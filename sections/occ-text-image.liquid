@@ -1,0 +1,101 @@
+<style>
+.occ-text-image{
+  padding: 50px 0;
+  background: var(--Linear, linear-gradient(-90deg, #edf1f5 1.33%, #fbfcfd 97.91%));
+}
+
+.occ-text-image .occ-text-image-list{
+  display: flex;
+}
+
+.occ-text-image .occ-text-image-item{
+  width: 33.333%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0 20px;
+  border-right: 1px solid #e8eef5;
+}
+
+.occ-text-image .occ-text-image-item:last-child{
+  border: 0;
+}
+
+.occ-text-image .occ-text-image-item .img{
+  width: 70px;
+  display: block;
+}
+
+.occ-text-image .occ-text-image-txt{
+  font-size: 18px;
+  color: #000;
+  line-height: 1.2;
+  font-family: var(--heading-font-family);
+  margin-top: 20px;
+  text-align: center;
+}
+
+@media (max-width:640px) {
+  .occ-text-image{
+    padding: 40px 0;
+  }
+  .occ-text-image .occ-text-image-item{
+    border: 0;
+  }
+  .occ-text-image .occ-text-image-item .img{
+    width: 45px;
+  }
+  .occ-text-image .occ-text-image-txt{
+    font-size: 14px;
+    margin-top: 10px;
+  }
+}
+</style>
+<section class="section-box">
+  <div class="occ-text-image">
+    <div class="container">
+      <div class="occ-text-image-list">
+        {%- for block in section.blocks -%}
+          <div class="occ-text-image-item to-top" style="transition-delay: 0.{{ forloop.index }}s">
+            {%- if block.settings.image != blank -%}
+              <img loading="lazy" class="img" width="{{ block.settings.image.width }}" height="{{ block.settings.image.height }}" {% render 'image-attributes', image: block.settings.image %} alt="{{ block.settings.image.alt | escape }}" >
+            {%- endif -%}
+            <div class="occ-text-image-txt">{{ block.settings.text }}</div>
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</section>
+{% schema %}
+{
+"name": "occ-text-image",
+"blocks": [
+  {
+    "name": "item",
+    "type": "item",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "image",
+        "label": "Image"
+      },
+      {
+        "type": "text",
+        "id": "text",
+        "label": "Text"
+      }
+    ]
+  }
+],
+"settings": [
+],
+  "presets": [
+  {
+    "name": "occ-text-image",
+    "blocks": []
+  }
+]
+}
+{% endschema %}

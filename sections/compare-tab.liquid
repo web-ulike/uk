@@ -1,0 +1,812 @@
+<style>
+  .compare-tab {
+    padding: 104px 0 84px;
+    /* background: #000; */
+    --color-border:255,255,255;
+  }
+
+  .compare-tab .compare-tab-top {
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+    --left-num: 0;
+    --width-num: 284px;
+  }
+
+  .compare-tab .compare-tab-top::before {
+    position: absolute;
+    content: '';
+    display: block;
+    height: 4px;
+    bottom: 0;
+    left: var(--left-num);
+    width: var(--width-num);
+    background: #CCB797;
+    transition: left 0.4s ease;
+  }
+
+  .compare-tab .compare-tab-top-item {
+    color: #EEE;
+    font-size: 32px;
+    line-height: 1.2;
+    /* font-family: var(--heading-font-family); */
+    padding: 0 14px 16px;
+    text-align: center;
+    cursor: pointer;
+  }
+
+  .compare-tab .compare-tab-top-item.active {
+    font-family: var(--heading-font-family);
+  }
+
+  .compare-tab .compare-tab-top-arraw {
+    position: absolute;
+    display: none;
+  }
+
+  .compare-tab .compare-tab-cont {
+    margin-top: 72px;
+  }
+
+  .compare-tab .compare-tab-cont-item {
+    display: none;
+  }
+
+  .compare-tab .compare-tab-cont-item.active {
+    display: block;
+  }
+
+  .compare-tab .compare-tab-cont-img-text {
+    display: flex;
+    align-items: center;
+  }
+
+  .compare-tab .compare-tab-cont-img-txt,
+  .compare-tab .compare-tab-cont-img {
+    width: 50%;
+  }
+
+  .compare-tab .compare-tab-cont-img-txt {
+    padding-right: 120px;
+  }
+
+  .compare-tab .compare-tab-cont-img-title {
+    color: #EEE;
+    font-size: 40px;
+    line-height: 1.25;
+    font-family: var(--heading-font-family);
+  }
+
+  .compare-tab .compare-tab-cont-img-p {
+    color: #EEE;
+    font-size: 16px;
+    line-height: 1.5;
+    margin-top: 30px;
+  }
+
+  .compare-tab .compare-tab-cont-img-p p {
+    margin: 0;
+  }
+
+  .compare-tab .compare-tab-top-box{
+    overflow: hidden;
+    position: relative;
+    z-index:3;
+  }
+  
+  .compare-tab .compare-tab-top-cont{
+    position: relative;
+    /* border-bottom: 1px solid #eee; */
+  }
+
+  .compare-tab .compare-tab-top-cont::before{
+    position: absolute;
+    content: '';
+    display: block;
+    width: 100%;
+    height: 1px;
+    background: #eee;
+    left: 0;
+    bottom: 0;
+    z-index: 1;
+}
+
+  @media (max-width: 1300px) {
+    .compare-tab .compare-tab-top-item {
+      font-size: 25px;
+    }
+
+    .compare-tab .compare-tab-cont-img-title {
+      font-size: 30px;
+    }
+
+    .compare-tab .compare-tab-cont-img-txt {
+      padding-right: 50px;
+    }
+  }
+
+  @media (max-width: 991px) {
+    .compare-tab {
+      padding: 80px 0 60px;
+    }
+
+    .compare-tab .compare-tab-top-item {
+      font-size: 18px;
+      flex-shrink: 0;
+      padding: 10px 6px;
+    }
+
+    .compare-tab .compare-tab-top::before {
+      /* height: 2px; */
+    }
+
+    .compare-tab .compare-tab-top-arraw {
+      display: block;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 3;
+      cursor: pointer;
+    }
+
+    .compare-tab .compare-tab-top-arraw svg {
+      display: block;
+    }
+
+    .compare-tab .compare-tab-cont {
+      margin-top: 30px;
+    }
+
+    .compare-tab .compare-tab-cont-img-text {
+      display: block;
+    }
+
+    .compare-tab .compare-tab-cont-img-txt,
+    .compare-tab .compare-tab-cont-img {
+      width: 100%;
+    }
+
+    .compare-tab .compare-tab-cont-img-txt {
+      padding-right: 0;
+      text-align: center;
+    }
+
+    .compare-tab .compare-tab-cont-img-title {
+      font-size: 22px;
+    }
+
+    .compare-tab .compare-tab-cont-img-p {
+      font-size: 14px;
+      margin-top: 15px;
+    }
+
+    .compare-tab .compare-tab-cont-img {
+      margin-top: 15px;
+    }
+
+  }
+
+  .product-results__sliders-list {
+    transition: opacity 0.2s;
+    /* opacity: 0; */
+    display: none;
+  }
+
+  .product-results__sliders-list:first-child {
+    display: block;
+  }
+
+  .product-results__accordions-list:first-child .product-results__content {
+    display: block;
+    
+  }
+
+  .product-results__accordions-list .product-results__content {
+    display: none;
+    padding-bottom: 10px;
+    color:#eee;
+  }
+
+  .product__result-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .product-results__accordions {
+    flex-basis: 35%;
+  }
+
+  .product-results__sliders {
+    flex-basis: 52%;
+  }
+
+  .product-results__sliders-list.is-active {
+    opacity: 1;
+    display: block;
+  }
+
+  .product-results__heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    height: 65px;
+    line-height: 65px;
+    color:#eee;
+  }
+
+  .product-results__accordions-list {
+    border-bottom: 1px solid #eee;
+    overflow: hidden;
+    /* height: 65px; */
+    transition: height 0.5s ease-out;
+  }
+
+  .product-results__label {
+    font-weight: 700;
+  }
+
+  .product-results__accordions .heading {
+    margin: 0;
+    padding-bottom: 22px;
+    border-bottom: 1px solid #eee;
+    color:#eee;
+
+  }
+
+  .heading.mobile__heading {
+    display: none;
+    font-size: 28px;
+    text-align: center;
+    margin-bottom: 36px;
+  }
+
+  .product-results__icon {
+    display: none;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .product-results__icon.is-plus {
+    display: flex;
+  }
+
+  .product-results__accordions-list.is-active .is-minus {
+    display: flex;
+  }
+
+  .product-results__accordions-list.is-active .is-plus {
+    display: none;
+  }
+
+  .product-results__tabs {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 20px;
+    margin: 20px 0;
+    line-height: 50px;
+  }
+
+  .product-results__tab {
+    margin: 0;
+    cursor: pointer;
+    color: #C1C1C1;
+  }
+
+  .product-results__tab.is-active {
+    color: #eee;
+    border-bottom: 2px solid #eee;
+    z-index: 1;
+  }
+
+  .mobile__nav .article-dot {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #E6E6E6;
+    position: relative;
+    height: 2px;
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    z-index: 0;
+  }
+
+  .mobile__nav .article-dot-item {
+    width: 100px;
+    height: 2px;
+    border-radius: 15px;
+    margin: 0;
+    position: absolute;
+    left: 0;
+    background: #1B1B1B;
+    top: 0;
+    transition: all 0.8s;
+    display: none;
+  }
+
+  .mobile__nav {
+    display: none;
+    position: relative;
+  }
+
+  .image__comparison-note {
+    margin-top: 26px;
+  }
+
+  .image__comparison-note.mobile-note {
+    display: none;
+  }
+
+  .procust-results__link {
+    margin-top: 20px;
+  }
+
+  .procust-results__link a {
+    font-size: 15px;
+    text-decoration-line: underline;
+    text-transform: capitalize;
+    color: #2BA8E7;
+  }
+
+  .product-results__content p {
+    line-height: 1.4;
+  }
+
+  @media screen and (max-width: 992px) {
+    .mobile__nav {
+      display: block;
+    }
+
+    .image__comparison-note {
+      display: none;
+    }
+
+    .product__result-item {
+      flex-direction: column-reverse;
+    }
+
+    .product-results__heading,
+    .product-results__accordions .heading {
+      display: none;
+    }
+
+    .product-results__accordions-list {
+      display: none;
+      border: none;
+      height: auto;
+      padding: 16px 0;
+      text-align: center;
+    }
+
+    .product-results__content {
+      font-size: 14px;
+    }
+
+    .product-results__accordions-list.is-active {
+      display: block;
+    }
+
+    .image__comparison-note.mobile-note {
+      display: block;
+      color: #888888;
+      font-size: 12px;
+      margin-top: 16px;
+    }
+
+    .procust-results__link {
+      text-align: center;
+    }
+
+    .heading.mobile__heading {
+      display: block;
+      color:#eee;
+    }
+    .compare-tab .compare-tab-top-box{
+      overflow-x: auto;
+    }
+    .compare-tab .compare-tab-top-box::-webkit-scrollbar {
+      display: none;
+    }
+  }
+</style>
+{{ 'section-image-comparison.css' | asset_url | stylesheet_tag }}
+<section class="section-box">
+  <div class="compare-tab">
+    <div class="container">
+      <div class="compare-tab-top-cont">
+      <div class="compare-tab-top-box">
+        <div class="compare-tab-top">
+          <div class="compare-tab-top-item active">
+            {{ section.settings.text }}
+          </div>
+          {%- for block in section.blocks -%}
+          {% case block.type %}
+          {% when 'item' %}
+          <div class="compare-tab-top-item">
+            {{ block.settings.text }}
+          </div>
+          {% endcase %}
+          {%- endfor -%}
+        </div>
+       </div>
+        <div class="compare-tab-top-arraw" style="display:none;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30" fill="none">
+              <circle opacity="0.4" cx="15" cy="15" r="15" fill="white" fill-opacity="0.5" />
+              <path d="M13.7251 9.02485L19.7003 15L13.7251 20.9751" stroke="white" stroke-width="2"
+                stroke-linecap="square" />
+            </svg>
+          </div>
+      </div>
+      <div class="compare-tab-cont">
+        <div class="compare-tab-cont-item active">
+          <div class="product__result-wrapper media-{{ section.id }}-padding">
+            <div class="product__result-item">
+              <div class="product-results__accordions">
+                {%- if section.settings.title != blank -%}
+                <h3 class="heading h3">{{ section.settings.title }}</h3>
+                {%- endif -%}
+                <div class="mobile__nav">
+                  <div class="product-results__tabs">
+                    {%- for block in section.blocks -%}
+                    {% case block.type %}
+                    {% when 'compare' %}
+                    <h5 class="product-results__tab {% if forloop.index == 1 %}is-active{% endif %}"
+                      data-target="#content{{forloop.index}}">
+                      {{ block.settings.result_title }}
+                    </h5>
+                    {% endcase %}
+                    {%- endfor -%}
+                  </div>
+                  <div class="article-dot">
+                    <div class="article-dot-item"></div>
+                  </div>
+                </div>
+                <div>
+                  {%- for block in section.blocks -%}
+                  {% case block.type %}
+                  {% when 'compare' %}
+                  <div class="product-results__accordions-list {% if forloop.index == 1 %}is-active{% endif %}"
+                    data-target="#content{{forloop.index}}">
+                    <div class="product-results__heading">
+                      <div class="product-results__label">{{ block.settings.result_title }}</div>
+                      <span class="animated-plus"></span>
+                    </div>
+                    <div class="product-results__content">{{ block.settings.result_content }}</div>
+                    <div class="image__comparison-note mobile-note">{{ block.settings.result_note }}</div>
+                  </div>
+                  {% endcase %}
+                  {%- endfor -%}
+                </div>
+                <div class="procust-results__link">
+                  <a href="{{ section.settings.link_url }}" class="">
+                    {{ section.settings.link_text }}
+                  </a>
+                </div>
+              </div>
+              <div class="product-results__sliders">
+                {%- if section.settings.title != blank -%}
+                <h3 class="heading h2 mobile__heading">{{ section.settings.title }}</h3>
+                {%- endif -%}
+                <div>
+                  {%- for block in section.blocks -%}
+                  {% case block.type %}
+                  {% when 'compare' %}
+                  <div class="product-results__sliders-list" id="content{{forloop.index}}">
+                    {%- liquid
+                    assign before = block.settings.before_img
+                    assign after = block.settings.after_img
+                    assign image_ratio_percent = 75
+
+                    if before != blank
+                    assign image_ratio_percent = 1 | divided_by: before.aspect_ratio | times: 100
+                    elsif after != blank
+                    assign image_ratio_percent = 1 | divided_by: after.aspect_ratio | times: 100
+                    endif
+                    -%}
+                    {%- if before != blank -%}
+                    <image-comparison class="image-comparison" data-layout="horizontal"
+                      style="--image-ratio-percent: {{ image_ratio_percent }}%;">
+                      <span class="image-comparison__animate"></span>
+                      {%- if before != blank -%}
+                      <div class="image-comparison__before media-wrapper image-comparison__item--start" {{
+                        before.shopify_attributes }}>
+                        {%- if before != blank -%}
+                        <div class="media media--adapt" style="max-height:459px">
+                          <img srcset="
+                              {%- if before.width >= 375 -%}{{ before | image_url: width: 375 }} 375w{%- endif -%}
+                              {%- if before.width >= 750 -%},{{ before | image_url: width: 750 }} 750w{%- endif -%}
+                              {%- if before.width >= 1100 -%},{{ before | image_url: width: 1100 }} 1100w{%- endif -%}
+                              {%- if before.width >= 1500 -%},{{ before | image_url: width: 1500 }} 1500w{%- endif -%}
+                              {%- if before.width >= 2200 -%},{{ before | image_url: width: 2200 }} 2200w{%- endif -%}
+                              {%- if before.width >= 3000 -%},{{ before | image_url: width: 3000 }} 3000w{%- endif -%},
+                              {{ before | image_url }} {{ before.width }}w
+                            " src="{{ before | image_url: width: 750 }}" sizes="100vw" loading="lazy"
+                            alt="{{ before.alt | escape }}" width="{{ before.width }}" height="{{ before.height }}">
+                        </div>
+                        {%- else -%}
+                        <div class="media media--adapt">
+                          {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder' }}
+                        </div>
+                        {%- endif -%}
+                      </div>
+                      {%- endif -%}
+                      {%- if after != blank -%}
+                      <div class="image-comparison__after media-wrapper image-comparison__item--start">
+                        {%- if after != blank -%}
+                        <div class="media media--adapt">
+                          <img srcset="
+                              {%- if after.width >= 375 -%}{{ after | image_url: width: 375 }} 375w{%- endif -%}
+                              {%- if after.width >= 750 -%},{{ after | image_url: width: 750 }} 750w{%- endif -%}
+                              {%- if after.width >= 1100 -%},{{ after | image_url: width: 1100 }} 1100w{%- endif -%}
+                              {%- if after.width >= 1500 -%},{{ after | image_url: width: 1500 }} 1500w{%- endif -%}
+                              {%- if after.width >= 2200 -%},{{ after | image_url: width: 2200 }} 2200w{%- endif -%}
+                              {%- if after.width >= 3000 -%},{{ after | image_url: width: 3000 }} 3000w{%- endif -%},
+                              {{ after | image_url }} {{ after.width }}w
+                            " src="{{ after | image_url: width: 750 }}" sizes="100vw" loading="lazy"
+                            alt="{{ after.alt | escape }}" width="{{ after.width }}" height="{{ after.height }}">
+                        </div>
+                        {%- else -%}
+                        <div class="media media--adapt">
+                          {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder' }}
+                        </div>
+                        {%- endif -%}
+                      </div>
+                      {%- endif -%}
+
+                      {%- if before != blank and after != blank -%}
+                      <button type="button" class="image-comparison__button">
+                        <span></span>
+                      </button>
+                      {%- endif -%}
+                    </image-comparison>
+                    {%- endif -%}
+                    <div class="image__comparison-note">{{ block.settings.result_note }}</div>
+                  </div>
+                  {% endcase %}
+                  {%- endfor -%}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        {%- for block in section.blocks -%}
+        {% case block.type %}
+        {% when 'item' %}
+        <div class="compare-tab-cont-item">
+          <div class="compare-tab-cont-img-text">
+            <div class="compare-tab-cont-img-txt">
+              <div class="compare-tab-cont-img-title">{{ block.settings.title }}</div>
+              <div class="compare-tab-cont-img-p">{{ block.settings.cont }}</div>
+            </div>
+            <div class="compare-tab-cont-img">
+              {%- if block.settings.image != blank -%}
+              <img loading="lazy" class="img" width="{{ block.settings.image.width }}"
+                height="{{ block.settings.image.height }}" {% render 'image-attributes' , image: block.settings.image %}
+                alt="{{ block.settings.image.alt | escape }}">
+              {%- endif -%}
+            </div>
+          </div>
+        </div>
+        {% endcase %}
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+  window.addEventListener('load', function () {
+    function setInitWidth() {
+      let $p = $('.compare-tab-top')
+      let $i = $p.find('.compare-tab-top-item')
+      let width = $i[0].offsetWidth
+      $p.attr('style', '--width-num: ' + width + 'px;')
+    }
+    setInitWidth()
+    $('.compare-tab .compare-tab-top-item').hover(function () {
+      let left = $(this)[0].offsetLeft
+      let width = $(this)[0].offsetWidth
+      $(this).parents('.compare-tab-top').attr('style', '--left-num: ' + left + 'px;--width-num: ' + width + 'px;')
+    }, function () {
+      let left = $('.compare-tab .compare-tab-top-item.active')[0].offsetLeft
+      let width = $(this)[0].offsetWidth
+      $(this).parents('.compare-tab-top').attr('style', '--left-num: ' + left + 'px;--width-num: ' + width + 'px;')
+    })
+
+    $('.compare-tab .compare-tab-top-item').click(function () {
+      let $p = $(this).closest('.compare-tab')
+      let index = $(this).index()
+      $(this).addClass('active').siblings().removeClass('active')
+      $p.find('.compare-tab-cont-item').removeClass('active').eq(index).addClass('active')
+      commonGtmEvent(['Intro-Result','Intro-FullBody','Intro-PainFree','Intro-Fast'][index],'','')
+    })
+    $('.procust-results__link a').click(function(){
+      commonGtmEvent('Result-Quiz','','')
+    })
+  })
+
+  window.addEventListener('load', () => {
+    $('html').on('click', '.product__result-wrapper .product-results__heading', function () {
+      let $this = $(this)
+      let index = $this.parents('.product-results__accordions-list').index()
+      $this.siblings('.product-results__content').slideToggle()
+      $this.parents('.product-results__accordions-list').toggleClass('is-active').siblings('.product-results__accordions-list').removeClass('is-active').find('.product-results__content').slideUp()
+      $this.closest('.product__result-wrapper').find('.product-results__sliders-list').hide().eq(index).fadeIn()
+      $this.closest('.product__result-wrapper').find('.product-results__tab').removeClass('is-active').eq(index).addClass('is-active')
+    })
+
+    $('html').on('click', '.product__result-wrapper .product-results__tab', function () {
+      let $this = $(this)
+      let index = $this.index()
+      $this.addClass('is-active').siblings('.product-results__tab').removeClass('is-active')
+      $this.closest('.product__result-wrapper').find('.product-results__accordions-list').removeClass('is-active').find('.product-results__content').hide()
+      $this.closest('.product__result-wrapper').find('.product-results__accordions-list').eq(index).addClass('is-active').find('.product-results__content').show()
+      $this.closest('.product__result-wrapper').find('.product-results__sliders-list').hide().eq(index).show()
+      commonGtmEvent(['Result-3wks','Result-6wks','Result-10wks'][index],'','')
+    })
+    
+  })
+  function initModule(module) {
+    // 使用 module.querySelector 和 module.querySelectorAll 替换 document.querySelector 和 document.querySelectorAll
+    // 这样，我们只会选择当前模块中的元素
+
+    let documentWidth = document.documentElement.clientWidth || document.body.clientWidth;
+
+    if (documentWidth > 992) {
+      module.querySelectorAll('.product-results__accordions-list').forEach((menuItem, index) => {
+        menuItem.addEventListener('click', function () {
+          let contentHeight = this.scrollHeight;
+          const targetId = menuItem.getAttribute('data-target');
+          const targetContent = module.querySelector(targetId);
+          // 移除其他菜单项的 'show' 类，为当前点击的菜单项添加 'show' 类
+          module.querySelectorAll('.product-results__accordions-list').forEach(function (item, idx) {
+            item.style.height = '65px';
+            item.classList.remove("is-active");
+          });
+          this.classList.add("is-active");
+          console.log('contentHeight', contentHeight);
+          this.style.height = (contentHeight + 20) + 'px';
+          /*           this.style.height =  'auto'; */
+          module.querySelectorAll('.product-results__sliders-list.is-active').forEach((content) => {
+            if (content !== targetContent) {
+              content.classList.remove('is-active');
+            }
+          });
+          targetContent.classList.add('is-active');
+        });
+      });
+      // 模拟第一个菜单项的点击事件
+      module.querySelectorAll('.product-results__accordions-list')[0].click();
+    } else {
+      module.querySelectorAll('.product-results__tab').forEach((menuItem) => {
+        menuItem.addEventListener('click', function () {
+          const targetId = menuItem.getAttribute('data-target');
+          const targetContent = module.querySelector(targetId);
+          // 移除其他菜单项的 'show' 类，为当前点击的菜单项添加 'show' 类
+          module.querySelectorAll('.product-results__tab').forEach(function (item) {
+            item.classList.remove("is-active");
+          });
+          this.classList.add("is-active");
+          module.querySelectorAll('.product-results__sliders-list.is-active').forEach((content) => {
+            if (content !== targetContent) {
+              content.classList.remove('is-active');
+            }
+          });
+          targetContent.classList.add('is-active');
+          module.querySelectorAll('.product-results__accordions-list').forEach(function (list) {
+            list.classList.remove('is-active');
+            if (list.getAttribute('data-target') == targetId) {
+              list.classList.add('is-active');
+            }
+          });
+        });
+      });
+      // 模拟第一个菜单项的点击事件
+      module.querySelectorAll('.product-results__tab')[0].click();
+    }
+  }
+  // 在 DOMContentLoaded 事件触发后，为每个模块调用 initModule 函数
+  document.addEventListener("DOMContentLoaded", function () {
+    // document.querySelectorAll(".product-results").forEach(function (module) {
+    //   initModule(module);
+    // });
+  });
+</script>
+{% schema %}
+{
+  "name": "compare-tab",
+  "blocks": [
+    {
+      "name": "item",
+      "type": "item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Label Text"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title"
+        },
+        {
+          "type": "richtext",
+          "id": "cont",
+          "label": "Content"
+        }
+      ]
+    },
+    {
+      "name": "compare",
+      "type": "compare",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "before_img",
+          "label": "Before"
+        },
+        {
+          "type": "image_picker",
+          "id": "after_img",
+          "label": "After"
+        },
+        {
+          "type": "text",
+          "id": "result_title",
+          "label": "Heading",
+          "default": "Your content"
+        },
+        {
+          "type": "text",
+          "id": "result_note",
+          "label": "Note",
+          "default": "Note"
+        },
+        {
+          "type": "richtext",
+          "id": "result_content",
+          "label": "Content",
+          "default": "<p></p>"
+        }
+      ]
+    }
+  ],
+  "settings": [
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Label Text"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Your content"
+    },
+    {
+      "type": "text",
+      "id": "link_text",
+      "label": "Link text"
+    },
+    {
+      "type": "url",
+      "id": "link_url",
+      "label": "Link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "compare-tab",
+      "blocks": []
+    }
+  ]
+}
+{% endschema %}

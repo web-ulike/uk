@@ -1,0 +1,343 @@
+{%- liquid
+  assign se_id = section.id
+  assign se_bks = section.blocks
+  assign se_stts = section.settings
+-%}
+{{ 'swiper-bundle.min.css' | asset_url | stylesheet_tag }}
+
+<div class="g_carousel_image_{{se_id}}">
+  <div class="title">{{ se_stts.title }}</div>
+  <div class="box-swiper">
+    <div class="left-text hidden-phone">
+      <div class="switch">
+        <span class="iconfont swiper-prev ">&#xe685;</span>
+        <span class="iconfont swiper-next">&#xe687;</span>
+      </div>
+      <div class="text-list">
+        <ul>
+          {%- for block in se_bks -%}
+            {%- assign item = block.settings -%}
+            <li index="{{forloop.index0}}">{{ item.title }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+    <div class="swiper mySwiper_{{se_id}}">
+      <div class="swiper-wrapper">
+        {%- for block in se_bks -%}
+          {%- assign item = block.settings -%}
+          <div class="item swiper-slide ">
+            <div class="box-image {{ item.s_class }}">
+              {{-
+                item.image
+                | image_url: width: item.image.width
+                | image_tag: loading: 'lazy', class: 'hidden-phone', draggable: false
+              -}}
+              {{-
+                item.m_image
+                | image_url: width: item.m_image.width
+                | image_tag: loading: 'lazy', class: 'hidden-desk', draggable: false
+              -}}
+            </div>
+            {%- if item.step != '' -%}
+              <div class="box-detail">
+                <p class="title">{{ item.step }}</p>
+                <div class="name">{{ item.name }}</div>
+                <div class="info">{{ item.info }}</div>
+              </div>
+            {% endif %}
+          </div>
+        {% endfor %}
+      </div>
+      <div class="swiper-pagination hidden-desk"></div>
+    </div>
+  </div>
+</div>
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="{{ 'swiper-bundle.min.aio.min.js' | asset_url }}"></script>
+<script>
+  $(function () {
+    var swiper = new Swiper('.mySwiper_{{se_id}}', {
+      slidesPerView: isMobile() ? 1.3 : 3,
+      spaceBetween: isMobile() ? 20 : 25,
+      loop: true,
+      {% comment %} autoplay:true, {% endcomment %}
+      pagination: {
+        el: '.swiper-pagination',
+        clickable: true,
+      },
+      navigation: {
+        nextEl: '.swiper-next',
+        prevEl: '.swiper-prev',
+      },
+      on: {
+        slideChangeTransitionEnd: function () {
+          let index = this.realIndex;
+          {% comment %} if ((index) => 5) {
+            index = index - 5;
+          } {% endcomment %}
+          $('.g_carousel_image_{{se_id}} .text-list ul li').removeClass('active');
+          $('.g_carousel_image_{{se_id}} .text-list ul li').eq(index).addClass('active');
+        },
+      },
+    });
+    $('.g_carousel_image_{{se_id}} .text-list ul li').eq(0).addClass('active');
+  });
+</script>
+<style>
+  @font-face {
+    font-family: 'iconfont';  /* Project id 3482585 */
+    src: url('https://cdn.shopify.com/s/files/1/0740/5882/6015/files/iconfont.woff2?v=1698718657') format('woff2')
+  }
+  .iconfont {
+    font-family: "iconfont" !important;
+    font-size: 16px;
+    font-style: normal;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    width: 40px;
+    height: 40px;
+    color: #fff;
+    display: flex;
+    text-align: center;
+    background-color: #808080;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    font-size: 22px;
+    cursor: pointer;
+  }
+  .g_carousel_image_{{se_id}}{
+    padding: 80px 0px 80px 8%;
+  }
+  .g_carousel_image_{{se_id}} .title{
+    color: #000;
+    text-align: center;
+    font-family: var(--heading-font-family);
+    font-size: 44px;
+    font-weight: 500;
+    line-height: 125%;
+    margin-bottom: 40px;
+    padding: 0px 8% 0px 0px;
+  }
+
+  .g_carousel_image_{{se_id}} .box-swiper {
+    display: flex;
+  }
+
+  .g_carousel_image_{{se_id}} .box-swiper .left-text {
+    width: 230px;
+    padding-top: 50px;
+  }
+
+  .g_carousel_image_{{se_id}} .box-swiper .left-text .switch {
+    display: flex;
+  }
+
+  .g_carousel_image_{{se_id}} .box-swiper .left-text .switch span:first-child {
+    margin-right: 20px;
+  }
+
+  .g_carousel_image_{{se_id}} .box-swiper .left-text .switch .swiper-button-disabled {
+    background-color: #bfbfbf;
+  }
+
+  .g_carousel_image_{{se_id}} .box-swiper .left-text .text-list {
+    color: rgba(0, 0, 0, 0.5);
+    font-size: 18px;
+    font-weight: 600;
+    margin-top: 40px;
+  }
+
+  .g_carousel_image_{{se_id}} .box-swiper .left-text .text-list ul {
+    list-style: none;
+    padding: 0px;
+    margin: 0px;
+  }
+
+  .g_carousel_image_{{se_id}} .box-swiper .left-text .text-list ul li {
+    font-size: 18px;
+    font-family: var(--heading-font-family);
+    font-weight: 400;
+    line-height: 26px;
+  }
+
+  .g_carousel_image_{{se_id}} .box-swiper .left-text .text-list ul .active {
+    color: #000;
+    font-weight: 500;
+  }
+
+  .g_carousel_image_{{se_id}} .box-swiper .mySwiper_{{se_id}} {
+    flex: 1;
+  }
+  .g_carousel_image_{{se_id}} .box-swiper .mySwiper_{{se_id}} .item {
+    position: relative;
+  }
+  .mySwiper_{{se_id}} .item .box-detail{
+    position: absolute;
+    top: 68%;
+    width: 100%;
+    padding: 0px 6%;
+  }
+  .mySwiper_{{se_id}} .item .box-detail .title{
+    color: #E0004D;
+    font-size: 18px;
+    font-weight: 500;
+    margin: 0px;
+    text-align: left;
+    margin-bottom: 4px;
+  }
+  .mySwiper_{{se_id}} .item .box-detail .name {
+    color: #000;
+    font-family: var(--heading-font-family);
+    font-size: 28px;
+    font-weight: 500;
+    line-height: 32px;
+  }
+  .mySwiper_{{se_id}} .item .box-detail .info {
+    color: #000;
+
+    font-size: 16px;
+    font-weight: 400;
+    margin-top: 20px;
+    line-height: 22px;
+  }
+  .mySwiper_{{se_id}} .item .active{
+    padding: 50px 0px 0px;
+  }
+  @media screen and (max-width: 1520px) {
+    .mySwiper_{{se_id}} {
+      .item .active{
+        padding: 40px 0px 0px;
+      }
+      .item .box-detail .name {
+        font-size: 22px;
+        line-height: 28px;
+      }
+      .item .box-detail .info {
+        font-size: 14px;
+        line-height: 16px;
+        margin-top: 10px;
+      }
+    }
+
+  }
+
+
+  @media screen and (max-width: 740px) {
+    .g_carousel_image_{{se_id}}{
+      padding: 80px 20px 40px;
+    }
+    .g_carousel_image_{{se_id}} .title{
+      font-size: 28px;
+      margin-bottom: 20px;
+      padding: 0px;
+    }
+    .mySwiper_{{se_id}} .item .active{
+      padding: 30px 0px 0px;
+    }
+
+    .mySwiper_{{se_id}} .item .box-detail{
+      position: absolute;
+      top: 50%;
+      width: 100%;
+      padding: 30px 20px;
+    }
+    .mySwiper_{{se_id}} .item .box-detail .title{
+      font-size: 16px;
+      margin-bottom: 6px;
+    }
+    .mySwiper_{{se_id}} .item .box-detail .name {
+      font-size: 21px;
+      line-height: 26px;
+    }
+    .mySwiper_{{se_id}} .item .box-detail .info {
+      font-size: 14px;
+      margin-top: 12px;
+    }
+    .g_carousel_image_{{se_id}} .box-swiper .mySwiper_{{se_id}} {
+      padding-bottom: 40px;
+    }
+
+  }
+</style>
+
+{% schema %}
+{
+  "name": "g-carousel-image",
+  "class": "g_carousel_image",
+  "settings": [
+    {
+      "type": "textarea",
+      "id": "title",
+      "label": "标题"
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "options": [
+        {
+          "value": "nt_full",
+          "label": "Full Width"
+        },
+        {
+          "value": "container",
+          "label": "Container"
+        }
+      ],
+      "label": "Layout"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "s_class",
+          "label": "class:"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "图片"
+        },
+        {
+          "type": "image_picker",
+          "id": "m_image",
+          "label": "移动端—图片"
+        },
+        {
+          "type": "textarea",
+          "id": "title",
+          "label": "右侧标题"
+        },
+        {
+          "type": "text",
+          "id": "step",
+          "label": "步骤",
+          "info": "STEP 1"
+        },
+        {
+          "type": "textarea",
+          "id": "name",
+          "label": "标题"
+        },
+        {
+          "type": "textarea",
+          "id": "info",
+          "label": "描述"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "g_carousel Image",
+      "category": "g_carousel Image",
+      "blocks": []
+    }
+  ]
+}
+{% endschema %}

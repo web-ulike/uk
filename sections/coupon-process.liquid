@@ -1,0 +1,900 @@
+{{ 'swiper-bundle.min.css' | asset_url | stylesheet_tag }}
+<style>
+      #shopify-section-{{ section.id }} {
+      --text-color: {{  section.settings.text_color.red }}, {{  section.settings.text_color.green }}, {{  section.settings.text_color.blue }};
+      --section-background: {{ section.settings.background.red }}, {{ section.settings.background.green }}, {{ section.settings.background.blue }};
+      --background-image: url({{ section.settings.background_image | img_url: '3840x1176' }});
+      background: rgb(var(--section-background, var(--background)));
+    }
+    .section-{{ section.id }}-padding {
+      padding-top: calc({{ section.settings.padding_top }}px);
+      padding-bottom: calc({{ section.settings.padding_bottom }}px);
+    }
+    @media screen and (max-width: 768px){
+      #shopify-section-{{ section.id }} {
+        --background-image: url({{ section.settings.mobile_background_image | img_url : '750x1230' }});
+      }
+    .section-{{ section.id }}-padding {
+      padding-top: calc({{ section.settings.padding_top }}px * 0.6);
+      padding-bottom: calc({{ section.settings.padding_bottom }}px * 0.6);
+    }
+  }
+  .swiper-wrapper{
+  }
+  .coupon_process-item{
+    font-family: var(--heading-font-family);
+        font-weight: var(--heading-font-weight);
+  }
+  {% comment %} .coupon_process-bg{
+    background-image: var(--background-image);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+  } {% endcomment %}
+   .coupon_process-bg{
+    background-image: var(--background-image);
+        background-repeat: repeat;
+    background-size: 100% 100%;
+  }
+  .coupon_top{
+    position: relative;
+    overflow: hidden;
+    border-radius: 5px;
+    /* background: #D9D9D9; */
+    background:linear-gradient(319deg, #D9D9D9 6.75%, #F7F7F7 95.81%);
+  }
+  .coupon_top img{
+    display: block;
+    position: absolute;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    height: 100%;
+  }
+  .coupon_top-bix {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 33px;
+      border-bottom: 1px dashed rgba(154, 154, 154, 0.5);
+      margin: 0 20px;
+  }
+  span.coupon-tle {
+    font-size: 75px;
+  font-style: normal;
+  line-height: 150%;
+  text-transform: capitalize;
+  margin-top: 12px;
+  }
+  span.coupon-tle i{
+    font-size: 30px;
+  }
+  .dis-coupon{
+    text-align: center;
+    padding: 17px 0;
+    font-size: 14px;
+  font-style: normal;
+  
+  line-height: 150%;
+  letter-spacing: 0.42px;
+  text-transform: capitalize;
+  color: #9A9A9A;
+  position: relative;
+  }
+  .coupon_top-bix svg{
+    fill: #9A9A9A;
+  }
+  .coupon-tle{
+    color: #969696;
+  }
+  .dis-coupon::before{
+    content: '';
+    display: block;
+    width: 15px;
+    height: 15px;
+    border: 1px solid  #D9D9D9;
+    background: #fff;
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+  }
+  .dis-coupon::after{
+    content: '';
+    display: block;
+    width: 15px;
+    height: 15px;
+    border: 1px solid  #D9D9D9;
+    background: #fff;
+    position: absolute;
+    top: 0;
+    right: 0;
+    transform: translate(50%, -50%);
+    border-radius: 50%;
+  }
+  .coupon_process-bt{
+  padding: 20px 0;
+  }
+  .coupon_process-label{
+    display: flex;
+    justify-content: space-between;
+    color: #DEB581;
+  }
+  .coupon_process-label span{
+  font-size: 14px;
+  font-style: normal;
+  
+  line-height: 150%;
+  text-transform: uppercase;
+  }
+  .coupon_process-input{
+    width: 100%;
+    height: 8px;
+    border-radius: 9px;
+  background: #DEDEDE;
+  margin-top: 10px;
+  position: relative;
+  }
+  .coupon_process-input .coupon_process-in{
+    position: absolute;
+    width: 0%;
+    height: 100%;
+    border-radius: 9px;
+    background: #DEB581;
+    left: 0;
+  }
+  .coupon_product-ul{
+  display: flex;
+  align-items: center;
+  gap: 34px;
+  padding: 20px;
+  }
+  .coupon_product-li {
+    display: flex;
+    align-items: center;
+  }
+  .coupon_product-right{
+    margin-left: 15px;
+  }
+  .coupon_product-li .coupon_product-right .coupon_product-tle{
+    font-size: 16px;
+  font-style: normal;
+  
+  line-height: 150%;
+  display: flex;
+  gap: 3px;
+  align-items: center;
+  }
+  .coupon_product-li .coupon_product-right .coupon_product-tle span{
+    display: inline-block;
+  background: #E0004D;
+  color: #fff;
+  font-size: 6px;
+  padding: 0px 2px;
+  line-height: 2.5;
+  }
+  .coupon_product-li .coupon_product-right .coupon_product-md{
+    font-size: 12px;
+    font-style: normal;
+    
+    line-height: 150%;
+    padding: 5px 0;
+  }
+  .coupon_product-li .coupon_product-right .coupon_product-price{
+    color: #E0004D;
+    font-size: 16px;
+    font-style: normal;
+    
+    line-height: 150%;
+    text-transform: uppercase;
+    display: flex;align-items: center;
+    gap: 7px;
+  }
+  .coupon_product-li .coupon_product-right .coupon_product-price span{
+    color: #838383;
+  text-align: center;
+  font-size: 12px;
+  font-style: normal;
+
+  line-height: 150%;
+  text-transform: uppercase;
+  text-decoration: line-through;
+  }
+  .coupon_btn a{
+    display: block;
+    width: 100%;
+    color: #FFF;
+  text-align: center;
+  font-size: 16px;
+  font-style: normal;
+  
+  line-height: 150%;
+  text-transform: uppercase;
+  background-color: #000000;
+  padding: 12px 0;
+  }
+  .coupon_btn button{
+    display: block;
+    width: 100%;
+    color: #FFF;
+  text-align: center;
+  font-size: 16px;
+  font-style: normal;
+  
+  line-height: 150%;
+  text-transform: uppercase;
+  background-color: #000000;
+  padding: 12px 0;
+  }
+  .tr_ov{
+    overflow: hidden;
+  }
+  .tr_top {
+      transform: translateY(113px);
+      transition: transform 0.4s ease-out;
+  }
+  .tr_ov:hover .tr_top{
+    transform: translateY(0);
+  }
+  .coupon_process-box .swiper-scrollbar {
+    bottom: -70px;
+  }
+  .check_coupon {
+      display: flex;
+      position: relative;
+      align-items: center;
+      gap: 42px;
+      margin-top: 55px;
+  }
+  .check_coupon .swiper-scrollbar{
+    background: #DEDEDE;
+  }
+  .check_coupon .swiper-pagination-progressbar .swiper-pagination-progressbar-fill{
+    background: #000000;
+  }
+  .next_prev-box{
+    display: flex;
+    gap: 50px;
+  }
+  .next_prev-box svg{
+    cursor: pointer;
+  }
+  .ico_lb{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .light{
+    display: none;
+  }
+  .coupon_process-item.active .coupon_top-bix svg {
+      fill: #4C2E13;
+  }
+  .coupon_process-item.active .coupon_top{
+    background: transparent;
+  }
+  .coupon_process-item.active .coupon_top .coupon_top-bix{
+    border-bottom: 1px dashed rgba(76, 46, 19, 0.5);
+  }
+  .coupon_process-item.active .coupon-tle{
+       color: #7B5B3E;
+  }
+  .coupon_process-item.active .dis-coupon{
+    color: #7B5B3E;
+  }
+  .coupon_process-item.active .coupon_btn button{
+    background-color: #DEB581;
+  }
+  .coupon_process-item.active .clock{
+    display: none;
+  }
+  .coupon_process-item.active .light{
+    display: block;
+  }
+  .coupon_process-item.sold .coupon_process-label{
+    color: #A7A7A7;
+  }
+  .coupon_process-item.sold .clock,.coupon_process-item.sold .light{
+    display: none;
+  }
+  .coupon_process-item.sold  .coupon_btn button{
+    background: #9D9D9D;
+  }
+  .check_coupon svg.swiper-button-disabled{
+    color: #DEDEDE;
+  }
+  .coupon_process-item.sold .coupon_process-in{
+    background:#9D9D9D;
+  }
+    .coupon_process-item.active .tr_top {
+      transform: translateY(0);
+  }
+  .coupon_process-box i{
+        font-style: normal;
+  }
+  @media screen and (max-width: 991px){
+    .coupon_product-ul{
+      padding:20px 0;
+      gap: 15px
+    }
+    .coupon_product-li .coupon_product-right .coupon_product-md{
+      font-size:11px;
+    }
+    .check_coupon{
+      margin-top:35px;
+    }
+    .coupon_process-box {
+    padding: 50px 0;
+}
+    .coupon_process-bt{
+      padding-bottom:0;
+    }
+  }
+  @media screen and (max-width: 520px){
+    .coupon_process-item.swiper-slide.swiper-slide-active .tr_top {
+      transform: translateY(0);
+    }
+  }
+</style>
+
+<section>
+  <div class="coupon_process-bg section-{{ section.id }}-padding">
+    <div class="coupon_process-box">
+      <div class="container" style="position: relative;">
+        <div class="swiper" id="coupon_process--{{ section.id}}">
+          <div class="swiper-wrapper">
+            {%- for block in section.blocks -%}
+              <div class="coupon_process-item swiper-slide{% if block.settings.custom_class != blank %} {{block.settings.custom_class}}{% endif %}">
+                <div class="tr_ov">
+                  <div class="tr_top">
+                    <div class="coupon_top">
+                      <div class="coupon_top-bix">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="91"
+                          height="21"
+                          viewBox="0 0 91 21"
+                          fill="inhert"
+                        >
+                          <g opacity="0.5">
+                            <path d="M44.1791 0.929199H38.9727V4.57781H44.1791V0.929199Z" fill="inhert"/>
+                            <path d="M44.1606 7.00024H39.0098V19.4632H44.1606V7.00024Z" fill="inhert"/>
+                            <path d="M34.5649 0.929199H29.4141V19.4631H34.5649V0.929199Z" fill="inhert"/>
+                            <path d="M68.8928 2.13774V2.03872H62.8753L53.7059 8.78692V0.929199H48.668V19.4631H53.7059V11.219L63.7317 19.4631H69.24V19.3526L58.1318 9.97248L68.8928 2.13774Z" fill="inhert"/>
+                            <path d="M17.7767 3.2119H19.6341V12.6371C19.5896 15.6615 16.9943 17.496 14.2267 17.496C11.4592 17.496 8.86381 15.6615 8.81937 12.6371V0.929199H0L1.68517 3.2119H3.54626V12.4727C3.54626 17.8815 9.09714 20.0413 14.2267 20.0254C19.3554 20.0413 24.9072 17.8824 24.9072 12.4727V0.929199H16.0915L17.7767 3.2119Z" fill="inhert"/>
+                            <path d="M87.1216 4.22486C85.1966 2.45493 82.3086 1.45857 79.3661 1.51869C75.9124 1.58234 73.0013 2.60699 70.9486 4.48301C69.1106 6.161 68.2227 8.39773 68.2227 10.7794C68.2227 13.559 69.4486 16.129 71.8023 17.7796C74.0782 19.3754 76.1254 20.0261 79.4809 20.0261C80.4577 20.0199 81.267 19.9757 82.0975 19.8439C86.1623 19.1968 88.6734 17.0794 89.6354 14.7587L85.2531 14.7393C84.5808 15.9672 82.5836 17.3093 79.4263 17.3093C75.8726 17.3093 73.6096 14.718 73.4115 11.927H90.0132C90.1845 8.66296 89.0669 6.01424 87.1225 4.22575L87.1216 4.22486ZM73.4495 9.15362L73.4708 8.96354C73.8624 6.57741 75.8263 4.07899 79.3448 4.07899C82.8633 4.07899 84.8114 6.87622 85.0253 8.96531L85.0373 9.15362H73.4485H73.4495Z" fill="inhert"/>
+                          </g>
+                        </svg>
+                        <span class="coupon-tle">
+                          {{ block.settings.coupon_price | escape -}}
+                          <i>OFF</i>
+                        </span>
+                      </div>
+                      <div class="dis-coupon">
+                        {{ block.settings.discount_coupon | escape }}
+                      </div>
+                      <img
+                        {% render 'image-attributes', image: block.settings.bg_image %}
+                        alt="{{ block.settings.bg_image.alt | escape }}"
+                      >
+                    </div>
+                    <div class="coupon_process-bt">
+                      <div class="coupon_process-label">
+                        <span class="ico_lb">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="20"
+                            height="22"
+                            viewBox="0 0 20 22"
+                            fill="none"
+                            class="clock"
+                          >
+                            <g clip-path="url(#clip0_2419_7143)">
+                              <path d="M1.2205 7.50872C1.99333 6.21002 3.06251 5.10598 4.33215 4.29247C4.28567 4.15302 4.21303 4.02518 4.10263 3.91478L3.62324 3.43539C3.24845 3.0606 2.63542 3.0606 2.25772 3.43539L0.282071 5.41395C-0.0927216 5.78874 -0.0927216 6.40177 0.282071 6.77947L0.761457 7.25886C0.892198 7.3896 1.05199 7.47095 1.2205 7.51162V7.50872Z" fill="#DEB581"/>
+                              <path d="M18.8147 5.41395L16.8362 3.43539C16.4614 3.0606 15.8483 3.0606 15.4706 3.43539L14.9912 3.91478C14.8808 4.02518 14.8082 4.15592 14.7617 4.29247C16.0314 5.10888 17.1005 6.21002 17.8734 7.50872C18.0419 7.46804 18.2017 7.38669 18.3324 7.25595L18.8118 6.77656C19.1866 6.40177 19.1866 5.78874 18.8118 5.41104L18.8147 5.41395Z" fill="#DEB581"/>
+                              <path d="M11.4532 3.59234V2.80789H11.9529C12.1679 2.80789 12.3422 2.63357 12.3422 2.41857V0.896155C12.3422 0.681158 12.1679 0.506836 11.9529 0.506836H7.1416C6.9266 0.506836 6.75228 0.681158 6.75228 0.896155V2.42147C6.75228 2.63647 6.9266 2.81079 7.1416 2.81079H7.64132V3.59524C3.55637 4.46685 0.491211 8.09856 0.491211 12.4479C0.491211 17.4509 4.54711 21.5068 9.54724 21.5068C14.5474 21.5068 18.6062 17.4509 18.6062 12.4479C18.6062 8.09856 15.541 4.46685 11.4532 3.59234Z" fill="#DEB581"/>
+                              <path d="M12.8648 7.57568H12.676C12.522 7.57568 12.4058 7.66575 12.2808 7.8023L9.47424 10.8413C9.31444 10.85 9.15465 10.8733 8.99485 10.9314C8.15229 11.2394 7.7194 12.1691 8.02446 13.0087C8.32952 13.8484 9.26215 14.2784 10.1047 13.9704C10.9269 13.6682 11.3569 12.7734 11.0896 11.9512L12.9374 8.26135C12.9926 8.15095 13.0972 7.94176 12.9781 7.75001L12.8648 7.58149V7.57568Z" fill="white"/>
+                            </g>
+                            <defs>
+                              <clipPath id="clip0_2419_7143">
+                                <rect width="19.097" height="21" fill="white" transform="translate(0 0.506836)"/>
+                              </clipPath>
+                            </defs>
+                          </svg>
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="18"
+                            height="22"
+                            viewBox="0 0 18 22"
+                            fill="none"
+                            class="light"
+                          >
+                            <path d="M14.4978 0.789475L5.35813 0.789508L1.3859 11.4957L6.9666 11.4959L5.35808 20.5334L17.0082 6.97717L10.4812 6.97717L14.4978 0.789475Z" fill="#DEB581" stroke="#DEB581" stroke-linejoin="round"/>
+                          </svg>
+                          <i class="txt_anit">Start soon</i>
+                        </span>
+                        <span class="percent">0%</span>
+                      </div>
+                      <div class="coupon_process-input">
+                        <div class="coupon_process-in"></div>
+                      </div>
+                    </div>
+                    <div class="tr_he">
+                      <div class="coupon_product-ul">
+                        <a href="javascript:;" class="coupon_product-li coupon_one">
+                          <div class="coupon_product-left">
+                            <img
+                              {% render 'image-attributes', image: block.settings.product_image_1 %}
+                              alt="{{ block.settings.product_image_1.alt | escape }}"
+                            >
+                          </div>
+                          <div class="coupon_product-right">
+                            <div class="coupon_product-tle">
+                              {{ block.settings.product_tle_1 | escape }}
+                              <span>HOT</span>
+                            </div>
+                            <div class="coupon_product-md">{{ block.settings.product_des_1 | escape }}</div>
+                            <div class="coupon_product-price">
+                              {{ block.settings.product_price_1 | escape }}
+                              <span class="rel_price">{{ block.settings.product_discount_price_1 | escape }}</span>
+                            </div>
+                          </div>
+                        </a>
+                        <a href="javascript:;" class="coupon_product-li coupon_two">
+                          <div class="coupon_product-left">
+                            <img
+                              {% render 'image-attributes', image: block.settings.product_image_2 %}
+                              alt="{{ block.settings.product_image_2.alt | escape }}"
+                            >
+                          </div>
+                          <div class="coupon_product-right">
+                            <div class="coupon_product-tle">{{ block.settings.product_tle_2 | escape }}</div>
+                            <div class="coupon_product-md">{{ block.settings.product_des_2 | escape }}</div>
+                            <div class="coupon_product-price">
+                              {{ block.settings.product_price_2 | escape }}
+                              <span class="rel_price">{{ block.settings.product_discount_price_2 | escape }}</span>
+                            </div>
+                          </div>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="coupon_btn">
+                  <button
+                    disabled
+                    onclick="copyCodeExtend('{{ block.settings.coupon_code}}','{{ block.settings.btn_txt }}', this,event)"
+                    class="coupon_btn_a"
+                  >
+                    {{ block.settings.btn_txt | escape }}
+                  </button>
+                </div>
+              </div>
+            {%- endfor -%}
+          </div>
+        </div>
+        <div class="check_coupon">
+          <div class="swiper-scrollbar" id="swiper-scrollbar--{{ section.id}}"></div>
+          <div class="next_prev-box">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="13"
+              height="22"
+              viewBox="0 0 13 22"
+              fill="none"
+              class="swiper-button-prev--{{ section.id}}"
+            >
+              <path d="M10.9717 1.99999L1.99998 10.9717L10.9717 19.9434" stroke="currentColor" stroke-width="2" stroke-linecap="square"/>
+            </svg>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="13"
+              height="22"
+              viewBox="0 0 13 22"
+              fill="none"
+              class="swiper-button-next--{{ section.id}}"
+            >
+              <path d="M1.97169 1.99999L10.9434 10.9717L1.97169 19.9434" stroke="currentColor" stroke-width="2" stroke-linecap="square"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<script src="{{ 'swiper-bundle.min.aio.min.js' | asset_url }}"></script>
+<script>
+  window.addEventListener("load", function () {
+     var eletoid1 =  '{{ section.settings.product_secction_1 }}'
+     var eletoid2 =  '{{ section.settings.product_secction_2 }}'
+     let screenWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+     var coupon_swp =  new Swiper('#coupon_process--{{ section.id }}',{
+         slidesPerView: 1.2,
+         spaceBetween:20,
+        
+        pagination: {
+      el: '#swiper-scrollbar--{{ section.id}}',
+      type: 'progressbar',
+    },
+    navigation: {
+      nextEl: '.swiper-button-next--{{ section.id }}',
+      prevEl: '.swiper-button-prev--{{ section.id }}',
+    },
+         breakpoints: {
+         520: {
+           slidesPerView: 2,
+           spaceBetween: 20
+         },
+         768: {
+           slidesPerView: 2,
+           spaceBetween: 50
+         },
+        1024: {
+           slidesPerView: 3,
+           spaceBetween: 50
+         },
+         1300: {
+           slidesPerView: 4,
+           spaceBetween: 30
+         },
+         1520: {
+           slidesPerView: 4,
+           spaceBetween: 80
+         }
+         },
+       on: {
+        slideChangeTransitionEnd: function () {
+          if(isMobile()){
+             let activeId = $('.coupon_process-box .coupon_process-item').index($('.coupon_process-box .active'))
+             //切换结束时，告诉我现在是第几个slide
+            if(activeId > -1 && activeId != this.activeIndex){
+              // 3秒之后切回当前折扣
+              autoBackFun(activeId);
+            }
+          }
+         
+        },
+      },
+   })
+    var autoBackFun = debounce(autoBack, 5000);
+    function autoBack(activeId){
+      console.log(111111);
+       coupon_swp.slideTo(activeId, 50);
+    }
+   var scrollToModuleBtn1 = document.querySelectorAll('.coupon_one')
+  var scrollToModuleBtn2 = document.querySelectorAll('.coupon_two')
+    // 获取要滚动到的模块
+  var module1 = document.getElementById(eletoid1);
+  var module2 = document.getElementById(eletoid2);
+
+// 添加点击事件监听器
+  scrollToModuleBtn1.forEach((btn,index)=>{
+    btn.addEventListener('click', function(){
+      module1.scrollIntoView({ behavior: 'smooth' });
+      if(index===0){
+         commonGtmEvent('160_A3', 'click', '');
+      } else if(index===1){
+        commonGtmEvent('110_A3', 'click', '');
+      }
+      else if(index===2){
+        commonGtmEvent('100_A3', 'click', '');
+      }
+      else if(index===3){
+        commonGtmEvent('90_A3', 'click', '');
+      }else if(index===4){
+        commonGtmEvent('80_A3', 'click', '');
+      }
+    })
+   
+  })
+  scrollToModuleBtn2.forEach((btn,index)=>{
+    btn.addEventListener('click', function(){
+      module2.scrollIntoView({ behavior: 'smooth' });
+      document.querySelector('.scroll_top').style.display = 'block';
+      document.querySelector('.scroll_top').style.opacity = 1;
+      // 设置定时器，5秒后执行隐藏效果
+      setTimeout(function() {
+          hideElement(document.querySelector('.scroll_top'));
+      }, 5000);
+       if(index===0){
+         commonGtmEvent('160_A2', 'click', '');
+      } else if(index===1){
+        commonGtmEvent('110_A2', 'click', '');
+      }
+      else if(index===2){
+        commonGtmEvent('100_A2', 'click', '');
+      }
+      else if(index===3){
+        commonGtmEvent('90_A2', 'click', '');
+      }else if(index===4){
+        commonGtmEvent('80_A2', 'click', '');
+      }
+    })
+  })
+
+  document.getElementById('coupon_process--{{ section.id }}').querySelectorAll('.coupon_btn_a').forEach((bt,index)=>{
+     bt.addEventListener('click', function(){
+       if(index===1){
+        commonGtmEvent('110copy', 'click', '');
+      }
+      else if(index===2){
+        commonGtmEvent('100copy', 'click', '');
+      }
+      else if(index===3){
+        commonGtmEvent('90copy', 'click', '');
+      }else if(index===4){
+        commonGtmEvent('80copy', 'click', '');
+      }
+     })
+    
+  })
+
+    document.querySelector('.swiper-button-next--{{ section.id }}').addEventListener('click', function(){
+       commonGtmEvent('code_right', 'click', '');
+    })
+     document.querySelector('.swiper-button-prev--{{ section.id }}').addEventListener('click', function(){
+       commonGtmEvent('code_left', 'click', '');
+    })
+    
+    // 隐藏元素的函数
+function hideElement(element) {
+    // 改变元素的透明度，触发 CSS 过渡效果
+    element.style.opacity = 0;
+    // 等待过渡完成后执行其他操作
+    setTimeout(function() {
+        // 隐藏后的操作，例如移除元素等
+        element.style.display = 'none';
+    }, 1000); // 这里的 1000 是过渡效果的时间，确保等待过渡完成
+}
+  fetch('https://api.myulike.com/api/order-coupon-use?site=uk')
+  .then(response => {
+    // 检查是否请求成功 (状态码为 200-299)
+    if (!response.ok) {
+      throw new Error(`Network response was not ok: ${response.status}`);
+    }
+    // 将响应解析为 JSON
+    return response.json();
+  })
+  .then(data => {
+    // 处理获取的数据
+    document.querySelectorAll('.coupon_process-in')[0].style.width = '100%'
+    document.querySelectorAll('.txt_anit')[0].innerHTML= 'End of this discount'
+    document.querySelectorAll('.percent')[0].innerHTML= '100%'
+    document.querySelectorAll('.coupon_btn button')[0].innerHTML= 'SOLD OUT'
+const couponData =  data.data.map((item, index, array) => ({
+  ...item,
+  index: index
+}))
+
+const selectData = couponData.filter((item, index) => {
+  if (item.usage_count === 0 && index > 0 && (couponData[index - 1].number - couponData[index - 1].usage_count) === 0) {
+    return { ...item, index };
+  } else if (item.usage_count !== 0 && item.number > item.usage_count) {
+    return { ...item, index };
+  } else if(item.usage_count === 0 && index === 0) {
+    return { ...item, index };
+  }
+  return false;
+});
+
+const endData = couponData.filter((item, index) => {
+  if (item.number - item.usage_count  === 0) {
+    return { ...item, index };
+  } 
+  return false;
+});
+if(screenWidth < 740){
+      coupon_swp.slideTo(((selectData[0].index)+1), 50);
+}
+selectData.forEach(item=>{
+  document.querySelectorAll('.coupon_process-item')[(item.index)+1].classList.add('active')
+  document.querySelectorAll('.coupon_process-in')[(item.index)+1].style.width = parseInt((((item.usage_count/item.number)*0.2)+0.8)*100)+'%'
+  document.querySelectorAll('.percent')[(item.index)+1].innerHTML= parseInt((((item.usage_count/item.number)*0.2)+0.8)*100)+'%'
+  document.querySelectorAll('.coupon_btn button')[(item.index)+1].innerHTML= 'COPY CODE'
+  document.querySelectorAll('.coupon_btn button')[(item.index)+1].disabled = false;
+  if(((item.number) - (item.usage_count)) > 10) {
+    document.querySelectorAll('.txt_anit')[(item.index)+1].innerHTML= `ONLY A FEW LEFT!`
+  } else {
+    document.querySelectorAll('.txt_anit')[(item.index)+1].innerHTML= `ONLY ${((item.number) - (item.usage_count))} LEFT!`
+  }
+})
+
+endData.forEach(item=>{
+  document.querySelectorAll('.coupon_process-item')[(item.index)+1].classList.add('sold')
+  document.querySelectorAll('.coupon_process-in')[(item.index)+1].style.width = '100%'
+  document.querySelectorAll('.txt_anit')[(item.index)+1].innerHTML= 'End of this discount'
+  document.querySelectorAll('.percent')[(item.index)+1].innerHTML= '100%'
+  document.querySelectorAll('.coupon_btn button')[(item.index)+1].innerHTML= 'SOLD OUT'
+  document.querySelectorAll('.coupon_btn button')[(item.index)+1].disabled = true;
+})
+      
+  })
+  .catch(error => {
+    // 处理错误
+    console.error('Error during fetch operation:', error);
+  });
+
+document.querySelectorAll('.coupon_btn_a').forEach(btn=>{
+  btn.addEventListener('click', function(){
+
+  })
+})
+
+  })
+
+
+</script>
+{% schema %}
+{
+  "name": "coupon process",
+  "class": "shopify-section--coupon-process",
+  "settings": [
+        {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Background Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "mobile_background_image",
+      "label": "Mobile Background Image"
+    },
+    {
+      "type": "text",
+      "id": "product_secction_1",
+      "label": "Element ID 1"
+    },
+    {
+      "type": "text",
+      "id": "product_secction_2",
+      "label": "Element ID 2"
+    },
+     {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 40
+    }
+  ],
+  "blocks": [
+     {
+        "type": "item",
+        "name": "item",
+        "settings": [
+          {
+            "type": "text",
+            "id": "custom_class",
+            "label": "Custom Class"
+          },
+          {
+          "type": "text",
+          "id": "coupon_price",
+          "label": "coupon price",
+          "default": "£160"
+        },
+        {
+          "type": "text",
+          "id": "discount_coupon",
+          "label": "Discount Coupon",
+          "default": "DISCOUNT COUPON"
+        },
+        {
+          "type": "text",
+          "id": "coupon_code",
+          "label": "coupon code",
+          "default": "Ulike"
+        },
+           {
+            "type": "text",
+            "id": "check_title",
+            "label": "Checkbox Title",
+            "default": "Performance"
+          },
+          {
+            "type": "image_picker",
+            "id": "product_image_1",
+            "label": "Product Image 1"
+          },
+          {
+            "type": "image_picker",
+            "id": "product_image_2",
+            "label": "Product Image 2"
+          },
+          {
+            "type": "image_picker",
+            "id": "bg_image",
+            "label": "Background Image"
+          },
+          {
+          "type": "text",
+          "id": "product_tle_1",
+          "label": "Product Title 1",
+          "default": "Air3"
+        },
+        {
+          "type": "text",
+          "id": "product_tle_2",
+          "label": "Product Title 2",
+          "default": "Air2"
+        },
+        {
+          "type": "text",
+          "id": "product_des_1",
+          "label": "Product Descripte 1",
+          "default": "Hero Model"
+        },
+        {
+          "type": "text",
+          "id": "product_des_2",
+          "label": "Product Descripte 2",
+          "default": "Hero Model"
+        },
+        {
+          "type": "text",
+          "id": "product_price_1",
+          "label": "Product Price 1",
+          "default": "£209"
+        },
+        {
+          "type": "text",
+          "id": "product_discount_price_1",
+          "label": "Product Discount Price 1",
+          "default": "£209"
+        },
+        {
+          "type": "text",
+          "id": "product_price_2",
+          "label": "Product Price 2",
+          "default": "£239"
+        },
+        {
+          "type": "text",
+          "id": "product_discount_price_2",
+          "label": "Product Discount Price 2",
+          "default": "£209"
+        },
+        {
+          "type": "text",
+          "id": "btn_txt",
+          "label": "Button Txt",
+          "default": "COPY CODE"
+        }
+        ]
+      }
+  ],
+  "presets": [
+    {
+      "name": "coupon process",
+      "settings": {}
+    }
+  ]
+}
+{% endschema %}

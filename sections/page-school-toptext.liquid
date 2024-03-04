@@ -1,0 +1,429 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.9.4/tiny-slider.css">
+<style>
+@media screen and (min-width: 1000px){
+  .schoole-toptext-section_{{ section.settings.id }}{
+    background: {{ section.settings.background }} 
+  }
+  .school-toptext-title{
+    color: #000;
+    text-align: center;
+    /* PC-H1 */
+    font-family: var(--heading-font-family);
+    font-size: 44px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 125%;
+    width:800px;
+    padding-top:75px;
+    margin:auto;
+  }
+  .school-toptext-conent{
+    color: #000;
+    text-align: center;
+    /* PC-正文 */
+    font-family: var(--text-font-family);
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 150%;
+    width:800px;
+    margin:20px auto;
+  }
+  .school-toptext-link{
+    width:800px;
+    margin:auto;
+    text-align:center;
+    color: #009CDE;
+    font-size: 14px;
+    text-decoration: underline;
+    cursor:pointer;
+    padding-bottom:40px
+  }
+  .school-toptext-image{
+    margin-top:36px;
+  }
+  .school-slider-inner{
+    position: relative;
+    margin-top:20px;
+  }
+  .media__logo-controls {
+        position: absolute;
+        width: 100%;
+        top: 50%;
+        transform: translateY(-50%);
+        display: flex;
+        justify-content: space-between;
+        z-index:1;
+    }
+  .media__logo-check{
+      cursor: pointer;
+    }
+    .school-slider-item{
+    display: inline-flex !important;
+  }
+  .school-slider-item-link{
+    display:inline-block;
+    float:left;
+    margin-left:81px;
+    max-width:624px;
+  }
+  .school-slider-item-link img{
+  transition: all 0.3s;
+      object-fit: cover;
+  }
+  .school-slider-item-link:hover img{
+     transform: scale(1.1);
+  }
+  .school-toptext-slider{
+    padding-bottom:30px;
+  }
+  .school-alider-item-all{
+    display:inline-block;
+    float:left;
+    margin-left:70px;
+    width:446px;
+    text-align:left;
+    margin-top:70px;
+  }
+  .school-alider-item-icon{
+    margin-top:30px;
+  }
+  .school-alider-item-foot{
+    margin-top:30px;
+    color: #000;
+    /* PC- H4 */
+    font-family: var(--heading-font-family);
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 110%;
+  }
+  #image_mobileimage{
+    display:none;
+  }
+}
+@media screen and (max-width: 768px){
+  .schoole-toptext-section_{{ section.settings.id }}{
+    background: {{ section.settings.background }} 
+  }
+  .school-toptext-title{
+    font-family: var(--heading-font-family);
+    color: #000;
+    text-align: center;
+    font-size: 28px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 125%; 
+    padding-top:48px;
+    margin:auto;
+  }
+  .school-toptext-conent{
+    color: #000;
+    text-align: center;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 150%;
+    font-family: var(--text-font-family);
+    margin:20px auto;
+  }
+  .school-toptext-link a{
+    color: #009CDE;
+    font-family: Söhne;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    display:block;
+    line-height: 150%; /* 21px */
+    text-transform: capitalize;
+    margin:auto;
+    text-align:center;
+    cursor:pointer;
+  }
+  .school-toptext-image{
+    margin-top:36px;
+  }
+  .school-slider-inner{
+    position: relative;
+  }
+  .media__logo-controls {
+        position: absolute;
+        width: 100%;
+        top: 50%;
+        transform: translateY(-50%);
+        display: flex;
+        justify-content: space-between;
+        z-index:1;
+    display:none;
+    }
+  .media__logo-check{
+      cursor: pointer;
+    }
+
+  .school-slider-item-link{
+    display:block;
+    float:left;
+  }
+  .school-slider-item-link img{
+  transition: all 0.3s;
+      object-fit: cover;
+  }
+  .school-slider-item-link:hover img{
+     transform: scale(1.1);
+  }
+  .school-toptext-slider{
+    padding-bottom:30px;
+  }
+  .school-alider-item-all{
+    display: block;
+    float: left;
+    width: 100%;
+    text-align: center;
+    margin-top: 40px;
+  }
+  .school-alider-item-icon{
+    margin-top:16px;
+    text-align:center;
+  }
+  .school-alider-item-foot{
+    margin-top:16px;
+    color: #000;
+    /* PC- H4 */
+    font-family: var(--heading-font-family);
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 110%;
+    text-align:center;
+  }
+  #image_modelPc{
+    display:none;
+  }
+}
+</style>
+<section class="shopify-section schoole-toptext-section_{{ section.id }}" >
+  <div class="container" id="{{ section.settings.sectionvalue }}">
+    {%- if section.settings.title != blank -%}
+    <div class="school-toptext-title">
+      {{ section.settings.title }}
+    </div>
+    {%- endif -%}
+    {%- if section.settings.content != blank -%}
+    <div class="school-toptext-conent">
+      {{ section.settings.content }}
+    </div>
+    {%- endif -%}
+    {%- if section.settings.footurl != blank -%}
+    <div class="school-toptext-link"><a href="{{ section.settings.footurl }}">
+      Learn More</a>
+    </div>
+    {%- endif -%}
+    {%- for block in section.blocks -%}
+       {%- if block.settings.image != blank -%}
+         <div class="school-toptext-image">
+          {{- block.settings.image | image_url: width: 3000 | image_tag: loading: loading_attribute_value, draggable: false, id:'image_modelPc', class: 'shave-sgs-__image', sizes: '100vw', widths: '600,700,800,1000,1200,1400,1600,1800,2000,2200,2400,2600,2800,3000' -}}
+           {{- block.settings.mobileimage | image_url: width: 3000 | image_tag: loading: loading_attribute_value, draggable: false, id:'image_mobileimage', class: 'shave-sgs-__image', sizes: '100vw', widths: '600,700,800,1000,1200,1400,1600,1800,2000,2200,2400,2600,2800,3000' -}} 
+         </div>
+         {%- endif -%}
+      {%- endfor -%}     
+      {%- if section.settings.lunbo != 'false' -%}
+      <div class="school-toptext-slider">
+        <div class="school-slider-inner">
+          <div class="latest-blog-carousel" id="latest-blog-carouselse_{{ section.id }}">
+            {%- for block in section.blocks -%}
+           <div class="school-slider-item">
+                <a href="" class="school-slider-item-link">
+                  {{-
+                    block.settings.slider_image
+                    | image_url: width: block.settings.slider_image.width
+                    | image_tag:
+                      loading: 'lazy',
+                      sizes: '(max-width: 740px) 81vw, (max-width: 999px) 37vw, 425px',
+                      sizes: '600,700,800,1000,1200,1400,1600,1800,2000',
+                      class: 'latest-blog-item__image'
+                  -}}
+                </a>
+                <div class="school-alider-item-all">
+                  <div>
+                    {{ block.settings.contenttext }}
+                  </div>
+                  <div class="school-alider-item-icon">
+                    <img style="max-width: 84px" width="84" height="14" src="{{ block.settings.custom_icon | img_url: custom_icon_width }}" alt="">
+                  </div>
+                  <div class="school-alider-item-foot">
+                    --  {{ block.settings.slider_anme }}
+                  </div>
+                </div>
+            </div>
+            {%- endfor -%}   
+          </div>
+          
+          <div id="latest-blog-controlse_{{ section.id }}" class="media__logo-controls">
+            <div class="media__logo-check media__logo-prev-custom">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="50"
+                height="50"
+                viewBox="0 0 50 50"
+                fill="none"
+                class="design-iconfont"
+              ><circle cx="25" cy="25" r="25" transform="rotate(-180 25 25)" fill="#DFDFDF"/><path d="M25.9667 32.9669L17.9999 25L25.9667 17.0331" stroke="white" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <div class="media__logo-check media__logo-next-custom">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="50"
+                height="50"
+                viewBox="0 0 50 50"
+                fill="none"
+                class="design-iconfont"
+              >
+                <circle cx="25" cy="25" r="25" fill="#DFDFDF"/>
+                <path d="M24.0333 17.0331L32.0001 25L24.0333 32.9669" stroke="white" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </div>
+          </div>
+                  
+        </div>
+        
+      </div>  
+        {%- endif -%}
+  </div>
+</section>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.9.2/min/tiny-slider.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+    var slider = tns({
+      container: "#latest-blog-carouselse_{{ section.id }}",
+      items: 1,
+      autoplay: false,
+      "mouseDrag": true,
+      "slideBy": 1,
+      "swipeAngle": false,
+      loop: true,
+      "gutter": 10,
+      "controlsContainer": "#latest-blog-controlse_{{ section.id }}",
+      responsive: {
+        768: {
+          items: 1, // 当屏幕宽度大于等于 768px 时，显示 2 个项目
+        },
+        1024: {
+          items: 1, // 当屏幕宽度大于等于 1024px 时，显示 3 个项目
+        },
+        1350: {
+          items: 1, // 当屏幕宽度大于等于 1200px 时，显示 4 个项目
+        }
+      }
+    });
+  });
+</script>
+{% schema %}
+{
+  "name": "school-toptext",
+  "blocks": [
+    {
+      "type": "image",
+      "name": "Image",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "image_picker",
+          "id": "mobileimage",
+          "label": "mobileimage"
+        },{
+          "type": "image_picker",
+          "id": "slider_image",
+          "label": "slider_image" 
+        },{
+          "type": "image_picker",
+          "id": "custom_icon",
+          "label": "Custom icon",
+          "info": "85 x 14px .png with transparency recommended"
+        },
+        {
+           "type": "text",
+          "id": "contenttext",
+          "label": "lunbo text"
+        },
+        {
+          "type": "text",
+          "id": "slider_anme",
+          "label": "Slider name"
+          
+        },
+        {
+          "type": "range",
+          "id": "custom_icon_width",
+          "min": 40,
+          "max": 200,
+          "step": 5,
+          "unit": "px",
+          "label": "Custom icon width",
+          "info": "Only impact custom icons",
+          "default": 85
+        }
+      ]
+    }
+  ],
+  "settings": [
+    {
+      "type": "select",
+      "id": "lunbo",
+      "label": "school title",
+      "options": [
+        {
+          "value": "true",
+          "label": "true"
+        },
+        {
+          "value": "false",
+          "label": "false"
+        }
+      ],
+      "default": "false"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "school title"
+    },
+    {
+      "type": "text",
+      "id": "sectionvalue",
+      "label": "section value"
+    },
+    {
+      "type": "text",
+      "id": "titletwo",
+      "label": "Shave titleTwo"
+    },
+    {
+      "type": "richtext",
+      "id": "content",
+      "label": "Content"
+    },
+    {
+      "type": "text",
+      "id": "footurl",
+      "label": "footurl"
+    },{
+      "type": "color",
+      "id": "background",
+      "label": "Background",
+      "default": "rgba(255,255,255,0)",
+      "info": "Only used for boxed background."
+    }
+  ],
+  "presets": [
+    {
+      "name": "school-toptext"
+    }
+  ]
+}
+{% endschema %}
+

@@ -1,0 +1,611 @@
+<style>
+
+  @media screen and (max-width: 768px) {
+  .shave-section--full.shave-section--small {
+   height:300px;
+  }
+
+  .shave-section--full.shave-section--medium {
+    height: 375px;
+  }
+
+  .shave-section--full.shave-section--large {
+   height: 667px;
+  }
+   .shave-image-{{ section.id }}{
+    display:none;
+  }
+  .shave-mobileimage-{{ section.id }}{
+    display:block;
+  }
+    .shave-dialog{
+      background:none;
+      justify-content:flex-start;
+      align-items:start;
+      color:#000;
+      display:block;
+      margin-left:21px;
+      width:calc(100% - 69px);
+      padding-top:calc({{section.settings.padding_top}}px * 5);
+    }
+    .shave-dialog-title{
+      font-size: 26px;
+      font-style: normal;
+      font-family: var(--heading-font-family);
+      font-weight: 400;
+      line-height: 120%;
+      margin-bottom:10px;
+    }
+    .shave-dialog-content{
+     font-size: 16px;
+     font-style: normal;
+     font-weight: 400;
+     line-height: 150%;
+     margin-bottom:10px;
+      font-family:var(--text-font-family);
+   }
+}
+
+@media screen and (min-width: 1000px) and (max-width: 1199px) {
+  .shave-section--full.shave-section--small {
+    height: 400px;
+  }
+
+  .shave-section--full.shave-section--medium {
+    height: 500px;
+  }
+
+  .shave-section--full.shave-section--large {
+    height: 894px;
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  .shave-image-{{ section.id }}{
+    display:block;
+  }
+  .shave-mobileimage-{{ section.id }}{
+    display:none;
+  }
+  .shave-section--full.shave-section--small {
+    height: 600px;
+  }
+
+  shave-section--full.shave-section--medium {
+    height: 700px;
+  }
+
+  .shave-section--full.shave-section--large {
+    height: 894px;
+  }
+  .shave-dialog{
+    background:none;
+    justify-content:flex-start;
+    align-items:start;
+    width:570px;
+    color:#000;
+    display:block;
+    margin-left:200px;
+    padding-top:360px;
+  }
+  .shave-dialog-title{
+    font-family: var(--heading-font-family);
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 125%;
+    margin-bottom:20px;
+  }
+
+   .shave-dialog-content{
+    font-family: var(--text-font-family);;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 150%;
+     margin-bottom:20px;
+  }
+  
+}
+  .shave-section{
+    position:relative
+  }
+  
+  .shave-dialog-footurl{
+    color: #2BA8E7;
+    font-family: var(--text-font-family);;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 150%; /* 24px */
+    text-decoration-line: underline;
+    text-transform: uppercase;
+  }
+  
+.shavedialog-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: none;
+  z-index: 9999;
+}
+
+  .shavedialog-popup {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: #fff;
+      width: 90%;
+      height: 90%;
+      padding: 4vw;
+      border-radius: 5px;
+      display: none;
+      z-index: 10000;
+    }
+
+    .shavedialog-popup .popup-content-container {
+      height: 100%;
+      width: 100%;
+      max-width: 100%;
+      max-height: 100%;
+      overflow-y: auto;
+    }
+
+    .shavedialog-popup .popup-content-container::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    .shavedialog-popup .popup-content-container::-webkit-scrollbar-track {
+      background-color: #d6d6d6;
+    }
+
+    .shavedialog-popup .popup-content-container::-webkit-scrollbar-thumb {
+      background-color: #888;
+    }
+
+    .shavedialog-popup .popup-content-container::-webkit-scrollbar-thumb:hover {
+      background-color: #555;
+    }
+
+    .shavedialog-popup .popup-content-box {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .shavedialog-popup .popup-content-box:first-child {
+      margin-bottom: 3vw;
+    }
+@media screen and (max-width: 1000px) {
+  .shavedialog-popup .popup-title{
+      color: #000;
+      width:315px;
+      font-family: var(--heading-font-family);
+      font-size: 24px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 130%; /* 31.2px */
+      text-transform: capitalize;
+      margin:61px 0px 20px 0px;
+  }
+   .shavedialog-popup .popup-content {
+      color: #000;
+      width: 315px;
+      font-family: var(--text-font-family);
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 150%; 
+      margin-bottom: 60px;
+      font-family: var(--text-font-family);
+    }
+    .shavedialog-popup .popup-content p{
+      margin:0px;
+    }
+    .dialog-video-popupPc{
+      display:none
+    }
+    .dialog-video-popupmobile{
+      display:block
+    }
+    .shavedialog-popup .popup-small-title {
+      color: #000;
+      font-family: var(--heading-font-family);
+      font-size: 18px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 125%;
+      margin-bottom:10px;
+    }
+    .shavedialog-popup .popup-list-content {
+
+    }
+
+    .shavedialog-popup .popup-list-content .list-item-box {
+      width: 100%;
+      flex-shrink: 0;
+      margin-bottom:30px;
+    }
+    .close-popup {
+      width: 18px;
+      height: 18px;
+      position: fixed;
+      top: 1vw;
+      right: 1vw;
+    }
+
+    .close-popup img {
+      width: 100%;
+    }
+  
+}
+  @media screen and (min-width: 1000px) {
+    .shavedialog-popup .popup-title {
+      color: #000;
+      font-family: var(--heading-font-family);
+      font-size: 32px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 125%;
+      max-width: 56%;
+      min-width: 760px;
+      margin-bottom: 20px;
+    }
+    .shavedialog-popup .popup-content {
+      color: #000;
+      font-family: var(--text-font-family);
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 24px;
+      max-width: 69%;
+      margin-bottom: 60px;
+    }
+    .shavedialog-popup .popup-content p{
+      margin:0px;
+    }
+    .dialog-video-popupPc{
+      display:block
+    }
+    .dialog-video-popupmobile{
+      display:none
+    }
+    .shavedialog-popup .popup-small-title {
+      color: #000;
+      font-family: var(--heading-font-family);
+      font-size: 18px;
+      font-style: normal;
+      font-weight: 600;
+      line-height: 22.5px;
+      margin-bottom: 20px;
+    }
+    .shavedialog-popup .popup-list-content {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+    }
+
+    .shavedialog-popup .popup-list-content .list-item-box {
+      width: 48%;
+      flex-shrink: 0;
+    }
+    .close-popup {
+      width: 22px;
+      height: 22px;
+      position: fixed;
+      top: 1vw;
+      right: 1vw;
+    }
+
+    .close-popup img {
+      width: 100%;
+    }
+  }
+    .shavedialog-popup .popup-content-box .popup-content-img {
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: center;
+    }
+
+    .shavedialog-popup .popup-content .popup-content-img,
+    .shavedialog-popup .popup-content .popup-content-img img,
+    .shavedialog-popup .popup-list-content {
+      width: 100%;
+    }
+
+    .close-popup img:hover {
+      animation: rotate .5s forwards;
+      cursor: pointer;
+    }
+
+    @keyframes rotate {
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(90deg);
+      }
+    }
+
+    body.lock-scroll {
+      overflow: hidden;
+    }
+  .shave-dialog-videoli video{
+    object-fit:unset;
+  }
+</style>
+
+<section class="shopify-section shave-section shopify-section--video">
+  <div class=" shave-section--{% if section.settings.background_type == 'boxed' %}boxed{% else %}full{% endif %} shave-section--{{ section.settings.shave_size }} shave-dialig-mobile">
+    {%- for block in section.blocks -%}
+       {%- if block.settings.image != blank -%}
+      <div class="shave-image-{{ section.id }}">
+        {{- block.settings.image | image_url: width: 3000 | image_tag: loading: loading_attribute_value, draggable: false, class: 'slideshow__image', sizes: '100vw', widths: '600,700,800,1000,1200,1400,1600,1800,2000,2200,2400,2600,2800,3000' -}}
+      </div>
+        {%- endif -%}
+      {%- if block.settings.mobileimage != blank -%}
+      <div class="shave-mobileimage-{{ section.id }}">
+        {{- block.settings.mobileimage | image_url: width: 3000 | image_tag: loading: loading_attribute_value, draggable: false, class: 'slideshow__image', sizes: '100vw', widths: '600,700,800,1000,1200,1400,1600,1800,2000,2200,2400,2600,2800,3000' -}} 
+      </div>
+         {%- endif -%}
+      {%- endfor -%}
+  </div>
+  <div class="video-wrapper__poster shave-dialog">
+    <h1 class="shave-dialog-title">{{ section.settings.title }}</h1>
+    <div class="shave-dialog-content">
+        {{- section.settings.content -}}
+    </div>
+    <div class="shave-dialog-footurl" id="openButton">
+       {{- section.settings.footurl -}}
+    </div>
+  </div>
+  <div class="shavedialog-overlay"></div>
+  <div class="shavedialog-popup">
+    <div class="popup-content-container">
+      <div class="popup-content-box">
+        <div class="popup-title">
+          {{ section.settings.dialogtitle }}
+        </div>
+        <div class="popup-content">
+          <p>
+            {{ section.settings.dialogcontentone }}
+          </p>
+          <p>
+            {{ section.settings.dialogcontenttwo }}
+          </p>
+        </div>
+        <div class="popup-content-img">
+          {%- if  section.settings.dialog_video != blank -%}
+            <native-video autoplay class="video-wrapper video-wrapper--native dialog-video-popupPc shave-dialog-videoli">
+            {{-  section.settings.dialog_video | video_tag: controls: false, autoplay: true, playsinline: true, muted: true, loop: true , image_size: '740x' -}}
+            </native-video>
+          {%- endif -%}
+          {%- if  section.settings.dialog_videomobile != blank -%}
+            <native-video autoplay class="video-wrapper video-wrapper--native dialog-video-popupmobile">
+            {{-  section.settings.dialog_videomobile | video_tag: controls: false, autoplay: true, playsinline: true, muted: true, loop: true , image_size: '740x' -}}
+            </native-video>
+          {%- endif -%}
+        </div>
+      </div>
+      <div class="popup-content-box">
+        <div class="popup-title">
+          {{ section.settings.Dialogtitletwo }}
+        </div>
+        <div class="popup-content">
+            {{section.settings.Dialogcontenttwo }}
+        </div>
+        <div class="popup-list-content">
+          <div class="list-item-box">
+            <div class="popup-small-title"> {{ section.settings.Dialogthreelefttitle }}</div>
+            <div class="popup-content-img">
+              {%- if  section.settings.dialog_left_video != blank -%}
+                <native-video autoplay class="video-wrapper video-wrapper--native ">
+                {{-  section.settings.dialog_left_video | video_tag: controls: false, autoplay: true, playsinline: true, muted: true, loop: true , image_size: '740x' -}}
+                </native-video>
+              {%- endif -%}
+            </div>
+          </div>
+          <div class="list-item-box">
+            <div class="popup-small-title">{{ section.settings.Dialogthreerighttitle}}</div>
+            <div class="popup-content-img">
+               {%- if  section.settings.dialog_right_video != blank -%}
+                <native-video autoplay class="video-wrapper video-wrapper--native">
+                {{-  section.settings.dialog_right_video | video_tag: controls: false, autoplay: true, playsinline: true, muted: true, loop: true , image_size: '740x' -}}
+                </native-video>
+              {%- endif -%}
+            
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="close-popup" id="closeButton">
+      {{- section.settings.closeicon | image_url: width: 25 | image_tag: loading: loading_attribute_value, draggable: false, sizes: '100vw' -}}
+    </div>
+  </div>
+</section>
+<script src='//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js'></script>
+<script type="text/javascript">
+  $('#openButton').click(function () {
+    $('.shavedialog-overlay').fadeIn();
+    $('.shavedialog-popup').fadeIn();
+    $('body').addClass('lock-scroll'); // 添加类名禁止滚动
+  });
+   $('#closeButton').click(function () {
+      $('.shavedialog-overlay').fadeOut();
+      $('.shavedialog-popup').fadeOut();
+      $('body').removeClass('lock-scroll'); // 移除类名恢复滚动
+    });
+</script>
+{% schema %}
+{
+  "name": "shave-dialog",
+  "blocks": [
+    {
+      "type": "image",
+      "name": "Image",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "image_picker",
+          "id": "mobileimage",
+          "label": "mobileImage"
+        }
+      ]
+    }
+  ],
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Shave title"
+    },
+    {
+      "type": "richtext",
+      "id": "content",
+      "label": "Content"
+    },
+    {
+      "type": "text",
+      "id": "footurl",
+      "label": "Foot Url"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "padding top",
+      "default": 36
+    },
+    {
+      "type": "select",
+      "id": "shave_size",
+      "label": "shave size",
+      "options": [
+        {
+          "value": "auto",
+          "label": "Original ratio"
+        },
+        {
+          "value": "small",
+          "label": "Small"
+        },
+        {
+          "value": "medium",
+          "label": "Medium"
+        },
+        {
+          "value": "large",
+          "label": "Large"
+        }
+      ],
+      "default": "auto"
+    },
+    {
+      "type": "select",
+      "id": "background_type",
+      "label": "shave mode",
+      "options": [
+        {
+          "value": "full_width",
+          "label": "Full width"
+        },
+        {
+          "value": "boxed",
+          "label": "Boxed"
+        }
+      ],
+      "default": "full_width"
+    },
+    {
+      "type": "image_picker",
+      "id": "closeicon",
+      "label": "closeicon"
+    },
+    {
+      "type": "text",
+      "id": "dialogtitle",
+      "label": "Dialog Title"
+    },
+    {
+      "type": "text",
+      "id": "dialogcontentone",
+      "label": "Dialog Top Content"
+    },
+    {
+      "type": "text",
+      "id": "dialogcontenttwo",
+      "label": "Dialog bom Content"
+    },
+    {
+      "type": "video",
+      "id": "dialog_video",
+      "label": "Dialog Video"
+    },
+    {
+      "type": "video",
+      "id": "dialog_videomobile",
+      "label": "Dialog Video Mobile"
+      
+    },
+    {
+      "type": "video",
+      "id": "dialog_left_video",
+      "label": "Dialog Left Video"
+    },
+    {
+      "type": "video",
+      "id": "dialog_left_videomobile",
+      "label": "Dialog Left Videomobile"
+    },
+    {
+      "type": "video",
+      "id": "dialog_right_video",
+      "label": "Dialog Right Video"
+    },
+    {
+      "type": "video",
+      "id": "dialog_right_videomobile",
+      "label": "Dialog Right Videomobile"
+    },
+    {
+      "type": "text",
+      "id": "Dialogtitletwo",
+      "label": "Dialog Two Title "
+    },
+    {
+      "type": "text",
+      "id": "Dialogcontenttwo",
+      "label": "Dialog Two content "
+    },
+    {
+      "type": "text",
+      "id": "Dialogthreelefttitle",
+      "label": "Dialog Three left Title "
+    }, 
+    {
+      "type": "text",
+      "id": "Dialogthreerighttitle",
+      "label": "Dialog Three right Title "
+    } 
+  ],
+  "presets": [
+    {
+      "name": "shave-dialog"
+    }
+  ]
+}
+{% endschema %}

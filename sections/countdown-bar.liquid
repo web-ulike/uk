@@ -1,0 +1,323 @@
+<style>
+.countdown__bix {
+    display: flex;
+    align-items: center;
+}
+  #shopify-section-{{ section.id }} {
+    --text-color: {{  section.settings.text_color.red }}, {{  section.settings.text_color.green }}, {{  section.settings.text_color.blue }};
+    --section-background: {{  section.settings.background.red }}, {{  section.settings.background.green }}, {{  section.settings.background.blue }};
+}
+  .countdown-bar .countdown {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+    gap: 15px;
+}
+.countdown-bar{
+  background: rgb(var(--section-background));
+}
+.countdown-bar .count-bar-wraap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+    max-width: 1000px;
+    margin: 0 auto;
+    line-height: 1.1;
+    padding: 23px 0;
+}
+#count-bar-wraap {
+  background: rgb(var(--section-background));
+}
+.countdown-bar .title{
+  margin-right: 62px;
+}
+.countdown-bar .countdown_txt{
+  font-size: 12px;
+}
+.countdown-bar span.countdown__er {
+    font-size: 26px;
+}
+.countdown-time-bar{
+  font-family: var(--heading-font-family);
+  font-weight: var(--heading-font-weight);
+}
+.countdown-bar .countdown__item {
+  display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.countdown_new_box .title {
+  font-size: 32px;
+  font-family: var(--heading-font-family);
+  font-weight: var(--heading-font-weight);
+}
+.countdown_new_box .countdown-time-bar{
+  display: flex;
+  font-size: 20px;
+  color: #fff;
+  background-color: #000000;
+  border-radius: 5px;
+  width: 40px;
+    height: 40px;
+    justify-content: center;
+    align-items: center;
+}
+.countdown_new_box .countdown__er{
+  display: flex;
+  transform: translateY(-7px);
+}
+
+.countdown_button {
+    width: 153px;
+    text-align: center;
+    height: 50px;
+    background: #E0004D;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #E0004D;
+    transition: all .3s;
+    position: relative;
+    z-index: 3;
+    margin-left: 50px;
+}
+.fixed {
+    position: fixed;
+    top: 84px; 
+    width: 100%;
+    z-index: 4;
+  }
+@media screen and (max-width: 768px){
+  .countdown-bar .count-bar-wraap{
+    font-size: 20px;
+    padding: 10px 0;
+  }
+  .countdown-bar .title {
+    margin-right: 10px;
+    font-size: 16px;
+}
+.countdown-bar .countdown__item {
+    /*width: 45px;*/
+}
+.countdown-bar span.countdown__er {
+    font-size: 20px;
+}
+.countdown-time-bar {
+  font-size: 20px;
+}
+.countdown_button {
+  width: auto;
+    height: auto;
+    padding: 6px 10px;
+    margin-left: 5px;
+    font-size: 12px;
+  }
+  .countdown_new_box .countdown-time-bar{
+  font-size: 12px;
+  width: 24px;
+    height: 24px;
+}
+.countdown-bar .countdown {
+    gap: 5px;
+}
+.fixed {
+    position: fixed;
+    top: auto; 
+    bottom: 60px;
+  }
+}
+</style>
+
+<section class="countdown_new_box" id="count-bar-wraap">
+  <div class="count-bar-wraap">
+    <div class="title">
+      {{section.settings.title}}
+    </div>
+    <div id="countdown-bar" class="countdown">
+      <div class="countdown__item">
+        <div class="countdown__bix">
+          <span class="countdown-time-bar countdown-days"></span>
+        </div>
+        <span class="countdown_txt">days</span>
+      </div>
+      <div class="countdown__er"> : </div>
+      <div class="countdown__item">
+        <div class="countdown__bix">
+          <span class="countdown-time-bar countdown-hours"></span>
+        </div>
+        <span class="countdown_txt">hrs</span>
+      </div>
+      <div class="countdown__er"> : </div>
+      <div class="countdown__item">
+        <div class="countdown__bix">
+          <span class="countdown-time-bar countdown-minutes"></span>
+        </div>
+        <span class="countdown_txt">mins</span>
+      </div>
+      <div class="countdown__er"> : </div>
+      <div class="countdown__item">
+        <span class="countdown-time-bar countdown-seconds"></span>
+        <span class="countdown_txt">secs</span>
+      </div>
+    </div>
+    {%- if section.settings.buy_now_txt != blank -%}
+      <a href="{{ section.settings.buy_now_url }}" class="countdown_button">{{ section.settings.buy_now_txt }}</a>
+    {%- endif -%}
+  </div>
+</section>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  function Countdownbar(selector, endDate) {
+    let countdownElement = document.querySelector(selector);
+    let daysElement = countdownElement.querySelector('.countdown-days');
+    let hoursElement = countdownElement.querySelector('.countdown-hours');
+    let minutesElement = countdownElement.querySelector('.countdown-minutes');
+    let secondsElement = countdownElement.querySelector('.countdown-seconds');
+  
+    // 获取当前时间和结束时间
+    let serverTimestamp = {{ 'now' | date: '%s' }};
+    let currentServerTime = new Date(serverTimestamp * 1000); // 将秒转换为毫秒
+    let currentTime = currentServerTime.getTime();
+    
+    let distance = endDate - currentTime <=0 ? 0: endDate - currentTime;
+
+    function updateCountdownbar() {
+      // 计算天、时、分、秒
+      let days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      let hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      let seconds = Math.floor((distance % (1000 * 60)) / 1000);
+  
+      // 更新倒计时显示
+      daysElement.textContent = days < 10 ? '0' + days : days;
+      hoursElement.textContent = hours < 10 ? '0' + hours : hours;
+      minutesElement.textContent = minutes < 10 ? '0' + minutes
+       : minutes;
+      secondsElement.textContent = seconds < 10 ? '0' + seconds : seconds;
+  
+      // 减去一秒，更新距离
+      distance -= 1000;
+  
+      // 当倒计时结束时，清除计时器
+      if (distance < 0) {
+        clearInterval(countdownInterval);
+        // 可以在倒计时结束后执行相应的操作
+      }
+    }
+  
+    // 每秒更新一次倒计时
+    let countdownInterval = setInterval(updateCountdownbar, 1000);
+  
+    // 页面加载时初始化倒计时
+    updateCountdownbar();
+  }
+ // let ediftendDate = ('{{section.settings.end_date }}');
+  // 使用示例
+ // let endDate = new Date(`${ediftendDate}`).getTime(); // 设置结束时间
+  //let countdown = new Countdownbar('#countdown-bar', endDate); // 初始化倒计时插件
+
+
+  countdownlist()
+  function countdownlist(){
+   var getEndTime = sessionStorage.getItem('uk_air_endtime{{ section.id }}')
+
+  // 获取当前时间
+    let serverTimestamp = {{ 'now' | date: '%s' }};
+    let currentServerTime = new Date(serverTimestamp * 1000); // 将秒转换为毫秒
+    let currentTime = currentServerTime.getTime();
+    let ediftendDate = ('{{section.settings.end_date }}');
+    if(ediftendDate =="" || ediftendDate==null){
+      if(getEndTime){
+       let currday = getEndTime - currentTime 
+       if(currday <= 0){
+         let new_currenttime= currentTime + 48 * 60 * 60 *  1000 
+         sessionStorage.setItem('uk_air_endtime{{ section.id }}',new_currenttime);
+  
+        let hos= new Countdownbar('#countdown-bar', new_currenttime);
+       }else{
+  
+          let hos= new Countdownbar('#countdown-bar', getEndTime);
+       }
+     }else{
+        // //系统当前时间戳
+       let new_currenttime= currentTime + 48 * 60 * 60 *  1000 
+       sessionStorage.setItem('uk_air_endtime{{ section.id }}',new_currenttime)
+       let hos= new Countdownbar('#countdown-bar', new_currenttime);
+     }
+    }else{
+     let endDate = new Date(`${ediftendDate}`).getTime(); // 设置结束时间
+     let countdown = new Countdownbar('#countdown-bar', endDate); // 初始化倒计时插件
+    }
+   
+ }
+  
+  
+  var fixedModule = document.getElementById('count-bar-wraap');
+  var initialTopOffset = fixedModule.getBoundingClientRect().top + window.scrollY;
+  window.addEventListener('scroll', function() {
+    var currentScrollY = window.scrollY;
+    
+    if (currentScrollY >= (initialTopOffset) ) {
+      fixedModule.classList.add('fixed');
+    } else {
+      fixedModule.classList.remove('fixed');
+    }
+  });
+
+});
+
+
+</script>
+{% schema %}
+{
+  "name": "countdown bar",
+  "class": "countdown-bar",
+  "blocks": [
+  ],
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "title",
+      "default": "Hurry up!  Events ends in"
+    },
+    {
+      "type": "text",
+      "id": "end_date",
+      "label": "End Date",
+      "info": "Please configure according to the format of 2020-10-03T00:00:00"
+    },
+{
+      "type": "text",
+      "id": "buy_now_txt",
+      "label": "Buy Now Txt"
+    },
+    {
+      "type": "url",
+      "id": "buy_now_url",
+      "label": "Buy Now Link URL"
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background",
+      "info": "Used while slideshow image is loading",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "rgba(0,0,0,0)"
+    }
+  ],
+  "presets": [
+    {
+      "name": "countdown bar"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,534 @@
+<style>
+@media screen and (max-width: 730px){
+  }
+  .fell_touch-wrapper{
+    text-align: center;
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .fell_touch-wrapper .tle_touch{
+    color: #E0004D;
+    font-size: 9vw;
+    font-style: normal;
+    font-weight: 250;
+    line-height: 125%;
+    display: inline-block;
+    position: absolute;
+    z-index: 1;
+    top: 50%;
+    transform: translateY(-105%);
+  }
+  .fell_touch-img {
+    display: inline-flex;
+    position: relative;
+    width: 15%;
+    max-width: 282px;
+    flex-direction: column;
+  }
+  .fell_touch-img .light_img{
+    position: absolute;
+    bottom: -27%;
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+     z-index: -1;
+  }
+  .tle1.tle_touch {
+    left: -15vw;
+}
+.tle2.tle_touch {
+    right: 4vw;
+    transform: translateY(-15%);
+}
+.fell_touch-subtle {
+    position: absolute;
+    max-width: 586px;
+    left: 50%;
+    transform: translate(-50%,464%);
+    /* z-index: 1; */
+    top: 50%;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 150%;
+    opacity: 0;
+  z-index: -1;
+}
+.fell_touch-box{
+  padding: 150px 0;
+  height: 100vh;
+  display: flex;
+    width: 100%;
+    align-items: center;
+}
+.touch_txt-list .touch_txt-1{
+  color: #000;
+text-align: center;
+font-size: 48px;
+font-style: normal;
+font-weight: 600;
+line-height: 125%;
+}
+.touch_txt-list .touch_txt-2{
+  color: #000;
+text-align: center;
+font-size: 16px;
+font-style: normal;
+font-weight: 500;
+line-height: 125%;
+opacity: 0;
+transition: opacity 0.2s ease-in-out;
+}
+.touch_txt-list.active .touch_txt-2{
+opacity: 1;
+}
+
+.touch_txt-box {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, 73%);
+    opacity: 0;
+  overflow: hidden;
+  z-index: -1;
+}
+.touch_txt-list{
+  padding: 30px 0;
+}
+.full_image-touch {
+    position: absolute;
+    top: 100vh;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+   transform: translate(0, 0);
+}
+.full_image-touch img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.full_touch-txtbox{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-width: 750px;
+  margin: 0 auto;
+  color: #fff;
+}
+.full_touch-txtbox h4{
+  text-align: center;
+  font-size: 44px;
+font-style: normal;
+ font-family: var(--heading-font-family);
+    font-weight: var(--heading-font-weight);
+line-height: 125%;
+margin-bottom: 15px;
+}
+.full_touch-txtbox .full_touch-txt{
+text-align: center;
+font-size: 16px;
+font-style: normal;
+font-weight: 400;
+line-height: 150%;
+}
+.ptimg-mb-show{
+  display: none;
+}
+
+  .touch_txt-box .touch_txt-list.active .touch_txt-1{
+    background: linear-gradient(180deg, #CCF0FF 0%, #3143B1 63%, #000000 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .touch_txt-box .touch_txt-list .touch_txt-2.active{
+    color: #000;
+        opacity: 1;
+  }
+    .touch_txt-box .touch_txt-list.active .touch_txt-2.active{
+    color: #273489;
+  }
+@media screen and (max-width: 992px){
+  .touch_txt-list .touch_txt-1{
+    font-size: 28px;
+  }
+  .touch_txt-list{
+    padding: 15px 0;
+  }
+  .touch_txt-box{
+    transform: translate(-50%, 65%);
+  }
+  .fell_touch-subtle{
+    transform: translate(-50%,95%);
+    max-width: 100%;
+    width: 100%;
+    padding: 0 20px;
+  }
+  .full_touch-txtbox{
+    width: 100%;
+    padding: 0 20px;
+  }
+  .full_touch-txtbox h4{
+    font-size: 28px;
+  }
+  .full_touch-txtbox .full_touch-txt{
+    font-size: 14px;
+  }
+  .ptimg-mb-visibile{
+    display: none;
+  }
+  .ptimg-mb-show{
+  display: block;
+}
+.fell_touch-img{
+  width: 152px;
+}
+.fell_touch-wrapper .tle_touch{
+  font-size: 52px;
+}
+.tle1.tle_touch {
+    left: -55vw;
+}
+.tle2.tle_touch {
+    right: -21vw;
+}
+}
+</style>
+<section class="fell_touch-box">
+  <div class="fell_touch-wrapper">
+    <div class="touch_txt-bix">
+      <div class="tle1 tle_touch">{{ section.settings.title_1 | escape }}</div>
+      <div class="tle2 tle_touch">{{ section.settings.title_2 | escape }}</div>
+      <div class="fell_touch-subtle">{{ section.settings.subHeading | escape }}</div>
+    </div>
+    <div class="fell_touch-img">
+      {%- if section.settings.product_img != blank -%}
+      <img class="pt_img to-top" src="{{ section.settings.product_img | image_url }}">
+      {%- endif -%}
+      {%- if section.settings.light_img != blank -%}
+      <img class="light_img" src="{{ section.settings.light_img | image_url }}">
+      {%- endif -%}
+    </div>
+    <div class="touch_txt-box">
+      {%- for block in section.blocks -%}
+      <div class="touch_txt-list">
+        <div class="touch_txt-1">{{ block.settings.scroll_tle | escape }}</div>
+        <div class="touch_txt-2">{{ block.settings.scroll_txt | escape }}</div>
+      </div>
+      {%- endfor -%}
+    </div>
+    <div class="full_image-touch">
+      {%- if section.settings.touch_img != blank -%}
+      <img class="pt_img ptimg-mb-visibile to-top" src="{{ section.settings.touch_img | image_url }}">
+      {%- endif -%}
+      {%- if section.settings.mobile_touch_img != blank -%}
+      <img class="pt_img ptimg-mb-show to-top" src="{{ section.settings.mobile_touch_img | image_url }}">
+      {%- endif -%}
+      <div class="full_touch-txtbox">
+        <h4 class="to-top">{{ section.settings.touch_tle | escape }}</h4>
+        <div class="full_touch-txt to-top" style="transition-delay: 0.2s">{{ section.settings.touch_subHeading | escape }}</div>
+      </div>
+      </div>
+  </div>
+</section>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/ScrollTrigger.min.js"></script>
+<script>
+  window.addEventListener("load", function () {
+    let screenWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+    let imgtrantop,tp1,het,touchTxt,fullImg;
+    // 获取图片元素
+  const myImage = document.querySelector(".light_img");
+  const myTouch = document.querySelectorAll(".touch_txt-list");
+// 获取图片底部距离文档顶部的距离
+function getImageBottomPosition() {
+  const rect = myImage.getBoundingClientRect();
+  const bottomPosition = rect.bottom + window.scrollY;
+  return bottomPosition;
+}
+function getTouch() {
+  let aa = getImageBottomPosition();
+  myTouch.forEach(function(touch,index){
+    if((parseInt(touch.getBoundingClientRect().top + window.scrollY)) < aa && (parseInt(touch.getBoundingClientRect().top + window.scrollY) + het) < aa  ){
+        document.querySelectorAll('.touch_txt-list').forEach(steplist=>{
+      steplist.classList.remove('active')
+    })
+    document.querySelectorAll('.touch_txt-list')[index].classList.add('active')
+    document.querySelectorAll('.touch_txt-list .touch_txt-2')[index].classList.add('active')
+    }
+  })
+}
+gsap.registerPlugin(ScrollTrigger);
+    if( screenWidth < 992 ) {
+      imgtrantop = '-48vh';
+      tp1 = '-100';
+      het = 50;
+      touchTxt = '-160%'
+      fullImg = '-100%'
+      ScrollTrigger.create({
+      trigger: '.fell_touch-box',
+      start: 'top top',
+      end: '+=200%',
+      scrub: true,
+      pin:true
+    });
+      ScrollTrigger.create({
+      trigger: '.fell_touch-box',
+      start: 'top top',
+      end: '+=100%',
+      scrub: true,
+      animation:
+      gsap.timeline().to('.tle1', { x: '61vw' })
+      .to('.tle2', { x: '-37vw' }, "<")
+      .to('.fell_touch-img', { y: imgtrantop }, "<")
+      .set('.fell_touch-subtle', { opacity: 1 })
+      .set('.touch_txt-box', { opacity: 1 })
+      .to('.tle1', { top: tp1,opacity: 0 })
+      .to('.tle2', { top: tp1,opacity: 0 },"<")
+      .to('.fell_touch-subtle', { top: tp1,opacity: 0 },"<")
+      .to('.light_img',{ opacity: 1 },"<")
+    });
+
+  //   ScrollTrigger.create({
+  //     trigger: '.fell_touch-subtle',
+  //     start: 'top +=10%',
+  //     end: '+=100%',
+  //     markers: false,
+  //     scrub: true,
+  //     onUpdate: (self) => {
+  //   getTouch()
+  // },
+  //     animation:
+  //     gsap.to('.touch_txt-box', { y: touchTxt })
+  //   });
+  //   ScrollTrigger.create({
+  //     trigger: '.touch_txt-box',
+  //     start: 'top +=20%',
+  //     end: '+=100%',
+  //     markers: false,
+  //     scrub: true,
+  //     animation:
+  //     gsap.to('.full_image-touch', { y: fullImg })
+  //   });
+        ScrollTrigger.create({
+      trigger: '.fell_touch-wrapper',
+      start: '+=60%',
+      end: '+=100%',
+      markers: false,
+      scrub: true,
+      onUpdate: (self) => {
+    getTouch()
+  },
+      animation:
+      gsap.to('.touch_txt-box', { y: touchTxt })
+    });
+    ScrollTrigger.create({
+      trigger: '.fell_touch-wrapper',
+      start: '+=90%',
+      end: '+=100%',
+      markers: false,
+      scrub: true,
+      animation:
+      gsap.to('.full_image-touch', { y: fullImg })
+    });
+    } else {
+      imgtrantop = '-56vh'
+      tp1 = '-200'
+      het = 150;
+      touchTxt = '-150%'
+      fullImg = '-100%'
+      ScrollTrigger.create({
+      trigger: '.fell_touch-box',
+      start: 'top top',
+      end: '+=190%',
+      scrub: true,
+      pin:true
+    });
+      ScrollTrigger.create({
+      trigger: '.fell_touch-box',
+      start: 'top top',
+      end: '+=100%',
+      scrub: true,
+      animation:
+      gsap.timeline().to('.tle1', { x: '37vw' })
+      .to('.tle2', { x: '-23vw' }, "<")
+      .to('.fell_touch-img', { y: imgtrantop }, "<")
+      .set('.fell_touch-subtle', { opacity: 1 })
+      .set('.touch_txt-box', { opacity: 1 })
+      .to('.tle1', { top: tp1,opacity: 0 })
+      .to('.tle2', { top: tp1,opacity: 0 },"<")
+      .to('.fell_touch-subtle', { top: tp1,opacity: 0 },"<")
+      .to('.light_img',{ opacity: 1 })
+    });
+
+  //   ScrollTrigger.create({
+  //     trigger: '.fell_touch-subtle',
+  //     start: 'top top',
+  //     end: '+=100%',
+  //     markers: false,
+  //     scrub: true,
+  //     onUpdate: (self) => {
+  //   getTouch()
+  // },
+  //     animation:
+  //     gsap.to('.touch_txt-box', { y: touchTxt })
+  //   });
+  //   ScrollTrigger.create({
+  //     trigger: '.touch_txt-box',
+  //     start: 'top top',
+  //     end: '+=100%',
+  //     markers: false,
+  //     scrub: true,
+  //     animation:
+  //     gsap.to('.full_image-touch', { y: fullImg })
+  //   });
+   ScrollTrigger.create({
+      trigger: '.fell_touch-wrapper',
+      start: '+=60%',
+      end: '+=100%',
+      markers: false,
+      scrub: true,
+      onUpdate: (self) => {
+    getTouch()
+  },
+      animation:
+      gsap.to('.touch_txt-box', { y: touchTxt })
+    });
+    ScrollTrigger.create({
+      trigger: '.fell_touch-wrapper',
+      start: '+=90%',
+      end: '+=100%',
+      markers: false,
+      scrub: true,
+      animation:
+      gsap.to('.full_image-touch', { y: fullImg })
+    });
+    }
+  })
+</script>
+{% schema %}
+{
+  "name": "Fell Touch",
+  "class": "shopify-section--fell-touch", 
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "product_img",
+      "label": "Product Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "mobile_product_img",
+      "label": "Mobile Product Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "light_img",
+      "label": "Light Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "touch_img",
+      "label": "Full Touch Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "mobile_touch_img",
+      "label": "Full Touch Mobile Image"
+    },
+    {
+      "type": "text",
+      "id": "title_1",
+      "label": "Heading 1",
+      "default": "Feel the Touch"
+    },
+    {
+      "type": "text",
+      "id": "title_2",
+      "label": "Heading 2",
+      "default": "Feel Loved"
+    },
+    {
+      "type": "text",
+      "id": "subHeading",
+      "label": "subHeading",
+      "default": "Get your skin ready for sensory touch from her, from him, from yourself, or from whoever extends warmth and connection."
+    },
+    {
+      "type": "text",
+      "id": "touch_tle",
+      "label": "Touch Heading",
+      "default": "Give a Little Touch"
+    },
+    {
+      "type": "text",
+      "id": "touch_subHeading",
+      "label": "Touch subHeading",
+      "default": "Each expression of love is accompanied by a touch—light, firm, soft, passionate, lingering, secret, tentative, soothing, and varied. Love, a tapestry of these touches, is woven intricately. While subtle, our skin subtly captures and preserves these nuanced gestures, etching them into the fabric of our affections."
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 40
+    }
+  ],
+  "blocks": [
+    {
+        "type": "item",
+        "name": "item",
+        "settings": [
+          {
+            "type": "text",
+            "id": "scroll_tle",
+            "label": "Scroll Title",
+            "default": "Bikini area"
+          },
+          {
+            "type": "text",
+            "id": "scroll_txt",
+            "label": "Scroll Txt",
+            "default": "1 min"
+          }
+        ]
+      }
+  ],
+  "presets": [
+    {
+      "name": "Fell Touch"
+    }
+  ]
+}
+{% endschema %}

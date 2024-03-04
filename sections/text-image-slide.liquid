@@ -1,0 +1,270 @@
+{{ 'swiper-bundle.min.css' | asset_url | stylesheet_tag }}
+<style>
+  #shopify-section-{{ section.id }} {
+    background: {{ section.settings.custom_background }};
+    --heading-color: {{ section.settings.text_color.red }}, {{ section.settings.text_color.green }}, {{ section.settings.text_color.blue }};
+    --text-color: {{ section.settings.text_color.red }}, {{ section.settings.text_color.green }}, {{ section.settings.text_color.blue }};
+  }
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+  }
+  @media screen and (max-width: 768px){
+  .section-{{ section.id }}-padding {
+    padding-top: calc({{ section.settings.padding_top }}px * 0.6);
+    padding-bottom: calc({{ section.settings.padding_bottom }}px * 0.6);
+  }
+}
+.result-image-wrapper{
+  display: flex;
+  align-items: center;
+}
+.result-tle{
+  width: 54%;
+}
+.result-image-wrapper .swiper-custom-to{
+  max-width: 46%;
+  position: relative;
+}
+.result-image-wrapper .swiper-pagination-bullet-active{
+  background: #696969;
+}
+.result-image-wrapper .swiper-pagination-bullet{
+  width: 9px;
+  height: 9px;
+}
+.result-tle h2.h2{
+  margin-bottom: 0px;
+}
+.result-tle .result-txt{
+  margin-top: 10px;
+}
+.swiper-custom-to .slide-button-nav{
+  position: absolute;
+  top: 50%;
+  left: 20px;
+  transform: translateY(-50%);
+  z-index: 1;
+}
+.swiper-custom-to .slide-button-nav.swiper-button-next-nav{
+left: auto;
+right: 20px;
+}
+.swiper-custom-to .nav-box svg{
+  cursor: pointer;
+  display: block;
+  border-radius: 50px;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+.swiper-custom-to .nav-box svg.swiper-button-disabled{
+  cursor: not-allowed;
+}
+@media (max-width: 992px){
+.result-image-wrapper{
+  flex-direction: column;
+}
+.result-tle{
+  text-align: center;
+  width: 100%;
+  margin-bottom: 15px;
+}
+.result-image-wrapper .swiper-custom-to {
+  max-width: 100%;
+}
+.swiper-custom-to .nav-box svg.swiper-button-disabled{
+  display: none;
+}
+}
+</style>
+
+<section class="result-image-box section-{{ section.id }}-padding">
+  <div class="container">
+    <div class="result-image-wrapper">
+      <div class="result-tle">
+        {%- if section.settings.title != blank -%}
+          <h2 class="heading h2">{{ section.settings.title | escape }}</h2>
+        {%- endif -%}
+        {%- if section.settings.content != blank -%}
+          <p class="result-txt">{{- section.settings.content -}}</p>
+        {%- endif -%}
+      </div>
+      <div class="swiper-custom-to">
+        <div class="swiper" id="result-thumbs-{{ section.id }}">
+          <div class="swiper-wrapper">
+            {%- if section.settings.image_1 != blank -%}
+              <div class="result-thump-image swiper-slide">
+                <img {% render 'image-attributes', image: section.settings.image_1 %}>
+              </div>
+            {%- endif -%}
+            {%- if section.settings.image_2 != blank -%}
+              <div class="result-thump-image swiper-slide">
+                <img {% render 'image-attributes', image: section.settings.image_2 %}>
+              </div>
+            {%- endif -%}
+            {%- if section.settings.image_3 != blank -%}
+              <div class="result-thump-image swiper-slide">
+                <img {% render 'image-attributes', image: section.settings.image_3 %}>
+              </div>
+            {%- endif -%}
+            {%- if section.settings.image_4 != blank -%}
+            <div class="result-thump-image swiper-slide">
+              <img {% render 'image-attributes', image: section.settings.image_4 %}>
+            </div>
+          {%- endif -%}
+          {%- if section.settings.image_5 != blank -%}
+            <div class="result-thump-image swiper-slide">
+              <img {% render 'image-attributes', image: section.settings.image_5 %}>
+            </div>
+          {%- endif -%}
+          {%- if section.settings.image_6 != blank -%}
+            <div class="result-thump-image swiper-slide">
+              <img {% render 'image-attributes', image: section.settings.image_6 %}>
+            </div>
+          {%- endif -%}
+          </div>
+          <div class="swiper-pagination swiper-pagination-{{ section.id }}"></div>
+        </div>
+        <div class="nav-box">
+          <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40" fill="none" class="slide-button-nav swiper-button-prev-nav swiper-prev-{{ section.id }}">
+            <circle cx="20" cy="20" r="20" transform="rotate(-180 20 20)" fill="none"/>
+            <path d="M23.0331 27.9669L15.0663 20L23.0331 12.0331" stroke="white" stroke-width="2" stroke-linecap="square"/>
+          </svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40" fill="none" class="slide-button-nav swiper-button-next-nav swiper-next-{{ section.id }}">
+            <circle cx="20" cy="20" r="20" fill="none"/>
+            <path d="M16.9669 12.0331L24.9337 20L16.9669 27.9669" stroke="white" stroke-width="2" stroke-linecap="square"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<script src="{{ 'swiper-bundle.min.aio.min.js' | asset_url }}"></script>
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+  let swiperId = new Swiper('#result-thumbs-{{ section.id }}',{
+    loop:false,
+    slidesPerView: 1.3,
+    spaceBetween:20,
+    breakpoints:{
+      768: {
+        slidesPerView: 1,
+        spaceBetween:0
+      }
+    },
+    pagination: {
+      el: ".swiper-pagination-{{ section.id }}",
+      clickable :true
+    },
+    navigation: {
+        nextEl: '.swiper-next-{{ section.id }}',
+        prevEl: '.swiper-prev-{{ section.id }}'
+    }
+  })
+});
+</script>
+{% schema %}
+{
+  "name": "Text Image Slide",
+  "class": "shopify-section--text-image-slide",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Promotion blocks"
+    },
+    {
+      "type": "text",
+      "id": "content",
+      "label": "Content",
+      "default": "Use this text to share information about your brand with your customers."
+    },
+    {
+      "type": "image_picker",
+      "id": "image_1",
+      "label": "Effect Image 1"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_2",
+      "label": "Effect Image 2"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_3",
+      "label": "Effect Image 3"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_4",
+      "label": "Effect Image 4"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_5",
+      "label": "Effect Image 5"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_6",
+      "label": "Effect Image 6"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "text",
+      "id": "custom_background",
+      "label": "Custom Background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "rgba(0,0,0,0)"
+    },
+     {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 36
+    }
+  ],
+  "blocks": [
+    {
+    "type":"item",
+    "name":"item",
+    "settings":[
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Text Image Slide"
+    }
+  ]
+}
+{% endschema %}

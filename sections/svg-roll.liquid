@@ -1,0 +1,92 @@
+<style>
+.svg-roll{
+  padding: 133px 0;
+}
+
+.svg-roll .svg-roll-cont{
+  position: relative;
+  width: 100%;
+  max-width: 600px;
+  
+  margin: 0 auto;
+  overflow: hidden;
+}
+
+.svg-roll .svg-roll-svg{
+  width: 100%;
+  padding-top: calc(100% + 6px);
+}
+
+.svg-roll svg{
+  display: block;
+  width: 100%;
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+}
+
+@media (max-width:991px) {
+  .svg-roll{
+    padding: 176px 0;
+  }
+}
+@media (min-width:640px) {
+  .svg-roll .svg-roll-cont{
+    max-width: 39.5%;
+  }
+}
+</style>
+<section class="section-box">
+  <div class="svg-roll to-opacity">
+    <div class="container">
+      <div class="svg-roll-cont">
+        <div class="svg-roll-svg">
+          {{ section.settings.html }}
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    window.addEventListener('load',function(){
+      function computeRect(){
+        let $p=$('.svg-roll')
+        let $svg = $p.find('svg')
+        let rect = $p.find('.svg-roll-svg')[0].getBoundingClientRect()
+        let scrollHeight = rect.height + window.innerHeight
+        let $rectG = $svg.find('.rect-p')
+        let height = $rectG.find('rect').attr('height')*1
+        let changeY = height + 600
+        let percentNum = 0
+        if(rect.top < window.innerHeight - 40 && rect.top -40> (0-rect.height)){
+          percentNum = (rect.height + rect.top)/scrollHeight
+          if(percentNum<0||percentNum>1) percentNum = percentNum<0 ? 0 : 1
+          $rectG.find('rect').attr('y',600-changeY*percentNum)
+        }
+      }
+      computeRect()
+      window.addEventListener('scroll',function(){
+        computeRect()
+      })
+    })
+  </script>
+</section>
+
+{% schema %}
+{
+  "name": "svg-roll",
+  "settings": [
+    {
+      "type": "html",
+      "id": "html",
+      "label": "HTML"
+    }
+  ],
+  "presets": [
+    {
+      "name": "svg-roll",
+      "blocks": []
+    }
+  ]
+}
+{% endschema %}

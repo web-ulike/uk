@@ -1,0 +1,176 @@
+<style>
+  .icon-module-diy {
+ 	padding: 16px 0 60px 0;
+ }
+
+ .icon-module-diy .icon-module-cont {
+ 	max-width: 880px;
+ 	margin: 0 auto;
+ }
+
+ .icon-module-diy .icon-module-title {
+ 	color: #1E1E1E;
+ 	text-align: center;
+ 	font-family: var(--heading-font-family);
+ 	font-size: 48px;
+ 	line-height: 1;
+ }
+
+ .icon-module-diy .icon-module-p {
+ 	color: #1E1E1E;
+ 	text-align: center;
+ 	font-size: 16px;
+ 	line-height: 1.5;
+ 	margin: 0 auto;
+ 	margin-top: 20px;
+ 	max-width: 630px;
+ }
+
+ .icon-module-diy .icon-module-p p{
+   margin:0;
+ }
+
+ .icon-module-diy .icon-module-list {
+ 	display: flex;
+ 	margin-top: 60px;
+ }
+
+ .icon-module-diy .icon-module-item {
+ 	flex: 1;
+ 	margin-right: 40px;
+ }
+
+ .icon-module-diy .icon-module-item:last-child {
+ 	margin-right: 0;
+ }
+
+ .icon-module-diy img {
+ 	display: block;
+ 	margin: 0 auto;
+ }
+
+ .icon-module-diy .icon-module-txt {
+ 	color: #1E1E1E;
+ 	text-align: center;
+ 	font-size: 16px;
+ 	line-height: 1.5;
+ 	margin-top: 20px;
+ }
+ 
+ @media (max-width:991px) {
+ 	.icon-module-diy{
+		padding: 24px 0 0 0;
+	}
+	.icon-module-diy .icon-module-title {
+		font-size: 28px;
+	}
+	 .icon-module-diy .icon-module-p {
+		 font-size: 14px;
+	 }
+	 .icon-module-diy .icon-module-list {
+		 margin-top: 30px;
+		 flex-wrap: wrap;
+	 }
+	 .icon-module-diy .icon-module-item {
+		 flex: none;
+		 width: calc(50% - 18px);
+		 margin-right: 36px;
+		 margin-bottom: 24px;
+	 }
+	 .icon-module-diy .icon-module-item:nth-child(2n) {
+		 margin-right: 0;
+	 }
+	 .icon-module-diy .icon-module-txt {
+		 font-size: 12px;
+		 margin-top: 6px;
+	 }
+	 .icon-module-diy img {
+		 width: 60px;
+	 }
+ }
+ 
+ @media (max-width:640px) {
+ 	.icon-module-diy .icon-module-list{
+		max-width: 236px;
+		margin: 0 auto;
+		margin-top: 30px;
+	}
+ }
+</style>
+<section class="section-box">
+  <div class="icon-module-diy">
+      <div class="container">
+          <div class="icon-module-cont">
+            {%- if section.settings.title != blank -%}
+            <div class="icon-module-title">{{ section.settings.title }}</div>
+            {%- endif -%}
+
+            {%- if section.settings.content != blank -%}
+                <div class="icon-module-p">{{ section.settings.content }} </div>
+            {%- endif -%}
+              <div class="icon-module-list">
+                {%- for block in section.blocks -%}
+                  <div class="icon-module-item">
+                    {%- if block.settings.image != blank -%}
+                       <img loading="lazy" width="{{ block.settings.image.width }}" height="{{ block.settings.image.height }}" {% render 'image-attributes', image: block.settings.image %} alt="{{ block.settings.image.alt | escape }}" >
+                    {%- endif -%}
+                    {%- if block.settings.title != blank -%}
+                      <div class="icon-module-txt">{{ block.settings.title }}</div>
+                    {%- endif -%}
+                  </div>
+                {%- endfor -%}
+              </div>
+          </div>
+      </div>
+  </div>
+</section>
+{% schema %}
+{
+  "name": "icon-module",
+  "class": "icon-module-box",
+  "blocks": [
+    {
+      "name": "item",
+      "type": "item",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Icon"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading"
+        },
+        {
+          "type": "text",
+          "id": "content",
+          "label": "Content"
+        }
+      ]
+    }
+  ],
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title"
+    },
+    {
+      "type": "richtext",
+      "id": "content",
+      "label": "Content"
+    }
+  ],
+  "presets": [
+    {
+      "name": "icon-module",
+      "blocks": []
+    }
+  ]
+}
+{% endschema %}
+
+
+

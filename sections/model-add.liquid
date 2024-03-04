@@ -1,0 +1,196 @@
+<style>
+  .section-{{ section.id }}-padding {
+    padding-top: calc({{ section.settings.padding_top }}px);
+    padding-bottom: calc({{ section.settings.padding_bottom }}px);
+  }
+  @media screen and (max-width: 768px){
+  .section-{{ section.id }}-padding {
+    padding-top: calc({{ section.settings.padding_top }}px * 0.6);
+    padding-bottom: calc({{ section.settings.padding_bottom }}px * 0.6);
+  }
+}
+#shopify-section-{{ section.id }} {
+    --text-color: {{  section.settings.text_color.red }}, {{  section.settings.text_color.green }}, {{  section.settings.text_color.blue }};
+    --section-background: {{ section.settings.background.red }}, {{ section.settings.background.green }}, {{ section.settings.background.blue }};
+    background: rgb(var(--section-background, var(--background)));
+}
+.section_model h2{
+  text-align: center;
+font-size: 44px;
+font-weight: normal;
+line-height: 55px;
+margin-bottom: 72px;
+}
+.scroll_mobile-model{
+  display: flex;
+  gap: 24px;
+}
+.model_item .model_list-tle{
+font-size: 38px;
+font-weight: normal;
+line-height: 46px;
+margin-top: 47px;
+}
+.model_item .model_list-txt{
+font-size: 19px;
+font-weight: normal;
+line-height: 28px;
+margin-top: 29px;
+color: rgba(0,0,0,0.5);
+}
+.scroll_mobile-model .model_item{
+    flex-basis: 33.333%;
+  }
+@media screen and (max-width: 767px){
+  .section_model h2{
+    font-size: 24px;
+    line-height: 130%;
+    margin-bottom: 34px;
+  }
+  .model_item .model_list-tle{
+    margin-top: 30px;
+    font-size: 24px;
+    line-height: 1.2;
+  }
+  .model_item .model_list-txt{
+    font-size: 14px;
+    line-height: 1.5;
+    margin-top: 18px;
+  }
+  .scroll_mobile-model{
+    overflow-x: scroll;
+    scrollbar-width: none;
+    scrollbar-color: transparent transparent;
+  }
+  .scroll_mobile-model .model_item{
+    flex-shrink: 0;
+    flex-basis: 80%;
+  }
+  .scroll_mobile-model::-webkit-scrollbar {
+        width: 0;
+        height: 0;
+      }
+      .scroll_mobile-model::-webkit-scrollbar-track {
+        display: none;
+      }
+
+      .scroll_mobile-model::-webkit-scrollbar-thumb {
+        display: none;
+      }
+
+      .scroll_mobile-model::-webkit-scrollbar-corner {
+        display: none;
+      }
+}
+</style>
+
+<section class="section_model{% if section.settings.custom_class != blank %} {{section.settings.custom_class}}{% endif %}">
+  <div class="section-{{ section.id }}-padding">
+    <div class="container">
+      {%- if section.settings.title != blank -%}
+        <h2 class="heading h2 to-top">
+          <split-lines>{{ section.settings.title | escape }}</split-lines>
+        </h2>
+      {%- endif -%}
+      <div class="scroll_mobile-model" >
+        {%- for block in section.blocks -%}
+          <div class="model_item to-top" style="transition-delay: 0.{{ forloop.index }}s">
+          {%- if block.settings.image_model != blank -%}
+            <img class="pt_img" src="{{ block.settings.image_model | image_url }}">
+          {%- endif -%}
+          {%- if block.settings.title != blank -%}
+            <div class="model_list-tle text-top" style="transition-delay: 0.3s">{{ block.settings.title | escape }}</div>
+          {%- endif -%}
+          {%- if block.settings.description != blank -%}
+            <div class="model_list-txt text-top" style="transition-delay: 0.4s">{{ block.settings.description | escape }}</div>
+          {%- endif -%}
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Add Model",
+  "class": "shopify-section--add-model",
+  "settings": [
+    {
+      "type": "text",
+      "id": "custom_class",
+      "label": "Custom Class"
+    },
+    {
+        "type": "text",
+        "id": "title",
+        "label": "Title",
+        "default": "Title"
+      },
+      {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 36
+    }
+  ],
+  "blocks": [
+    {
+      "name": "Column",
+      "type": "item",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image_model",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "IPL vs. Salon"
+        },
+        {
+          "type": "text",
+          "id": "description",
+          "label": "Description"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Add Model",
+      "settings": {},
+      "blocks": [
+      ]
+    }
+  ]
+}
+{% endschema %}

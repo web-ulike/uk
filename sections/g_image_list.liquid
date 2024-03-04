@@ -1,0 +1,142 @@
+{%- liquid
+  assign se_id = section.id
+  assign se_bks = section.blocks
+  assign se_stts = section.settings
+-%}
+<div class="container box-images_{{se_id}}">
+  <div class="left">
+    {{- se_stts.image | image_url: width: se_stts.image.width | image_tag: loading: 'lazy', draggable: false -}}
+  </div>
+  <div class="right-image">
+    {{-
+      se_stts.image1
+      | image_url: width: se_stts.image1.width
+      | image_tag: loading: 'lazy', class: 'hidden-phone', draggable: false
+    -}}
+    {{-
+      se_stts.m_image1
+      | image_url: width: se_stts.m_image1.width
+      | image_tag: loading: 'lazy', class: 'hidden-desk', draggable: false
+    -}}
+    {{-
+      se_stts.image2
+      | image_url: width: se_stts.image2.width
+      | image_tag: loading: 'lazy', class: 'two hidden-phone', draggable: false
+    -}}
+    {{-
+      se_stts.m_image2
+      | image_url: width: se_stts.m_image2.width
+      | image_tag: loading: 'lazy', class: 'hidden-desk', draggable: false
+    -}}
+  </div>
+</div>
+<style>
+  .box-images_{{se_id}}{
+    padding: 80px var(--container-gutter);
+    display: flex;
+    grid-column-gap: 40px;
+    .right-image {
+      display: block;
+      flex: 1;
+    }
+    .left {
+      width: 51%;
+    }
+    .two{
+      margin-top: 45px;
+    }
+  }
+  .box-images_{{se_id}} img {
+    border-radius: 35px;
+  }
+
+  @media screen and (max-width: 1520px) {
+    .box-images_{{se_id}} {
+      display: flex;
+      .left {
+        width: 51%;
+      }
+      .right-image {
+        width: initial;
+        flex: 1;
+      }
+    }
+
+  }
+  @media screen and (max-width: 740px) {
+    .box-images_{{se_id}}{
+      display: block;
+      padding: 0px 20px;
+      .left {
+        width: 100%;
+      }
+    }
+    .box-images_{{se_id}} .right-image {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      gap: 15px;
+      margin-top: 15px;
+      width: 100%;
+    }
+    .box-images_{{se_id}} .right-image img {
+      height: 240px;
+    }
+  }
+</style>
+{% schema %}
+{
+  "name": "g-images-list",
+  "class": "g-image-list",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "图片1"
+    },
+    {
+      "type": "image_picker",
+      "id": "image1",
+      "label": "图片2"
+    },
+    {
+      "type": "image_picker",
+      "id": "m_image1",
+      "label": "移动端—图片2"
+    },
+    {
+      "type": "image_picker",
+      "id": "image2",
+      "label": "图片3"
+    },
+    {
+      "type": "image_picker",
+      "id": "m_image2",
+      "label": "移动-图片3"
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "options": [
+        {
+          "value": "nt_full",
+          "label": "Full Width"
+        },
+        {
+          "value": "container",
+          "label": "Container"
+        }
+      ],
+      "label": "Layout"
+    }
+  ],
+  "blocks": [],
+  "presets": [
+    {
+      "name": "g-image list",
+      "category": "g-image List",
+      "blocks": []
+    }
+  ]
+}
+{% endschema %}

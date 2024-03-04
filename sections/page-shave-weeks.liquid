@@ -1,0 +1,297 @@
+
+<style>
+  .shave-weeks-container {
+        position: relative;
+        height: 180vh;
+    }
+
+    .shave-weeks-container .shave-weeks-img {
+        position: absolute;
+        width: 100%;
+        min-height: 100%;
+        top: 0;
+        left: 0;
+        object-fit: cover;
+        z-index: 1;
+    }
+
+    .shave-weeks-container .mb-box {
+        display: none;
+    }
+
+    .shave-weeks-container .parallax-content {
+        position: sticky;
+        text-align: center;
+        color: white;
+        top: 169px;
+        z-index: 3;
+        height: calc(100vh - 169px);
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .shave-weeks-container .text-box {
+        max-width: 81%;
+        width: 792px;
+        position: absolute;
+		transform: translateY(100px);
+    }
+
+    .shave-weeks-container .bottom-text {
+        opacity: 0;
+    }
+
+    .shave-weeks-container .top-text {
+        font-size: 61px;
+        font-weight: 400;
+        line-height: 1.25;
+        /* position: relative; */
+        transform: translateY(0px);
+    }
+
+    .shave-weeks-container .ticon img {
+        display: block;
+        margin: 0 auto;
+    }
+
+    .shave-weeks-container .text-2 .t1 {
+        font-size: 32px;
+        font-weight: 400;
+        line-height: 1.25;
+    }
+
+    .shave-weeks-container .text-2 .t2 {
+        font-size: 18px;
+        font-weight: 400;
+        line-height: 1.5;
+    }
+
+    .shave-weeks-container .text-2 .t3 {
+        font-size: 15px;
+        font-weight: 400;
+        line-height: 1.5;
+    }
+
+    .shave-weeks-container .text-2 .t4 {
+        font-size: 13px;
+        font-weight: 400;
+        line-height: 18px;
+    }
+
+    .shave-weeks-container .text-2 .t5 {
+        font-size: 18px;
+        font-weight: 400;
+        line-height: 1.25;
+    }
+    @media screen and (max-width: 1200px) {
+      .shave-weeks-container .parallax-content {
+            top:78px;
+            height: calc(100vh - 78px);
+        }
+    }
+
+    @media screen and (max-width: 769px) {
+      .shave-weeks-container .parallax-content {
+            top:61px;
+            height: calc(100vh - 61px);
+        }
+        .shave-weeks-container {
+            position: relative;
+            height: 150vh;
+        }
+        .shave-weeks-container .top-text {
+            font-size: 30px;
+        }
+
+        .shave-weeks-container .mb-box {
+            display: block;
+        }
+
+        .shave-weeks-container .pc-box {
+            display: none;
+        }
+
+        .shave-weeks-container .text-2 .t1 {
+            text-align: center;
+            font-size: 32px;
+            font-style: normal;
+            line-height: 120%;
+        }
+
+        .shave-weeks-container .text-2 .t2 {
+            text-align: center;
+            font-size: 16px;
+            line-height: 1.5;
+        }
+
+        .shave-weeks-container .text-2 .t3 {
+            text-align: center;
+            font-size: 16px;
+            font-weight: 400;
+            line-height: 1.5;
+        }
+
+        .shave-weeks-container .text-2 .t4 {
+            margin-top: -0.31rem;
+            text-align: center;
+            font-size: 16px;
+            line-height: 1.4;
+        }
+
+        .shave-weeks-container .text-2 .t5 {
+            text-align: center;
+            font-size: 16px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 1.25;
+        }
+    }
+</style>
+
+<section class="shopify-section shave-section">
+  <div class="shave-weeks-container">
+      {%- if section.settings.image != blank -%}
+        {{- section.settings.image | image_url: width: 3000 | image_tag: loading: loading_attribute_value, draggable: false, id:'c_modelPc', class: 'shave-weeks-img pc-box', sizes: '100vw', widths: '600,700,800,1000,1200,1400,1600,1800,2000,2200,2400,2600,2800,3000' -}}
+        {{- section.settings.mobileimage | image_url: width: 3000 | image_tag: loading: loading_attribute_value, draggable: false, id:'c_modelmobile', class: 'shave-weeks-img mb-box', sizes: '100vw', widths: '600,700,800,1000,1200,1400,1600,1800,2000,2200,2400,2600,2800,3000' -}}
+      {%- endif -%}
+    <div class="parallax-content">
+      <div class="text-box top-text">
+        {{ section.settings.title }}
+      </div>
+      <div class="text-box bottom-text">
+        <div class="text-2">
+          <h1 class="t1">
+            {{ section.settings.titletwo }}  
+          </h1>
+          <div class="t2">
+            {{ section.settings.content }}
+          </div>
+          <p class="t3">{{ section.settings.contenttwo }}</p>
+          <p class="ticon">
+          {%- if section.settings.imageicon != blank -%}
+                {{- section.settings.imageicon | image_url: width: 150 | image_tag: loading: loading_attribute_value, draggable: false, sizes: '100vw' -}}
+            {%- endif -%}
+          </p>
+          <p class="t4">{{ section.settings.foot }}</p>
+          <p class="t5">{{ section.settings.footuser }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<script src='//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js' defer></script>
+<script type="text/javascript">
+  document.addEventListener("DOMContentLoaded", function () {
+    let lastScrollTop = 0;
+		let isToTop = false
+		window.addEventListener('scroll', function() {
+			let scrollTop = $(this).scrollTop();
+			let { top,height } = $('.shave-weeks-container')[0].getBoundingClientRect()
+			let offSetTop = $('.shave-weeks-container').offset().top
+			let halfHeight = height / 1.8 / 4
+			let toggleNum = scrollTop - offSetTop
+			if (scrollTop > lastScrollTop) {
+				isToTop = false
+			} else if (scrollTop < lastScrollTop) {
+				isToTop = true
+			}
+			if (top <= 0) {
+				if (isToTop) {
+					if (toggleNum < halfHeight) {
+						$('.bottom-text').css({
+							'opacity': 0,
+							"transform": 'translateY(100px)',
+							'transition': 'all .4s ease'
+						})
+						setTimeout(() => {
+							$('.top-text').css({
+								'opacity': 1,
+								"transform": 'translateY(0px)',
+								'transition': 'all .4s ease'
+							})
+						}, 500);
+
+					}
+				} else {
+					if (toggleNum > halfHeight) {
+						$('.top-text').css({
+							'opacity': 0,
+							"transform": 'translateY(100px)',
+							'transition': 'all .4s ease'
+						})
+						setTimeout(() => {
+							$('.bottom-text').css({
+								'opacity': 1,
+								'transform': 'translateY(0px)',
+								'transition': 'all .4s ease'
+							})
+						}, 500);
+
+					}
+				}
+			}
+			lastScrollTop = scrollTop;
+		})
+  });
+
+</script>
+
+{% schema %}
+{
+  "name": "shave-weeks",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "mobileimage",
+      "label": "mobileimage"
+    },
+    {
+      "type": "image_picker",
+      "id": "imageicon",
+      "label": "imageicon"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Shave title"
+    },
+    {
+      "type": "text",
+      "id": "titletwo",
+      "label": "Shave titleTwo"
+    },
+    {
+      "type": "richtext",
+      "id": "content",
+      "label": "Content"
+    },
+    {
+      "type": "text",
+      "id": "contenttwo",
+      "label": "contenttwo"
+    },
+    {
+      "type": "text",
+      "id": "foot",
+      "label": "foot"
+    },
+    {
+      "type": "text",
+      "id": "footuser",
+      "label": "footuser"
+    }
+  ],
+  "presets": [
+    {
+      "name": "shave-weeks"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,127 @@
+{%- liquid
+  assign se_id = section.id
+  assign se_bks = section.blocks
+  assign se_stts = section.settings
+-%}
+
+<div class="container box-image-text_{{se_id}}">
+  <div class="warp">
+    <p class="title">{{ se_stts.title }}</p>
+    <p class="desc">{{ se_stts.desc }}</p>
+  </div>
+  <div class="images">
+    {{-
+      se_stts.image
+      | image_url: width: se_stts.image.width
+      | image_tag: loading: 'lazy', class: 'hidden-phone', draggable: false
+    -}}
+    {{-
+      se_stts.m_image
+      | image_url: width: se_stts.m_image.width
+      | image_tag: loading: 'lazy', class: 'hidden-desk', draggable: false
+    -}}
+  </div>
+</div>
+<style>
+  .box-image-text_{{se_id}}{
+    padding: 80px 0px;
+    display: block;
+    .warp{
+      width: 50%;
+      margin: 0 auto;
+      text-align: center;
+    }
+    .title {
+      color: #000;
+      font-family: var(--heading-font-family);
+      font-size: 44px;
+      font-weight: 500;
+      line-height: 125%;
+      margin: 0px;
+    }
+    .desc{
+      color: #000;
+      text-align: center;
+
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 24px; /* 24px */
+      margin-top: 30px;
+    }
+    .images {
+      width: 90%;
+      margin: 0 auto;
+    }
+  }
+  @media screen and (max-width: 740px) {
+    .box-image-text_{{se_id}}{
+      display: block;
+      padding: 40px 20px;
+      .warp{
+        width: 100%;
+      }
+      .title {
+        font-size: 28px;
+      }
+      .desc {
+        font-size: 14px;
+        margin-top: 10px;
+      }
+      .images {
+       padding: 30px 0px;
+      }
+    }
+
+  }
+</style>
+{% schema %}
+{
+  "name": "g-images-Text",
+  "class": "g-image-text",
+  "settings": [
+    {
+      "type": "textarea",
+      "id": "title",
+      "label": "标题"
+    },
+    {
+      "type": "textarea",
+      "id": "desc",
+      "label": "描述"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "图片"
+    },
+    {
+      "type": "image_picker",
+      "id": "m_image",
+      "label": "移动端图片"
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "options": [
+        {
+          "value": "nt_full",
+          "label": "Full Width"
+        },
+        {
+          "value": "container",
+          "label": "Container"
+        }
+      ],
+      "label": "Layout"
+    }
+  ],
+  "blocks": [],
+  "presets": [
+    {
+      "name": "g-image Text",
+      "category": "g-image Text",
+      "blocks": []
+    }
+  ]
+}
+{% endschema %}

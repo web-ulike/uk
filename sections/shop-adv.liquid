@@ -1,0 +1,284 @@
+<style>
+  .shop-adv{
+    background: #f9f9f9;
+    padding: 26px 0;
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+  }
+  .shop-adv .shop-adv-list{
+    display: flex;
+  }
+  .shop-adv .shop-adv-item{
+    width: 25%;
+    padding: 0  50px;
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+    color: #000;
+    font-weight: bold;
+  }
+  .shop-adv .shop-adv-item img{
+    display: block;
+    margin: 0;
+    margin-right: 20px;
+  }
+@media (min-width:992px) {
+  .product-sticky-form{
+    display:none !important;
+  }
+  .home-shop-adv{
+    padding: 60px 0;
+  }
+}
+  
+  @media (max-width:1400px) {
+    .shop-adv .shop-adv-item{
+        padding: 0 30px;
+    }
+  }
+
+  .shop-adv-dot{
+    display: none;
+    justify-content: center;
+    margin-top: 30px;
+  }
+
+  .shop-adv-dot-item{
+    margin: 0 5px;
+    height: 6px;
+    width: 6px;
+    background: #aaa;
+    cursor: pointer;
+  }
+
+  .shop-adv-dot-item.active{
+    background: #000;
+  }
+
+  @media (max-width:991px) {
+    /* .shop-adv-dot{
+        display: flex;
+    } */
+    .shop-adv .shop-adv-item{
+        width: 33.333%;
+        flex-shrink: 0;
+        padding: 0 10px;
+        margin-right: 0px;
+        justify-content: center;
+        flex-direction: column;
+        text-align: center;
+        line-height: 1.2;
+        font-size: 14px;
+    }
+    .shop-adv .shop-adv-item:nth-child(4){
+      display: none;
+    }
+    .shop-adv .shop-adv-item img{
+      margin-right: 0;
+      margin-bottom: 8px;
+      width: 45px;
+    }
+  }
+</style>
+<section class="section-box">
+  <div class="shop-adv to-top {{ section.settings.class_text }}" style="background: {{ section.settings.background }};">
+    <div class="container">
+      <div class="shop-adv-list">
+        {%- for block in section.blocks -%}
+          <div class="shop-adv-item to-top" style="transition-delay: 0.{{forloop.index}}s">
+            <img loading="lazy" width="{{ block.settings.image.width }}" height="{{ block.settings.image.height }}" {%
+              render 'image-attributes' , image: block.settings.image %} alt="{{ block.settings.image.alt | escape }}">
+            <div class="shop-adv-txt">{{ block.settings.text }}</div>
+          </div>
+        {%- endfor -%}
+      </div>
+      <div class="shop-adv-dot to-top">
+        {%- for block in section.blocks -%}
+          <div class="shop-adv-dot-item"></div>
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+  function mediaRealSliderShop(name){
+    let $p=$(name)
+    let $list = $p.find('.shop-adv-list')
+    let length = $list.find('.shop-adv-item').length
+    let index = -2 //[0,-length-2]
+    let isLeftBtn = 1 //0左 1右
+    let timer = null
+    let timers = null
+    let dateTb = 0
+    let dateTs = 0
+    if(length<2) return
+
+    $list.html(
+        $list.find('.shop-adv-item')[length-2].outerHTML+
+        $list.find('.shop-adv-item')[length-1].outerHTML+
+        $list.html()+
+        $list.find('.shop-adv-item')[0].outerHTML+
+        $list.find('.shop-adv-item')[1].outerHTML)
+    skewTransform(true)
+    changeDot()
+    $p.find('.shop-adv-dot-item').click(function() {
+        let sIndex = $(this).index()
+        if(+new Date() - dateTb<600) return
+        dateTb = +new Date()
+        index = -sIndex-2
+        console.log(index);
+        changeLeft()
+    })
+    function skewTransform(auto,tIndex = index,skew=0){
+        let width = $list.find('.shop-adv-item').eq(Math.abs(tIndex)-1)[0].clientWidth
+        let translateX = (width + 60) * tIndex
+        if(auto){
+            translateX+=skew
+            $list.css({
+                'transform': 'translateX(' + translateX  + 'px)',
+                'transition': ' all 0s ease'
+            })
+        }else{
+            $list.css({
+                'transform': 'translateX(' + translateX + 'px)',
+                'transition': ' all .6s ease'
+            })
+        }
+    }
+    function changeLeft(skew) {
+        if(isLeftBtn && index == (-length-2)){
+            skewTransform(true,-1,skew)
+            index = -2
+        }
+
+        if(!isLeftBtn && index == 0){
+            skewTransform(true,-length-1,skew)
+            index = -length
+        }
+        setTimeout(() => {
+            skewTransform()
+        }, 10);
+        changeDot()
+}
+    function changeDot(){
+        $p.find('.shop-adv-dot-item').removeClass('active')
+        setTimeout(() => {
+            $p.find('.shop-adv-dot-item').each(function(){
+            let sIndex = $(this).index()
+            if(sIndex==(Math.abs(index)-2)){
+                $(this).addClass('active')
+            }
+        })
+        if(index==-1){
+            $p.find('.shop-adv-dot-item').eq(length-1).addClass('active')
+        }
+        }, 20);
+    }
+    function getTranslateX($element) {
+        var matrix = $element.css('transform').replace(/[^0-9\-.,]/g, '').split(',');
+        var translateX = parseFloat(matrix[12] || matrix[4]);
+        return translateX;
+    }
+    function initMobileCarousel() {
+        let startX = 0;
+        let listTar = 0
+        let startY = 0;
+        let isScrolling = false;
+
+        $list.on('touchstart', function(e) {
+            var touch = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
+            startX = touch.clientX;
+            startY = touch.clientY;
+            isScrolling = false;
+            listTar = getTranslateX($list)
+            clearInterval(timer)
+            
+        });
+
+        $list.on('touchmove', function(e) {
+            var touch = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
+            var diffX = touch.clientX - startX;
+            var diffY = touch.clientY - startY;
+            var translateX = listTar + diffX;
+            if(!isScrolling){
+                if (Math.abs(diffX) > Math.abs(diffY)) {
+                    isScrolling = true;
+                }
+            }
+            
+            if(isScrolling&&e.cancelable){
+                e.preventDefault();
+                $list.css({'transform': 'translateX(' + translateX + 'px)',    'transition': 'all 0s ease'});
+            }
+        });
+
+        $list.on('touchend', function(e) {
+            if (isScrolling) {
+                var touch = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
+                var diffX = touch.clientX - startX;
+                if (Math.abs(diffX) > window.innerWidth * 0.05) {
+                    if (diffX > 0) {
+                        index = index+1;
+                        isLeftBtn = 0
+                    } else {
+                        index = index-1;
+                        isLeftBtn = 1
+                    }
+                }
+                changeLeft(diffX)
+            }
+            isScrolling = false;
+        });
+    }
+    initMobileCarousel()
+}
+// $(window).load(function(){
+  // if(window.innerWidth<991){
+  //   mediaRealSliderShop('#shopify-section-{{ section.id }}')
+  // }  
+// })
+</script>
+{% schema %}
+{
+"name": "shop-adv-list",
+"class": "shop-adv-diy",
+"blocks": [
+  {
+    "name": "item",
+    "type": "item",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "image",
+        "label": "Icon"
+      },
+      {
+        "type": "text",
+        "id": "text",
+        "label": "Text"
+      }
+    ]
+  }
+],
+"settings": [
+  {
+    "type": "text",
+    "id": "class_text",
+    "label": "Custom Class"
+  },
+  {
+    "type": "color",
+    "id": "background",
+    "label": "Background",
+    "default": "#f9f9f9"
+  }
+],
+  "presets": [
+  {
+    "name": "shop-adv-list",
+    "blocks": []
+  }
+]
+}
+{% endschema %}

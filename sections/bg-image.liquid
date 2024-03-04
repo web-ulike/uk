@@ -1,0 +1,215 @@
+<style>
+  .section-{{ section.id }}-padding {
+    padding-top: calc({{ section.settings.padding_top }}px);
+    padding-bottom: calc({{ section.settings.padding_bottom }}px);
+  }
+  @media screen and (max-width: 768px){
+  .section-{{ section.id }}-padding {
+    padding-top: calc({{ section.settings.padding_top }}px * 0.6);
+    padding-bottom: calc({{ section.settings.padding_bottom }}px * 0.6);
+  }
+}
+#shopify-section-{{ section.id }} {
+    --text-color: {{  section.settings.text_color.red }}, {{  section.settings.text_color.green }}, {{  section.settings.text_color.blue }};
+}
+.monter_text-wrapper{
+  /* background: linear-gradient(180deg, #F8F8F8 0%, rgba(248, 248, 248, 0.00) 100%);
+  padding: 80px 0; */
+  position: relative;
+}
+.live_img_bg{
+  position: absolute;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    height: 100%;
+}
+.monter_box {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 80px 130px;
+    gap: 60px;
+}
+.monter_box .monter_left .monter_left-tle{
+font-size: 44px;
+font-style: normal;
+font-weight: 500;
+line-height: 125%;
+margin-bottom: 20px;
+}
+.monter_box .monter_left .monter_left-txt{
+font-size: 16px;
+font-style: normal;
+font-weight: 400;
+line-height: 150%;
+margin-bottom: 20px;
+}
+
+@media screen and (max-width: 992px){
+  .monter_box{
+    flex-direction: column-reverse;
+  }
+  .monter_box {
+    padding: 56px 20px;
+    gap: 0;
+}
+.monter_left{
+  text-align: center;
+  margin-top: 34px;
+}
+.monter_box .monter_left .monter_left-tle{
+font-size: 28px;
+margin-bottom: 10px;
+}
+.monter_box .monter_left .monter_left-txt{
+font-size: 14px;
+margin-bottom: 10px;
+}
+}
+</style>
+
+<section class="bg-monter{% if section.settings.custom_class != blank %} {{section.settings.custom_class}}{% endif %}">
+  <div class="section-{{ section.id }}-padding">
+    <div class="container">
+      <div class="monter_text-wrapper to-top">
+        {%- if section.settings.bg_image != blank -%}
+          <img class="live_img_bg hidden-pocket" src="{{ section.settings.bg_image | image_url }}">
+        {%- endif -%}
+        {%- if section.settings.bg_image_mobile != blank -%}
+          <img class="live_img_bg hidden-lap-and-up" src="{{ section.settings.bg_image_mobile | image_url }}">
+        {%- endif -%}
+      <div class="monter_box">
+        <div class="monter_left to-top" style="transition-delay: 0.2s">
+          {%- if section.settings.title != blank -%}
+            <div class="monter_left-tle">
+              {{ section.settings.title | escape }}
+            </div>
+          {%- endif -%}
+          {%- if section.settings.logo_tle != blank -%}
+            <div class="monter_left-txt">
+            {{ section.settings.logo_tle | escape }}
+            </div>
+          {%- endif -%}
+          {%- if section.settings.button_txt != blank -%}
+            <a href="{{ section.settings.button_url }}" class="button button--primary button--animate">{{ section.settings.button_txt }}
+            </a>
+          {%- endif -%}
+        </div>
+        <div class="monter_right">
+          {%- if section.settings.image != blank -%}
+            <img class="monter_img" src="{{ section.settings.image | image_url }}">
+          {%- endif -%}
+          {% comment %} {%- if section.settings.image_mobile != blank -%}
+            <img class="monter_img hidden-lap-and-up" src="{{ section.settings.image_mobile | image_url }}">
+          {%- endif -%} {% endcomment %}
+        </div>
+      </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Background Text Image",
+  "class": "shopify-section--bg-text-img",
+  "settings": [
+    {
+      "type": "text",
+      "id": "custom_class",
+      "label": "Custom Class"
+    },
+    {
+          "type": "image_picker",
+          "id": "bg_image",
+          "label": "Background Image"
+        },
+        {
+          "type": "image_picker",
+          "id": "bg_image_mobile",
+          "label": "Mobile Background Image"
+        },
+
+    {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_mobile",
+          "label": "Mobile Image"
+        },
+    {
+        "type": "text",
+        "id": "title",
+        "label": "Title",
+        "default": "Title"
+      },
+      {
+        "type": "text",
+        "id": "logo_tle",
+        "label": "Logo Text"
+      },
+      {
+      "type": "text",
+      "id": "button_txt",
+      "label": "Button Text"
+    },
+    {
+      "type": "url",
+      "id": "button_url",
+      "label": "Button Link URL"
+    },
+      {
+          "type": "image_picker",
+          "id": "live_image",
+          "label": "Live Image"
+        },
+      {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 36
+    }
+  ],
+  "blocks": [
+  ],
+  "presets": [
+    {
+      "name": "Background Text Image",
+      "settings": {},
+      "blocks": [
+      ]
+    }
+  ]
+}
+{% endschema %}

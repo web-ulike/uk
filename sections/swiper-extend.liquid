@@ -1,0 +1,470 @@
+{{ 'swiper-bundle.min.css' | asset_url | stylesheet_tag }}
+<style>
+#shopify-section-{{ section.id }} {
+    padding-top: calc({{ section.settings.padding_top }}px * 0.75);
+    padding-bottom: calc({{ section.settings.padding_bottom }}px  * 0.75);
+  }
+
+  @media screen and (min-width: 750px) {
+    #shopify-section-{{ section.id }} {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+.banner-extend-page{
+  position: relative;
+}
+.banner-part .image-fit {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+    max-width: 100%;
+}
+    .banner-part .swiper {
+        width: 100%;
+        height: 100%;
+        z-index:0;
+      }
+  .banner-part .swiper div:empty{
+    display:block;
+  }
+    .banner-part  .swiper-slide {
+        font-size: 18px;
+        height: auto;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        padding: 20px 20px 40px;
+      }
+    .banner-part.banner-extend-page .img-box{
+        display: flex;
+        cursor: pointer;
+        position: relative;
+      }
+    .banner-part.banner-extend-page .img{
+        display: flex;
+         margin-right:30px;
+      }
+      .banner-part.banner-extend-page .img img {
+        object-fit: contain;
+    max-height: 60px;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    font-family: "object-fit: cover";
+    z-index: 1;
+      }
+  .banner-part.banner-extend-page .swiper-scrollbar-drag{
+    background: #181818;
+  }
+  .banner-part .swiper-horizontal>.swiper-scrollbar,.banner-part .swiper-scrollbar.swiper-scrollbar-horizontal{
+    height:2px;
+  }
+.banner-part .slideshow__image {
+    position: relative;
+    width: 100%;
+}
+.banner-part.banner-extend-page .swiper-button-prev-custom, .swiper-rtl .swiper-button-next-custom {
+    left: 28px;
+}
+.banner-part.banner-extend-page .swiper-button-next-custom, .swiper-rtl .swiper-button-prev-custom {
+    right: 28px;
+}
+.banner-part .swiper-thumbs {
+    margin-top: 30px;
+}
+.banner-part .swiper-thumbs .swiper-wrapper{
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.banner-part .aplus-goto-btn{
+  display: inline-block;
+    margin: 7px 10px !important;
+    cursor: pointer;
+    border: 2px solid #000;
+    line-height: 2.5em;
+    min-width: 200px;
+    background-color: #fff;
+    white-space: nowrap;
+    color: #000;
+    width: auto !important;
+    padding: 0;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 600;
+}
+.banner-part .aplus-goto-btn:hover{
+    background-color: #000;
+    color: #fff;
+}
+.banner-part .aplus-goto-btn.swiper-slide-thumb-active{
+  /*border-color: #fff;*/
+    background-color: #000;
+    color: #fff;
+}
+  .banner-part .content_pos {
+   top: 50%;
+    position: absolute;
+    z-index: 100;
+    left: 18%;
+    transform: translate(-50%, -50%);
+}
+  
+.banner-part .card-description-box {
+      padding: 10px 20px;
+    border: 2px solid #040000;
+  min-width:174px;
+      width: max-content;
+}
+.banner-part .card-description-box h3{
+  font-size: 13px;
+    line-height: 1.4em;
+    font-weight: 300;
+    margin:0;
+}
+.banner-part .card-description-box h1{
+      font-size: 16px;
+    line-height: 1.2em;
+    margin:0;
+}
+.banner-part .card-description-box p{
+  margin: 0;
+}
+.banner-part #gallery .swiper-slide{
+  padding: 0;
+  margin:0;
+}
+.banner-part .swiper-button-next-custom, .banner-part .swiper-button-prev-custom {
+    position: absolute;
+    top: 50%;
+    width: 40px;
+    height: 40px;
+    margin-top: calc(0px - (var(--swiper-navigation-size)/ 2));
+    z-index: 10;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.banner-extend-page .swiper-pagination{
+  display: none;
+}
+
+.banner-extend-page .slide-button-nav{
+  position: absolute;
+  top: 50%;
+  left: 20px;
+  transform: translateY(-50%);
+  z-index: 1;
+}
+.banner-extend-page .slide-button-nav.swiper-button-next-nav{
+left: auto;
+right: 20px;
+}
+.banner-extend-page .nav-box svg{
+  cursor: pointer;
+  display: block;
+  border-radius: 50px;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+.banner-extend-page .nav-box svg.swiper-button-disabled{
+  cursor: not-allowed;
+}
+  
+  
+@media screen and (max-width: 768px){
+.banner-part.banner-extend-page .swiper-button-prev-custom.swiper-button-disabled, .banner-part.banner-extend-page .swiper-button-next-custom.swiper-button-disabled{
+  display: none;
+}
+.banner-extend-page .swiper-pagination{
+  bottom: -28px;
+  display: block;
+}
+.banner-extend-page .swiper-pagination .swiper-pagination-bullet.swiper-pagination-bullet-active{
+  background: #696969;
+}
+  .banner-part.banner-extend-page{
+    display: flex;
+    flex-direction: column-reverse;
+  }
+  .banner-part .swiper-thumbs{
+    display: none;
+  }
+.banner-part .swiper-thumbs .swiper-wrapper{
+  flex-direction: column;
+  align-items: center;
+}
+.banner-part .aplus-goto-btn{
+  padding: 9px 12px !important;
+  line-height:1.3;
+  width: fit-content !important;
+  min-width: 220px;
+  margin: 5px 10px !important;
+}
+ .banner-part .content_pos {
+    position: initial;
+    transform: none;
+}
+   .banner-part .content_pos h3.h3 {
+   text-align: center;
+}
+  .banner-part.banner-extend-page .img-box {
+    flex-direction: column-reverse;
+}
+.banner-part .card-description-box {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    transform: none;
+    left: 0;
+    padding: 7.21px 24px;
+    top: auto;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    align-items: end;
+  justify-content: center;
+    color: #fff;
+}
+.banner-part .card-description-box h1{
+  font-size: 18px;
+  /*margin-right: 20px;
+  margin-left: 20px;*/
+  order: -1;
+  display:flex;
+}
+.banner-part .card-description-box .aplus-p1{
+  font-size: 12px;
+  line-height: 1.3;
+}
+.banner-part .swiper-button-next-custom, .banner-part .swiper-button-prev-custom{
+  
+}
+  .banner-part.banner-extend-page .img{
+    margin-right:15px !important;
+  }
+  .banner-part.banner-extend-page .extend-img .image-fit{
+    width:auto;
+  }
+  .banner-extend-page .nav-box svg.swiper-button-disabled{
+  display: none;
+}
+}
+</style>
+
+<div class="banner-extend-page container banner-part section-{{ section.id }}-padding">
+  
+  <div class="swiper mySwiper" id="gallery">
+    <div class="swiper-wrapper">
+      {%- for block in section.blocks -%}
+        {%- assign image = block.settings.image -%}
+        {%- assign mobile_image = block.settings.image_mobile -%}
+        {%- if forloop.index > 2 -%}
+          {%- assign loading_attribute_value = 'lazy' -%}
+        {%- else -%}
+          {%- assign loading_attribute_value = 'eager' -%}
+        {%- endif -%}
+      <div class="swiper-slide" style="width:auto">
+        <div class="img-box">
+          {% comment %} {{- block.settings.image | image_url: width: 2700 | image_tag: loading: 'lazy', draggable: true, class: 'logo-bar__image image-fit small-hide', sizes: '(min-width: 1600px) 750px, (min-width: 750px) calc((100vw - 130px) / 2), calc((100vw - 50px) / 2)', widths: '750,2700' -}}
+          {%- if block.settings.image_mobile != blank -%}
+            {{- block.settings.image_mobile | image_url: width: 680 | image_tag: loading: 'lazy', draggable: true, class: 'logo-bar__image image-fit large-up-hide', sizes: '(min-width: 1600px) 750px, (min-width: 750px) calc((100vw - 130px) / 2), calc((100vw - 50px) / 2)', widths: '680' -}}
+          {%- endif -%} {% endcomment %}
+           <div class="{% if mobile_image != blank %}hidden-phone{% endif %}">
+            {%- if image != blank -%}
+              {{- image | image_url: width: 3000 | image_tag: loading: loading_attribute_value, draggable: false, class: 'slideshow__image', sizes: '100vw', widths: '600,700,800,1000,1200,1400,1600,1800,2000,2200,2400,2600,2800,3000' -}}
+            {%- else -%}
+              {% capture image_name %}lifestyle-{% cycle '1', '2' %}{%- endcapture -%}
+              {{- image_name | placeholder_svg_tag: 'slideshow__image slideshow__image--placeholder' -}}
+            {%- endif -%}
+          </div>
+
+          {%- if mobile_image != blank -%}
+            <div class="hidden-tablet-and-up">
+              {{- mobile_image | image_url: width: 3000 | image_tag: loading: loading_attribute_value, draggable: false, class: 'slideshow__image', sizes: '100vw', widths: '600,700,800,1000,1200,1400,1600,1800,2000,2200,2400,2600,2800,3000' -}}
+            </div>
+          {%- endif -%}
+
+
+          {%- if section.settings.show_image_with_txt_carousel == true -%}
+            <div class="content_pos"> 
+              <h3 class="heading h3">  {{ block.settings.main_title |  escape }} </h3>
+              <div class="card-description-box">
+                <h3 class="aplus-p3">  {{ block.settings.subTitle |  escape }} </h3>
+                <h1 class="aplus-h1 a-text-bold"> {{ block.settings.title |  escape }} </h1>
+                <p class="description aplus-p1">{{ block.settings.description |  escape }} </p>
+              </div>
+            </div>
+          {%- endif -%}
+        </div>
+      </div>
+      {%- endfor -%}
+    </div>
+     <div class="nav-box">
+      <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40" fill="none" class="slide-button-nav swiper-button-prev-nav swiper-prev-{{ section.id }}">
+        <circle cx="20" cy="20" r="20" transform="rotate(-180 20 20)" fill="none"/>
+        <path d="M23.0331 27.9669L15.0663 20L23.0331 12.0331" stroke="white" stroke-width="2" stroke-linecap="square"/>
+      </svg>
+      <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40" fill="none" class="slide-button-nav swiper-button-next-nav swiper-next-{{ section.id }}">
+        <circle cx="20" cy="20" r="20" fill="none"/>
+        <path d="M16.9669 12.0331L24.9337 20L16.9669 27.9669" stroke="white" stroke-width="2" stroke-linecap="square"/>
+      </svg>
+    </div>
+   
+  </div>
+  <div class="swiper swiper-thumbs" id="thumbs">
+    {%- if section.settings.show_image_with_txt_carousel == true -%}
+    <div class="swiper-wrapper" aria-live="polite" style="transition-duration: 0ms;">
+      {%- for block in section.blocks -%}
+      <div class="swiper-slide aplus-goto-btn"  style="margin-right: 10px;">
+        {{ block.settings.title |  escape }}
+      </div>
+      {%- endfor -%}
+    </div>
+    <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span>
+    {%- endif -%}
+  </div>
+  <div class="swiper-pagination swiper-pagination-{{ section.id }}"></div>
+</div>
+<script src="{{ 'swiper-bundle.min.aio.min.js' | asset_url }}"></script>
+<script>
+      /*或者*/
+    var thumbsSwiper = new Swiper('#thumbs',{
+      watchSlidesVisibility: true,/*避免出现bug*/
+      drag: false,
+      slidesPerView: 1.3,
+      spaceBetween:10,
+      breakpoints:{
+        768: {
+          slidesPerView: 1,
+          spaceBetween:10
+        }
+      },
+    })
+    var gallerySwiper = new Swiper('#gallery',{
+      slidesPerView: 1.3,
+      spaceBetween:10,
+      breakpoints:{
+        768: {
+          slidesPerView: 1,
+          spaceBetween:10
+        }
+      },
+      loop:false,
+      thumbs: {
+        swiper: thumbsSwiper,
+      },
+      navigation: {
+          nextEl: '.swiper-next-{{ section.id }}',
+          prevEl: '.swiper-prev-{{ section.id }}'
+      },
+      pagination: {
+        el: ".swiper-pagination-{{ section.id }}",
+        clickable :true
+      }
+    })
+</script>
+{% schema %}
+{
+  "name": "Swiper Extend",
+  "class": "shopify-section--swiper-extend",
+  "max_blocks": 20,
+  "settings":[
+    {
+      "type": "checkbox",
+      "id": "show_image_with_txt_carousel",
+      "label": "Show Image With Txt Carousel",
+      "info": "Show Image With Txt Carousel",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 36
+    }
+  ],
+  "blocks": [
+      {
+        "type": "logo",
+        "name": "logo",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          },
+          {
+            "type": "image_picker",
+            "id": "image_mobile",
+            "label": "Mobile Image"
+          },
+          {
+            "type": "url",
+            "id": "link",
+            "label": "Link"
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "default": "NEW ERA OF",
+            "label": "Heading"
+          },
+          {
+            "type": "text",
+            "id": "main_title",
+            "default": "Main Title",
+            "label": "Main Title"
+          },
+          {
+            "type": "text",
+            "id": "subTitle",
+            "default": "50℉ Sapphire System",
+            "label": "Subheading"
+          },
+          {
+            "type": "text",
+            "id": "description",
+            "default": "Only Hair",
+            "label": "Description"
+          }
+        ]
+      }
+    ],
+  "presets": [
+      {
+        "name": "Swiper Extend",
+        "blocks": [
+          {
+            "type": "logo"
+          },
+          {
+            "type": "logo"
+          },
+          {
+            "type": "logo"
+          },
+          {
+            "type": "logo"
+          }
+        ]
+      }
+    ]
+}
+{% endschema %}

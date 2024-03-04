@@ -1,0 +1,850 @@
+<style>
+  .limited-box {
+    padding: 78px 0 68px 0;
+  }
+
+  .limited-box .limited-box-cont {
+    position: relative;
+  }
+
+  .limited-box .limited-bg {
+    position: relative;
+    z-index: 1;
+  }
+
+  .limited-box .limited-box-txt {
+    position: absolute;
+    z-index: 2;
+    max-width: 405px;
+    left: 107px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  .limited-box .limited-box-tag {
+    display: inline-block;
+    color: #f4e2d2;
+    font-size: 12px;
+    line-height: 1.5;
+    letter-spacing: 1.2px;
+    padding: 8px 10px;
+    background: #e0004d;
+  }
+
+  .limited-box .limited-box-title {
+    color: #f4e2d2;
+    font-size: 48px;
+    line-height: 1.2;
+    font-weight: 600;
+    margin-top: 6px;
+    font-family: var(--heading-font-family);
+  }
+
+  .limited-box .limited-box-spec {
+    display: flex;
+    align-items: center;
+    margin-top: 25px;
+    color: #eee;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 1.5;
+  }
+
+  .limited-box .limited-box-color-item {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    position: relative;
+    border: 1px solid #000;
+    margin-left: 12px;
+    --bg-color: #fff;
+    cursor: pointer;
+  }
+
+  .limited-box .limited-box-color-item::before {
+    position: absolute;
+    content: '';
+    display: block;
+    width: calc(100% - 5px);
+    height: calc(100% - 5px);
+    border-radius: 50%;
+    background: var(--bg-color);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border: 1px solid #fcfcfc;
+  }
+
+  .limited-box .limited-box-color-item.active {
+    border-color: #fff;
+  }
+
+  .limited-box .limited-box-plug-txt {
+    color: #eee;
+    font-size: 16px;
+    line-height: 1.5;
+    letter-spacing: -0.28px;
+  }
+
+  .limited-box .limited-box-label-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 120px;
+    height: 34px;
+    color: #eee;
+    font-size: 14px;
+    line-height: 1.5;
+    border: 1px solid #d9d9d9;
+    margin-left: 10px;
+    cursor: pointer;
+  }
+
+  .limited-box .limited-box-label-item.active {
+    border-width: 2px;
+  }
+
+  .limited-box .limited-box-price {
+    display: flex;
+    align-items: center;
+    color: #eee;
+    font-size: 30px;
+    line-height: 1.3;
+    letter-spacing: -0.28px;
+    margin-top: 25px;
+  }
+
+  .limited-box .limited-box-price .n-price {
+    font-family: var(--heading-font-family);
+  }
+
+  .limited-box .limited-box-price .d-price {
+    color: #d8d8d8;
+    font-size: 20px;
+    line-height: 1.2;
+    letter-spacing: -0.28px;
+    text-decoration: line-through;
+    margin-left: 10px;
+  }
+
+  .limited-box .limited-box-qun {
+    display: flex;
+    /* width: 130px; */
+    height: 31px;
+    padding: 0 12px;
+    justify-content: center;
+    align-items: center;
+    color: #eee;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 1.3;
+    letter-spacing: -0.28px;
+    margin-left: 10px;
+    background: linear-gradient(180deg, #f7dfad 0%, #a9692e 100%);
+  }
+
+  .limited-box .limited-box-qun span {
+    margin: 0 5px;
+  }
+
+  .limited-box .limited-box-btn {
+    width: 224px;
+    height: 46px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #000;
+    background: #eee;
+    color: #000;
+    font-size: 14px;
+    letter-spacing: 1.4px;
+    margin-top: 29px;
+    cursor: pointer;
+  }
+
+  .limited-box .limited-box-sold-out {
+    position: absolute;
+    max-width: 455px;
+    left: 108px;
+    top: 50%;
+    transform: translateY(-50%);
+    text-align: center;
+    z-index: 3;
+    display: none;
+  }
+ .limited-box .mark-box::before{
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    position: absolute;
+    content: '';
+    display: block;
+    z-index: 2;
+    background: rgba(0, 0, 0, 0.6);
+  }
+  .limited-box .sold-out-title {
+    color: #eee;
+    text-align: center;
+    font-size: 40px;
+    font-family: var(--heading-font-family);
+    margin-top: 6px;
+    line-height: 1.2;
+  }
+
+  .limited-box .sold-out-p {
+    color: #eee;
+    text-align: center;
+    font-size: 24px;
+    max-width: 382px;
+    margin: 0 auto;
+    margin-top: 6px;
+    line-height: 1.2;
+  }
+
+  .limited-box .sold-out-input {
+    width: 100%;
+    max-width: 390px;
+    height: 52px;
+    background: #fff;
+    margin: 0 auto;
+    margin-top: 26px;
+    border: 0;
+  }
+
+  .limited-box .sold-out-input::placeholder {
+    color: rgba(0, 0, 0, 0.3);
+  }
+  .limited-box .sold-out-input:focus {
+    outline: none;
+  }
+  .limited-box .sold-out-btn {
+    width: 100%;
+    max-width: 390px;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #fff;
+    color: #fff;
+    text-align: center;
+    font-size: 14px;
+    line-height: 1.5;
+    margin: 0 auto;
+    margin-top: 6px;
+    cursor: pointer;
+    position: relative;
+  }
+
+  .limited-box .sold-out-btn .button {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    opacity: 0;
+  }
+
+  .limited-box .sold-out-timer {
+    display: flex;
+    justify-content: center;
+    margin-top: 48px;
+  }
+
+  .limited-box .sold-out-timer-item {
+    width: 54px;
+    color: #fff;
+    text-align: center;
+    font-size: 12px;
+    margin-right: 21px;
+  }
+
+  .limited-box .sold-out-timer-item:last-child {
+    margin-right: 0;
+  }
+
+  .limited-box .sold-out-timer-num {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 54px;
+    height: 45px;
+    color: #040000;
+    font-size: 28px;
+    font-family: var(--heading-font-family);
+    background: linear-gradient(180deg, #fff9d5 0%, #e1c097 100%);
+  }
+
+  .limited-box .sold-out-timer-num::before {
+    position: absolute;
+    content: ':';
+    display: block;
+    top: 50%;
+    right: -16px;
+    transform: translate(-50%, -50%);
+    color: #fff;
+    margin-top: -3px;
+  }
+  .limited-box .sold-out-timer-item:last-child .sold-out-timer-num::before {
+    display: none;
+  }
+
+  .limited-box .mb-box {
+    display: none;
+  }
+
+  .limited-box .banner--success {
+    background: none;
+    color: #fff;
+  }
+
+.limited-box .sold-out-mark{
+  position: relative;
+  display: none;
+}
+
+.limited-box .sold-out-mark img{
+  position: relative;
+  z-index: 1;
+}
+
+.limited-box .sold-out-mark::before{
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  position: absolute;
+  content: '';
+  display: block;
+  z-index: 2;
+  background: rgba(0, 0, 0, 0.6);
+}
+
+  @media (max-width: 1400px) {
+    .limited-box .limited-box-txt {
+      left: 60px;
+    }
+    .limited-box .limited-box-title {
+      font-size: 38px;
+    }
+  }
+
+  @media (max-width: 1100px) {
+    .limited-box .limited-box-txt {
+      left: 30px;
+    }
+  }
+
+  @media (max-width: 991px) {
+    .limited-box {
+      padding: 52px 0 24px 0;
+    }
+    .limited-box .limited-bg {
+      display: none;
+    }
+    .limited-box .limited-box-txt,
+    .limited-box .limited-box-sold-out {
+      position: relative;
+      left: 0;
+      top: 0;
+      transform: translateY(0);
+      width: 100%;
+      max-width: none;
+      text-align: center;
+    }
+    .limited-box .mb-box ,.limited-box .sold-out-mark{
+      display: block;
+    }
+    .limited-box .limited-box-title {
+      font-size: 34px;
+    }
+    .limited-box .limited-box-plug-txt {
+      text-align: left;
+      font-size: 14px;
+    }
+    .limited-box .limited-box-spec {
+      font-size: 14px;
+    }
+    .limited-box .limited-box-label-item {
+      width: 95px;
+    }
+    .limited-box .limited-box-price .n-price {
+      color: #e0004d;
+      font-size: 24px;
+      line-height: 1.3;
+      letter-spacing: -0.28px;
+    }
+    .limited-box .limited-box-price .d-price {
+      color: #9b9b9b;
+      font-size: 16px;
+      line-height: 1.3;
+    }
+    .limited-box .limited-box-qun {
+      font-size: 12px;
+    }
+
+    .limited-box .limited-box-btn {
+      height: 50px;
+      width: 100%;
+    }
+
+    .limited-box .sold-out-title {
+      color: #f4e2d2;
+      font-size: 28px;
+      line-height: 1.3;
+    }
+
+    .limited-box .sold-out-p {
+      color: #f4e2d2;
+      font-size: 16px;
+    }
+    .limited-box .sold-out-input,
+    .limited-box .sold-out-btn {
+      max-width: none;
+    }
+    .limited-box .sold-out-timer {
+      margin-top: 26px;
+    }
+    .limited-box .sold-out-timer-item {
+      color: #f4e2d2;
+    }
+    .limited-box .limited-box-color-item {
+      width: 42px;
+      height: 42px;
+    }
+  }
+</style>
+{%- assign product = section.settings.product -%}
+{% capture inventory_info %}
+  {% for variant in product.variants %}
+    color: {{ variant.option1 }},spe: {{ variant.option2 }},quan: {{ variant.inventory_quantity }},
+  {% endfor %}
+{% endcapture %}
+<section class="section-box">
+  <div class="limited-box">
+    <div class="container">
+      <div class="limited-box-cont">
+        {%- if section.settings.image != blank -%}
+          <img
+            loading="lazy"
+            class="limited-bg"
+            width="{{ section.settings.image.width }}"
+            height="{{ section.settings.image.height }}"
+            {% render 'image-attributes', image: section.settings.image %}
+            alt="{{ section.settings.image.alt | escape }}"
+          >
+        {%- endif -%}
+        <div
+          class="limited-box-txt"
+          data-id="{{ section.settings.product_id_1 }},{{ section.settings.product_id_2 }},{{ section.settings.product_id_3 }},{{ section.settings.product_id_4 }}"
+        >
+          <div class="limited-box-tag">{{ section.settings.text }}</div>
+          <div class="limited-box-title">{{ section.settings.text1 }}</div>
+          {%- if section.settings.image1 != blank -%}
+            <img
+              loading="lazy"
+              class="mb-box"
+              width="{{ section.settings.image1.width }}"
+              height="{{ section.settings.image1.height }}"
+              {% render 'image-attributes', image: section.settings.image1 %}
+              alt="{{ section.settings.image1.alt | escape }}"
+            >
+          {%- endif -%}
+          <div class="limited-box-spec">
+            {{ section.settings.text2 }}
+            <div class="limited-box-color-item active" style="--bg-color:{{ section.settings.text3 }};"></div>
+            <div class="limited-box-color-item" style="--bg-color:{{ section.settings.text4 }};"></div>
+          </div>
+          <div class="limited-box-plug-txt">
+            {{ section.settings.text5 }}
+          </div>
+          <div class="limited-box-spec">
+            {{ section.settings.text6 }}
+            <div class="limited-box-label-item active">
+              {{ section.settings.text7 }}
+            </div>
+            <div class="limited-box-label-item">
+              {{ section.settings.text8 }}
+            </div>
+          </div>
+          <div class="limited-box-price">
+            <span class="n-price">{{ section.settings.text9 }}</span>
+            <span class="d-price">{{ section.settings.text10 }}</span>
+            <div class="limited-box-qun" style="display:none;">ONLY <span> 2 </span> LEFT !</div>
+          </div>
+          <div class="limited-box-btn" data-id="{{ section.settings.product_id_1 }}">
+            {{ section.settings.text11 }}
+          </div>
+        </div>
+        <div class="limited-box-sold-out">
+          <div class="limited-box-tag">{{ section.settings.text12 }}</div>
+          <div class="sold-out-title">{{ section.settings.text13 }}</div>
+          {%- if section.settings.image1 != blank -%}
+            <div class="sold-out-mark">
+            <img
+              loading="lazy"
+              class="mb-box"
+              width="{{ section.settings.image1.width }}"
+              height="{{ section.settings.image1.height }}"
+              {% render 'image-attributes', image: section.settings.image1 %}
+              alt="{{ section.settings.image1.alt | escape }}"
+            >
+            </div>
+          {%- endif -%}
+          <div class="sold-out-p">{{ section.settings.text14 }}</div>
+
+          <!--
+            <input type="text" placeholder="{{ section.settings.text16 }}" class="sold-out-input">
+            <div class="sold-out-btn">{{ section.settings.text15 }}</div>
+          -->
+
+          {%- assign newsletter_id = 'newsletter-' | append: section.id -%}
+
+          {%- form 'customer', id: newsletter_id, class: 'form newsletter__form' -%}
+            {%- if form.posted_successfully? -%}
+              <script>
+                window.addEventListener('DOMContentLoaded', () => {
+                  if (history.scrollRestoration) {
+                    history.scrollRestoration = 'manual'; // Prevent the browser to scroll on captcha page
+                  }
+
+                  // document.getElementById('shopify-section-{{ section.id }}').scrollIntoView();
+                });
+              </script>
+
+              <div class="form__banner banner banner--success">
+                <span class="banner__ribbon">{% render 'icon' with 'form-success' %}</span>
+                <p class="banner__content">{{ section.settings.text17 }}</p>
+              </div>
+            {%- else -%}
+              {%- if form.errors -%}
+                <div class="form__banner banner banner--error">
+                  <span class="banner__ribbon">{% render 'icon' with 'form-error' %}</span>
+                  <p class="banner__content">{{ form.errors.messages.email }}</p>
+                </div>
+              {%- endif -%}
+
+              <input
+                type="hidden"
+                name="contact[tags]"
+                class="{{ template }} 1 "
+                value="newsletter{% if template == 'page.subscribe-and-save' or template == 'page.black-friday-super-saving' -%},BlackFriday {%- endif -%}"
+              >
+              <input type="hidden" name="contact[context]" value="{{ newsletter_id }}">
+              <input
+                type="email"
+                placeholder="{{ section.settings.text16 }}"
+                id="newsletter[{{ section.id }}][contact][email]"
+                name="contact[email]"
+                class="sold-out-input"
+                required
+              >
+              <div class="sold-out-btn">
+                <button type="submit" is="loader-button" class="button button--primary">
+                  {{ 'general.newsletter.subscribe' | t }}
+                </button>
+                {{ section.settings.text15 }}
+              </div>
+            {%- endif -%}
+          {%- endform -%}
+
+          <div class="sold-out-timer">
+            <div class="sold-out-timer-item">
+              <div class="sold-out-timer-num">22</div>
+              {{ section.settings.text18 }}
+            </div>
+            <div class="sold-out-timer-item">
+              <div class="sold-out-timer-num">22</div>
+              {{ section.settings.text19 }}
+            </div>
+            <div class="sold-out-timer-item">
+              <div class="sold-out-timer-num">22</div>
+              {{ section.settings.text20 }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="quan-text" style="display:none;">
+      {{ inventory_info }}
+    </div>
+  </div>
+  <script>
+    window.addEventListener('load', function () {
+      function setQuan() {
+        let $p = $('#shopify-section-{{ section.id }}');
+        let textList = document
+          .querySelector('#shopify-section-{{ section.id }} .quan-text')
+          .innerText.replaceAll('\n', '')
+          .replaceAll(' ', '')
+          .split(',');
+        let num = 0;
+        textList.forEach((item) => {
+          if (item.includes('quan')) {
+            num += item.split(':')[1] * 1;
+          }
+        });
+        if (num) {
+          $p.find('.limited-box-qun span').html(num);
+          $p.find('.limited-box-qun').css({ display: 'flex' });
+        } else {
+          $p.find('.limited-box-txt').hide();
+          $p.find('.limited-box-sold-out').show();
+          $p.find('.limited-box-cont').addClass('mark-box')
+        }
+      }
+      setQuan();
+      $('.limited-box .limited-box-color-item').click(function () {
+        let $p = $(this).closest('.limited-box');
+        $(this).addClass('active').siblings().removeClass('active');
+        setId();
+        if ($(this).index() != 0) {
+          $p.find('.limited-box-plug-txt').hide();
+        } else {
+          $p.find('.limited-box-plug-txt').show();
+        }
+      });
+      $('.limited-box .limited-box-label-item').click(function () {
+        $(this).addClass('active').siblings().removeClass('active');
+        setId();
+      });
+
+      function setId() {
+        let $p = $('.limited-box');
+        let idList = $p
+          .find('.limited-box-txt')
+          .attr('data-id')
+          .split(',')
+          .filter((item) => item);
+        let colorIndex = $p.find('.limited-box-color-item.active').index();
+        let labelIndex = $p.find('.limited-box-label-item.active').index();
+        let pId = '';
+        if (colorIndex == 0) {
+          if (labelIndex == 0) {
+            pId = idList[0];
+          } else {
+            pId = idList[1];
+          }
+        } else {
+          if (labelIndex == 0) {
+            pId = idList[2];
+          } else {
+            pId = idList[3];
+          }
+        }
+        $p.find('.limited-box-btn').attr('data-id', pId);
+      }
+
+      $('#shopify-section-{{ section.id }} .limited-box-btn').click(function () {
+        addToCart($(this).attr('data-id'));
+        commonGtmEvent('Flash-ATC','','')
+      });
+      
+      $('#shopify-section-{{ section.id }} .sold-out-btn').click(function () {
+        commonGtmEvent('Flash-Notify','','')
+      });
+
+      
+
+      function formatNumber(num) {
+        return num < 10 ? '0' + num : num;
+      }
+      function countdownToTomorrow() {
+        // 获取当前时间
+        let now = new Date(new Date().toLocaleString("en-US", { timeZone: "Europe/London" }));
+
+        // 获取今天和明天下午4点的日期
+        let today4PM = new Date(now);
+        today4PM.setHours(16, 0, 0, 0); // 设置为今天下午4点
+
+        let tomorrow4PM = new Date(now);
+        tomorrow4PM.setDate(now.getDate() + 1);
+        tomorrow4PM.setHours(16, 0, 0, 0); // 设置为明天下午4点
+
+        // 判断当前时间，选择倒计时的目标时间
+        let targetTime = now.getHours() < 16 ? today4PM : tomorrow4PM;
+
+        // 计算时间差
+        let timeDifference = targetTime - now;
+        // 将时间差转换为小时、分钟、秒
+        let hours = formatNumber(Math.floor(timeDifference / (1000 * 60 * 60)));
+        let minutes = formatNumber(Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60)));
+        let seconds = formatNumber(Math.floor((timeDifference % (1000 * 60)) / 1000));
+        return { hours, minutes, seconds };
+      }
+
+      function setCountdown() {
+        let $p = $('.limited-box');
+        let $item = $p.find('.sold-out-timer-item');
+        let timer = countdownToTomorrow();
+        $item.eq(0).find('.sold-out-timer-num').html(timer.hours);
+        $item.eq(1).find('.sold-out-timer-num').html(timer.minutes);
+        $item.eq(2).find('.sold-out-timer-num').html(timer.seconds);
+      }
+
+      setInterval(() => {
+        setCountdown();
+      }, 500);
+    });
+  </script>
+</section>
+{% schema %}
+{
+  "name": "limited-box",
+  "blocks": [],
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image1",
+      "label": "Mobile Image"
+    },
+    {
+      "type": "product",
+      "id": "product",
+      "label": "Product"
+    },
+    {
+      "type": "text",
+      "id": "product_id_1",
+      "label": "Product Id 1"
+    },
+    {
+      "type": "text",
+      "id": "product_id_2",
+      "label": "Product Id 2"
+    },
+    {
+      "type": "text",
+      "id": "product_id_3",
+      "label": "Product Id 3"
+    },
+    {
+      "type": "text",
+      "id": "product_id_4",
+      "label": "Product Id 4"
+    },
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "text1",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "text2",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "text3",
+      "label": "Color"
+    },
+    {
+      "type": "text",
+      "id": "text4",
+      "label": "Color"
+    },
+    {
+      "type": "text",
+      "id": "text5",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "text6",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "text7",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "text8",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "text9",
+      "label": "Price"
+    },
+    {
+      "type": "text",
+      "id": "text10",
+      "label": "Discount Price"
+    },
+    {
+      "type": "text",
+      "id": "text11",
+      "label": "Button text"
+    },
+    {
+      "type": "header",
+      "content": "Notify"
+    },
+    {
+      "type": "text",
+      "id": "text12",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "text13",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "text14",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "text15",
+      "label": "Button text"
+    },
+    {
+      "type": "text",
+      "id": "text16",
+      "label": "Placeholder"
+    },
+    {
+      "type": "text",
+      "id": "text17",
+      "label": "Message"
+    },
+    {
+      "type": "text",
+      "id": "text18",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "text19",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "text20",
+      "label": "Text"
+    }
+  ],
+  "presets": [
+    {
+      "name": "limited-box",
+      "blocks": []
+    }
+  ]
+}
+{% endschema %}

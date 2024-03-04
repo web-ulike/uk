@@ -1,0 +1,325 @@
+<style>
+    #shopify-section-{{ section.id }} {
+    --text-color: {{  section.settings.text_color.red }}, {{  section.settings.text_color.green }}, {{  section.settings.text_color.blue }};
+    --section-background: {{ section.settings.background.red }}, {{ section.settings.background.green }}, {{ section.settings.background.blue }};
+    background: rgb(var(--section-background, var(--background)));
+  }
+  .section-{{ section.id }}-padding {
+    padding-top: calc({{ section.settings.padding_top }}px);
+    padding-bottom: calc({{ section.settings.padding_bottom }}px);
+  }
+  @media screen and (max-width: 768px){
+  .section-{{ section.id }}-padding {
+    padding-top: calc({{ section.settings.padding_top }}px * 0.6);
+    padding-bottom: calc({{ section.settings.padding_bottom }}px * 0.6);
+  }
+}
+.com-left h3{
+  font-size: 44px;
+font-style: normal;
+font-weight: 500;
+line-height: 125%; 
+margin-bottom: 20px;
+}
+.com-left p{
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 150%;
+  margin-top: 0;
+  margin-bottom: 90px;
+}
+.chebox_cnt {
+    position: relative;
+    display: inline-block;
+    border-left:1px solid #CCB797;
+}
+.tab-bar_process{
+  position: absolute;
+  display: inline-block;
+  left: -1px;
+  width: 4px;
+  height: 110px;
+  background: #CCB797;
+  transition: all .3s ease;
+}
+.checkbox-li{
+  font-size: 32px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 150%;
+  text-transform: capitalize;
+  padding: 31px;
+  cursor: pointer;
+}
+.checkbox-li:hover{
+  font-weight: 600;
+}
+.checkbox-li.active{
+  font-weight: 600;
+}
+.picture-comparison-flex {
+    display: flex;
+    align-items: center;
+}
+.com-left {
+    flex-basis: 50%;
+    padding-right: 170px;
+}
+.com-right {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    flex-basis: 50%;
+}
+.picture_item {
+    position: relative;
+    display: none;
+    opacity: 0;
+    max-width: 562px;
+    transition: opacity 600ms ease 0s, visibility 600ms ease 0s;
+}
+.picture_item.active{
+  display: flex;
+  opacity: 1;
+}
+.compare-tab-top-arraw {
+    display: none;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 3;
+    cursor: pointer;
+    position: absolute;
+}
+  @media screen and (min-width: 992px) and (max-width: 1250px){
+    .com-left {
+    padding-right: 50px;
+}
+  }
+@media screen and (max-width: 991px){
+  /* .compare-tab-top-arraw {
+    display: block;
+  } */
+.checkbox_tab-bar-box::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+
+.checkbox_tab-bar-box::-webkit-scrollbar-track {
+  display: none;
+}
+
+.checkbox_tab-bar-box::-webkit-scrollbar-thumb {
+  display: none;
+}
+
+.checkbox_tab-bar-box::-webkit-scrollbar-corner {
+  display: none;
+}
+  .picture-comparison-flex{
+    flex-direction: column;
+  }
+  .com-left,.com-right{
+    flex-basis: 100%;
+    padding-right: 0;
+  }
+  .picture_item{
+    max-width: 100%;
+  }
+  .com-left h3{
+    font-size: 28px;
+  }
+  .com-left h3,.com-left p{
+    text-align: center;
+  }
+  .com-left p{
+    margin-bottom: 30px;
+  }
+  .chebox_cnt {
+    border-bottom: 1px solid #CCB797;
+    border-left: none;
+    overflow: hidden;
+    width: 100vw;
+    max-width: 465px;
+  }
+  .style__tab-bar{
+    display: flex;
+  }
+  .checkbox_tab-bar-box {
+    overflow-x: scroll;
+    position: relative;
+}
+  .checkbox-li{
+    padding: 18px 20px;
+    font-size: 20px;
+        width: 155px;
+    text-align: center;
+    flex-shrink: 0;
+  }
+  .tab-bar_process{
+    width: 155px;
+    height: 4px;
+    bottom: -1px;
+    left: auto;
+  }
+  .com-left{
+    margin-bottom:50px;
+  }
+}
+</style>
+
+<section>
+  <div class="section-{{ section.id }}-padding">
+    <div class="picture-comparison-box">
+      <div class="container">
+        <div class="picture-comparison-flex">
+          <div class="com-left">
+            {%- if section.settings.title != blank -%}
+              <h3>{{ section.settings.title | escape }}</h3>
+            {%- endif -%}
+            {%- if section.settings.subheading != blank -%}
+              <p>{{ section.settings.subheading | escape }}</p>
+            {%- endif -%}
+            <div class="chebox_cnt">
+              <div class="checkbox_tab-bar-box">
+                <div class="tab-bar_process"></div>
+                <div class="style__tab-bar">
+                  {%- for block in section.blocks -%}
+                  <div class="checkbox-li">
+                    {{ block.settings.check_title | escape }}
+                  </div>
+                  {%- endfor -%}
+                </div>
+              </div>
+              <div class="compare-tab-top-arraw">
+                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30" fill="none">
+                  <circle opacity="0.4" cx="15" cy="15" r="15" fill="white" fill-opacity="0.5"></circle>
+                  <path d="M13.7251 9.02485L19.7003 15L13.7251 20.9751" stroke="white" stroke-width="2" stroke-linecap="square"></path>
+                </svg>
+              </div>
+            </div>
+          </div>
+          <div class="com-right">
+            {%- for block in section.blocks -%}
+            <div class="picture_item">
+              {%- if block.settings.comparison_img != blank -%}
+                {{-  block.settings.comparison_img | image_url: width: 3000 | image_tag: loading: false, draggable: false, class: 'hidden-pocket', sizes: '100vw', widths: '600,700,800,1000,1200,1400,1600,1800,2000,2200,2400,2600,2800,3000' -}}
+              {%- endif -%}
+              {%- if block.settings.comparison_img_mobile != blank -%}
+                {{-  block.settings.comparison_img_mobile | image_url: width: 3000 | image_tag: loading: false, draggable: false, class: 'hidden-lap-and-up', sizes: '100vw', widths: '600,700,800,1000,1200,1400,1600,1800,2000,2200,2400,2600,2800,3000' -}}
+              {%- endif -%}
+              </div>
+            {%- endfor -%}
+        
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+  window.addEventListener("load", function () {
+    var screenWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+    document.querySelectorAll('.checkbox-li').forEach((ck,index)=>{
+      ck.addEventListener('click',function(){
+        if (screenWidth > 992) {
+          document.querySelector('.tab-bar_process').style.transform = `translate3d(0, ${index * 110}px, 0)`;
+        } else {
+          document.querySelector('.tab-bar_process').style.transform = `translate3d(${index * 155}px, 0, 0)`;
+        }
+        document.querySelectorAll('.picture_item').forEach(pic=>{
+          pic.classList.remove('active')
+        })
+        document.querySelectorAll('.picture_item')[index].classList.add('active')
+        document.querySelectorAll('.checkbox-li').forEach(ckb=>{
+          ckb.classList.remove('active')
+        })
+        this.classList.add('active')
+      })
+    })
+    document.querySelectorAll('.checkbox-li')[0].click();
+  })
+</script>
+{% schema %}
+{
+  "name": "picture comparison",
+  "class": "shopify-section--picture-comparison",
+  "settings": [
+     {
+        "type": "text",
+        "id": "title",
+        "label": "Heading",
+        "default": "L'épilation experte à la maison. Étape par étape."
+      },
+      {
+          "type": "text",
+          "id": "subheading",
+          "label": "Subheading",
+          "default": "Le guide ulike"
+        },
+     {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 40
+    }
+  ],
+  "blocks": [
+     {
+        "type": "item",
+        "name": "item",
+        "settings": [
+           {
+            "type": "text",
+            "id": "check_title",
+            "label": "Checkbox Title",
+            "default": "Performance"
+          },
+          {
+            "type": "image_picker",
+            "id": "comparison_img",
+            "label": "Comparison Image"
+          },
+          {
+            "type": "image_picker",
+            "id": "comparison_img_mobile",
+            "label": "Comparison Image Mobile"
+          }
+        ]
+      }
+  ],
+  "presets": [
+    {
+      "name": "picture comparison",
+      "settings": {}
+    }
+  ]
+}
+{% endschema %}

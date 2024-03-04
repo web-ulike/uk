@@ -1,0 +1,24 @@
+{% if template contains "product" %}
+<meta name="rto:tags" content="{{ product.tags | join: ", " | escape }}">
+<meta name="rto:collections" content="{{ product.collections | map: "title" | join: ", " | escape }}">
+{% endif %}
+{% if template contains "cart" %}
+<meta name="rto:tags" content="{``:``{% for line_item in cart.items %}, `{{line_item.product.id}}`: [``{% for tag in line_item.product.tags %},`{{ tag | replace: '"', '\"' | escape }}`{% endfor %}]{% endfor %} }">
+<meta name="rto:collections" content="{``:``{% for line_item in cart.items %}, `{{line_item.product.id}}`: [``{% for collection in line_item.product.collections %},`{{ collection.title | replace: '"', '\"' | escape }}`{% endfor %}]{% endfor %} }">
+{% endif %}
+{% if template contains "collection" %}
+<meta name="rto:collections" content="{{ collection.title }}">
+{% endif %}
+{% if customer %}
+<meta name="rto:customer_tags" content="{% for tag in customer.tags %}{{ tag | replace: '"', '\"' | escape}},{% endfor %}">
+<meta name="rto:customer_name" content="{{ customer.name }}">
+<meta name="rto:customer_email" content="{{ customer.email }}">
+<meta name="rto:customer_addresses" content="{{ customer.addresses | json | escape }}">
+<meta name="rto:customer_lastOrder" content="{{ customer.last_order.created_at | date: "%B %d, %Y %I:%M%p" }}">
+<meta name="rto:customer_orderCount" content="{{ customer.orders_count }}">
+<meta name="rto:customer_totalSpent" content="{{ customer.total_spent }}">
+<meta name="rto:customer_lastOrderId" content="{{ customer.last_order.id }}">
+<meta name="rto:customer_phone" content="{{ customer.phone }}">
+<meta name="rto:customer_firstName" content="{{ customer.first_name }}">
+<meta name="rto:customer_lastName" content="{{ customer.last_name }}">
+{% endif %}

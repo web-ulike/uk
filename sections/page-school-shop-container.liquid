@@ -1,0 +1,217 @@
+<style>
+  @media screen and (min-width: 1000px){
+  #shopify-section-{{ section.id }} {
+    position: sticky; 
+    top: 82px; 
+    z-index: 3; 
+    background-color: #fff;
+  }
+  .school-shop-container {
+      width: 100%;
+      height: 70px;
+      
+    }
+  .school-shop-container .hover-bar-content {
+      max-width: 1521px;
+      height: 100%;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.30);
+      display: flex;
+      justify-content: space-between;
+    }
+  .school-shop-container .hover-bar-content .content-item {
+      width: 33.333%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      border-bottom: 1px solid transparent;
+      transform: translateY(0.5px);
+      color: #9D9D9D;
+      text-align: center;
+      font-size: 24px;
+      font-weight: 400;
+      line-height: normal;
+      text-transform: capitalize;
+    }
+  .school-shop-container .hover-bar-content .top-text {
+      font-size: 10px;
+      margin-left: 3px;
+      transform: translateY(-4px);
+    }
+  .school-shop-container .hover-bar-content .content-item-active {
+      border-bottom: 1px solid #000;
+      color: #000;
+      font-size: 24px;
+      font-weight: 400;
+      line-height: normal;
+      text-transform: capitalize;
+    }
+  }
+  @media screen and (max-width: 768px){
+   #shopify-section-{{ section.id }} {
+    position: sticky; 
+    top: 63px; 
+    z-index: 6; 
+    background-color: #fff;
+  }
+    .school-shop-container {
+      width: 100%;
+      background-color: #fff;
+      height: 50px;
+      position: sticky;
+      top: 0;
+      z-index: 6;
+      overflow-x: scroll;
+    }
+   .school-shop-container::-webkit-scrollbar {
+      height: 0;
+      width: 0;
+      color: transparent;
+    }
+    .school-shop-container .hover-bar-content {
+        width: 150%;
+        height: 100%;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.30);
+        display: flex;
+        flex-shrink: 0;
+      }
+
+      .school-shop-container .hover-bar-content .content-item {
+        width: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-bottom: 1px solid transparent;
+        transform: translateY(0.5px);
+        color: #9D9D9D;
+        font-size: 16px;
+        font-weight: 400;
+        line-height: normal;
+        text-transform: capitalize;
+      }
+
+      .school-shop-container .hover-bar-content .top-text {
+        font-size: 10px;
+        margin-left: 3px;
+        transform: translateY(-4px);
+      }
+
+      .school-shop-container .hover-bar-content .content-item-active {
+        border-bottom: 1px solid #000;
+        color: #000;
+        font-size: 16px;
+        font-weight: 400;
+        line-height: normal;
+        text-transform: capitalize;
+      }
+
+      .school-shop-container .hover-bar-content .content-item:hover {
+        background-color: #fff;
+      }
+  }
+</style>
+<section class="shopify-section">
+  <div class="container school-shop-container">
+    <div class="hover-bar-content">
+      <div class="content-item content-item-active" data-target="#section1">
+        <span>Optimal</span>
+
+      </div>
+      <div class="content-item" data-target="#section2">
+        <span>Economic</span>
+
+      </div>
+      <div class="content-item" data-target="#section3">
+        <span>Why Ulike</span>
+      </div>
+    </div>
+  </div>
+</section>
+<script src='//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js'></script>
+<script>
+ document.addEventListener("DOMContentLoaded", function () {
+    $(document).ready(function () {
+      var currentBoxH = $(window).outerHeight(); // 动态获取全屏高度
+      // 锚点点击
+      $('.content-item').on('click', function () {
+        // 获取目标ID
+        var target = $(this).data('target');
+        // 获取目标元素的位置
+        var targetPosition = $(target).offset().top - $(this).height();
+        // 缓慢滚动到目标位置
+        $('html, body').animate({ scrollTop: targetPosition }, 'slow');
+      });
+
+      // 监听滚动事件
+      $(window).on('scroll', function () {
+        // 获取滚动位置
+        var scrollPosition = $(this).scrollTop();
+        // 遍历所有链接元素
+        $('.content-item').each(function () {
+          var target = $(this).data('target');
+          var aroudH = $(this).height() * 2;
+          var targetPosition = $(target).offset().top;
+          // 判断滚动位置是否在目标元素附近
+          if (scrollPosition >= targetPosition - aroudH && scrollPosition <= targetPosition + aroudH) {
+            // 添加高亮类并移除其他元素的高亮类
+            $('.content-item').removeClass('content-item-active');
+            $(this).addClass('content-item-active');
+          }
+        });
+      });
+    });
+  });
+  
+</script>
+
+{% schema %}
+{
+  "name": "school-shop-container",
+  "blocks": [
+    {
+      "type": "image",
+      "name": "Image",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "image_picker",
+          "id": "mobileimage",
+          "label": "mobileimage"
+        }
+      ]
+    }
+  ],
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "school title"
+    },
+    {
+      "type": "text",
+      "id": "titletwo",
+      "label": "Shave titleTwo"
+    },
+    {
+      "type": "richtext",
+      "id": "content",
+      "label": "Content"
+    },
+    {
+      "type": "text",
+      "id": "footurl",
+      "label": "footurl"
+    }
+  ],
+  "presets": [
+    {
+      "name": "school-shop-container"
+    }
+  ]
+}
+{% endschema %}
+

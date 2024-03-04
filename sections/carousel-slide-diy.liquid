@@ -1,0 +1,683 @@
+<style>
+  .carousel-row {
+    width: 100%;
+    background-color: #fff;
+    overflow: hidden;
+    padding: 60px 0;
+  }
+  .carousel-row .container {
+    position: relative;
+  }
+  .carousel-row .carousel-list {
+    display: flex;
+  }
+
+  .carousel-row .carousel-item {
+    position: relative;
+    width: 67.4%;
+    flex-shrink: 0;
+    margin-right: 20px;
+  }
+
+  .carousel-row .carousel-item .img {
+    display: block;
+    width: 100%;
+    margin: 0;
+    position: relative;
+    z-index: 1;
+  }
+
+  .carousel-row .carousel-item .mb-box {
+    display: none;
+  }
+
+  .carousel-row .carousel1-text {
+    position: absolute;
+    top: 56px;
+    left: 70px;
+    z-index: 3;
+    max-width: 43%;
+  }
+
+  .carousel-row .carousel1-text span {
+    font-size: 32px;
+    line-height: 1.35;
+    margin-bottom: 10px;
+    font-family: var(--heading-font-family);
+    font-weight: var(--heading-font-weight);
+  }
+
+  .carousel-row .carousel1-text .p {
+    font-size: 16px;
+    line-height: 21px;
+  }
+  .carousel-row .carousel1-text .p p {
+    margin: 0;
+  }
+  .carousel-row .carousel-item:nth-child(4) .carousel1-text {
+    color: #fff;
+  }
+
+  .carousel-row .btns-row {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+  }
+  .carousel-row .btns-row .btn-box {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.2);
+    position: relative;
+    margin: 0 15px;
+    cursor: pointer;
+    transition: all 0.4s ease;
+  }
+  .carousel-row .btns-row .btn-box:hover {
+    background: #000;
+  }
+  .carousel-row .btns-row .btn-box::before {
+    position: absolute;
+    content: '';
+    display: block;
+    width: 10px;
+    height: 10px;
+    border-top: 2px solid #fff;
+    border-left: 2px solid #fff;
+    top: 50%;
+    left: 50%;
+    margin-left: 2px;
+    transform: translate(-50%, -50%) rotate(-45deg);
+  }
+  .carousel-row .btns-row .btn-box:last-child {
+    transform: scale(-1, -1);
+  }
+
+  .carousel-row .carousel-row-dot {
+    display: none;
+    justify-content: center;
+  }
+
+  .carousel-row .carousel-row-dot-item {
+    width: 5px;
+    height: 5px;
+    background: #d9d9d9;
+    margin: 0 8px;
+  }
+  .carousel-row .carousel-row-dot-item.active {
+    background: #7a7a7a;
+  }
+
+  .carousel-row .car-title {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #000;
+    text-align: center;
+  }
+
+  .carousel-row .car-title span {
+    font-size: 44px;
+    line-height: 55px;
+    font-family: var(--heading-font-family);
+    font-weight: var(--heading-font-weight);
+  }
+
+  .carousel-row .car-title .p {
+    font-size: 16px;
+    line-height: 24px;
+    margin: 0;
+    margin-bottom: 60px;
+  }
+  .carousel-row .car-title .p p {
+    margin: 0;
+  }
+  .carousel-row .carousel-item1 {
+    width: 67.9%;
+    display: flex;
+    flex-shrink: 0;
+    margin-right: 20px;
+  }
+  .carousel-row .carousel-item1 .img {
+    width: 46%;
+    display: block;
+    margin: 0;
+    object-fit: cover;
+  }
+  .carousel-row .carousel2-text {
+    background: #f6f6f6;
+    display: flex;
+    align-items: center;
+    padding: 50px 75px 50px 68px;
+    flex: 1;
+  }
+
+  .carousel-row .carousel2-text .t1 {
+    display: block;
+    font-size: 16px;
+    line-height: 1.2px;
+    margin-bottom: 20px;
+  }
+
+  .carousel-row .carousel2-text .t2 {
+    font-size: 28px;
+    line-height: 1.25;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #c4c4c4;
+    margin-bottom: 20px;
+  }
+
+  .carousel-row .carousel2-text .t3 {
+    font-size: 14.5px;
+    line-height: 1.45;
+    margin-top: 15px;
+  }
+  .carousel-row .carousel2-text .t3 p {
+    margin: 0;
+  }
+
+  .carousel-row-diy .video-wrapper {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    top: 0;
+    left: 0;
+  }
+  .carousel-row.halloween .carousel-item1 {
+    width: 71.6%;
+  }
+  .carousel-row.halloween .carousel2-text {
+    height: 26.6vw;
+    max-height: 500px;
+  }
+  .custom_st {
+    fill: #e0004d;
+  }
+  .carousel-row.halloween .custom_st {
+    fill: #660096;
+  }
+  @media (max-width: 1500px) {
+    .carousel-row .carousel1-text {
+      left: 40px;
+      top: 30px;
+    }
+    .carousel-row .carousel1-text span {
+      font-size: 25px;
+    }
+    .carousel-row .carousel1-text .p {
+      font-size: 15px;
+    }
+  }
+
+  @media (max-width: 991px) {
+    .carousel-row .carousel1-text {
+      width: 100%;
+      max-width: none;
+      left: 0;
+      padding: 0 15px;
+    }
+    .carousel-row .carousel-item .mb-box {
+      display: block;
+    }
+    .carousel-row .carousel-item .pc-box {
+      display: none;
+    }
+
+    .carousel-row .carousel1-text span {
+      font-size: 22px;
+    }
+    .carousel-row .carousel1-text .p {
+      font-size: 14px;
+    }
+    .carousel-row .carousel-item {
+      width: 300px;
+    }
+    .carousel-row .carousel-row-dot {
+      display: flex;
+      position: absolute;
+      width: 100%;
+      left: 0;
+      bottom: -40px;
+      z-index: 3;
+    }
+    .carousel-row .btns-row .btn-box {
+      background: rgba(0, 0, 0, 0.5);
+      width: 30px;
+      height: 30px;
+    }
+    .carousel-row .btns-row .btn-box:nth-child(1) {
+      opacity: 0;
+    }
+    .carousel-row .btns-row {
+      position: absolute;
+      width: 100%;
+      left: 0;
+      top: 50%;
+      z-index: 3;
+      transform: translateY(-50%);
+      margin-top: 0;
+      justify-content: space-between;
+    }
+    .carousel-row .carousel-list {
+      /* padding-bottom: 20px; */
+    }
+    .carousel-row .btns-row .btn-box::before {
+      width: 8px;
+      height: 8px;
+      margin-left: 2px;
+    }
+  }
+
+  @media (max-width: 1300px) {
+    .carousel-row .carousel2-text {
+      padding: 20px 30px;
+    }
+    .carousel-row .carousel2-text .t2 {
+      font-size: 22px;
+      font-family: var(--heading-font-family);
+      font-weight: var(--heading-font-weight);
+    }
+    .carousel-row .carousel2-text .t3 {
+      font-size: 14px;
+    }
+  }
+
+  @media (max-width: 991px) {
+    .carousel-row {
+      padding-top: 0;
+    }
+    .carousel-row .car-title span {
+      font-size: 28px;
+    }
+    .carousel-row .car-title .p {
+      font-size: 14px;
+      margin-bottom: 30px;
+    }
+    .carousel-row .carousel-item1 {
+      flex-direction: column;
+    }
+    .carousel-row .carousel-item1 .img {
+      width: 100%;
+    }
+    .carousel-row .carousel2-text {
+      padding: 30px 20px;
+    }
+    .carousel-row.halloween .carousel2-text {
+      height: auto;
+      min-height: auto;
+      max-height: fit-content;
+    }
+    .carousel-row.halloween .carousel-item1 {
+      width: 90%;
+    }
+  }
+</style>
+<section class="section">
+  <div class="carousel-row carousel-row-diy{% if section.settings.custom_class != blank %} {{section.settings.custom_class}}{% endif %}">
+    <div class="container">
+      <div class="car-title">
+        {%- if section.settings.title != blank -%}
+          <span>{{ section.settings.title }}</span>
+        {%- endif -%}
+        {%- if section.settings.content != blank -%}
+          <div class="p">{{ section.settings.content }}</div>
+        {%- endif -%}
+      </div>
+      <div class="carousel-list">
+        {%- for block in section.blocks -%}
+          {% case block.type %}
+            {% when 'item-s' %}
+              <div class="carousel-item">
+                {%- capture video_poster -%}
+                      <img loading="lazy" class="img pc-box" width="{{ block.settings.image.width }}" height="{{ block.settings.image.height }}" {% render 'image-attributes', image: block.settings.image %} alt="{{ block.settings.image.alt | escape }}" >
+                    {%- endcapture -%}
+                {%- capture video_poster_m -%}
+                      <img loading="lazy" class="img mb-box" width="{{ block.settings.m_image.width }}" height="{{ block.settings.m_image.height }}" {% render 'image-attributes', image: block.settings.m_image %} alt="{{ block.settings.m_image.alt | escape }}" >
+                    {%- endcapture -%}
+                {%- if block.settings.video != blank -%}
+                  {{- video_poster -}}
+                  <native-video
+                    class="video-wrapper video-wrapper--native{% if block.settings.mobile_video != blank %} hidden-pocket{% endif %}"
+                    style="--aspect-ratio:0.56"
+                  >
+                    {{-
+                      block.settings.video
+                      | video_tag: controls: false, autoplay: true, muted: true, playsinline: true, loop: true
+                    -}}
+                  </native-video>
+                {%- else -%}
+                  {{- video_poster -}}
+                {%- endif -%}
+                {%- if block.settings.mobile_video != blank -%}
+                  {{- video_poster_m -}}
+                  <native-video
+                    class="video-wrapper video-wrapper--native mobile-video-wrapper hidden-lap-and-up"
+                    style="--aspect-ratio: 0.6"
+                  >
+                    {{-
+                      block.settings.mobile_video
+                      | video_tag: controls: false, autoplay: true, muted: true, playsinline: true, loop: true
+                    -}}
+                  </native-video>
+                {%- else -%}
+                  {{- video_poster_m -}}
+                {%- endif -%}
+                <div class="carousel1-text">
+                  {%- if block.settings.title != blank -%}
+                    <span>{{ block.settings.title }}</span>
+                  {%- endif -%}
+                  {%- if block.settings.content != blank -%}
+                    <div class="p">{{ block.settings.content }}</div>
+                  {%- endif -%}
+                </div>
+              </div>
+            {% else %}
+              <div class="carousel-item carousel-item1">
+                <img
+                  loading="lazy"
+                  class="img"
+                  width="{{ block.settings.image.width }}"
+                  height="{{ block.settings.image.height }}"
+                  {% render 'image-attributes', image: block.settings.image %}
+                  alt="{{ block.settings.image.alt | escape }}"
+                >
+                <div class="carousel2-text">
+                  <div>
+                    {%- if block.settings.date_txt != blank -%}
+                      <span class="t1">{{ block.settings.date_txt }}</span>
+                    {%- endif -%}
+                    {%- if block.settings.title != blank -%}
+                      <div class="t2">{{ block.settings.title }}</div>
+                    {%- endif -%}
+                    <div class="custom_st">
+                      <!--
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"
+                            fill="none">
+                            <path
+                                d="M6.62805 1.6375C6.9274 0.716188 8.23081 0.716189 8.53016 1.6375L9.59973 4.9293C9.7336 5.34132 10.1176 5.62028 10.5508 5.62028H14.012C14.9807 5.62028 15.3835 6.85989 14.5998 7.4293L11.7996 9.46374C11.4491 9.71838 11.3025 10.1697 11.4363 10.5818L12.5059 13.8736C12.8053 14.7949 11.7508 15.561 10.9671 14.9916L8.16689 12.9572C7.8164 12.7025 7.3418 12.7025 6.99132 12.9572L4.19115 14.9916C3.40743 15.561 2.35295 14.7949 2.65231 13.8736L3.72187 10.5818C3.85575 10.1697 3.70909 9.71838 3.3586 9.46374L0.558434 7.4293C-0.225279 6.85989 0.177496 5.62028 1.14622 5.62028H4.60742C5.04065 5.62028 5.4246 5.34132 5.55848 4.9293L6.62805 1.6375Z"
+                                fill="#E0004D" />
+                        </svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"
+                            fill="none">
+                            <path
+                                d="M6.62805 1.6375C6.9274 0.716188 8.23081 0.716189 8.53016 1.6375L9.59973 4.9293C9.7336 5.34132 10.1176 5.62028 10.5508 5.62028H14.012C14.9807 5.62028 15.3835 6.85989 14.5998 7.4293L11.7996 9.46374C11.4491 9.71838 11.3025 10.1697 11.4363 10.5818L12.5059 13.8736C12.8053 14.7949 11.7508 15.561 10.9671 14.9916L8.16689 12.9572C7.8164 12.7025 7.3418 12.7025 6.99132 12.9572L4.19115 14.9916C3.40743 15.561 2.35295 14.7949 2.65231 13.8736L3.72187 10.5818C3.85575 10.1697 3.70909 9.71838 3.3586 9.46374L0.558434 7.4293C-0.225279 6.85989 0.177496 5.62028 1.14622 5.62028H4.60742C5.04065 5.62028 5.4246 5.34132 5.55848 4.9293L6.62805 1.6375Z"
+                                fill="#E0004D" />
+                        </svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"
+                            fill="none">
+                            <path
+                                d="M6.62805 1.6375C6.9274 0.716188 8.23081 0.716189 8.53016 1.6375L9.59973 4.9293C9.7336 5.34132 10.1176 5.62028 10.5508 5.62028H14.012C14.9807 5.62028 15.3835 6.85989 14.5998 7.4293L11.7996 9.46374C11.4491 9.71838 11.3025 10.1697 11.4363 10.5818L12.5059 13.8736C12.8053 14.7949 11.7508 15.561 10.9671 14.9916L8.16689 12.9572C7.8164 12.7025 7.3418 12.7025 6.99132 12.9572L4.19115 14.9916C3.40743 15.561 2.35295 14.7949 2.65231 13.8736L3.72187 10.5818C3.85575 10.1697 3.70909 9.71838 3.3586 9.46374L0.558434 7.4293C-0.225279 6.85989 0.177496 5.62028 1.14622 5.62028H4.60742C5.04065 5.62028 5.4246 5.34132 5.55848 4.9293L6.62805 1.6375Z"
+                                fill="#E0004D" />
+                        </svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"
+                            fill="none">
+                            <path
+                                d="M6.62805 1.6375C6.9274 0.716188 8.23081 0.716189 8.53016 1.6375L9.59973 4.9293C9.7336 5.34132 10.1176 5.62028 10.5508 5.62028H14.012C14.9807 5.62028 15.3835 6.85989 14.5998 7.4293L11.7996 9.46374C11.4491 9.71838 11.3025 10.1697 11.4363 10.5818L12.5059 13.8736C12.8053 14.7949 11.7508 15.561 10.9671 14.9916L8.16689 12.9572C7.8164 12.7025 7.3418 12.7025 6.99132 12.9572L4.19115 14.9916C3.40743 15.561 2.35295 14.7949 2.65231 13.8736L3.72187 10.5818C3.85575 10.1697 3.70909 9.71838 3.3586 9.46374L0.558434 7.4293C-0.225279 6.85989 0.177496 5.62028 1.14622 5.62028H4.60742C5.04065 5.62028 5.4246 5.34132 5.55848 4.9293L6.62805 1.6375Z"
+                                fill="#E0004D" />
+                        </svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"
+                            fill="none">
+                            <path
+                                d="M6.62805 1.6375C6.9274 0.716188 8.23081 0.716189 8.53016 1.6375L9.59973 4.9293C9.7336 5.34132 10.1176 5.62028 10.5508 5.62028H14.012C14.9807 5.62028 15.3835 6.85989 14.5998 7.4293L11.7996 9.46374C11.4491 9.71838 11.3025 10.1697 11.4363 10.5818L12.5059 13.8736C12.8053 14.7949 11.7508 15.561 10.9671 14.9916L8.16689 12.9572C7.8164 12.7025 7.3418 12.7025 6.99132 12.9572L4.19115 14.9916C3.40743 15.561 2.35295 14.7949 2.65231 13.8736L3.72187 10.5818C3.85575 10.1697 3.70909 9.71838 3.3586 9.46374L0.558434 7.4293C-0.225279 6.85989 0.177496 5.62028 1.14622 5.62028H4.60742C5.04065 5.62028 5.4246 5.34132 5.55848 4.9293L6.62805 1.6375Z"
+                                fill="#E0004D" />
+                        </svg>
+                      -->
+                      {%- if block.settings['non-perfect'] -%}
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          xmlns:xlink="http://www.w3.org/1999/xlink"
+                          width="117"
+                          height="21"
+                          viewBox="0 0 117 21"
+                          style="enable-background:new 0 0 117 21;"
+                          xml:space="preserve"
+                        >
+                          <style type="text/css">
+                          	.st0{fill:#E0004D;}
+                          	.st1{fill:#C4C4C4;}
+                          </style>
+                          <path class="st0" d="M9.6,3.6c0.3-0.9,1.6-0.9,1.9,0l1.1,3.3c0.1,0.4,0.5,0.7,1,0.7H17c1,0,1.4,1.2,0.6,1.8l-2.8,2
+                          	c-0.4,0.3-0.5,0.7-0.4,1.1l1.1,3.3c0.3,0.9-0.8,1.7-1.5,1.1l-2.8-2c-0.4-0.3-0.8-0.3-1.2,0l-2.8,2c-0.8,0.6-1.8-0.2-1.5-1.1l1.1-3.3
+                          	c0.1-0.4,0-0.9-0.4-1.1l-2.8-2C2.8,8.9,3.2,7.6,4.1,7.6h3.5c0.4,0,0.8-0.3,1-0.7L9.6,3.6z"/>
+                          <path class="st0" d="M33.6,3.6c0.3-0.9,1.6-0.9,1.9,0l1.1,3.3c0.1,0.4,0.5,0.7,1,0.7H41c1,0,1.4,1.2,0.6,1.8l-2.8,2
+                          	c-0.4,0.3-0.5,0.7-0.4,1.1l1.1,3.3c0.3,0.9-0.8,1.7-1.5,1.1l-2.8-2c-0.4-0.3-0.8-0.3-1.2,0l-2.8,2c-0.8,0.6-1.8-0.2-1.5-1.1l1.1-3.3
+                          	c0.1-0.4,0-0.9-0.4-1.1l-2.8-2c-0.8-0.6-0.4-1.8,0.6-1.8h3.5c0.4,0,0.8-0.3,1-0.7L33.6,3.6z"/>
+                          <path class="st0" d="M57.6,3.6c0.3-0.9,1.6-0.9,1.9,0l1.1,3.3c0.1,0.4,0.5,0.7,1,0.7H65c1,0,1.4,1.2,0.6,1.8l-2.8,2
+                          	c-0.4,0.3-0.5,0.7-0.4,1.1l1.1,3.3c0.3,0.9-0.8,1.7-1.5,1.1l-2.8-2c-0.4-0.3-0.8-0.3-1.2,0l-2.8,2c-0.8,0.6-1.8-0.2-1.5-1.1l1.1-3.3
+                          	c0.1-0.4,0-0.9-0.4-1.1l-2.8-2c-0.8-0.6-0.4-1.8,0.6-1.8h3.5c0.4,0,0.8-0.3,1-0.7L57.6,3.6z"/>
+                          <path class="st0" d="M81.6,3.6c0.3-0.9,1.6-0.9,1.9,0l1.1,3.3c0.1,0.4,0.5,0.7,1,0.7H89c1,0,1.4,1.2,0.6,1.8l-2.8,2
+                          	c-0.4,0.3-0.5,0.7-0.4,1.1l1.1,3.3c0.3,0.9-0.8,1.7-1.5,1.1l-2.8-2c-0.4-0.3-0.8-0.3-1.2,0l-2.8,2c-0.8,0.6-1.8-0.2-1.5-1.1l1.1-3.3
+                          	c0.1-0.4,0-0.9-0.4-1.1l-2.8-2c-0.8-0.6-0.4-1.8,0.6-1.8h3.5c0.4,0,0.8-0.3,1-0.7L81.6,3.6z"/>
+                          <g>
+                          	<path class="st0" d="M105.5,3.6l-1.1,3.3c-0.1,0.4-0.5,0.7-1,0.7H100c-1,0-1.4,1.2-0.6,1.8l2.8,2c0.3,0.3,0.5,0.7,0.4,1.1l-1.1,3.3
+                          		c-0.3,0.9,0.8,1.7,1.5,1.1l2.8-2c0.2-0.1,0.4-0.2,0.6-0.2V2.9C106.1,2.9,105.7,3.2,105.5,3.6z"/>
+                          	<path class="st1" d="M113.5,9.4c0.8-0.6,0.4-1.8-0.6-1.8h-3.5c-0.4,0-0.8-0.3-1-0.7l-1.1-3.3c-0.1-0.5-0.6-0.7-1-0.7v11.8
+                          		c0.2,0,0.4,0.1,0.6,0.2l2.8,2c0.8,0.6,1.8-0.2,1.5-1.1l-1.1-3.3c-0.1-0.4,0-0.9,0.4-1.1L113.5,9.4z"/>
+                          </g>
+                        </svg>
+                      {%- else -%}
+                        <svg
+                          width="117"
+                          height="21"
+                          viewBox="0 0 117 21"
+                          fill="inherit"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path d="M9.62805 3.6375C9.9274 2.71619 11.2308 2.71619 11.5302 3.6375L12.5997 6.9293C12.7336 7.34132 13.1176 7.62028 13.5508 7.62028H17.012C17.9807 7.62028 18.3835 8.85989 17.5998 9.4293L14.7996 11.4637C14.4491 11.7184 14.3025 12.1697 14.4363 12.5818L15.5059 15.8736C15.8053 16.7949 14.7508 17.561 13.9671 16.9916L11.1669 14.9572C10.8164 14.7025 10.3418 14.7025 9.99132 14.9572L7.19115 16.9916C6.40743 17.561 5.35295 16.7949 5.65231 15.8736L6.72187 12.5818C6.85575 12.1697 6.70909 11.7184 6.3586 11.4637L3.55843 9.4293C2.77472 8.85989 3.1775 7.62028 4.14622 7.62028H7.60742C8.04065 7.62028 8.4246 7.34132 8.55848 6.9293L9.62805 3.6375Z" fill="inherit"/>
+                          <path d="M33.628 3.6375C33.9274 2.71619 35.2308 2.71619 35.5302 3.6375L36.5997 6.9293C36.7336 7.34132 37.1176 7.62028 37.5508 7.62028H41.012C41.9807 7.62028 42.3835 8.85989 41.5998 9.4293L38.7996 11.4637C38.4491 11.7184 38.3025 12.1697 38.4363 12.5818L39.5059 15.8736C39.8053 16.7949 38.7508 17.561 37.9671 16.9916L35.1669 14.9572C34.8164 14.7025 34.3418 14.7025 33.9913 14.9572L31.1911 16.9916C30.4074 17.561 29.353 16.7949 29.6523 15.8736L30.7219 12.5818C30.8557 12.1697 30.7091 11.7184 30.3586 11.4637L27.5584 9.4293C26.7747 8.85989 27.1775 7.62028 28.1462 7.62028H31.6074C32.0406 7.62028 32.4246 7.34132 32.5585 6.9293L33.628 3.6375Z" fill="inherit"/>
+                          <path d="M57.628 3.6375C57.9274 2.71619 59.2308 2.71619 59.5302 3.6375L60.5997 6.9293C60.7336 7.34132 61.1176 7.62028 61.5508 7.62028H65.012C65.9807 7.62028 66.3835 8.85989 65.5998 9.4293L62.7996 11.4637C62.4491 11.7184 62.3025 12.1697 62.4363 12.5818L63.5059 15.8736C63.8053 16.7949 62.7508 17.561 61.9671 16.9916L59.1669 14.9572C58.8164 14.7025 58.3418 14.7025 57.9913 14.9572L55.1911 16.9916C54.4074 17.561 53.353 16.7949 53.6523 15.8736L54.7219 12.5818C54.8557 12.1697 54.7091 11.7184 54.3586 11.4637L51.5584 9.4293C50.7747 8.85989 51.1775 7.62028 52.1462 7.62028H55.6074C56.0406 7.62028 56.4246 7.34132 56.5585 6.9293L57.628 3.6375Z" fill="inherit"/>
+                          <path d="M81.628 3.6375C81.9274 2.71619 83.2308 2.71619 83.5302 3.6375L84.5997 6.9293C84.7336 7.34132 85.1176 7.62028 85.5508 7.62028H89.012C89.9807 7.62028 90.3835 8.85989 89.5998 9.4293L86.7996 11.4637C86.4491 11.7184 86.3025 12.1697 86.4363 12.5818L87.5059 15.8736C87.8053 16.7949 86.7508 17.561 85.9671 16.9916L83.1669 14.9572C82.8164 14.7025 82.3418 14.7025 81.9913 14.9572L79.1911 16.9916C78.4074 17.561 77.353 16.7949 77.6523 15.8736L78.7219 12.5818C78.8557 12.1697 78.7091 11.7184 78.3586 11.4637L75.5584 9.4293C74.7747 8.85989 75.1775 7.62028 76.1462 7.62028H79.6074C80.0406 7.62028 80.4246 7.34132 80.5585 6.9293L81.628 3.6375Z" fill="inherit"/>
+                          <path d="M105.628 3.6375C105.927 2.71619 107.231 2.71619 107.53 3.6375L108.6 6.9293C108.734 7.34132 109.118 7.62028 109.551 7.62028H113.012C113.981 7.62028 114.383 8.85989 113.6 9.4293L110.8 11.4637C110.449 11.7184 110.302 12.1697 110.436 12.5818L111.506 15.8736C111.805 16.7949 110.751 17.561 109.967 16.9916L107.167 14.9572C106.816 14.7025 106.342 14.7025 105.991 14.9572L103.191 16.9916C102.407 17.561 101.353 16.7949 101.652 15.8736L102.722 12.5818C102.856 12.1697 102.709 11.7184 102.359 11.4637L99.5584 9.4293C98.7747 8.85989 99.1775 7.62028 100.146 7.62028H103.607C104.041 7.62028 104.425 7.34132 104.558 6.9293L105.628 3.6375Z" fill="inherit"/>
+                        </svg>
+                      {%- endif -%}
+                    </div>
+                    {%- if block.settings.content != blank -%}
+                      <div class="t3">
+                        {{ block.settings.content }}
+                      </div>
+                    {%- endif -%}
+                  </div>
+                </div>
+              </div>
+          {% endcase %}
+        {%- endfor -%}
+      </div>
+      {%- if section.blocks.size > 0 -%}
+        <div class="btns-row">
+          <div class="btn-box"></div>
+          <div class="btn-box"></div>
+        </div>
+      {%- endif -%}
+      <div class="carousel-row-dot">
+        {%- for block in section.blocks -%}
+          <div class="carousel-row-dot-item {% if forloop.index == 1 %}active{% endif %}"></div>
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+  window.addEventListener('load', function () {
+    function slideDiy(name) {
+      let $p = $(name);
+      let $list = $p.find('.carousel-list');
+      let length = $list.find('.carousel-item').length;
+      let index = 0;
+      let left = $list.offset().left;
+      $p.find('.btn-box').click(function () {
+        let sIndex = $(this).index();
+        index += sIndex ? 1 : -1;
+        if (index < 0) index = length - 1;
+        if (index == length) index = 0;
+        changeLeft();
+      });
+
+      $p.find('.carousel-row-dot-item').click(function () {
+        index = $(this).index();
+        changeLeft();
+      });
+
+      function changeLeft() {
+        let width = $list.find('.carousel-item').width();
+        let pWidth = (width + 20) * length - $p.width() + left;
+        let translateX = (width + 20) * index;
+        if (translateX >= pWidth) translateX = pWidth;
+        if (window.innerWidth <= 991) {
+          if (index == 0) {
+            $p.find('.btns-row .btn-box:nth-child(1)').css({ opacity: 0 });
+          } else {
+            $p.find('.btns-row .btn-box:nth-child(1)').css({ opacity: 1 });
+          }
+        }
+        $list.css({
+          transform: 'translateX(-' + translateX + 'px)',
+          transition: ' all .4s ease',
+        });
+        $p.find('.carousel-row-dot-item').eq(index).addClass('active').siblings().removeClass('active');
+      }
+
+      function initMobileCarousel() {
+        let startX = 0;
+
+        $list.on('touchstart', function (e) {
+          var touch = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
+          startX = touch.clientX;
+        });
+
+        $list.on('touchmove', function (e) {
+          var touch = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
+          var diffX = touch.clientX - startX;
+          var translateX = -index * 100 + (diffX / window.innerWidth) * 100 + '%';
+          $list.css('transform', 'translateX(' + translateX + ')');
+        });
+
+        $list.on('touchend', function (e) {
+          var touch = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
+          var diffX = touch.clientX - startX;
+          if (Math.abs(diffX) > window.innerWidth * 0.3) {
+            if (diffX > 0) {
+              index = Math.max(index - 1, 0);
+            } else {
+              index = Math.min(index + 1, length - 1);
+            }
+          }
+          changeLeft();
+        });
+      }
+      initMobileCarousel();
+
+      window.addEventListener('resize', function () {
+        changeLeft();
+      });
+    }
+    slideDiy('#shopify-section-{{ section.id }}');
+  });
+</script>
+{% schema %}
+{
+  "name": "carousel-slider",
+  "class": "carousel-slider-diy",
+  "blocks": [
+    {
+      "name": "slider",
+      "type": "item-s",
+      "settings": [
+        {
+          "type": "video",
+          "id": "video",
+          "label": "Video",
+          "info": "选择了PC视频下面PC端的图片也需要传"
+        },
+        {
+          "type": "video",
+          "id": "mobile_video",
+          "label": "Mobile Video",
+          "info": "选择了移动端视频下面移动端的图片也需要传"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Pc Image"
+        },
+        {
+          "type": "image_picker",
+          "id": "m_image",
+          "label": "Mobile Image"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading"
+        },
+        {
+          "type": "richtext",
+          "id": "content",
+          "label": "Content"
+        }
+      ]
+    },
+    {
+      "name": "Compare slider",
+      "type": "compare",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "date_txt",
+          "label": "Date"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading"
+        },
+        {
+          "type": "richtext",
+          "id": "content",
+          "label": "Content"
+        },
+        {
+          "type": "checkbox",
+          "id": "non-perfect",
+          "label": "4.5",
+          "default": false
+        }
+      ]
+    }
+  ],
+  "settings": [
+    {
+      "type": "text",
+      "id": "custom_class",
+      "label": "Custom Class"
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading"
+    },
+    {
+      "type": "text",
+      "id": "content",
+      "label": "Content"
+    }
+  ],
+  "presets": [
+    {
+      "name": "carousel-slider",
+      "blocks": []
+    }
+  ]
+}
+{% endschema %}

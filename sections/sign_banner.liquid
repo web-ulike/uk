@@ -1,0 +1,288 @@
+{%- liquid
+  assign se_id = section.id
+  assign se_bks = section.blocks
+  assign se_stts = section.settings
+-%}
+
+{% comment %} sign banner 活动组件 {% endcomment %}
+<div class="main-sign{{ se_id }} {{ se_stts.layout }}">
+  <div class="main-sign-box">
+    {{-
+      se_stts.image
+      | image_url: width: se_stts.image.width
+      | image_tag: loading: 'lazy', class: 'hidden-phone', draggable: false
+    -}}
+    {{-
+      se_stts.m_image
+      | image_url: width: se_stts.m_image.width
+      | image_tag: loading: 'lazy', class: 'hidden-desk', draggable: false
+    -}}
+    <div class="abs-spin-win ">
+      <p class="sign-title">{{ se_stts.title }}</p>
+      <p class="sign-info">{{ se_stts.info }}</p>
+      <div class="sign-btn">
+        <a href="javascript:void(0)" id="woohoo-trigger-spinthewheel" class="woohoo-63184 btn-sign">
+          {{- se_stts.btn_name -}}
+        </a>
+      </div>
+      <div class="sign-image">
+        {{-
+          se_stts.spin_image
+          | image_url: width: se_stts.spin_image.width
+          | image_tag: loading: 'lazy', class: 'hidden-phone', draggable: false
+        -}}
+      </div>
+      <div class="sign-desc">{{ se_stts.desc }}</div>
+    </div>
+  </div>
+  {%- for block in se_bks -%}
+    <div class="box-changce list_{{forloop.index }}">
+      {%- assign item = block.settings -%}
+      <div class="main-win  container">
+        {{-
+          item.image
+          | image_url: width: item.image.width
+          | image_tag: loading: 'lazy', class: 'hidden-phone', draggable: false
+        -}}
+        {{-
+          item.m_image
+          | image_url: width: item.m_image.width
+          | image_tag: loading: 'lazy', class: 'hidden-desk', draggable: false
+        -}}
+        <div class="abs-win-title">
+          {{ item.name }}
+        </div>
+      </div>
+    </div>
+  {%- endfor %}
+</div>
+<style>
+  .main-sign{{ se_id }} {
+    .main-sign-box {
+      position: relative;
+    }
+    .abs-spin-win {
+      position: absolute;
+      top: 12%;
+      left: 10%;
+      width: 35%;
+      text-align: center;
+      border-radius: 20px;
+      background: #FFFAF0;
+      padding: 2% 4%;
+    }
+    p{
+     margin: 0px;
+    }
+    .sign-title {
+      font-size: 48px;
+      color: #000;
+      font-weight: 500;
+      font-family: var(--heading-font-family);
+    }
+    .sign-info {
+      color: #000;
+      text-align: center;
+      font-size: 16px;
+      font-weight: 400;
+      width: 75%;
+      margin: 0 auto;
+      line-height: 24px;
+      margin-bottom: 20px;
+    }
+    .sign-image {
+      width: 80%;
+      margin: 0 auto;
+    }
+    .sign-desc {
+      color: #000;
+      text-align: center;
+      font-size: 24px;
+      font-family: var(--heading-font-family);
+      font-weight: 500;
+      width: 70%;
+      margin: 10px auto 20px;
+      line-height: 28px;
+    }
+    .btn-sign {
+      background: #000;
+      color: #FFF;
+      font-size: 14px;
+      display: block;
+      width: 256px;
+      height: 52px;
+      line-height: 52px;
+      margin: 0px auto 20px;
+      cursor: pointer;
+    }
+    .box-changce {
+      background: #F3E6D6;
+      padding: 5% 0px;
+    }
+    .list_2 {
+      background: linear-gradient(180deg, #F3E6D6 0%, rgba(243, 230, 214, 0.00) 100%), #FFF;
+    }
+    .main-win {
+      position: relative;
+      text-align: center;
+    }
+    .abs-win-title {
+      color: #000;
+      text-align: center;
+      font-size: 44px;
+      font-weight: 500;
+      line-height: 130%;
+      position: absolute;
+      top: 8%;
+      width: 100%;
+      font-family: var(--heading-font-family);
+    }
+    .list_2 .abs-win-title {
+      top: -26%;
+    }
+  }
+
+  @media screen and (max-width: 740px) {
+    .main-sign{{ se_id }} {
+      .abs-spin-win {
+        top: 20px;
+        width: 100%;
+        left: 0px;
+        background: initial;
+        border: 0px;
+        left: 0px;
+        padding: 0px;
+      }
+      .sign-title {
+        font-size: 24px;
+      }
+      .box-changce {
+        padding: 120px 0px 40px;
+      }
+      .sign-image {
+        height: 400px;
+      }
+      .sign-info {
+        width: 85%;
+        font-size: 14px;
+        line-height: 22px;
+      }
+      .btn-sign {
+        height: 36px;
+        line-height: 36px;
+        width: 200px;
+      }
+      .sign-desc {
+        font-size: 16px;
+        width: 80%;
+        margin: 20px auto;
+      }
+      .abs-win-title {
+        top: -60px;
+        font-size: 24px;
+        padding: 0px;
+        position: absolute;
+        right: 0px;
+      }
+      .list_2 {
+        padding: 80px 0px 40px;
+      }
+      .list_2  .abs-win-title {
+        width: 66%;
+        text-align: center;
+        margin: 0 auto;
+        left: 0px;
+      }
+    }
+
+  }
+</style>
+{% schema %}
+{
+  "name": "sign-banner",
+  "class": "sign-banner",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "图片"
+    },
+    {
+      "type": "image_picker",
+      "id": "m_image",
+      "label": "移动端图片"
+    },
+    {
+      "type": "textarea",
+      "id": "title",
+      "label": "标题"
+    },
+    {
+      "type": "textarea",
+      "id": "info",
+      "label": "描述"
+    },
+    {
+      "type": "image_picker",
+      "id": "spin_image",
+      "label": "奖品转盘图片"
+    },
+    {
+      "type": "textarea",
+      "id": "desc",
+      "label": "奖品介绍"
+    },
+    {
+      "type": "textarea",
+      "id": "btn_name",
+      "label": "按钮名称"
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "options": [
+        {
+          "value": "nt_full",
+          "label": "Full Width"
+        },
+        {
+          "value": "container",
+          "label": "Container"
+        }
+      ],
+      "label": "Layout"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "item",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "图片"
+        },
+        {
+          "type": "image_picker",
+          "id": "m_image",
+          "label": "移动端图片"
+        },
+        {
+          "type": "textarea",
+          "id": "name",
+          "label": "名称",
+          "info": "Chance to win"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "sign-banner",
+      "category": "sign-banner",
+      "blocks": []
+    }
+  ]
+}
+{% endschema %}

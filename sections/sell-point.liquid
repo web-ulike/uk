@@ -1,0 +1,644 @@
+<style>
+    #shopify-section-{{ section.id }} {
+    --text-color: {{  section.settings.text_color.red }}, {{  section.settings.text_color.green }}, {{  section.settings.text_color.blue }};
+    --section-background: {{ section.settings.background.red }}, {{ section.settings.background.green }}, {{ section.settings.background.blue }};
+    background: rgb(var(--section-background, var(--background)));
+  }
+  .section-{{ section.id }}-padding {
+    padding-top: calc({{ section.settings.padding_top }}px);
+    padding-bottom: calc({{ section.settings.padding_bottom }}px);
+  }
+  @media screen and (max-width: 768px){
+  .section-{{ section.id }}-padding {
+    padding-top: calc({{ section.settings.padding_top }}px * 0.6);
+    padding-bottom: calc({{ section.settings.padding_bottom }}px * 0.6);
+  }
+}
+.sell_point{
+  background: linear-gradient(180deg, #FFECF2 0%, rgba(255, 236, 242, 0.00) 100%);
+}
+/* .sell_wrapper {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 150px;
+} */
+.sell_wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 150px;
+    flex-direction: column;
+    position: relative;
+}
+/* .sell_list {
+    flex-basis: 45%;
+    border-radius: 0px 0px 20px 20px;
+    background: #FFF;
+} */
+.sell_list {
+    border-radius: 0px 0px 20px 20px;
+    background: #FFF;
+    max-width: 695px;
+    width: 50%;
+    opacity: 0;
+    transform: scale3d(0.9, 0.9, 1);
+    transform-style: preserve-3d;
+}
+.sell_list:nth-child(2) {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%) scale3d(0.9, 0.9, 1);
+}
+.sell_bt {
+    padding: 50px 45px 60px;
+}
+.sell_subtle{
+  color: #E7004C;
+font-size: 14px;
+font-style: normal;
+font-weight: 400;
+line-height: normal;
+text-transform: uppercase;
+}
+.sell_tle{
+color: #000;
+font-size: 40px;
+line-height: 125%;
+margin: 0;
+}
+.sell_des{
+  margin-top: 17px;
+  color: #000;
+font-size: 18px;
+line-height: 150%; 
+}
+.sell_img {
+    position: relative;
+    width: 100%;
+    padding-bottom: 97%;
+    overflow: hidden;
+    border-radius: 0px 0px 20px 20px;
+}
+.sell_img img{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: calc(100% + 5rem);
+    object-fit: cover;
+    border-radius: 0px 0px 20px 20px;
+    transform: translate(0);
+}
+.sell_video .video-wrapper {
+    overflow: hidden;
+    padding-bottom: 97%;
+    border-radius: 0px 0px 20px 20px;
+}
+.sell_video .video-wrapper--native video{
+  border-radius: 0px 0px 20px 20px;
+  position: absolute;
+  width: 100%;
+  height: calc(100% + 5rem);
+  bottom: 0;
+}
+.scroll{
+  overflow: hidden;
+  margin-top: 170px;
+}
+.scroll_img{
+  width: 3469px;
+  height: 185px;
+  overflow: hidden;
+}
+.scroll_img img{
+  width: 100%;
+  height: 100%;
+  object-fit: none;
+}
+.destop_show{
+  display: none;
+}
+  .sell_bt .avtor_list {
+    display: flex;
+    margin-top: 20px;
+    gap: 20px;
+    align-items: center;
+}
+  .sell_bt .avtor_list .pt_img {
+    display: flex;
+    width: 75px;
+    height: 75px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+  .sell_bt .avtor_list .avtor_tle .avtor_top {
+    font-size: 18px;
+    font-weight: normal;
+    line-height: 27px;
+    font-family: var(--heading-font-family);
+}
+  .sell_bt .avtor_list .avtor_tle .avtor_bt {
+    font-size: 12px;
+    font-weight: normal;
+    line-height: 18px;
+}
+  .sell_bt .avtor_note {
+    font-size: 12px;
+    font-weight: normal;
+    color: #000000;
+    line-height: 18px;
+    margin-top: 20px;
+}
+ .sell_bt .avtor_note p {
+    margin: 0!important;
+}
+  .arrow_box{
+     display:none;
+  }
+  @media screen and (max-width: 1550px){
+  .sell_list {
+    width: 48%;
+  }
+  }
+@media screen and (max-width: 992px){
+  .sell_tle{
+    font-size: 24px;
+    margin-top: 17px;
+  }
+  .sell_des{
+    font-size: 14px;
+  }
+  .sell_list {
+    background: none;
+    max-width: auto;
+    width: 80%;
+    flex-shrink: 0;
+  }
+  .sell_bt {
+    padding: 25px 0px;
+  }
+  .sell_list:nth-child(2) {
+    position: inherit;
+    right: 0;
+    top: 50%;
+    transform: translateY(0%);
+  }
+  .sell_wrapper{
+    flex-wrap: nowrap;
+    flex-direction: row;
+    gap: 20px;
+    overflow-x: scroll;
+    scrollbar-width: none;
+    scrollbar-color: transparent transparent;
+  }
+  .scroll {
+    margin-top: 80px;
+}
+.sell_wrapper::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+  }
+
+  .sell_wrapper::-webkit-scrollbar-track {
+    display: none;
+  }
+
+  .sell_wrapper::-webkit-scrollbar-thumb {
+    display: none;
+  }
+
+  .sell_wrapper::-webkit-scrollbar-corner {
+    display: none;
+  }
+  .sell_img {
+    padding-bottom: 126%;
+}
+  .sell_video .video-wrapper {
+    padding-bottom: 126%;
+}
+}
+@media screen and (max-width: 730px){
+    .scroll_img{
+      width: 729px;
+      height: 65px;
+    }
+    .destop_show{
+      display: block;
+    }
+    .mobile_hide {
+      display: none;
+    }
+    .sell_bt .avtor_list .pt_img {
+    width: 60px;
+    height: 60px;
+}
+    .sell_bt .avtor_list .avtor_tle .avtor_top {
+    font-size: 16px;
+}
+  .avtor_box-extend{
+    display:none;
+  }
+   .arrow_box {
+    display: inline-flex;
+    cursor: pointer;
+     transition: all 0.3s;
+     /* padding-top: 10px; */
+}
+  .arrow_box.active {
+    transform: rotate(180deg);
+}
+  .sell_bt .avtor_note{
+    display:none;
+  }
+  }
+</style>
+<section class="sell_point section-{{ section.id }}-padding">
+  <div class="container">
+    <div class="sell_wrapper">
+      {%- for block in section.blocks -%}
+        <div class="sell_list">
+          {%- if block.settings.sell_img != blank -%}
+          <div class="sell_img mobile_hide">
+            <img src="{{ block.settings.sell_img | image_url }}" alt="{{ block.settings.sell_img | escape }}"/>
+          </div>
+          {%- endif -%}
+        {%- if block.settings.mobile_sell_img != blank -%}
+          <div class="sell_img destop_show">
+            <img src="{{ block.settings.mobile_sell_img | image_url }}" alt="{{ block.settings.mobile_sell_img | escape }}"/>
+          </div>
+          {%- endif -%}
+          {%- if block.settings.video != blank -%}
+            <div class="sell_video">
+            <native-video autoplay class="video-wrapper video-wrapper--native">
+            {{- block.settings.video | video_tag: controls: false, autoplay: true, playsinline: true, muted: true, loop: true , image_size: '740x' -}}
+            </native-video>
+            </div>
+          
+          {%- endif -%}
+          <div class="sell_bt">
+            {%- if block.settings.sell_sub != blank -%}
+            <div class="sell_subtle">{{ block.settings.sell_sub | escape }}</div>
+            {%- endif -%}
+            {%- if block.settings.sell_tle != blank -%}
+            <h4 class="sell_tle">{{ block.settings.sell_tle | escape }}</h4>
+            {%- endif -%}
+            {%- if block.settings.sell_des != blank -%}
+            <p class="sell_des">{{ block.settings.sell_des | escape }}</p>
+            {%- endif -%}
+
+             <div class="avtor_box avtor_box_two avtor_box-extend">
+            {%- if block.settings.avtor_image1 != blank -%}
+            <div class="avtor_list">
+              <img class="pt_img" src="{{ block.settings.avtor_image1 | image_url }}">
+              <div class="avtor_tle">
+                <div class="avtor_top">{{ block.settings.author_1 | escape }}</div>
+                <div class="avtor_bt">{{ block.settings.author_des1 | escape }}</div>
+              </div>
+            </div>
+            {%- endif -%}
+            {%- if block.settings.avtor_image2 != blank -%}
+              <div class="avtor_list">
+                <img class="pt_img" src="{{ block.settings.avtor_image2 | image_url }}">
+                <div class="avtor_tle">
+                  <div class="avtor_top">{{ block.settings.author_2 | escape }}</div>
+                  <div class="avtor_bt">{{ block.settings.author_des2 | escape }}</div>
+                </div>
+              </div>
+              {%- endif -%}
+          </div>
+
+            {%- if block.settings.avtor_note != blank -%}
+          <div class="avtor_note">
+           {{- block.settings.avtor_note -}}
+          </div>
+          {%- endif -%}
+
+            {%- if block.settings.mobile_arrow != blank -%}
+            <div class="arrow_box">
+             <svg xmlns="http://www.w3.org/2000/svg" width="25" height="24" viewBox="0 0 25 24" fill="none">
+                <g clip-path="url(#clip0_370_906)">
+                  <path d="M0.871093 6.89002C0.871093 6.45141 1.03855 6.01276 1.37336 5.67795C2.04304 5.00832 3.12784 5.00832 3.79743 5.67795L12.8711 14.7533L21.9447 5.67795C22.6136 5.00832 23.6992 5.00832 24.3689 5.67795C25.0385 6.34758 25.0385 7.43243 24.3689 8.10207L14.0831 18.3911C13.7617 18.7125 13.3264 18.8933 12.8711 18.8933C12.4157 18.8933 11.9805 18.7125 11.659 18.3911L1.37331 8.10209C1.03853 7.76726 0.871093 7.32863 0.871093 6.89002Z" fill="#2C2C2C"/>
+                </g>
+                <defs>
+                  <clipPath id="clip0_370_906">
+                    <rect width="24" height="24" fill="white" transform="translate(0.871094 24) rotate(-90)"/>
+                  </clipPath>
+                </defs>
+              </svg>
+            </div>
+           {%- endif -%}
+
+
+            
+          </div>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+  {%- if section.settings.scroll_img != blank -%}
+  <div class="scroll">
+    {%- if section.settings.scroll_img != blank -%}
+      <div class="scroll_img mobile_hide">
+        <img src="{{ section.settings.scroll_img | image_url }}" alt="{{ section.settings.sell_img | escape }}"/>
+      </div>
+    {%- endif -%}
+    {%- if section.settings.mobile_scroll_img != blank -%}
+      <div class="scroll_img destop_show">
+        <img src="{{ section.settings.mobile_scroll_img | image_url }}" alt="{{ section.settings.sell_img | escape }}"/>
+      </div>
+    {%- endif -%}
+  </div>
+  {%- endif -%}                 
+</section>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/ScrollTrigger.min.js"></script>
+<script>
+  window.addEventListener("load", function () {
+    let screenWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+    let imgWidth
+    let endLocation
+    if(document.querySelector('.scroll_img')){
+    if( screenWidth < 730 ) {
+        imgWidth = document.querySelector('.destop_show').clientWidth
+        endLocation = '+=150'
+      } else {
+        imgWidth = document.querySelector('.scroll_img').clientWidth
+        endLocation = '+=300'
+      }
+    }
+    // let transtionWidth = (screenWidth - imgWidth) + 100
+    let transtionWidth = '-10%'
+      gsap.registerPlugin(ScrollTrigger);
+    let bck1 = document.querySelectorAll('.sell_list')[0]
+    let bck2 = document.querySelectorAll('.sell_list')[1]
+    let bck3 = document.querySelectorAll('.sell_list')[2]
+
+    let bckimg1 = bck1.querySelector('img')
+    let bckimg2 = bck2.querySelector('video')
+    let bckimg3 = bck3.querySelector('img')
+      gsap.to(bck1, {
+      opacity: 1,
+      scale: 1,
+      scrollTrigger: {
+        trigger: bck1
+      }
+    });
+    gsap.to(bck2, {
+      opacity: 1,
+      scale: 1,
+      scrollTrigger: {
+        trigger: bck2
+      }
+    });
+    gsap.to(bck3, {
+      opacity: 1,
+      scale: 1,
+      scrollTrigger: {
+        trigger: bck3
+      }
+    });
+
+    if( screenWidth > 730 ) {
+    gsap.to(bckimg1, {
+    y: '10%',
+    duration: 2,
+    scrollTrigger: {
+      trigger: bck1,
+      start: "top bottom",
+      end: "bottom 15%",
+      scrub: 1
+    }
+  });
+
+  gsap.to(bckimg2, {
+    y: '10%',
+    duration: 2,
+    // ease: "power2.inOut",
+    scrollTrigger: {
+      trigger: bck2,
+      start: "top bottom",
+      end: "bottom 15%",
+      scrub: 1
+    }
+  });
+
+  gsap.to(bck2, {
+    y: '-30%',
+    duration: 2,
+    scrollTrigger: {
+      trigger: bck2,
+      start: "top bottom",
+      end: "bottom top",
+      scrub: 1
+    }
+  });
+
+  gsap.to(bckimg3, {
+    y: '10%',
+    duration: 2,
+    scrollTrigger: {
+      trigger: bck3,
+      start: "top bottom",
+      end: "bottom 30%",
+      scrub: 1
+    }
+  });
+  }
+    if(document.querySelector('.scroll_img')){
+  gsap.to('.scroll_img', {
+    x: transtionWidth,
+    duration: 2,
+    scrollTrigger: {
+      trigger: '.sell_point',
+      start: 'top top',
+      end: 'bottom top',
+      scrub: 1
+    }
+  });
+    }
+
+    $('.arrow_box').click(function() {
+    $('.avtor_box-extend').toggle(); // 切换显示和隐藏
+      $('.sell_bt .avtor_note').toggle();
+      $(this).toggleClass('active');
+  });
+  })
+</script>
+{% schema %}
+{
+  "name": "Sell Point",
+  "class": "shopify-section--sell-point", 
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "scroll_img",
+      "label": "Scroll Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "mobile_scroll_img",
+      "label": "Mobile Scroll Image"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Talk about your brand"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Subheading"
+    },
+    {
+      "type": "text",
+      "id": "note_text",
+      "label": "IPL Quiz"
+    },
+    {
+      "type": "url",
+      "id": "link_url",
+      "label": "IPL Quiz Link"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 40
+    }
+  ],
+  "blocks": [
+     {
+        "type": "item",
+        "name": "item",
+        "settings": [
+          {
+      "type": "select",
+      "id": "item_alignment",
+      "label": "Item alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "left"
+    },
+          {
+          "type": "image_picker",
+          "id": "sell_img",
+          "label": "Sell Image"
+        },
+            {
+          "type": "image_picker",
+          "id": "mobile_sell_img",
+          "label": "Sell Mobile Image"
+        },
+          {
+            "type": "video",
+            "id": "video",
+            "label": "Video",
+            "info": "Replaces the external video if both are set."
+          },
+          {
+            "type": "text",
+            "id": "sell_sub",
+            "label": "Sell subTitle"
+          },
+          {
+            "type": "text",
+            "id": "sell_tle",
+            "label": "Sell Title"
+          },
+          {
+            "type": "text",
+            "id": "sell_des",
+            "label": "Sell Desscripte"
+          },
+          
+      {
+      "type": "image_picker",
+      "id": "avtor_image1",
+      "label": "Avtor Image 1"
+    },
+    {
+      "type": "image_picker",
+      "id": "avtor_image2",
+      "label": "Avtor Image 2"
+    },
+
+    {
+        "type": "text",
+        "id": "author_1",
+        "label": "Author 1"
+      },
+      {
+        "type": "text",
+        "id": "author_des1",
+        "label": "Author Description 1"
+      },
+
+      {
+        "type": "text",
+        "id": "author_2",
+        "label": "Author 2"
+      },
+      {
+        "type": "text",
+        "id": "author_des2",
+        "label": "Author Description 2"
+      },
+           {
+        "type": "richtext",
+        "id": "avtor_note",
+        "label": "Note"
+      },
+           {
+      "type": "text",
+      "id": "mobile_arrow",
+      "label": "Mobile Arrow"
+    }
+        ]
+      }
+  ],
+  "presets": [
+    {
+      "name": "Sell Point"
+    }
+  ]
+}
+{% endschema %}

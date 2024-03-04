@@ -1,0 +1,68 @@
+<style>
+  .add_box {
+    position: fixed;
+    width: 100%;
+    height: 54px;
+    bottom: 50px;
+    padding: 0 20px;
+    z-index: 10;
+    display: none;
+}
+a.add_to-btn {
+    display: inline-flex;
+    background: #040000;
+    width: 100%;
+    height: 100%;
+    color: #fff;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+}
+@media screen and (max-width: 768px){
+  .add_box {
+    display: block;
+}
+}
+</style>
+
+<section class="">
+  <div class="add_box">
+    <button onclick="addToCart({{ section.settings.product_id }}, this)" class="custom-checkout-button" style="height: 100%;">
+      <span class="loader-button__text">{{ section.settings.btn_txt }}<span style="font-family: var(--heading-font-family);font-weight: var(--heading-font-weight);"></span></span>
+      <span class="loader-button__loader" hidden>
+        <div class="spinner">
+          <svg focusable="false" width="24" height="24" class="icon icon--spinner" viewBox="25 25 50 50">
+            <circle cx="50" cy="50" r="20" fill="none" stroke="currentColor" stroke-width="5"></circle>
+          </svg>
+        </div>
+      </span>
+    </button>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Add To Cart Fixed",
+  "class": "shopify-section--add-to-cart-fixed", 
+  "settings": [
+    {
+      "type": "text",
+      "id": "product_id",
+      "label": "Product id"
+    },
+    {
+      "type": "text",
+      "id": "btn_txt",
+      "label": "Button Txt",
+      "default": "Add to Card"
+    }
+  ],
+  "blocks": [
+  ],
+  "presets": [
+    {
+      "name": "Add To Cart Fixed"
+    }
+  ]
+}
+{% endschema %}

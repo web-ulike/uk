@@ -1,0 +1,295 @@
+<style>
+@media screen and (max-width: 768px) {
+  .lpl-title{
+    width:290px;
+    margin-left:20px;
+    padding-top:53px;
+    color: #FFF;
+    font-family: var(--heading-font-family);
+    font-size: 26px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 130%; /* 31.2px */
+    text-transform: capitalize;
+  }
+  .lpl-content{
+    color: #FFF;
+    width:335px;
+    padding-top:20px;
+    margin-left:20px;
+    font-family: var(--text-font-family);
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 150%; /* 21px */
+  }
+
+  .lpl-image-list{
+    margin-top:40px;
+    width:100%;
+  }
+  .lpl-image-list .list .lpl-image-listtit{
+    font-family: var(--heading-font-family);
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 125%;
+      margin-left:20px;
+    color: #fff;
+  }
+  .lpl-image-list .lpl-image-list-img{
+    width:335px;
+    position:relative;
+    height:110px;
+    margin-left:20px;
+    margin-bottom:30px;
+  }
+  .shave-section--full.shave-lpl-section--large {
+   height: 750px;
+  }
+  .shave-lpl-image{
+    display:none;
+  }
+  .shave-lpl-mobileimage{
+    display:block;
+  }
+}
+  @media screen and (min-width: 1600px) {
+      .lpl-title{
+        width:1000px;
+        text-align:left;
+        color:#fff;
+        font-family: var(--text-font-family);
+        font-size: 32px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 125%;
+        padding-top:98px;
+        padding-left:200px;
+      }
+     .lpl-content{
+      width:1000px;
+      text-align:left;
+      color:#fff;
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 150%;
+      padding-top:20px;
+      padding-left:200px;
+    }
+     .lpl-image-list{
+        display:flex;
+        padding-left:200px;
+        padding-top:61px;
+        width: calc(100% - 200px);
+        padding-bottom:80px;
+      }
+      .lpl-image-list .list{
+        width:50%
+      }
+      .lpl-image-list .list .lpl-image-listtit{
+        font-family: var(--heading-font-family);
+        font-size: 18px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 125%;
+        color: #fff;
+      }
+    .lpl-image-list .lpl-image-list-img{
+      width:calc(100% - 25px);
+      position:relative;
+      height:244px;
+    }
+     .shave-lpl-image{
+        display:block;
+      }
+      .shave-lpl-mobileimage{
+        display:none;
+      }
+    .shave-section--full.shave-lpl-section--large {
+       height: 750px;
+      }
+     .lpl-image-list .lpl-image-list-img img{
+      object-fit:contain
+    }
+  }
+
+  
+  @media screen and (min-width: 1200px) and (max-width: 1600px){
+      .lpl-title{
+        width:1000px;
+        text-align:left;
+        color:#fff;
+        font-family: var(--text-font-family);
+        font-size: 32px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 125%;
+        padding-left:25px;
+        padding-top:98px;
+      }
+     .lpl-content{
+      width:800px;
+      text-align:left;
+      color:#fff;
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 150%;
+      padding-top:20px;
+      padding-left:25px;
+    }
+     .lpl-image-list{
+        display:flex;
+        padding-left:25px;
+        padding-top:61px;
+        width: calc(100% - 50px);
+        padding-bottom:80px;
+      }
+      .lpl-image-list .list{
+        width:50%
+      }
+      .lpl-image-list .list .lpl-image-listtit{
+        font-family: var(--heading-font-family);
+        font-size: 18px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 125%;
+        color: #fff;
+      }
+    .lpl-image-list .lpl-image-list-img{
+      width:calc(100% - 25px);
+      position:relative;
+      height:244px;
+    }
+    .shave-lpl-image{
+      display:block;
+    }
+    .shave-lpl-mobileimage{
+      display:none;
+    }
+    .shave-section--full.shave-lpl-section--large {
+     height: 750px;
+    }
+    .lpl-image-list .lpl-image-list-img img{
+      object-fit:contain
+    }
+  }
+  
+  .shave-lpl-list{
+    margin:auto;
+  }
+  
+</style>
+
+<section class="shopify-section shave-section shopify-section--video">
+  <div class=" shave-section--{% if section.settings.background_type == 'boxed' %}boxed{% else %}full{% endif %} shave-lpl-section--{{ section.settings.shave_size }} shave-expect">
+    <div class="shave-lpl-list">
+      <div class="lpl-title">{{ section.settings.title }}</div>
+      <div class="lpl-content">{{ section.settings.content }}</div>
+      <div class="lpl-image-list">
+        {%- for block in section.blocks -%}
+          <div class="list">
+            <div class="lpl-image-listtit">{{ block.settings.listtit }}</div>
+            <div class="lpl-image-list-img">
+              {{- block.settings.image | image_url: width: 3000 | image_tag: loading: loading_attribute_value, draggable: false, class: 'slideshow__image shave-lpl-image ', sizes: '100vw', widths: '600,700,800,1000,1200,1400,1600,1800,2000,2200,2400,2600,2800,3000' -}}
+              {{- block.settings.mobileimage | image_url: width: 3000 | image_tag: loading: loading_attribute_value, draggable: false, class: 'shave-lpl-mobileimage', sizes: '100vw', widths: '600,700,800,1000,1200,1400,1600,1800,2000,2200,2400,2600,2800,3000' -}}
+            </div>
+          </div>
+          {%- endfor -%}
+      </div>
+    </div>
+    
+  </div>
+</section>
+{% schema %}
+{
+  "name": "Shave-lPL",
+  "blocks": [
+    {
+      "type": "image",
+      "name": "Image",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "image_picker",
+          "id": "mobileimage",
+          "label": "mobileImage"
+        },
+        {
+          "type": "text",
+          "id": "listtit",
+          "label": "listtit"
+        }
+      ]
+    }
+  ],
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Shave title"
+    },
+    {
+      "type": "richtext",
+      "id": "content",
+      "label": "Content"
+    },
+    {
+      "type": "text",
+      "id": "footurl",
+      "label": "Foot Url"
+    },
+    {
+      "type": "select",
+      "id": "shave_size",
+      "label": "shave size",
+      "options": [
+        {
+          "value": "auto",
+          "label": "Original ratio"
+        },
+        {
+          "value": "small",
+          "label": "Small"
+        },
+        {
+          "value": "medium",
+          "label": "Medium"
+        },
+        {
+          "value": "large",
+          "label": "Large"
+        }
+      ],
+      "default": "auto"
+    },
+    {
+      "type": "select",
+      "id": "background_type",
+      "label": "shave mode",
+      "options": [
+        {
+          "value": "full_width",
+          "label": "Full width"
+        },
+        {
+          "value": "boxed",
+          "label": "Boxed"
+        }
+      ],
+      "default": "full_width"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Shave-lPL"
+    }
+  ]
+}
+{% endschema %}

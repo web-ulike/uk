@@ -1,0 +1,134 @@
+<div class="tagg-reset tagg-balloons-wrapper tagg-product-page tagg-two-balloons tagg-treatment-v13-ml">
+  {%- for block in se_bks -%}
+    {%- assign item = block.settings -%}
+    {%- if block.type == 'levitate-item' -%}
+      <div class="tagg-reset tagg-balloon tagg-quantity_orders tagg-QP">
+        <div class="tagg-reset tagg-icon">
+          {{- item.image | image_url: width: item.logo.width | image_tag: loading: 'lazy', draggable: false -}}
+        </div>
+        <div class="tagg-reset tagg-txt">{{ item.title }}</div>
+      </div>
+    {% endif %}
+  {% endfor %}
+</div>
+
+<script type="text/javascript">
+  window.addEventListener('load', function () {
+      {% if se_stts.is_levitate == true %}
+        $(window).scroll(function() {
+          // 当滚动条滚动到#trigger-point元素顶部距离窗口顶部的距离时，执行动画
+          var triggerPointOffset = $('#main .product-diy').offset().top;
+          var scrollTop = $(window).scrollTop();
+          if (scrollTop + $(window).height() > triggerPointOffset) {
+            triggerPoint();
+            $(window).off('scroll');
+          }
+        });
+      {% endif %}
+  });
+    {% comment %} 显示悬浮文案 {% endcomment %}
+    function triggerPoint(){
+      // 选取所有的元素
+      var $animatedElements = $('.tagg-product-page .tagg-reset');
+      // 遍历每个元素并执行动画
+      $animatedElements.each(function (index) {
+        var $currentElement = $(this);
+        // 设置延迟，每个div延迟500毫秒执行
+        setTimeout(function () {
+          $currentElement.css('opacity', '1');
+          $currentElement.animate(
+            {
+              top: '-=40px', // 向上移动40像素
+              opacity: 0, // 渐变消失
+            },
+           {{se_stts.continued }},
+            function () {
+              // 动画完成后的回调（可选）
+              {% comment %} $currentElement.remove(); // 移除元素 {% endcomment %}
+            }
+          );
+        }, index * {{ se_stts.delay }}); // 根据索引设置不同的延迟时间
+      });
+  }
+</script>
+
+<style>
+  .tagg-reset {
+    position: static;
+    float: none;
+    padding: 0;
+    margin: 0;
+    border: 0 none;
+    outline: 0 none;
+    border-spacing: 0;
+    color: #000;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    font-variant: normal;
+    line-height: normal;
+    text-decoration: none;
+    text-transform: none;
+    text-align: left;
+    text-indent: 0;
+    text-shadow: none;
+    letter-spacing: normal;
+    word-spacing: normal;
+    white-space: normal;
+    direction: ltr;
+    background: none repeat scroll 0 0 transparent;
+    vertical-align: middle;
+    overflow: visible;
+    max-width: none;
+    max-height: none;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+  }
+  .tagg-product-page {
+    width: 360px;
+    top: 20%;
+    left: 30%;
+    margin-left: -180px;
+  }
+  .tagg-badge-wrapper .tagg-badge {
+    position: relative;
+    width: 100%;
+  }
+  .tagg-balloons-wrapper {
+    pointer-events: none;
+    box-sizing: border-box;
+    z-index: 1;
+    position: absolute;
+  }
+  .tagg-balloons-wrapper .tagg-balloon {
+    position: relative;
+    box-sizing: border-box;
+    height: 28px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #e6e6ed;
+    border-radius: 4px;
+    height: 40px;
+    opacity: 0;
+  }
+
+  .tagg-balloons-wrapper .tagg-balloon .tagg-txt {
+    font-size: 14px;
+    color: #05054b;
+  }
+  .tagg-balloons-wrapper .tagg-balloon .tagg-icon {
+    width: 32px;
+    min-width: 32px;
+    height: 32px;
+    display: flex;
+  }
+  @media screen and (max-width: 740px){
+    .tagg-product-page{
+       top: 5%;
+       left: 30px;
+       margin: 0 auto;
+    }
+  }
+</style>

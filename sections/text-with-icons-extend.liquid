@@ -1,0 +1,180 @@
+<style>
+  #shopify-section-{{ section.id }} {
+    background: {{ section.settings.custom_background }};
+    --heading-color: {{ section.settings.text_color.red }}, {{ section.settings.text_color.green }}, {{ section.settings.text_color.blue }};
+    --text-color: {{ section.settings.text_color.red }}, {{ section.settings.text_color.green }}, {{ section.settings.text_color.blue }};
+  }
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+  }
+  @media screen and (max-width: 768px){
+  .section-{{ section.id }}-padding {
+    padding-top: calc({{ section.settings.padding_top }}px * 0.6);
+    padding-bottom: calc({{ section.settings.padding_bottom }}px * 0.6);
+  }
+}
+  .ico_extend-box h2{
+    max-width: 660px;
+    margin: 0 auto 50px;
+  }
+  .ico_extend-box .banner_image-txt {
+    margin: 0;
+    line-height: 18px;
+  }
+  .icon_txt-item {
+      flex: 1;
+      text-align: center;
+  }
+  .icon_txt-item .icon_txt{
+    font-size: 16px;
+    margin-top: 0px;
+  }
+  .icon_txt-wrap {
+    display: grid;
+    grid-gap: 48px;
+    gap: 48px;
+    grid-template-columns: repeat(2, 1fr); 
+    justify-content: center;
+  }
+  @media screen and (max-width: 740px){
+    .icon_txt-item .icon_txt{
+          font-size: 14px;
+    }
+    .icon_txt-wrap {
+        grid-gap: 40px;
+        column-gap: 0px;
+    }
+  }
+  @media screen and (min-width: 1000px){
+    .icon_txt-wrap {
+      grid-template-columns: repeat(4, 1fr); 
+      grid-auto-columns: minmax(200px,400px);
+    }
+  }
+</style>
+
+<section class="ico_extend-box section-{{ section.id }}-padding">
+  <div class="container">
+    {%- if section.settings.title != blank -%}
+      <h2 class="heading h2 text--{{section.settings.text_alignment}}"> {{- section.settings.title -}}</h2>
+    {%- endif -%}
+    {%- if section.settings.banner_txt != blank -%}
+      <p class="banner_image-txt text--{{section.settings.text_alignment}}"> {{- section.settings.banner_txt -}}</p>
+    {%- endif -%}
+    <div class="icon_txt-wrap">
+      {%- for block in section.blocks -%}
+        <div class="icon_txt-item">
+          <img loading="" {% render 'image-attributes', image: block.settings.icon_image %}>
+          <p class="icon_txt">{{- block.settings.icon_txt -}}</p>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Text With Icon Extend",
+  "class": "shopify-section--text-with-icon-extend",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "default": "Why Ulike?",
+      "label": "Heading"
+    },
+    {
+      "type": "text",
+      "id": "banner_txt",
+      "label": "subHeading"
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Text alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "text",
+      "id": "custom_background",
+      "label": "Custom Background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "rgba(0,0,0,0)"
+    },
+     {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 36
+    }
+  ],
+  "blocks": [
+    {
+    "type":"item",
+    "name":"item",
+    "settings":[
+      {
+        "type": "image_picker",
+        "id": "icon_image",
+        "label": "Icon Image"
+      },
+      {
+        "type": "text",
+        "id": "icon_txt",
+        "default": "Why Ulike",
+        "label": "Icon Txt"
+      }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Text With Icon Extend"
+    }
+  ]
+}
+{% endschema %}

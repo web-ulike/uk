@@ -1,0 +1,597 @@
+{%- liquid
+  assign se_id = section.id
+  assign se_bks = section.blocks
+  assign se_stts = section.settings
+  assign product = se_stts.product
+  assign color_ck = 'color,colors,couleur,Colour'
+  assign get_color = color_ck | replace: ' ,', ',' | replace: ', ', ',' | split: ',' | uniq
+  assign color_swatch_config = settings.color_swatch_config | newline_to_br | split: '<br />'
+-%}
+
+<div class="product-detail g-Product-detail{{se_id}}">
+  <div class="slide-left">
+    {% comment %} product-item {% endcomment %}
+    {%- for block in se_bks -%}
+      {%- if block.type == 'product-item' -%}
+        {%- assign item = block.settings -%}
+        {%- assign image_url = shop.url | append: '/cdn/shop/' | append: item.image -%}
+        {% if forloop.index == 4 -%}
+          {%- assign first_image = item.image -%}
+        {% endif %}
+        <div
+          class="item {% if forloop.index == 4 -%} active {% endif %}"
+          image="{{ image_url }}"
+          index="{{ forloop.index }}"
+        >
+          {{-
+            item.pic_image
+            | image_url: width: item.pic_image.width
+            | image_tag: loading: 'lazy', class: 'hidden-phone', draggable: false
+          -}}
+          {{-
+            item.m_pic_image
+            | image_url: width: item.m_pic_image.width
+            | image_tag: loading: 'lazy', class: 'hidden-desk', draggable: false
+          -}}
+        </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+  <div class="slide-right">
+    <h1>
+      {{ se_stts.title }}
+    </h1>
+    <p class="desc">
+      {{ se_stts.info }}
+    </p>
+    <div class="box-deatil">
+      <div class="image-list">
+        {{-
+          first_image
+          | image_url: width: first_image.width
+          | image_tag: loading: 'lazy', class: 'j_pic_image', draggable: false
+        -}}
+        {%- for block in se_bks -%}
+          {%- if block.type == 'item-image' -%}
+            {%- assign item = block.settings -%}
+            {{- item.image | image_url: width: item.image.width | image_tag: loading: 'lazy', draggable: false -}}
+          {% endif %}
+        {% endfor %}
+      </div>
+      <div class="box-info">
+        <div class="price">
+          {{ se_stts.price }}
+        </div>
+        <div class="star">
+          {% comment %} 没有点击不调整 {% endcomment %}
+          <a href="#looxReviews" class="review-widget">
+            <div class="loox-rating" data-fetch data-id="{{product.id}}"></div>
+          </a>
+        </div>
+        <div class="box-desc">
+          <ul>
+            <li>Results in 3 Weeks</li>
+            <li>Nearly Painless</li>
+            <li>Full-Body Treatment in 12 mins</li>
+            <li>Auto-Glide Mode</li>
+          </ul>
+        </div>
+        <div class="box-subscribe turntable-link-box">
+          <a
+            href="javascript:void(0)"
+            id="woohoo-trigger-spinthewheel"
+            class="woohoo-61002 box-subscribe"
+          >
+            Subscribe to win up to <span>£110</span>
+            <div class="btn-getIt">Get It</div>
+          </a>
+        </div>
+
+        {%- for option in product.options_with_values -%}
+          {%- assign name = option.name -%}
+          {%- assign option_index = forloop.index0 -%}
+
+          {%- if get_color contains name -%}
+            <div class="select-color" style="align-items: center;">
+              <div class="color-label">{{ name }}:</div>
+              {%- for value in option.values -%}
+                {% comment %} 默认第一个选中状态 {% endcomment %}
+                <div
+                  data-index="{{ forloop.index0 }}"
+                  data-value="{{ value}}"
+                  class="select-list {%if forloop.first -%}active{%-endif-%}"
+                  data-product-id="{{ option.id }}"
+                >
+                  <span
+                    class="{{ value }}"
+                    style="{% render 'color-swatch-style', color_swatch_config: color_swatch_config, value: value %}"
+                  ></span>
+                </div>
+              {%- endfor -%}
+            </div>
+          {%- else -%}
+            <div class="select-plug-box" data-select-plug-id="0">
+              <div class="color-label">{{ name }}: &nbsp;</div>
+              <div class="select-plug">
+                {%- for value in option.values -%}
+                  {% comment %} 默认第一个选中状态 {% endcomment %}
+                  <div
+                    data-index="{{ forloop.index0 }}"
+                    data-value="{{ value}}"
+                    class="select-plug-list {%if forloop.first-%}active{%-endif-%}"
+                    data-product-id="{{ option.id }}"
+                  >
+                    {{ value }}
+                  </div>
+                {%- endfor -%}
+              </div>
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+
+        <div class="product_btn-box">
+          <button
+            id="AddToCart"
+            data-target="{{ section.settings.coupon_id }}"
+            is="loader-button"
+            {% unless block.settings.show_payment_button and template.suffix != 'quick-buy-popover' %}
+              data-use-primary
+            {% endunless %}
+            data-product-add-to-cart-button
+            data-button-content="{% if product.template_suffix == 'pre-order' %}{{ 'product.form.pre_order' | t | escape }}{% else %}{{ 'product.form.add_to_cart' | t | escape }}{% endif %}"
+            class="product-form__add-button button button--animate {% unless product.selected_or_first_available_variant.available %}button--ternary{% else %}{% if block.settings.show_payment_button and template.suffix != 'quick-buy-popover' %}button--secondary{% else %}button--primary{% endif %}{% endunless %} button--full"
+            {% unless product.selected_or_first_available_variant.available %}
+              disabled
+            {% endunless %}
+          >
+            {%- if product.selected_or_first_available_variant.available -%}
+              {%- if product.template_suffix == 'pre-order' -%}
+                {{- 'product.form.pre_order' | t -}}
+              {%- else -%}
+                {{- 'product.form.add_to_cart' | t -}}
+              {%- endif -%}
+            {%- else -%}
+              {{- 'product.form.sold_out' | t -}}
+            {%- endif -%}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script>
+  var gProductJson = [];
+  {%- for variant in product.variants -%}
+      var _variant = {
+        id: '{{ variant.id }}',
+        title: '{{ variant.title | escape }}',
+        option1: '{{ variant.option1 }}',
+        option2: '{{ variant.option2 }}',
+        option3: '{{ variant.option3 }}'
+      };
+    gProductJson.push(_variant);
+  {%- endfor -%}
+  console.log(gProductJson);
+  {% comment %} 添加购物车 {% endcomment %}
+  var pid = '{{product.selected_or_first_available_variant.id}}';
+
+
+  function getVariantFromSize(size, variants, vl0, vl1) {
+    if (size == 1) {
+      console.log(1111);
+      var found = $.grep(variants, function (v, i) {
+        return v.option1 == vl0;
+      });
+    } else {
+      var found = $.grep(variants, function (v, i) {
+        return v.option1 == vl0 && v.option2 == vl1;
+      });
+    }
+    return found || '';
+  }
+
+
+  {% comment %} 切换颜色 {% endcomment %}
+  $(document).on('click', '.product-detail .select-color .select-list', function () {
+    let ths = $('.select-color .select-list');
+    ths.removeClass('active');
+    $(this).addClass('active');
+    let index = $(this).attr('data-index');
+    // 切换图片
+    let p_image= $('.slide-left .item').removeClass('active').eq(index).addClass('active').attr('image');
+    $('.j_pic_image').attr('srcset', p_image).attr('src', p_image);
+    updateVariant();
+    if(index == 1) {
+      $('.product-detail').css({"background-color":"#F6F6F6"});
+    } else {
+      $('.product-detail').css({"background-color": "#f2f0ff"});
+    }
+  });
+  // 切换 plug
+  $(document).on('click', '.product-detail .select-plug-box .select-plug-list', function () {
+    let ths = $('.select-plug-box .select-plug-list');
+    ths.removeClass('active');
+    $(this).addClass('active');
+    updateVariant();
+  });
+
+  /**
+   * 更新变体
+   */
+  function updateVariant() {
+    let name = $('.select-color .select-list.active').attr('data-value');
+    let value = $('.select-plug-box .select-plug-list.active').attr('data-value');
+    var product = getVariantFromSize(2, gProductJson, name, value);
+    if (product.length > 0){
+      pid = product[0].id;
+    }
+  }
+
+  // 添加购物车
+  $(document).on('click', '.product-detail #AddToCart', function () {
+    addToCart(pid, this);
+  });
+</script>
+
+<style>
+   .g-Product-detail{{se_id}} {
+     display: flex;
+     background: #f2f0ff;
+   }
+   .g-Product-detail{{se_id}}  .slide-left {
+      flex: 1;
+    }
+    .g-Product-detail{{se_id}}  .slide-left .item{
+      display: none;
+    }
+    .g-Product-detail{{se_id}}  .slide-left .active{
+      display: block;
+    }
+
+  .g-Product-detail{{se_id}}  .slide-right {
+     padding: 80px 90px;
+     flex: 1;
+   }
+  .g-Product-detail{{se_id}}  .slide-right h1 {
+     margin: 0px;
+     margin-bottom: 20px;
+     color: #000;
+     font-family: var(--heading-font-family);
+     font-size: 3rem;
+     font-weight: 500;
+   }
+  .g-Product-detail{{se_id}}  .slide-right .desc {
+     color: #000;
+     font-size: 2rem;
+     font-weight: 400;
+     margin: 0px;
+     line-height: 48px;
+   }
+  .g-Product-detail{{se_id}}  .slide-right .box-deatil {
+     margin-top: 60px;
+     display: flex;
+   }
+  .g-Product-detail{{se_id}}  .slide-right .box-deatil .image-list {
+     display: grid;
+     grid-template-columns: repeat(2, 50%);
+     grid-column-gap: 20px;
+     grid-row-gap: 15px;
+     width: 40%;
+   }
+  .g-Product-detail{{se_id}}  .slide-right .box-deatil .image-list img {
+     width: 100%;
+   }
+  .g-Product-detail{{se_id}}  .slide-right .box-deatil .box-info {
+     margin-left: 60px;
+     color: #000;
+     font-size: 14px;
+     font-style: normal;
+   }
+  .g-Product-detail{{se_id}}  .slide-right .box-deatil .box-info .price {
+     color: #000;
+     font-family: var(--heading-font-family);
+     font-size: 32px;
+     font-weight: 500;
+   }
+   .g-Product-detail{{se_id}}  .slide-right .box-deatil .box-info .price span{
+    color: #9B9B9B;
+    font-size: 16px;
+    text-decoration-line: strikethrough;
+    margin-left: 4px;
+  }
+  .g-Product-detail{{se_id}}  .slide-right .box-deatil .box-info .box-desc {
+     margin: 10px 0px 30px;
+   }
+  .g-Product-detail{{se_id}}  .slide-right .box-deatil .box-info .box-desc ul {
+     margin-block-start: 0px;
+     margin-block-end: 0px;
+     padding-inline-start: 20px;
+     line-height: 21px;
+   }
+  .g-Product-detail{{se_id}}  .slide-right .box-deatil .box-info .box-subscribe {
+     background: #fff;
+     height: 48px;
+     display: flex;
+     align-items: center;
+     color: #000;
+     font-size: 14px;
+     font-weight: 400;
+     padding: 0px 20px;
+   }
+  .g-Product-detail{{se_id}}  .slide-right .box-deatil .box-info .box-subscribe span {
+     font-size: 20px;
+     margin-left: 6px;
+     font-weight: 500;
+   }
+  .g-Product-detail{{se_id}}  .slide-right .box-deatil .box-info .box-subscribe .btn-getIt {
+     border-radius: 20px;
+     background: #e0004d;
+     color: #fff;
+     text-align: center;
+
+     font-size: 14px;
+     margin-left: 15px;
+     padding: 5px 20px;
+     cursor: pointer;
+   }
+  .g-Product-detail{{se_id}}  .slide-right .box-deatil .box-info .select-color {
+     margin: 30px 0px;
+     display: flex;
+     gap: 12px;
+   }
+  .g-Product-detail{{se_id}}  .slide-right .box-deatil .box-info .select-color .color-label {
+     font-size: 16px;
+     font-style: normal;
+     font-weight: 400;
+     color: #040000;
+
+     margin-right: 12px;
+   }
+  .g-Product-detail{{se_id}}  .slide-right .box-deatil .box-info .select-color .select-list {
+     width: 38px;
+     height: 38px;
+     border: 1px solid #d9d9d9;
+     border-radius: 50px;
+     padding: 2px;
+     cursor: pointer;
+   }
+   .g-Product-detail{{se_id}}  .slide-right .box-deatil .box-info .select-color .active {
+     border: 2px solid #040000;
+   }
+
+  .g-Product-detail{{se_id}}  .slide-right .box-deatil .box-info .select-color .select-list span {
+     display: inline-block;
+     width: 100%;
+     height: 100%;
+     border-radius: 50px;
+   }
+  .g-Product-detail{{se_id}}  .slide-right .box-deatil .box-info .select-plug-box {
+     margin: 30px 0px;
+     display: flex;
+     gap: 10px;
+     align-items: center;
+   }
+  .g-Product-detail{{se_id}}  .slide-right .box-deatil .box-info .select-plug-box .color-label {
+
+     font-size: 16px;
+     font-style: normal;
+     font-weight: 400;
+   }
+  .g-Product-detail{{se_id}}  .slide-right .box-deatil .box-info .select-plug-box .select-plug {
+     display: flex;
+     gap: 10px;
+   }
+  .g-Product-detail{{se_id}}  .slide-right .box-deatil .box-info .select-plug-box .select-plug .select-plug-list {
+     border: 1px solid #9d9d9d;
+     padding: 5px 20px;
+     cursor: pointer;
+   }
+  .g-Product-detail{{se_id}}  .slide-right .box-deatil .box-info .select-plug-box .select-plug .active {
+     border: 2px solid #000000;
+   }
+  .g-Product-detail{{se_id}}  .slide-right .box-deatil .box-info .product_btn-box .custom_product_btn {
+     width: 100%;
+     text-align: center;
+     height: 44px;
+     background: #040000;
+     color: #fff;
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     border: 1px solid #040000;
+     transition: all 0.3s;
+     position: relative;
+     z-index: 3;
+     cursor: pointer;
+   }
+   @media screen and (max-width: 1580px) {
+    .g-Product-detail{{se_id}} {
+      .slide-right h1 {
+        font-size: 42px;
+        line-height: 48px;
+      }
+      .slide-right .desc {
+        font-size: 22px;
+        line-height: 32px;
+      }
+      .slide-right .box-deatil .image-list {
+        grid-row-gap: inherit;
+        width: 45%;
+        grid-template-columns: repeat(2, 48%);
+      }
+      .slide-right .box-deatil .box-info {
+        margin-left: 50px;
+      }
+    }
+    .g-Product-detail{{se_id}}  .slide-right .box-deatil .box-info .select-color .select-list {
+      width: 22px;
+      height: 22px;
+      display: flex
+    }
+    .g-Product-detail{{se_id}}  .slide-right {
+      padding: 40px 40px;
+      width: 60%;
+    }
+    .g-Product-detail{{se_id}}  .slide-right .box-deatil {
+      margin-top: 40px;
+      display: flex;
+    }
+    .g-Product-detail{{se_id}}  .slide-right .box-deatil .box-info .box-subscribe {
+      padding: 0px 10px;
+    }
+   }
+   @media screen and (max-width: 740px) {
+    .g-Product-detail{{se_id}} {
+      display: block;
+    }
+    .g-Product-detail{{se_id}} .slide-right {
+      width: 100%;
+      padding: 30px 20px 50px;
+    }
+    .g-Product-detail{{se_id}} .slide-right h1{
+      font-size: 28px;
+      line-height: 36px;
+      margin-bottom: 15px;
+    }
+    .g-Product-detail{{se_id}} .slide-right .desc {
+      font-size: 18px;
+      line-height: 24px;
+    }
+    .g-Product-detail{{se_id}} .slide-right .box-deatil {
+      display: block;
+      margin-top: 30px;
+    }
+    .g-Product-detail{{se_id}} .slide-right .box-deatil .image-list {
+      width: 100%;
+      grid-template-columns: repeat(4, 22.5%);
+      grid-column-gap: 10px;
+    }
+    .g-Product-detail{{se_id}} .slide-right .box-deatil .box-info {
+      margin: 30px 0px 0px;
+    }
+    .g-Product-detail{{se_id}} .slide-right .box-deatil .box-info .price{
+      font-size: 24px;
+      line-height: 30px;
+    }
+    .g-Product-detail{{se_id}} .slide-right .box-deatil .box-info .box-subscribe {
+      font-size: 12px;
+      padding: 0px 10px;
+    }
+    .g-Product-detail{{se_id}} .slide-right .box-deatil .box-info .box-desc {
+      margin: 10px 0px 20px;
+    }
+
+    .g-Product-detail{{se_id}} .slide-right .box-deatil .box-info .select-color {
+      margin: 20px 0px;
+    }
+    .g-Product-detail{{se_id}} .slide-right .box-deatil .box-info .select-plug-box {
+      margin: 20px 0px;
+    }
+
+    .g-Product-detail{{se_id}} .slide-right .box-deatil .box-info .select-plug-box .color-label {
+      font-size: 14px;
+    }
+    .g-Product-detail{{se_id}} .slide-right .box-deatil .box-info .select-plug-box .select-plug .select-plug-list{
+      padding: 5px 15px;
+    }
+
+
+   }
+</style>
+{% schema %}
+{
+  "name": "g-Product Detail",
+  "class": "g-Product-detail",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "产品大图"
+    },
+    {
+      "type": "textarea",
+      "id": "title",
+      "label": "标题"
+    },
+    {
+      "type": "textarea",
+      "id": "info",
+      "label": "描述"
+    },
+    {
+      "type": "url",
+      "id": "image_link",
+      "label": "链接"
+    },
+    {
+      "type": "product",
+      "id": "product",
+      "label": "产品"
+    },
+    {
+      "type": "textarea",
+      "id": "price",
+      "label": "价格描述"
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "options": [
+        {
+          "value": "nt_full",
+          "label": "Full Width"
+        },
+        {
+          "value": "container",
+          "label": "Container"
+        }
+      ],
+      "label": "Layout"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "item-image",
+      "name": "item",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "介绍图"
+        }
+      ]
+    },
+    {
+      "type": "product-item",
+      "name": "product-item",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "pic_image",
+          "label": "自定义图片",
+          "info": "根据变体颜色索引来切换"
+        },
+        {
+          "type": "image_picker",
+          "id": "m_pic_image",
+          "label": "移动端——大图",
+          "info": "根据变体颜色索引来切换"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "介绍图片"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "g-Product Detail",
+      "category": "g-Product Detail",
+      "blocks": []
+    }
+  ]
+}
+{% endschema %}

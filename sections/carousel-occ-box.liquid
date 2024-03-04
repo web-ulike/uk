@@ -1,0 +1,342 @@
+<style>
+.carousel-occ-box{
+  position: relative;
+  padding: 90px 0 100px 0;
+  overflow: hidden;
+}
+
+.carousel-occ-box .bg-img{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  object-fit: cover;
+  z-index: 1;
+}
+
+.carousel-occ-box .mb-box{
+  display: none;
+}
+
+.carousel-occ-box .container{
+  position: relative;
+  z-index: 2;
+}
+
+.carousel-occ-box .carousel-occ-cont{
+  display: flex;
+  /* align-items: center; */
+}
+
+.carousel-occ-box .carousel-occ-text{
+  width: 41.5%;
+  margin-right: 40px;
+}
+
+.carousel-occ-box .carousel-occ-title{
+  font-size: 60px;
+  font-family: var(--heading-font-family);
+  color: #000;
+  line-height: 1;
+  margin-bottom: 50px;
+}
+
+.carousel-occ-box .carousel-occ-sub{
+  max-width: 560px;
+  font-size: 14px;
+  color: #797979;
+  line-height: 1.5;
+}
+
+.carousel-occ-box .carousel-occ-p-box{
+  max-width: 480px;
+  background: var(--Linear, linear-gradient(140deg, #fff -1.33%, #edeff1 59.91%));
+  padding: 20px 35px 25px 35px;
+  margin-top:40px;
+}
+
+.carousel-occ-box .carousel-occ-p{
+  padding: 15px 0;
+  font-size: 14px;
+  color: #000;
+  line-height: 1.5;
+  position: relative;
+}
+
+.carousel-occ-box .carousel-occ-p p{
+  margin:0;
+}
+
+.carousel-occ-box .carousel-occ-p::before{
+  position: absolute;
+  content: '*';
+  display: block;
+  color: #e7004c;
+  font-size: 20px;
+  left: -15px;
+  top: 15px;
+  font-weight: bold;
+}
+
+.carousel-occ-box .carousel-occ-p:first-child{
+  border-bottom: 2px dashed #859098;
+}
+
+.carousel-occ-box .carousel-occ-list{
+  position: relative;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.carousel-occ-box .carousel-occ-list img{
+  display: block;
+}
+
+.carousel-occ-box .carousel-occ-img-cont{
+  max-width: 65%;
+  /* margin: 0 auto; */
+  position: relative;
+  --translate-x:300px;
+}
+
+.carousel-occ-box .carousel-occ-item{
+  position: absolute;
+  bottom: 0;
+  transform: translate3d(0,0,0) scale(.6);
+  z-index: 1;
+  opacity: 0;
+  transition: all .4s ease;
+  transition:all 1.5s cubic-bezier(0.645, 0.045, 0.355, 1) 0s;
+}
+
+.carousel-occ-box .carousel1{
+  position: relative;
+  transform: translate3d(0,0,0) scale(1);
+  z-index: 3;
+  opacity: 1;
+}
+
+.carousel-occ-box .carousel2{
+  transform: translate3d(var(--translate-x),0,300px) scale(.6);
+  opacity: .3;
+}
+
+.carousel-occ-box .carousel3{
+  transform: translate3d(calc(0% - var(--translate-x)),0,300px) scale(.6);
+  opacity: .3;
+}
+
+.carousel-occ-box .carousel-occ-list::before{
+  position: absolute;
+  content: '';
+  display: block;
+  width: 100%;
+  height: 80%;
+  left: 0;
+  bottom: 0;
+  background: linear-gradient( 180deg, rgba(240, 241, 243, 0) 0%, rgba(240, 241, 243, 0.9) 100% );
+  z-index: 5;
+}
+
+@media (max-width:1600px) {
+  .carousel-occ-box .carousel-occ-title{
+    font-size: 50px;
+  }
+  .carousel-occ-box .carousel-occ-img-cont{
+    max-width: 55%;
+  }
+}
+
+@media (max-width:1300px) {
+  .carousel-occ-box .carousel-occ-title{
+    font-size: 40px;
+    margin-bottom: 30px;
+  }
+  .carousel-occ-box .carousel-occ-img-cont{
+    max-width:67%;
+  }
+}
+
+@media (max-width:991px) {
+  .carousel-occ-box{
+    padding: 60px 0;
+  }
+  .carousel-occ-box .mb-box{
+    display: block;
+  }
+  .carousel-occ-box .pc-box{
+    display: none;
+  }
+  .carousel-occ-box .carousel-occ-cont{
+    display: block;
+  }
+  .carousel-occ-box .carousel-occ-text{
+    width: 100%;
+    margin-right: 0;
+  }
+  .carousel-occ-box .carousel-occ-sub,.carousel-occ-box .carousel-occ-p-box{
+    max-width: none;
+  }
+  .carousel-occ-box .carousel-occ-title{
+    font-size: 28px;
+  }
+
+  .carousel-occ-box .carousel-occ-list{
+    margin-top: 30px;
+  }
+  .carousel-occ-box .carousel-occ-list::before{
+    bottom: -60px;
+    width: 100vw;
+    left: 50%;
+    height: 120%;
+    transform: translateX(-50%);
+  }
+  .carousel-occ-box .carousel-occ-p{
+    line-height:1.7;
+  }
+}
+</style>
+<section class="section-box">
+  <div class="carousel-occ-box">
+    {%- if section.settings.image != blank -%}
+       <img loading="lazy" class="bg-img pc-box to-opacity" width="{{ section.settings.image.width }}" height="{{ section.settings.image.height }}" {% render 'image-attributes', image: section.settings.image %} alt="{{ section.settings.image.alt | escape }}" >
+    {%- endif -%}
+    {%- if section.settings.image1 != blank -%}
+       <img loading="lazy" class="bg-img mb-box to-opacity" width="{{ section.settings.image1.width }}" height="{{ section.settings.image1.height }}" {% render 'image-attributes', image: section.settings.image1 %} alt="{{ section.settings.image1.alt | escape }}" >
+    {%- endif -%}
+    <div class="container">
+      <div class="carousel-occ-cont">
+        <div class="carousel-occ-text">
+          <div class="carousel-occ-title to-top">{{ section.settings.text }}</div>
+          <div class="carousel-occ-sub to-top" style="transition-delay: 0.1s">
+            {{ section.settings.text1 }}
+          </div>
+          {%- if section.settings.text2 != blank or section.settings.text3 != blank -%}
+             <div class="carousel-occ-p-box to-top" style="transition-delay: 0.2s">
+               {%- if section.settings.text2 != blank -%}
+                  <div class="carousel-occ-p">{{ section.settings.text2 }}</div>
+               {%- endif -%}
+               {%- if section.settings.text3 != blank -%}
+                  <div class="carousel-occ-p">
+                    {{ section.settings.text3 }}
+                  </div>
+               {%- endif -%}
+             </div>
+          {%- endif -%}
+        </div>
+        <div class="carousel-occ-list to-top" style="transition-delay: 0.3s">
+          <div class="carousel-occ-img-cont">
+            {%- for block in section.blocks -%}
+              {%- if block.settings.image != blank -%}
+                <div class="carousel-occ-item {% if forloop.index==1 %} carousel1 {% endif %}">
+                  <img loading="lazy" class="img" width="{{ block.settings.image.width }}" height="{{ block.settings.image.height }}" {% render 'image-attributes', image: block.settings.image %} alt="{{ block.settings.image.alt | escape }}" >
+                </div>
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+  window.addEventListener('load',function(){
+    function carouselSwiper(){
+      let $p=$('.carousel-occ-box')
+      let $cont = $p.find('.carousel-occ-img-cont')
+      let $item = $p.find('.carousel-occ-item')
+      let index = 0
+      let length = $item.length
+
+      function setTraNum(){
+        $cont.attr('style',`--translate-x:${$cont[0].offsetWidth*0.5}px;`)
+      }
+
+      setTraNum()
+
+      window.addEventListener('resize',setTraNum)
+
+      function changeItem(){
+        index++
+        if(index==length) index = 0
+        $item.removeClass('carousel1 carousel2 carousel3')
+
+        $item.eq(index).addClass('carousel1')
+        if(index==0){
+          $item.eq(length - 1).addClass('carousel3')
+        }else{
+          $item.eq(index - 1).addClass('carousel3')
+        }
+        if(index==length-1){
+          $item.eq(0).addClass('carousel2')
+        }else{
+          $item.eq(index + 1).addClass('carousel2')
+        }
+      }
+
+      setInterval(() => {
+        changeItem()
+      }, 3500);
+    }
+    carouselSwiper()
+  })
+</script>
+{% schema %}
+{
+"name": "carousel-occ-box",
+"blocks": [
+  {
+    "name": "item",
+    "type": "item",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "image",
+        "label": "Image"
+      }
+    ]
+  }
+],
+"settings": [
+  {
+    "type": "image_picker",
+    "id": "image",
+    "label": "Image"
+  },
+  {
+    "type": "image_picker",
+    "id": "image1",
+    "label": "Mobile Image"
+  },
+  {
+    "type": "text",
+    "id": "text",
+    "label": "Title"
+  },
+  {
+    "type": "richtext",
+    "id": "text1",
+    "label": "Text"
+  },
+  {
+    "type": "richtext",
+    "id": "text2",
+    "label": "Text"
+  },
+  {
+    "type": "richtext",
+    "id": "text3",
+    "label": "Text"
+  }
+],
+  "presets": [
+  {
+    "name": "carousel-occ-box",
+    "blocks": []
+  }
+]
+}
+{% endschema %}

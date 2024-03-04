@@ -1,0 +1,602 @@
+<style>
+
+.january-two {
+  padding: 70px 0 100px 0;
+}
+
+.january-two .two-list {
+  display: flex;
+  margin-top: 70px;
+  --tar-width:0;
+  --tar-height:0;
+}
+
+.january-two .two-list .two-item {
+  position: relative;
+  width: calc(25% - 12px);
+  margin-right: 16px;
+  padding: 2px;
+  background: #eeeff1;
+  overflow: hidden;
+  
+}
+
+.january-two .two-list .two-item-cont{
+  padding: 50px 40px 50px 40px;
+  background: var(--Linear, linear-gradient(140deg, #edeff1 1.33%, #fff 97.91%));
+  height: 100%;
+  position: relative;
+  z-index: 3;
+}
+
+.january-two .two-list .two-item:before {
+  content: "";
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  width: 120px;
+  height: 120px;
+  border-radius: 999px;
+  box-shadow: 0 -84px 28px 2px #b6bdc0;
+  animation: shinebright 8s linear infinite;
+  transition: all 0.4s ease;
+}
+
+.january-two .two-list .two-item::after {
+  content: "";
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  width: 120px;
+  height: 120px;
+  border-radius: 999px;
+  box-shadow: 0 84px 28px 2px #b6bdc0;
+  animation: shinebright1 8s linear infinite;
+  transition: all 0.4s ease;
+}
+
+.january-two .two-list .two-item:hover:before {
+  animation-play-state: paused;
+  box-shadow: 0 -84px 28px 12px #b6bdc0;
+}
+
+.january-two .two-list .two-item:hover::after {
+  animation-play-state: paused;
+  box-shadow: 0 84px 28px 12px #b6bdc0;
+}
+
+@keyframes shinebright {
+  0% {
+    transform: translate(0,0) rotate(0deg);
+  }
+  25% {
+    transform: translate(var(--tar-width),-10px) rotate(90deg);
+  }
+  50% {
+    transform: translate(var(--tar-width),var(--tar-height)) rotate(180deg);
+  }
+  75% {
+    transform: translate(0,var(--tar-height)) rotate(270deg);
+  }
+  100% {
+    transform: translate(0,0) rotate(360deg);
+  }
+}
+
+@keyframes shinebright1 {
+  0% {
+    transform: translate(0,0) rotate(0deg);
+  }
+  25% {
+    transform: translate(calc(0% - var(--tar-width)),-10px) rotate(90deg);
+  }
+  50% {
+    transform: translate(calc(0% -  var(--tar-width)),calc(0% - var(--tar-height))) rotate(180deg);
+  }
+  75% {
+    transform: translate(0,calc(0% - var(--tar-height))) rotate(270deg);
+  }
+  100% {
+    transform: translate(0,0) rotate(360deg);
+  }
+}
+
+
+.january-two .two-list .two-item:last-child {
+  margin-right: 0;
+}
+
+.january-two .two-list .img-box {
+  position: relative;
+}
+
+.january-two .two-list .img-box img {
+  display: block;
+  width: 65.6%;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+.january-two .two-list  .icon-box {
+  font-size: 25px;
+  width: 47%;
+  max-width: 185px;
+  height: 45px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #e7004c;
+  font-family: var(--heading-font-family);
+  background: linear-gradient(to right,#fff,#edeff1);
+  border-radius:0 0 15px 15px;
+  position: absolute;
+  top: -2px;
+  transform: translateX(-50%);
+  left: 50%;
+  z-index: 2;
+}
+
+.january-two .two-list .title-two {
+  font-size: 20px;
+  font-family: var(--heading-font-family);
+  color: #000;
+  line-height: 1.2;
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+.january-two .two-list .two-sub {
+  font-size: 16px;
+  line-height: 1.3;
+  color: #000;
+  text-align: center;
+  height: 62px;
+}
+
+.january-two .january-two-dot {
+  justify-content: space-between;
+  margin-top: 30px;
+  display: none;
+}
+
+.january-two .january-dot-item {
+  text-align: center;
+  /* background: #efd7d6; */
+  background: var(--Linear, linear-gradient(140deg, #fff 1.33%, #edeff1 97.91%));
+  font-size: 12px;
+  color: #d7dde5;
+  line-height: 1;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  cursor: pointer;
+}
+
+.january-two .january-dot-item .det-num {
+  font-size: 30px;
+  font-family: var(--heading-font-family);
+}
+
+.january-two .january-dot-item.active {
+  color: #e7004c;
+  transition: all .4s ease;
+}
+
+.january-two .january-two-dot-lin{
+  display: none;
+  align-items: center;
+  height: 4px;
+  background: #f9f9f9;
+  margin: 0 auto;
+  margin-top: 30px;
+  width: calc(100% - 40px);
+
+}
+
+.january-two .january-dot-lin-item{
+  flex: 1;
+  position: relative;
+  height: 3px;
+}
+.january-two .january-dot-lin-item:last-child{
+  width: 10px;
+  flex: none;
+}
+
+.january-two .january-dot-lin-item::before{
+  position: absolute;
+  content: '';
+  display: block;
+  width: 10px;
+  height: 10px;
+  background: #d7dde5;
+  border-radius: 50%;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+  box-shadow:0 0 0 0 rgba(215,221,229,.5),0 0 0 3px rgba(215,221,229,.3),0 0 0 6px rgba(215,221,229,.2);
+  z-index: 2;
+}
+
+.january-two .january-dot-lin-item::after{
+  position: absolute;
+  content: '';
+  height: 3px;
+  width: 0;
+  background: #e7004c;
+  z-index: 1;
+}
+
+.january-two .january-dot-lin-item.active::before{
+  background:#e7004c;
+  box-shadow:0 0 0 0 rgba(231,0,76,.5),0 0 0 3px rgba(231,0,76,.3),0 0 0 6px rgba(231,0,76,.2);
+  z-index: 2;
+}
+
+.january-two .january-dot-lin-item.active::after{
+  width: 100%;
+  transition: all 5s linear;
+}
+
+.january-two .january-dot-lin-item.no-tran::after {
+  transition:none;
+}
+
+.january-two .january-dot-lin-item:last-child:after{
+  display: none;
+}
+
+
+.january-two .adm-box{
+  position: relative;
+  width: 15px;
+  height: 15px;
+  border-right: 3px solid #e7004c;
+  border-bottom: 3px solid #e7004c;
+  transform: rotate(-45deg) scale(.65);
+  margin: 0 auto;
+  margin-top: 30px;
+  animation: opacityright 1s .2s linear infinite;
+}
+
+.january-two .adm-box::before,.january-two .adm-box::after{
+  position: absolute;
+  content: '';
+  display: block;
+  width: 15px;
+  height: 15px;
+  border-right: 3px solid #e7004c;
+  border-bottom: 3px solid #e7004c;
+  transform: rotate(-45deg);
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.january-two .adm-box::before{
+  left: -10px;
+  top: -2px;
+  animation: opacityright 1s 0.1s linear infinite;
+}
+
+.january-two .adm-box::after{
+  left: 10px;
+  top: 17px;
+  animation: opacityright 1s .3s linear infinite;
+}
+
+@keyframes opacityright {
+  0%{
+    border-color: rgba(253, 51, 112, 1);
+  }
+  100%{
+    border-color: rgba(249, 202, 218, 1);
+  }
+}
+
+.january-two .other-item .adm-box{
+  border: 0;
+  transform: rotate(0);
+}
+
+.january-two .other-item .adm-box::after,.january-two .other-item .adm-box::before{
+  display: none;
+}
+
+.january-two .other-item .adm-box::after{
+  position: absolute;
+  display: block;
+  content: '';
+  height: 4px;
+  width: 4px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  border-radius: 50%;
+  border: 0;
+  animation: firework 1.2s ease infinite 0.1s;
+}
+
+.january-two .other-item .adm-box::before{
+  display: block;
+  width: 7px;
+  height: 12px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%) rotate(45deg);
+  margin-top: -2px;
+  border-right: 2px solid #e7004c;
+  border-bottom: 2px solid #e7004c;
+  animation:none;
+  /* animation: scalework 1.2s ease infinite 0.1s; */
+}
+
+@keyframes scalework {
+  0%{
+    transform: translate(-50%,-50%) rotate(45deg) scale(0);
+    opacity: 0;
+  }
+  100%{
+    transform: translate(-50%,-50%) rotate(45deg) scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes firework {
+  0% {
+    opacity: 1;
+    box-shadow: 0 0 0 -2px #e7004c, 0 0 0 -2px #e7004c, 0 0 0 -2px #e7004c, 0 0 0 -2px #e7004c, 0 0 0 -2px #e7004c, 0 0 0 -2px #e7004c;
+  }
+  30% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    box-shadow: 0 -15px 0 0px #e7004c, 14px -8px 0 0px #e7004c, 14px 8px 0 0px #e7004c, 0 15px 0 0px #e7004c, -14px 8px 0 0px #e7004c, -14px -8px 0 0px #e7004c;
+  }
+}
+
+@media (max-width:1500px) {
+  .january-two .two-list .two-item-cont {
+    padding: 50px 20px 50px 20px;
+  }
+  .january-two .two-list .two-sub{
+    font-size: 16px;
+  }
+}
+
+@media (max-width:1200px) {
+  .january-two .two-list .img-box .icon-box {
+      font-size: 16px;
+  }
+
+  .january-two .two-list .title-two {
+      font-size: 18px;
+  }
+
+  .january-two .two-list .two-sub {
+      font-size: 14px;
+      line-height: 1.4;
+  }
+}
+
+@media (max-width:991px) {
+  .january-two{
+    padding: 50px 0;
+  }
+  .january-two .two-list .two-item {
+      width: 100%;
+      flex-shrink: 0;
+  }
+
+  .january-two .two-list .img-box .icon-box {
+      font-size: 14px;
+  }
+
+  .january-two .two-list {
+      margin-top: 50px;
+  }
+
+  .january-two .two-list-box {
+      overflow: hidden;
+
+  }
+
+  .january-two .january-two-dot {
+      display: flex;
+  }
+
+  .january-two .two-list .icon-box{
+    font-size: 22px;
+  }
+
+  .january-two .january-two-dot-lin{
+    display: flex;
+  }
+
+} 
+
+@media (max-width:640px) {
+  .january-two .two-list .two-sub{
+    height: 40px;
+  }
+}
+</style>
+<section class="section-box">
+  <div class="january-two to-top">
+  <div class="container">
+      <div class="title-diy">
+          {{ section.settings.text }}
+      </div>
+      <div class="january-two-dot">
+        {%- for block in section.blocks -%}
+          <div class="january-dot-item">
+            <div class="det-txt">{{ block.settings.text }}</div>
+            <div class="det-num">0{{ forloop.index }}</div>
+          </div>
+        {%- endfor -%}
+      </div>
+      <div class="january-two-dot-lin">
+        {%- for block in section.blocks -%}
+          <div class="january-dot-lin-item"></div>
+        {%- endfor -%}
+      </div>
+      <div class="two-list-box">
+        <div class="two-list">
+          {%- for block in section.blocks -%}
+            <div class="two-item {% if block.settings.isOther %}other-item{% endif %}">
+              <div class="two-item-cont">
+                <div class="icon-box">{{ block.settings.text1}} {{ forloop.index }}</div>
+                <div class="img-box">
+                  {%- if block.settings.image != blank -%}
+                     <img loading="lazy" class="img" width="{{ block.settings.image.width }}" height="{{ block.settings.image.height }}" {% render 'image-attributes', image: block.settings.image %} alt="{{ block.settings.image.alt | escape }}" >
+                  {%- endif -%}
+                </div>
+                <div class="two-txt">
+                  <div class="title-two">{{ block.settings.text2}}</div>
+                  <div class="two-sub">{{ block.settings.text3}}</div>
+                </div>
+                <div class="adm-box"></div>
+              </div>
+            </div>
+          {%- endfor -%}
+        </div>
+      </div>
+  </div>
+</div>
+</section>
+<script>
+  window.addEventListener('load',function(){
+    let januaryTwoTimer = null
+    function initNum(){
+      let $list = $('.january-two .two-list')
+      let $Item = $('.january-two .two-item')
+      $list.attr('style',`--tar-width:${$Item[0].offsetWidth -146}px;--tar-height:${$Item[0].offsetHeight - 146}px;`)
+    }
+
+    initNum()
+
+    function januaryTwo(bol=false) {
+      let $list = $('.january-two .january-dot-item')
+      let $listLin = $('.january-two .january-dot-lin-item')
+      let activeNum = $('.january-two .january-dot-item.active').length
+      let $plist = $('.january-two .two-list')
+      let $itemW = $plist.find('.two-item').outerWidth()
+      $('.january-two .january-dot-item.no-tran').addClass('active')
+      $('.january-two .january-dot-lin-item.no-tran').addClass('active')
+      if(bol) activeNum = $('.january-two .january-dot-item.no-tran').length
+      if (activeNum == $list.length) {
+        $list.removeClass('active')
+        $listLin.removeClass('active')
+        activeNum = 0
+      }
+      setTimeout(() => {
+        $list.eq(activeNum).addClass('active')
+        $listLin.eq(activeNum).addClass('active')
+        $list.removeClass('no-tran')
+        $listLin.removeClass('no-tran')
+        $plist.css({
+            'transform': 'translateX(-' + ($itemW + 16) * activeNum + 'px)',
+            'transition': 'all .4s ease'
+        })
+        januaryTwoTimer = setTimeout(() => {
+            januaryTwo()
+        }, 5000);
+      }, 50);
+    }
+  
+    if ($('body')[0].clientWidth < 991) {
+      januaryTwo()
+    }
+  
+    $('.january-two .january-dot-item').click(function () {
+      let index = $(this).index()
+      $('.january-two .january-dot-item').each(function () {
+        if ($(this).index() >= index) {
+          $(this).removeClass('no-tran active')
+        }
+      })
+      $('.january-two .january-dot-lin-item').each(function () {
+        if ($(this).index() >= index) {
+          $(this).removeClass('no-tran active')
+        }
+      })
+
+      clearTimeout(januaryTwoTimer)
+
+      $('.january-two .january-dot-item').each(function () {
+          let num = $(this).index()
+          if (num < index) {
+            $(this).addClass('no-tran')
+          }
+      })
+      $('.january-two .january-dot-lin-item').each(function () {
+          let num = $(this).index()
+          if (num < index) {
+            $(this).addClass('no-tran')
+          }
+      })
+      januaryTwo(true)
+    })
+  })
+</script>
+{% schema %}
+{
+"name": "special-occ-step",
+"blocks": [
+  {
+    "name": "item",
+    "type": "item",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "image",
+        "label": "Image"
+      },
+      {
+        "type": "text",
+        "id": "text",
+        "label": "Text"
+      },
+      {
+        "type": "text",
+        "id": "text1",
+        "label": "Text"
+      },
+      {
+        "type": "text",
+        "id": "text2",
+        "label": "Text"
+      },
+      {
+        "type": "text",
+        "id": "text3",
+        "label": "Text"
+      },
+      {
+        "type": "checkbox",
+        "id": "isOther",
+        "label": "√",
+        "default": false
+      }
+    ]
+  }
+],
+"settings": [
+  {
+    "type": "text",
+    "id": "text",
+    "label": "Title"
+  }
+],
+  "presets": [
+  {
+    "name": "special-occ-step",
+    "blocks": []
+  }
+]
+}
+{% endschema %}

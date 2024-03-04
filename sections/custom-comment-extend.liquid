@@ -1,0 +1,449 @@
+<link rel="stylesheet" href="{{ 'swiper-bundle.min.css' | asset_url }}" media="print" onload="this.media='all'">
+<style>
+.media-{{ section.id }}-padding {
+    padding-top: calc({{ section.settings.padding_top }}px);
+    padding-bottom: calc({{ section.settings.padding_bottom }}px);
+  }
+  #shopify-section-{{ section.id }} {
+    {%- if section.settings.background == 'rgba(0,0,0,0)' -%}
+      {%- assign section_background = settings.background -%}
+    {%- else -%}
+      {%- assign section_background = section.settings.background -%}
+    {%- endif -%}
+
+    {%- if section.settings.text_color == 'rgba(0,0,0,0)' -%}
+      {%- assign text_color = settings.text_color -%}
+    {%- else -%}
+      {%- assign text_color = section.settings.text_color -%}
+    {%- endif -%}
+    --text-color: {{ text_color.red }}, {{ text_color.green }}, {{ text_color.blue }};
+    --section-background: {{ section_background.red }}, {{ section_background.green }}, {{ section_background.blue }};
+  }
+  .custom-comment-extend-wrapper {
+    background: rgb(var(--background));
+    background: rgb(var(--section-background, var(--background)));
+}
+  .custom-comment-extend-item{
+    text-align: center;
+  }
+  .custom-comment-extend-inner {
+    position: relative;
+      margin-top: 40px;
+  }
+  .custom-comment-extend-controls .design-iconfont{
+    display:inline-block;
+    width:50px;
+    height:50px;
+  }
+  .custom-comment-extend-text{
+    max-width:348px;
+    margin:0 auto;
+  }
+  .tns-outer {
+    margin: 0 50px;
+  }
+
+.custom-comment-extend-check{
+    position: absolute;
+    top: 50%;
+    width: 50px;
+    height: 50px;
+    margin-top: -22px;
+    z-index: 1;
+    cursor: pointer;
+}
+.custom-comment-extend-check.custom-comment-extend-prev-custom{
+    left: 0px;
+    right: auto;
+}
+.custom-comment-extend-check.custom-comment-extend-next-custom{
+    right: 0px;
+    left: auto;
+}
+.comment_content-inner{
+    display:none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    max-width: 720px;
+    margin: 40px auto 0;
+    opacity: 0;
+    transition: all 3s;
+}
+.comment_content-inner .custom-comment__custom-icon{
+  margin-bottom:15px;
+}
+.comment_content-inner .custom-comment__text{
+   color:#000000;
+   margin-bottom:15px;
+   text-align: center;
+   min-height:83px;
+}
+.comment_content-inner  .custom-comment__autor{
+  font-size: 18px;
+  font-weight: 700;
+}
+.certify{
+  
+}
+.certify .swiper-pagination {
+  display: none;
+    width: 100%;
+    bottom: -30px;
+    position: relative;
+  z-index: 0;
+}
+.certify .swiper-pagination-bullets .swiper-pagination-bullet {
+  display: inline-block;
+    margin: 0 5px;
+    background: #D2D1D1;
+    border: 0;
+    width: 8px;
+    height: 8px;
+    opacity: 1;
+}
+.certify .swiper-pagination-bullets .swiper-pagination-bullet-active {
+   background: #696969;
+}
+.certify .title{
+  text-align: center;
+    margin-bottom: 10px;
+}
+.certify .des-txt{
+  text-align: center;
+  margin-bottom: 10px;
+}
+.certify  .custom-comment__link-box{
+text-align: center;
+}
+.certify .custom-comment-extend-link{
+  text-decoration: underline;
+  color:#009CDE;
+}
+/*.certify  .custom-comment-extend-item{
+  transform: scale(0.3);
+  z-index: 999;
+  opacity: 0.6;
+}
+.certify  .custom-comment-extend-item.swiper-slide-active{
+  transform: scale(1);
+  z-index: 999;
+  opacity: 1;
+}
+.certify  .custom-comment-extend-item.swiper-slide-prev,.certify  .custom-comment-extend-item.swiper-slide-next{
+  transform: scale(0.5);
+  z-index: 999;
+  opacity: 1;
+}*/
+@media screen and (max-width: 768px){
+  .media-{{ section.id }}-padding {
+    padding-top: calc({{ section.settings.padding_top }}px * 0.6);
+    padding-bottom: calc({{ section.settings.padding_bottom }}px * 0.6);
+    padding-bottom:90px;
+  }
+  .certify .swiper-pagination {
+    display: block;
+  }
+  .custom-comment-extend-check {
+    top: auto;
+    bottom: -236px;
+}
+}
+</style>
+
+<section class="" id="section3">
+  <div class="custom-comment-extend-wrapper media-{{ section.id }}-padding">
+    <div class="container certify">
+        {%- if section.settings.title != blank -%}
+          <h3 class="title h3">{{ section.settings.title | escape }}</h3>
+        {%- endif -%}
+        {%- if section.settings.description != blank -%}
+           <div class="des des-txt">{{ section.settings.description | escape }}</div>
+        {%- endif -%}
+        {%- if section.settings.button_text != blank -%}
+          <div class="custom-comment__link-box">
+              <a href="{{ section.settings.button_link }}" class="custom-comment-extend-link">{{ section.settings.button_text }}</a>
+          </div>
+        {%- endif -%}
+        <div class="custom-comment-extend-inner">
+          <div class="custom-comment-extend-carousel swiper mySwiper" id="custom-comment-extend-carousel-{{ section.id }}">
+            <div class="swiper-wrapper">
+            {%- for block in section.blocks -%}
+              <div class="custom-comment-extend-item swiper-slide">
+                {%- if block.settings.image != blank -%}
+                  <div class="custom-comment-extend-image">
+                    {% comment %} <img class="custom-comment-extend-img" width="{{ block.settings.image.width }}" height="{{ block.settings.image.height }}" src="{{ block.settings.image | img_url }}" alt="{{ block.settings.image.alt | escape }}"> {% endcomment %}
+                    {{- block.settings.image | image_url: width: 3000 | image_tag: loading: 'lazy', sizes: '100vw', widths: '600,700,800,1000,1200,1400,1600,1800,2000,2200,2400,2600,2800,3000' -}}
+                  </div>
+                {%- endif -%}
+              </div>
+            {%- endfor -%}
+            </div>
+          </div>
+           {% comment %} {%- if block.settings.title != blank -%}
+              <h3 class="heading h2">{{ block.settings.title }}</h3>
+            {%- endif -%}
+            {%- if block.settings.content != blank -%}
+              <div class="media__logo-text">
+                {{- block.settings.content -}}
+              </div>
+            {%- endif -%} {% endcomment %}
+            {% comment %} <div class="swiper-pagination swiper-pagination-bullets"></div> {% endcomment %}
+            <div class="custom-comment-extend-check custom-comment-extend-prev-custom custom-comment-extend-prev-custom-{{ section.id }}">
+              <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 50 50" fill="none" class="design-iconfont">
+                <circle cx="25" cy="25" r="25" transform="rotate(-180 25 25)" fill="#DFDFDF"/>
+                <path d="M25.9667 32.9669L17.9999 25L25.9667 17.0331" stroke="white" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <div class="custom-comment-extend-check custom-comment-extend-next-custom custom-comment-extend-next-custom-{{ section.id }}">
+              <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 50 50" fill="none" class="design-iconfont">
+                <circle cx="25" cy="25" r="25" fill="#DFDFDF"/>
+                <path d="M24.0333 17.0331L32.0001 25L24.0333 32.9669" stroke="white" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </div>
+        </div>
+        {%- for block in section.blocks -%}
+          <div class="comment_content-inner comment_content-inner-{{ section.id }}">
+            {%- if block.settings.custom_icon != blank -%}
+              {% capture custom_icon_width %}{{ block.settings.custom_icon_width | times: 2 }}x{% endcapture %}
+              <img class="custom-comment__custom-icon" style="max-width: {{ block.settings.custom_icon_width }}px" width="{{ block.settings.custom_icon.width }}" height="{{ block.settings.custom_icon.height }}" src="{{ block.settings.custom_icon | img_url: custom_icon_width }}" alt="{{ block.settings.custom_icon.alt | escape }}">
+            {%- endif -%}
+            {%- if block.settings.content != blank -%}
+              <div class="custom-comment__text">
+                {{- block.settings.content -}}
+              </div>
+            {%- endif -%}
+            {%- if block.settings.custom_autor != blank -%}
+              <div class="custom-comment__autor">{{ block.settings.custom_autor }}</div>
+            {%- endif -%}
+          </div>
+        {%- endfor -%}
+        <div class="swiper-pagination swiper-pagination-bullets swiper-pagination-{{ section.id }}"></div>
+    </div>
+  </div>
+</section>
+<script src="{{ 'swiper-bundle.min.aio.min.js' | asset_url }}"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    var comment = document.querySelectorAll('.comment_content-inner-{{ section.id }}');
+    var mySwiper = new Swiper('#custom-comment-extend-carousel-{{ section.id }}', {
+      watchSlidesProgress: true,
+      slidesPerView: 1,
+      spaceBetween: 0,
+      slideToClickedSlide: true,
+	  centeredSlides: true,
+	  loop: true,
+     navigation: {
+      nextEl: '.custom-comment-extend-next-custom-{{ section.id }}',
+      prevEl: '.custom-comment-extend-prev-custom-{{ section.id }}'
+    },
+      pagination: {
+        el: '.swiper-pagination-{{ section.id }}',
+        clickable: true
+      },
+       // 响应式布局
+      breakpoints: {
+        640: {
+          slidesPerView: 3,
+          spaceBetween: 0,
+        },
+        768: {
+          slidesPerView: 3,
+          spaceBetween: 0,
+        },
+        1024: {
+          slidesPerView: 5,
+          spaceBetween: 0,
+        },
+      },
+      on: {
+      slideChangeTransitionStart: function(){
+        comment.forEach((item)=>{
+          item.style.display = "none";
+          item.style.opacity = 0;
+        })
+        let activeSlide =  document.getElementById('custom-comment-extend-carousel-{{ section.id }}').querySelector('.swiper-slide-active');
+        let slideIndex = activeSlide.getAttribute('data-swiper-slide-index');
+        comment[slideIndex].style.display = "flex";
+        comment[slideIndex].style.opacity = 1;
+      },
+   progress: function(progress) {
+			for (let i = 0; i < this.slides.length; i++) {
+        
+				var slide = this.slides.eq(i);
+				var slideProgress = this.slides[i].progress;
+				modify = 1;
+        modifyX = 0 ;
+				if (Math.abs(slideProgress) > 1) {
+					modify = (Math.abs(slideProgress) - 1) * 0.3 + 1;
+				}
+
+        scale = 1 - Math.abs(slideProgress) / 3;
+        translate = slideProgress * modify * 0 + 'px';
+				zIndex = 999 - Math.abs(Math.round(10 * slideProgress));
+				slide.transform('translateX(' + translate + ') scale(' + scale + ')');
+				slide.css('zIndex', zIndex);
+				slide.css('opacity', 1);
+				if (Math.abs(slideProgress) > 3) {
+					slide.css('opacity', 0);
+				}
+			}
+		},
+		setTransition: function(transition) {
+			for (var i = 0; i < this.slides.length; i++) {
+				var slide = this.slides.eq(i)
+				slide.transition(transition);
+			}
+
+		}
+
+  },
+    });
+  })
+</script>
+{% schema %}
+{
+  "name": "Custom Comment",
+  "class": "custom-comment",
+  "blocks": [
+    {
+      "name": "Column",
+      "type": "item",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image",
+          "info": "130 x 30px .jpg recommended"
+        },
+        {
+          "type": "image_picker",
+          "id": "custom_icon",
+          "label": "Custom icon",
+          "info": "85 x 14px .png with transparency recommended"
+        },
+        {
+          "type": "range",
+          "id": "custom_icon_width",
+          "min": 40,
+          "max": 200,
+          "step": 5,
+          "unit": "px",
+          "label": "Custom icon width",
+          "info": "Only impact custom icons",
+          "default": 85
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "Your content"
+        },
+        {
+          "type": "richtext",
+          "id": "content",
+          "label": "Content",
+          "default": "<p>Unlike some devices which can burn the skin, the Ulike Sapphire Air has a significantly cooler head, making it more comfortable and practically painless to use. You’ll become obsessed with the results.</p>"
+        },
+        {
+          "type": "text",
+          "id": "custom_autor",
+          "label": "Custom Autor",
+          "default": "-- Kelly"
+        }
+      ]
+    }
+  ],
+  "settings": [
+     {
+      "type": "text",
+      "id": "title",
+      "default": "Custom Comment",
+      "label": "Heading"
+    },
+    {
+      "type": "text",
+      "id": "subTitle",
+      "default": "Custom Comment",
+      "label": "SubHeading"
+    },
+    {
+      "type": "text",
+      "id": "description",
+      "default": "Custom Comment",
+      "label": "Description"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button text"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "rgba(0,0,0,0)"
+    },
+     {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 36
+    }
+  ],
+  "presets": [
+    {
+      "name": "Custom Comment",
+      "blocks": [
+        {
+          "type": "item",
+          "settings": {
+            "title": "Column 1"
+          }
+        },
+        {
+          "type": "item",
+          "settings": {
+            "title": "Column 1"
+          }
+        },
+        {
+          "type": "item",
+          "settings": {
+            "title": "Column 1"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

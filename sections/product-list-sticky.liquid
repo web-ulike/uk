@@ -1,0 +1,370 @@
+<style>
+  #shopify-section-{{ section.id }} {
+    --heading-color: {{ section.settings.text_color.red }}, {{ section.settings.text_color.green }}, {{ section.settings.text_color.blue }};
+    --text-color: {{ section.settings.text_color.red }}, {{ section.settings.text_color.green }}, {{ section.settings.text_color.blue }};
+  }
+  .btn-diy {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    overflow: hidden;
+    transition: all 0.4s ease;
+  }
+  
+  .btn-diy .btn-txt {
+    position: relative;
+    overflow: hidden;
+  }
+  .btn-diy .btn-txt span {
+    transition: all 0.4s ease;
+    display: block;
+    position: relative;
+    z-index: 1;
+  }
+  .btn-diy .btn-txt::before {
+    content: attr(text);
+    display: block;
+    position: absolute;
+    transition: all 0.4s ease;
+    transform: translateY(40px);
+    z-index: 1;
+  }
+  
+  .btn-diy::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #fff;
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.4s;
+  }
+  .btn-diy:hover::after {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+  
+  .btn-diy:hover .btn-txt::before {
+    transform: translateY(0);
+  }
+  
+  .btn-diy:hover .btn-txt span {
+    transform: translateY(-40px);
+  }
+  .product-cat{
+    position: fixed;
+    width: 100%;
+    background: #fff;
+    left: 0;
+    top: -100%;
+    z-index: 3;
+    transition: all .8s linear;
+}
+.product-cat.show{
+    transition: all .4s ease;
+    top: var(--cat-top);
+}
+.product-cat .product-cat-cont{
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    padding: 50px 0;
+}
+.product-cat .product-cat-item{
+    flex: 1;
+    display: flex;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    margin-right: 50px;
+}
+.product-cat .product-cat-item:last-child{
+    margin-right: 0;
+}
+.product-cat .product-cat-item img{
+    display: block;
+}
+.product-cat .product-cat-text{
+    flex: 1;
+}
+
+.product-cat .product-cat-title{
+    font-size: 30px;
+    color: #000;
+    line-height: 1.2;
+    /* font-weight: bold; */
+    font-family: var(--heading-font-family);
+}
+
+.product-cat .product-cat-price{
+    font-size: 30px;
+    color: #e7004c;
+    line-height: 1.2;
+    margin-top: 20px;
+    /* font-weight: bold; */
+    font-family: var(--heading-font-family);
+}
+
+.product-cat .product-cat-p{
+    font-size: 18px;
+    color: #636363;
+    line-height: 1.2;
+    margin-top: 16px;
+}
+
+.product-cat .product-cat-btn{
+    width: 100%;
+    max-width: 330px;
+    height: 66px;
+    cursor: pointer;
+    background: #000;
+    color: #fff;
+    border: 2px solid #000;
+    font-size: 25px;
+    margin: 0 auto;
+    margin-top: 25px;
+}
+.product-cat .product-cat-btn:hover span,.product-cat .product-cat-btn:hover .btn-txt::before{
+    color: #000;
+}
+
+@media (max-width:1600px) {
+    .product-cat .product-cat-cont{
+        padding:20px 0;
+    }
+    .product-cat .product-cat-item img{
+        height: 139px;
+        margin-right: 40px;
+        width: auto;
+    }
+    .product-cat .product-cat-title{
+        font-size: 20px;
+    }
+    .product-cat .product-cat-price{
+        font-size: 20px;
+        margin-top: 10px;
+    }
+    .product-cat .product-cat-btn{
+        font-size: 16px;
+        height: 45px;
+        margin-top: 10px;
+    }
+    .product-cat .product-cat-p{
+        font-size: 14px;
+    }
+    .product-cat .product-cat-text{
+        flex: none;
+    }
+}
+
+@media (max-width:740px) {
+    .product-cat .product-cat-item img{
+        width: auto;
+        height: 100px;
+    }
+    .product-cat .product-cat-title{
+        font-size: 16px;
+    }
+    .product-cat .product-cat-price{
+        font-size: 16px;
+        margin-top: 5px;
+    }
+    .product-cat .product-cat-btn{
+        font-size: 14px;
+        height: 40px;
+        margin-top: 10px;
+    }
+    .product-cat .product-cat-p{
+        font-size: 12px;
+        margin-top: 5px;
+    }
+    .product-cat .product-cat-item{
+        margin-right: 20px;
+    }
+}
+
+@media (max-width:640px) {
+    .product-cat .product-cat-p{
+        zoom: .9;
+    }
+    .product-cat .product-cat-item{
+        position: relative;
+    }
+    .product-cat .product-cat-text{
+        flex: 1;
+    }
+    .product-cat .product-cat-item img{
+        position: absolute;
+        height: 77px;
+        top: 0px;
+        left: 0;
+    }
+    .product-cat .product-cat-title{
+        /* text-align: left; */
+        padding-left: 20px;
+        margin-top: 15px;
+    }
+    .product-cat .product-cat-price{
+        /* text-align: left; */
+        padding-left: 20px;
+    }
+    .product-cat .product-cat-cont{
+        padding: 10px 0;
+    }
+
+    .product-cat .product-cat-btn{
+        margin-top: 30px;
+    }
+}
+</style>
+
+<section class="">
+<div class="product-cat">
+        <div class="container">
+            <div class="product-cat-cont">
+              {%- for block in section.blocks -%}
+                <div class="product-cat-item">
+                    <img loading="lazy" width="{{ block.settings.product_image.width }}" height="{{ block.settings.product_image.height }}" {% render 'image-attributes', image: block.settings.product_image %} alt="{{ block.settings.product_image.alt | escape }}" >
+                    <div class="product-cat-text">
+                        <div class="product-cat-title">{{ block.settings.title | escape }}</div>
+                        <div class="product-cat-price">{{ block.settings.price | escape }}</div>
+                        <a href="{{ block.settings.button_link }}" class="product-cat-btn btn-diy compare-top-air{{ forloop.index }}">
+                            <div class="btn-txt" text="{{ block.settings.button_txt | escape }}">
+                                <span>{{ block.settings.button_txt | escape }}</span>
+                            </div>
+                        </a>
+                        <div class="product-cat-p">{{ block.settings.content | escape }}</div>
+                    </div>
+                </div>
+                {%- endfor -%}
+            </div>
+        </div>
+    </div>
+</section>
+
+ <script>
+        window.addEventListener('scroll',function(){
+            const rect = document.querySelector('.product-area-box').getBoundingClientRect();
+            let head = document.querySelector('.shopify-section--header').getBoundingClientRect()
+            let showNum = rect.height/2+40
+            if(window.innerWidth>1400){
+                showNum = rect.height/2+40
+            }else if(window.innerWidth>991){
+                showNum = rect.height/2+240
+            }
+            if(rect.bottom <= showNum){
+                document.querySelector('.product-cat').classList.add('show')
+                document.querySelector('.product-cat').style =`--cat-top:${head.height-1}px`
+            }else{
+                document.querySelector('.product-cat').classList.remove('show')
+                document.querySelector('.product-cat').style = ''
+            }
+        })
+    </script>
+{% schema %}
+{
+  "name": "Product List Sticky",
+  "class": "shopify-section--product-list-sticky",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "text",
+      "id": "custom_background",
+      "label": "Custom Background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "color",
+      "id": "mobile_text_color",
+      "label": "Mobile Text color",
+      "default": "#040000"
+    },
+     {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 36
+    }
+  ],
+  "blocks": [
+    {
+    "type":"item",
+    "name":"item",
+    "settings":[
+      {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Product Title"
+    },
+      {
+      "type": "text",
+      "id": "price",
+      "label": "Price",
+      "default": "Product Price"
+    },
+    {
+      "type": "text",
+      "id": "content",
+      "label": "Content"
+    },
+      {
+      "type": "image_picker",
+      "id": "product_image",
+      "label": "Product Image"
+      },
+      {
+      "type": "text",
+      "id": "button_txt",
+      "label": "Button Txt"
+    },
+       {
+        "type": "url",
+        "id": "button_link",
+        "label": "Button Link",
+        "info": "Button Link"
+      }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product List Sticky"
+    }
+  ]
+}
+{% endschema %}

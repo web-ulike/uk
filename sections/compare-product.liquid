@@ -1,0 +1,507 @@
+<style>
+.btn-diy {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    overflow: hidden;
+    transition: all 0.4s ease;
+  }
+  
+  .btn-diy .btn-txt {
+    position: relative;
+    overflow: hidden;
+  }
+  .btn-diy .btn-txt span {
+    transition: all 0.4s ease;
+    display: block;
+    position: relative;
+    z-index: 1;
+  }
+  .btn-diy .btn-txt::before {
+    content: attr(text);
+    display: block;
+    position: absolute;
+    transition: all 0.4s ease;
+    transform: translateY(40px);
+    z-index: 1;
+  }
+  
+  .btn-diy::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #fff;
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.4s;
+  }
+  .btn-diy:hover::after {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+  
+  .btn-diy:hover .btn-txt::before {
+    transform: translateY(0);
+  }
+  
+  .btn-diy:hover .btn-txt span {
+    transform: translateY(-40px);
+  }
+.product-area-box {
+    position: relative;
+    z-index: 1;
+    padding: 80px 0;
+    background: #fff;
+  }
+  .product-area-box .product-area-list {
+    display: flex;
+  }
+  .product-area-box .product-area-item {
+    position: relative;
+    overflow: hidden;
+    flex: 1;
+  }
+  .product-area-box .product-area-item:first-child {
+    margin-right: 36px;
+  }
+  
+  .product-area-box .product-area-img-list {
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+    width: 67%;
+    margin: 0 auto;
+  }
+  
+  .product-area-box .product-area-img-item {
+    width: 100%;
+    overflow: hidden;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    display: none;
+  }
+  .product-area-box .product-area-img-item.active {
+    position: relative;
+    display: block;
+  }
+  .product-area-box .product-area-img-item.close {
+    z-index: 3;
+    transition: width 0.6s ease;
+    width: 0%;
+    height: 100%;
+    display: block;
+    transform-origin: left;
+  }
+  .product-area-box .product-area-img-item.close .img {
+    width: auto;
+    max-width: none;
+    height: 100%;
+  }
+  .product-area-box .product-area-item .img {
+    display: block;
+    position: relative;
+    z-index: 1;
+    width: 100%;
+  }
+  
+  .product-area-box .product-area-cont {
+    padding: 35px 25px;
+    position: relative;
+  }
+  
+  .product-area-box .product-area-dot {
+    position: relative;
+    margin-top: 20px;
+    justify-content: center;
+    z-index: 3;
+    display: flex;
+  }
+  
+  .product-area-box .product-area-dot .product-area-dot-item {
+    position: relative;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    margin-left: 12px;
+    cursor: pointer;
+    background: linear-gradient(to bottom, #fff 80%, rgba(0, 0, 0, 0.1) 100%);
+    box-shadow: inset 0px 0px 2px 1px rgba(0, 0, 0, 0.05),
+      inset 0px 0px 2px 1px rgba(255, 255, 255, 0.05);
+  }
+  .product-area-box .product-area-dot .product-area-dot-item::after {
+    border-radius: inherit;
+    box-shadow: inset 0 1px 1px rgb(0 0 0 / 10%);
+    content: "";
+    display: block;
+    height: inherit;
+    position: absolute;
+    width: inherit;
+  }
+  .product-area-box .product-area-dot .product-area-dot-item.active::before {
+    position: absolute;
+    content: "";
+    display: block;
+    width: 120%;
+    height: 120%;
+    border-radius: 50%;
+    border: 1px solid #000;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  
+  .product-area-box .product-area-h3 {
+    font-size: 30px;
+    font-weight: normal;
+    font-family: var(--heading-font-family);
+    color: #000;
+    line-height: 1.2;
+    margin: 0;
+    text-align: center;
+  }
+  
+  .product-area-box .product-area-p {
+    font-size: 18px;
+    color: #636363;
+    line-height: 1.2;
+    text-align: center;
+    margin-top: 20px;
+  }
+  
+  .product-area-box .product-area-price {
+    font-size: 30px;
+    color: #e7004c;
+    line-height: 1.2;
+    display: inline-block;
+    padding-left: 20px;
+    margin-left: 17px;
+    border-left: 1px solid #dfdfdf;
+  }
+  
+  .product-area-box .product-area-price span {
+    color: #bcbcbc;
+    font-weight: normal;
+    text-decoration: line-through;
+    display: inline-block;
+    margin-left: 15px;
+  }
+  
+  .product-area-box .product-area-btn {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+    overflow: hidden;
+  }
+  
+  .product-area-box .product-area-btn-item {
+    background: #000;
+    color: #fff;
+    font-size: 16px;
+    width: 320px;
+    height: 66px;
+    line-height: 1;
+    border: 2px solid #000;
+  }
+  
+  .product-area-box .product-area-btn-item:hover span,
+  .product-area-box .product-area-btn-item:hover .btn-txt::before{
+    color: #000;
+  }
+
+  @media (max-width:1920px) and (min-width:1600px){
+  .product-cat .product-cat-cont{
+    padding:34px 0;
+  }
+  .product-cat .product-cat-item img{
+    width: 55px;
+  }
+  .product-cat .product-cat-item{
+    padding: 0 115px;
+  }
+  .product-cat .product-cat-title{
+    font-size: 22px;
+  }
+  .product-cat .product-cat-price{
+    font-size: 23px;
+    margin-top: 10px;
+  }
+  .product-cat .product-cat-btn{
+    max-width: 217px;
+    height: 45px;
+    font-size: 18px;
+    margin-top: 13px;
+  }
+  .product-cat .product-cat-p{
+    font-size: 14px;
+    margin-top: 9px;
+  }
+}
+
+  @media (max-width:1600px) {
+    .product-area-box .product-area-img-list{
+        width: 60%;
+        margin: 0 auto;
+    }
+  }
+  
+  @media (max-width: 1400px) {
+    .product-area-box .product-area-h3 {
+      font-size: 25px;
+    }
+    .product-area-box .product-area-p {
+      font-size: 16px;
+    }
+    .product-area-box .product-area-btn-item {
+      height: 55px;
+    }
+  }
+
+  @media (max-width:1300px) {
+    .product-area-box .product-area-img-list{
+        max-width: 57%;
+        margin: 0 auto;
+    }
+  }
+  
+  @media (max-width: 991px) {
+    .product-area-box {
+      padding: 50px 0;
+    }
+    .product-area-box .product-area-list {
+      /* flex-wrap: wrap; */
+    }
+
+    .product-area-box .product-area-img-list{
+        max-width: 100%;
+    }
+    /* .product-area-box .product-area-item {
+      flex: auto;
+      width: 100%;
+    } */
+    .product-area-box .product-area-item:first-child {
+      /* margin-bottom: 30px;
+      margin-right: 0; */
+    }
+  
+    .product-area-box .product-area-cont {
+      padding: 25px 15px;
+    }
+  
+    .product-area-box .product-area-h3 {
+      font-size: 16px;
+      text-align: center;
+    }
+    .product-area-box .product-area-p {
+      font-size: 12px;
+      text-align: center;
+    }
+  
+    .product-area-box .product-area-price {
+      font-size: 16px;
+      padding-left: 6px;
+      margin-left: 4px;
+    }
+    .product-area-box .product-area-btn {
+      margin-top: 30px;
+    }
+    .product-area-box .product-area-btn-item {
+      height: 45px;
+    }
+    .product-area-box .product-area-dot {
+      top: 0;
+      right: 0;
+      position: relative;
+      justify-content: center;
+      margin-top: 20px;
+    }
+    .product-area-box .product-area-dot .product-area-dot-item {
+      width: 30px;
+      height: 30px;
+      margin: 0 8px;
+    }
+    .product-area-box .product-area-tag {
+      font-size: 12px;
+      padding: 1px 8px;
+    }
+  }
+
+  @media (max-width:640px) {
+    .product-area-box .product-area-img-item{
+        width: 140%;
+        left: -20%;
+    }
+    .product-area-box .product-area-item .img{
+        max-width: none;
+        object-fit: cover;
+    }
+    .product-area-box .product-area-img-item.close .img {
+        width: auto;
+        max-width: none;
+        height: 100%;
+    }
+    .product-area-box .product-area-cont {
+        padding: 25px 0;
+      }
+  }
+</style>
+<section class="section-box">
+  <div class="product-area-box">
+      <div class="container">
+         <div class="product-area-list">
+           {%- for block in section.blocks -%}
+             <div class="product-area-item to-top" style="transition-delay: 0.{{ forloop.index }}s">
+                 <div class="product-area-img-list">
+                   {%- if block.settings.image != blank -%}
+                     <div class="product-area-img-item active">
+                         <img loading="eager" class="img" width="{{ block.settings.image.width }}" height="{{ block.settings.image.height }}" {% render 'image-attributes', image: block.settings.image %} alt="{{ block.settings.image.alt | escape }}" >
+                     </div>
+                    {%- endif -%}
+                     {%- if block.settings.image1 != blank -%}
+                        <div class="product-area-img-item">
+                          <img loading="eager" class="img" width="{{ block.settings.image1.width }}" height="{{ block.settings.image1.height }}" {% render 'image-attributes', image: block.settings.image1 %} alt="{{ block.settings.image1.alt | escape }}" >
+                       </div>
+                      {%- endif -%}
+                       {%- if block.settings.image2 != blank -%}
+                        <div class="product-area-img-item">
+                           <img loading="eager" class="img" width="{{ block.settings.image2.width }}" height="{{ block.settings.image2.height }}" {% render 'image-attributes', image: block.settings.image2 %} alt="{{ block.settings.image2.alt | escape }}" >
+                        </div>
+                      {%- endif -%}                 
+                 </div>
+                 <div class="product-area-cont">
+                     <h3 class="product-area-h3 text-top">
+                          {{ block.settings.title }}
+                          <span class="product-area-price">{{ block.settings.price }}</span>
+                     </h3>
+                     <div class="product-area-dot to-top">
+                         {%- if block.settings.text != blank -%}
+                              <div class="product-area-dot-item active" style="background:{{ block.settings.text }};"></div>
+                         {%- endif -%}
+                          {%- if block.settings.text1 != blank -%}
+                              <div class="product-area-dot-item" style="background:{{ block.settings.text1 }};"></div>
+                          {%- endif -%}
+                          {%- if block.settings.text2 != blank -%}
+                              <div class="product-area-dot-item" style="background:{{ block.settings.text2 }};"></div>
+                           {%- endif -%}
+                      </div>
+                     <div class="product-area-btn-box">
+                      <div class="product-area-btn to-top">
+                         {%- if block.settings.btn_txt != blank -%}
+                            <a href="{{ block.settings.link  }}" class="product-area-btn-item btn-diy compare_air{{ forloop.index }}">
+                              <div class="btn-txt" text="{{ block.settings.btn_txt }}">
+                                  <span> {{ block.settings.btn_txt }} </span>
+                              </div>  
+                            </a>
+                         {%- endif -%}
+                      </div>
+                     </div>
+                     <div class="product-area-p text-top">
+                          {{ block.settings.text3 }}
+                      </div>
+                 </div>
+             </div>
+           {%- endfor -%}
+         </div>
+      </div>
+  </div>
+  <script>
+      window.addEventListener('load',function(){
+          $('html').on('click','#shopify-section-{{ section.id }} .product-area-box .product-area-dot-item',function(){
+              let $this = $(this)
+              let index = $this.index()
+              if($this.hasClass('active')) return
+              $this.closest('.product-area-item').find('.product-area-img-item.close').removeClass('close')
+              $this.addClass('active').siblings().removeClass('active')
+              $this.closest('.product-area-item').find('.product-area-img-item.active').removeClass('active').addClass('close')
+              $this.closest('.product-area-item').find('.product-area-img-item').eq(index).addClass('active')
+              setTimeout(()=>{
+                  $this.closest('.product-area-item').find('.product-area-img-item.close').removeClass('close')
+              },600)
+          })
+      })
+  </script>
+</section>
+<script>
+  
+</script>
+{% schema %}
+{
+  "name": "compare-product",
+  "class": "compare-p",
+  "blocks": [
+    {
+      "name": "item",
+      "type": "item",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "color"
+        },
+        {
+          "type": "image_picker",
+          "id": "image1",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "text1",
+          "label": "color"
+        },
+        {
+          "type": "image_picker",
+          "id": "image2",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "text2",
+          "label": "color"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title"
+        },
+        {
+          "type": "text",
+          "id": "price",
+          "label": "Price"
+        },
+        {
+          "type": "text",
+          "id": "btn_txt",
+          "label": "Button text"
+        },
+        {
+          "type": "text",
+          "id": "text3",
+          "label": "Text"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Button link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "compare-product",
+      "blocks": []
+    }
+  ]
+}
+{% endschema %}

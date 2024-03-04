@@ -1,0 +1,608 @@
+<style>
+.before-after-box {
+  padding: 80px 0;
+  overflow: hidden;
+  position: relative;
+  z-index: 1;
+}
+ .before-after-box .container{
+    position: relative;
+  }
+  .before-after-box .bg-img{
+  position: absolute;
+  display: block;
+  right: -15%;
+  top: -18%;
+  z-index: 1;
+}
+.before-after-box .before-after-tab {
+  position: relative;
+  display: flex;
+  width: 380px;
+  height: 58px;
+  overflow: hidden;
+  border: 2px solid #000;
+  border-radius: 58px;
+  margin: 0 auto;
+  margin-top: 40px;
+  z-index:2;
+}
+
+.before-after-box .before-after-tab-item {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 2;
+  font-size: 16px;
+  color: #000;
+  cursor: pointer;
+  transition: all 0.4s ease;
+}
+.before-after-box .before-after-tab:hover .before-after-tab-item.active {
+  color: #000;
+}
+.before-after-box .before-after-tab-item.active,
+.before-after-box .before-after-tab .before-after-tab-item.active:hover,
+.before-after-box .before-after-tab .before-after-tab-item:hover {
+  color: #fff;
+}
+
+.before-after-box .before-after-tab-span {
+  position: absolute;
+  width: calc(33.333% + 4px);
+  height: 100%;
+  border-radius: 60px;
+  top: 0;
+  background: #000;
+  z-index: 1;
+  margin-left: -2px;
+}
+.before-after-box .before-after-cont{
+  display: flex;
+  align-items: center;
+  margin-top: 60px;
+  position: relative;
+  z-index:2;
+}
+.before-after-box .before-after-text{
+  flex:1;
+}
+  .before-after-box .before-after-img-wrapper{
+    width: 55.9%;
+  }
+.before-after-box .before-after-text{
+  /* padding-left: 170px; */
+}
+.before-after-box .before-after-text-item{
+  display: none;
+  max-width: 360px;
+}
+
+.before-after-box .before-after-text-item.active{
+  display: block;
+}
+
+.before-after-box .before-after-text-title{
+  font-size: 40px;
+  color: #000;
+  line-height: 1.2;
+  font-family: var(--heading-font-family);
+}
+
+.before-after-box .before-after-text-sub{
+  color: #b3b3b3;
+  font-size: 30px;
+  margin-top: 10px;
+  line-height: 1.2;
+}
+
+.before-after-box .before-after-text-p{
+  font-size: 20px;
+  color: #000;
+  line-height: 1.2;
+  margin-top: 55px;
+}
+
+.before-after-box .before-after-text-btn{
+  width: 300px;
+  height: 60px;
+  background: #000;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  margin-top: 55px;
+  cursor: pointer;
+  border: 2px solid #000;
+}
+
+.before-after-box .before-after-text-btn:hover .btn-txt::before{
+  color: #000;
+}
+
+.before-after-box .before-after-img-wrapper{
+  position: relative;
+  --img-width: 0px;
+  --left-num: 100%;
+  --time-num:1s;
+  overflow: hidden;
+}
+.before-after-box .before-after-img-item{
+  position: relative;
+  z-index: 1;
+  pointer-events: none;
+}
+.before-after-box .before-after-img-item img{
+  display: none;
+  width: 100%;
+  user-select: none;
+  pointer-events: none;
+  user-drag: none;
+  -moz-user-drag: none;
+  -webkit-user-drag: none;
+}
+.before-after-box .before-after-img-item img.active{
+  display: block;
+}
+.before-after-box .before-after-img-right{
+  position: absolute;
+  width: calc(100% - var(--left-num));
+  height: 100%;
+  overflow: hidden;
+  z-index: 2;
+  right: 0;
+  top: 0;
+  /* transition: all var(--time-num) ease; */
+  transition: all var(--time-num) cubic-bezier(0.645, 0.045, 0.355, 1) 0s;
+}
+.before-after-box .before-after-img-right img{
+  height: 100%;
+  width: var(--img-width);
+  max-width: none;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+.before-after-box .before-after-tag{
+  position: absolute;
+  padding: 5px 15px;
+  font-size: 14px;
+  color: #fff;
+  background: rgba(0, 0, 0, .4);
+  top: 15px;
+  left: 15px;
+  z-index: 2;
+  white-space: nowrap;
+}
+.before-after-box .before-after-tag span{
+  display:none;
+}
+.before-after-box .before-after-tag .active{
+  display:block;
+}
+.before-after-box .before-after-img-right .before-after-tag{
+  left: auto;
+  right: 15px;
+}
+
+.before-after-box .before-after-img-handle{
+  position: absolute;
+  z-index: 5;
+  top: 0;
+  height: 100%;
+  left: var(--left-num);
+  /* transition: all var(--time-num) ease; */
+  transition: all var(--time-num) cubic-bezier(0.645, 0.045, 0.355, 1) 0s;
+}
+.before-after-box .before-after-img-handle::before,.before-after-box .before-after-img-handle::after{
+  position: absolute;
+  content: '';
+  display: block;
+  width: 2px;
+  height: calc(50% - 25px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: #fff;
+}
+.before-after-box .before-after-img-handle::before{
+  top: 0;
+}
+.before-after-box .before-after-img-handle::after{
+  bottom: 0;
+}
+.before-after-box .before-after-img-handle-btn{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  cursor: col-resize;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  overflow: hidden;
+  width: 50px;
+  height: 50px;
+}
+
+.before-after-box .before-after-img-handle-btn span{
+  position: absolute;
+  width: 200%;
+  height: 200%;
+  background: rgba(255, 255, 255, .2);
+  /* filter: blur(10px); */
+  z-index: 1;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  backdrop-filter: blur(20px);
+}
+
+.before-after-box .before-after-img-handle-btn::before,.before-after-box .before-after-img-handle-btn::after{
+  position: absolute;
+  content: '';
+  display: block;
+  border: 12px solid transparent;
+  border-color: transparent #fff transparent transparent;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  z-index: 2;
+}
+.before-after-box .before-after-img-handle-btn::before{
+  margin-left: -16px;
+}
+.before-after-box .before-after-img-handle-btn::after{
+  transform: translate(-50%,-50%) scale(-1,-1);
+  margin-left: 16px;
+}
+.before-after-box .before-after-img-text{
+  font-size: 12px;
+  color: #fff;
+  width: 100%;
+  padding: 0 20px;
+  max-width: 510px;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 30px;
+  text-align: center;
+  z-index: 3;
+  position: absolute;
+  line-height: 1.2;
+}
+
+.before-after-box .bottom-text{
+  display:none;
+}
+
+@media (max-width:1300px) {
+  .before-after-box .before-after-text{
+    /* padding-left: 100px; */
+  }
+}
+
+@media (max-width:1100px) {
+  .before-after-box .before-after-text{
+    /* padding-left: 60px; */
+  }
+}
+
+@media (max-width:991px) {
+  .before-after-box {
+    padding:40px 0;
+  }
+  .before-after-box .bg-img{
+    display:none;
+  }
+  .before-after-box .before-after-tab{
+    width: 320px;
+    margin-top: 25px;
+    height: 50px;
+  }
+  .before-after-box .before-after-tab-item{
+    font-size: 14px;
+  }
+  .before-after-box .before-after-cont{
+    flex-direction: column-reverse;
+    align-items: flex-start;
+    margin-top: 30px;
+  }
+  .before-after-box .before-after-text{
+    padding-left: 0;
+    margin-top: 30px;
+  }
+  .before-after-box .before-after-text,.before-after-box .before-after-img-wrapper{
+    width: 100%;
+  }
+  .before-after-box .before-after-text-item{
+    max-width: none;
+  }
+  .before-after-box .before-after-text-title{
+    font-size: 28px;
+  }
+  .before-after-box .before-after-text-sub{
+    font-size: 20px;
+  }
+  .before-after-box .before-after-text-p{
+    font-size: 18px;
+    margin-top: 30px;
+  }
+  .before-after-box .before-after-text-btn{
+    font-size: 14px;
+    margin-top: 30px;
+    width: 100%;
+    height: 50px;
+  }
+  .before-after-box .before-after-img-text{
+    bottom: 30px;
+    display:none;
+  }
+  
+  .before-after-box .bottom-text{
+    display:block !important;
+    margin-top:20px;
+    position: relative;
+    font-size: 12px;
+    color: #b6b6b6;
+    width: 100%;
+    padding: 0;
+    left: 0;
+    transform: translateX(0%);
+    bottom: 0px;
+    text-align: center;
+    z-index: 3;
+    line-height: 1.2;
+  }
+}
+</style>
+<section class="section-box">
+  <div class="before-after-box">
+    <div class="container">
+      {%- if section.settings.image != blank -%}
+        <img loading="lazy" class="bg-img" width="{{ section.settings.image.width }}" height="{{ section.settings.image.height }}" {% render 'image-attributes', image: section.settings.image %} alt="{{ section.settings.image.alt | escape }}" >
+      {%- endif -%}
+      <div class="title-diy text-top">{{ section.settings.text }}</div>
+      <div class="before-after-tab to-top">
+        {%- for block in section.blocks -%}
+          <div class="before-after-tab-item {% if forloop.index == 1 %}active{% endif %}">
+            {{ block.settings.text }}
+          </div>
+        {%- endfor -%}
+        <div class="before-after-tab-span"></div>
+      </div>
+      <div class="before-after-cont">
+        <div class="before-after-text to-top">
+          {%- for block in section.blocks -%}
+            <div class="before-after-text-item {% if forloop.index == 1 %}active{% endif %}">
+              <div class="before-after-text-title">{{ block.settings.text1 }}</div>
+              <div class="before-after-text-sub">{{ block.settings.text2 }}</div>
+              <div class="before-after-text-p">
+                {{ block.settings.text3 }}
+              </div>
+            </div>
+          {%- endfor -%}
+          {%- if section.settings.text4 != blank -%}
+            <a href="{{ section.settings.link }}" class="before-after-text-btn btn-diy show-match-box">
+              <div class="btn-txt" text="{{ section.settings.text4 }}">
+                <span>{{ section.settings.text4 }}</span>
+              </div>
+            </a>
+          {%- endif -%}
+        </div>
+        <div class="before-after-img-wrapper to-top">
+          <div class="before-after-img-item">
+            {%- for block in section.blocks -%}
+              <img loading="lazy" class="img {% if forloop.index == 1 %}active{% endif %}" width="{{ block.settings.image.width }}" height="{{ block.settings.image.height }}" {%
+              render 'image-attributes' , image: block.settings.image %} alt="{{ block.settings.image.alt | escape }}">
+            {%- endfor -%}
+            <div class="before-after-tag">
+              {%- for block in section.blocks -%}
+                 <span class="{% if forloop.index == 1 %}active{% endif %}">
+                   {{ block.settings.text4 }}
+                 </span>
+              {%- endfor -%}
+            </div>
+          </div>
+          <div class="before-after-img-item before-after-img-right">
+            {%- for block in section.blocks -%}
+              <img loading="lazy" class="img {% if forloop.index == 1 %}active{% endif %}" width="{{ block.settings.image1.width }}" height="{{ block.settings.image1.height }}" {%
+              render 'image-attributes' , image: block.settings.image1 %} alt="{{ block.settings.image1.alt | escape }}">
+            {%- endfor -%}
+            <div class="before-after-tag">
+              {%- for block in section.blocks -%}
+                 <span class="{% if forloop.index == 1 %}active{% endif %}">
+                   {{ block.settings.text5 }}
+                 </span>
+              {%- endfor -%}
+            </div>
+          </div>
+          <div class="before-after-img-handle">
+            <div class="before-after-img-handle-btn">
+              <span></span>
+            </div>
+          </div>
+          <div class="before-after-img-text">
+            {{ section.settings.text3 }}
+          </div>
+        </div>
+      </div>
+      <div class="before-after-img-text bottom-text to-top">
+        {{ section.settings.text3 }}
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+  window.addEventListener('load',function(){
+    $('#shopify-section-{{ section.id }} .before-after-tab-item').hover(function(){
+      let left = $(this)[0].offsetLeft
+      $(this).siblings('.before-after-tab-span').css({'transform': 'translateX('+left+'px)','transition': 'transform .4s'})
+    },function(){
+      let left = $('#shopify-section-{{ section.id }} .before-after-tab-item.active')[0].offsetLeft
+      $(this).siblings('.before-after-tab-span').css({'transform': 'translateX('+left+'px)','transition': 'transform .4s'})
+    })
+    $('#shopify-section-{{ section.id }} .before-after-tab-item').click(function(){
+      let index = $(this).index()
+      let $imgBox = $(this).parents('.before-after-tab').siblings('.before-after-cont').find('.before-after-img-wrapper')
+      let width = $imgBox.clientWidth
+      console.log($imgBox);
+      $imgBox.attr('style',`--img-width:${width}px;--left-num:100%;--time-num:0s;`)
+      $(this).addClass('active').siblings().removeClass('active')
+      $(this).parents('.before-after-tab').siblings('.before-after-cont').find('.before-after-text-item').removeClass('active').eq(index).addClass('active')
+      $(this).parents('.before-after-tab').siblings('.before-after-cont').find('.before-after-img-item').each(function(){
+        $(this).find('.img').removeClass('active').eq(index).addClass('active')
+      })
+      $(this).parents('.before-after-tab').siblings('.before-after-cont').find('.before-after-tag').each(function(){
+        $(this).find('span').removeClass('active').eq(index).addClass('active')
+      })
+      setTimeout(() => {
+        $imgBox.attr('style',`--img-width:${width}px;--left-num:50%;--time-num:1s;`)
+      }, 100);
+    })
+    window.addEventListener('resize',function(){
+      initImg()
+    })
+    function initImg(){
+      let $p = document.querySelector('#shopify-section-{{ section.id }}')
+      let $box = $p.querySelector('.before-after-img-wrapper')
+      let $hp = $p.querySelector('.before-after-img-handle')
+      let $hand = $hp.querySelector('.before-after-img-handle-btn')
+      let width = $box.clientWidth
+
+      $box.style=`--img-width:${width}px;--left-num:50%;`
+      makeElementDraggable($hand)
+      function makeElementDraggable(draggableElement) {
+        var isDragging = false;
+        var offsetX = 0;
+
+        draggableElement.addEventListener('mousedown', function(e) {
+            isDragging = true;
+            offsetX = e.clientX - $hp.offsetLeft;
+            e.preventDefault(); // 阻止默认行为，避免文本选择
+        });
+
+        document.addEventListener('mouseup', function() {
+            isDragging = false;
+        });
+
+        document.addEventListener('mousemove', function(e) {
+            if (isDragging) {
+                var newX = e.clientX - offsetX;
+                if (newX <= 10) newX = 10;
+                if (newX >= width - 10) newX = width - 10;
+                $box.style = `--img-width:${width}px;--left-num:${newX / width * 100}%;--time-num:0s;`;
+                e.preventDefault(); // 阻止默认行为，避免文本选择
+            }
+        });
+
+        draggableElement.addEventListener('touchstart', function(e) {
+            isDragging = true;
+            offsetX = e.touches[0].clientX - $hp.offsetLeft;
+            e.preventDefault(); // 阻止默认行为
+        }, { passive: false });
+
+        document.addEventListener('touchend', function() {
+            isDragging = false;
+        });
+
+        document.addEventListener('touchmove', function(e) {
+            if (isDragging) {
+                e.preventDefault();
+                var newX = e.touches[0].clientX - offsetX;
+                if (newX <= 10) newX = 10;
+                if (newX >= width - 10) newX = width - 10;
+                $box.style = `--img-width:${width}px;--left-num:${newX / width * 100}%;--time-num:0s;`;
+            }
+        }, { passive: false });
+    }
+    }
+    initImg()
+  })
+</script>
+{% schema %}
+{
+"name": "before-after",
+"blocks": [
+  {
+    "name": "item",
+    "type": "item",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "image",
+        "label": "Before Image"
+      },
+      {
+        "type": "image_picker",
+        "id": "image1",
+        "label": "After Image"
+      },
+      {
+        "type": "text",
+        "id": "text",
+        "label": "Label Text"
+      },
+      {
+        "type": "text",
+        "id": "text1",
+        "label": "Title Text"
+      },
+      {
+        "type": "text",
+        "id": "text2",
+        "label": "Text"
+      },
+      {
+        "type": "text",
+        "id": "text3",
+        "label": "Text"
+      },
+      {
+        "type": "text",
+        "id": "text4",
+        "label": "Before Text"
+      },
+      {
+        "type": "text",
+        "id": "text5",
+        "label": "After Text"
+      }
+    ]
+  }
+],
+"settings": [
+  {
+    "type": "image_picker",
+    "id": "image",
+    "label": "Background Image"
+  },
+  {
+    "type": "text",
+    "id": "text",
+    "label": "Title"
+  },
+  {
+    "type": "text",
+    "id": "text3",
+    "label": "Text"
+  },
+  {
+    "type": "text",
+    "id": "text4",
+    "label": "Buttom Text"
+  },
+  {
+    "type": "url",
+    "id": "link",
+    "label": "Buttom Link"
+  }
+],
+  "presets": [
+  {
+    "name": "before-after",
+    "blocks": []
+  }
+]
+}
+{% endschema %}

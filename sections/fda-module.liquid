@@ -1,0 +1,208 @@
+<style>
+.fda-module-diy{
+	 padding: 80px 0;
+ }
+ 
+ .fda-module-diy .fda-module-cont{
+	max-width: 667px;
+	margin: 0 auto;
+ }
+ 
+ .fda-module-diy .fda-module-title{
+	 color: #000;
+	 text-align: center;
+	 font-family: var(--heading-font-family);
+	 font-size: 48px;
+	 line-height: 1;
+ }
+ 
+.fda-module-diy .fda-module-p{
+	color: #000;
+	text-align: center;
+	font-size: 16px;
+	line-height: 1.5;
+	margin: 0 auto;
+	margin-top: 20px;
+	max-width: 661px;
+ }
+ 
+ .fda-module-diy .fda-img{
+	 display: block;
+	 margin: 0 auto;
+	 margin-top: 30px;
+	 max-width: 140px;
+ }
+ 
+ .fda-module-diy .fda-img-box{
+	 display: flex;
+	 justify-content: center;
+	 position: relative;
+	 margin-top: 30px;
+ }
+ 
+ .fda-module-diy .fda-sig{
+	 position: absolute;
+	 left: 0;
+	 top: 50%;
+	 z-index: 2;
+	 margin-top: -13px;
+	 max-width: 240px;
+ }
+ 
+  .fda-module-diy .fda-avatar-box{
+	 position: relative;
+	 z-index: 1;
+ }
+ 
+ .fda-module-diy .fda-avatar{
+	 display: block;
+	 margin: 0;
+	 max-width: 318px;
+ }
+ 
+.fda-module-diy .fda-avatar-txt{
+	 position: absolute;
+	 right: 0;
+	 bottom:0;
+	 text-align: right;
+	 color: #fff;
+	 padding: 6px 13px 16px 13px;
+	 background: linear-gradient(180deg, rgba(0, 0, 0, 0.00) 0%, rgba(0, 0, 0, 0.80) 100%);
+ }
+ 
+ .fda-module-diy .fda-avatar-sub{
+	 color: #FFF;
+	 font-family: var(--heading-font-family);
+	 font-size: 24px;
+	 line-height: 1.1;
+ }
+ 
+ .fda-module-diy .fda-avatar-p{
+	 color: #FFF;
+	 font-size: 16px;
+	 line-height: 1.1;
+	 margin-top: 10px;
+ }
+ 
+ @media (max-width:740px) {
+ 	.fda-module-diy{
+		padding: 60px 0;
+	}
+	 .fda-module-diy .fda-module-title{
+		 font-size: 28px;
+	 }
+	 .fda-module-diy .fda-module-p{
+		 font-size: 14px;
+		 margin-top: 10px;
+	 }
+	 .fda-module-diy .fda-img{
+		 max-width: 106px;
+		 margin-top: 18px;
+	 }
+	 
+	 .fda-module-diy .fda-avatar{
+		 max-width: 260px;
+	 }
+	 
+	 .fda-module-diy .fda-sig{
+		 max-width: 136px;
+	 }
+	 
+	  .fda-module-diy .fda-avatar-sub{
+		  font-size: 20px;
+	  }
+	  .fda-module-diy .fda-avatar-p{
+		  font-size: 14px;
+		  margin-top: 7px;
+	  }
+ }
+</style>
+<section class="section-box">
+  <div class="fda-module-diy">
+      <div class="container">
+          <div class="fda-module-cont">
+            {%- if section.settings.title != blank -%}
+            <div class="fda-module-title">{{ section.settings.title }}</div>
+            {%- endif -%}
+            {%- if section.settings.content != blank -%}
+                <div class="fda-module-p">{{ section.settings.content }} </div>
+            {%- endif -%}
+            {%- if section.settings.image != blank -%}
+               <img loading="lazy" class="fda-img" width="{{ section.settings.image.width }}" height="{{ section.settings.image.height }}" {% render 'image-attributes', image: section.settings.image %} alt="{{ section.settings.image.alt | escape }}" >
+            {%- endif -%}
+              <div class="fda-img-box">
+                {%- if section.settings.image1 != blank -%}
+                   <img loading="lazy" class="fda-sig" width="{{ section.settings.image1.width }}" height="{{ section.settings.image1.height }}" {% render 'image-attributes', image: section.settings.image1 %} alt="{{ section.settings.image1.alt | escape }}" >
+                {%- endif -%}
+                  <div class="fda-avatar-box">
+                    {%- if section.settings.image2 != blank -%}
+                       <img loading="lazy" class="fda-avatar" width="{{ section.settings.image2.width }}" height="{{ section.settings.image2.height }}" {% render 'image-attributes', image: section.settings.image2 %} alt="{{ section.settings.image2.alt | escape }}" >
+                    {%- endif -%}
+                      <div class="fda-avatar-txt">
+                        {%- if section.settings.text != blank -%}
+                          <div class="fda-avatar-sub">{{ section.settings.text }}</div>
+                        {%- endif -%}
+                        {%- if section.settings.text1 != blank -%}
+                          <div class="fda-avatar-p">{{ section.settings.text1 }}</div>
+                        {%- endif -%}
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+
+</section>
+{% schema %}
+{
+  "name": "fda-module",
+  "class": "fda-module-box",
+  "blocks": [],
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title"
+    },
+    {
+      "type": "richtext",
+      "id": "content",
+      "label": "Content"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image1",
+      "label": "Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image2",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "text1",
+      "label": "Text"
+    }
+  ],
+  "presets": [
+    {
+      "name": "fda-module",
+      "blocks": []
+    }
+  ]
+}
+{% endschema %}
+
+
+

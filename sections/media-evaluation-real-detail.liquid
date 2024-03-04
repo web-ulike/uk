@@ -1,0 +1,726 @@
+<style>
+  .media-evaluation-real-box {
+    background: #fff;
+    overflow: hidden;
+    padding: 90px 0;
+    position: relative;
+    z-index: 1;
+  }
+  .media-evaluation-real-box .title-diy p {
+    margin: 0;
+  }
+  .media-evaluation-real-box .media-evaluation-real {
+    display: flex;
+    margin-top: 60px;
+  }
+
+  .media-evaluation-real-box .media-evaluation-real-item {
+    background: #fff;
+    margin-right: 60px;
+    display: flex;
+    width: 600px;
+    flex-direction: column;
+    flex-shrink: 0;
+  }
+
+  .media-evaluation-real-box .media-evaluation-real-img,
+  .media-evaluation-real-box .media-evaluation-real-cont {
+    position: relative;
+  }
+
+  .media-evaluation-real-box .media-evaluation-real-cont {
+    flex: 1;
+    background: #f9f9f9;
+    display: flex;
+  }
+
+  .media-evaluation-real-box .media-evaluation-real-img {
+    display: flex;
+  }
+
+  .media-evaluation-real-box .media-real-img-item {
+    flex: 1;
+    position: relative;
+  }
+
+  .media-evaluation-real-box .media-real-img-item img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    position: relative;
+    z-index: 1;
+    object-fit: cover;
+  }
+
+  .media-evaluation-real-box .media-real-tag {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-size: 16px;
+    color: #fff;
+    line-height: 1.2;
+    padding: 4px 8px;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 2;
+  }
+  .media-evaluation-real-box .media-real-img-item:last-child .media-real-tag {
+    left: auto;
+    right: 10px;
+  }
+
+  .media-evaluation-real-box .media-evaluation-real-cont {
+    padding: 25px 35px;
+  }
+  .media-evaluation-real-box .media-evaluation-real-star {
+    font-size: 22px;
+    line-height: 1;
+    color: #e7004c;
+  }
+  .media-evaluation-real-box .media-evaluation-real-title {
+    font-size: 20px;
+    font-weight: bold;
+    color: #000;
+    line-height: 1.2;
+    width: 150px;
+    margin-right: 70px;
+    flex-shrink: 0;
+  }
+  .media-evaluation-real-box .media-evaluation-real-p {
+    font-size: 14px;
+    color: #7f7f7f;
+    line-height: 1.6;
+    /* margin-top: 10px; */
+  }
+
+  .media-evaluation-real-box .media-evaluation-real-name {
+    font-size: 16px;
+    color: #000;
+    margin-top: 35px;
+    text-align: right;
+  }
+  .media-evaluation-real-box .media-evaluation-real-name .span {
+    display: inline-block;
+    margin-right: 5px;
+    color: #d5d5d5;
+  }
+
+  .media-evaluation-real-box .media-evaluation-real-arrow {
+    position: absolute;
+    display: flex;
+    left: 50%;
+    bottom: 40px;
+    transform: translateX(-50%);
+    z-index: 3;
+  }
+
+  .media-evaluation-real-box .media-real-arrow-item {
+    cursor: pointer;
+    margin-right: 18px;
+    overflow: hidden;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    /* border: 2px solid #000; */
+    background: #fff;
+    position: relative;
+    transition: all 0.4s ease;
+  }
+  .media-evaluation-real-box .media-real-arrow-item::before {
+    position: absolute;
+    content: '';
+    display: block;
+    width: 12px;
+    height: 12px;
+    border-top: 2px solid #000;
+    border-left: 2px solid #000;
+    top: 50%;
+    left: 50%;
+    margin-left: 2px;
+    transform: translate(-50%, -50%) rotate(-45deg);
+    transition: all 0.4s ease;
+  }
+  .media-evaluation-real-box .media-real-arrow-item:nth-child(2) {
+    transform: scale(-1, -1);
+  }
+  .media-evaluation-real-box .media-real-arrow-item:hover {
+    background: #000;
+  }
+  .media-evaluation-real-box .media-real-arrow-item:hover::before {
+    border-color: #fff;
+  }
+
+  .media-evaluation-real-box .media-real-bottom {
+    display: flex;
+    align-items: center;
+    margin-top: 60px;
+  }
+  .media-evaluation-real-box .media-real-dot {
+    display: flex;
+    flex: 1;
+    background: #f1f1f1;
+    height: 2px;
+  }
+  .media-evaluation-real-box .media-real-dot-item {
+    flex: 1;
+    height: 2px;
+    position: relative;
+    cursor: pointer;
+  }
+  .media-evaluation-real-box .media-real-dot-item::before {
+    position: absolute;
+    content: '';
+    display: block;
+    width: 0;
+    height: 100%;
+    background: #000;
+    left: 0;
+    top: 0;
+  }
+  .media-evaluation-real-box .media-real-dot-item::after {
+    position: absolute;
+    content: '';
+    display: block;
+    width: 100%;
+    height: 400%;
+    background: none;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  .media-evaluation-real-box .media-real-dot-item.active::before {
+    width: 100%;
+  }
+  .media-evaluation-real-box .media-real-dot-item.active.tra::before {
+    transition: width 0.4s linear;
+  }
+
+  .media-evaluation-real-box .media-real-arrow {
+    display: flex;
+    margin-left: 10px;
+  }
+
+  .media-evaluation-real-box .media-real-bottom-arrow-item {
+    cursor: pointer;
+    margin-left: 20px;
+    overflow: hidden;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    position: relative;
+    transition: all 0.4s ease;
+  }
+  .media-evaluation-real-box .media-real-bottom-arrow-item::before {
+    position: absolute;
+    content: '';
+    display: block;
+    width: 12px;
+    height: 12px;
+    border-top: 2px solid #d5d5d5;
+    border-left: 2px solid #d5d5d5;
+    top: 50%;
+    left: 50%;
+    margin-left: 2px;
+    transform: translate(-50%, -50%) rotate(-45deg);
+    transition: all 0.4s ease;
+  }
+  .media-evaluation-real-box .media-real-bottom-arrow-item:nth-child(2) {
+    transform: scale(-1, -1);
+  }
+
+  .media-evaluation-real-box .media-real-bottom-arrow-item:hover::before {
+    border-color: #000;
+  }
+
+  @media (max-width: 890px) {
+    .media-evaluation-real-box {
+      padding: 50px 0;
+      overflow: hidden;
+    }
+    .media-evaluation-real-box .title-diy {
+      font-size: 23px;
+    }
+    .media-evaluation-real-box .media-evaluation-real-item {
+      width: 100%;
+    }
+    .media-evaluation-real-box .media-evaluation-real-img,
+    .media-evaluation-real-box .media-evaluation-real-cont {
+      width: 100%;
+    }
+    .media-evaluation-real-box .media-evaluation-real-cont {
+      flex: 1;
+    }
+    .media-evaluation-real-box .media-evaluation-real-cont {
+      padding: 30px 20px;
+      display: block;
+      position: relative;
+      padding-top: 50px;
+    }
+    .media-evaluation-real-box .media-evaluation-real-title {
+      width: auto;
+      margin-right: 0;
+    }
+    .media-evaluation-real-box .media-evaluation-real-p {
+      margin-top: 10px;
+    }
+    .media-evaluation-real-box .media-evaluation-real-star {
+      position: absolute;
+      left: 20px;
+      top: 25px;
+    }
+    .media-evaluation-real-box .media-evaluation-real-name {
+      margin-top: 15px;
+    }
+
+    .media-evaluation-real-box .media-real-dot {
+      display: none;
+    }
+    .media-evaluation-real-box .media-real-bottom {
+      justify-content: center;
+    }
+    .media-evaluation-real-box .media-real-arrow {
+      margin-left: 0;
+      position: absolute;
+      width: 100%;
+      justify-content: space-between;
+      top: 50%;
+    }
+    .home-media-evaluation.media-evaluation-real-box .media-real-arrow {
+      top: 44%;
+    }
+    .media-evaluation-real-box .media-real-bottom-arrow-item {
+      margin: 0 10px;
+      background: #000;
+    }
+    .media-evaluation-real-box .media-real-bottom-arrow-item:hover::before {
+      border-color: #fff;
+    }
+    .media-evaluation-real-box .media-real-bottom {
+      margin-top: 30px;
+    }
+    .media-evaluation-real-box .media-evaluation-real {
+      margin-top: 40px;
+    }
+  }
+</style>
+<section class="section-box">
+  <div class="media-evaluation-real-box {{ section.settings.class_text }}">
+    <div class="container">
+      <div class="title-diy text-top">{{ section.settings.title }}</div>
+      <div class="media-evaluation-real">
+        {%- for block in section.blocks -%}
+          <div class="media-evaluation-real-item to-top" style="transition-delay: 0.{{forloop.index}}s">
+            <div class="media-evaluation-real-img">
+              {%- if block.settings.image != blank -%}
+                <div class="media-real-img-item">
+                  <img
+                    loading="lazy"
+                    width="{{ block.settings.image.width }}"
+                    height="{{ block.settings.image.height }}"
+                    {% render 'image-attributes', image: block.settings.image %}
+                    alt="{{ block.settings.image.alt | escape }}"
+                  >
+                  <div class="media-real-tag">
+                    {{ block.settings.label_txt }}
+                  </div>
+                </div>
+              {%- endif -%}
+              {%- if block.settings.image1 != blank -%}
+                <div class="media-real-img-item">
+                  <img
+                    loading="lazy"
+                    width="{{ block.settings.image1.width }}"
+                    height="{{ block.settings.image1.height }}"
+                    {% render 'image-attributes', image: block.settings.image1 %}
+                    alt="{{ block.settings.image1.alt | escape }}"
+                  >
+                  <div class="media-real-tag">
+                    {{ block.settings.label_txt1 }}
+                  </div>
+                </div>
+              {%- endif -%}
+            </div>
+            <div class="media-evaluation-real-cont">
+              {%- if block.settings.title != blank -%}
+                <div class="media-evaluation-real-title text-top" style="transition-delay: 0.1s">
+                  {{ block.settings.title }}
+                </div>
+              {%- endif -%}
+              <div class="media-evaluation-real-right">
+                <div class="media-evaluation-real-star to-top" data-num="{{block.settings.star}}">
+                  {%- if block.settings.half -%}
+                    <div class="star-d">
+                      <span class="hide">★</span>
+                      <span class="show">★</span>
+                    </div>
+                  {%- endif -%}
+                </div>
+                {%- if block.settings.content != blank -%}
+                  <div class="media-evaluation-real-p text-top" style="transition-delay: 0.1s">
+                    {{ block.settings.content }}
+                  </div>
+                {%- endif -%}
+                {%- if block.settings.name != blank -%}
+                  <div class="media-evaluation-real-name text-top" style="transition-delay: 0.6s">
+                    <span class="span">-</span>
+                    {{ block.settings.name }}
+                  </div>
+                {%- endif -%}
+              </div>
+            </div>
+          </div>
+        {%- endfor -%}
+      </div>
+      <div class="media-real-bottom">
+        <div class="media-real-dot to-top">
+          {%- for block in section.blocks -%}
+            <div class="media-real-dot-item"></div>
+          {%- endfor -%}
+        </div>
+        <div class="media-real-arrow to-top">
+          <div class="media-real-bottom-arrow-item"></div>
+          <div class="media-real-bottom-arrow-item"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+  (function () {
+    function mediaRealSlider(name) {
+      let $p = $(name);
+      let $list = $p.find('.media-evaluation-real');
+      let $dot = $p.find('.media-real-dot');
+      let $bottomArrow = $p.find('.media-real-arrow');
+      let length = $list.find('.media-evaluation-real-item').length;
+      let index = -2; //[0,-length-2]
+      let isLeftBtn = 1; //0左 1右
+      let timer = null;
+      let timers = null;
+      let dateTb = 0;
+      let dateTs = 0;
+      if (length < 2) return;
+
+      $list.html(
+        $list.find('.media-evaluation-real-item')[length - 2].outerHTML +
+          $list.find('.media-evaluation-real-item')[length - 1].outerHTML +
+          $list.html() +
+          $list.find('.media-evaluation-real-item')[0].outerHTML +
+          $list.find('.media-evaluation-real-item')[1].outerHTML
+      );
+      skewTransform(true);
+      changeDot();
+      $p.find('.media-real-bottom-arrow-item').click(function () {
+        let sIndex = $(this).index();
+        if (+new Date() - dateTb < 600) return;
+        dateTb = +new Date();
+        isLeftBtn = sIndex;
+        index += sIndex ? -1 : 1;
+        clearInterval(timer);
+        changeLeft();
+        timer = setInterval(() => {
+          isLeftBtn = 1;
+          index--;
+          changeLeft();
+        }, 5000);
+      });
+      $dot.find('.media-real-dot-item').click(function () {
+        index = -$(this).index() - 2;
+        clearInterval(timer);
+        changeLeft();
+        timer = setInterval(() => {
+          isLeftBtn = 1;
+          index--;
+          changeLeft();
+        }, 5000);
+      });
+      function skewTransform(auto, tIndex = index, skew = 0) {
+        let width = $list
+          .find('.media-evaluation-real-item')
+          .eq(Math.abs(tIndex) - 1)
+          .width();
+        let translateX = (width + 60) * tIndex;
+        if (auto) {
+          translateX += skew;
+          $list.css({
+            transform: 'translateX(' + translateX + 'px)',
+            transition: ' all 0s ease',
+          });
+        } else {
+          $list.css({
+            transform: 'translateX(' + translateX + 'px)',
+            transition: ' all .6s ease',
+          });
+        }
+      }
+      function changeLeft(skew) {
+        if (isLeftBtn && index == -length - 2) {
+          skewTransform(true, -1, skew);
+          index = -2;
+        }
+
+        if (!isLeftBtn && index == 0) {
+          skewTransform(true, -length - 1, skew);
+          index = -length;
+        }
+        setTimeout(() => {
+          skewTransform();
+        }, 10);
+        changeDot();
+      }
+      function changeDot() {
+        // $p.find('.media-real-dot-item').removeClass('active tra')
+        // setTimeout(() => {
+        $p.find('.media-real-dot-item').each(function () {
+          let $this = $(this);
+          let sIndex = $(this).index();
+          if (sIndex < Math.abs(index) - 2) {
+            $(this).addClass('active');
+          } else {
+            $(this).removeClass('active tra');
+          }
+          setTimeout(() => {
+            if (sIndex == Math.abs(index) - 2) {
+              $this.addClass('active tra');
+            }
+          }, 20);
+        });
+        if (index == -1) {
+          $p.find('.media-real-dot-item').addClass('active');
+          $p.find('.media-real-dot-item')
+            .eq(length - 1)
+            .addClass('active tra');
+        }
+        // }, 20);
+      }
+      function getTranslateX($element) {
+        var matrix = $element
+          .css('transform')
+          .replace(/[^0-9\-.,]/g, '')
+          .split(',');
+        var translateX = parseFloat(matrix[12] || matrix[4]);
+        return translateX;
+      }
+
+      function clearTimer() {
+        if (timer) {
+          clearInterval(timer);
+          timer = null;
+        }
+      }
+
+      function initMobileCarousel() {
+        let startX = 0;
+        let listTar = 0;
+        let startY = 0;
+        let isScrolling = false;
+        let isDragging = false;
+
+        function setAutoPlay() {
+          clearTimer();
+          timer = setInterval(() => {
+            isLeftBtn = 1;
+            index--;
+            changeLeft();
+          }, 5000);
+        }
+
+        $list.on('touchstart mousedown', function (e) {
+          clearTimer();
+
+          if (e.type === 'touchstart') {
+            var touch = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
+            startX = touch.clientX;
+            startY = touch.clientY;
+          } else {
+            startX = e.clientX;
+            startY = e.clientY;
+          }
+
+          isScrolling = false;
+          isDragging = true;
+          listTar = getTranslateX($list);
+
+          $(document).on('touchmove mousemove', handleMove);
+          $(document).on('touchend mouseup', handleEnd);
+        });
+
+        function handleMove(e) {
+          if (isDragging) {
+            if (e.type === 'touchmove') {
+              var touch = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
+              var diffX = touch.clientX - startX;
+              var diffY = touch.clientY - startY;
+            } else {
+              var diffX = e.clientX - startX;
+              var diffY = e.clientY - startY;
+            }
+
+            var translateX = listTar + diffX;
+
+            if (!isScrolling) {
+              if (Math.abs(diffX) > Math.abs(diffY)) {
+                isScrolling = true;
+              }
+            }
+
+            if (isScrolling && e.cancelable) {
+              e.preventDefault();
+              $list.css({ transform: 'translateX(' + translateX + 'px)', transition: 'all 0s ease' });
+            }
+          }
+        }
+
+        function handleEnd(e) {
+          if (isDragging) {
+            $(document).off('touchmove mousemove', handleMove);
+            $(document).off('touchend mouseup', handleEnd);
+
+            if (isScrolling) {
+              if (e.type === 'touchend') {
+                var touch = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
+                var diffX = touch.clientX - startX;
+              } else {
+                var diffX = e.clientX - startX;
+              }
+
+              if (Math.abs(diffX) > window.innerWidth * 0.05) {
+                if (diffX > 0) {
+                  index = index + 1;
+                  isLeftBtn = 0;
+                } else {
+                  index = index - 1;
+                  isLeftBtn = 1;
+                }
+                changeLeft(diffX);
+              } else {
+                $list.css({ transform: 'translateX(' + listTar + 'px)', transition: 'all .4s ease' });
+              }
+            }
+
+            isScrolling = false;
+            isDragging = false;
+            setAutoPlay(); // 保证只触发一次自动播放
+          }
+        }
+      }
+      initMobileCarousel();
+      clearTimer();
+
+      timer = setInterval(() => {
+        isLeftBtn = 1;
+        index--;
+        changeLeft();
+      }, 5000);
+
+      $list.hover(
+        function () {
+          clearTimer();
+        },
+        function () {
+          clearTimer();
+          timer = setInterval(() => {
+            isLeftBtn = 1;
+            index--;
+            changeLeft();
+          }, 5000);
+        }
+      );
+    }
+    const generateStars = (score) => '★★★★★'.slice(0, score) + ''.slice(score);
+    document.querySelectorAll('.media-evaluation-real-star').forEach((item) => {
+      let num = item.getAttribute('data-num') * 1;
+      item.innerText = generateStars(num);
+    });
+    window.addEventListener('load', function () {
+      mediaRealSlider('#shopify-section-{{ section.id }}');
+    });
+  })();
+</script>
+{% schema %}
+{
+  "name": "media-evaluation-detail",
+  "blocks": [
+    {
+      "name": "item",
+      "type": "item",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Before Image"
+        },
+        {
+          "type": "text",
+          "id": "label_txt",
+          "label": "Label"
+        },
+        {
+          "type": "image_picker",
+          "id": "image1",
+          "label": "After Image"
+        },
+        {
+          "type": "text",
+          "id": "label_txt1",
+          "label": "Label"
+        },
+        {
+          "type": "range",
+          "id": "star",
+          "min": 1,
+          "max": 5,
+          "step": 1,
+          "label": "Star",
+          "default": 5
+        },
+        {
+          "type": "checkbox",
+          "id": "half",
+          "label": "0.5",
+          "default": false
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title"
+        },
+        {
+          "type": "text",
+          "id": "content",
+          "label": "Content"
+        },
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Name"
+        }
+      ]
+    }
+  ],
+  "settings": [
+    {
+      "type": "richtext",
+      "id": "title",
+      "label": "Title"
+    },
+    {
+      "type": "text",
+      "id": "class_text",
+      "label": "Custom Class"
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background",
+      "default": "rgba(0,0,0,0)"
+    }
+  ],
+  "presets": [
+    {
+      "name": "media-evaluation-detail",
+      "blocks": []
+    }
+  ]
+}
+{% endschema %}

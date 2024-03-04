@@ -1,0 +1,448 @@
+<style>
+.hover-slide{
+  padding: 105px 0;
+}
+
+.hover-slide .hover-slide-cont{
+  display: flex;
+}
+
+.hover-slide .hover-slide-text{
+  width: 25%;
+  margin-right: 25px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.hover-slide .hover-slide-text-item{
+  margin-bottom: 27px;
+  background: #F9F9F9;
+  padding: 0 30px;
+  display: flex;
+  align-items: center;
+  height: 25.6%;
+  cursor: pointer;
+}
+
+.hover-slide .hover-slide-text-item.active{
+  height: 40%;
+}
+
+.hover-slide .hover-slide-text-item:last-child{
+  margin-bottom: 0;
+}
+
+.hover-slide .hover-slide-text-rp{
+  color: #E7004C;
+  font-size: 12px;
+  line-height: 1;
+}
+
+.hover-slide .hover-slide-text-sub{
+  color: #000;
+  font-size: 12px;
+  line-height: 1;
+}
+
+.hover-slide .hover-slide-text-title{
+  color: #000;
+  font-size: 20px;
+  font-family: var(--heading-font-family);
+  line-height: 1.25;
+}
+
+.hover-slide .hover-slide-text-p{
+  color: rgba(0, 0, 0, 0.50);
+  font-size: 12px;
+  line-height: 1.5;
+  margin-top: 15px;
+}
+
+.hover-slide .hover-slide-text-item .img{
+  display: block;
+  margin-top: 15px;
+}
+
+.hover-slide .hover-slide-img{
+  flex: 1;
+}
+
+.hover-slide .hover-slide-img-item{
+  display: none;
+  height: 100%;
+}
+
+.hover-slide .hover-slide-img-item.active{
+  display: block;
+}
+
+.hover-slide .hover-slide-img-item .img{
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hover-slide .disable-box,.hover-slide .active .undisable-box{
+  display: none !important;
+}
+
+.hover-slide .active .disable-box{
+  display: block !important;
+}
+
+.hover-slide .mb-box{
+  display: none !important;
+}
+
+@media (min-width:991px) {
+  
+  .hover-slide .active .hover-slide-text-title,.hover-slide .active  .hover-slide-text-p,.hover-slide .active .hover-slide-text-sub{
+    color: #fff;
+  }
+  .hover-slide .hover-slide-text-item:hover{
+    background: #FCE5ED;
+  }
+  .hover-slide .hover-slide-text-item.active{
+    background: linear-gradient(180deg, #E0004D 0.32%, #F9F9F9 101.91%);
+  }
+}
+
+@media (max-width:1300px) {
+  .hover-slide .hover-slide-text-item{
+    height: 22.6%;
+    padding: 0 20px;
+  }
+  .hover-slide .hover-slide-text-item.active{
+    height: 44%;
+  }
+  .hover-slide .hover-slide-text-title{
+    font-size: 16px;
+  }
+  .hover-slide .hover-slide-text-p{
+    margin-top: 10px;
+    line-height: 1.3;
+  }
+  .hover-slide .hover-slide-text-item .img{
+    margin-top: 10px;
+  }
+}
+
+
+@media (max-width:1100px) {
+  .hover-slide .hover-slide-text-title{
+    font-size: 14px;
+  }
+}
+
+@media (max-width:991px) {
+  .hover-slide {
+    overflow: hidden;
+    padding: 50px 0;
+  }
+  .hover-slide .hover-slide-cont{
+    flex-direction: column-reverse;
+  }
+
+  .hover-slide .hover-slide-text{
+    width: 100%;
+    margin-right: 0;
+    margin-top: 26px;
+    flex-direction: row;
+    justify-content: flex-start;
+  }
+
+  .hover-slide .hover-slide-text-item.active{
+    background: none;
+  }
+
+  .hover-slide .disable-box,.hover-slide .active .undisable-box{
+    display: block !important;
+  }
+
+  .hover-slide .hover-slide-text-sub,.hover-slide .active .hover-slide-text-sub{
+    display: none !important;
+  }
+
+  .hover-slide .hover-slide-text-rp,.hover-slide .hover-slide-text-p{
+    font-size:14px;
+  }
+  .hover-slide .hover-slide-text-title{
+    font-size: 24px;
+    margin-top:16px;
+  }
+  
+  .hover-slide .hover-slide-text-item{
+    background: none;
+    width: 71.7%;
+    flex-shrink: 0;
+    margin-right: 24px;
+    align-items: flex-start;
+    padding: 0;
+  }
+  .hover-slide .hover-slide-img-item{
+    width: 71.7%;
+    flex-shrink: 0;
+    margin-right: 24px;
+    min-width:270px;
+  }
+  .hover-slide .hover-slide-img-item{
+    border-radius: 16px;
+    overflow: hidden;
+  }
+  .hover-slide .hover-slide-text-item.active,.hover-slide .hover-slide-text-item{
+    height: auto;
+    margin-bottom: 0;
+  }
+  .hover-slide .hover-slide-img{
+    display: flex;
+  }
+  .hover-slide .hover-slide-img-item{
+    display: block;
+  }
+
+  .hover-slide .mb-box{
+    display: block !important;
+  }
+
+  .hover-slide .pc-box{
+    display: none !important;
+  }
+}
+</style>
+
+<section class="section-box">
+  <div class="hover-slide">
+    <div class="container">
+      <div class="hover-slide-cont">
+        <div class="hover-slide-text to-top">
+          {%- for block in section.blocks -%}
+            <div class="hover-slide-text-item to-top {% if forloop.index == 1 %}active{% endif %}" style="transition-delay: 0.{{ forloop.index }}s">
+              <div>
+                <div class="hover-slide-text-rp undisable-box">{{ block.settings.text }}</div>
+                <div class="hover-slide-text-sub disable-box">{{ block.settings.text1 }}</div>
+                <div class="hover-slide-text-title">{{ block.settings.text2 }}</div>
+                <div class="hover-slide-text-p disable-box">{{ block.settings.text3 }}</div>
+                {%- if block.settings.image3 != blank or block.settings.image4 != blank -%}
+                  <div class="disable-box">
+                    {%- if block.settings.image3 != blank -%}
+                      <img
+                        loading="lazy"
+                        class="img pc-box"
+                        width="{{ block.settings.image3.width }}"
+                        height="{{ block.settings.image3.height }}"
+                        {% render 'image-attributes', image: block.settings.image3 %}
+                        alt="{{ block.settings.image3.alt | escape }}"
+                      >
+                    {%- endif -%}
+                    {%- if block.settings.image4 != blank -%}
+                      <img
+                        loading="lazy"
+                        class="img mb-box"
+                        width="{{ block.settings.image4.width }}"
+                        height="{{ block.settings.image4.height }}"
+                        {% render 'image-attributes', image: block.settings.image4 %}
+                        alt="{{ block.settings.image4.alt | escape }}"
+                      >
+                    {%- endif -%}
+                  </div>
+                {%- endif -%}
+              </div>
+            </div>
+          {%- endfor -%}
+        </div>
+        <div class="hover-slide-img to-top" style="transition-delay: 0.4s">
+          {%- for block in section.blocks -%}
+            <div class="hover-slide-img-item {% if forloop.index == 1 %}active{% endif %}" data-url="{{ block.settings.video_txt }}">
+              {%- if block.settings.image != blank -%}
+                <img
+                  loading="lazy"
+                  class="txt-img pc-box"
+                  width="{{ block.settings.image.width }}"
+                  height="{{ block.settings.image.height }}"
+                  {% render 'image-attributes', image: block.settings.image %}
+                  alt="{{ block.settings.image.alt | escape }}"
+                >
+              {%- endif -%}
+              {%- if block.settings.image1 != blank -%}
+                <img
+                  loading="lazy"
+                  class="txt-img mb-box"
+                  width="{{ block.settings.image1.width }}"
+                  height="{{ block.settings.image1.height }}"
+                  {% render 'image-attributes', image: block.settings.image1 %}
+                  alt="{{ block.settings.image1.alt | escape }}"
+                >
+              {%- endif -%}
+              {%- if block.settings.video_txt != blank -%}
+              <video class="video-wrapper video-wrapper--native hidden-pocket" autoplay muted loop>
+                  <source src="{{ block.settings.video_txt }}" type="video/mp4">
+                  Your browser does not support the video tag.
+              </video>
+      
+                {%- if block.settings.video_txt1 != blank -%}
+                  <video  class="video-wrapper video-wrapper--native mobile-video-wrapper hidden-lap-and-up" autoplay muted loop>
+                      <source src="{{ block.settings.video_txt1 }}" type="video/mp4">
+                      Your browser does not support the video tag.
+                  </video>
+                {%- endif -%}
+              {%- endif -%}
+            </div>
+          {%- endfor -%}
+        </div>
+      </div>
+    </div>
+  </div>        
+</section>
+<script>
+  window.addEventListener('load',function(){
+    if(window.innerWidth>991){
+      $('.hover-slide .hover-slide-text-item').click(function(){
+        $(this).addClass('active').siblings().removeClass('active')
+        $(this).parents('.hover-slide-text').siblings('.hover-slide-img').find('.hover-slide-img-item').removeClass('active').eq($(this).index()).addClass('active')
+      })
+    }else{
+      function hoverSlide(){
+        let time = +new Date()
+        let $p = $('.hover-slide')
+        let $list = $p.find('.hover-slide-cont')
+        const content = document.querySelector('.hover-slide .hover-slide-cont');
+        let length = $list.find('.hover-slide-img-item').length
+        let width = $list.find('.hover-slide-img-item')[0].offsetWidth
+        let index = 0
+        let pWidth = $p[0].offsetWidth
+        let marginW = 24
+        let lWidth = length * (width + marginW) + $list[0].offsetLeft
+        let translateX = 0
+
+        function changeTransform(num){
+          translateX += (width + marginW) * num
+          if(translateX > lWidth - pWidth) {
+            translateX = lWidth - pWidth
+          }
+          if(translateX<0) translateX = 0
+          $list.css({
+            transform: 'translateX(-' + translateX + 'px)',
+            transition: 'all 1s cubic-bezier(0.645, 0.045, 0.355, 1) 0s'
+          })
+        }
+
+        detectSwipe(content, () => {
+          changeTransform(1)
+        }, () => {
+          changeTransform(-1)
+        });
+      }
+      
+      function detectSwipe(element, onSwipeLeft, onSwipeRight) {
+        let startX = 0;
+
+        const getEventX = (event) => {
+          return event.touches ? event.touches[0].clientX : event.clientX;
+        };
+
+        const handleTouchStart = (e) => {
+          startX = getEventX(e);
+        };
+
+        const handleTouchMove = (e) => {
+          const deltaX = getEventX(e) - startX;
+          if (Math.abs(deltaX) > 10 && e.cancelable) {
+            e.preventDefault();
+          }
+        };
+
+        const handleTouchEnd = (e) => {
+          const deltaX = getEventX(e.changedTouches ? e.changedTouches[0] : e) - startX;
+          if (deltaX > 10) {
+            onSwipeRight();
+          } else if (deltaX < -10) {
+            onSwipeLeft();
+          }
+        };
+
+        element.addEventListener('touchstart', handleTouchStart);
+        element.addEventListener('touchmove', handleTouchMove);
+        element.addEventListener('touchend', handleTouchEnd);
+
+        // Add mouse event listeners for PC compatibility
+        element.addEventListener('mousedown', handleTouchStart);
+        element.addEventListener('mousemove', handleTouchMove);
+        element.addEventListener('mouseup', handleTouchEnd);
+      }
+      hoverSlide()
+    }
+  })
+</script>
+{% schema %}
+{
+  "name": "hover-slide",
+  "blocks": [
+    {
+        "type": "item",
+        "name": "item",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          },
+          {
+            "type": "image_picker",
+            "id": "image1",
+            "label": "Mobile Image"
+          },
+          {
+            "type": "text",
+            "id": "video_txt",
+            "label": "Video"
+          },
+          {
+            "type": "text",
+            "id": "video_txt1",
+            "label": "Mobile Video"
+          },
+          {
+            "type": "text",
+            "id": "text",
+            "label": "Text"
+          },
+          {
+            "type": "text",
+            "id": "text1",
+            "label": "Text"
+          },
+          {
+            "type": "text",
+            "id": "text2",
+            "label": "Text"
+          },
+          {
+            "type": "text",
+            "id": "text3",
+            "label": "Text"
+          },
+          {
+            "type": "image_picker",
+            "id": "image3",
+            "label": "Image"
+          },
+          {
+            "type": "image_picker",
+            "id": "image4",
+            "label": "Image"
+          }
+        ]
+      }
+  ],
+  "presets": [
+    {
+      "name": "hover-slide",
+      "settings": {},
+      "blocks": [
+      ]
+    }
+  ]
+}
+{% endschema %}

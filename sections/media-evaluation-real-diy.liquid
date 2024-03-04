@@ -1,0 +1,1014 @@
+<style>
+  .media-evaluation-real-box {
+    background: #f9f9f9;
+    overflow: hidden;
+    padding: 90px 0 60px 0;
+    position: relative;
+    z-index: 1;
+  }
+  .media-evaluation-real-box .media-evaluation-real-t{
+    color: #000;
+    text-align: center;
+    font-size: 44px;
+    font-family: var(--heading-font-family);
+    line-height: 1.25;
+    max-width:520px;
+    margin:0 auto;
+    margin-bottom:50px;
+  }
+  .media-evaluation-real-box .media-evaluation-real {
+    display: flex;
+  }
+
+  .media-evaluation-real-box .media-evaluation-real-item {
+    background: #fff;
+    margin-right: 25px;
+    display: flex;
+    width: 890px;
+    align-items: center;
+    flex-shrink: 0;
+    flex-direction: row-reverse;
+  }
+
+  .media-evaluation-real-box .media-evaluation-real-img,
+  .media-evaluation-real-box .media-evaluation-real-cont {
+    width: 50%;
+    position: relative;
+  }
+
+  .media-evaluation-real-box .media-real-img-item {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    top: 0;
+    left: 0;
+    display: none;
+    transition: opacity 0.4s ease;
+  }
+  .media-evaluation-real-box .media-real-img-item img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    position: relative;
+    z-index: 1;
+    object-fit: cover;
+  }
+
+  .media-evaluation-real-box .media-real-img-item.active {
+    display: block;
+    position: relative;
+  }
+
+  .media-evaluation-real-box .media-real-img-item.close {
+    z-index: 3;
+    transition: height 0.6s ease;
+    width: 100%;
+    height: 0%;
+    display: block;
+  }
+
+  .media-evaluation-real-box .media-real-img-item.close img {
+    width: 100%;
+    height: auto;
+  }
+
+  .media-evaluation-real-box .media-evaluation-real-cont {
+    padding: 0 80px;
+  }
+  .media-evaluation-real-box .media-evaluation-real-star {
+    font-size: 22px;
+    line-height: 1;
+    color: #e7004c;
+  }
+  .media-evaluation-real-box .media-evaluation-real-title {
+    font-size: 25px;
+    font-family: var(--heading-font-family);
+    color: #000;
+    line-height: 1.2;
+    margin-top: 15px;
+  }
+  .media-evaluation-real-box .media-evaluation-real-p {
+    font-size: 14px;
+    color: #7f7f7f;
+    line-height: 1.6;
+    margin-top: 15px;
+  }
+
+  .media-evaluation-real-box .media-evaluation-real-name {
+    font-size: 16px;
+    color: #000;
+    margin-top: 35px;
+  }
+  .media-evaluation-real-box .media-evaluation-real-name .span {
+    display: inline-block;
+    margin-right: 5px;
+    color: #d5d5d5;
+  }
+
+  .media-evaluation-real-box .media-evaluation-real-btn {
+    width: 165px;
+    height: 52px;
+    background: #000;
+    color: #fff;
+    font-size: 18px;
+    margin-top: 35px;
+    border: 2px solid #000;
+    cursor: pointer;
+  }
+
+  .media-evaluation-real-box .media-evaluation-real-btn:hover .btn-txt::before {
+    color: #000;
+  }
+
+  .media-evaluation-real-box .media-evaluation-real-arrow {
+    position: absolute;
+    display: flex;
+    left: 50%;
+    bottom: 40px;
+    transform: translateX(-50%);
+    z-index: 3;
+  }
+
+  .media-evaluation-real-box .media-real-arrow-item {
+    cursor: pointer;
+    margin-right: 18px;
+    overflow: hidden;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    /* border: 2px solid #000; */
+    background: #fff;
+    position: relative;
+    transition: all 0.4s ease;
+  }
+  .media-evaluation-real-box .media-real-arrow-item::before {
+    position: absolute;
+    content: '';
+    display: block;
+    width: 12px;
+    height: 12px;
+    border-top: 2px solid #000;
+    border-left: 2px solid #000;
+    top: 50%;
+    left: 50%;
+    margin-left: 2px;
+    transform: translate(-50%, -50%) rotate(-45deg);
+    transition: all 0.4s ease;
+  }
+  .media-evaluation-real-box .media-real-arrow-item:nth-child(2) {
+    transform: scale(-1, -1);
+  }
+  .media-evaluation-real-box .media-real-arrow-item:hover {
+    background: #000;
+  }
+  .media-evaluation-real-box .media-real-arrow-item:hover::before {
+    border-color: #fff;
+  }
+
+  .media-evaluation-real-box .media-real-bottom {
+    display: flex;
+    align-items: center;
+    margin-top: 60px;
+  }
+  .media-evaluation-real-box .media-real-dot {
+    display: flex;
+    flex: 1;
+    background: #f1f1f1;
+    height: 2px;
+  }
+  .media-evaluation-real-box .media-real-dot-item {
+    flex: 1;
+    height: 2px;
+    position: relative;
+    cursor: pointer;
+  }
+  .media-evaluation-real-box .media-real-dot-item::before {
+    position: absolute;
+    content: '';
+    display: block;
+    width: 0;
+    height: 100%;
+    background: #000;
+    left: 0;
+    top: 0;
+  }
+
+  .media-evaluation-real-box .media-real-dot-item::after {
+    position: absolute;
+    content: '';
+    display: block;
+    width: 100%;
+    height: 400%;
+    background: none;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  .media-evaluation-real-box .media-real-dot-item.active::before {
+    width: 100%;
+  }
+  .media-evaluation-real-box .media-real-dot-item.active.tra::before {
+    transition: width 0.4s linear;
+  }
+
+  .media-evaluation-real-box .media-real-arrow {
+    display: flex;
+    margin-left: 10px;
+  }
+
+  .media-evaluation-real-box .media-real-bottom-arrow-item {
+    cursor: pointer;
+    margin-left: 20px;
+    overflow: hidden;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    position: relative;
+    transition: all 0.4s ease;
+  }
+  .media-evaluation-real-box .media-real-bottom-arrow-item::before {
+    position: absolute;
+    content: '';
+    display: block;
+    width: 12px;
+    height: 12px;
+    border-top: 2px solid #d5d5d5;
+    border-left: 2px solid #d5d5d5;
+    top: 50%;
+    left: 50%;
+    margin-left: 2px;
+    transform: translate(-50%, -50%) rotate(-45deg);
+    transition: all 0.4s ease;
+  }
+  .media-evaluation-real-box .media-real-bottom-arrow-item:nth-child(2) {
+    transform: scale(-1, -1);
+  }
+
+  .media-evaluation-real-box .media-real-bottom-arrow-item:hover::before {
+    border-color: #000;
+  }
+
+  .review-list-popup {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 99;
+    top: 0;
+    left: 0;
+    display: none;
+  }
+
+  .review-list-popup .review-list-popup-cont {
+    background: #fff;
+    width: 95%;
+    max-width: 1000px;
+    padding: 20px;
+  }
+
+  .review-list-popup .review-list-popup-title {
+    font-size: 40px;
+    font-family: var(--heading-font-family);
+    color: #000;
+    line-height: 1.2;
+    text-align: center;
+  }
+
+  .review-list-popup .review-list-popup-img {
+    display: flex;
+    margin-top: 30px;
+  }
+
+  .review-list-popup .review-list-popup-item {
+    flex: 1;
+    margin-right: 20px;
+    position: relative;
+  }
+
+  .review-list-popup .review-list-popup-item:last-child {
+    margin-right: 0;
+  }
+
+  .review-list-popup .review-list-popup-item .img {
+    display: block;
+    position: relative;
+    z-index: 1;
+  }
+
+  .review-list-popup .review-list-tag {
+    position: absolute;
+    font-size: 18px;
+    white-space: nowrap;
+    color: #fff;
+    padding: 3px 10px;
+    line-height: 1.2;
+    background: rgba(0, 0, 0, 0.6);
+    left: 50%;
+    top: 30px;
+    transform: translateX(-50%);
+    z-index: 3;
+  }
+
+  .review-list-popup .review-list-popup-close {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    border: 2px solid #fff;
+    margin: 0 auto;
+    margin-top: 30px;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.6s ease;
+  }
+
+  .review-list-popup .review-list-popup-close:hover {
+    transform: rotate(360deg);
+  }
+
+  .review-list-popup .review-list-popup-close::after,
+  .review-list-popup .review-list-popup-close::before {
+    position: absolute;
+    content: '';
+    display: block;
+    width: 2px;
+    height: 22px;
+    background: #fff;
+    top: 50%;
+    left: 50%;
+  }
+
+  .review-list-popup .review-list-popup-close::after {
+    transform: translate(-50%, -50%) rotate(-45deg);
+  }
+
+  .review-list-popup .review-list-popup-close::before {
+    transform: translate(-50%, -50%) rotate(45deg);
+  }
+
+
+  @media (max-width: 991px) {
+    .review-list-popup .review-list-popup-cont {
+      padding-bottom: 0;
+    }
+    .review-list-popup .review-list-popup-title {
+      font-size: 28px;
+    }
+    .review-list-popup .review-list-popup-img {
+      flex-wrap: wrap;
+    }
+    .review-list-popup .review-list-popup-item {
+      width: calc(50% - 10px);
+      margin-bottom: 20px;
+      flex: none;
+      max-height: 220px;
+    }
+    .review-list-popup .review-list-popup-item .img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .review-list-popup .review-list-popup-item:nth-child(2n) {
+      margin-right: 0;
+    }
+    .review-list-popup .review-list-tag {
+      font-size: 16px;
+      top: 20px;
+    }
+  }
+
+  @media (max-width: 890px) {
+    .media-evaluation-real-box {
+      padding: 50px var(--container-gutter);
+      overflow: hidden;
+    }
+    .media-evaluation-real-box .media-evaluation-real-t{
+      font-size: 28px;
+      max-width:220px;
+      margin-bottom:30px;
+    }
+    .media-evaluation-real-box .media-evaluation-real-item {
+      width: 100%;
+      flex-direction: column-reverse;
+    }
+    .media-evaluation-real-box .media-evaluation-real-img,
+    .media-evaluation-real-box .media-evaluation-real-cont {
+      width: 100%;
+    }
+    .media-evaluation-real-box .media-evaluation-real-cont {
+      flex: 1;
+    }
+    .media-evaluation-real-box .media-evaluation-real-cont {
+      padding: 30px;
+    }
+    .media-evaluation-real-box .media-real-dot {
+      display: none;
+    }
+    .media-evaluation-real-box .media-real-bottom {
+      justify-content: center;
+    }
+    .media-evaluation-real-box .media-real-arrow {
+      margin-left: 0;
+      flex: 1;
+      justify-content: space-between;
+    }
+    .media-evaluation-real-box .media-real-bottom-arrow-item {
+      margin: 0 4px;
+      background: #000;
+    }
+    .christmas-real.media-evaluation-real-box .media-real-bottom-arrow-item{
+      background:rgba(0,0,0,.25);
+    }
+    .christmas-real.media-evaluation-real-box .media-real-bottom-arrow-item:hover{
+      background:rgba(0,0,0,.5);
+    }
+    .media-evaluation-real-box .media-real-bottom {
+      margin-top: 0px;
+      position: absolute;
+      bottom: 57%;
+      width: 100%;
+      justify-content: space-between;
+      left: 0;
+    }
+    .media-evaluation-real-box .media-real-bottom-arrow-item::before {
+      border-color: #fff;
+    }
+    .media-evaluation-real-box .media-real-bottom-arrow-item:hover::before {
+      border-color: #fff;
+    }
+    .media-evaluation-real-box .media-evaluation-real-name {
+      margin-top: 10px;
+    }
+
+    .media-evaluation-real-box .media-evaluation-real-btn {
+      width: 100%;
+      margin-top: 20px;
+    }
+  }
+</style>
+<section class="section-box">
+  <div
+    class="media-evaluation-real-box {{ section.settings.class_name }}"
+    style="background:{{ section.settings.background }};"
+    data-text="{{ section.settings.r_text1 }},{{ section.settings.r_text2 }},{{ section.settings.r_text3 }},{{ section.settings.r_text4 }}"
+  >
+    {%- if section.settings.t_text != blank -%}
+      <div class="media-evaluation-real-t to-top">
+        {{ section.settings.t_text }}
+      </div>
+    {%- endif -%}
+    <div class="media-evaluation-real">
+      {%- for block in section.blocks -%}
+        <div
+          class="media-evaluation-real-item to-top"
+          style="background:{{ block.settings.background }};"
+          style="transition-delay: 0.{{forloop.index}}s"
+        >
+          <div class="media-evaluation-real-cont">
+            <div class="media-evaluation-real-star to-top" data-num="{{block.settings.star}}">
+              {%- if block.settings.half -%}
+                <div class="star-d">
+                  <span class="hide">★</span>
+                  <span class="show">★</span>
+                </div>
+              {%- endif -%}
+            </div>
+            {%- if block.settings.title != blank -%}
+              <div class="media-evaluation-real-title text-top" style="transition-delay: 0.1s">
+                {{ block.settings.title }}
+              </div>
+            {%- endif -%}
+            {%- if block.settings.content != blank -%}
+              <div class="media-evaluation-real-p text-top" style="transition-delay: 0.1s">
+                {{ block.settings.content }}
+              </div>
+            {%- endif -%}
+            {%- if block.settings.name != blank -%}
+              <div class="media-evaluation-real-name text-top" style="transition-delay: 0.6s">
+                <span class="span">-</span> {{ block.settings.name }}
+              </div>
+            {%- endif -%}
+            {%- if block.settings.btn_txt != blank -%}
+              <div
+                class="media-evaluation-real-btn btn-diy"
+                data-src="{{ block.settings.r_image | img_url: 'master' }},{{ block.settings.r_image1 | img_url: 'master' }}{% if block.settings.r_image2 != blank %},{{ block.settings.r_image2 | img_url: 'master' }}{% endif %}{% if block.settings.r_image3 != blank %},{{ block.settings.r_image3 | img_url: 'master' }}{% endif %}"
+              >
+                <div class="btn-txt" text="{{ block.settings.btn_txt }}">
+                  <span>{{ block.settings.btn_txt }}</span>
+                </div>
+              </div>
+            {%- endif -%}
+          </div>
+          <div class="media-evaluation-real-img to-top">
+            <div class="media-real-img-item active">
+              {%- if block.settings.image != blank and block.settings.image1 != blank -%}
+                <picture class="dropdown__picture">
+                  <source srcset="{{ block.settings.image1 | img_url: 'master' }}" media="(max-width: 890px)">
+                  <source srcset="{{ block.settings.image | img_url: 'master' }}" media="(min-width: 891px)">
+                  <img
+                    loading="lazy"
+                    width="{{ block.settings.image.width }}"
+                    height="{{ block.settings.image.height }}"
+                    {% render 'image-attributes', image: block.settings.image %}
+                    alt="{{ block.settings.image.alt | escape }}"
+                  >
+                </picture>
+              {%- endif -%}
+            </div>
+          </div>
+        </div>
+      {%- endfor -%}
+    </div>
+    <div class="container">
+      <div class="media-real-bottom">
+        <div class="media-real-dot to-top">
+          {%- for block in section.blocks -%}
+            <div class="media-real-dot-item"></div>
+          {%- endfor -%}
+        </div>
+        <div class="media-real-arrow to-top">
+          <div class="media-real-bottom-arrow-item"></div>
+          <div class="media-real-bottom-arrow-item"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="review-list-popup">
+    <div class="review-list-popup-cont">
+      <div class="review-list-popup-title">{{ section.settings.r_text }}</div>
+      <div class="review-list-popup-img"></div>
+    </div>
+    <div class="review-list-popup-close"></div>
+  </div>
+</section>
+<script>
+  (function () {
+    function mediaRealSlider(name) {
+      let $p = $(name);
+      let $list = $p.find('.media-evaluation-real');
+      let $dot = $p.find('.media-real-dot');
+      let $bottomArrow = $p.find('.media-real-arrow');
+      let length = $list.find('.media-evaluation-real-item').length;
+      let index = -2; //[0,-length-2]
+      let isLeftBtn = 1; //0左 1右
+      let timer = null;
+      let timers = null;
+      let dateTb = 0;
+      let dateTs = 0;
+      if (length < 2) return;
+
+      $list.html(
+        $list.find('.media-evaluation-real-item')[length - 2].outerHTML +
+          $list.find('.media-evaluation-real-item')[length - 1].outerHTML +
+          $list.html() +
+          $list.find('.media-evaluation-real-item')[0].outerHTML +
+          $list.find('.media-evaluation-real-item')[1].outerHTML
+      );
+      skewTransform(true);
+      changeDot();
+      $p.find('.media-real-bottom-arrow-item').click(function () {
+        let sIndex = $(this).index();
+        if (+new Date() - dateTb < 600) return;
+        dateTb = +new Date();
+        isLeftBtn = sIndex;
+        index += sIndex ? -1 : 1;
+        clearInterval(timer);
+        changeLeft();
+        timer = setInterval(() => {
+          isLeftBtn = 1;
+          index--;
+          changeLeft();
+        }, 5000);
+      });
+
+      $dot.find('.media-real-dot-item').click(function () {
+        index = -$(this).index() - 2;
+        clearInterval(timer);
+        changeLeft();
+        timer = setInterval(() => {
+          isLeftBtn = 1;
+          index--;
+          changeLeft();
+        }, 5000);
+      });
+
+      function skewTransform(auto, tIndex = index, skew = 0) {
+        let width = $list
+          .find('.media-evaluation-real-item')
+          .eq(Math.abs(tIndex) - 1)
+          .width();
+        let translateX = (width + 25) * tIndex;
+        if (auto) {
+          translateX += skew;
+          $list.css({
+            transform: 'translateX(' + translateX + 'px)',
+            transition: ' all 0s ease',
+          });
+        } else {
+          $list.css({
+            transform: 'translateX(' + translateX + 'px)',
+            transition: ' all .6s ease',
+          });
+        }
+      }
+
+      function changeLeft(skew) {
+        if (isLeftBtn && index == -length - 2) {
+          skewTransform(true, -1, skew);
+          index = -2;
+        }
+
+        if (!isLeftBtn && index == 0) {
+          skewTransform(true, -length - 1, skew);
+          index = -length;
+        }
+        setTimeout(() => {
+          skewTransform();
+        }, 10);
+        changeDot();
+      }
+
+      function changeDot() {
+        // $p.find('.media-real-dot-item').removeClass('active')
+        // setTimeout(() => {
+        $p.find('.media-real-dot-item').each(function () {
+          let $this = $(this);
+          let sIndex = $(this).index();
+          if (sIndex < Math.abs(index) - 2) {
+            $(this).addClass('active');
+          } else {
+            $(this).removeClass('active tra');
+          }
+          setTimeout(() => {
+            if (sIndex == Math.abs(index) - 2) {
+              $this.addClass('active tra');
+            }
+          }, 20);
+        });
+        if (index == -1) {
+          $p.find('.media-real-dot-item').addClass('active');
+          $p.find('.media-real-dot-item')
+            .eq(length - 1)
+            .addClass('active tra');
+        }
+        // }, 20);
+      }
+
+      function getTranslateX($element) {
+        var matrix = $element
+          .css('transform')
+          .replace(/[^0-9\-.,]/g, '')
+          .split(',');
+        var translateX = parseFloat(matrix[12] || matrix[4]);
+        return translateX;
+      }
+
+      function initMobileCarousel() {
+        let startX = 0;
+        let listTar = 0;
+        let startY = 0;
+        let isScrolling = false;
+        let isDragging = false;
+
+        function clearTimer() {
+          if (timer) {
+            clearInterval(timer);
+            timer = null;
+          }
+        }
+
+        function setAutoPlay() {
+          clearTimer();
+          timer = setInterval(() => {
+            isLeftBtn = 1;
+            index--;
+            changeLeft();
+          }, 5000);
+        }
+
+        $list.on('touchstart mousedown', function (e) {
+          clearTimer();
+
+          if (e.type === 'touchstart') {
+            var touch = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
+            startX = touch.clientX;
+            startY = touch.clientY;
+          } else {
+            startX = e.clientX;
+            startY = e.clientY;
+          }
+
+          isScrolling = false;
+          isDragging = true;
+          listTar = getTranslateX($list);
+
+          $(document).on('touchmove mousemove', handleMove);
+          $(document).on('touchend mouseup', handleEnd);
+        });
+
+        function handleMove(e) {
+          if (isDragging) {
+            if (e.type === 'touchmove') {
+              var touch = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
+              var diffX = touch.clientX - startX;
+              var diffY = touch.clientY - startY;
+            } else {
+              var diffX = e.clientX - startX;
+              var diffY = e.clientY - startY;
+            }
+
+            var translateX = listTar + diffX;
+
+            if (!isScrolling) {
+              if (Math.abs(diffX) > Math.abs(diffY)) {
+                isScrolling = true;
+              }
+            }
+
+            if (isScrolling && e.cancelable) {
+              e.preventDefault();
+              $list.css({
+                transform: 'translateX(' + translateX + 'px)',
+                transition: 'all 0s ease',
+              });
+            }
+          }
+        }
+
+        function handleEnd(e) {
+          if (isDragging) {
+            $(document).off('touchmove mousemove', handleMove);
+            $(document).off('touchend mouseup', handleEnd);
+
+            if (isScrolling) {
+              if (e.type === 'touchend') {
+                var touch = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
+                var diffX = touch.clientX - startX;
+              } else {
+                var diffX = e.clientX - startX;
+              }
+
+              if (Math.abs(diffX) > window.innerWidth * 0.05) {
+                if (diffX > 0) {
+                  index = index + 1;
+                  isLeftBtn = 0;
+                } else {
+                  index = index - 1;
+                  isLeftBtn = 1;
+                }
+                changeLeft(diffX);
+              } else {
+                $list.css({
+                  transform: 'translateX(' + listTar + 'px)',
+                  transition: 'all .4s ease',
+                });
+              }
+            }
+
+            isScrolling = false;
+            isDragging = false;
+            setAutoPlay(); // 保证只触发一次自动播放
+          }
+        }
+      }
+
+      initMobileCarousel();
+      clearInterval(timer);
+      timer = setInterval(() => {
+        isLeftBtn = 1;
+        index--;
+        changeLeft();
+      }, 5000);
+
+      // 图片轮播
+      $p.on('click', '.media-real-arrow-item', function () {
+        let $this = $(this);
+        let bIndex = $this.index();
+        let $list = $this.closest('.media-evaluation-real-img');
+        if (+new Date() - dateTs < 600) return;
+        dateTs = +new Date();
+        clearInterval(timers);
+        changeImg($list, bIndex);
+        timers = setInterval(() => {
+          loopImg();
+        }, 3800);
+      });
+
+      function changeImg($list, btnIndex) {
+        let dotIndex = $list.find('.media-real-img-item.active').index();
+        let length = $list.find('.media-real-img-item').length;
+        if (btnIndex != undefined) {
+          dotIndex += btnIndex ? 1 : -1;
+        } else {
+          dotIndex++;
+        }
+        if (dotIndex == length) dotIndex = 0;
+        if (dotIndex < 0) dotIndex = length - 1;
+        $list.find('.media-real-img-item.active').removeClass('active').addClass('close');
+        $list.find('.media-real-img-item').eq(dotIndex).addClass('active');
+        setTimeout(() => {
+          $list.find('.media-real-img-item.close').removeClass('close');
+        }, 600);
+      }
+
+      function loopImg() {
+        $p.find('.media-evaluation-real-img').each(function () {
+          changeImg($(this));
+        });
+      }
+
+      // timers = setInterval(() => {
+      //     loopImg()
+      // }, 3800);
+
+      $list.hover(
+        function () {
+          clearInterval(timer);
+        },
+        function () {
+          clearInterval(timer);
+          timer = setInterval(() => {
+            isLeftBtn = 1;
+            index--;
+            changeLeft();
+          }, 5000);
+        }
+      );
+    }
+    window.addEventListener('load', function () {
+      mediaRealSlider('#shopify-section-{{ section.id }}');
+      const generateStars = (score) => '★★★★★'.slice(0, score) + ''.slice(score);
+      document.querySelectorAll('.media-evaluation-real-star').forEach((item) => {
+        let num = item.getAttribute('data-num') * 1;
+        item.innerText = generateStars(num);
+      });
+
+      $('#shopify-section-{{ section.id }} .media-evaluation-real-box .media-evaluation-real-btn').click(function () {
+        let textL = $(this)
+          .closest('.media-evaluation-real-box')
+          .attr('data-text')
+          .split(',')
+          .filter((item) => item);
+        let imgL = $(this)
+          .attr('data-src')
+          .split(',')
+          .filter((item) => item);
+        
+        if (textL.length >= imgL.length) {
+          let html = imgL.map((item, index) => {
+            return `<div class="review-list-popup-item">
+                <img loading="lazy" src="${item}" alt="" class="img">
+                <div class="review-list-tag">${textL[index]}</div>
+              </div>`;
+          });
+
+          $('#shopify-section-{{ section.id }} .review-list-popup .review-list-popup-img').html(html);
+          $('#shopify-section-{{ section.id }} .review-list-popup').css({ display: 'flex' });
+        }
+      });
+      $('#shopify-section-{{ section.id }} .review-list-popup .review-list-popup-close').click(function () {
+        $('#shopify-section-{{ section.id }} .review-list-popup').css({ display: 'none' });
+      });
+    });
+  })();
+</script>
+{% schema %}
+{
+  "name": "media-evaluation-real",
+  "class": "media-evaluation-real-diy",
+  "blocks": [
+    {
+      "name": "item",
+      "type": "item",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "image_picker",
+          "id": "image1",
+          "label": "Mobile Image"
+        },
+        {
+          "type": "range",
+          "id": "star",
+          "min": 1,
+          "max": 5,
+          "step": 1,
+          "label": "Star",
+          "default": 5
+        },
+        {
+          "type": "checkbox",
+          "id": "half",
+          "label": "0.5",
+          "default": false
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title"
+        },
+        {
+          "type": "text",
+          "id": "content",
+          "label": "Content"
+        },
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Name"
+        },
+        {
+          "type": "text",
+          "id": "btn_txt",
+          "label": "Buttom text"
+        },
+        {
+          "type": "image_picker",
+          "id": "r_image",
+          "label": "Results Image"
+        },
+        {
+          "type": "image_picker",
+          "id": "r_image1",
+          "label": "Results Image"
+        },
+        {
+          "type": "image_picker",
+          "id": "r_image2",
+          "label": "Results Image"
+        },
+        {
+          "type": "image_picker",
+          "id": "r_image3",
+          "label": "Results Image"
+        },
+        {
+          "type": "color",
+          "id": "background",
+          "label": "Background",
+          "default": "#f9f9f9"
+        }
+      ]
+    }
+  ],
+  "settings": [
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "text",
+      "id": "t_text",
+      "label": "Title"
+    },
+    {
+      "type": "text",
+      "id": "r_text",
+      "label": "Results title"
+    },
+    {
+      "type": "text",
+      "id": "r_text1",
+      "label": "Results text"
+    },
+    {
+      "type": "text",
+      "id": "r_text2",
+      "label": "Results text"
+    },
+    {
+      "type": "text",
+      "id": "r_text3",
+      "label": "Results text"
+    },
+    {
+      "type": "text",
+      "id": "r_text4",
+      "label": "Results text"
+    },
+    {
+      "type": "text",
+      "id": "class_name",
+      "label": "Custom Class"
+    }
+  ],
+  "presets": [
+    {
+      "name": "media-evaluation-real",
+      "blocks": []
+    }
+  ]
+}
+{% endschema %}

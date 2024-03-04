@@ -1,0 +1,383 @@
+{%- liquid
+  assign se_id = section.id
+  assign se_bks = section.blocks
+  assign se_stts = section.settings
+-%}
+
+<div class="container g_in_medias_{{se_id}}">
+  <p class="title">
+    {{ se_stts.title }}
+  </p>
+  <div class="slick-list">
+    <div class="box-images">
+      <div class="swiper box-swiper swiper_avatar">
+        <div class="swiper-wrapper">
+          {%- for block in se_bks -%}
+            {%- assign item = block.settings -%}
+            <div class="swiper-slide images-item" index="{{ forloop.index0 }}">
+              {{- item.image | image_url: width: item.image.width | image_tag: loading: 'lazy', draggable: false -}}
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+    <div class="swiper mediasSwiper">
+      <div class="swiper-wrapper">
+        {%- for block in se_bks -%}
+          {%- assign item = block.settings -%}
+          <div class="swiper-slide item">
+            <div class="media__img">
+              {{- item.image | image_url: width: item.image.width | image_tag: loading: 'lazy', draggable: false -}}
+            </div>
+            <div class="abs-warp">
+              <div class="title">
+                {{ item.desc }}
+              </div>
+              <div class="name">{{ item.name }}</div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+      <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span>
+    </div>
+    <div class="box-switch">
+      <span class="iconfont swiper-prev ">&#xe685;</span>
+      <span class="iconfont swiper-next">&#xe687;</span>
+    </div>
+  </div>
+</div>
+
+<style>
+  @font-face {
+    font-family: 'iconfont';  /* Project id 3482585 */
+    src: url('https://cdn.shopify.com/s/files/1/0740/5882/6015/files/iconfont.woff2?v=1698718657') format('woff2')
+  }
+  .iconfont {
+    font-family: "iconfont" !important;
+    font-size: 16px;
+    font-style: normal;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    width: 40px;
+    height: 40px;
+    color: #fff;
+    display: flex;
+    text-align: center;
+    background-color: #808080;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    font-size: 22px;
+    cursor: pointer;
+  }
+  .g_in_medias_{{se_id}} .box-switch {
+    position: absolute;
+    right: 40px;
+    display: flex;
+    gap: 20px;
+  }
+
+  .g_in_medias_{{se_id}} {
+    padding: 60px var(--container-gutter);
+  }
+  .g_in_medias_{{se_id}} .slick-list{
+    margin-top: 20px;
+    z-index: 2;
+    overflow: hidden;
+    margin: 60px auto;
+    border-radius: 35px;
+    background: #F6F6F6;
+    padding: 60px 60px;
+    position: relative;
+    min-height: 410px;
+  }
+  .g_in_medias_{{se_id}} .title{
+    color: #000;
+    text-align: center;
+    font-family: var(--heading-font-family);
+    font-size: 40px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    text-transform: capitalize;
+  }
+
+  .g_in_medias_{{se_id}} .box-images {
+    height: 80px;
+    display: flex;
+    position: absolute;
+    left: 330px;
+    gap: 30px;
+    margin-bottom: 40px;
+    z-index: 6;
+    width: 500px;
+  }
+  .g_in_medias_{{se_id}} .box-images .swiper-slide-active {
+    display: none;
+  }
+
+  .g_in_medias_{{se_id}} .box-images img {
+    opacity: .4;
+    width: 80px;
+    cursor: pointer;
+    transition: opacity .2s;
+  }
+
+  .g_in_medias_{{se_id}} .box-images img:hover {
+    opacity: 1;
+  }
+
+  .g_in_medias_{{se_id}} .mediasSwiper {
+    width: 100%;
+    display: inline-block;
+    min-height: 280px;
+  }
+
+  .g_in_medias_{{se_id}} .mediasSwiper .item {
+    padding-bottom: 80px;
+    opacity: 0;
+    overflow: inherit;
+    transition: width .3s;
+    transition-delay: .2s;
+    cursor: pointer;
+  }
+
+  .g_in_medias_{{se_id}} .mediasSwiper .item .media__img {
+    opacity: .4;
+    position: relative;
+    transition: opacity .2s;
+  }
+
+  .g_in_medias_{{se_id}} .mediasSwiper .item .media__img img {
+    z-index: 2;
+    transition: width .6s;
+    width: 0px;
+    -webkit-transition: width .6s;
+    -moz-transition: width .6s;
+    -ms-transition: width .6s;
+    -o-transition: width .6s;
+  }
+
+  .g_in_medias_{{se_id}} .mediasSwiper .item .abs-warp {
+    position: absolute;
+    top: 0px;
+    left: 215px;
+    z-index: 4;
+    opacity: 0;
+    visibility: hidden;
+    transform: translate(50px, 0);
+    transition: all .3s;
+    transition-delay: .3s;
+    margin-top: 100px;
+    width: 75%;
+  }
+
+  .g_in_medias_{{se_id}} .mediasSwiper .item .abs-warp .title {
+    color: #000;
+
+    font-size: 32px;
+    font-weight: 500;
+    text-align: left;
+  }
+
+  .g_in_medias_{{se_id}} .mediasSwiper .item .abs-warp .name {
+    color: #000;
+
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 22.08px;
+    margin-top: 20px;
+  }
+
+  .g_in_medias_{{se_id}} .mediasSwiper .swiper-slide-active {
+    opacity: 1;
+  }
+
+  .g_in_medias_{{se_id}} .mediasSwiper .swiper-slide-active .media__img {
+    opacity: 1;
+  }
+
+  .g_in_medias_{{se_id}} .mediasSwiper .swiper-slide-active .media__img img {
+    width: 200px;
+  }
+
+  .g_in_medias_{{se_id}} .mediasSwiper .swiper-slide-active .abs-warp {
+    visibility: visible;
+    opacity: 1;
+  }
+
+  @media screen and (max-width: 740px) {
+    .g_in_medias_{{se_id}} {
+      padding: 50px 0px 20px;
+    }
+    .g_in_medias_{{se_id}} .title{
+      font-size: 28px;
+      margin-bottom: 40px;
+    }
+    .g_in_medias_{{se_id}} .slick-list{
+      padding: 0px ;
+      background: inherit;
+      margin: 0px auto;
+      min-height: auto;
+    }
+    .g_in_medias_{{se_id}} .box-images {
+      display: none;
+    }
+    .g_in_medias_{{se_id}} .mediasSwiper {
+      .swiper-slide-prev{ margin-top: 22%; height: 80px!important; text-align: right;}
+      .swiper-slide-prev img{ height: 80px!important;}
+      .swiper-slide-next{ margin-top: 22%; height: 80px!important;}
+      .swiper-slide-next img{ height: 80px!important;}
+    }
+
+    .g_in_medias_{{se_id}} .mediasSwiper .item {
+      opacity: 1;
+      width: 240px;
+      height: auto;
+      transition: none;
+      .media__img {
+        opacity: 1;
+        transition: none;
+      }
+      .media__img img{
+        width: 80px;
+        transition: none;
+      }
+      .abs-warp {
+        display: none;
+        opacity: 0;
+        visibility: visible;
+        position: initial;
+        margin: 30px 0px;
+        width: 100%;
+        transform: none;
+      }
+    }
+    .g_in_medias_{{se_id}} .mediasSwiper .item .abs-warp .title {
+      font-size: 20px;
+      font-weight: 500;
+      line-height: 24px;
+      margin-bottom: 0px;
+    }
+    .g_in_medias_{{se_id}} .mediasSwiper .item .abs-warp .name {
+      font-size: 14px;
+      margin-top: 10px;
+    }
+    .g_in_medias_{{se_id}} .mediasSwiper .swiper-slide-active {
+      width: 260px!important;
+      display: block;
+      padding: 0px;
+      .abs-warp {
+        display: block;
+        opacity: 1;
+      }
+    }
+    .g_in_medias_{{se_id}} .mediasSwiper .swiper-slide-active .media__img img {
+      width: 100%;
+    }
+    .g_in_medias_{{se_id}} .mediasSwiper .swiper-slide-active .abs-warp {
+      text-align: center;
+    }
+  }
+</style>
+
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script>
+  $(function () {
+    var ths = $('.g_in_medias_{{se_id}} .box-images');
+    {% comment %} 初始化 {% endcomment %}
+    if (!isMobile()){
+      var avatarSwiper  = new Swiper('.g_in_medias_{{se_id}} .swiper_avatar', {
+        slidesPerView: 4,
+        spaceBetween: 20,
+        loop: true,
+        loopAdditionalSlides: 4,
+        slideToClickedSlide: true,
+        on:{
+          click: function(){
+            mediasSwiper.slideTo(this.realIndex, 1000, false);
+          },
+        },
+      });
+    }
+    var mediasSwiper = new Swiper('.g_in_medias_{{se_id}} .mediasSwiper', {
+      slidesPerView: isMobile() ? 'auto' : 1,
+      spaceBetween: isMobile() ? 20 : 25,
+      centeredSlides: isMobile() ? true : false,
+      {% comment %} autoplay:true, {% endcomment %}
+      loop: true,
+      loopAdditionalSlides: 4,
+      navigation: {
+        nextEl: '.g_in_medias_{{se_id}} .swiper-next',
+        prevEl: '.g_in_medias_{{se_id}} .swiper-prev',
+      },
+      watchSlidesVisibility: true,
+      controller: {
+        control: avatarSwiper,
+      }
+    });
+  });
+</script>
+{% schema %}
+{
+  "name": "g-in-medias",
+  "settings": [
+    {
+      "type": "textarea",
+      "id": "title",
+      "label": "标题"
+    },
+    {
+      "type": "image_picker",
+      "id": "m_image",
+      "label": "移动端图片"
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "options": [
+        {
+          "value": "nt_full",
+          "label": "Full Width"
+        },
+        {
+          "value": "container",
+          "label": "Container"
+        }
+      ],
+      "label": "Layout"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "item",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "图片"
+        },
+        {
+          "type": "textarea",
+          "id": "name",
+          "label": "名称",
+          "info": "--Amber Scholl"
+        },
+        {
+          "type": "textarea",
+          "id": "desc",
+          "label": "介绍"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "g-in Medias",
+      "category": "g-in Medias",
+      "blocks": []
+    }
+  ]
+}
+{% endschema %}

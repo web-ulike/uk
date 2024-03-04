@@ -1,0 +1,178 @@
+<style>
+
+.compare-image-link{
+  position: relative;
+}
+
+.compare-image-link .compare-img{
+  display: block;
+  width: 100%;
+  position: relative;
+  z-index: 1;
+}
+
+.compare-image-link .mb-box{
+  display: none;
+}
+
+.compare-image-link .compare-image-cont{
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 100%;
+  left: 0;
+  z-index: 3;
+}
+
+.compare-image-link .compare-image-txt{
+  max-width: 330px;
+  margin-right: 50px;
+}
+
+.compare-image-link .compare-image-p{
+  font-size: 60px;
+  color: #fff;
+  line-height: 1;
+  font-family: var(--heading-font-family);
+}
+
+.compare-image-link .compare-image-btn{
+  width: 200px;
+  height: 60px;
+  font-size: 18px;
+  background: #000;
+  color: #fff;
+  margin-top: 40px;
+}
+.compare-image-link .compare-image-btn:hover .btn-txt::before,.compare-image-link .compare-image-btn:hover span{
+  color: #000;
+}
+.compare-image-link .container{
+  display: flex;
+  justify-content: flex-end;
+}
+
+@media (max-width:1300px) {
+  .compare-image-link .compare-image-txt{
+    max-width: 260px;
+  }
+  .compare-image-link .compare-image-p{
+    font-size: 46px;
+  }
+  .compare-image-link .compare-image-btn{
+    margin-top: 30px;
+  }
+}
+
+@media (max-width:991px) {
+  .compare-image-link .pc-box{
+    display: none;
+  }
+  .compare-image-link .mb-box{
+    display: block;
+  }
+  .compare-image-link .compare-image-txt{
+    max-width: 300px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  .compare-image-link .compare-image-p{
+    font-size: 28px;
+  }
+  .compare-image-link .compare-image-p span{
+    display: block;
+  }
+  .compare-image-link .compare-image-cont{
+    position: absolute;
+    top: auto;
+    transform: translateY(0);
+    bottom: 20px;
+  }
+  .compare-image-link .compare-image-btn{
+    margin: 0 auto;
+    margin-top: 25px;
+    height: 45px;
+    font-size: 14px;
+    width: 160px;
+  }
+}
+</style>
+<section class="section-box">
+  <a href="{{ section.settings.link }}" class="compare-image-link to-top">
+    {%- if section.settings.image != blank -%}
+         <img loading="lazy" class="pc-box compare-img" width="{{ section.settings.image.width }}" height="{{ section.settings.image.height }}" {% render 'image-attributes', image: section.settings.image %} alt="{{ section.settings.image.alt | escape }}" >
+      {%- endif -%}
+      {%- if section.settings.image1 != blank -%}
+         <img loading="lazy" class="mb-box compare-img" width="{{ section.settings.image1.width }}" height="{{ section.settings.image1.height }}" {% render 'image-attributes', image: section.settings.image1 %} alt="{{ section.settings.image1.alt | escape }}" >
+      {%- endif -%}
+    <div class="compare-image-cont">
+      <div class="container">
+        <div class="compare-image-txt">
+          {%- if section.settings.text != blank -%}
+            <div class="compare-image-p to-top">
+            {{ section.settings.text }}
+            {%- if section.settings.text1 != blank -%}
+              <span> {{ section.settings.text1 }}</span>
+            {%- endif -%}
+            </div>
+          {%- endif -%}
+          {%- if section.settings.text2 != blank -%}
+            <div class="compare-image-btn btn-diy to-top">
+              <div class="btn-txt" text="{{ section.settings.text2 }}">
+                  <span> {{ section.settings.text2 }} </span>
+              </div>  
+            </div>
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+  </a>
+</section>
+{% schema %}
+{
+  "name": "compare-image",
+  "class": "compare-image-box",
+  "blocks": [],
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image1",
+      "label": "Mobile Image"
+    },
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "text1",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "text2",
+      "label": "Button text"
+    },
+    {
+      "type": "url",
+      "id": "link",
+      "label": "Button link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "compare-image",
+      "blocks": []
+    }
+  ]
+}
+{% endschema %}
+
+
+

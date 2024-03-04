@@ -1,0 +1,191 @@
+<style>
+  #shopify-section-{{ section.id }} {
+    /*background: {{ section.settings.custom_background }};*/
+    --heading-color: {{ section.settings.text_color.red }}, {{ section.settings.text_color.green }}, {{ section.settings.text_color.blue }};
+    --text-color: {{ section.settings.text_color.red }}, {{ section.settings.text_color.green }}, {{ section.settings.text_color.blue }};
+    --bg:{{ section.settings.custom_background }};
+  }
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+  }
+  @media screen and (max-width: 768px){
+  .section-{{ section.id }}-padding {
+    padding-top: calc({{ section.settings.padding_top }}px * 0.6);
+    padding-bottom: calc({{ section.settings.padding_bottom }}px * 0.6);
+  }
+}
+  .content_image-box h2{
+    margin-bottom: 15px;
+  }
+  .content_image-box .content_image-txt {
+    margin: 0;
+    line-height: 18px;
+  }
+  .image-content-box{
+    display: flex;
+  }
+  .image-content-box{
+    border-radius: 0px 10px 10px 0px;
+    background: var(--bg);
+  }
+  .content-image{
+    max-width: 553px;
+  }
+  .content-txt {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex: 1;
+    padding: 20px;
+  }
+  .content-txt h4{
+    padding-left: 20px;
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+  .content-txt ul{
+    font-size: 14px;
+  }
+  @media (max-width: 1054px){
+    .image-content-box{
+      flex-direction: column;
+    }
+    .content-image{
+      max-width: fit-content;
+      width: 100%;
+    }
+    .content-txt{
+      padding: 20px 20px 20px 0;
+    }
+    .content-txt h4 {
+      font-size: 20px;
+      margin-bottom: 5px;
+    }
+  }
+</style>
+
+<section class="content_image-box section-{{ section.id }}-padding">
+  <div class="container">
+    <h2 class="heading heading--large text--{{section.settings.text_alignment}}"> {{- section.settings.title -}}</h2>
+    <p class="content_image-txt text--{{section.settings.text_alignment}}"> {{- section.settings.banner_txt -}}</p>
+    <div class="image-content-box">
+      {%- if section.settings.image != blank -%}
+        <div class="content-image">
+          {{- section.settings.image | image_url: width: section.settings.image.width | image_tag: loading: '', sizes: '100vw', widths: '200,300,400,500,600' -}}
+        </div>
+      {%- endif -%}
+      <div class="content-txt">
+        <h4>Notices</h4>
+        <ul>
+          <li>Apply the code when checkout to enjoy the discount</li>
+          <li>Cannot be used in conjunction with any other promotional code</li>
+          <li>50% off only applied on your 2nd item when you purchase 2 together in a single order</li>
+          <li>Lower price product will be discounted to half price</li>
+          <li>Ulike reserves the right to withdraw or amend promotional offers at any time</li>
+          <li>If you return one of the items, the discount will be unavaliable, we will charge the full price of the item you keep.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Image With Content",
+  "class": "shopify-section--image-with-content",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "default": "Banner Image Title",
+      "label": "Heading"
+    },
+    {
+      "type": "text",
+      "id": "banner_txt",
+      "default": "Banner Image Text",
+      "label": "Heading"
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Text alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "mobile_image",
+      "label": "Mobile Image"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "text",
+      "id": "custom_background",
+      "label": "Custom Background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "rgba(0,0,0,0)"
+    },
+     {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 36
+    }
+  ],
+  "blocks": [
+  ],
+  "presets": [
+    {
+      "name": "Image With Content"
+    }
+  ]
+}
+{% endschema %}

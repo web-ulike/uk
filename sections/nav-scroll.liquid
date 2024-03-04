@@ -1,0 +1,177 @@
+<style>
+  .nav_scroll-box ul{
+    display: flex;
+    color: #9D9D9D;
+text-align: center;
+font-size: 24px;
+font-style: normal;
+font-weight: 400;
+line-height: normal;
+text-transform: capitalize;
+padding: 0;
+border-bottom: 1px solid #9D9D9D;
+  }
+  .nav_scroll-box ul li{
+    flex-basis: 33.3%;
+  }
+  .nav_scroll-box ul li a{
+    display: flex;
+    padding: 25px;
+    justify-content: center;
+  }
+  .nav_scroll-box ul li a.active{
+    border-bottom: 1px solid #040000;
+    color: #040000;
+  }
+  .nav_scroll-box ul li::marker{
+    content: none;
+  }
+  .shopify-section--nav-scroll {
+    position: sticky;
+    top: 82px;
+    width: 100%;
+    z-index: 10;
+    background: #fff;
+}
+@media screen and (max-width: 768px){
+  .shopify-section--nav-scroll {
+    top: 63px;
+}
+.nav_scroll-box ul{
+  font-size: 20px;
+  overflow-x: scroll;
+    scrollbar-width: none;
+    scrollbar-color: transparent transparent;
+}
+.nav_scroll-box ul li {
+    flex-basis: 43%;
+    flex-shrink: 0;
+}
+.nav_scroll-box ul li a {
+    padding: 15px 0;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+}
+
+.nav_scroll-box ul::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+  }
+
+  .nav_scroll-box ul::-webkit-scrollbar-track {
+    display: none;
+  }
+
+  .nav_scroll-box ul::-webkit-scrollbar-thumb {
+    display: none;
+  }
+
+  .nav_scroll-box ul::-webkit-scrollbar-corner {
+    display: none;
+  }
+  .nav_scroll-box .container{
+    padding:0;
+  }
+}
+</style>
+
+<section class="">
+  <div class="nav_scroll-box">
+    <div class="container">
+      <nav>
+        <ul>
+          <li><a href="#{{section.settings.nav_id_1}}" data-target="#{{section.settings.nav_id_1}}">{{section.settings.nav_text_1}}</a></li>
+          <li><a href="#{{section.settings.nav_id_2}}" data-target="#{{section.settings.nav_id_2}}">{{section.settings.nav_text_2}}</a></li>
+          <li><a href="#{{section.settings.nav_id_3}}" data-target="#{{section.settings.nav_id_3}}">{{section.settings.nav_text_3}}</a></li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</section>
+<script>
+window.addEventListener("load", function () {
+      var currentBoxH = $(window).outerHeight(); // 动态获取全屏高度
+      // 锚点点击
+      $('.nav_scroll-box a').on('click', function (event) {
+         event.preventDefault();
+        // 获取目标ID
+        var target = $(this).data('target');
+        // 获取目标元素的位置
+        var targetPosition = $(target).offset().top - $(this).height();
+        // 缓慢滚动到目标位置
+        $('html, body').animate({ scrollTop: targetPosition }, 'slow');
+      });
+
+      // 监听滚动事件
+      $(window).on('scroll', function () {
+        // 获取滚动位置
+        var scrollPosition = $(this).scrollTop();
+        // 遍历所有链接元素
+        $('.nav_scroll-box a').each(function () {
+          var target = $(this).data('target');
+          var aroudH = $(this).height() * 2;
+          var targetPosition = $(target).offset().top;
+          // 判断滚动位置是否在目标元素附近
+          if (scrollPosition >= targetPosition - aroudH && scrollPosition <= targetPosition + aroudH) {
+            // 添加高亮类并移除其他元素的高亮类
+            $('.nav_scroll-box a').removeClass('active');
+            $(this).addClass('active');
+          }
+        });
+      });
+    });
+
+
+
+
+</script>
+{% schema %}
+{
+  "name": "Nav Scroll",
+  "class": "shopify-section--nav-scroll",
+  "settings": [
+    {
+      "type": "text",
+      "id": "nav_text_1",
+      "label": "Nav label 1"
+    },
+    {
+      "type": "text",
+      "id": "nav_text_2",
+      "label": "Nav label 2"
+    },
+    {
+      "type": "text",
+      "id": "nav_text_3",
+      "label": "Nav label 3"
+    },
+
+    {
+      "type": "text",
+      "id": "nav_id_1",
+      "label": "Nav Modal 1"
+    },
+    {
+      "type": "text",
+      "id": "nav_id_2",
+      "label": "Nav Modal 2"
+    },
+    {
+      "type": "text",
+      "id": "nav_id_3",
+      "label": "Nav Modal 3"
+    }
+  ],
+  "blocks": [
+  ],
+  "presets": [
+    {
+      "name": "Nav Scroll",
+      "settings": {},
+      "blocks": [
+      ]
+    }
+  ]
+}
+{% endschema %}

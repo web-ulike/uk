@@ -1,0 +1,291 @@
+{%- liquid
+  assign se_id = section.id
+  assign se_bks = section.blocks
+  assign se_stts = section.settings
+-%}
+{{ 'swiper-bundle.min.css' | asset_url | stylesheet_tag }}
+
+<div class="g_carousel_{{se_id}}">
+  <div class="title">{{ se_stts.title }}</div>
+  <div class="box-swiper">
+    <div class="left-text">
+      <div class="switch">
+        <span class="iconfont swiper-prev ">&#xe685;</span>
+        <span class="iconfont swiper-next">&#xe687;</span>
+      </div>
+      <div class="text-list hidden-phone">
+        <ul>
+          {%- for block in se_bks -%}
+            {%- assign item = block.settings -%}
+            <li index="{{forloop.index0}}">{{ item.title }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+    <div class="swiper mySwiper">
+      <div class="swiper-wrapper">
+        {%- for block in se_bks -%}
+          {%- assign item = block.settings -%}
+          <div class="item swiper-slide">
+            {% assign my_array = item.videoid | split: '?v=' %}
+            <div class="box-video">
+              {% if my_array.last != '' %}
+                <iframe
+                  width="100%"
+                  height="100%"
+                  src="https://www.youtube.com/embed/{{ my_array.last}}"
+                  title="video player"
+                  frameborder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowfullscreen
+                ></iframe>
+              {% endif %}
+            </div>
+            {%- if item.title != '' -%}
+              <div class="box-detail hidden-desk">
+                <p class="title">{{ item.title }}</p>
+              </div>
+            {% endif %}
+          </div>
+        {% endfor %}
+      </div>
+      <div class="swiper-pagination hidden-desk"></div>
+    </div>
+  </div>
+</div>
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="{{ 'swiper-bundle.min.aio.min.js' | asset_url }}"></script>
+<script>
+  $(function () {
+    var swiper = new Swiper('.g_carousel_{{se_id}} .mySwiper', {
+      slidesPerView: isMobile() ? 1.2 : 4.4,
+      spaceBetween: isMobile() ? 15 : 25,
+      loop: true,
+      {% comment %} autoplay: true, {% endcomment %}
+      pagination: {
+        el: '.swiper-pagination',
+        clickable: true,
+      },
+      navigation: {
+        nextEl: '.swiper-next',
+        prevEl: '.swiper-prev',
+      },
+      on: {
+        slideChangeTransitionEnd: function () {
+          let index = this.realIndex;
+          if (!isMobile()) {
+            $('.g_carousel_{{se_id}} .text-list ul li').removeClass('active');
+            $('.g_carousel_{{se_id}} .text-list ul li').eq(index).addClass('active');
+          }
+        },
+      },
+    });
+    if (!isMobile()) {
+      $('.g_carousel_{{se_id}} .text-list ul li').eq(0).addClass('active');
+    }
+  });
+</script>
+<style>
+  @font-face {
+    font-family: 'iconfont';  /* Project id 3482585 */
+    src: url('https://cdn.shopify.com/s/files/1/0740/5882/6015/files/iconfont.woff2?v=1698718657') format('woff2')
+  }
+  .iconfont {
+    font-family: "iconfont" !important;
+    font-size: 16px;
+    font-style: normal;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    width: 40px;
+    height: 40px;
+    color: #fff;
+    display: flex;
+    text-align: center;
+    background-color: #808080;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    font-size: 22px;
+    cursor: pointer;
+  }
+  .g_carousel_{{se_id}}{
+    padding: 80px 0px 80px 8%;
+  }
+  .g_carousel_{{se_id}} .title{
+    color: #000;
+    text-align: center;
+    font-family: var(--heading-font-family);
+    font-size: 44px;
+    font-weight: 500;
+    line-height: 125%;
+    margin-bottom: 40px;
+    padding: 0px 8% 0px 0px;
+  }
+
+  .g_carousel_{{se_id}} .box-swiper {
+    display: flex;
+  }
+
+  .g_carousel_{{se_id}} .box-swiper .left-text {
+    width: 230px;
+  }
+
+  .g_carousel_{{se_id}} .box-swiper .left-text .switch {
+    display: flex;
+  }
+
+  .g_carousel_{{se_id}} .box-swiper .left-text .switch span:first-child {
+    margin-right: 20px;
+  }
+
+  .g_carousel_{{se_id}} .box-swiper .left-text .switch .swiper-button-disabled {
+    background-color: #bfbfbf;
+  }
+
+  .g_carousel_{{se_id}} .box-swiper .left-text .text-list {
+    color: rgba(0, 0, 0, 0.5);
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 600;
+    margin-top: 40px;
+  }
+
+  .g_carousel_{{se_id}} .box-swiper .left-text .text-list ul {
+    list-style: none;
+    padding: 0px;
+    margin: 0px;
+  }
+
+  .g_carousel_{{se_id}} .box-swiper .left-text .text-list ul li {
+    font-size: 18px;
+    font-family: var(--heading-font-family);
+    font-weight: 400;
+    line-height: 26px;
+  }
+
+  .g_carousel_{{se_id}} .box-swiper .left-text .text-list ul .active {
+    color: #000;
+    font-weight: 500;
+  }
+
+  .g_carousel_{{se_id}} .box-swiper .mySwiper {
+    flex: 1;
+  }
+  .g_carousel_{{se_id}} .box-swiper .box-video {
+    height: 450px;
+  }
+
+  @media screen and (max-width: 740px) {
+    .g_carousel_{{se_id}}{
+      font-size: 28px;
+      padding: 50px 20px;
+    }
+    .g_carousel_{{se_id}} .title{
+      font-size: 28px;
+      margin-bottom: 20px;
+      padding: 0px;
+    }
+    .g_carousel_{{se_id}} .box-swiper {
+      position: relative;
+      width: 100%;
+    }
+
+    .g_carousel_{{se_id}} .box-swiper .left-text {
+      position: absolute;
+      width: 100%;
+      top: 40%;
+      z-index: 10;
+      padding: 0px 15px;
+    }
+    .g_carousel_{{se_id}} .box-swiper .left-text .switch {
+      justify-content: space-between;
+    }
+
+    .g_carousel_{{se_id}} .box-swiper .mySwiper {
+      flex: 1;
+      padding-bottom: 40px;
+    }
+
+    .g_carousel_{{se_id}} .box-swiper .mySwiper .item {
+      padding-top: 20px;
+    }
+    .g_carousel_{{se_id}} .box-swiper .mySwiper .item .box-detail {
+      padding: 10px 0px;
+    }
+    .g_carousel_{{se_id}} .box-swiper .mySwiper .item .title {
+      color: #000;
+      font-size: 16px;
+      font-weight: 600;
+      text-align: center;
+      line-height: 24px;
+    }
+    .swiper-pagination {
+      --swiper-pagination-color: #7a7a7a;
+      --swiper-pagination-bullet-inactive-color: #D9D9D9;
+      --swiper-pagination-bullet-inactive-opacity: 1;
+      line-height: 30px;
+
+    }
+    .swiper-pagination .swiper-pagination-bullet {
+      border-radius: 0px;
+      width: 5px;
+      height: 5px;
+    }
+
+  }
+</style>
+
+{% schema %}
+{
+  "name": "g-carousel-block",
+  "class": "g_carousel_block",
+  "settings": [
+    {
+      "type": "textarea",
+      "id": "title",
+      "label": "标题"
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "options": [
+        {
+          "value": "nt_full",
+          "label": "Full Width"
+        },
+        {
+          "value": "container",
+          "label": "Container"
+        }
+      ],
+      "label": "Layout"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "item",
+      "settings": [
+        {
+          "type": "url",
+          "id": "videoid",
+          "label": "视频链接",
+          "info": "E.g: "
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "标题"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "g_carousel Block",
+      "category": "g_carousel Block",
+      "blocks": []
+    }
+  ]
+}
+{% endschema %}

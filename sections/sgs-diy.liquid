@@ -1,0 +1,308 @@
+<style>
+  .sgs-box{
+    padding: 100px 0;
+    background: #fff;
+    position: relative;
+    z-index: 1;
+}
+.sgs-box .sgs-box-cont{
+    position: relative;
+}
+.sgs-box .sgs-img{
+    position: relative;
+    z-index: 1;
+    display: block;
+    margin: 0;
+    width:100%;
+}
+
+.sgs-box .mb-box{
+    display: none;
+}
+
+.sgs-box .sgs-text{
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 100px;
+    color: #fff;
+    z-index: 2;
+    max-width: 585px;
+}
+
+.sgs-box .sgs-sub{
+    font-size: 18px;
+    line-height: 1.2;
+}
+.sgs-box .sgs-title{
+    position: relative;
+    font-size: 40px;
+    font-weight: bold;
+    padding-bottom: 25px;
+    margin-bottom: 20px;
+    line-height: 1.2;
+}
+
+.sgs-box .sgs-title::before{
+    position: absolute;
+    content: '';
+    display: block;
+    width: 18px;
+    height: 4px;
+    background: #fff;
+    left: 0;
+    bottom: 0;
+}
+
+.sgs-box .sgs-p{
+    font-size: 16px;
+    line-height: 1.6;
+    max-width: 435px;
+}
+.sgs-box .sgs-icon{
+    display: block;
+    margin-top: 20px;
+}
+
+  .sgs-box .sgs-txt-box{
+  width: 276px;
+  height: 90px;
+  display: flex;
+  border: 2px solid #fff;
+  border-radius: 6px;
+  margin-top: 30px;
+}
+.sgs-box .sgs-txt-box-item{
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  color: #fff;
+}
+
+.sgs-box .sgs-txt-box-item:first-child{
+  border-right: 2px solid #fff;
+}
+
+.sgs-box .sgs-txt-box-item .img{
+  width: 117px;
+  display: block;
+}
+
+.sgs-box .sgs-txt-box-item .icon-s{
+  width: 30px;
+  display: block;
+  margin-right: 8px;
+}
+
+.sgs-box .big-box{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  z-index: 3;
+}
+
+.sgs-box .big-box .container{
+  position: relative;
+  height: 100%;
+}
+
+@media (max-width:1400px) {
+    .sgs-box .sgs-text{
+        max-width: 45%;
+        right: 50px;
+    }
+    .sgs-box .sgs-title{
+        font-size: 32px;
+    }
+    .sgs-box .sgs-txt-num{
+        font-size: 38px;
+    }
+}
+@media (max-width:1200px) {
+    .sgs-box .sgs-text{
+        right: 30px;
+    }
+    .sgs-box .sgs-title{
+        font-size: 28px;
+    }
+    .sgs-box .sgs-txt-num{
+        font-size: 30px;
+    }
+    .sgs-box .sgs-txt-item{
+        padding: 0 10px;
+    }
+    .sgs-box .sgs-icon{
+        width: 90px;
+    }
+}
+
+@media (max-width:991px) {
+    .sgs-box{
+        padding: 50px 0;
+    }
+    .sgs-box .sgs-title{
+        font-size: 28px;
+        padding-bottom: 20px;
+        margin-bottom: 15px;
+        margin-top: 10px;
+    }
+    .sgs-box .mb-box{
+        display: block;
+    }
+    .sgs-box .pc-box{
+        display: none;
+    }
+    .sgs-box .sgs-text{
+        max-width: none;
+        width: 100%;
+        right: 0;
+        padding: 0 20px;
+        bottom: 0;
+        top: auto;
+        transform: translateY(0);
+        text-align: center;
+        padding-bottom: 30px;
+    }
+    .sgs-box .sgs-p{
+        max-width: none;
+    }
+    .sgs-box .sgs-title::before{
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .sgs-box .sgs-p{
+        font-size: 14px;
+        line-height: 1.4;
+    }
+    .sgs-box .sgs-sub{
+        font-size: 14px;
+    }
+  .sgs-box .sgs-txt-box{
+      margin: 0 auto;
+      margin-top: 30px;
+      zoom: .8;
+    }
+}
+</style>
+<section class="section-box">
+  <div class="sgs-box">
+    {%- unless section.settings.is_big -%}
+      <div class="container">
+    {%- endunless -%}
+      <div class="sgs-box-cont">
+        {%- if section.settings.image != blank -%}
+          <img loading="lazy" class="sgs-img pc-box to-opacity" width="{{ section.settings.image.width }}"
+            height="{{ section.settings.image.height }}" {% render 'image-attributes' , image: section.settings.image %}
+            alt="{{ section.settings.image.alt | escape }}">
+        {%- endif -%}
+        {%- if section.settings.image_m != blank -%}
+          <img loading="lazy" class="sgs-img mb-box to-opacity" width="{{ section.settings.image_m.width }}"
+            height="{{ section.settings.image_m.height }}" {% render 'image-attributes' , image: section.settings.image_m %}
+            alt="{{ section.settings.image_m.alt | escape }}">
+        {%- endif -%}
+        {%- if section.settings.is_big -%}
+          <div class="big-box">
+            <div class="container">
+        {%- endif -%}
+              <div class="sgs-text to-top">
+                <div class="sgs-sub">{{ section.settings.text }}</div>
+                <div class="sgs-title">{{ section.settings.text1 }}</div>
+                <div class="sgs-p">
+                  {{ section.settings.text2 }}
+                </div>
+                {%- if section.settings.image1 != blank -%}
+                  <div class="sgs-txt-box">
+                    <div class="sgs-txt-box-item">
+                      {%- if section.settings.image1 != blank -%}
+                       <img loading="lazy" class="img" width="{{ section.settings.image1.width }}"
+                        height="{{ section.settings.image1.height }}" {% render 'image-attributes' , image: section.settings.image1 %}
+                        alt="{{ section.settings.image1.alt | escape }}">
+                      {%- endif -%}
+                    </div>
+                    <div class="sgs-txt-box-item">
+                      {%- if section.settings.image2 != blank -%}
+                        <img loading="lazy" class="icon-s" width="{{ section.settings.image2.width }}"
+                          height="{{ section.settings.image2.height }}" {% render 'image-attributes' , image: section.settings.image2 %}
+                          alt="{{ section.settings.image2.alt | escape }}">
+                      {%- endif -%}
+                      {{ section.settings.text3 }}
+                    </div>
+                  </div>
+                {%- endif -%}
+              </div>
+        {%- if section.settings.is_big -%}
+            </div>
+          </div>
+        {%- endif -%}
+      </div>
+  {%- unless section.settings.is_big -%}
+    </div>
+  {%- endunless -%}
+  </div>
+</section>
+{% schema %}
+  {
+    "name": "sgs-diy",
+    "class": "sgs-diy",
+    "blocks": [],
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "is_big",
+        "label": "宽屏",
+        "default": false
+      },
+      {
+        "type": "image_picker",
+        "id": "image",
+        "label": "Image"
+      },
+      {
+        "type": "image_picker",
+        "id": "image_m",
+        "label": "Mobile Image"
+      },
+      {
+        "type": "image_picker",
+        "id": "image1",
+        "label": "Icon"
+      },
+      {
+        "type": "image_picker",
+        "id": "image2",
+        "label": "Icon"
+      },
+      {
+        "type": "text",
+        "id": "text",
+        "label": "Text"
+      },
+      {
+        "type": "text",
+        "id": "text1",
+        "label": "Text"
+      },
+      {
+        "type": "text",
+        "id": "text2",
+        "label": "Text"
+      },
+      {
+        "type": "text",
+        "id": "text3",
+        "label": "Text"
+      }
+    ],
+    "presets": [
+      {
+        "name": "sgs-diy",
+        "blocks": []
+      }
+    ]
+  }
+{% endschema %}

@@ -1,0 +1,496 @@
+<style>
+  .sell-point-box{
+    padding-bottom: 100px;
+    background: #fff;
+    position: relative;
+    z-index: 1;
+}
+
+.sell-point-box .sell-point-item{
+    display: flex;
+}
+.sell-point-box .is-reversal{
+    flex-direction: row-reverse;
+}
+.sell-point-box .sell-point-img,.sell-point-box .sell-point-text{
+    width: 50%;
+    position: relative;
+    overflow: hidden;
+}
+.sell-point-box .sell-point-img img{
+    display: block;
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: relative;
+    z-index: 1;
+}
+.sell-point-box .img-item{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    opacity: 0;
+    z-index: 1;
+    transition: all .4s ease;
+}
+.sell-point-box .img-item.active{
+    position: relative;
+    opacity: 1;
+    z-index: 2;
+}
+.sell-point-box .img-item-txt{
+    position: absolute;
+    z-index: 2;
+    top: 30px;
+    left: 30px;
+    font-size: 20px;
+    color: #fff;
+    line-height: 1.2;
+}
+.sell-point-box .img-item-txt .img-item-p{
+    margin-top: 8px;
+}
+.sell-point-box .img-item-txt .img-item-p:not(:first-child){
+    padding-left: 20px;
+    position: relative;
+}
+.sell-point-box .img-item-txt .img-item-p:not(:first-child)::after{
+    position: absolute;
+    content: '';
+    display: block;
+    width: 5px;
+    height: 5px;
+    background: #fff;
+    top: 50%;
+    left: 5px;
+    transform: translateY(-50%);
+}
+.sell-point-box .sell-point-text{
+    padding: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.sell-point-box .sell-point-text-cont{
+    max-width: 472px;
+}
+
+.sell-point-box .sell-point-sub{
+    font-size: 18px;
+    color: #000;
+    line-height: 1.2;
+}
+
+ .sell-point-box .sell-point-text .sell-point-icon{
+  display: block;
+  margin-top: 30px;
+}
+.sell-point-box .sell-point-title{
+    font-size: 40px;
+    font-family: var(--heading-font-family);
+    color: #000;
+    line-height: 1.2;
+    position: relative;
+    padding-bottom: 25px;
+    margin-bottom: 30px;
+}
+
+.sell-point-box .sell-point-title::before{
+    position: absolute;
+    content: '';
+    display: block;
+    width: 18px;
+    height: 4px;
+    left: 0;
+    bottom: 0;
+    background: #e1e1e1;
+}
+
+.sell-point-box .sell-point-p{
+    font-size: 16px;
+    line-height: 1.6;
+    color: #535353;
+}
+
+.sell-point-box .img-item-tab{
+    position: absolute;
+    width: 430px;
+    height: 45px;
+    max-width: 90%;
+    left: 50%;
+    bottom: 50px;
+    z-index: 3;
+    border: 2px solid #fff;
+    border-radius: 45px;
+    display: flex;
+    transform: translateX(-50%);
+}
+
+.sell-point-box .img-item-tab-item{
+    position: relative;
+    flex: 1;
+    font-size: 18px;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 2;
+    transition: all .4s ease;
+}
+.sell-point-box .img-item-tab-item.active{
+    color: #000;
+}
+
+.sell-point-box .img-item-tab-span{
+    position: absolute;
+    width: calc(33.333% + 2px);
+    height: calc(100% + 4px);
+    border-radius: 45px;
+    margin-left: -1px;
+    top: -2px;
+    background: #fff;
+}
+
+@media (max-width:1300px) {
+    .sell-point-box .sell-point-title{
+        font-size: 28px;
+    }
+    .sell-point-box .img-item-tab-item{
+        font-size: 14px;
+    }
+}
+
+@media (max-width:991px) {
+    .sell-point-box{
+        padding-bottom: 50px;
+    }
+    .sell-point-box .sell-point-title{
+        padding-bottom: 15px;
+        margin-bottom: 20px;
+    }
+    .sell-point-box .sell-point-item{
+        display: block;
+    }
+    .sell-point-box .sell-point-img, .sell-point-box .sell-point-text{
+        width: 100%;
+    }
+    .sell-point-box .sell-point-text{
+        justify-content: flex-start;
+        padding: 30px 20px;
+    }
+    .sell-point-box .img-item-tab-item{
+        font-size: 12px;
+    }
+    .sell-point-box .img-item-tab{
+        height: 35px;
+        bottom: 20px;
+    }
+    .sell-point-box .img-item-txt{
+        top: 15px;
+        left: 15px;
+        font-size: 14px;
+    }
+  .sell-point-box .sell-point-text .sell-point-icon{
+    margin-top: 20px;
+  }
+}
+
+@media (max-width:740px) {
+    .sell-point-box .sell-point-item{
+        margin: 0 -24px;
+    }
+}
+
+</style>
+<section class="section-box">
+  <div class="sell-point-box">
+    <div class="container">
+      <div class="sell-point-list">
+        {%- for block in section.blocks -%}
+          {% case block.type %}
+            {% when 'item' %}
+              <div class="sell-point-item {% if block.settings.is_reversal %}is-reversal{% endif %} to-top">
+                <div class="sell-point-img">
+                  {%- if block.settings.image != blank -%}
+                    <div class="img-item active">
+                      <img loading="lazy" width="{{ block.settings.image.width }}"
+                      height="{{ block.settings.image.height }}" {% render 'image-attributes' , image: block.settings.image %}
+                      alt="{{ block.settings.image.alt | escape }}">
+                    </div>
+                  {%- endif -%}
+                </div>
+                <div class="sell-point-text">
+                  <div class="sell-point-text-cont">
+                    <div class="sell-point-sub to-top" style="transition-delay: .1s">{{ block.settings.text }}</div>
+                    <div class="sell-point-title to-top" style="transition-delay: .2s">{{ block.settings.text1 }}</div>
+                    <div class="sell-point-p to-top" style="transition-delay: .3s">{{ block.settings.text2 }}</div>
+                    {%- if block.settings.image1 != blank -%}
+                      <img loading="lazy" class="sell-point-icon to-top" style="transition-delay: .4s" width="{{ block.settings.image1.width }}"
+                        height="{{ block.settings.image1.height }}" {% render 'image-attributes' , image: block.settings.image1 %}
+                        alt="{{ block.settings.image1.alt | escape }}">
+                    {%- endif -%}
+                  </div>
+                </div>
+              </div>
+              {% when 'multiple' %}
+                <div class="sell-point-item is-reversal to-top">
+                  <div class="sell-point-img sell-point-img-other">
+                    {%- if block.settings.image != blank -%}
+                      <div class="img-item active">
+                        <img loading="eager" width="{{ block.settings.image.width }}"
+                          height="{{ block.settings.image.height }}" {% render 'image-attributes' , image: block.settings.image %}
+                          alt="{{ block.settings.image.alt | escape }}">
+                        <div class="img-item-txt">
+                          <div class="img-item-p to-top" style="transition-delay: .1s">{{ block.settings.text3 }}</div>
+                          <div class="img-item-p to-top" style="transition-delay: .2s">{{ block.settings.text4 }}</div>
+                          <div class="img-item-p to-top" style="transition-delay: .3s">{{ block.settings.text5 }}</div>
+                          <div class="img-item-p to-top" style="transition-delay: .4s">{{ block.settings.text6 }}</div>
+                        </div>
+                      </div>
+                    {%- endif -%}
+                    {%- if block.settings.image1 != blank -%}
+                      <div class="img-item">
+                        <img loading="eager" width="{{ block.settings.image1.width }}"
+                          height="{{ block.settings.image1.height }}" {% render 'image-attributes' , image: block.settings.image1 %}
+                          alt="{{ block.settings.image1.alt | escape }}">
+                        <div class="img-item-txt">
+                          <div class="img-item-p to-top" style="transition-delay: .1s">{{ block.settings.text7 }}</div>
+                          <div class="img-item-p to-top" style="transition-delay: .2s">{{ block.settings.text8 }}</div>
+                          <div class="img-item-p to-top" style="transition-delay: .3s">{{ block.settings.text9 }}</div>
+                        </div>
+                      </div>
+                    {%- endif -%}
+                    {%- if block.settings.image2 != blank -%}
+                      <div class="img-item">
+                        <img loading="eager" width="{{ block.settings.image2.width }}"
+                          height="{{ block.settings.image2.height }}" {% render 'image-attributes' , image: block.settings.image2 %}
+                          alt="{{ block.settings.image2.alt | escape }}">
+                        <div class="img-item-txt">
+                          <div class="img-item-p to-top" style="transition-delay: .1s">{{ block.settings.text10 }}</div>
+                          <div class="img-item-p to-top" style="transition-delay: .2s">{{ block.settings.text11 }}</div>
+                          <div class="img-item-p to-top" style="transition-delay: .3s">{{ block.settings.text12 }}</div>
+                        </div>
+                      </div>
+                    {%- endif -%}
+                    <div class="img-item-tab to-opacity" style="transition-delay: .5s">
+                      {%- if block.settings.text13 != blank -%}
+                        <div class="img-item-tab-item active">{{ block.settings.text13 }}</div>
+                      {%- endif -%}
+                      {%- if block.settings.text14 != blank -%}
+                        <div class="img-item-tab-item">{{ block.settings.text14 }}</div>
+                      {%- endif -%}
+                      {%- if block.settings.text15 != blank -%}
+                        <div class="img-item-tab-item">{{ block.settings.text15 }}</div>
+                      {%- endif -%}
+                      <div class="img-item-tab-span"></div>
+                    </div>
+                  </div>
+                  <div class="sell-point-text">
+                    <div class="sell-point-text-cont">
+                      <div class="sell-point-sub text-top" style="transition-delay: .3s">{{ block.settings.text }}</div>
+                      <div class="sell-point-title text-top" style="transition-delay: .6s">{{ block.settings.text1 }}</div>
+                      <div class="sell-point-p to-top" style="transition-delay: 1s">{{ block.settings.text2 }}</div>
+                    </div>
+                  </div>
+                </div>
+            {% endcase %}
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+  window.addEventListener('load',function(){
+    $('.sell-point-box .img-item-tab-item').click(function(){
+      let index = $(this).index()
+      let width = $(this).width()
+      let translateX = index*width
+      $(this).addClass('active').siblings().removeClass('active')
+      $(this).closest('.sell-point-item').find('.img-item').removeClass('active').eq(index).addClass('active')
+      $('.sell-point-box .img-item-tab-span').css({'transform': 'translateX('+translateX+'px)','transition': 'transform .4s'})
+    })
+
+    function changeellPointItem($this){
+      let width = $this.find('.img-item-tab-item').width()
+      setTimeout(function(){
+        let hover = $this.attr('data-hover')
+        if(hover==1){
+          return changeellPointItem($this)
+        }
+        let index = $this.find('.img-item.active').index()
+        index ++
+        if(index==3) index = 0
+        $this.find('.img-item').removeClass('active')
+        $this.find('.img-item').eq(index).addClass('active')
+        $this.find('.img-item-tab-item').removeClass('active').eq(index).addClass('active')
+        $this.find('.img-item-tab-span').css({'transform': 'translateX('+width*index+'px)','transition': 'transform .4s'})
+        changeellPointItem($this)
+      },2000)
+    }
+    $('.sell-point-img-other').hover(function(){
+      $(this).attr('data-hover',1)
+    },function(){
+      $(this).attr('data-hover',0)
+    })
+    $('.sell-point-img-other').each(function(){
+      $(this).attr('data-hover',0)
+      changeellPointItem($(this))
+    })
+  })
+</script>
+{% schema %}
+{
+"name": "sell-point-diy",
+"class": "sell-point-diy",
+"blocks": [
+  {
+    "name": "item",
+    "type": "item",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "is_reversal",
+        "label": "Reversal",
+        "default": false
+      },
+      {
+        "type": "image_picker",
+        "id": "image",
+        "label": "Image"
+      },
+      {
+        "type": "image_picker",
+        "id": "image1",
+        "label": "Icon"
+      },
+      {
+        "type": "text",
+        "id": "text",
+        "label": "Text"
+      },
+      {
+        "type": "text",
+        "id": "text1",
+        "label": "Text"
+      },
+      {
+        "type": "richtext",
+        "id": "text2",
+        "label": "Text"
+      }
+    ]
+  },
+  {
+    "name": "multiple",
+    "type": "multiple",
+    "settings": [
+      {
+        "type": "text",
+        "id": "text",
+        "label": "Text"
+      },
+      {
+        "type": "text",
+        "id": "text1",
+        "label": "Text"
+      },
+      {
+        "type": "richtext",
+        "id": "text2",
+        "label": "Text"
+      },
+      {
+        "type": "image_picker",
+        "id": "image",
+        "label": "Image"
+      },
+      {
+        "type": "text",
+        "id": "text3",
+        "label": "Text"
+      },
+      {
+        "type": "text",
+        "id": "text4",
+        "label": "Text"
+      },
+      {
+        "type": "text",
+        "id": "text5",
+        "label": "Text"
+      },
+      {
+        "type": "text",
+        "id": "text6",
+        "label": "Text"
+      },
+      {
+        "type": "image_picker",
+        "id": "image1",
+        "label": "Image"
+      },
+      {
+        "type": "text",
+        "id": "text7",
+        "label": "Text"
+      },
+      {
+        "type": "text",
+        "id": "text8",
+        "label": "Text"
+      },
+      {
+        "type": "text",
+        "id": "text9",
+        "label": "Text"
+      },
+      {
+        "type": "image_picker",
+        "id": "image2",
+        "label": "Image"
+      },
+      {
+        "type": "text",
+        "id": "text10",
+        "label": "Text"
+      },
+      {
+        "type": "text",
+        "id": "text11",
+        "label": "Text"
+      },
+      {
+        "type": "text",
+        "id": "text12",
+        "label": "Text"
+      },
+      {
+        "type": "text",
+        "id": "text13",
+        "label": "Text"
+      },
+      {
+        "type": "text",
+        "id": "text14",
+        "label": "Text"
+      },
+      {
+        "type": "text",
+        "id": "text15",
+        "label": "Text"
+      }
+    ]
+  }
+],
+  "presets": [
+  {
+    "name": "sell-point-diy",
+    "blocks": []
+  }
+]
+}
+{% endschema %}

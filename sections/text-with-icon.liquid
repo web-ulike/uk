@@ -1,0 +1,143 @@
+<style>
+  #shopify-section-{{ section.id }} {
+    background: {{ section.settings.custom_background }};
+    --heading-color: {{ section.settings.text_color.red }}, {{ section.settings.text_color.green }}, {{ section.settings.text_color.blue }};
+    --text-color: {{ section.settings.text_color.red }}, {{ section.settings.text_color.green }}, {{ section.settings.text_color.blue }};
+  }
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+  }
+  @media screen and (max-width: 768px){
+  .section-{{ section.id }}-padding {
+    padding-top: calc({{ section.settings.padding_top }}px * 0.6);
+    padding-bottom: calc({{ section.settings.padding_bottom }}px * 0.6);
+  }
+}
+.text-with__logo-wrapper{
+  text-align: center;
+}
+.text-with__logo-wrapper h4{
+  font-size: 64px;
+  margin-bottom: 0;
+  line-height: 1.0;
+}
+.text-with__logo-wrapper h3{
+  font-size: 24px;
+  margin-top: 0;
+  margin-bottom: 55px;
+}
+.mrdia-logo_box{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 60px;
+}
+@media screen and (max-width: 740px){
+  .text-with__logo-wrapper h3{
+    font-size: 16px;
+    margin-bottom: 30px;
+  }
+  .text-with__logo-wrapper h4{
+    font-size: 48px;
+  }
+  .mrdia-logo_box{
+    flex-wrap: wrap;
+    gap: 10px 30px;
+  }
+}
+</style>
+
+<section class="text-with__logo section-{{ section.id }}-padding">
+  <div class="container">
+    <div class="text-with__logo-wrapper">
+      {%- if section.settings.title != blank -%} 
+        <h4>”</h4>
+        <h3>{{- section.settings.title -}}</h3>
+      {%- endif -%}
+      <div class="mrdia-logo_box">
+        {%- for block in section.blocks -%}
+          {%- if block.settings.cover_image != blank -%} 
+          <div class="media__img">
+            <img loading="" {% render 'image-attributes', image: block.settings.cover_image %}>
+          </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</section>
+{% schema %}
+{
+  "name": "Text With Logo",
+  "class": "shopify-section--text-with-logo",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "default": "Video Player",
+      "label": "Heading"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "text",
+      "id": "custom_background",
+      "label": "Custom Background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "rgba(0,0,0,0)"
+    },
+     {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 36
+    }
+  ],
+  "blocks": [
+    {
+    "type":"item",
+    "name":"item",
+    "settings":[
+      {
+        "type": "image_picker",
+        "id": "cover_image",
+        "label": "Media Logo"
+      }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Text With Logo"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,134 @@
+{%- liquid
+  assign se_id = section.id
+  assign se_bks = section.blocks
+  assign se_stts = section.settings
+-%}
+
+<div class="container g_interest_free_{{se_id}}">
+  <div class="box-image">
+    {{-
+      se_stts.image
+      | image_url: width: se_stts.image.width
+      | image_tag: loading: 'lazy', class: 'hidden-phone', draggable: false
+    -}}
+    {{-
+      se_stts.m_image
+      | image_url: width: se_stts.m_image.width
+      | image_tag: loading: 'lazy', class: 'hidden-desk', draggable: false
+    -}}
+  </div>
+  <div class="box-detail">
+    <div class="conn">
+      <p class="title">{{ se_stts.title }}</p>
+      <p class="desc">{{ se_stts.desc }}</p>
+    </div>
+  </div>
+</div>
+<style>
+  .g_interest_free_{{se_id}}{
+    padding: 80px 0px;
+    display: flex;
+    .box-image {
+      width: 43%;
+    }
+    .box-detail{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex: 1;
+    }
+    .title {
+      color: #000;
+      font-family: var(--heading-font-family);
+      font-size: 40px;
+      font-weight: 500;
+      margin-bottom: 20px;
+      line-height: 48px;
+    }
+    .desc {
+      color: #000;
+
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 150%;
+    }
+  }
+  @media screen and (max-width: 740px) {
+    .g_interest_free_{{se_id}}{
+      padding: 40px var(--container-gutter) 40px;
+      display: flex;
+      flex-direction: column-reverse;
+      .box-detail {
+        text-align: center;
+      }
+      .box-image {
+        width: 100%;
+      }
+      .title {
+        font-size: 28px;
+        font-weight: 500;
+        line-height: 32px;
+      }
+      .desc {
+        font-size: 14px;
+        width: 72%;
+        margin: 0 auto;
+        padding-bottom: 20px;
+      }
+      .images {
+       padding: 30px 0px;
+      }
+    }
+
+  }
+</style>
+{% schema %}
+{
+  "name": "g-interest-free",
+  "settings": [
+    {
+      "type": "textarea",
+      "id": "title",
+      "label": "标题"
+    },
+    {
+      "type": "textarea",
+      "id": "desc",
+      "label": "描述"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "图片"
+    },
+    {
+      "type": "image_picker",
+      "id": "m_image",
+      "label": "移动端图片"
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "options": [
+        {
+          "value": "nt_full",
+          "label": "Full Width"
+        },
+        {
+          "value": "container",
+          "label": "Container"
+        }
+      ],
+      "label": "Layout"
+    }
+  ],
+  "blocks": [],
+  "presets": [
+    {
+      "name": "g-interest free",
+      "category": "g-interest free",
+      "blocks": []
+    }
+  ]
+}
+{% endschema %}

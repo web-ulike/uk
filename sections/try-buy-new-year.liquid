@@ -1,0 +1,426 @@
+<style>
+  .section-{{ section.id }}-padding {
+    padding-top: calc({{ section.settings.padding_top }}px);
+    padding-bottom: calc({{ section.settings.padding_bottom }}px);
+  }
+  @media screen and (max-width: 768px){
+  .section-{{ section.id }}-padding {
+    padding-top: calc({{ section.settings.padding_top }}px * 0.6);
+    padding-bottom: calc({{ section.settings.padding_bottom }}px * 0.6);
+  }
+}
+  #shopify-section-{{ section.id }} {
+    {%- if section.settings.background == 'rgba(0,0,0,0)' -%}
+      {%- assign section_background = settings.background -%}
+    {%- else -%}
+      {%- assign section_background = section.settings.background -%}
+    {%- endif -%}
+
+    {%- if section.settings.text_color == 'rgba(0,0,0,0)' -%}
+      {%- assign heading_color = settings.heading_color -%}
+      {%- assign text_color = settings.text_color -%}
+    {%- else -%}
+      {%- assign heading_color = section.settings.text_color -%}
+      {%- assign text_color = section.settings.text_color -%}
+    {%- endif -%}
+
+    --heading-color: {{ heading_color.red }}, {{ heading_color.green }}, {{ heading_color.blue }};
+    --text-color: {{ text_color.red }}, {{ text_color.green }}, {{ text_color.blue }};
+    --section-background: {{ section_background.red }}, {{ section_background.green }}, {{ section_background.blue }};
+    background: rgb(var(--section-background, var(--background)));
+    {%- if section.settings.background_image != blank -%}
+      --background-image: url({{ section.settings.background_image | img_url: '3840x4855' }});
+       background-image: var(--background-image);
+        background-repeat: repeat;
+       background-size: 100% 100%;
+    {%- endif -%}
+  }
+    @media screen and (max-width: 992px){
+      #shopify-section-{{ section.id }} {
+    {%- if section.settings.background_image_mobile != blank -%}
+      --background-image: url({{ section.settings.background_image_mobile | img_url: '750x1230' }});
+       background-image: var(--background-image);
+        background-repeat: repeat;
+       background-size: 100% 100%;
+    {%- else -%}
+      background-image: none;
+        background-repeat: repeat;
+       background-size: auto;
+    {%- endif -%}
+      }
+  }
+  .advantage-box{
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 70px;
+  }
+  .advantage-list{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-basis: 30%;
+    /* padding: 20px 0; */
+  }
+  .advantage-list img{
+    max-width: 127px;
+    display: inline-block;
+        width: 100%;
+    height: 100%;
+  }
+  .advantage-txt{
+    margin: 0;
+    font-family: var(--heading-font-family);
+    font-style:normal;
+    font-size: 16px;
+    line-height: 1.3;
+    max-width: 170px;
+    margin-top: 35px;
+    margin-left: 10px;
+  }
+  .try_buy_ext .advantage-list{
+    flex-basis: 25%;
+    flex-direction: column;
+  }
+  .try_buy_ext .advantage-txt{
+    max-width: 220px;
+    margin: 10px auto 0;
+    text-align: center;
+  }
+  .try_buy_ext h3{
+    font-size: 44px;
+    line-height: 125%;
+    text-align: center;
+    margin:0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .try_buy_ext h3 img{
+    display:block;
+    margin-left:10px;
+  }
+ .try_buy_ext .try_buy_ext-sub{
+    color: #000;
+    text-align: center;
+    font-size: 16px;
+    line-height: 1.5;
+    max-width:800px;
+    margin:0 auto;
+    margin-top:20px;
+  }
+  .try_buy_ext{
+    position: relative;
+    overflow: hidden;
+  }
+  .try_buy_ext .scroll_top {
+    position: absolute;
+    right: 30px;
+    bottom: 30px;
+}
+  .try_buy_dot{
+    display:none;
+  }
+  @media screen and (max-width: 768px){
+    .advantage-box{
+      flex-direction: column;
+      margin-top: 30px;
+    }
+    .advantage-list{
+      justify-content: left;
+      padding: 10px 0;
+    }
+    .advantage-list {
+      margin-right: 43px;
+    }
+    .advantage-list img {
+      max-width: 107px;
+      flex-shrink: 0;
+    }
+      .try_buy_ext h3{
+       font-size: 28px;
+      }
+    .try_buy_ext .try_buy_ext-sub{
+      display:none;
+    }
+     .try_buy_ext .advantage-box{
+        flex-wrap: nowrap;
+        flex-direction: initial;
+     }
+    .try_buy_ext .advantage-box{
+        flex-wrap: nowrap;
+        flex-direction: initial;
+        justify-content: flex-start;
+     }
+    .try_buy_ext .advantage-list {
+      flex-basis: auto;
+      flex-direction: row;
+      flex-shrink: 0;
+      
+      gap: 17px;
+      width:272px;
+    }
+    .try_buy_ext .advantage-list img{
+      
+    }
+    .try_buy_ext .advantage-txt{
+      max-width:100%;
+      font-size: 14px;
+      text-align: left;
+    }
+    .try_buy_dot{
+      display:flex;
+      margin-top:30px;
+      justify-content: center;
+    }
+   .try_buy_dot .try_buy_dot_item {
+      background: #D9D9D9;
+      width: 5px;
+      height: 5px;
+     margin:0 5px;
+    }
+   .try_buy_dot .try_buy_dot_item.active {
+     background: #7A7A7A;
+   }
+    .try_buy_ext h3 img {
+      height: 25px;
+      width: auto;
+    }
+     .try_buy_ext.vale .try_buy_ext-sub{
+      display:block;
+    }
+  }
+</style>
+
+<section class="try_buy_ext{% if section.settings.custom_class != blank %} {{section.settings.custom_class}}{% endif %}">
+  <div class="section-{{ section.id }}-padding">
+    <div class="container">
+      {%- if section.settings.title != blank -%}
+      <h3 class="heading h3 to-top">
+        {{ section.settings.title | escape }}
+        {%- if section.settings.icon != blank -%}
+          <img {% render 'image-attributes' , image: section.settings.icon %} alt="{{ section.settings.icon.alt | escape }}">
+        {%- endif -%}
+      </h3>
+      {%- endif -%}
+      {%- if section.settings.text != blank -%}
+        <div class="try_buy_ext-sub to-top" style="transition-delay: 0.1s">{{ section.settings.text | escape }}</div>
+      {%- endif -%}
+      <div class="advantage-box">
+        {%- for block in section.blocks -%}
+        <div class="advantage-list to-top" style="transition-delay: 0.{{ forloop.index }}s">
+          {%- if block.settings.try_buy_image != blank -%}
+          <img {% render 'image-attributes' , image: block.settings.try_buy_image %} alt="{{ block.settings.try_buy_image.alt | escape }}">
+          {%- endif -%}
+          {%- if block.settings.try_buy_txt != blank -%}
+          <p class="advantage-txt">{{ block.settings.try_buy_txt | escape }}</p>
+          {%- endif -%}
+        </div>
+        {%- endfor -%}
+      </div>
+      <div class="try_buy_dot to-top" style="transition-delay: 0.2s">
+        {%- for block in section.blocks -%}
+          <div class="try_buy_dot_item {% if forloop.index == 1 %}active{% endif %}"></div>
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+  window.addEventListener('load',function(){
+    function TrySwiper(){
+      let time = +new Date()
+      let $p = $('.try_buy_ext')
+      let $list = $p.find('.advantage-box')
+      let $dotItem = $p.find('.try_buy_dot_item')
+      const content = document.querySelector('.try_buy_ext .advantage-box');
+      let length = $list.find('.advantage-list').length
+      let width = $list.find('.advantage-list')[0].offsetWidth
+      let index = 0
+      let pWidth = $p[0].offsetWidth
+      let marginW = 43
+      let lWidth = length * (width + marginW) + $list[0].offsetLeft
+      let translateX = 0
+
+      function changeTransform(num){
+        if(num){
+          index +=num
+          translateX += (width + marginW) * num
+        }
+
+        if(translateX > lWidth - pWidth) {
+          translateX = lWidth - pWidth
+        }
+        if(translateX<0){
+          index = 0
+          translateX = 0
+        }
+        
+        $list.css({
+          transform: 'translateX(-' + translateX + 'px)',
+          transition: 'all 1s cubic-bezier(0.645, 0.045, 0.355, 1) 0s'
+        })
+        $dotItem.removeClass('active').eq(index).addClass('active')
+      }
+
+      $dotItem.click(function(){
+        let sindex = $(this).index()
+        if(+new Date() - time<1000) return
+        time = +new Date()
+        translateX = (width + marginW) * sindex
+        index = sindex
+        changeTransform()
+      })
+
+      detectSwipe(content, () => {
+        changeTransform(1)
+      }, () => {
+        changeTransform(-1)
+      });
+    }
+
+    function detectSwipe(element, onSwipeLeft, onSwipeRight) {
+      let startX = 0;
+
+      const getEventX = (event) => {
+        return event.touches ? event.touches[0].clientX : event.clientX;
+      };
+
+      const handleTouchStart = (e) => {
+        startX = getEventX(e);
+      };
+
+      const handleTouchMove = (e) => {
+        const deltaX = getEventX(e) - startX;
+        if (Math.abs(deltaX) > 10 && e.cancelable) {
+          e.preventDefault();
+        }
+      };
+
+      const handleTouchEnd = (e) => {
+        const deltaX = getEventX(e.changedTouches ? e.changedTouches[0] : e) - startX;
+        if (deltaX > 10) {
+          onSwipeRight();
+        } else if (deltaX < -10) {
+          onSwipeLeft();
+        }
+      };
+
+      element.addEventListener('touchstart', handleTouchStart);
+      element.addEventListener('touchmove', handleTouchMove);
+      element.addEventListener('touchend', handleTouchEnd);
+
+      // Add mouse event listeners for PC compatibility
+      element.addEventListener('mousedown', handleTouchStart);
+      element.addEventListener('mousemove', handleTouchMove);
+      element.addEventListener('mouseup', handleTouchEnd);
+    }
+    
+    if(window.innerWidth<768){
+      TrySwiper()
+    }
+    
+  })
+  
+</script>
+{% schema %}
+{
+  "name": "Try Buy New Year",
+  "settings": [
+    {
+      "type": "text",
+      "id": "custom_class",
+      "label": "Custom Class"
+    },
+    {
+      "type": "text",
+      "id": "custom_class_one",
+      "label": "Custom Class 1"
+    },
+     {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Background Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image_mobile",
+      "label": "Background Image Mobile"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title"
+    },
+    {
+      "type": "image_picker",
+      "id": "icon",
+      "label": "Title Icon"
+    },
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Text"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 36
+    }
+  ],
+  "blocks": [
+    {
+        "type": "item",
+        "name": "item",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "try_buy_image",
+            "label": "Try Buy Image"
+          },
+          {
+          "type": "text",
+          "id": "try_buy_txt",
+          "label": "Try Buy Title",
+          "default": "Select Klarna - Pay in"
+        }
+        ]
+      }
+  ],
+  "presets": [
+    {
+      "name": "Try Buy New Year",
+      "settings": {},
+      "blocks": [
+      ]
+    }
+  ]
+}
+{% endschema %}

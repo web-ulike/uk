@@ -1,0 +1,619 @@
+<!-- CSS -->
+<link rel="stylesheet" href="https://unpkg.com/flickity@2/dist/flickity.min.css">
+<style>
+  #shopify-section-{{ section.id }} {
+    background: {{ section.settings.custom_background }};
+    --heading-color: {{ section.settings.text_color.red }}, {{ section.settings.text_color.green }}, {{ section.settings.text_color.blue }};
+    --text-color: {{ section.settings.text_color.red }}, {{ section.settings.text_color.green }}, {{ section.settings.text_color.blue }};
+  }
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+  }
+  @media screen and (max-width: 768px){
+  .section-{{ section.id }}-padding {
+    padding-top: calc({{ section.settings.padding_top }}px * 0.6);
+    padding-bottom: calc({{ section.settings.padding_bottom }}px * 0.6);
+  }
+}
+  .unlock-title{
+    margin-top: 15px;
+    margin-bottom: 70px;
+  }
+  .unlock_product-list {
+      display: flex;
+      grid-gap: 100px;
+      max-width: 1350px;
+      margin: 0 auto;
+  }
+  .unlock-product-item {
+  }
+  .unlock-product-image{
+    margin-bottom: 40px;
+    background: #FFFFFF;
+    border-radius: 10px;
+    border: 1px solid #3C599C;
+    text-align: center;
+    padding: 20px 0;
+  }
+  .unlock-product-image img{
+    max-width: 131px;
+    border-radius: 10px;
+  }
+  .unlock-product-item h3.heading{
+    margin: 0;
+    display: flex;
+    align-items: center;
+    font-size: 30px;
+  }
+  .unlock-product-item h3.heading.custom-product-tle1{
+    margin-bottom: 20px;
+  }
+  .unlock-price-box{
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  .unlock-price-box .unlock-price{
+    font-size: 30px;
+    color: #3C599C;
+    line-height: 24px;
+    font-family: var(--heading-font-family);
+    font-weight: var(--heading-font-weight);
+  }
+  .unlock-price-box .unlock-price-discount{
+    font-size: 20px;
+    color: #9B9B9B;
+    line-height: 24px;
+    text-decoration: line-through;
+    margin-left: 10px;
+  }
+  .select-color {
+    display: flex;
+    margin-left: 20px;
+    gap: 10px;
+  }
+  .select-color-box{
+    display: flex;
+    align-items: center;
+    margin-bottom: 30px;
+  }
+  .select-color-box .color-label{
+    font-family: var(--heading-font-family);
+    font-weight: var(--heading-font-weight);
+  }
+  .select-list {
+    width: 38px;
+    height: 38px;
+    border: 1px solid #D9D9D9;
+    border-radius: 50px;
+    padding: 5px;
+    cursor: pointer;
+  }
+  .select-list span{
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+    border-radius: 50px;
+  }
+  .select-list.active{
+    border-color: #000000;
+  }
+  .afterpay-txt-box{
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+    color: #2658A0;
+    margin-bottom: 10px;
+  }
+  .afterpay-txt-box .afterpay-coupon_code{
+    text-decoration: underline;
+  }
+  .unlock-title span{
+    color: #3C599C;
+  }
+  .unlock-product-item .image-with-text-badge__box{
+    margin-bottom: 20px;
+  }
+  .unlock-product-item .image-with-text-badge__item{
+    padding: 1px 0;
+  }
+  .custom-unlock-add-button.custom-checkout-button{
+    background: #3C599C;
+    color: #ffffff;
+  }
+  .buy-now-button.custom-checkout-button{
+    background: #ffffff;
+    color:#000000;
+  }
+  .custom-checkout-button-wrapper .custom-checkout-button:hover{
+    background: #000000;
+    color: #FFFFFF;
+  }
+  .product-tag{
+    display: inline-block;
+    font-size: 12px;
+    background: #000000;
+    color: #ffffff;
+    margin-left: 10px;
+    padding: 0 20px;
+    height: 30px;
+    line-height: 30px;
+  }
+  p.unlock_product-txt.text--center {
+    margin-top: 30px;
+}
+  .buy-now-link.custom-checkout-button {
+    background: #ffffff;
+    color: #000000;
+}
+  @media (max-width: 1200px){
+    .unlock_product-list {
+        grid-gap: 30px;
+    }
+  }
+  @media (max-width: 740px){
+    .unlock-title{
+      margin-bottom: 30px;
+    }
+    .unlock-product-item h3.heading {
+        font-size: 20px;
+    }
+  .unlock-price-box .unlock-price {
+    font-size: 20px;
+  }
+  .unlock_product-list {
+    flex-direction: column;
+  }
+  .unlock-product-item{
+    display: flex;
+    flex-direction: column;
+    padding: 0 2px;
+  }
+  .unlock-product-image{
+    order: 0;
+    margin-bottom: 20px;
+  }
+  .select-color-box{
+    order: 1;
+    margin-bottom: 20px;
+  }
+  .unlock-product-item h3.heading{
+    order: 2;
+  }
+  .unlock-price-box{
+    order: 3;
+    margin-bottom:5px;
+  }
+  .afterpay-txt-box{
+    order: 4;
+  }
+  .unlock-product-item .html{
+    order: 5;
+  }
+  .custom-checkout-button-wrapper{
+    order: 6;
+  }
+  .unlock-title span{
+    display: block;
+  }
+    .unlock-product-image img{
+      max-width:75px;
+    }
+    .unlock-product-item .image-with-text-badge__item svg{
+      max-width:35px;
+      max-height:31px;
+    }
+     .unlock-product-item .image-with-text-badge__item span {
+        font-size: 12px;
+    }
+    .unlock-product-item h3.heading.custom-product-tle1 {
+        margin-bottom: 10px;
+    }
+  }
+</style>
+<script src="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js"></script>
+
+<section class="product-list-unlock section-{{ section.id }}-padding">
+  <div class="container">
+    {%- if section.settings.custom_icon != blank -%}
+        <div class="text--{{section.settings.text_alignment}}">
+          <img loading="lazy" {% render 'image-attributes', image: section.settings.custom_icon %}>
+        </div>
+    {%- endif -%}
+    {%- if section.settings.unlock_product_txt != blank -%}
+      <p class="unlock_product-txt text--{{section.settings.text_alignment}}"> {{- section.settings.unlock_product_txt -}}</p>
+    {%- endif -%}
+    {%- if section.settings.unlock_product_title != blank -%}
+      <h2 class="heading h2 unlock-title text--{{section.settings.text_alignment}}"> {{- section.settings.unlock_product_title -}}<span>&nbsp{{- section.settings.unlock_product_title_color -}}</span></h2>
+    {%- endif -%}
+    <div class="unlock_product-list">
+      {%- for block in section.blocks -%}
+          <div class="unlock-product-item">
+            {%- if block.settings.image_1 != blank -%}
+              <div class="unlock-product-image">
+                <img loading="" {% render 'image-attributes', image: block.settings.image_1 %}>
+              </div>
+            {%- endif -%}
+            {%- if block.settings.image_2 != blank -%}
+              <div class="unlock-product-image" style="display:none">
+                <img loading="" {% render 'image-attributes', image: block.settings.image_2 %}>
+              </div>
+            {%- endif -%}
+            {%- if block.settings.image_3 != blank -%}
+              <div class="unlock-product-image">
+                <img loading="" {% render 'image-attributes', image: block.settings.image_3 %}>
+              </div>
+            {%- endif -%}
+            {%- if block.settings.title_1 != blank -%}
+              <h3 class="heading h3 custom-product-tle">{{- block.settings.title_1 -}} 
+                {%- if block.settings.product_tag != blank -%}
+                  <span class="product-tag"> {{- block.settings.product_tag -}} </span>
+                {%- endif -%}
+              </h3>
+            {%- endif -%}
+            {%- if block.settings.title_2 != blank -%}
+              <h3 class="heading h3 custom-product-tle1">{{- block.settings.title_2 -}}</h3>
+            {%- endif -%}
+            {%- if block.settings.price != blank -%}
+              <div class="unlock-price-box">
+                <div class="unlock-price">{{- block.settings.price -}}</div>
+                <div class="unlock-price-discount">{{- block.settings.discount_price -}}</div>
+              </div>
+            {%- endif -%}
+
+            {%- if block.settings.discount_code != blank -%}
+              <div class="afterpay-txt-box">
+                <button class="afterpay-coupon_code" onclick="copyCode(`{{ block.settings.discount_code }}`, `{{ block.settings.discount_code_txt }}`, this)">{{- block.settings.discount_code_txt -}}</button>
+                <span>&nbsp{{- block.settings.afterpay_txt -}}</span>
+              </div>
+            {%- endif -%}
+
+            {%- if block.settings.html != blank -%}
+              <div class="html">
+                {{- block.settings.html -}}
+              </div>
+            {%- endif -%}
+            <div class="select-color-box">
+              <div class="color-label">{{- block.settings.product_color_txt -}}:</div>
+              <div class="select-color">
+                {%- if block.settings.product_color_1 != blank -%}
+                  <div class="select-list" data-product-id="{{ block.settings.product_id_1}}"><span style="background: {{ block.settings.product_color_1}}"></span></div>
+                {%- endif -%}
+                {%- if block.settings.product_color_2 != blank -%}
+                  <div class="select-list" data-product-id="{{ block.settings.product_id_2}}"><span style="background: {{ block.settings.product_color_2}}"></span></div>
+                {%- endif -%}
+                {%- if block.settings.product_color_3 != blank -%}
+                  <div class="select-list" data-product-id="{{ block.settings.product_id_3}}"><span style="background: {{ block.settings.product_color_3}}"></span></div>
+                {%- endif -%}
+              </div>
+            </div>
+            <div class="custom-checkout-button-wrapper">
+              {%- if block.settings.show_add_button -%}
+                <button data-product-id="{{ block.settings.product_id_1}}" class="add-cart-button custom-unlock-add-button custom-checkout-button">
+                  <span class="loader-button__text">{{- block.settings.add_cart_txt -}}</span>
+                  <span class="loader-button__loader" hidden>
+                    <div class="spinner">
+                      <svg focusable="false" width="24" height="24" class="icon icon--spinner" viewBox="25 25 50 50">
+                        <circle cx="50" cy="50" r="20" fill="none" stroke="currentColor" stroke-width="5"></circle>
+                      </svg>
+                    </div>
+                  </span>
+                </button>
+              {%- endif -%}
+              {%- if block.settings.show_buy_now_button -%}
+                <button data-product-id="{{ block.settings.product_id_1}}" class="buy-now-button custom-checkout-button">
+                  <span class="loader-button__text">{{- block.settings.buy_now_txt -}}</span>
+                  <span class="loader-button__loader" hidden>
+                    <div class="spinner">
+                      <svg focusable="false" width="24" height="24" class="icon icon--spinner" viewBox="25 25 50 50">
+                        <circle cx="50" cy="50" r="20" fill="none" stroke="currentColor" stroke-width="5"></circle>
+                      </svg>
+                    </div>
+                  </span>
+                </button>
+              {%- endif -%}
+
+              {%- if block.settings.product_link_url != blank -%}  
+                  <a href="{{ block.settings.product_link_url }}" class="buy-now-link custom-checkout-button">{{ block.settings.buy_now_txt }}</a>
+              {%- endif -%}
+            </div>
+            {%- if block.settings.sub_txt != blank -%} 
+                <div class="txt_tle">{{  block.settings.sub_txt | escape }}</div>
+            {%- endif -%}
+           {%- if block.settings.sub_txt_1 != blank -%} 
+                <div class="txt_tle">{{  block.settings.sub_txt_1 | escape }}</div>
+            {%- endif -%}
+          </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    var unlockscreenWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+    console.log('unlockscreenWidth', unlockscreenWidth);
+    document.querySelectorAll('.unlock-product-item').forEach(function (unlockProductList) {
+      unlockProductList.querySelectorAll('.select-list').forEach(function (button, index) {
+        button.addEventListener('click', function (e) {
+          productId = e.target.dataset.productId;
+          unlockProductList.querySelector('.add-cart-button').setAttribute('data-product-id', this.getAttribute('data-product-id'));
+          // unlockProductList.querySelector('.buy-now-button').setAttribute('data-product-id', this.getAttribute('data-product-id'));
+          unlockProductList.querySelectorAll('.unlock-product-image').forEach((img) => {
+            img.style.display = "none";
+          })
+          unlockProductList.querySelectorAll('.unlock-product-image')[index].style.display = 'block';
+
+          unlockProductList.querySelectorAll('.select-list').forEach((list) => {
+            list.classList.remove('active');
+          })
+          unlockProductList.querySelectorAll('.select-list')[index].classList.add('active');
+        });
+        if(index === 0) {
+          button.click();
+        }
+      })
+      unlockProductList.querySelector('.add-cart-button').addEventListener('click', function (bt) {
+        addToCart(this.getAttribute('data-product-id'), this);
+      });
+      // unlockProductList.querySelector('.buy-now-button').addEventListener('click', function (bt) {
+      //   buyProduct(this.getAttribute('data-product-id'));
+      // });
+    });
+    if (unlockscreenWidth < 768) {
+      var unlockelem = document.querySelector('.unlock_product-list');
+       new Flickity( unlockelem, {
+        fullscreen: true,
+        prevNextButtons: false
+      });
+    }
+  })
+</script>
+{% schema %}
+{
+  "name": "Product List Unlock",
+  "class": "shopify-section--product-list-unlock",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "custom_icon",
+      "label": "Custom Icon"
+    },
+    {
+      "type": "text",
+      "id": "unlock_product_title",
+      "default": "Unlock Product Title",
+      "label": "Heading"
+    },
+    {
+      "type": "text",
+      "id": "unlock_product_title_color",
+      "default": "Unlock Product Title Color",
+      "label": "Heading Color"
+    },
+    {
+      "type": "text",
+      "id": "unlock_product_txt",
+      "default": "Unlock Product Txt",
+      "label": "Unlock Product Txt"
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Text alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "text",
+      "id": "custom_background",
+      "label": "Custom Background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "rgba(0,0,0,0)"
+    },
+     {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 36
+    }
+  ],
+  "blocks": [
+    {
+    "type":"item",
+    "name":"item",
+    "settings":[
+      {
+          "type": "image_picker",
+          "id": "image_1",
+          "label": "Product Image 1"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_2",
+          "label": "Product Image 2"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_3",
+          "label": "Product Image 3"
+        },
+        {
+          "type": "text",
+          "id": "title_1",
+          "label": "Product Heading 1",
+          "default": "Your content"
+        },
+        {
+          "type": "text",
+          "id": "title_2",
+          "label": "Product Heading 2",
+          "default": "Your content"
+        },
+        {
+          "type": "text",
+          "id": "product_tag",
+          "label": "Product Tag"
+        },
+        {
+          "type": "text",
+          "id": "price",
+          "label": "Price",
+          "default": "$259"
+        },
+        {
+          "type": "text",
+          "id": "discount_price",
+          "label": "discount Price",
+          "default": "$379"
+        },
+        {
+          "type": "text",
+          "id": "discount_code_txt",
+          "label": "Discount Code Txt"
+        },
+        {
+          "type": "text",
+          "id": "discount_code",
+          "label": "Discount Code"
+        },
+        {
+          "type": "text",
+          "id": "afterpay_txt",
+          "label": "Afterpay Txt"
+        },
+        {
+          "type": "html",
+          "id": "html",
+          "label": "HTML",
+          "default": "<p style=\"text-align: center\">Write or copy/paste HTML code</p>"
+        },
+        {
+          "type": "text",
+          "id": "product_color_txt",
+          "label": "Product Color label"
+        },
+        {
+          "type": "text",
+          "id": "product_color_1",
+          "label": "Product Color 1"
+        },
+        {
+          "type": "text",
+          "id": "product_color_2",
+          "label": "Product Color 2"
+        },
+        {
+          "type": "text",
+          "id": "product_color_3",
+          "label": "Product Color 3"
+        },
+        {
+          "type": "text",
+          "id": "product_id_1",
+          "label": "Product Id 1"
+        },
+        {
+          "type": "text",
+          "id": "product_id_2",
+          "label": "Product Id 2"
+        },
+        {
+          "type": "text",
+          "id": "product_id_3",
+          "label": "Product Id 3"
+        },
+       {
+          "type": "url",
+          "id": "product_link_url",
+          "label": "Product Link URL",
+          "info": "If none is set, collection URL is used."
+        },
+        {
+          "type": "checkbox",
+          "id": "show_add_button",
+          "label": "Show Add to cart button",
+          "info": "Show Add to cart button",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "show_buy_now_button",
+          "label": "Show Buy Now button",
+          "info": "Show Buy Now button",
+          "default": false
+        },
+        {
+          "type": "text",
+          "id": "add_cart_txt",
+          "label": "Add To Cart Txt",
+          "default": "Add To Cart"
+        },
+        {
+          "type": "text",
+          "id": "buy_now_txt",
+          "label": "Buy Now Txt",
+          "default": "Buy Now"
+        },
+      {
+          "type": "text",
+          "id": "sub_txt",
+          "label": "Product Txt"
+        },
+      {
+          "type": "text",
+          "id": "sub_txt_1",
+          "label": "Product Txt 1"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product List Unlock"
+    }
+  ]
+}
+{% endschema %}

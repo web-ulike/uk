@@ -1,0 +1,746 @@
+<style>
+.media-{{ section.id }}-padding {
+    padding-top: calc({{ section.settings.padding_top }}px);
+    padding-bottom: calc({{ section.settings.padding_bottom }}px);
+  }
+  #shopify-section-{{ section.id }} {
+    {%- if section.settings.background == 'rgba(0,0,0,0)' -%}
+      {%- assign section_background = settings.background -%}
+    {%- else -%}
+      {%- assign section_background = section.settings.background -%}
+    {%- endif -%}
+
+    {%- if section.settings.text_color == 'rgba(0,0,0,0)' -%}
+      {%- assign text_color = settings.text_color -%}
+    {%- else -%}
+      {%- assign text_color = section.settings.text_color -%}
+    {%- endif -%}
+    --text-color: {{ text_color.red }}, {{ text_color.green }}, {{ text_color.blue }};
+    --section-background: {{ section_background.red }}, {{ section_background.green }}, {{ section_background.blue }};
+  }
+  .product-list-wrapper {
+    background: rgb(var(--background));
+    background: rgb(var(--section-background, var(--background)));
+}
+.product-list-container .heading.h4{
+      text-align: center;
+       font-size: 18px;
+line-height: 20px;
+margin-bottom: 20px;
+}
+.product-list-box {
+    display: flex;
+    justify-content: center;
+    grid-column-gap: 15px;
+    max-width: 1255px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+.product-list-container {
+    /*width: 595px;*/
+}
+.product-list-list {
+    background: #F8F8F8;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    padding: 32px;
+    position: relative;
+}
+.product_checkout-wrap {
+    display: flex;
+    grid-column-gap: 12px;
+    position: relative;
+    z-index: 3;
+}
+.product_checkout-button {
+    border: 2px solid #d9d9d9ff;
+    border-radius: 50%;
+    box-sizing: border-box;
+    color: #1d1d1f;
+    padding: 2px;
+    position: relative;
+    width: 20px;
+    height: 20px;
+    z-index: 1;
+    cursor: pointer;
+    transition: border-color .25s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.product_checkout-button .colornav-swatch{
+  width: 12px;
+    height: 12px;
+    background-color: #f5e488;
+    border-radius: 50%;
+    display: block;
+}
+.product_checkout-button .colornav-swatch:after {
+    border-radius: inherit;
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.1);
+    content: "";
+    display: block;
+    height: inherit;
+    position: absolute;
+    width: inherit;
+}
+.product-list-list .heading.h3{
+  margin: 16px 0;
+   font-size: 28px;
+   letter-spacing: 0;
+}
+.product-list-list .product-price__box {
+    display: flex;
+    align-items: center;
+}
+.product-list-list .product__price {
+    color: #000000ff;
+    font-size: 22px;
+    font-weight: 700;
+    margin-right: 8px;
+}
+.product-list-list .discount-product__price {
+    color: #666666ff;
+    font-size: 16px;
+    text-decoration: line-through;
+}
+.product-list-text {
+    color: #888888ff;
+    font-size: 16px;
+}
+.product-list-link {
+    width: 100%;
+    text-align: center;
+    height: 52px;
+    background: #040000ff;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 24px;
+  border: 1px solid #040000ff;
+    transition: all .3s;
+   position: relative;
+    z-index: 3;
+}
+  a.product-list-link:hover {
+    background: #ffffff;
+    color: #040000ff;
+}
+.product_checkout-button.switch-active {
+    border-color: #040000;
+}
+.product-list__custom-icon {
+    position: absolute;
+    left: 10px;
+    top: 10px;
+}
+a.product-list-to {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 2;
+}
+  .product-list-wrapper .heading.h3 {
+      margin-bottom: 10px;
+}
+.product-list-wrapper .product_sub {
+      margin-bottom: 40px;
+}
+.reduce__price-box{
+  color: #E0004D;
+  font-size: 16px;
+  margin-bottom: 15px;
+}
+.product-price__box .reduce__price{
+  font-family: var(--heading-font-family);
+  font-weight: var(--heading-font-weight);
+  font-style: var(--heading-font-style);
+  padding-right: 10px;
+}
+
+@media screen and (max-width: 768px){
+  .media-{{ section.id }}-padding {
+    padding-top: calc({{ section.settings.padding_top }}px * 0.6);
+    padding-bottom: calc({{ section.settings.padding_bottom }}px * 0.6);
+  }
+}
+@media screen and (max-width: 1100px){
+
+}
+@media screen and (max-width: 768px){
+.product-list-box{
+  grid-column-gap: 0;
+  flex-direction: column;
+  grid-row-gap: 30px;
+}
+.product-list-wrapper .heading.h3 {
+      padding:0  20px;
+}
+.product-list-wrapper .product_sub {
+     padding:0  20px;
+      margin-bottom: 30px;
+}
+}
+</style>
+
+<section class="">
+  <div class="product-list-wrapper media-{{ section.id }}-padding">
+    <div class="">
+      {%- if section.settings.main_title != blank -%}
+        <h3 class="heading h3 text--center">
+          {{ section.settings.main_title | escape }}
+        </h3>
+      {%- endif -%}
+      {%- if section.settings.main_sub != blank -%}
+        <div class="product_sub text--center">
+          {{ section.settings.main_sub | escape }}
+        </div>
+      {%- endif -%}
+      <div class="product-list-box">
+        {%- for block in section.blocks -%}
+          <div class="product-list-container">
+            {%- if block.settings.title != blank -%}
+              <h4 class="heading h4">
+                {{ block.settings.title | escape }}
+              </h4>
+            {%- endif -%}
+            {%- if block.settings.title_1 != blank -%}
+              <div class="product-list-list">
+                {%- if block.settings.product_link_1 != blank -%}
+                  <a href="{{ block.settings.product_link_1 }}" class="product-list-to"></a>
+                {%- endif -%}
+                {%- if block.settings.custom_label_ico != blank -%}
+                  <img class="product-list__custom-icon" width="{{ block.settings.custom_label_ico.width }}" height="{{ block.settings.custom_label_ico.height }}" src="{{ block.settings.custom_label_ico | img_url }}" alt="{{ block.settings.custom_label_ico.alt | escape }}">
+                {%- endif -%}
+                {%- if block.settings.image_1 != blank -%}
+                  <div class="product__image">
+                    {{- block.settings.image_1 | image_url: width: 3000 | image_tag: loading: 'lazy', sizes: '100vw', widths: '600,700,800,1000,1200,1400,1600,1800,2000,2200,2400,2600,2800,3000' -}}
+                  </div>
+                {%- endif -%}
+                <div class="product_checkout-wrap">
+                  {%- if block.settings.title_1 != blank -%}
+                    <div class="product_checkout-button" data-index="0">
+                    <span class="colornav-swatch" data-index="0" style="background: {{ block.settings.product_switch_color_1}}"></span>
+                    </div>
+                  {%- endif -%}
+                  {%- if block.settings.title_2 != blank -%}
+                    <div class="product_checkout-button" data-index="1">
+                    <span class="colornav-swatch" data-index="1" style="background: {{ block.settings.product_switch_color_2}}"></span>
+                    </div>
+                  {%- endif -%}
+                  {%- if block.settings.title_3 != blank -%}
+                    <div class="product_checkout-button" data-index="2">
+                    <span class="colornav-swatch" data-index="2" style="background: {{ block.settings.product_switch_color_3}}"></span>
+                    </div>
+                  {%- endif -%}
+                </div>
+                {%- if block.settings.title_1 != blank -%}
+                    <h3 class="heading h3">
+                      {{ block.settings.title_1 | escape }}
+                    </h3>
+                {%- endif -%}
+                {%- if block.settings.price_1 != blank -%}
+                  <div class="product-price__box">
+                    <span class="product__price money">{{ block.settings.price_1 | escape }}</span>
+                    <span class="discount-product__price money">{{ block.settings.discount_price_1 | escape }}</span>
+                  </div>
+                {%- endif -%}
+
+                {%- if block.settings.reduce_price_code_1 != blank -%}
+                  <div class="product-price__box reduce__price-box">
+                    <span class="reduce__price">{{ block.settings.reduce_price_1 | escape }}</span>
+                    <span class="discount-reduce__price">{{ block.settings.reduce_price_code_1 | escape }}</span>
+                  </div>
+                {%- endif -%}
+
+                {%- if block.settings.product_label_1 != blank -%}
+                  <div class="product-list-text">
+                    {{- block.settings.product_label_1 -}}
+                  </div>
+                {%- endif -%}
+                {%- if block.settings.button_text_1 != blank -%}
+                    <a href="{{ block.settings.button_link_1 }}" class="product-list-link">{{ block.settings.button_text_1 }}</a>
+                {%- endif -%}
+                 {%- if block.settings.show_add_button -%}
+                     <button onclick="addToCart({{ block.settings.product_id_1 }}, this)" class="custom-checkout-button" style="height: 52px;margin-top: 20px;">
+                      <span class="loader-button__text">{{ 'product.form.add_to_cart' | t | escape }}<span style="font-family: var(--heading-font-family);font-weight: var(--heading-font-weight);"></span></span>
+                      <span class="loader-button__loader" hidden>
+                        <div class="spinner">
+                          <svg focusable="false" width="24" height="24" class="icon icon--spinner" viewBox="25 25 50 50">
+                            <circle cx="50" cy="50" r="20" fill="none" stroke="currentColor" stroke-width="5"></circle>
+                          </svg>
+                        </div>
+                      </span>
+                    </button>
+                  {%- endif -%}
+              </div>
+            {%- endif -%}
+            {%- if block.settings.title_2 != blank -%}
+              <div class="product-list-list">
+                {%- if block.settings.product_link_2 != blank -%}
+                  <a href="{{ block.settings.product_link_2 }}" class="product-list-to"></a>
+                {%- endif -%}
+                {%- if block.settings.custom_label_ico != blank -%}
+                  <img class="product-list__custom-icon" width="{{ block.settings.custom_label_ico.width }}" height="{{ block.settings.custom_label_ico.height }}" src="{{ block.settings.custom_label_ico | img_url }}" alt="{{ block.settings.custom_label_ico.alt | escape }}">
+                {%- endif -%}
+                {%- if block.settings.image_2 != blank -%}
+                  <div class="product__image">
+                    {{- block.settings.image_2 | image_url: width: 3000 | image_tag: loading: 'lazy', sizes: '100vw', widths: '600,700,800,1000,1200,1400,1600,1800,2000,2200,2400,2600,2800,3000' -}}
+                  </div>
+                {%- endif -%}
+                <div class="product_checkout-wrap">
+                 {%- if block.settings.title_1 != blank -%}
+                    <div class="product_checkout-button" data-index="0">
+                    <span class="colornav-swatch" data-index="0" style="background: {{ block.settings.product_switch_color_1}}"></span>
+                    </div>
+                  {%- endif -%}
+                  {%- if block.settings.title_2 != blank -%}
+                    <div class="product_checkout-button" data-index="1">
+                    <span class="colornav-swatch" data-index="1" style="background: {{ block.settings.product_switch_color_2}}"></span>
+                    </div>
+                  {%- endif -%}
+                  {%- if block.settings.title_3 != blank -%}
+                    <div class="product_checkout-button" data-index="2">
+                    <span class="colornav-swatch" data-index="2" style="background: {{ block.settings.product_switch_color_3}}"></span>
+                    </div>
+                  {%- endif -%}
+                </div>
+                {%- if block.settings.title_2 != blank -%}
+                    <h3 class="heading h3">
+                      {{ block.settings.title_2 | escape }}
+                    </h3>
+                {%- endif -%}
+                {%- if block.settings.price_2 != blank -%}
+                <div class="product-price__box">
+                  <span class="product__price money">{{ block.settings.price_2 | escape }}</span>
+                  <span class="discount-product__price money">{{ block.settings.discount_price_2 | escape }}</span>
+                </div>
+                {%- endif -%}
+                {%- if block.settings.reduce_price_code_2 != blank -%}
+                  <div class="product-price__box reduce__price-box">
+                    <span class="reduce__price">{{ block.settings.reduce_price_2 | escape }}</span>
+                    <span class="discount-reduce__price">{{ block.settings.reduce_price_code_2 | escape }}</span>
+                  </div>
+                {%- endif -%}
+                {%- if block.settings.product_label_2 != blank -%}
+                  <div class="product-list-text">
+                    {{- block.settings.product_label_2 -}}
+                  </div>
+                {%- endif -%}
+                {%- if block.settings.button_text_2 != blank -%}
+                    <a href="{{ block.settings.button_link_2 }}" class="product-list-link">{{ block.settings.button_text_2 }}</a>
+                {%- endif -%}
+              {%- if block.settings.show_add_button -%}
+                     <button onclick="addToCart({{ block.settings.product_id_2 }}, this)" class="custom-checkout-button" style="height: 52px;margin-top: 20px;">
+                      <span class="loader-button__text">{{ 'product.form.add_to_cart' | t | escape }}<span style="font-family: var(--heading-font-family);font-weight: var(--heading-font-weight);"></span></span>
+                      <span class="loader-button__loader" hidden>
+                        <div class="spinner">
+                          <svg focusable="false" width="24" height="24" class="icon icon--spinner" viewBox="25 25 50 50">
+                            <circle cx="50" cy="50" r="20" fill="none" stroke="currentColor" stroke-width="5"></circle>
+                          </svg>
+                        </div>
+                      </span>
+                    </button>
+                  {%- endif -%}
+              </div>
+            {%- endif -%}
+            {%- if block.settings.title_3 != blank -%}
+              <div class="product-list-list">
+                {%- if block.settings.product_link_3 != blank -%}
+                  <a href="{{ block.settings.product_link_3 }}" class="product-list-to"></a>
+                {%- endif -%}
+                {%- if block.settings.custom_label_ico != blank -%}
+                  <img class="product-list__custom-icon" width="{{ block.settings.custom_label_ico.width }}" height="{{ block.settings.custom_label_ico.height }}" src="{{ block.settings.custom_label_ico | img_url }}" alt="{{ block.settings.custom_label_ico.alt | escape }}">
+                {%- endif -%}
+                {%- if block.settings.image_3 != blank -%}
+                  <div class="product__image">
+                    {{- block.settings.image_3 | image_url: width: 3000 | image_tag: loading: 'lazy', sizes: '100vw', widths: '600,700,800,1000,1200,1400,1600,1800,2000,2200,2400,2600,2800,3000' -}}
+                  </div>
+                {%- endif -%}
+                <div class="product_checkout-wrap">
+                  {%- if block.settings.title_1 != blank -%}
+                    <div class="product_checkout-button" data-index="0">
+                    <span class="colornav-swatch" data-index="0" style="background: {{ block.settings.product_switch_color_1}}"></span>
+                    </div>
+                  {%- endif -%}
+                  {%- if block.settings.title_2 != blank -%}
+                    <div class="product_checkout-button" data-index="1">
+                    <span class="colornav-swatch" data-index="1" style="background: {{ block.settings.product_switch_color_2}}"></span>
+                    </div>
+                  {%- endif -%}
+                  {%- if block.settings.title_3 != blank -%}
+                    <div class="product_checkout-button" data-index="2">
+                    <span class="colornav-swatch" data-index="2" style="background: {{ block.settings.product_switch_color_3}}"></span>
+                    </div>
+                  {%- endif -%}
+                </div>
+                {%- if block.settings.title_3 != blank -%}
+                    <h3 class="heading h3">
+                      {{ block.settings.title_3 | escape }}
+                    </h3>
+                {%- endif -%}
+                {%- if block.settings.price_3 != blank -%}
+                  <div class="product-price__box">
+                    <span class="product__price money">{{ block.settings.price_3 | escape }}</span>
+                    <span class="discount-product__price money">{{ block.settings.discount_price_3 | escape }}</span>
+                  </div>
+                {%- endif -%}
+                {%- if block.settings.reduce_price_code_3 != blank -%}
+                  <div class="product-price__box reduce__price-box">
+                    <span class="reduce__price">{{ block.settings.reduce_price_3 | escape }}</span>
+                    <span class="discount-reduce__price">{{ block.settings.reduce_price_code_3 | escape }}</span>
+                  </div>
+                {%- endif -%}
+                {%- if block.settings.product_label_3 != blank -%}
+                  <div class="product-list-text">
+                    {{- block.settings.product_label_3 -}}
+                  </div>
+                {%- endif -%}
+                {%- if block.settings.button_text_3 != blank -%}
+                    <a href="{{ block.settings.button_link_3 }}" class="product-list-link">{{ block.settings.button_text_3 }}</a>
+                {%- endif -%}
+              {%- if block.settings.show_add_button -%}
+                     <button onclick="addToCart({{ block.settings.product_id_3 }}, this)" class="custom-checkout-button" style="height: 52px;margin-top: 20px;">
+                      <span class="loader-button__text">{{ 'product.form.add_to_cart' | t | escape }}<span style="font-family: var(--heading-font-family);font-weight: var(--heading-font-weight);"></span></span>
+                      <span class="loader-button__loader" hidden>
+                        <div class="spinner">
+                          <svg focusable="false" width="24" height="24" class="icon icon--spinner" viewBox="25 25 50 50">
+                            <circle cx="50" cy="50" r="20" fill="none" stroke="currentColor" stroke-width="5"></circle>
+                          </svg>
+                        </div>
+                      </span>
+                    </button>
+                  {%- endif -%}
+              </div>
+            {%- endif -%}
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    var buttons = document.querySelectorAll('.product_checkout-wrap');
+    // 遍历所有的按钮
+    buttons.forEach(function(button, index) {
+      // 为每个按钮添加点击事件监听
+      button.addEventListener('click', function(e) {
+        // 获取当前按钮的父元素（product_checkout-wrap）的父元素（也就是 product-list-container）
+        var productListContainer = this.parentNode.parentNode;
+
+        // 在 product-list-container 内找到所有的 product-list-list 元素
+        var productLists = productListContainer.querySelectorAll('.product-list-list');
+
+        // 遍历所有的 product-list-list 元素
+       // productLists.forEach(function(productList, i) {
+          // 如果点击的按钮对应的 product-list-list 已经显示，并且是当前元素，那就跳过
+         // if (productList.style.display !== 'none' && i === index) {
+            //return;
+          //}
+          // 否则，如果当前 product-list-list 是隐藏的，那就显示它，如果是显示的，那就隐藏它
+          //productList.style.display = productList.style.display === 'none' ? 'flex' : 'none';
+        //});
+        if(e.target.dataset.index) {
+          //this.querySelectorAll('.product_checkout-button').forEach(function(checkoutButtont, i) {
+           //checkoutButtont.classList.remove('switch-active');
+         // })
+          productLists.forEach(function(productList, i) {
+            productList.querySelectorAll('.product_checkout-button').forEach(function(checkButton, i) {
+              checkButton.classList.remove('switch-active');
+            })
+            productList.style.display =  'none';
+            productList.querySelectorAll('.product_checkout-button')[e.target.dataset.index].classList.add('switch-active');
+          })
+          productLists[e.target.dataset.index].style.display =  'flex';
+        }
+      });
+      var checkoutWrap = document.querySelectorAll('.product_checkout-wrap');
+      checkoutWrap.forEach(function(checkoutWrapList, i) {
+        checkoutWrapList.querySelector('.product_checkout-button').click();
+      })
+    });
+  })
+</script>
+{% schema %}
+{
+  "name": "Product List",
+  "class": "product-list",
+  "blocks": [
+    {
+      "name": "Column",
+      "type": "item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Product Heading",
+          "default": "Product List"
+        },
+        {
+          "type": "image_picker",
+          "id": "custom_label_ico",
+          "label": "Custom Label Ico"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_1",
+          "label": "Product Image 1"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_2",
+          "label": "Product Image 2"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_3",
+          "label": "Product Image 3"
+        },
+        {
+          "type": "text",
+          "id": "title_1",
+          "label": "Product Heading 1",
+          "default": "Your content"
+        },
+        {
+          "type": "text",
+          "id": "title_2",
+          "label": "Product Heading 2",
+          "default": "Your content"
+        },
+         {
+          "type": "text",
+          "id": "title_3",
+          "label": "Product Heading 3"
+        },
+        {
+          "type": "text",
+          "id": "price_1",
+          "label": "Price 1",
+          "default": "Your content"
+        },
+        {
+          "type": "text",
+          "id": "price_2",
+          "label": "Price 2",
+          "default": "Your content"
+        },
+        {
+          "type": "text",
+          "id": "price_3",
+          "label": "Price 3",
+          "default": "Your content"
+        },
+        {
+          "type": "text",
+          "id": "discount_price_1",
+          "label": "discount Price 1",
+          "default": "Your content"
+        },
+        {
+          "type": "text",
+          "id": "discount_price_2",
+          "label": "discount Price 2",
+          "default": "Your content"
+        },
+        {
+          "type": "text",
+          "id": "discount_price_3",
+          "label": "discount Price 3",
+          "default": "Your content"
+        },
+
+        {
+          "type": "text",
+          "id": "reduce_price_1",
+          "label": "Reduce Price 1"
+        },
+        {
+          "type": "text",
+          "id": "reduce_price_2",
+          "label": "Reduce Price 2"
+        },
+        {
+          "type": "text",
+          "id": "reduce_price_3",
+          "label": "Reduce Price 3"
+        },
+        {
+          "type": "text",
+          "id": "reduce_price_code_1",
+          "label": "Discount Code 1"
+        },
+        {
+          "type": "text",
+          "id": "reduce_price_code_2",
+          "label": "Discount Code 2"
+        },
+        {
+          "type": "text",
+          "id": "reduce_price_code_3",
+          "label": "Discount Code 3"
+        },
+
+        {
+          "type": "richtext",
+          "id": "product_label_1",
+          "label": "Product Label 1"
+        },
+        {
+          "type": "richtext",
+          "id": "product_label_2",
+          "label": "Product Label 2"
+        },
+        {
+          "type": "richtext",
+          "id": "product_label_3",
+          "label": "Product Label 3"
+        },
+        {
+          "type": "text",
+          "id": "button_text_1",
+          "label": "Button text 1"
+        },
+         {
+          "type": "url",
+          "id": "product_link_1",
+          "label": "Product link 1"
+        },
+         {
+          "type": "url",
+          "id": "product_link_2",
+          "label": "Product link 2"
+        },
+         {
+          "type": "url",
+          "id": "product_link_3",
+          "label": "Product link 3"
+        },
+        {
+          "type": "url",
+          "id": "button_link_1",
+          "label": "Button link 1"
+        },
+         {
+          "type": "text",
+          "id": "button_text_2",
+          "label": "Button text 2"
+        },
+        {
+          "type": "url",
+          "id": "button_link_2",
+          "label": "Button link 2"
+        },
+        {
+          "type": "text",
+          "id": "button_text_3",
+          "label": "Button text 3"
+        },
+        {
+          "type": "url",
+          "id": "button_link_3",
+          "label": "Button link 3"
+        },
+         {
+          "type": "checkbox",
+          "id": "show_add_button",
+          "label": "Show Add to cart button",
+          "info": "Show Add to cart button",
+          "default": false
+        },
+        {
+            "type": "text",
+            "id": "product_id_1",
+            "label": "Product id 1"
+          },
+        {
+            "type": "text",
+            "id": "product_id_2",
+            "label": "Product id 2"
+          },
+        {
+            "type": "text",
+            "id": "product_id_3",
+            "label": "Product id 3"
+          },
+        {
+          "type": "color",
+          "id": "product_switch_color_1",
+          "label": "Product Switch Color 1",
+          "default": "rgba(0,0,0,0)"
+        },
+        {
+          "type": "color",
+          "id": "product_switch_color_2",
+          "label": "Product Switch Color 2",
+          "default": "rgba(0,0,0,0)"
+        },
+        {
+          "type": "color",
+          "id": "product_switch_color_3",
+          "label": "Product Switch Color 3",
+          "default": "rgba(0,0,0,0)"
+        }
+      ]
+    }
+  ],
+  "settings": [
+    {
+      "type": "text",
+      "id": "main_title",
+      "label": "Product Heading"
+    },
+    {
+      "type": "text",
+      "id": "main_sub",
+      "label": "Product subheading"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "rgba(0,0,0,0)"
+    },
+     {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 36
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product List"
+    }
+  ]
+}
+{% endschema %}

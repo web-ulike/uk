@@ -1,0 +1,879 @@
+{{ 'swiper-bundle.min.css' | asset_url | stylesheet_tag }}
+<style>
+  #shopify-section-{{ section.id }} {
+    background: {{ section.settings.custom_background }};
+    --heading-color: {{ section.settings.text_color.red }}, {{ section.settings.text_color.green }}, {{ section.settings.text_color.blue }};
+    --text-color: {{ section.settings.text_color.red }}, {{ section.settings.text_color.green }}, {{ section.settings.text_color.blue }};
+  }
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+  }
+  @media screen and (max-width: 768px){
+  .section-{{ section.id }}-padding {
+    padding-top: calc({{ section.settings.padding_top }}px * 0.6);
+    padding-bottom: calc({{ section.settings.padding_bottom }}px * 0.6);
+  }
+}
+.product-ad-wrapper{
+  display: flex;
+}
+.ad-thump{
+  margin-right: 80px;
+  flex-basis: 64%;
+}
+.product-ad-tle{
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+.price-box{
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+}
+.price-box .price-ad{
+  color: #E0004D;
+  font-size: 32px;
+  font-family: var(--heading-font-family);
+    font-weight: var(--heading-font-weight);
+}
+.price-box .price-ad-discount{
+  color: #A1A1A1;
+  margin-left: 10px;
+  font-size: 20px;
+  text-decoration: line-through;
+}
+.coupon_wrapper{
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  background-color: #e0004d;
+  max-width: 400px;
+  color: #fff;
+  padding: 5px 10px;
+  margin-bottom: 30px;
+}
+.coupon_code_txt {
+  font-size: 26px;
+    font-weight: 700;
+}
+.copy_code_btn{
+  text-decoration: underline;
+}
+.select-color-box,.select-plug-box {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+.select-color-box .color-label, .select-plug-box .color-label{
+    font-family: var(--heading-font-family);
+    font-weight: var(--heading-font-weight);
+    margin-bottom: 5px;
+}
+.select-color {
+    display: flex;
+    margin-left: 20px;
+    gap: 10px;
+}
+.select-list.active {
+    border-color: #000000;
+}
+.select-list {
+    width: 38px;
+    height: 38px;
+    border: 1px solid #D9D9D9;
+    border-radius: 50px;
+    padding: 2px;
+    cursor: pointer;
+}
+.select-list span {
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+    border-radius: 50px;
+}
+.product-ad-des .custom-checkout-button{
+  max-width: 400px;
+}
+.product-thump-image{
+  text-align: center;
+}
+.product-ad-wrapper .swiper{
+  max-width: 46.5%;
+  height: 100%;
+}
+.product-ad-des{
+  margin-left: 100px;
+  flex: 1;
+}
+.product-ad-wrapper .swiper-pagination-bullet-active{
+  background: #696969;
+}
+.product-ad-wrapper .swiper-pagination-bullet{
+  width: 9px;
+  height: 9px;
+}
+.product-ad-des .html{
+  margin-top: 20px;
+  margin-bottom: 30px;
+}
+.product-ad-des .html ul{
+  padding-left: 20px;
+}
+.product-ad-des .select-color-box, .product-ad-des .select-plug-box{
+  flex-direction: column;
+  align-items:flex-start;
+}
+.product-ad-des .select-color{
+  margin-left: 0;
+  margin-top: 5px;
+  gap: 20px;
+}
+.count_down_list {
+    display: flex;
+    margin-bottom: 30px;
+}
+.count_down_txt{
+  font-family: var(--heading-font-family);
+    font-weight: var(--heading-font-weight);
+    margin-right: 15px;
+}
+#count_down_datatime {
+    display: flex;
+    gap: 7px;
+}
+.countdown-time {
+  display: inline-flex;
+    width: 29px;
+    height: 29px;
+    background: #D9D9D9;
+    align-items: center;
+    justify-content: center;
+    border-radius: 3px;
+}
+.color_val,.plug_val{
+  display: none;
+}
+.color_val.active,.plug_val.active{
+  display: inline-flex;
+}
+.product-ad-des .custom_input{
+  position: absolute;
+  right: 0;
+  top: 0;
+  margin: 0;
+}
+.product-ad-des .input-row{
+  position: relative;
+  --form-input-field-height: 44px;
+  --button-height: 44px;
+}
+.product-ad-des .form{
+  max-width: 400px;
+  margin-top: 20px;
+}
+.product-ad-des .form .input__field{
+  border: 1px solid #000000;
+}
+.product-ad-des .form  .input__label{
+  background:transparent;
+}
+.from_subscribe_txt{
+  font-size: 16px;
+  line-height: 21px;
+  color: #E0004D;
+  margin-top: 8px;
+}
+.select-plug{
+  display: flex;
+  gap: 5px;
+  align-items: center;
+}
+.select-plug .select-plug-list{
+  border: 1px solid #9D9D9D;
+  padding: 5px 20px;
+  cursor: pointer;
+}
+.select-plug .select-plug-list.active{
+  border: 2px solid #000000;
+}
+@media (max-width: 992px){
+  .product-ad-wrapper{
+    flex-direction: column;
+  }
+  .product-ad-des{
+    margin-left: 0;
+  }
+  .product-ad-des{
+    margin-top: 20px;
+  }
+  .product-ad-wrapper .swiper {
+    max-width: 100%;
+  }
+  .product-ad-des .html {
+    margin-top: 20px;
+    margin-bottom: 10px;
+   }
+   .coupon_wrapper{
+    margin-bottom: 20px;
+   }
+   .product-ad-des .price-box {
+    margin-top: 10px;
+  }
+  .coupon_code_txt {
+      font-size: 24px;
+  }
+  .product-ad-des .form {
+    max-width: 100%;
+  }
+}
+</style>
+
+<section class="main-product-ad section-{{ section.id }}-padding" id="product_scroll">
+  <div class="container">
+    <div class="product-ad-wrapper">
+      <div class="swiper" id="ad-thumbs-{{ section.id }}">
+        <div class="swiper-wrapper">
+          {%- if section.settings.image_1 != blank -%}
+            <div class="product-thump-image swiper-slide">
+              <img {% render 'image-attributes', image: section.settings.image_1 %}>
+            </div>
+          {%- endif -%}
+          {%- if section.settings.image_2 != blank -%}
+            <div class="product-thump-image swiper-slide">
+              <img {% render 'image-attributes', image: section.settings.image_2 %}>
+            </div>
+          {%- endif -%}
+          {%- if section.settings.image_3 != blank -%}
+            <div class="product-thump-image swiper-slide">
+              <img {% render 'image-attributes', image: section.settings.image_3 %}>
+            </div>
+              {%- endif -%}
+              {%- if section.settings.image_4 != blank -%}
+              <div class="product-thump-image swiper-slide">
+                <img {% render 'image-attributes', image: section.settings.image_4 %}>
+              </div>
+            {%- endif -%}
+            {%- if section.settings.image_5 != blank -%}
+            <div class="product-thump-image swiper-slide">
+              <img {% render 'image-attributes', image: section.settings.image_5 %}>
+            </div>
+          {%- endif -%}
+          {%- if section.settings.image_6 != blank -%}
+          <div class="product-thump-image swiper-slide">
+            <img {% render 'image-attributes', image: section.settings.image_6 %}>
+          </div>
+        {%- endif -%}
+        </div>
+        <div class="swiper-pagination swiper-pagination-{{ section.id }}"></div>
+      </div>
+      <div class="product-ad-des">
+        {%- if section.settings.title_1 != blank -%}
+          <h3 class="heading h3 product-ad-tle">{{- section.settings.title_1 -}}</h3>
+        {%- endif -%}
+        {%- if section.settings.title_2 != blank -%}
+          <h3 class="heading h3 product-ad-tle">{{- section.settings.title_2 -}}</h3>
+        {%- endif -%}
+        {%- if section.settings.html != blank -%}
+          <div class="html">
+            {{- section.settings.html -}}
+          </div>
+        {%- endif -%}
+        {%- if section.settings.product_color_txt != blank -%}
+          <div class="select-color-box">
+            <div class="color-label">{{- section.settings.product_color_txt -}}: &nbsp 
+              {%- if section.settings.product_color_txt_1 != blank -%}
+              <span class="color_val">{{- section.settings.product_color_txt_1 -}}</span>
+              {%- endif -%}
+              {%- if section.settings.product_color_txt_2 != blank -%}
+              <span class="color_val">{{- section.settings.product_color_txt_2 -}}</span>
+              {%- endif -%}
+              {%- if section.settings.product_color_txt_3 != blank -%}
+              <span class="color_val">{{- section.settings.product_color_txt_3 -}}</span>
+              {%- endif -%}
+            </div>
+            <div class="select-color">
+              {%- if section.settings.product_color_1 != blank -%}
+                <div class="select-list" data-product-id="{{ section.settings.product_id_1}}"><span style="background: {{ section.settings.product_color_1}}"></span></div>
+              {%- endif -%}
+              {%- if section.settings.product_color_2 != blank -%}
+                <div class="select-list" data-product-id="{{ section.settings.product_id_2}}"><span style="background: {{ section.settings.product_color_2}}"></span></div>
+              {%- endif -%}
+              {%- if section.settings.product_color_3 != blank -%}
+                <div class="select-list" data-product-id="{{ section.settings.product_id_3}}"><span style="background: {{ section.settings.product_color_3}}"></span></div>
+              {%- endif -%}
+            </div>
+          </div>
+        {%- endif -%}
+
+        {%- if section.settings.product_plug_txt != blank -%}
+          <div class="select-plug-box">
+            <div class="color-label">{{- section.settings.product_plug_txt -}}: &nbsp 
+              {%- if section.settings.product_plug_1 != blank -%}
+              <span class="plug_val">{{- section.settings.product_plug_1 -}}</span>
+              {%- endif -%}
+              {%- if section.settings.product_plug_2 != blank -%}
+              <span class="plug_val">{{- section.settings.product_plug_2 -}}</span>
+              {%- endif -%}
+            </div>
+            <div class="select-plug">
+              {%- if section.settings.product_plug_1 != blank -%}
+                <div class="select-plug-list">
+                  {{- section.settings.product_plug_1 -}}
+                </div>
+              {%- endif -%}
+              {%- if section.settings.product_plug_2 != blank -%}
+                <div class="select-plug-list">
+                  {{- section.settings.product_plug_2 -}}
+                </div>
+              {%- endif -%}
+            </div>
+          </div>
+        {%- endif -%}
+
+        {%- if section.settings.price != blank -%}
+          <div class="price-box">
+            <div class="price-ad">{{- section.settings.price -}}</div>
+            <div class="price-ad-discount">{{- section.settings.discount_price -}}</div>
+          </div>
+        {%- endif -%}
+        {%- if section.settings.end_date_tle != blank -%}
+          <div class="count_down_list">
+            <div class="count_down_txt">
+              {{section.settings.end_date_tle}}
+            </div>
+            <div id="count_down_datatime" class="count_down_datatime">
+                  <span class="countdown-time countdown_days_id"></span>
+                  <span class="countdown_spcolon"> : </span>
+                  <span class="countdown-time countdown_hours_id"></span>
+                  <span class="countdown_spcolon"> : </span>
+                  <span class="countdown-time countdown_minutes_id"></span>
+                  <span class="countdown_spcolon"> : </span>
+                <span class="countdown-time countdown_seconds_id"></span>
+            </div>
+          </div>
+        {%- endif -%}
+        {%- if section.settings.discount_code != blank -%}
+          <div class="coupon_wrapper">
+            <div class="coupon_code_txt">
+              {{- section.settings.discount_code_txt -}}
+            </div>
+              <div class="coupon_code"> 
+                <span class="code_tle">Code:</span>
+                <span class="code_dis">{{- section.settings.discount_code -}}</span>
+              </div>
+              <button class="copy_code_btn" onclick="copyCode(`{{ section.settings.discount_code }}`, `Copy`, this)">
+                Copy
+              </button>
+          </div>
+        {%- endif -%}
+        {%- if section.settings.shop_now_txt != blank -%}
+          {% comment %} <a href="{{ section.settings.product_link_url }}" class="buy-now-link custom-checkout-button">{{ section.settings.shop_now_txt }}</a> {% endcomment %}
+          <button class="custom-checkout-button custom_product_btn">
+            <span class="loader-button__text">{{ section.settings.shop_now_txt }}</span>
+            <span class="loader-button__loader" hidden>
+              <div class="spinner">
+                <svg focusable="false" width="24" height="24" class="icon icon--spinner" viewBox="25 25 50 50">
+                  <circle cx="50" cy="50" r="20" fill="none" stroke="currentColor" stroke-width="5"></circle>
+                </svg>
+              </div>
+            </span>
+          </button>
+        {%- endif -%}
+
+        {%- assign newsletter_id = 'newsletter-' | append: section.id -%}
+
+        {%- form 'customer', id: newsletter_id, class: 'form newsletter__form' -%}
+          {%- if form.posted_successfully? -%}
+            <script>
+              window.addEventListener('DOMContentLoaded', () => {
+                if (history.scrollRestoration) {
+                  history.scrollRestoration = 'manual'; // Prevent the browser to scroll on captcha page
+                }
+
+                document.getElementById('shopify-section-{{ section.id }}').scrollIntoView();
+              });
+            </script>
+
+            <div class="form__banner banner banner--success">
+              <span class="banner__ribbon">{% render 'icon' with 'form-success' %}</span>
+              <p class="banner__content">{{ 'general.newsletter.success' | t }}</p>
+            </div>
+          {%- else -%}
+            {%- if form.errors -%}
+              <div class="form__banner banner banner--error">
+                <span class="banner__ribbon">{% render 'icon' with 'form-error' %}</span>
+                <p class="banner__content">{{ form.errors.messages['email'] }}</p>
+              </div>
+            {%- endif -%}
+
+            <input type="hidden" name="contact[tags]" value="newsletter">
+            <input type="hidden" name="contact[context]" value="{{ newsletter_id }}">
+
+            <div class="input-row">
+              <div class="input">
+                <input type="email" id="newsletter[{{ section.id }}][contact][email]" name="contact[email]" class="input__field" required>
+                <label for="newsletter[{{ section.id }}][contact][email]" class="input__label">{{ 'general.newsletter.email' | t }}</label>
+              </div>
+
+              <div class="input custom_input">
+                <button type="submit" is="loader-button" class="button button--primary">{{ 'general.newsletter.subscribe' | t }}</button>
+              </div>
+            </div>
+          {%- endif -%}
+        {%- endform -%}
+        <div class="from_subscribe_txt">
+          {{ section.settings.subcribe_txt | escape }}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<script src="{{ 'swiper-bundle.min.aio.min.js' | asset_url }}"></script>
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+  let swiperId = new Swiper('#ad-thumbs-{{ section.id }}',{
+    loop:true,
+    pagination: {
+      el: ".swiper-pagination-{{ section.id }}",
+      clickable :true
+    }
+  })
+  function Countdownbar(selector, endDate) {
+    let countdownElement = document.querySelector(selector);
+    let daysElement = countdownElement.querySelector('.countdown_days_id');
+    let hoursElement = countdownElement.querySelector('.countdown_hours_id');
+    let minutesElement = countdownElement.querySelector('.countdown_minutes_id');
+    let secondsElement = countdownElement.querySelector('.countdown_seconds_id');
+  
+    // 获取当前时间和结束时间
+    let serverTimestamp = {{ 'now' | date: '%s' }};
+    let currentServerTime = new Date(serverTimestamp * 1000); // 将秒转换为毫秒
+    let currentTime = currentServerTime.getTime();
+    
+    let distance = endDate - currentTime <=0 ? 0: endDate - currentTime;
+
+    function updateCountdownbar() {
+      // 计算天、时、分、秒
+      let days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      let hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      let seconds = Math.floor((distance % (1000 * 60)) / 1000);
+  
+      // 更新倒计时显示
+      daysElement.textContent = days < 10 ? '0' + days : days;
+      hoursElement.textContent = hours < 10 ? '0' + hours : hours;
+      minutesElement.textContent = minutes < 10 ? '0' + minutes
+       : minutes;
+      secondsElement.textContent = seconds < 10 ? '0' + seconds : seconds;
+  
+      // 减去一秒，更新距离
+      distance -= 1000;
+  
+      // 当倒计时结束时，清除计时器
+      if (distance < 0) {
+        clearInterval(countdownInterval);
+        // 可以在倒计时结束后执行相应的操作
+      }
+    }
+    // 每秒更新一次倒计时
+    let countdownInterval = setInterval(updateCountdownbar, 1000);
+  
+    // 页面加载时初始化倒计时
+    updateCountdownbar();
+  }
+  countdownlist()
+  function countdownlist(){
+   var getEndTime = sessionStorage.getItem('uk_air_endtime{{ section.id }}')
+
+  // 获取当前时间
+    let serverTimestamp = {{ 'now' | date: '%s' }};
+    let currentServerTime = new Date(serverTimestamp * 1000); // 将秒转换为毫秒
+    let currentTime = currentServerTime.getTime();
+    let ediftendDate = ('{{section.settings.end_date }}');
+    if(ediftendDate =="" || ediftendDate==null){
+       if(getEndTime){
+         let currday = getEndTime - currentTime 
+         if(currday <= 0){
+           let new_currenttime= currentTime + 48 * 60 * 60 *  1000 
+           sessionStorage.setItem('uk_air_endtime{{ section.id }}',new_currenttime);
+           //this.Countdownbar('#count_down_datatime', new_currenttime);
+          let hos= new Countdownbar('#count_down_datatime', new_currenttime);
+         }else{
+           //this.Countdownbar('#count_down_datatime', getEndTime);
+            let hos= new Countdownbar('#count_down_datatime', getEndTime);
+         }
+       }else{
+          // //系统当前时间戳
+         let new_currenttime= currentTime + 48 * 60 * 60 *  1000 
+         sessionStorage.setItem('uk_air_endtime{{ section.id }}',new_currenttime)
+         let hos= new Countdownbar('#count_down_datatime', new_currenttime);
+       }
+    }else{
+     let endDate = new Date(`${ediftendDate}`).getTime(); // 设置结束时间
+     let countdown = new Countdownbar('#count_down_datatime', endDate); // 初始化倒计时插件
+    }
+  }
+  //let ediftendDate = ('{{section.settings.end_date }}');
+  // 使用示例
+  //let endDate = new Date(`${ediftendDate}`).getTime(); // 设置结束时间
+  //let countdown = new Countdownbar('#count_down_datatime', endDate); // 初始化倒计时插件
+   
+  let productId_1 =  '{{section.settings.product_id_1}}'
+  let productId_2 =  '{{section.settings.product_id_2}}'
+  let productId_3 =  '{{section.settings.product_id_3}}'
+  let productId_4 =  '{{section.settings.product_id_4}}'
+  let productId_5 =  '{{section.settings.product_id_5}}'
+  let productId_6 =  '{{section.settings.product_id_6}}'
+
+  document.getElementById('shopify-section-{{section.id}}').querySelectorAll('.select-list').forEach((colorButton,index)=>{
+    colorButton.addEventListener('click', function(e){
+      console.log('index', index);
+      document.getElementById('shopify-section-{{section.id}}').querySelectorAll('.select-list').forEach(list=>{
+        list.classList.remove('active')
+      })
+      document.getElementById('shopify-section-{{section.id}}').querySelectorAll('.color_val').forEach(colorVal=>{
+        colorVal.classList.remove('active')
+      })
+     
+      if(index==0 && ((document.querySelector('.select-plug-box').dataset.selectPlugId) == 0)){
+        document.getElementById('shopify-section-{{section.id}}').querySelector('.custom_product_btn').dataset.productId = productId_1
+      } else if(index==0 && ((document.querySelector('.select-plug-box').dataset.selectPlugId) == 1)){
+        document.getElementById('shopify-section-{{section.id}}').querySelector('.custom_product_btn').dataset.productId = productId_2
+      }else if(index==1 && ((document.querySelector('.select-plug-box').dataset.selectPlugId) == 0)){
+        document.getElementById('shopify-section-{{section.id}}').querySelector('.custom_product_btn').dataset.productId = productId_3
+      }else if(index==1 && ((document.querySelector('.select-plug-box').dataset.selectPlugId) == 1)){
+        document.getElementById('shopify-section-{{section.id}}').querySelector('.custom_product_btn').dataset.productId = productId_4
+      }else if(index==2 && ((document.querySelector('.select-plug-box').dataset.selectPlugId) == 0)){
+        document.getElementById('shopify-section-{{section.id}}').querySelector('.custom_product_btn').dataset.productId = productId_5
+      }else if(index==2 && ((document.querySelector('.select-plug-box').dataset.selectPlugId) == 1)){
+        document.getElementById('shopify-section-{{section.id}}').querySelector('.custom_product_btn').dataset.productId = productId_6
+      }
+    
+      document.getElementById('shopify-section-{{section.id}}').querySelectorAll('.color_val')[index].classList.add('active')
+      this.classList.add('active');
+      document.querySelector('.select-color-box').dataset.selectColorId = index;
+      swiperId.slideTo(index+1, 500);
+    })
+  })
+
+
+  document.getElementById('shopify-section-{{section.id}}').querySelectorAll('.select-plug-list').forEach((plugButton,index)=>{
+    plugButton.addEventListener('click', function(e){
+      console.log('index', index);
+      document.getElementById('shopify-section-{{section.id}}').querySelectorAll('.select-plug-list').forEach(pluglist=>{
+        pluglist.classList.remove('active')
+      })
+      document.getElementById('shopify-section-{{section.id}}').querySelectorAll('.plug_val').forEach(colorVal=>{
+        colorVal.classList.remove('active')
+      })
+      document.getElementById('shopify-section-{{section.id}}').querySelectorAll('.plug_val')[index].classList.add('active')
+      this.classList.add('active');
+      document.querySelector('.select-plug-box').dataset.selectPlugId = index;
+
+      if(index==0 && ((document.querySelector('.select-color-box').dataset.selectColorId) == 0)){
+        document.getElementById('shopify-section-{{section.id}}').querySelector('.custom_product_btn').dataset.productId = productId_1
+      } else if(index==1 && ((document.querySelector('.select-color-box').dataset.selectColorId) == 0)){
+        document.getElementById('shopify-section-{{section.id}}').querySelector('.custom_product_btn').dataset.productId = productId_2
+      }else if(index==0 && ((document.querySelector('.select-color-box').dataset.selectColorId) == 1)){
+        document.getElementById('shopify-section-{{section.id}}').querySelector('.custom_product_btn').dataset.productId = productId_3
+      }else if(index==1 && ((document.querySelector('.select-color-box').dataset.selectColorId) == 1)){
+        document.getElementById('shopify-section-{{section.id}}').querySelector('.custom_product_btn').dataset.productId = productId_4
+      }else if(index==0 && ((document.querySelector('.select-color-box').dataset.selectColorId) == 2)){
+        document.getElementById('shopify-section-{{section.id}}').querySelector('.custom_product_btn').dataset.productId = productId_5
+      }else if(index==1 && ((document.querySelector('.select-color-box').dataset.selectColorId) == 2)){
+        document.getElementById('shopify-section-{{section.id}}').querySelector('.custom_product_btn').dataset.productId = productId_6
+      }
+    })
+  })
+
+  document.getElementById('shopify-section-{{section.id}}').querySelector('.select-list').click();
+  document.getElementById('shopify-section-{{section.id}}').querySelector('.select-plug-list').click();
+  document.getElementById('shopify-section-{{section.id}}').querySelector('.custom_product_btn').addEventListener('click', function (bt) {
+    addToCart(this.getAttribute('data-product-id'), this);
+  });
+});
+
+
+</script>
+{% schema %}
+{
+  "name": "Main Product KOL",
+  "class": "shopify-section--main-product-ad",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image_1",
+      "label": "Product Image 1"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_2",
+      "label": "Product Image 2"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_3",
+      "label": "Product Image 3"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_4",
+      "label": "Product Image 4"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_5",
+      "label": "Product Image 5"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_6",
+      "label": "Product Image 6"
+    },
+    {
+          "type": "text",
+          "id": "title_1",
+          "label": "Product Heading 1",
+          "default": "Your content"
+        },
+        {
+          "type": "text",
+          "id": "title_2",
+          "label": "Product Heading 2",
+          "default": "Your content"
+        },
+        {
+          "type": "text",
+          "id": "price",
+          "label": "Price",
+          "default": "$259"
+        },
+        {
+          "type": "text",
+          "id": "discount_price",
+          "label": "discount Price",
+          "default": "$379"
+        },
+        {
+        "type": "text",
+        "id": "end_date_tle",
+        "label": "End Date Title",
+        "info": "End Date Title",
+        "default": "Ends in"
+      },
+        {
+        "type": "text",
+        "id": "end_date",
+        "label": "End Date",
+        "info": "Please configure according to the format of 2020-10-03T00:00:00"
+      },
+        {
+          "type": "text",
+          "id": "discount_code_txt",
+          "label": "Discount Code Txt"
+        },
+        {
+          "type": "text",
+          "id": "discount_code",
+          "label": "Discount Code"
+        },
+        {
+          "type": "text",
+          "id": "afterpay_txt",
+          "label": "Afterpay Txt"
+        },
+        {
+          "type": "html",
+          "id": "html",
+          "label": "HTML",
+          "default": "<p style=\"text-align: center\">Write or copy/paste HTML code</p>"
+        },
+        
+        {
+          "type": "text",
+          "id": "product_color_txt",
+          "label": "Product Color label"
+        },
+        {
+          "type": "text",
+          "id": "product_color_1",
+          "label": "Product Color 1"
+        },
+        {
+          "type": "text",
+          "id": "product_color_2",
+          "label": "Product Color 2"
+        },
+        {
+          "type": "text",
+          "id": "product_color_3",
+          "label": "Product Color 3"
+        },
+        {
+          "type": "text",
+          "id": "product_color_txt_1",
+          "label": "Product Color Txt 1"
+        },
+        {
+          "type": "text",
+          "id": "product_color_txt_2",
+          "label": "Product Color Txt 2"
+        },
+        {
+          "type": "text",
+          "id": "product_color_txt_3",
+          "label": "Product Color Txt 3"
+        },
+        {
+          "type": "text",
+          "id": "product_id_1",
+          "label": "Product Id 1"
+        },
+        {
+          "type": "text",
+          "id": "product_id_2",
+          "label": "Product Id 2"
+        },
+        {
+          "type": "text",
+          "id": "product_id_3",
+          "label": "Product Id 3"
+        },
+        {
+          "type": "text",
+          "id": "product_id_4",
+          "label": "Product Id 4"
+        },
+        {
+          "type": "text",
+          "id": "product_id_5",
+          "label": "Product Id 5"
+        },
+        {
+          "type": "text",
+          "id": "product_id_6",
+          "label": "Product Id 6"
+        },
+        {
+          "type": "text",
+          "id": "product_plug_txt",
+          "label": "Product Plug label"
+        },
+        {
+          "type": "text",
+          "id": "product_plug_1",
+          "label": "Product Plug 1"
+        },
+        {
+          "type": "text",
+          "id": "product_plug_2",
+          "label": "Product Plug 2"
+        },
+        {
+          "type": "text",
+          "id": "shop_now_txt",
+          "label": "Shop Now Txt",
+          "default": "Shop Now"
+        },
+        {
+          "type": "url",
+          "id": "product_link_url",
+          "label": "Product Link URL 1",
+          "info": "If none is set, collection URL is used."
+        },
+        {
+          "type": "url",
+          "id": "product_link_url_2",
+          "label": "Product Link URL 2",
+          "info": "If none is set, collection URL is used."
+        },
+        {
+          "type": "url",
+          "id": "product_link_url_3",
+          "label": "Product Link URL 3",
+          "info": "If none is set, collection URL is used."
+        },
+        {
+          "type": "url",
+          "id": "product_link_url_4",
+          "label": "Product Link URL 4",
+          "info": "If none is set, collection URL is used."
+        },
+        {
+          "type": "url",
+          "id": "product_link_url_5",
+          "label": "Product Link URL 5",
+          "info": "If none is set, collection URL is used."
+        },
+        {
+          "type": "url",
+          "id": "product_link_url_6",
+          "label": "Product Link URL 6",
+          "info": "If none is set, collection URL is used."
+        },
+        {
+          "type": "text",
+          "id": "subcribe_txt",
+          "label": "Subcribe Txt",
+          "default": "Subcribe to Save the discount for longer time"
+        },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "text",
+      "id": "custom_background",
+      "label": "Custom Background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "rgba(0,0,0,0)"
+    },
+     {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 36
+    }
+  ],
+  "blocks": [
+    {
+    "type":"item",
+    "name":"item",
+    "settings":[
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Main Product KOL"
+    }
+  ]
+}
+{% endschema %}

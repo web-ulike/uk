@@ -1,0 +1,350 @@
+<style>
+.return-flow{
+  padding: 120px 0;
+  overflow: hidden;
+  background: linear-gradient(180deg, #FFECF3 0.02%, #FFF 119.12%);
+}
+
+.return-flow .return-flow-sub{
+  font-size: 14px;
+  line-height: 1;
+  text-align: left;
+  color: #E7004C;
+  font-family: var(--heading-font-family);
+}
+
+.return-flow .title-diy{
+  max-width: 580px;
+  text-align: left;
+  margin-top: 18px;
+  font-size: 40px;
+}
+
+.return-flow .return-flow-top{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.return-flow .return-flow-cont{
+  margin-top: 88px;
+}
+
+.return-flow .return-flow-list{
+  display: flex;
+}
+
+.return-flow .return-flow-item{
+  border-radius: 35px;
+  background: linear-gradient(180deg, #E6E2FF 0%, #FFF 100%);
+  margin-right: 40px;
+  width: 480px;
+  color: #000;
+  flex-shrink: 0;
+}
+
+.return-flow .return-flow-item .img{
+  margin-top: -53px;
+  display: block;
+}
+
+
+.return-flow .return-flow-text{
+  padding: 40px 50px;
+}
+
+.return-flow .return-flow-num{
+  line-height: 1;
+  font-family: var(--heading-font-family);
+  margin-bottom: 6px;
+  color: #E0004D;
+  font-size: 18px;
+}
+
+.return-flow .return-flow-t{
+  font-family: var(--heading-font-family);
+  font-size: 32px;
+  line-height: 1.2;
+}
+
+.return-flow .return-flow-txt{
+  margin-top: 20px;
+  color: #000;
+  line-height: 1.4;
+  font-size: 14px;
+}
+
+.return-flow .return-flow-txt p{
+  margin: 0;
+}
+
+.return-flow .return-flow-arrow {
+  display: flex;
+  justify-content: center;
+}
+
+.return-flow .return-flow-arrow-item {
+  cursor: pointer;
+  overflow: hidden;
+  width: 40px;
+  height: 40px;
+  margin: 0 20px;
+  position: relative;
+  transition: all 0.4s ease;
+}
+.return-flow .return-flow-arrow-item:hover{
+   opacity: 0.5;
+}
+.return-flow .return-flow-arrow-item svg{
+  display: block;
+}
+
+.return-flow .return-flow-arrow-item::before {
+  position: absolute;
+  content: "";
+  display: none;
+  width: 12px;
+  height: 12px;
+  border-top: 2px solid #000;
+  border-left: 2px solid #000;
+  top: 50%;
+  left: 50%;
+  margin-left: 2px;
+  transform: translate(-50%, -50%) rotate(-45deg);
+  transition: all 0.4s ease;
+}
+
+
+@media (max-width:1400px) {
+  .return-flow .return-flow-item{
+    width: 400px;
+  }
+  .return-flow .return-flow-item .img{
+    margin-top: -45px;
+  }
+  .return-flow .return-flow-text{
+    padding: 30px;
+    padding-bottom: 50px;
+  }
+}
+
+@media (max-width:768px) {
+  .return-flow {
+    padding: 70px 0 40px 0;
+  }
+  .return-flow .return-flow-cont{
+    margin-top: 63px;
+  }
+  .return-flow .return-flow-arrow{
+    display: none;
+  }
+  .return-flow .title-diy{
+    margin-top: 16px;
+    font-size: 28px;
+    max-width: none;
+  }
+  .return-flow .return-flow-item .img{
+    margin-top: -31px;
+  }
+  .return-flow .return-flow-item{
+    width: 276px;
+    margin-right: 20px;
+  }
+  .return-flow .return-flow-num{
+    font-size: 16px;
+  }
+  .return-flow .return-flow-t{
+    font-size: 21px;
+  }
+  .return-flow .return-flow-txt{
+    margin-top: 12px;
+  }
+}
+</style>
+
+<section class="section-box">
+  <div class="return-flow">
+  <div class="container">
+    <div class="return-flow-sub to-top">{{ section.settings.text }} </div>
+    <div class="return-flow-top">
+      <div class="title-diy to-top" style="transition-delay: 0.1s">{{ section.settings.text1 }}</div>
+      <div class="return-flow-arrow to-top" style="transition-delay: 0.2s">
+        <div class="return-flow-arrow-item">
+          <svg xmlns="http://www.w3.org/2000/svg" width="40" height="41" viewBox="0 0 40 41" fill="none">
+            <path d="M18.3333 8.35196L5.97632 20.709L18.3333 33.066L20.6904 30.709L12.357 22.3757H33.3333V19.0423H12.357L20.6904 10.709L18.3333 8.35196Z" fill="black"/>
+          </svg>
+        </div>
+        <div class="return-flow-arrow-item">
+          <svg xmlns="http://www.w3.org/2000/svg" width="41" height="41" viewBox="0 0 41 41" fill="none">
+            <path d="M22.1666 8.35196L34.5236 20.709L22.1666 33.066L19.8096 30.709L28.1429 22.3757H7.16663V19.0423H28.1429L19.8096 10.709L22.1666 8.35196Z" fill="black"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+    
+    <div class="return-flow-cont">
+      <div class="return-flow-list">
+        {%- for block in section.blocks -%}
+          <div class="return-flow-item to-top" style="transition-delay: 0.{{ forloop.index }}s">
+            {%- if block.settings.image != blank -%}
+              <img
+                loading="lazy"
+                class="img"
+                width="{{ block.settings.image.width }}"
+                height="{{ block.settings.image.height }}"
+                {% render 'image-attributes', image: block.settings.image %}
+                alt="{{ block.settings.image.alt | escape }}"
+              >
+            {%- endif -%}
+            <div class="return-flow-text">
+              <div class="return-flow-num">{{ block.settings.text }}</div>
+              <div class="return-flow-t">{{ block.settings.text1 }}</div>
+              <div class="return-flow-txt">
+                {{ block.settings.text2 }}
+              </div>
+            </div>
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</div>      
+</section>
+<script>
+  window.addEventListener('load',function(){
+    function returnFlowSwiper(){
+      let time = +new Date()
+      let $p = $('.return-flow')
+      let $list = $p.find('.return-flow-list')
+      let $arrowItem = $p.find('.return-flow-arrow-item')
+      const content = document.querySelector('.return-flow .return-flow-list');
+      let length = $list.find('.return-flow-item').length
+      let width = $list.find('.return-flow-item')[0].offsetWidth
+      let index = 0
+      let pWidth = $p[0].offsetWidth
+      let marginW = window.innerWidth > 768 ? 40:20
+      let lWidth = length * (width + marginW) + $list[0].offsetLeft
+      let translateX = 0
+
+      function changeTransform(num){
+        translateX += (width + marginW) * num
+        if(translateX > lWidth - pWidth) {
+          translateX = lWidth - pWidth
+        }
+        if(translateX<0) translateX = 0
+        $list.css({
+          transform: 'translateX(-' + translateX + 'px)',
+          transition: 'all 1s cubic-bezier(0.645, 0.045, 0.355, 1) 0s'
+        })
+      }
+
+      $arrowItem.click(function(){
+        let sindex = $(this).index()
+        if(+new Date() - time<1000) return
+        time = +new Date()
+        changeTransform(sindex?1:-1)
+      })
+
+      detectSwipe(content, () => {
+        changeTransform(1)
+      }, () => {
+        changeTransform(-1)
+      });
+    }
+
+    function detectSwipe(element, onSwipeLeft, onSwipeRight) {
+      let startX = 0;
+
+      const getEventX = (event) => {
+        return event.touches ? event.touches[0].clientX : event.clientX;
+      };
+
+      const handleTouchStart = (e) => {
+        startX = getEventX(e);
+      };
+
+      const handleTouchMove = (e) => {
+        const deltaX = getEventX(e) - startX;
+        if (Math.abs(deltaX) > 10 && e.cancelable) {
+          e.preventDefault();
+        }
+      };
+
+      const handleTouchEnd = (e) => {
+        const deltaX = getEventX(e.changedTouches ? e.changedTouches[0] : e) - startX;
+        if (deltaX > 10) {
+          onSwipeRight();
+        } else if (deltaX < -10) {
+          onSwipeLeft();
+        }
+      };
+
+      element.addEventListener('touchstart', handleTouchStart);
+      element.addEventListener('touchmove', handleTouchMove);
+      element.addEventListener('touchend', handleTouchEnd);
+
+      // Add mouse event listeners for PC compatibility
+      element.addEventListener('mousedown', handleTouchStart);
+      element.addEventListener('mousemove', handleTouchMove);
+      element.addEventListener('mouseup', handleTouchEnd);
+    }
+
+
+
+    returnFlowSwiper()
+  })
+  
+</script>
+{% schema %}
+{
+  "name": "new-year-flow",
+  "settings": [
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "text1",
+      "label": "Title"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "item",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text"
+        },
+        {
+          "type": "text",
+          "id": "text1",
+          "label": "Text"
+        },
+        {
+          "type": "text",
+          "id": "text2",
+          "label": "Text"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "new-year-flow",
+      "settings": {},
+      "blocks": [
+      ]
+    }
+  ]
+}
+{% endschema %}

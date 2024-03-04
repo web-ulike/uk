@@ -1,0 +1,354 @@
+{{ 'swiper-bundle.min.css' | asset_url | stylesheet_tag }}
+<style>
+  .section-{{ section.id }}-padding {
+    padding-top: calc({{ section.settings.padding_top }}px);
+    padding-bottom: calc({{ section.settings.padding_bottom }}px);
+  }
+  @media screen and (max-width: 768px){
+  .section-{{ section.id }}-padding {
+    padding-top: calc({{ section.settings.padding_top }}px * 0.6);
+    padding-bottom: calc({{ section.settings.padding_bottom }}px * 0.6);
+  }
+}
+#shopify-section-{{ section.id }} {
+    --text-color: {{  section.settings.text_color.red }}, {{  section.settings.text_color.green }}, {{  section.settings.text_color.blue }};
+    --section-background: {{ section.settings.background.red }}, {{ section.settings.background.green }}, {{ section.settings.background.blue }};
+    background: rgb(var(--section-background, var(--background)));
+}
+
+.check_swiper-new {
+    display: flex;
+    position: relative;
+    align-items: center;
+    gap: 40px;
+    margin-top: 60px;
+}
+.check_swiper-new .swiper-scrollbar {
+    background: #DEDEDE;
+    height: 2px;
+}
+.check_swiper-new .swiper-pagination-progressbar .swiper-pagination-progressbar-fill {
+    background: #000000;
+}
+.next_prev-bix {
+    display: flex;
+    gap: 30px;
+    zoom: .9;
+}
+.next_prev-bix svg.swiper-button-disabled {
+    color: #DEDEDE;
+}
+.next_prev-bix svg {
+    cursor: pointer;
+}
+
+
+.text-swiper-wrapper{
+  display: flex;
+  align-items: center;
+  gap: 54px;
+}
+.text_swiper-left{
+  flex-basis: 41%;
+}
+.text_swiper-right{
+  flex-basis: 59%;
+  width: 59%;
+}
+.text_swiper-left h2.h2{
+  font-size: 40px;
+  line-height: 1.25;
+  margin-bottom: 30px;
+}
+.text-swiper_tle{
+  font-size: 16px;
+  line-height: 1.5;
+  margin-bottom: 30px;
+}
+.image_swiper-bix .swiper-slide{
+  opacity: 0.8;
+}
+.image_swiper-bix .swiper-slide.swiper-slide-active{
+  opacity: 1;
+}
+.swiper_dex-box {
+  background: linear-gradient(180deg, rgba(224, 0, 77, 0.00) 22.98%, #E0004D 100%);
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+        padding: 25% 40px 40px;
+  border-radius: 0 0 15px 15px;
+  display: none;
+}
+  .swiper_dex-box .swiper_name{
+    color: #FFF;
+font-size: 22px;
+font-style: normal;
+font-weight: 600;
+line-height: 150%;
+  }
+    .swiper_dex-box .swiper_des{
+color: #FFF;
+font-size: 16px;
+font-style: normal;
+font-weight: 400;
+line-height: 150%;
+  }
+
+  .swiper-slide.swiper-slide-active .swiper_dex-box{
+    display: block;
+  }
+@media screen and (max-width: 991px){
+  .text-swiper-wrapper{
+    flex-direction: column;
+    gap: 40px;
+  }
+  .text_swiper-right {
+    flex-basis: 100%;
+    width:100%;
+}
+.text_swiper-left {
+    flex-basis: 100%;
+    text-align: center;
+}
+}
+@media screen and (max-width: 740px){
+  .text_swiper-left h2.h2{
+    font-size: 22px;
+    line-height: 1.25;
+    margin-bottom: 15px;
+  }
+  .text-swiper_tle {
+    font-size: 14px;
+    line-height: 1.5;
+    margin-bottom: 15px;
+}
+.check_swiper-new .swiper-scrollbar{
+  background: none;
+  height: auto;
+  text-align: center;
+}
+.next_prev-bix{
+  display: none;
+}
+.text-swiper-wrapper .swiper-pagination-bullet{
+width: 5px;
+height: 5px;
+background: #d9d9d9;
+}
+.text-swiper-wrapper .swiper-pagination-bullet-active{
+  background: #7a7a7a;
+}
+.check_swiper-new{
+  margin-top: 16px;
+}
+}
+  @media screen and (max-width: 600px){
+    img.text-swiper_new {
+    max-width: 254px;
+    margin: 0 auto;
+}
+  }
+</style>
+
+<section class="section_text-swiper{% if section.settings.custom_class != blank %} {{section.settings.custom_class}}{% endif %}">
+  <div class="section-{{ section.id }}-padding">
+    <div class="container">
+      <div class="text-swiper-wrapper">
+        <div class="text_swiper-left">
+          
+            {%- if section.settings.title != blank -%}
+              <h2 class="heading h2 to-top" style="transition-delay: 0.1s">
+                <split-lines>{{ section.settings.title | escape }}</split-lines>
+              </h2>
+            {%- endif -%}
+
+            {%- if section.settings.sub_heading != blank -%}
+              <div class="text-swiper_tle to-top" style="transition-delay: 0.2s">
+              {{ section.settings.sub_heading | escape }}
+              </div>
+            {%- endif -%}
+            {%- if section.settings.image != blank -%}
+              <img class="text-swiper_new to-top" src="{{ section.settings.image | image_url }}" style="transition-delay: 0.3s">
+            {%- endif -%}
+        </div>
+        <div class="text_swiper-right to-top" style="transition-delay: 0.4s">
+          <div class="image_swiper-bix">
+            <div class="swiper" id="image_swiper--{{ section.id}}">
+              <div class="swiper-wrapper">
+                {%- for block in section.blocks -%}
+                  <div class="swiper-slide">
+                    {%- if block.settings.image != blank -%}
+                      <img
+                        loading="lazy"
+                        class=""
+                        width="{{ block.settings.image.width }}"
+                        height="{{ block.settings.image.height }}"
+                        {% render 'image-attributes', image: block.settings.image %}
+                        alt="{{ block.settings.image.alt | escape }}"
+                      >
+                    {%- endif -%}
+                    {%- if block.settings.name != blank -%}
+                     <div class="swiper_dex-box">
+                       <div class="swiper_name">{{ block.settings.name | escape }}</div>
+                       <div class="swiper_des">{{ block.settings.des | escape }}</div>
+                     </div>
+                    {%- endif -%}
+                  </div>
+                {%- endfor -%}
+              </div>
+            </div>
+            
+
+            <div class="check_swiper-new">
+              <div class="swiper-scrollbar" id="swiper-scrollbar--{{ section.id}}"></div>
+              <div class="next_prev-bix">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="13"
+                  height="22"
+                  viewBox="0 0 13 22"
+                  fill="none"
+                  class="swiper-button-prev--{{ section.id}}"
+                >
+                  <path d="M10.9717 1.99999L1.99998 10.9717L10.9717 19.9434" stroke="currentColor" stroke-width="2" stroke-linecap="square"/>
+                </svg>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="13"
+                  height="22"
+                  viewBox="0 0 13 22"
+                  fill="none"
+                  class="swiper-button-next--{{ section.id}}"
+                >
+                  <path d="M1.97169 1.99999L10.9434 10.9717L1.97169 19.9434" stroke="currentColor" stroke-width="2" stroke-linecap="square"/>
+                </svg>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script src="{{ 'swiper-bundle.min.aio.min.js' | asset_url }}"></script>
+<script>
+  window.addEventListener('load', function () {
+    let imageswiper = new Swiper('#image_swiper--{{ section.id }}', {
+        slidesPerView: 1,
+        spaceBetween: 20,
+        pagination: {
+        el: '#swiper-scrollbar--{{ section.id}}'
+      },
+        breakpoints:{
+        740: {
+          slidesPerView: 1.45,
+          spaceBetween:54,
+          pagination: {
+            type: 'progressbar'
+          }
+        }
+      },
+        navigation: {
+          nextEl: '.swiper-button-next--{{ section.id }}',
+          prevEl: '.swiper-button-prev--{{ section.id }}',
+        }
+      });
+  });
+</script>
+{% schema %}
+{
+  "name": "Text With Swiper",
+  "class": "shopify-section--text-with-swiper",
+  "settings": [
+    {
+      "type": "text",
+      "id": "custom_class",
+      "label": "Custom Class"
+    },
+    {
+        "type": "text",
+        "id": "title",
+        "label": "Title",
+        "default": "Title"
+      },
+      {
+        "type": "text",
+        "id": "sub_heading",
+        "label": "subHeading"
+      },
+      
+      {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+
+      {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 36
+    }
+  ],
+  "blocks": [
+    {
+      "name": "Column",
+      "type": "item",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+        "type": "text",
+        "id": "name",
+        "label": "Name"
+      },
+        {
+        "type": "text",
+        "id": "des",
+        "label": "Description"
+      }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Text With Swiper",
+      "settings": {},
+      "blocks": [
+      ]
+    }
+  ]
+}
+{% endschema %}

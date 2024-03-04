@@ -1,0 +1,215 @@
+<style>
+.certificate-box{
+  position: relative;
+}
+
+.certificate-box .certificate-bg{
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 100%;
+}
+
+.certificate-box .mb-box{
+  display: none;
+}
+
+.certificate-box .certificate-cont{
+  position: absolute;
+  width: 100%;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+}
+
+.certificate-box .certificate-title{
+  color: #FFF;
+  font-size: 40px;
+  font-family: var(--heading-font-family);
+  line-height: 1.25;
+  max-width: 645px;
+}
+
+.certificate-box .certificate-p{
+  color: #FFF;
+  font-size: 16px;
+  line-height: 1.5;
+  margin-top: 20px;
+  max-width: 645px;
+}
+
+.certificate-box .certificate-img{
+  max-width: 755px;
+  display: block;
+  margin-top: 70px;
+}
+.certificate-box .certificate-img.mb-box{
+  display: none;
+}
+.christmas .certificate-box .certificate-title{
+  color: #333;
+}
+  .christmas .certificate-box .certificate-p{
+ color: #333;
+}
+@media (max-width:1600px) {
+  .certificate-box .certificate-img{
+    width: 45.7%;
+  }
+}
+
+@media (max-width:1300px) {
+  .certificate-box .certificate-title{
+    font-size: 30px;
+  }
+  .certificate-box .certificate-p{
+    font-size: 14px;
+    width: 50%;
+  }
+  .certificate-box .certificate-img{
+    margin-top: 30px;
+  }
+}
+
+@media (max-width:860px) {
+  .certificate-box .certificate-cont{
+    text-align: center;
+    transform: translateY(0);
+    top: 60px;
+  }
+  .certificate-box .certificate-title{
+    font-size: 22px;
+    max-width: 224px;
+    margin: 0 auto;
+  }
+  .certificate-box .mb-box,.certificate-box .certificate-img.mb-box{
+    display: block;
+  }
+
+  .certificate-box .pc-box{
+    display: none;
+  }
+
+  .certificate-box .certificate-img{
+    width: 100%;
+    margin-top: 30px;
+  }
+
+  .certificate-box .certificate-p{
+    width: 100%;
+    margin-top: 10px;
+  }
+
+}
+
+</style>
+<section class="section-box{% if section.settings.custom_class != blank %} {{section.settings.custom_class}}{% endif %}">
+  <div class="certificate-box">
+    {%- if section.settings.image != blank -%}
+       <img loading="lazy" class="certificate-bg pc-box{% if section.settings.custom_class_1 != blank %} {{section.settings.custom_class_1}}{% endif %}" width="{{ section.settings.image.width }}" height="{{ section.settings.image.height }}" {% render 'image-attributes', image: section.settings.image %} alt="{{ section.settings.image.alt | escape }}" >
+    {%- endif -%}
+    {%- if section.settings.image1 != blank -%}
+       <img loading="lazy" class="certificate-bg mb-box{% if section.settings.custom_class_2 != blank %} {{section.settings.custom_class_2}}{% endif %}" width="{{ section.settings.image1.width }}" height="{{ section.settings.image1.height }}" {% render 'image-attributes', image: section.settings.image1 %} alt="{{ section.settings.image1.alt | escape }}" >
+    {%- endif -%}
+    <div class="certificate-cont">
+      <div class="container">
+        {%- if section.settings.text != blank -%}
+          <div class="certificate-title">
+            {{ section.settings.text }}
+          </div>
+        {%- endif -%}
+        {%- if section.settings.text1 != blank -%}
+          <div class="certificate-p">
+          {{ section.settings.text1 }}
+          </div>
+        {%- endif -%}
+        {%- if section.settings.image2 != blank -%}
+           <img loading="lazy" class="certificate-img pc-box" width="{{ section.settings.image2.width }}" height="{{ section.settings.image2.height }}" {% render 'image-attributes', image: section.settings.image2 %} alt="{{ section.settings.image2.alt | escape }}" >
+        {%- endif -%}
+        {%- if section.settings.image3 != blank -%}
+           <img loading="lazy" class="certificate-img mb-box" width="{{ section.settings.image3.width }}" height="{{ section.settings.image3.height }}" {% render 'image-attributes', image: section.settings.image3 %} alt="{{ section.settings.image3.alt | escape }}" >
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</section>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/ScrollTrigger.min.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+
+//      gsap.registerPlugin(ScrollTrigger);
+// ScrollTrigger.create({
+//   trigger: '.scroll_bg_img',
+//   start: 'top 100%',
+//   end: 'bottom 0',
+//   scrub: true,
+//    animation:
+//     gsap.timeline().fromTo('.scroll_img_cris', { y: '-150' }, { y: '0' })
+//    .fromTo('.scroll_img_cris_2', { y: '-150' }, { y: '0' },'<')
+// })
+  })
+</script>
+{% schema %}
+{
+  "name": "certificate-box",
+  "blocks": [],
+  "settings": [
+    {
+      "type": "text",
+      "id": "custom_class",
+      "label": "Custom Class"
+    },
+    {
+      "type": "text",
+      "id": "custom_class_1",
+      "label": "Custom Class 1"
+    },
+    {
+      "type": "text",
+      "id": "custom_class_2",
+      "label": "Custom Class 2"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Background"
+    },
+    {
+      "type": "image_picker",
+      "id": "image1",
+      "label": "Mobile Background"
+    },
+    {
+      "type": "image_picker",
+      "id": "image2",
+      "label": "Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image3",
+      "label": "Mobile Image"
+    },
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Text"
+    },
+    {
+      "type": "richtext",
+      "id": "text1",
+      "label": "Text"
+    }
+  ],
+  "presets": [
+    {
+      "name": "certificate-box",
+      "blocks": []
+    }
+  ]
+}
+{% endschema %}
+
+
+

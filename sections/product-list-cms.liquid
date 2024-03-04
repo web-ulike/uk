@@ -1,0 +1,1217 @@
+<!-- CSS -->
+<link rel="stylesheet" href="https://unpkg.com/flickity@2/dist/flickity.min.css">
+<style>
+  #shopify-section-{{ section.id }} {
+    background: {{ section.settings.custom_background }};
+    --heading-color: {{ section.settings.text_color.red }}, {{ section.settings.text_color.green }}, {{ section.settings.text_color.blue }};
+    --text-color: {{ section.settings.text_color.red }}, {{ section.settings.text_color.green }}, {{ section.settings.text_color.blue }};
+  }
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+  }
+  @media screen and (max-width: 768px){
+  .section-{{ section.id }}-padding {
+    padding-top: calc({{ section.settings.padding_top }}px * 0.6);
+    padding-bottom: calc({{ section.settings.padding_bottom }}px * 0.6);
+  }
+}
+  .unlock-title{
+    margin-top: 15px;
+    margin-bottom: 70px;
+  }
+  .th_product-list {
+      display: flex;
+      grid-gap: 100px;
+      max-width: 1350px;
+      margin: 0 auto;
+  }
+  .product-list-th .th_product-list{
+    grid-gap: 38px;
+    max-width: 1200px;
+  }
+  .th_product-list .unlock-product-item {
+    background: #F8F8F8;
+    padding: 20px 48px;
+  }
+  .unlock-product-image{
+    margin-bottom: 40px;
+    background: #FFFFFF;
+    border-radius: 10px;
+    border: 1px solid #3C599C;
+    text-align: center;
+    padding: 20px 0;
+  }
+  .th_product-list  .unlock-product-image{
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    border-bottom: 1px solid #D9D9D9;
+  }
+  .unlock-product-image img{
+    max-width: 131px;
+    border-radius: 10px;
+  }
+  .unlock-product-item h3.heading{
+    margin: 0;
+    display: flex;
+    align-items: center;
+    font-size: 30px;
+  }
+  .unlock-product-item h3.heading.custom-product-tle1{
+    margin-bottom: 20px;
+  }
+  .unlock-price-box{
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  .unlock-price-box .unlock-price{
+    font-size: 30px;
+    color: #3C599C;
+    line-height: 24px;
+    font-family: var(--heading-font-family);
+    font-weight: var(--heading-font-weight);
+  }
+  .unlock-price-box .unlock-price-discount{
+    font-size: 20px;
+    color: #9B9B9B;
+    line-height: 24px;
+    text-decoration: line-through;
+    margin-left: 10px;
+  }
+  .select-color {
+    display: flex;
+    margin-left: 20px;
+    gap: 10px;
+  }
+  .select-color-box{
+    display: flex;
+    align-items: center;
+    margin-bottom: 30px;
+  }
+  .select-color-box .color-label{
+    font-family: var(--heading-font-family);
+    font-weight: var(--heading-font-weight);
+  }
+  .select-list {
+    width: 38px;
+    height: 38px;
+    border: 1px solid #D9D9D9;
+    border-radius: 50px;
+    padding: 5px;
+    cursor: pointer;
+  }
+  .select-list span{
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+    border-radius: 50px;
+  }
+  .select-list.active{
+    border-color: #000000;
+  }
+  .afterpay-txt-box{
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+    color: #2658A0;
+    margin-bottom: 10px;
+  }
+  .afterpay-txt-box .afterpay-coupon_code{
+    text-decoration: underline;
+  }
+  .unlock-title span{
+    color: #3C599C;
+  }
+  .unlock-product-item .image-with-text-badge__box{
+    margin-bottom: 20px;
+  }
+  .unlock-product-item .image-with-text-badge__item{
+    padding: 1px 0;
+  }
+  .custom-unlock-add-button.custom-checkout-button{
+    background: #3C599C;
+    color: #ffffff;
+  }
+  .buy-now-button.custom-checkout-button{
+    background: #ffffff;
+    color:#000000;
+  }
+  .custom-checkout-button-wrapper .custom-checkout-button:hover{
+    background: #000000;
+    color: #FFFFFF;
+  }
+  .product-th-tag{
+    display: inline-flex;
+    border-radius: 17px;
+    border: 1px solid #000;
+    font-size: 14px;
+    padding: 1px 10px;
+    margin-bottom: 13px;
+    width: fit-content;
+  }
+  p.unlock_product-txt.text--center {
+    margin-top: 30px;
+}
+  .buy-now-link.custom-checkout-button {
+    background: #ffffff;
+    color: #000000;
+}
+.th_product-list .unlock-price-box .unlock-price{
+  color: #000;
+  font-size: 28px;
+}
+.th_product-list .unlock-price-box .unlock-price-discount {
+  color: #666;
+font-size: 16px;
+}
+.th_product-list .afterpay-txt-box{
+  color: #888;
+font-size: 16px;
+margin-bottom: 30px;
+}
+  .th_product-list .html {
+    color: #888;
+    margin-bottom: 30px;
+}
+  .th_product-list .html ul{
+        padding-left: 18px;
+}
+.th_product-list .select-color-box{
+  margin-bottom: 0;
+}
+.th_product-list .select-color{
+  margin-left: 0;
+}
+.th_product-list .select-list{
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px;
+}
+.th_product-list .unlock-price-box{
+  margin-bottom: 5px;
+}
+.th_product-list .txt_tle{
+  color: #969696;
+  font-size: 16px;
+  margin-right: 10px;
+}
+.th_product-list .top_select {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.bt_after_box {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+    line-height: 1.2;
+}
+.product_star_box {
+    display: flex;
+    align-items: center;
+    color: #888;
+   font-size: 18px;
+   margin-bottom: 10px;
+}
+.product_star_box .product_score{
+  padding-left: 10px;
+  padding-right: 5px;
+}
+.product_star_box .product_link_review{
+  text-decoration: underline;
+}
+.th_product-list .unlock-product-item h3.heading.custom-product-tle1{
+  margin-bottom: 15px;
+}
+  .th_product-list .unlock-product-image img{
+    max-width:100%;
+  }
+  .th_product-list .custom-checkout-button{
+    font-size: 14px;
+  }
+ .product-list-full .th_product-list{
+  max-width: 100%;
+  }
+  .product-list-full .th_product-list .unlock-product-item{
+    width: 100%;
+    padding: 0;
+  }
+  .full_flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.left_flex{
+  padding: 30px 0;
+  width: 32%;
+  margin-left: 80px;
+}
+.product-list-full .th_product-list .unlock-product-image{
+  border-bottom: none;
+  padding: 0;
+  margin: 0;
+  max-width: 800px;
+}
+.product-list-full .th_product-list .afterpay-txt-box{
+  margin-bottom: 0;
+  color: #E0004D;
+  font-family: var(--heading-font-family);
+  font-weight: var(--heading-font-weight);
+  font-style: var(--heading-font-style);
+  padding-right: 5px;
+  padding-left: 5px;
+}
+.product-list-full  .th_product-list .unlock-price-box{
+  margin-bottom: 20px;
+  margin-top: 30px;
+}
+.product-list-full .th_product-list .unlock-price-box .unlock-price{
+  font-size: 30px;
+  color: #E0004D;
+}
+.product-list-full .th_product-list .unlock-price-box .unlock-price-discount{
+  font-size: 20px;
+  color: #9B9B9B;
+}
+.product-list-full .unlock-product-item h3.heading{
+  margin-bottom: 2px;
+}
+.product-list-full .th_product-list .html {
+    color: #000000;
+    font-family: var(--heading-font-family);
+    font-weight: var(--heading-font-weight);
+    font-style: var(--heading-font-style);
+}
+.label_color{
+  font-size: 16px;
+  color: #000000;
+    font-family: var(--heading-font-family);
+    font-weight: var(--heading-font-weight);
+    font-style: var(--heading-font-style);
+    padding-right: 8px;
+}
+.product_subheading{
+  margin-bottom: 30px;
+}
+.right_flex {
+    width: 53%;
+}
+.right_mobile {
+    display: flex;
+    align-items: center;
+}
+.product-list-full .unlock-title{
+  margin-bottom: 20px;
+  font-size: 44px;
+
+}
+.product-list-full p.unlock_product-txt.text--center{
+  margin-top: 0;
+  margin-bottom: 50px;
+}
+.full-select_box{
+  display: flex;
+  align-items: center;
+}
+  .product-list-cms .full-select_box{
+    margin-top:30px
+  }
+.full-select_box .select-plug{
+  display: flex;
+  gap: 5px;
+  align-items: center;
+}
+/* .full-select_box .select-plug .select-plug-list {
+  border: 1px solid #9D9D9D;
+  padding: 3px 12px;
+  cursor: pointer;
+} */
+  .full-select_box .select-plug .select-plug-list {
+    cursor: pointer;
+    width: 120px;
+    height: 34px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #000000;
+}
+.full-select_box .select-plug .select-plug-list.active {
+  border: 2px solid #000000;
+}
+.product-list-full.product-list-cms .th_product-list .unlock-price-box .unlock-price{
+  color: #000000;
+}
+.product-list-full.product-list-cms .th_product-list .afterpay-txt-box{
+  color: #DEB581;
+}
+.full_flex.full_flex--reverse {
+    flex-direction: row-reverse;
+}
+.full_flex.full_flex--reverse .left_flex{
+  width: 50%;
+}
+.full_flex.full_flex--reverse .right_flex{
+  width: 50%;
+}
+.full_flex.full_flex--reverse .custom-checkout-button-wrapper{
+  max-width: 450px;
+}
+  .product-list-cms{
+    position: relative;
+  }
+  .product-list-cms .scroll_top {
+    position: absolute;
+    right: 12px;
+    top: 30px;
+    cursor: pointer;
+     z-index: 10;
+    display:none;
+     transition: opacity 2s;
+}
+  .product-list-cms .container{
+        position: relative;
+  }
+  .product-list-cms.product-list-full .th_product-list .html{
+    font-family: var(--text-font-family);
+    font-weight: var(--text-font-weight);
+    font-style: var(--text-font-style);
+  }
+  .product-list-cms .th_product-list .unlock-product-image img {
+    max-width: 352px;
+    margin:0 auto;
+}
+   .product-list-cms .left_flex{
+     padding: 65px 0;
+   }
+  @media (max-width: 1200px){
+    .th_product-list {
+        grid-gap: 30px;
+    }
+  }
+  @media (max-width: 992px){
+    .full_flex,.full_flex.full_flex--reverse {
+        flex-direction: column-reverse;
+    }
+    .left_flex{
+      width: 100%;
+      margin: 0;
+      padding: 20px 20px 50px;
+    }
+    .right_flex{
+      width: 100%;
+    }
+    .full_flex.full_flex--reverse .left_flex{
+      width:100%;
+    }
+    .full_flex.full_flex--reverse .right_flex {
+    width: 100%;
+}
+    .product-list-cms .left_flex {
+        padding: 20px 20px 50px;
+}
+  }
+  @media (max-width: 740px){
+    .product-list-cms .scroll_top {
+      width:60px;
+      height:60px;
+      right: 21px;
+        bottom: inherit;
+    top: 10px;
+}
+    .product-list-cms .th_product-list .unlock-product-image img{
+      max-width: 243px;
+    }
+    .product-list-cms.product-list-full .th_product-list .unlock-product-image {
+    padding-top: 60px;
+}
+     .product-list-cms .scroll_top svg{
+           width: 60px;
+    height: 60px;
+     }
+    .unlock-title{
+      margin-bottom: 30px;
+    }
+    .unlock-product-item h3.heading {
+        font-size: 20px;
+    }
+  .unlock-price-box .unlock-price {
+    font-size: 20px;
+  }
+  .th_product-list {
+    flex-direction: column;
+  }
+  .unlock-product-item{
+    display: flex;
+    flex-direction: column;
+    padding: 0 2px;
+  }
+  .unlock-product-image{
+    order: 0;
+    margin-bottom: 30px;
+  }
+  .th_product-list .select-color-box{
+    order: none;
+    margin-bottom: 0px;
+  }
+  .th_product-list .unlock-product-item h3.heading{
+    order: none;
+    font-size: 24px;
+  }
+  .th_product-list .unlock-price-box{
+    order: none;
+    margin-bottom:0;
+  }
+  .th_product-list .afterpay-txt-box{
+    order: none;
+  }
+  .th_product-list .unlock-product-item .html{
+    order: none;
+    margin-bottom:15px;
+    font-size: 12px;
+  }
+  .th_product-list .custom-checkout-button-wrapper{
+    order: none;
+    grid-template-columns: 1fr 1fr;
+  }
+  .unlock-title span{
+    display: block;
+  }
+    .unlock-product-image img{
+      max-width:75px;
+    }
+    .unlock-product-item .image-with-text-badge__item svg{
+      max-width:35px;
+      max-height:31px;
+    }
+     .unlock-product-item .image-with-text-badge__item span {
+        font-size: 12px;
+    }
+    .unlock-product-item h3.heading.custom-product-tle1 {
+        margin-bottom: 10px;
+    }
+    .product_star_box {
+    font-size: 12px;
+     margin-top: 10px;
+}
+.th_product-list .afterpay-txt-box {
+    font-size: 12px;
+      margin-bottom: 17px;
+}
+.th_product-list .unlock-price-box .unlock-price {
+    font-size: 20px;
+}
+.th_product-list .unlock-product-item {
+    padding: 24px;
+}
+.th_product-list .txt_tle{
+  font-size: 12px;
+}
+.product-list-full .th_product-list .custom-checkout-button-wrapper{
+  grid-template-columns: 1fr;
+}
+.product-list-full .th_product-list .unlock-price-box .unlock-price{
+      font-size: 24px;
+    }
+    .product-list-full .th_product-list .unlock-price-box .unlock-price-discount{
+      font-size: 16px;
+    }
+    .product-list-full .th_product-list .html{
+      font-size: 16px;
+    }
+    .product_subheading{
+      font-size: 14px;
+      margin-bottom: 20px;
+    }
+    .product-list-full .th_product-list .unlock-price-box{
+      margin-top: 20px;
+    }
+    .product-list-full .bt_after_box{
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .product-list-full .unlock-title{
+      margin-bottom: 10px;
+      font-size: 28px;
+    }
+    .product-list-full p.unlock_product-txt.text--center{
+      margin-bottom: 20px;
+    }
+    .label_color{
+      font-size: 13px;
+    }
+    .full-select_box .select-plug .select-plug-list{
+      padding: 2px 8px;
+    }
+    .full-select_box .select-plug .select-plug-list{
+      width: 95px;
+    }
+    .product-list-th .container{
+      padding-left:0;
+      padding-right:0;
+    }
+  }
+</style>
+
+<section class="product-list-th product-list-full product-list-cms section-{{ section.id }}-padding{% if section.settings.custom_class != blank %} {{section.settings.custom_class}}{% endif %}">
+   
+  
+  <div class="container">
+     {%- if section.settings.scroll_to_id != blank -%}
+  <div class="scroll_top">
+    <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 80 80" fill="none">
+      <circle opacity="0.5" cx="40" cy="40" r="40" fill="#D9D9D9"/>
+      <path d="M41.7761 34.1333V54.6667C41.7761 55.4667 41.2388 56 40.4328 56C39.6269 56 39.0896 55.4667 39.0896 54.6667V34.1333L29.4179 44.8C28.8806 45.3333 28.0746 45.3333 27.5373 44.8C27 44.2667 27 43.4667 27.5373 42.9333L39.6269 29.6C40.1642 29.0667 40.9701 29.0667 41.5075 29.6L53.597 42.9333C54.1343 43.4667 54.1343 44.2667 53.597 44.8C53.0597 45.3333 52.2537 45.3333 51.7164 44.8L41.7761 34.1333ZM28.3433 24H52.5224C53.3284 24 53.8657 24.5333 53.8657 25.3333C53.8657 26.1333 53.3284 26.6667 52.5224 26.6667H28.3433C27.5373 26.6667 27 26.1333 27 25.3333C27 24.5333 27.5373 24 28.3433 24Z" fill="#828282"/>
+    </svg>
+    </div>
+  {%- endif -%}
+    {%- if section.settings.custom_icon != blank -%}
+        <div class="to-top text--{{section.settings.text_alignment}}">
+          <img loading="lazy" {% render 'image-attributes', image: section.settings.custom_icon %}>
+        </div>
+    {%- endif -%}
+    
+    {%- if section.settings.unlock_product_title != blank -%}
+      <h2 class="heading h2 unlock-title to-top text--{{section.settings.text_alignment}}"> {{- section.settings.unlock_product_title -}}</h2>
+    {%- endif -%}
+    {%- if section.settings.unlock_product_txt != blank -%}
+      <p class="unlock_product-txt to-top text--{{section.settings.text_alignment}}"> {{- section.settings.unlock_product_txt -}}</p>
+    {%- endif -%}
+    <div class="th_product-list">
+      {%- for block in section.blocks -%}
+          <div class="unlock-product-item to-top" style="transition-delay: 0.{{ forloop.index }}s">
+            <div class="full_flex{% if section.settings.image_position == 'right' %} full_flex--reverse{% endif %}">
+              <div class="left_flex">
+            {%- if block.settings.product_tag != blank -%}
+              <div class="product-th-tag"> {{- block.settings.product_tag -}} </div>
+            {%- endif -%}
+            {%- if block.settings.title_1 != blank -%}
+              <h3 class="heading h3 custom-product-tle">{{- block.settings.title_1 -}} 
+              </h3>
+            {%- endif -%}
+            {%- if block.settings.title_2 != blank -%}
+              <h3 class="heading h3 custom-product-tle1">{{- block.settings.title_2 -}}</h3>
+            {%- endif -%}
+            {%- if block.settings.subheading != blank -%}
+              <div class="product_subheading"> {{- block.settings.subheading -}} </div>
+            {%- endif -%}
+            {%- if block.settings.product_image_star != blank -%}
+              <div class="product_star_box">
+                <img loading="" {% render 'image-attributes', image: block.settings.product_image_star %}>
+                <span class="product_score">{{- block.settings.product_score -}}</span>
+                <a href="{{ block.settings.product_link_url }}" class="product_link_review">{{- block.settings.product_review -}}</a>
+              </div>
+            {%- endif -%}
+
+            {%- if block.settings.html != blank -%}
+              <div class="html">
+                {{- block.settings.html -}}
+              </div>
+            {%- endif -%}
+            <div class="top_select">
+              <div class="select-color-box">
+                <div class="label_color">{{- block.settings.product_color_txt -}}</div>
+                <div class="select-color">
+                  {%- if block.settings.product_color_1 != blank -%}
+                    <div class="select-list" data-product-id="{{ block.settings.product_id_1}}"><span style="background: {{ block.settings.product_color_1}}"></span></div>
+                  {%- endif -%}
+                  {%- if block.settings.product_color_2 != blank -%}
+                    <div class="select-list" data-product-id="{{ block.settings.product_id_2}}"><span style="background: {{ block.settings.product_color_2}}"></span></div>
+                  {%- endif -%}
+                  {%- if block.settings.product_color_3 != blank -%}
+                    <div class="select-list" data-product-id="{{ block.settings.product_id_3}}"><span style="background: {{ block.settings.product_color_3}}"></span></div>
+                  {%- endif -%}
+                </div>
+              </div>
+              {%- if block.settings.product_image_tag != blank -%}
+                <div class="tag_right">
+                  <img loading="" {% render 'image-attributes', image: block.settings.product_image_tag %}>
+                </div>
+              {%- endif -%}
+            </div>
+
+
+
+            {%- if block.settings.product_plug_txt != blank -%}
+            <div class="select-plug-box full-select_box">
+              <div class="label_color">{{- block.settings.product_plug_txt -}}</div>
+              <div class="select-plug">
+                {%- if block.settings.product_plug_1 != blank -%}
+                  <div class="select-plug-list">
+                    {{- block.settings.product_plug_1 -}}
+                  </div>
+                {%- endif -%}
+                {%- if block.settings.product_plug_2 != blank -%}
+                  <div class="select-plug-list">
+                    {{- block.settings.product_plug_2 -}}
+                  </div>
+                {%- endif -%}
+              </div>
+            </div>
+          {%- endif -%}
+
+
+            {%- if block.settings.price != blank -%}
+              <div class="unlock-price-box">
+                <div class="unlock-price">{{- block.settings.price -}}</div>
+                <div class="unlock-price-discount">{{- block.settings.discount_price -}}</div>
+                                {%- if block.settings.discount_code != blank -%}
+                  <div class="afterpay-txt-box">
+                    <button class="afterpay-coupon_code" onclick="copyCode(`{{ block.settings.discount_code }}`, `{{ block.settings.discount_code_txt }}`, this)">{{- block.settings.discount_code_txt -}}</button>
+                    <span>&nbsp{{- block.settings.afterpay_txt -}}</span>
+                  </div>
+                {%- endif -%}
+              </div>
+            {%- endif -%}
+
+            
+
+            <div class="custom-checkout-button-wrapper">
+              {%- if block.settings.show_add_button -%}
+                <button data-product-id="{{ block.settings.product_id_1}}" class="add-cart-button custom-checkout-button">
+                  <span class="loader-button__text">{{- block.settings.add_cart_txt -}}</span>
+                  <span class="loader-button__loader" hidden>
+                    <div class="spinner">
+                      <svg focusable="false" width="24" height="24" class="icon icon--spinner" viewBox="25 25 50 50">
+                        <circle cx="50" cy="50" r="20" fill="none" stroke="currentColor" stroke-width="5"></circle>
+                      </svg>
+                    </div>
+                  </span>
+                </button>
+              {%- endif -%}
+              {%- if block.settings.show_buy_now_button -%}
+                <button data-product-id="{{ block.settings.product_id_1}}" class="buy-now-button custom-checkout-button">
+                  <span class="loader-button__text">{{- block.settings.buy_now_txt -}}</span>
+                  <span class="loader-button__loader" hidden>
+                    <div class="spinner">
+                      <svg focusable="false" width="24" height="24" class="icon icon--spinner" viewBox="25 25 50 50">
+                        <circle cx="50" cy="50" r="20" fill="none" stroke="currentColor" stroke-width="5"></circle>
+                      </svg>
+                    </div>
+                  </span>
+                </button>
+              {%- endif -%}
+
+              {%- if block.settings.product_link_url != blank -%}  
+                  <a href="{{ block.settings.product_link_url }}" class="buy-now-link custom-checkout-button">{{ block.settings.buy_now_txt }}</a>
+              {%- endif -%}
+            </div>
+            {%- if block.settings.sub_txt != blank -%}
+              <div class="bt_after_box">
+
+                <div class="right_mobile">
+                <div class="txt_tle">{{  block.settings.sub_txt | escape }}</div>
+                {%- if block.settings.sub_txt_image != blank -%}
+                <img loading="" {% render 'image-attributes', image: block.settings.sub_txt_image %}>
+                {%- endif -%}
+                </div>
+              </div>
+            {%- endif -%}
+           {%- if block.settings.sub_txt_1 != blank -%} 
+                <div class="txt_tle">{{  block.settings.sub_txt_1 | escape }}</div>
+            {%- endif -%}
+            </div>
+            <div class="right_flex">
+              {%- if block.settings.image_1 != blank -%}
+              <div class="unlock-product-image">
+                <img loading="" {% render 'image-attributes', image: block.settings.image_1 %}>
+              </div>
+            {%- endif -%}
+            {%- if block.settings.image_2 != blank -%}
+              <div class="unlock-product-image" style="display:none">
+                <img loading="" {% render 'image-attributes', image: block.settings.image_2 %}>
+              </div>
+            {%- endif -%}
+            {%- if block.settings.image_3 != blank -%}
+              <div class="unlock-product-image">
+                <img loading="" {% render 'image-attributes', image: block.settings.image_3 %}>
+              </div>
+            {%- endif -%}
+            </div>
+            </div>
+          </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    let productId_1 =  '{{section.settings.product_id_1}}'
+    let productId_2 =  '{{section.settings.product_id_2}}'
+    let productId_3 =  '{{section.settings.product_id_3}}'
+    let productId_4 =  '{{section.settings.product_id_4}}'
+    let productId_5 =  '{{section.settings.product_id_5}}'
+    let productId_6 =  '{{section.settings.product_id_6}}'
+    let product_id = ''
+    
+      var ptdid =  '{{ section.settings.scroll_to_id }}'
+   var scrollToModuleBtn = document.querySelector('.scroll_top')
+    // 获取要滚动到的模块
+    var module = document.getElementById(ptdid);
+  // 添加点击事件监听器
+  scrollToModuleBtn.addEventListener('click', function(){
+    module.scrollIntoView({ behavior: 'smooth' });
+      })
+
+    fetch('https://api.myulike.com/api/order-coupon-use?site=uk')
+      .then(response => {
+        // 检查是否请求成功 (状态码为 200-299)
+        if (!response.ok) {
+          throw new Error(`Network response was not ok: ${response.status}`);
+        }
+        // 将响应解析为 JSON
+        return response.json();
+      })
+      .then(data => {
+        // 处理获取的数据
+
+       const couponData =  data.data.map((item, index, array) => ({
+        ...item,
+        index: index
+      }))
+
+    const selectData = couponData.filter((item, index) => {
+      if (item.usage_count === 0 && index > 0 && (couponData[index - 1].number - couponData[index - 1].usage_count) === 0) {
+        return { ...item, index };
+      } else if (item.usage_count !== 0 && item.number > item.usage_count) {
+        return { ...item, index };
+      } else if(item.usage_count === 0 && index === 0) {
+        return { ...item, index };
+      }
+      return false;
+    });
+
+      selectData.forEach(item=>{
+        document.querySelector('.section-{{ section.id }}-padding .unlock-price-box .unlock-price').innerHTML = item.currency + ' '+ item.air.discount_price
+          document.querySelector('.section-{{ section.id }}-padding .unlock-price-box .unlock-price-discount').innerHTML = item.currency + ' '+ item.air.price
+        current_code = item.code
+    })
+    })
+    .catch(error => {
+      // 处理错误
+      console.error('Error during fetch operation:', error);
+    });
+
+    document.querySelector('.section-{{ section.id }}-padding .afterpay-coupon_code').addEventListener('click', function(){
+  copyCode(current_code, `Copy Code`, this)
+       commonGtmEvent('A2_copy', '', '');
+})
+    
+    if( document.getElementById('shopify-section-{{section.id}}').querySelectorAll('.select-list')){
+    document.getElementById('shopify-section-{{section.id}}').querySelectorAll('.select-list').forEach((colorButton,index)=>{
+    colorButton.addEventListener('click', function(e){
+      document.querySelectorAll('.unlock-product-image').forEach((img) => {
+            img.style.display = "none";
+          })
+      document.getElementById('shopify-section-{{section.id}}').querySelectorAll('.select-list').forEach(list=>{
+        list.classList.remove('active')
+      })
+      if(index==0 && ((document.querySelector('.select-plug-box').dataset.selectPlugId) == 0)){
+        product_id = productId_1
+      } else if(index==0 && ((document.querySelector('.select-plug-box').dataset.selectPlugId) == 1)){
+        product_id = productId_2
+      }else if(index==1 && ((document.querySelector('.select-plug-box').dataset.selectPlugId) == 0)){
+        product_id = productId_3
+      }else if(index==1 && ((document.querySelector('.select-plug-box').dataset.selectPlugId) == 1)){
+        product_id = productId_4
+      }else if(index==2 && ((document.querySelector('.select-plug-box').dataset.selectPlugId) == 0)){
+        product_id = productId_5
+      }else if(index==2 && ((document.querySelector('.select-plug-box').dataset.selectPlugId) == 1)){
+        product_id = productId_6
+      }
+    
+      this.classList.add('active');
+      document.querySelector('.select-color-box').dataset.selectColorId = index;
+      document.querySelectorAll('.unlock-product-image')[index].style.display = 'block';
+    })
+  })
+    }
+if( document.getElementById('shopify-section-{{section.id}}').querySelectorAll('.select-plug-list')){
+  document.getElementById('shopify-section-{{section.id}}').querySelectorAll('.select-plug-list').forEach((plugButton,index)=>{
+    plugButton.addEventListener('click', function(e){
+      document.getElementById('shopify-section-{{section.id}}').querySelectorAll('.select-plug-list').forEach(pluglist=>{
+        pluglist.classList.remove('active')
+      })
+      this.classList.add('active');
+      document.querySelector('.select-plug-box').dataset.selectPlugId = index;
+
+      if(index==0 && ((document.querySelector('.select-color-box').dataset.selectColorId) == 0)){
+        product_id = productId_1
+      } else if(index==1 && ((document.querySelector('.select-color-box').dataset.selectColorId) == 0)){
+        product_id = productId_2
+      }else if(index==0 && ((document.querySelector('.select-color-box').dataset.selectColorId) == 1)){
+        product_id = productId_3
+      }else if(index==1 && ((document.querySelector('.select-color-box').dataset.selectColorId) == 1)){
+        product_id = productId_4
+      }else if(index==0 && ((document.querySelector('.select-color-box').dataset.selectColorId) == 2)){
+        product_id = productId_5
+      }else if(index==1 && ((document.querySelector('.select-color-box').dataset.selectColorId) == 2)){
+        product_id = productId_6
+      }
+    })
+  })
+    }
+if( document.getElementById('shopify-section-{{section.id}}').querySelectorAll('.select-list')){
+  document.getElementById('shopify-section-{{section.id}}').querySelector('.select-list').click();
+}
+    if( document.getElementById('shopify-section-{{section.id}}').querySelectorAll('.select-plug-list')){
+  document.getElementById('shopify-section-{{section.id}}').querySelector('.select-plug-list').click();
+    }
+
+if(  document.getElementById('shopify-section-{{section.id}}').querySelector('.add-cart-button')){
+
+  document.getElementById('shopify-section-{{section.id}}').querySelector('.add-cart-button').addEventListener('click', function (bt) {
+        addToCart(product_id, this);
+     commonGtmEvent('A2_atc', '', '');
+      });
+}
+    if(  document.getElementById('shopify-section-{{section.id}}').querySelector('.buy-now-button')){}
+    
+      document.getElementById('shopify-section-{{section.id}}').querySelector('.buy-now-button').addEventListener('click', function (bt) {
+        buyProduct(product_id);
+      });
+  })
+</script>
+{% schema %}
+{
+  "name": "Product List Cms",
+  "class": "product-list-cms",
+  "settings": [
+    {
+      "type": "text",
+      "id": "custom_class",
+      "label": "Custom Class"
+    },
+     {
+      "type": "text",
+      "id": "scroll_to_id",
+      "label": "scroll to id"
+    },
+    {
+          "type": "text",
+          "id": "product_id_1",
+          "label": "Product Id 1"
+        },
+        {
+          "type": "text",
+          "id": "product_id_2",
+          "label": "Product Id 2"
+        },
+        {
+          "type": "text",
+          "id": "product_id_3",
+          "label": "Product Id 3"
+        },
+        {
+          "type": "text",
+          "id": "product_id_4",
+          "label": "Product Id 4"
+        },
+        {
+          "type": "text",
+          "id": "product_id_5",
+          "label": "Product Id 5"
+        },
+        {
+          "type": "text",
+          "id": "product_id_6",
+          "label": "Product Id 6"
+        },
+    {
+      "type": "image_picker",
+      "id": "custom_icon",
+      "label": "Custom Icon"
+    },
+    {
+      "type": "text",
+      "id": "unlock_product_title",
+      "default": "Unlock Product Title",
+      "label": "Heading"
+    },
+    {
+      "type": "text",
+      "id": "unlock_product_title_color",
+      "default": "Unlock Product Title Color",
+      "label": "Heading Color"
+    },
+    {
+      "type": "text",
+      "id": "unlock_product_txt",
+      "default": "Unlock Product Txt",
+      "label": "Unlock Product Txt"
+    },
+    {
+      "type": "select",
+      "id": "image_position",
+      "label": "Desktop image position",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Text alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "text",
+      "id": "custom_background",
+      "label": "Custom Background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "rgba(0,0,0,0)"
+    },
+     {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 36
+    }
+  ],
+  "blocks": [
+    {
+    "type":"item",
+    "name":"item",
+    "settings":[
+      {
+          "type": "image_picker",
+          "id": "product_image_tag",
+          "label": "Product Tag Image"
+        },
+      {
+          "type": "image_picker",
+          "id": "image_1",
+          "label": "Product Image 1"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_2",
+          "label": "Product Image 2"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_3",
+          "label": "Product Image 3"
+        },
+        {
+          "type": "text",
+          "id": "title_1",
+          "label": "Product Heading 1",
+          "default": "Your content"
+        },
+        {
+          "type": "text",
+          "id": "title_2",
+          "label": "Product Heading 2",
+          "default": "Your content"
+        },
+
+        {
+          "type": "text",
+          "id": "subheading",
+          "label": "Subheading",
+          "default": "Tell your story"
+        },
+
+        {
+          "type": "text",
+          "id": "product_tag",
+          "label": "Product Tag"
+        },
+        {
+          "type": "image_picker",
+          "id": "product_image_star",
+          "label": "Product Star Image"
+        },
+
+        {
+          "type": "text",
+          "id": "product_score",
+          "label": "Price Score"
+        },
+
+        {
+          "type": "text",
+          "id": "product_review",
+          "label": "Price Reviews"
+        },
+        {
+          "type": "text",
+          "id": "price",
+          "label": "Price",
+          "default": "$259"
+        },
+        {
+          "type": "text",
+          "id": "discount_price",
+          "label": "discount Price",
+          "default": "$379"
+        },
+        {
+          "type": "text",
+          "id": "discount_code_txt",
+          "label": "Discount Code Txt"
+        },
+        {
+          "type": "text",
+          "id": "discount_code",
+          "label": "Discount Code"
+        },
+        {
+          "type": "text",
+          "id": "afterpay_txt",
+          "label": "Afterpay Txt"
+        },
+        {
+          "type": "html",
+          "id": "html",
+          "label": "HTML",
+          "default": "<p style=\"text-align: center\">Write or copy/paste HTML code</p>"
+        },
+        {
+          "type": "text",
+          "id": "product_color_txt",
+          "label": "Product Color label"
+        },
+        {
+          "type": "text",
+          "id": "product_color_1",
+          "label": "Product Color 1"
+        },
+        {
+          "type": "text",
+          "id": "product_color_2",
+          "label": "Product Color 2"
+        },
+        {
+          "type": "text",
+          "id": "product_color_3",
+          "label": "Product Color 3"
+        },
+        {
+          "type": "text",
+          "id": "product_plug_txt",
+          "label": "Product Plug label"
+        },
+        {
+          "type": "text",
+          "id": "product_plug_1",
+          "label": "Product Plug 1"
+        },
+        {
+          "type": "text",
+          "id": "product_plug_2",
+          "label": "Product Plug 2"
+        },
+       {
+          "type": "url",
+          "id": "product_link_url",
+          "label": "Product Link URL",
+          "info": "If none is set, collection URL is used."
+        },
+        {
+          "type": "checkbox",
+          "id": "show_add_button",
+          "label": "Show Add to cart button",
+          "info": "Show Add to cart button",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "show_buy_now_button",
+          "label": "Show Buy Now button",
+          "info": "Show Buy Now button",
+          "default": false
+        },
+        {
+          "type": "text",
+          "id": "add_cart_txt",
+          "label": "Add To Cart Txt",
+          "default": "Add To Cart"
+        },
+        {
+          "type": "text",
+          "id": "buy_now_txt",
+          "label": "Buy Now Txt",
+          "default": "Buy Now"
+        },
+      {
+          "type": "text",
+          "id": "sub_txt",
+          "label": "Product Txt"
+        },
+      {
+          "type": "text",
+          "id": "sub_txt_1",
+          "label": "Product Txt 1"
+        },
+        {
+          "type": "image_picker",
+          "id": "sub_txt_image",
+          "label": "Product Txt Image"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product List Cms"
+    }
+  ]
+}
+{% endschema %}

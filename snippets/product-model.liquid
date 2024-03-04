@@ -1,0 +1,299 @@
+<script type="importmap">
+{
+    "imports": {
+      "/three": "https://unpkg.com/three@0.156.0/build/three.module.js",
+      "/three/addons/": "https://unpkg.com/three@0.156.0/examples/jsm/"
+    }
+  }
+</script>
+<script type="module">
+  import * as THREE from "https://unpkg.com/three@0.127.0/build/three.module.js";
+
+    import {
+      OrbitControls
+    } from "https://unpkg.com/three@0.127.0/examples/jsm/controls/OrbitControls.js";
+    import {
+      GLTFLoader
+    } from "https://unpkg.com/three@0.127.0/examples/jsm/loaders/GLTFLoader.js";
+    import {
+      RoomEnvironment
+    } from "https://unpkg.com/three@0.127.0/examples/jsm/environments/RoomEnvironment.js";
+
+  let camera, scene, renderer,object,controls,model,animationId;
+  let isZoom = false
+  let modelLoaded = false; // 用于追踪模型加载状态
+  let isRotation = false;//转动
+  let rotationY = 0;
+  let rotationX = 0;
+  let isRight = 0;
+  let isTop = 0;
+  let num = 0.01
+  let boxHeight = 0
+  let boxWidth = 0
+
+  $('html').on('click','.product-slider-btn-model',function(){
+      // $('.close-three-btn').css({'display':'flex'})
+      $('.three-load').css({'height':document.querySelector('.product_valentine .product-diy-img').clientHeight+'px','display':'flex'})
+      // 初始化函数
+      init();
+      // 动画函数
+      animate();
+  })
+
+  $('html').on('click','.close-three-btn',function(){
+    // $('.close-three-btn').css({'display':'none'})
+    $('.three-box').remove()
+    $('.shopify-section--main-product').css({'z-index':'1'})
+     $('.product_valentine .product-diy-img').addClass('to-top')
+    $('.product_valentine .product-diy-img').css({'position':'sticky'})
+    cancelAnimationFrame(animationId);
+    rotationY = 0;
+    rotationX = 0;
+    isRight = 0;
+    isTop = 0;
+    num = 0.01
+    isZoom = false
+  })
+
+  function init() {
+    boxHeight = document.querySelector('.product_valentine .product-diy-img').clientHeight
+    boxWidth = document.querySelector('.product_valentine .product-diy-img').clientWidth
+    let div = document.createElement( 'div' );
+    div.className = 'three-box'
+    div.style.position = 'absolute'
+    div.style.zIndex='3'
+    div.style.background = '#eee'
+    div.style.width = boxWidth
+    div.style.height = boxHeight
+    div.style.top = '0px'
+    div.style.left= '0px'
+
+    let sDiv = document.createElement( 'div' )
+        sDiv.className = 'tips-icon'
+
+    let img = document.createElement( 'img' );
+        img.src="https://cdn.shopify.com/s/files/1/0656/9079/6273/files/cu.svg"
+        img.className = 'tip-img'
+
+    let mDiv = document.createElement( 'div' )
+        mDiv.className = 'models-btn'
+    let mImg = document.createElement( 'img' );
+        mImg.src="https://cdn.shopify.com/s/files/1/0656/9079/6273/files/search.svg"
+
+    let cDiv = document.createElement('div')
+        cDiv.className = 'close-three-btn'
+    let cImg = document.createElement( 'img' );
+        cImg.src="https://cdn.shopify.com/s/files/1/0656/9079/6273/files/close-s.svg"
+    
+    cDiv.appendChild(cImg)
+    mDiv.appendChild(mImg)
+    sDiv.appendChild(img)
+    div.appendChild(sDiv)
+    div.appendChild(mDiv)
+    div.appendChild(cDiv)
+
+    document.querySelector('.product_valentine .product-diy-img').appendChild(div)
+
+    mDiv.addEventListener('click',function(){
+      mDiv.style.display = 'none'
+      $('.shopify-section--main-product').css({'z-index':'9999999999'})
+      $('.product_valentine .three-box').css({'position':'fixed','bottom':'0','right':'0','z-index':'4'})
+      $('.product_valentine .product-diy-img').removeClass('to-top')
+      $('.product_valentine .product-diy-img').css({'position':'relative'})
+      isZoom = true
+      boxWidth = window.innerWidth
+      boxHeight = window.innerHeight
+      camera.aspect = boxWidth / boxHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(boxWidth,boxHeight);
+    })
+
+      // 创建透视相机
+    camera = new THREE.PerspectiveCamera(
+      45, // 视角
+      boxWidth / boxHeight, // 长宽比
+      0.1, // 近裁剪面
+      100 // 远裁剪面
+    );
+    camera.position.set(0, 0, -25); // 设置相机位置
+
+    scene = new THREE.Scene(); // 创建场景
+
+    // 加载并添加3D模型
+
+    loadModel('{{ section.settings.link_model }}', () => {
+      modelLoaded = true
+      $('.product_valentine .three-load').hide()
+      setTimeout(function() {
+        isRotation = true
+        sDiv.classList.add('show-box')
+      }, 800);
+    })
+
+    // 创建WebGL渲染器
+    renderer = new THREE.WebGLRenderer({
+      antialias: true
+    });
+    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.setSize(boxWidth,boxHeight);
+    renderer.toneMapping = THREE.ACESFilmicToneMapping; // 色调映射
+    renderer.toneMappingExposure = 2.8; // 曝光度
+    div.appendChild(renderer.domElement);
+
+    // 创建环境和环境贴图
+    const environment = new RoomEnvironment(renderer);
+    const pmremGenerator = new THREE.PMREMGenerator(renderer);
+
+    scene.background = new THREE.Color(0xf9f9f9); // 设置场景背景颜色
+    scene.environment = pmremGenerator.fromScene(environment).texture; // 设置环境贴图
+
+    // 创建交互控制器
+    controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true; // 启用阻尼
+    controls.minDistance = 15; // 最小距离
+    controls.maxDistance = 100; // 最大距离
+    controls.enablePan = false;
+    controls.target.set(0, 0.35, 0); // 控制器焦点位置
+    controls.update();
+
+    renderer.domElement.addEventListener('mousedown', function(event) {
+      isRotation = false
+      document.querySelector('.product_valentine .tips-icon').classList.remove('show')
+      isRight = 0;
+      isTop = 0;
+      num = 0.01
+    });
+
+    // 响应窗口大小变化
+    window.addEventListener("resize", onWindowResize);
+
+  }
+
+ // 窗口大小变化处理函数
+function onWindowResize() {
+  boxHeight = document.querySelector('.product_valentine .product-diy-img').clientHeight
+  boxWidth = document.querySelector('.product_valentine .product-diy-img').clientWidth
+  camera.aspect =isZoom? (window.innerWidth / window.innerHeight):(boxWidth/boxHeight);
+  camera.updateProjectionMatrix();
+  renderer.setSize(isZoom?window.innerWidth:boxWidth, isZoom?window.innerHeight:boxHeight);
+}
+
+function onProgress( xhr ) {
+  if ( xhr.lengthComputable ) {
+    const percentComplete = xhr.loaded / xhr.total * 100;
+    // console.log( 'model ' + Math.round( percentComplete, 2 ) + '% downloaded' );
+    $('.product_valentine .three-load').html('loading '+percentComplete.toFixed(2)+'%')
+  }
+}
+
+// 加载模型
+function loadModel(modelPath, callback) {
+  new GLTFLoader().load(modelPath, (gltf) => {
+    model = gltf.scene;
+    scene.add(model);
+    if (callback) {
+      callback();
+    }
+  },onProgress);
+}
+// 清空场景重新加载模型
+function reloadModel(modelPath, callback) {
+  if (scene) {
+    clearThree(scene)
+  }
+
+  loadModel(modelPath, () => {
+    if (callback) {
+      callback();
+    }
+    renderer.render(scene, camera);
+  });
+}
+
+function clearThree(obj) {
+  while (obj.children.length > 0) {
+    clearThree(obj.children[0])
+    obj.remove(obj.children[0]);
+  }
+  if (obj.geometry) obj.geometry.dispose()
+  if (obj.material) {
+    Object.keys(obj.material).forEach(prop => {
+      if (!obj.material[prop]) return
+      if (typeof obj.material[prop].dispose === 'function') obj.material[prop].dispose()
+    })
+    obj.material.dispose()
+  }
+}
+
+// 动画循环函数
+function animate() {
+  animationId = requestAnimationFrame(animate);
+
+  if(isRotation){
+    if(isRight==0){
+      rotationY+= num
+      if(rotationY>=0.5){
+        isRight=1
+      }
+    }else{
+      if(isRight!=2){
+        if(isRight==1){
+          num=-0.01
+        }
+        rotationY += num
+        if(rotationY<=-0.5){
+          num = 0.01
+          isRight = 3
+        }
+        if(rotationY>=0&&num == 0.01){
+          rotationY = 0
+          isRight = 2
+        }
+      }
+      
+    }
+    if(isRight==2){
+      if(isTop==0){
+        rotationX+= num
+        if(rotationX>=0.3){
+          isTop=1
+        }
+      }else{
+        if(isTop!=2){
+          if(isTop==1){
+            num=-0.01
+          }
+          rotationX += num
+          if(rotationX<=-0.3){
+            num = 0.01
+            isTop = 3
+          }
+          if(rotationX>=0&&num == 0.01){
+            rotationX = 0
+            isTop = 2
+            isRotation = false
+            document.querySelector('.product_valentine .tips-icon').classList.remove('show-box')
+          }
+        }
+        
+      }
+    }
+  }
+  if(model){
+    model.rotation.y = rotationY;
+    model.rotation.x = rotationX;
+  }
+  
+  controls.update(); // 如果启用阻尼，需要更新控制器
+
+  render();
+}
+
+// 渲染函数
+function render() {
+  if (modelLoaded) { // 仅在模型加载完成后才渲染
+    renderer.render(scene, camera);
+  }
+}
+
+</script>

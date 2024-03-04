@@ -1,0 +1,824 @@
+<style>
+.review-industry{
+  padding: 70px 0;
+  overflow: hidden;
+  /* background: #000; */
+}
+
+.review-industry .container{
+  /* max-width: 1400px; */
+}
+.review-industry .review-industry-title{
+  color: #EEE;
+  text-align: center;
+  font-size: 44px;
+  font-family: var(--heading-font-family);
+  line-height: 1.25;
+}
+  .review-industry .review-industry-title .review-industry-arraw{
+    display:none;
+  }
+.review-industry .review-industry-more{
+  display: block;
+  text-align: center;
+  color: #009CDE;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.5;
+  text-decoration: underline;
+  margin-top: 10px;
+}
+
+.review-industry .review-industry-cont{
+  position: relative;
+  padding-top: 76px;
+  min-height: 340px;
+  /* padding-left: 22px; */
+  margin-top: 52px;
+}
+
+.review-industry .review-industry-img-list{
+  width: calc(100% - 22px);
+  max-width: calc(1356px - 22px);
+  height: 347px;
+  overflow: hidden;
+  position: absolute;
+  top: 0;
+}
+
+ .new-year .review-industry .review-industry-img-list{
+    max-width:1166px;
+  }
+
+.review-industry .list-box{
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 347px;
+  display: flex;
+  align-items: flex-start;
+}
+
+.review-industry .review-industry-img-list::after{
+  position: absolute;
+  content: '';
+  display: block;
+  width: 200px;
+  height: 80px;
+  right: 0;
+  top: 0;
+  z-index: 3;
+  --background:0,0,0;
+  background: linear-gradient(to left, rgb(var(--background)), rgba(var(--background), 0));
+  pointer-events: none;
+}
+
+.review-industry .img-item{
+  width: 80px;
+  height: 80px;
+  flex-shrink: 0;
+  margin-right: 70px;
+  /* filter: grayscale(100%); */
+  cursor: pointer;
+  position: relative;
+}
+
+.review-industry .img-item .img{
+  width: 80px;
+  height: 80px;
+  display: block;
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 1;
+  object-fit: cover;
+}
+.review-industry .img-item::before{
+  position: absolute;
+  display: block;
+  /* content: ''; */
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 2;
+  background: rgba(255, 255, 255, 0.3);
+  transition: all .4s ease;
+}
+/* .review-industry .img-item:hover::before{
+  opacity: 0;
+} */
+  .new-year .review-industry .img-item{
+    filter: grayscale(100%);
+  }
+ .new-year .review-industry .img-item::before{
+    content: '';
+  }
+ .new-year .review-industry .img-item:hover::before{
+    opacity: 0;
+  }
+  
+.review-industry .img-item.active{
+  width: 273px;
+  margin-right: 62px;
+  filter: grayscale(0%);
+}
+
+.review-industry .img-item.active .img{
+  transition: all .4s ease;
+  width: 273px;
+  height: 347px;
+}
+.review-industry .img-item.zero-am.active .img{
+  transition: all 0s ease;
+}
+.review-industry .img-item.active::before{display: none;}
+
+.review-industry .img-item.active .img{
+  height: 347px;
+}
+
+.review-industry .review-industry-right{
+  position: relative;
+  padding-left: 335px;
+}
+
+.review-industry .review-industry-text-list{
+  position: relative;
+  margin-top: 45px;
+  max-width: 1020px;
+  overflow: hidden;
+}
+
+.review-industry .text-item{
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  z-index: 1;
+  transition: all .4s ease;
+}
+
+.review-industry .posi-item{
+  position: relative;
+  z-index: 1;
+}
+
+.review-industry .text-item.active{
+  position: relative;
+  opacity: 1;
+  z-index: 2;
+}
+
+.review-industry .review-industry-text-p{
+  font-size: 30px;
+  font-family: var(--heading-font-family);
+  color: #eee;
+  line-height: 1.5;
+  opacity: 0;
+  transform: translateX(100px);
+  transition: all .4s ease;
+}
+.review-industry .review-industry-text-p p{
+  margin:0;
+}
+.review-industry .review-industry-text-name{
+  position: relative;
+  margin-top: 45px;
+  opacity: 0;
+  transform: translateX(100px);
+  transition: all .4s ease;
+  transition-delay: 0.1s
+}
+
+.review-industry .active .review-industry-text-p{
+  opacity: 1;
+  transform: translateX(0px);
+}
+
+.review-industry .active .review-industry-text-name{
+  opacity: 1;
+  transform: translateX(0px);
+}
+
+.review-industry .posi-item .review-industry-text-p{
+  opacity: 0;
+  transform: translateX(-100px);
+}
+
+.review-industry .posi-item .review-industry-text-name{
+  opacity: 0;
+  transform: translateX(-100px);
+}
+
+.review-industry .review-industry-name{
+  font-size: 18px;
+  color: #eee;
+  font-family: var(--heading-font-family);
+  line-height: 1.2;
+  position: relative;
+}
+
+.review-industry .review-industry-sub{
+  font-size: 14px;
+  color: #eee;
+  line-height: 1.2;
+}
+
+.review-industry .review-industry-arraw {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+  display: flex;
+  justify-content: space-between;
+  transition: all .4s ease;
+}
+
+.review-industry .review-industry-arraw-item {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  background: #343434;
+  position: relative;
+  cursor: pointer;
+  transition: all .4s ease;
+  margin-left: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.review-industry .review-industry-arraw-item:hover{
+  opacity: 0.5;
+}
+.review-industry .review-industry-arraw-item svg{
+  display: block;
+}
+
+.review-industry .review-industry-arraw-item path {
+  transition: all .4s ease;
+}
+
+.review-industry .review-industry-arraw-item:hover path {
+  opacity: 1;
+}
+
+.review-industry .sm-box{
+  display: none;
+}
+ .christmas .review-industry .review-industry-title{
+ color: #333;
+}
+  .christmas .review-industry .review-industry-text-p{
+    color: #333;
+  }
+
+  .christmas .review-industry .review-industry-name{
+     color: #333;
+  }
+   .christmas .review-industry .review-industry-sub{
+     color: #333;
+  }
+.christmas .review-industry .review-industry-img-list::after{
+      --background: 255,255,255;
+}
+  .christmas .review-industry .review-industry-arraw-item {
+    background: transparent;
+}
+   .new-year .review-industry .review-industry-more{
+    color: #E7004C;
+  }
+@media (min-width:992px) {
+  .hide-small.review-industry .review-industry-text-list{
+    margin-top: 0;
+  }
+  
+  .hide-small.review-industry .review-industry-img-list{
+    max-width: 306px;
+    position: relative;
+  }
+  .hide-small.review-industry .list-box{
+    position: relative;
+  }
+  .hide-small.review-industry .review-industry-img-list::after{
+    display: none;
+  }
+  
+  .hide-small.review-industry .review-industry-right{
+    padding-left: 0;
+    margin-left: 84px;
+  }
+  
+  .hide-small.review-industry .img-item{
+    width: 306px;
+    height: 306px;
+    filter: grayscale(0%);
+  }
+  
+  .hide-small.review-industry .img-item .img{
+    width: 306px;
+    height: 306px;
+  }
+  
+  .hide-small.review-industry .img-item::before{
+    display: none;
+  }
+  
+  .hide-small.review-industry .review-industry-cont{
+    padding-top: 0;
+    display: flex;
+    min-height: auto;
+  }
+  
+  .new-year .review-industry-top{
+    display: flex;
+    flex-direction: column-reverse;
+  }
+  
+  .new-year .review-industry .review-industry-more{
+    margin-top:0;
+    text-align: left;
+    text-decoration: none;
+  }
+  
+  .new-year .review-industry .review-industry-title{
+    text-align: left;
+    margin-top:10px;
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .new-year .review-industry .review-industry-arraw {
+    display:none;
+  }
+  
+  .new-year .review-industry .review-industry-title .review-industry-arraw{
+    display:flex;
+    position: relative;
+  }
+  
+}
+
+@media (max-width:991px) {
+  .review-industry{
+    padding: 60px 0;
+  }
+
+  .review-industry .review-industry-title{
+    font-size: 28px;
+  }
+
+  .review-industry .review-industry-more{
+    margin-top: 20px;
+  }
+
+  .review-industry .review-industry-cont{
+    min-height: auto;
+    padding-top: 0;
+    padding-left: 0;
+    margin-top: 39px;
+  }
+
+  .review-industry .review-industry-img-list{
+    max-width: none;
+    position: relative;
+    height: auto;
+    width: 100%;
+  }
+
+  .review-industry .list-box{
+    width: auto;
+    height: auto;
+    position: relative;
+  }
+  .review-industry .img-item{
+    width: 100%;
+    height: auto;
+  }
+  .review-industry .img-item .img{
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+  .review-industry .img-item.active{
+    width: 100%;
+    margin-right: 26px;
+  }
+  .review-industry .img-item.active .img{
+    width: 100%;
+    height: auto;
+  }
+  .review-industry .review-industry-right{
+    padding-left: 0;
+  }
+  .review-industry .review-industry-arraw{
+    margin-top: 30px;
+    position: relative;
+    justify-content: center;
+  }
+  .review-industry .review-industry-img-list::after{
+    height: 100%;
+  }
+  .review-industry .review-industry-text-p{
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  .review-industry .review-industry-text-list{
+    margin-top: 16px;
+  }
+  .review-industry .review-industry-text-name{
+    margin-top: 16px;
+  }
+  .review-industry .review-industry-arraw-item{
+    margin: 0 15px;
+  }
+  .review-industry .text-item{
+    text-align: center;
+  }
+  .review-industry .review-industry-sub{
+    color: #B0B0B0;
+    margin-top: 3px;
+  }
+  .review-industry .review-industry-img-list::after{
+    display:none;
+  }
+}
+
+@media (max-width:640px) {
+  .review-industry .review-industry-arraw{
+    display: none;
+  }
+  .review-industry .sm-box{
+    display: block;
+    margin-top: 16px;
+    overflow: hidden;
+  }
+
+  .review-industry .sm-list-box{
+    display: flex;
+  }
+
+  .review-industry .sm-img-item{
+    width: 17.6%;
+    position: relative;
+    padding-top: 17.6%;
+    flex-shrink: 0;
+    margin-right: 3%;
+    cursor: pointer;
+  }
+
+  .review-industry .sm-img-item::before{
+    position: absolute;
+    content: '';
+    display: block;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background: rgba(0, 0, 0, .3);
+    z-index: 2;
+  }
+
+  .new-year .review-industry .sm-img-item::before{
+    background: rgba(255, 255, 255, .5);
+  }
+
+  .review-industry .sm-img-item.active::before{
+    display: none;
+  }
+
+  .review-industry .sm-img-item .img{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    top: 0;
+    left: 0;
+    z-index: 1;
+  }
+  .new-year  .review-industry .review-industry-sub{
+    color: #B0B0B0;
+  }
+}
+</style>
+
+
+<section class="section-box{% if section.settings.custom_class != blank %} {{section.settings.custom_class}}{% endif %}">
+<div class="review-industry">
+  <div class="container">
+    <div class="review-industry-top">
+      <div class="review-industry-title to-top">
+      {{ section.settings.title }}
+      <div class="review-industry-arraw">
+          <div class="review-industry-arraw-item">
+            <svg xmlns="http://www.w3.org/2000/svg" width="41" height="41" viewBox="0 0 41 41" fill="none">
+              <path d="M18.8333 8.49744L6.47632 20.8545L18.8333 33.2115L21.1904 30.8545L12.857 22.5211H33.8333V19.1878H12.857L21.1904 10.8545L18.8333 8.49744Z" fill="black"/>
+            </svg>
+          </div>
+          <div class="review-industry-arraw-item">
+            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="41" viewBox="0 0 40 41" fill="none">
+              <path d="M21.6666 8.49744L34.0236 20.8545L21.6666 33.2115L19.3096 30.8545L27.6429 22.5211H6.66663V19.1878H27.6429L19.3096 10.8545L21.6666 8.49744Z" fill="black"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+      <a href="{{ section.settings.button_link }}" class="review-industry-more">{{ section.settings.button_text | escape }}</a>
+    </div>
+    <div class="review-industry-cont">
+      <div class="review-industry-img-list to-top">
+        <div class="list-box">
+          {%- for block in section.blocks -%}
+            <div class="img-item" data-index="{{ forloop.index }}">
+              {%- if block.settings.image != blank -%}
+                 <img loading="lazy" class="img{% if block.settings.mobile_image != blank %} hidden-pocket{% endif %}" width="{{ block.settings.image.width }}" height="{{ block.settings.image.height }}" {% render 'image-attributes', image: block.settings.image %} alt="{{ block.settings.image.alt | escape }}" >
+              {%- endif -%}
+              {%- if block.settings.mobile_image != blank -%}
+                 <img loading="lazy" class="img hidden-lap-and-up" width="{{ block.settings.mobile_image.width }}" height="{{ block.settings.mobile_image.height }}" {% render 'image-attributes', image: block.settings.mobile_image %} alt="{{ block.settings.mobile_image.alt | escape }}" >
+              {%- endif -%}
+            </div>
+          {%- endfor -%}
+        </div>
+      </div>
+      <div class="sm-box to-top">
+        <div class="sm-list-box">
+          {%- for block in section.blocks -%}
+            <div class="sm-img-item" data-index="{{ forloop.index }}">
+              {%- if block.settings.image != blank -%}
+                 <img loading="lazy" class="img{% if block.settings.mobile_image != blank %} hidden-pocket{% endif %}" width="{{ block.settings.image.width }}" height="{{ block.settings.image.height }}" {% render 'image-attributes', image: block.settings.image %} alt="{{ block.settings.image.alt | escape }}" >
+              {%- endif -%}
+              {%- if block.settings.mobile_image != blank -%}
+                 <img loading="lazy" class="img hidden-lap-and-up" width="{{ block.settings.mobile_image.width }}" height="{{ block.settings.mobile_image.height }}" {% render 'image-attributes', image: block.settings.mobile_image %} alt="{{ block.settings.mobile_image.alt | escape }}" >
+              {%- endif -%}
+            </div>
+          {%- endfor -%}
+        </div>
+      </div>
+      <div class="review-industry-right to-top">
+        <div class="review-industry-text-list">
+          {%- for block in section.blocks -%}
+            <div class="text-item {% if forloop.index == 1 %}active{% endif %}">
+              <div class="review-industry-text-p">
+                {{ block.settings.text }}
+              </div>
+              <div class="review-industry-text-name">
+                <div class="review-industry-name">{{ block.settings.text1 }}</div>
+                <div class="review-industry-sub">{{ block.settings.text2 }}</div>
+              </div>
+            </div>
+          {%- endfor -%}
+        </div>
+        <div class="review-industry-arraw">
+          <div class="review-industry-arraw-item">
+            <!-- <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <path opacity="0.4" d="M14 18L8 12L14 6" stroke="#D8D8D8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg> -->
+            <svg xmlns="http://www.w3.org/2000/svg" width="46" height="46" viewBox="0 0 46 46" fill="none">
+            <g opacity="0.25">
+            <circle cx="22.5224" cy="23.4775" r="22.5225" transform="rotate(-180 22.5224 23.4775)" fill="black"/>
+            <path d="M25.9385 32.4492L16.9668 23.4775L25.9385 14.5059" stroke="#F5F5F5" stroke-width="2" stroke-linecap="square"/>
+            </g>
+            </svg>
+          </div>
+          <div class="review-industry-arraw-item">
+            <!-- <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <path opacity="0.4" d="M10 18L16 12L10 6" stroke="#D8D8D8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg> -->
+            <svg xmlns="http://www.w3.org/2000/svg" width="46" height="46" viewBox="0 0 46 46" fill="none">
+            <g opacity="0.5">
+            <circle cx="23.4776" cy="23.4776" r="22.5225" fill="black"/>
+            <path d="M20.0615 14.5059L29.0332 23.4775L20.0615 32.4492" stroke="#F5F5F5" stroke-width="2" stroke-linecap="square"/>
+            </g>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function industrySwiper(name){
+    let $p = $(name)
+    let $list = $p.find('.list-box')
+    let $tList = $p.find('.review-industry-text-list')
+    let length = $p.find('.img-item').length
+    let width = $p.find('.img-item').width()
+    let $smList = $p.find('.sm-list-box')
+    let smWidth = $p.find('.sm-img-item').width()
+    let sMargin = $p.find('.sm-img-item').css('margin-right').replace('px','')*1
+    let index = length
+    $list.html($list.html()+$list.html()+$list.html())
+    $list.find('.img-item').eq(index).addClass('active')
+    $smList.html($smList.html()+$smList.html()+$smList.html())
+    $smList.find('.sm-img-item').eq(index).addClass('active')
+    skewTranslateX(0)
+    $p.find('.review-industry-arraw-item').click(function(){
+      let tIndex = $(this).index()
+      if(tIndex){
+        index ++
+      }else{
+        index--
+      }
+      skewTranslateX()
+    })
+
+    function skewTranslateX(time = 0.4){
+      let smTranslateX = index*(smWidth + sMargin) - width/2 + smWidth/2 -sMargin/2
+      $list.find('.img-item').removeClass('active')
+      $list.find('.img-item').eq(index).addClass('active')
+      $list.css({'transform': 'translateX(-'+ index*(width + 70) +'px)','transition':' all '+ time +'s ease'})
+      $smList.find('.sm-img-item').removeClass('active')
+      $smList.find('.sm-img-item').eq(index).addClass('active')
+      $smList.css({'transform': 'translateX(-'+ smTranslateX +'px)','transition':' all '+ time +'s ease'})
+      
+      if(time){
+        $tList.find('.text-item.active').addClass('posi-item')
+        $tList.find('.text-item').removeClass('active')
+        setTimeout(function(){
+          let sindex = index-length
+          if(sindex == length) sindex = 0
+          if(sindex == -1) sindex = length - 1
+          $tList.find('.text-item.posi-item').removeClass('posi-item')
+          $tList.find('.text-item').eq(Math.abs(sindex)).addClass('active')
+        },450)
+      }
+      if(index==length-1){
+        setTimeout(function(){
+          index = length*2-1
+          $list.find('.img-item').eq(index).addClass('zero-am')
+          skewTranslateX(0)
+          setTimeout(function(){
+            $list.find('.img-item').eq(index).removeClass('zero-am')
+          },50)
+        },450)
+      }
+      
+      if(index==length*2){
+        setTimeout(function(){
+          index = length
+          $list.find('.img-item').eq(index).addClass('zero-am')
+          skewTranslateX(0)
+          setTimeout(function(){
+            $list.find('.img-item').eq(index).removeClass('zero-am')
+          },50)
+        },450)
+      }
+    }
+
+    $p.on('click','.img-item',function(){
+      let newIndex = $(this).data('index')*1 - 1 + length
+      let isChange = newIndex ==index
+      index = $(this).data('index')*1 - 1 + length
+      if(!isChange) skewTranslateX()
+    })
+
+    $p.on('click','.sm-img-item',function(){
+      let newIndex = $(this).data('index')*1 - 1 + length
+      let isChange = newIndex ==index
+      index = $(this).data('index')*1 - 1 + length
+      if(!isChange) skewTranslateX()
+    })
+    
+    function addSwipeHandler(element, leftCallback, rightCallback) {
+      let startX = 0;
+      let startY = 0;
+      let isHorizontalScrolling = false;
+
+      element.addEventListener('touchstart', (e) => {
+        startX = e.touches[0].clientX;
+        startY = e.touches[0].clientY;
+        isHorizontalScrolling = false;
+      });
+
+      element.addEventListener('touchmove', (e) => {
+        let endX = e.touches[0].clientX;
+        let endY = e.touches[0].clientY;
+
+        let diffX = startX - endX;
+        let diffY = startY - endY;
+
+        if (!isHorizontalScrolling) {
+          if (Math.abs(diffX) > 15 && Math.abs(diffX) > Math.abs(diffY)) {
+            isHorizontalScrolling = true;
+            e.preventDefault(); 
+          }
+        } else {
+          e.preventDefault(); 
+        }
+      }, { passive: false });
+
+      element.addEventListener('touchend', (e) => {
+        if (isHorizontalScrolling) {
+          let endX = e.changedTouches[0].clientX;
+          let diffX = startX - endX;
+
+          if (diffX > 0) {
+            leftCallback(); 
+          } else {
+            rightCallback(); 
+          }
+          isHorizontalScrolling = false; 
+        }
+      });
+    }
+
+
+    let myElement = document.querySelector('.review-industry .review-industry-cont');
+
+    function onSwipeLeft() {
+      index ++ 
+      skewTranslateX()
+    }
+
+    function onSwipeRight() {
+      index --
+      skewTranslateX()
+    }
+
+    if(window.innerWidth<991){
+      addSwipeHandler(myElement, onSwipeLeft, onSwipeRight);
+    }
+  }
+
+  window.addEventListener('load',function(){
+    industrySwiper('.review-industry')
+    $('.review-industry-more').click(function(){
+      if('shopify-section-{{ section.id }}' == 'shopify-section-template--21577236545823__9711ad96-6b13-4a9e-bda9-bea011b93f92'){
+        commonGtmEvent('pro_bounce','','')
+      } else {
+         commonGtmEvent('Review-LearnMore','','')
+      }
+       
+    })
+  })
+  
+</script>
+</section>
+
+{% schema %}
+{
+  "name": "review-industry-diy",
+  "blocks": [
+    {
+      "name": "item",
+      "type": "item",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "image_picker",
+          "id": "mobile_image",
+          "label": "Mobile Image"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text"
+        },
+        {
+          "type": "text",
+          "id": "text1",
+          "label": "Text"
+        },
+        {
+          "type": "text",
+          "id": "text2",
+          "label": "Text"
+        }
+      ]
+    }
+  ],
+  "settings": [
+    {
+      "type": "text",
+      "id": "custom_class",
+      "label": "Custom Class"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Link text"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "review-industry-diy",
+      "blocks": []
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,186 @@
+<style>
+  .fda-box{
+    padding: 80px 0;
+    background: #f9f9f9;
+    position: relative;
+    z-index: 1;
+}
+
+.fda-box .fda-cont{
+    display: flex;
+    flex-direction: row-reverse;
+    position: relative;
+    max-width: 1240px;
+    margin: 0 auto;
+}
+
+.fda-box .fda-text{
+    flex: 1;
+    margin-left: 100px;
+}
+
+.fda-box .fda-cont img{
+    display: block;
+}
+
+.fda-box .fda-title{
+    font-size: 30px;
+    color: #000;
+    font-weight: bold;
+    line-height: 1.3;
+}
+
+.fda-box .fda-name-box{
+    padding-left: 35px;
+    margin-top: 65px;
+}
+
+.fda-box .fda-name{
+    font-size: 18px;
+    font-weight: bold;
+    color: #000;
+    position: relative;
+    line-height: 1.2;
+}
+
+.fda-box .fda-name::before{
+    position: absolute;
+    content: '';
+    display: block;
+    width: 20px;
+    height: 2px;
+    background: #e6e6e6;
+    top: 50%;
+    transform: translateY(-50%);
+    left: -35px;
+}
+
+.fda-box .fda-name-sub{
+    font-size: 14px;
+    color: #9f9f9f;
+    line-height: 1.2;
+}
+
+.fda-box .fad-img-icon{
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 120px;
+}
+
+@media (max-width:1500px) {
+    .fda-box .fda-title{
+        font-size: 26px;
+    }
+}
+
+@media (max-width:991px) {
+    .fda-box{
+        padding: 50px 0;
+    }
+    .fda-box .fda-cont{
+        display: block;
+    }
+    .fda-box .fda-name::before{
+        display: inline-block;
+        position: relative;
+        transform: translate(0);
+        left: 0;
+        top: 0;
+        vertical-align: middle;
+        margin-right: 10px;
+    }
+    .fda-box .fda-text{
+        margin-left: 0;
+        margin-bottom: 30px;
+        text-align: center;
+    }
+    .fda-box .fda-title{
+        font-size: 22px;
+    }
+    .fda-box .fda-name-box{
+        margin-top: 30px;
+    }
+    
+    .fda-box .fda-img img{
+        display: block;
+        margin: 0 auto;
+    }
+
+    .fda-box .fda-img .fad-img-icon{
+        position: relative;
+        margin-top: 40px;
+    }
+    .fda-box .fda-img .fad-img-t{
+        width: 220px;
+    }
+}
+</style>
+<section class="section-box">
+  <div class="fda-box">
+    <div class="container">
+      <div class="fda-cont">
+        <div class="fda-text">
+          <div class="fda-title to-top">
+            {{ section.settings.text }}
+          </div>
+          <div class="fda-name-box">
+            <div class="fda-name to-top" style="transition-delay: .1s">{{ section.settings.text1 }}</div>
+            <div class="fda-name-sub to-top" style="transition-delay: .2s">{{ section.settings.text2 }}</div>
+          </div>
+        </div>
+        <div class="fda-img">
+          {%- if section.settings.image != blank -%}
+            <img loading="lazy" class="fad-img-t to-top" width="{{ section.settings.image.width }}"
+              height="{{ section.settings.image.height }}" {% render 'image-attributes' , image: section.settings.image %}
+              alt="{{ section.settings.image.alt | escape }}" style="transition-delay: .3s">
+          {%- endif -%}
+          {%- if section.settings.image1 != blank -%}
+            <img loading="lazy" class="fad-img-icon to-top" width="{{ section.settings.image1.width }}"
+              height="{{ section.settings.image1.height }}" {% render 'image-attributes' , image: section.settings.image1 %}
+              alt="{{ section.settings.image1.alt | escape }}" style="transition-delay: .4s">
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% schema %}
+{
+"name": "fad-detail-diy",
+"blocks": [],
+"settings": [
+      {
+        "type": "image_picker",
+        "id": "image",
+        "label": "Image"
+      },
+      {
+        "type": "image_picker",
+        "id": "image1",
+        "label": "Image"
+      },
+      {
+        "type": "text",
+        "id": "text",
+        "label": "Text"
+      },
+      {
+        "type": "text",
+        "id": "text1",
+        "label": "Text"
+      },
+      {
+        "type": "text",
+        "id": "text2",
+        "label": "Text"
+      }
+    ],
+    "presets": [
+    {
+      "name": "fad-detail-diy",
+      "blocks": []
+    }
+  ]
+}
+{% endschema %}

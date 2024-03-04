@@ -1,0 +1,515 @@
+<style>
+  .section-{{ section.id }}-padding {
+    padding-top: calc({{ section.settings.padding_top }}px);
+    padding-bottom: calc({{ section.settings.padding_bottom }}px);
+  }
+  @media screen and (max-width: 768px){
+  .section-{{ section.id }}-padding {
+    padding-top: calc({{ section.settings.padding_top }}px * 0.6);
+    padding-bottom: calc({{ section.settings.padding_bottom }}px * 0.6);
+  }
+}
+
+  #shopify-section-{{ section.id }} {
+      {%- assign section_background = section.settings.background -%}
+      {%- assign heading_color = section.settings.text_color -%}
+      {%- assign text_color = section.settings.text_color -%}
+      {%- assign button_background = section.settings.button_background -%}
+      {%- assign button_text_color = section.settings.button_text_color -%}
+    --heading-color: {{ heading_color.red }}, {{ heading_color.green }}, {{ heading_color.blue }};
+    --text-color: {{ text_color.red }}, {{ text_color.green }}, {{ text_color.blue }};
+    --primary-button-background: {{ button_background.red }}, {{ button_background.green }}, {{ button_background.blue }};
+    --primary-button-text-color: {{ button_text_color.red }}, {{ button_text_color.green }}, {{ button_text_color.blue }};
+
+    --section-accent-background: {{ section.settings.accent_background.red }} {{ section.settings.accent_background.green }} {{ section.settings.accent_background.blue }} / {{ section.settings.accent_background.alpha }};
+    --section-autoplay-duration: {{ section.settings.cycle_speed }}s;
+    --section-animation-play-state: paused;
+    --section-background: {{ section_background.red }}, {{ section_background.green }}, {{ section_background.blue }};
+    background: rgb(var(--section-background, var(--background)));
+  }
+  .file__text__box {
+    display: flex;
+    align-items: center;
+}
+.file__left {
+    flex-basis: 50%;
+}
+.file-with-text__content-wrapper {
+    flex: 1;
+}
+.file__text__box .file-with-text__content-wrapper{
+  padding-left: 120px;
+}
+.file__text__box.file-with-text--reverse{
+  flex-direction: row-reverse;
+}
+.file__text__box.file-with-text--reverse .file-with-text__content-wrapper{
+padding-left: 0;
+padding-right: 130px;
+}
+.avtor_note p{
+  margin: 0!important;
+}
+.file-with-text__content-wrapper h2.h2{
+font-size: 40px;
+font-weight: normal;
+line-height: 50px;
+margin-bottom: 20px;
+}
+.file-with-text__content-wrapper .cnt_bix{
+font-size: 16px;
+font-weight: normal;
+line-height: 24px;
+}
+.avtor_box{
+
+}
+.file-with-text__content-wrapper .avtor_list{
+  display: flex;
+  margin-top: 20px;
+  gap: 20px;
+  align-items: center;
+}
+.file-with-text__content-wrapper .avtor_list .pt_img{
+  display: flex;
+  width: 75px;
+height: 75px;
+border-radius: 50%;
+object-fit: cover;
+}
+.file-with-text__content-wrapper .avtor_list .avtor_tle .avtor_top{
+font-size: 18px;
+font-weight: normal;
+line-height: 27px;
+font-family: var(--heading-font-family);
+}
+.file-with-text__content-wrapper .avtor_list .avtor_tle .avtor_bt{
+font-size: 12px;
+font-weight: normal;
+line-height: 18px;
+}
+.file-with-text__content-wrapper .avtor_note{
+font-size: 12px;
+font-weight: normal;
+color: #000000;
+line-height: 18px;
+margin-top: 20px;
+}
+@media screen and (max-width: 991px){
+  .file__text__box,.file__text__box.file-with-text--reverse {
+    flex-direction: column-reverse;
+}
+.file__text__box.file-with-text--reverse .file-with-text__content-wrapper{
+  padding-right: 0;
+}
+.file__text__box .file-with-text__content-wrapper{
+  padding-left: 0;
+}
+.file-with-text__content{
+  text-align: center !important;
+}
+.file-with-text__content-wrapper h2.h2 {
+font-size: 22px;
+line-height: 28px;
+margin-bottom: 15px;
+}
+.file-with-text__content-wrapper .cnt_bix {
+  font-size: 14px;
+    line-height: 21px;
+}
+.file-with-text__content-wrapper .avtor_list .avtor_tle .avtor_top{
+  font-size: 14px;
+  line-height: 21px;
+}
+.file-with-text__content-wrapper .avtor_list{
+  margin-top: 20px;
+  justify-content: center;
+  gap: 10px;
+}
+.avtor_box{
+  display: flex;
+  justify-content: center;
+}
+.avtor_tle{
+  text-align: left;
+}
+.file-with-text__content-wrapper .avtor_box.avtor_box_two .avtor_list{
+flex-direction: column;
+gap: 15px;
+flex-basis: 50%;
+  margin-top: 40px;
+}
+.file-with-text__content-wrapper .avtor_list .pt_img{
+  width: 54px;
+  height: 54px;
+}
+.file-with-text__content-wrapper .avtor_box.avtor_box_two .avtor_tle{
+  text-align: center;
+  max-width: 167px;
+  margin: 0 auto;
+}
+.file-with-text__content-wrapper .avtor_note{
+  display: none;
+}
+.avtor_note.hidden-lap-and-up{
+font-size: 12px;
+font-weight: normal;
+line-height: 18px;
+margin-top: 15px;
+text-align: center;
+}
+.file__left{
+  margin-top: 26px;
+}
+  .avtor_box.avtor_box_two{
+  gap: 20px;
+  align-items: baseline;
+}
+}
+</style>
+
+<section class="section_file{% if section.settings.custom_class != blank %} {{section.settings.custom_class}}{% endif %}">
+  <div class="section-{{ section.id }}-padding">
+    <div class="container">
+   <div class="file__text__box{% if section.settings.image_position == 'right' %} file-with-text--reverse{% endif %} to-top">
+      <div class="file__left">
+        {%- if section.settings.image != blank -%}
+          <div class="hidden-pocket">
+            {{- section.settings.image | image_url: width: section.settings.image.width | image_tag: loading: 'lazy', sizes: '100vw', widths: '600,700,800,1000,1200,1400,1600,1800,2000,2200,2400,2600,2800,3000' -}}
+          </div>
+        {%- endif -%}
+        {%- if section.settings.mobile_image != blank -%}
+          <div class="hidden-lap-and-up">
+            {{- section.settings.mobile_image | image_url: width: section.settings.mobile_image.width | image_tag: loading: 'lazy', sizes: '100vw', widths: '600,700,800,1000,1200,1400,1600,1800,2000,2200,2400,2600,2800,3000' -}}
+          </div>
+        {%- endif -%}
+        {%- if section.settings.video != blank -%}
+          <native-video autoplay class="video-wrapper video-wrapper--native">
+          {{- section.settings.video | video_tag: controls: false, autoplay: true, playsinline: true, muted: true, loop: true , image_size: '740x' -}}
+          </native-video>
+        {%- endif -%}
+        {%- if section.settings.avtor_note != blank -%}
+          <div class="avtor_note hidden-lap-and-up">
+           {{- section.settings.avtor_note -}}
+          </div>
+        {%- endif -%}
+      </div>
+      <div class="file-with-text__content-wrapper">
+        <div class="file-with-text__content text--{{ section.settings.text_alignment }}">
+          {%- if section.settings.title != blank -%}
+            <h2 class="heading h2 to-top" style="transition-delay: 0.1s">
+              <split-lines>{{ section.settings.title | escape }}</split-lines>
+            </h2>
+          {%- endif -%}
+
+          <div class="video-with-text__text-wrapper to-top" style="transition-delay: 0.2s">
+            {%- if section.settings.content != blank -%}
+              <div class="cnt_bix">
+              {{- section.settings.content -}}
+              </div>
+            {%- endif -%}
+
+            {%- if section.settings.button_text != blank -%}
+              {%- if section.settings.link_style == 'link' -%}
+                <div class="button-wrapper">
+                  <a class="button--link show-match-box">{{ section.settings.button_text }}</a>
+                </div>
+              {%- else -%}
+                <div class="button-wrapper">
+                  <a class="button button--primary button--animate show-match-box">{{ section.settings.button_text }}</a>
+                </div>
+              {%- endif -%}
+            {%- endif -%}
+          </div>
+
+          {%- if section.settings.extend_image != blank -%}
+            <div class="extend-image">
+              {{- section.settings.extend_image | image_url: width: section.settings.extend_image.width | image_tag: loading: '', sizes: '100vw', widths: '600,700,800,1000,1200,1400,1600,1800,2000,2200,2400,2600,2800,3000' -}}
+            </div>
+          {%- endif -%}
+
+          <div class="avtor_box{% if section.settings.avtor_image2 != blank %} avtor_box_two{% endif %} to-top" style="transition-delay: 0.3s">
+            {%- if section.settings.avtor_image1 != blank -%}
+            <div class="avtor_list">
+              <img class="pt_img" src="{{ section.settings.avtor_image1 | image_url }}">
+              <div class="avtor_tle">
+                <div class="avtor_top">{{ section.settings.author_1 | escape }}</div>
+                <div class="avtor_bt">{{ section.settings.author_des1 | escape }}</div>
+              </div>
+            </div>
+            {%- endif -%}
+            {%- if section.settings.avtor_image2 != blank -%}
+              <div class="avtor_list">
+                <img class="pt_img" src="{{ section.settings.avtor_image2 | image_url }}">
+                <div class="avtor_tle">
+                  <div class="avtor_top">{{ section.settings.author_2 | escape }}</div>
+                  <div class="avtor_bt">{{ section.settings.author_des2 | escape }}</div>
+                </div>
+              </div>
+              {%- endif -%}
+          </div>
+
+          {%- if section.settings.avtor_note != blank -%}
+          <div class="avtor_note to-top" style="transition-delay: 0.4s">
+           {{- section.settings.avtor_note -}}
+          </div>
+          {%- endif -%}
+          
+          
+        </div>
+      </div>
+   </div>
+  </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "File with text",
+  "class": "shopify-section--file-with-text",
+  "settings": [
+    {
+      "type": "text",
+      "id": "custom_class",
+      "label": "Custom Class"
+    },
+    {
+      "type": "video",
+      "id": "video",
+      "label": "Video",
+      "info": "Replaces the external video if both are set."
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "extend_image",
+      "label": "Extend Image"
+    },
+    {
+        "type": "image_picker",
+        "id": "mobile_image",
+        "label": "Mobile image",
+        "info": "1000 x 1400px .jpg recommended. If none is set, desktop image will be used."
+      },
+    {
+        "type": "text",
+        "id": "subheading",
+        "label": "Subheading",
+        "default": "Subheading"
+      },
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Heading",
+        "default": "Image with text"
+      },
+      {
+        "type": "richtext",
+        "id": "content",
+        "label": "Content",
+        "default": "<p>Use image with text to give your customers insight into your brand. Select imagery and text that relates to your style and story.</p>"
+      },
+      {
+        "type": "text",
+        "id": "button_text",
+        "label": "Button text"
+      },
+      {
+        "type": "url",
+        "id": "button_link",
+        "label": "Button link"
+      },
+
+      {
+      "type": "image_picker",
+      "id": "avtor_image1",
+      "label": "Avtor Image 1"
+    },
+    {
+      "type": "image_picker",
+      "id": "avtor_image2",
+      "label": "Avtor Image 2"
+    },
+
+    {
+        "type": "text",
+        "id": "author_1",
+        "label": "Author 1"
+      },
+      {
+        "type": "text",
+        "id": "author_des1",
+        "label": "Author Description 1"
+      },
+
+      {
+        "type": "text",
+        "id": "author_2",
+        "label": "Author 2"
+      },
+      {
+        "type": "text",
+        "id": "author_des2",
+        "label": "Author Description 2"
+      },
+      {
+        "type": "richtext",
+        "id": "avtor_note",
+        "label": "Note"
+      },
+      {
+        "type": "select",
+        "id": "link_style",
+        "label": "Link style",
+        "options": [
+          {
+            "value": "link",
+            "label": "Link"
+          },
+          {
+            "value": "button",
+            "label": "Button"
+          }
+        ],
+        "default": "button"
+      },
+      {
+      "type": "select",
+      "id": "background_type",
+      "label": "Background",
+      "options": [
+        {
+          "value": "full_width",
+          "label": "Full width"
+        },
+        {
+          "value": "boxed",
+          "label": "Boxed"
+        }
+      ],
+      "default": "full_width"
+    },
+    {
+      "type": "select",
+      "id": "background_overlap",
+      "label": "Background overlap",
+      "info": "Add an accent background color below.",
+      "options": [
+        {
+          "value": "image",
+          "label": "Image"
+        },
+        {
+          "value": "text",
+          "label": "Text"
+        },
+        {
+          "value": "both",
+          "label": "Both"
+        }
+      ],
+      "default": "image"
+    },
+    {
+      "type": "select",
+      "id": "image_position",
+      "label": "Desktop image position",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Text alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "color",
+      "id": "accent_background",
+      "label": "Accent background",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "color",
+      "id": "button_background",
+      "label": "Button background",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button text",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 36
+    }
+  ],
+  "blocks": [
+  ],
+  "presets": [
+    {
+      "name": "File with text",
+      "settings": {},
+      "blocks": [
+      ]
+    }
+  ]
+}
+{% endschema %}

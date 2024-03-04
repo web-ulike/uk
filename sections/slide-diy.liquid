@@ -1,0 +1,579 @@
+<style>
+ .slide-diy{
+  padding: 100px 0;
+}
+
+.slide-diy .slide-diy-title{
+  color: #000;
+  text-align: center;
+  font-size: 44px;
+  font-family: var(--heading-font-family);
+  line-height: 1.25;
+}
+
+.slide-diy .slide-diy-sub{
+  color: #000;
+  text-align: center;
+  font-size: 16px;
+  line-height: 1.5;
+  max-width: 750px;
+  margin: 0 auto;
+  margin-top: 15px;
+}
+
+.slide-diy .slide-diy-cont{
+  margin-top: 50px;
+  display: flex;
+}
+
+.slide-diy .slide-diy-left{
+  width: 46.8%;
+  display: flex;
+  overflow: hidden;
+  border-radius: 20px;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.slide-diy .slide-diy-left::after{
+  position: absolute;
+  content: '';
+  height: 100%;
+  width: 1px;
+  background: #fff;
+  left: 50%;
+  top: 0;
+  transform: translateX(-50%);
+  z-index: 2;
+}
+
+.slide-diy .slide-diy-img{
+  width: 50%;
+  position: relative;
+  z-index: 1;
+}
+
+.slide-diy .slide-diy-img-item{
+  position: absolute;
+  z-index: 1;
+  height: 100%;
+  width: 100%;
+}
+
+.slide-diy .slide-diy-img-item .img{
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.slide-diy .slide-diy-img-item.close{
+  left: 0;
+  top: 0;
+  z-index: 3;
+  overflow: hidden;
+  width: 0;
+  transition: width 0.7s cubic-bezier(0.4, 0.2, 0.2, 1);
+}
+
+.slide-diy .slide-diy-img-item.close .img{
+  width: auto;
+}
+
+.slide-diy .slide-diy-img-item.active{
+  position: relative;
+  z-index: 2;
+}
+
+.slide-diy .slide-diy-img-txt{
+  color: #fff;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 1px;
+  font-family: var(--heading-font-family);
+  position: absolute;
+  z-index: 4;
+  right: 0;
+  bottom: 80px;
+  background: rgba(0, 0, 0, 0.50);
+  padding: 8px 10px;
+}
+
+.slide-diy .slide-diy-img:nth-child(2) .slide-diy-img-txt{
+  background: #E0004D;
+}
+
+.slide-diy .slide-diy-right{
+  margin-left: 50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: calc(53.2% - 50px);
+}
+
+.slide-diy .slide-diy-img-list{
+  overflow: hidden;
+  position: relative;
+}
+
+.slide-diy .slide-diy-img-list::after {
+  position: absolute;
+  content: '';
+  display: block;
+  width: 70%;
+  height: 100%;
+  right: 0;
+  top: 0;
+  z-index: 3;
+  --background: 255,255,255;
+  background: linear-gradient(to left, rgb(var(--background)), rgba(var(--background), 0));
+  pointer-events: none;
+}
+
+.slide-diy .slide-diy-list{
+  display: flex;
+}
+
+.slide-diy .slide-diy-list .img{
+  display: block;
+  width: 38.7%;
+  flex-shrink: 0;
+  margin-right: 25px;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+.slide-diy .slide-diy-bottom{
+  display: flex;
+  align-items: flex-end;
+  gap: 42px;
+  margin-top: 30px;
+  flex: 1;
+}
+
+.slide-diy .slide-diy-arraw{
+  display: flex;
+  gap: 22px;
+}
+
+.slide-diy .slide-diy-arraw-item{
+  width: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.slide-diy .slide-diy-arraw-item svg{
+  display: block;
+}
+
+.slide-diy .slide-diy-text{
+  background: #F9F9F9;
+  border-radius: 20px;
+  padding: 50px 30px 30px 70px;
+  flex: 1;
+  position: relative;
+  height: 100%;
+  display: flex;
+  overflow: hidden;
+}
+
+.slide-diy .slide-diy-text::before{
+  position: absolute;
+  content: '“';
+  font-size: 200px;
+  line-height: 1;
+  color: #E6E6E6;
+  left: 25px;
+  top: -10px;
+  z-index: 0;
+}
+
+.slide-diy .slide-diy-txt-item{
+  position: relative;
+  z-index: 2;
+  color: #000;
+  font-size: 16px;
+  line-height: 1.5;
+  flex-shrink: 0;
+  width: 100%;
+  margin-right: 100px;
+}
+
+.slide-diy .slide-diy-dot{
+  display: none;
+  align-items: center;
+  justify-content: center;
+  margin-top: 26px;
+}
+
+.slide-diy .slide-diy-dot-item{
+  width: 5px;
+  height: 5px;
+  background: #D9D9D9;
+  margin: 0 5px;
+  border-radius: 50%;
+}
+
+.slide-diy .slide-diy-dot-item.active{
+  background: #7A7A7A;
+}
+
+@media (max-width:1300px) {
+  .slide-diy .slide-diy-right{
+    margin-left: 30px;
+    width: calc(53.2% - 30px);
+  }
+  .slide-diy .slide-diy-text{
+    padding: 30px;
+    padding-left: 50px;
+    font-size: 14px;
+  }
+  .slide-diy .slide-diy-text::before{
+    font-size: 160px;
+    left: 12px;
+    top: -17px;
+  }
+}
+
+@media (max-width:991px) {
+  .slide-diy{
+    padding: 50px 0;
+    padding-top:0;
+  }
+  .slide-diy .slide-diy-title{
+    font-size: 28px;
+  }
+  .slide-diy .slide-diy-sub{
+    margin-top: 20px;
+    font-size: 14px;
+  }
+
+  .slide-diy .slide-diy-cont{
+    display: block;
+    margin-top: 25px;
+  }
+  .slide-diy .slide-diy-left{
+    width: 100%;
+    border-radius: 16px 16px 0px 0px;
+    pointer-events: none;
+  }
+  
+  .slide-diy .slide-diy-right{
+    margin-left: 0;
+    width: 100%;
+  }
+  .slide-diy .slide-diy-img-txt{
+    bottom: 24px;
+  }
+  .slide-diy .slide-diy-txt-item{
+    text-align: center;
+    font-size: 14px;
+  }
+  .slide-diy .slide-diy-img-list{
+    display: none;
+  }
+  .slide-diy .slide-diy-bottom{
+    margin-top: 0;
+  }
+  .slide-diy .slide-diy-arraw{
+    display: none;
+  }
+  .slide-diy .slide-diy-text{
+    border-radius: 0px 0px 16px 16px;
+    padding: 52px 36px 45px 36px;
+  }
+  .slide-diy .slide-diy-text::before {
+    font-size: 200px;
+    left: 12px;
+    top: -10px;
+  }
+  .slide-diy .slide-diy-dot{
+    display: flex;
+  }
+}
+</style>
+
+<section class="section-box">
+  <div class="slide-diy">
+    <div class="container">
+      <div class="slide-diy-title to-top">{{ section.settings.text }}</div>
+      <div class="slide-diy-sub to-top" style="transition-delay: 0.1s">{{ section.settings.text1 }}</div>
+      <div class="slide-diy-cont">
+        <div class="slide-diy-left to-top" style="transition-delay: 0.2s">
+          <div class="slide-diy-img">
+            {%- for block in section.blocks -%}
+                {%- if block.settings.image1 != blank -%}
+                  <div class="slide-diy-img-item">
+                    <img
+                      loading="lazy"
+                      class="img"
+                      width="{{ block.settings.image1.width }}"
+                      height="{{ block.settings.image1.height }}"
+                      {% render 'image-attributes', image: block.settings.image1 %}
+                      alt="{{ block.settings.image1.alt | escape }}"
+                    >
+                  </div>
+              {%- endif -%}
+            {%- endfor -%}
+            {%- if section.settings.text2 != blank -%}
+              <div class="slide-diy-img-txt">{{ section.settings.text2 }}</div>
+            {%- endif -%}
+          </div>
+          <div class="slide-diy-img">
+            {%- for block in section.blocks -%}
+                {%- if block.settings.image2 != blank -%}
+                  <div class="slide-diy-img-item">
+                    <img
+                      loading="lazy"
+                      class="img"
+                      width="{{ block.settings.image2.width }}"
+                      height="{{ block.settings.image2.height }}"
+                      {% render 'image-attributes', image: block.settings.image2 %}
+                      alt="{{ block.settings.image2.alt | escape }}"
+                    >
+                  </div>
+              {%- endif -%}
+            {%- endfor -%}
+            {%- if section.settings.text3 != blank -%}
+              <div class="slide-diy-img-txt">{{ section.settings.text3 }}</div>
+            {%- endif -%}
+          </div>
+        </div>
+        <div class="slide-diy-right to-top">
+          <div class="slide-diy-img-list to-top" style="transition-delay: 0.3s">
+            <div class="slide-diy-list">
+              {%- for block in section.blocks -%}
+                  {%- if block.settings.image != blank -%}
+                      <img
+                        loading="lazy"
+                        class="img"
+                        data-index="{{ forloop.index }}"
+                        width="{{ block.settings.image.width }}"
+                        height="{{ block.settings.image.height }}"
+                        {% render 'image-attributes', image: block.settings.image %}
+                        alt="{{ block.settings.image.alt | escape }}"
+                      >
+                {%- endif -%}
+              {%- endfor -%}
+            </div>
+          </div>
+          <div class="slide-diy-bottom to-top" style="transition-delay: 0.4s">
+            <div class="slide-diy-text">
+              {%- for block in section.blocks -%}
+                <div class="slide-diy-txt-item">
+                  {{ block.settings.text }}
+                </div>
+              {%- endfor -%}
+            </div>
+            <div class="slide-diy-arraw">
+              <div class="slide-diy-arraw-item">
+                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40" fill="none">
+                  <path d="M18.3333 7.64307L5.97632 20.0001L18.3333 32.3571L20.6904 30.0001L12.357 21.6668H33.3333V18.3334H12.357L20.6904 10.0001L18.3333 7.64307Z" fill="black"/>
+                </svg>
+              </div>
+              <div class="slide-diy-arraw-item">
+                <svg xmlns="http://www.w3.org/2000/svg" width="41" height="40" viewBox="0 0 41 40" fill="none">
+                  <path d="M22.1666 7.64307L34.5236 20.0001L22.1666 32.3571L19.8096 30.0001L28.1429 21.6668H7.16663V18.3334H28.1429L19.8096 10.0001L22.1666 7.64307Z" fill="black"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="slide-diy-dot to-top" style="transition-delay: 0.4s">
+        {%- for block in section.blocks -%}
+          <div class="slide-diy-dot-item"></div>
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+  window.addEventListener('load',function(){
+    function slideDiySwiper(){
+      const content = document.querySelector('.slide-diy .slide-diy-cont');
+      let $p = $('.slide-diy')
+      let $imgBox = $p.find('.slide-diy-img')
+      let $imgSm = $p.find('.slide-diy-list')
+      let $txt = $p.find('.slide-diy-text')
+      let $arraw = $p.find('.slide-diy-arraw')
+      let $dot = $p.find('.slide-diy-dot-item')
+      let length = $imgSm.find('.img').length
+      let width = $imgSm.find('.img')[0].offsetWidth
+      let txtWidth = $txt.find('.slide-diy-txt-item')[0].offsetWidth
+      let index = 0
+      let smInex = length + index + 1
+      let time = +new Date()
+      let timerIn = null
+      $imgSm.html($imgSm.html().repeat(3))
+  
+      function changeTransform(bol){
+        if(index == length){
+          index = 0
+          $imgSm.css({'transform': 'translateX(-'+ (width + 25) * length +'px)','transition':'none'})
+        }
+        if(index == -1){
+          index = length - 1
+          $imgSm.css({'transform': 'translateX(-'+ (width + 25) * (length + length + 1) +'px)','transition':'none'})
+        }
+        smInex = length + index + 1
+        $imgBox.each(function(){
+          $(this).find('.slide-diy-img-item.close').removeClass('close')
+          $(this).find('.slide-diy-img-item.active').removeClass('active').addClass('close')
+          $(this).find('.slide-diy-img-item').eq(index).addClass('active')
+          setTimeout(()=>{
+            $(this).find('.slide-diy-img-item.close').removeClass('close')
+          },600)
+        })
+  
+        $txt.find('.slide-diy-txt-item').css({'transform': 'translateX(-'+ (txtWidth + 100) * index +'px)','transition': 'transform 0.5s cubic-bezier(0.4, 0.2, 0.2, 1)'})
+        $dot.removeClass('active').eq(index).addClass('active')
+        setTimeout(() => {
+          if(bol){
+            $imgSm.css({'transform': 'translateX(-'+ (width + 25) * smInex +'px)'})
+          }else{
+            $imgSm.css({'transform': 'translateX(-'+ (width + 25) * smInex +'px)','transition': 'transform 0.5s cubic-bezier(0.4, 0.2, 0.2, 1)'})
+          }
+        }, 10);
+        timerIn = setTimeout(function(){
+          index++
+          changeTransform()
+        },6000)
+      }
+      changeTransform(true)
+      $arraw.find('.slide-diy-arraw-item').click(function(){
+        let sindex=$(this).index()
+        let clickTime = +new Date()
+        if(clickTime - time<800) return
+        time = +new Date()
+        index += sindex? 1 : -1
+        clearTimeout(timerIn)
+        changeTransform()
+      })
+  
+      $imgSm.on('click','.img',function(){
+        let sindex = $(this).attr('data-index')*1 - 1
+        let clickTime = +new Date()
+        if(clickTime - time<800) return
+        time = +new Date()
+        index = sindex
+        clearTimeout(timerIn)
+        changeTransform()
+      })
+      detectSwipe(content, () => {
+        index +=1
+        clearTimeout(timerIn)
+        changeTransform()
+      }, () => {
+        index -=1
+        clearTimeout(timerIn)
+        changeTransform()
+      });
+  
+  
+      function detectSwipe(element, onSwipeLeft, onSwipeRight) {
+        let startX = 0;
+  
+        const getEventX = (event) => {
+          return event.touches ? event.touches[0].clientX : event.clientX;
+        };
+  
+        const handleTouchStart = (e) => {
+          startX = getEventX(e);
+        };
+  
+        const handleTouchMove = (e) => {
+          const deltaX = getEventX(e) - startX;
+          if (Math.abs(deltaX) > 10 && e.cancelable) {
+            e.preventDefault();
+          }
+        };
+  
+        const handleTouchEnd = (e) => {
+          const deltaX = getEventX(e.changedTouches ? e.changedTouches[0] : e) - startX;
+          if (deltaX > 10) {
+            onSwipeRight();
+          } else if (deltaX < -10) {
+            onSwipeLeft();
+          }
+        };
+  
+        element.addEventListener('touchstart', handleTouchStart);
+        element.addEventListener('touchmove', handleTouchMove);
+        element.addEventListener('touchend', handleTouchEnd);
+  
+        // Add mouse event listeners for PC compatibility
+        element.addEventListener('mousedown', handleTouchStart);
+        element.addEventListener('mousemove', handleTouchMove);
+        element.addEventListener('mouseup', handleTouchEnd);
+      }
+    }
+    slideDiySwiper()
+  })
+</script>
+{% schema %}
+{
+  "name": "slide-diy",
+  "settings": [
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Title"
+    },
+    {
+      "type": "text",
+      "id": "text1",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "text2",
+      "label": "Before"
+    },
+    {
+      "type": "text",
+      "id": "text3",
+      "label": "After"
+    }
+  ],
+  "blocks": [
+    {
+        "type": "item",
+        "name": "item",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          },
+          {
+            "type": "image_picker",
+            "id": "image1",
+            "label": "Image"
+          },
+          {
+            "type": "image_picker",
+            "id": "image2",
+            "label": "Image"
+          },
+          {
+          "type": "text",
+          "id": "text",
+          "label": "Text"
+        }
+        ]
+      }
+  ],
+  "presets": [
+    {
+      "name": "slide-diy",
+      "settings": {},
+      "blocks": [
+      ]
+    }
+  ]
+}
+{% endschema %}

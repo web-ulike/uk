@@ -1,0 +1,415 @@
+<style>
+  .faq-box{
+    padding: 80px 0;
+    background: #fff;
+    position: relative;
+    z-index: 1;
+}
+
+.faq-box .faq-cont{
+    margin-top: 60px;
+    display: flex;
+    align-items: center;
+}
+
+.faq-box .faq-left,.faq-box .faq-list{
+    width: calc(50% - 30px);
+}
+
+.faq-box .faq-left{
+    margin-right: 60px;
+    position: relative;
+}
+
+.faq-box .faq-img{
+    display: block;
+    margin: 0;
+    position: relative;
+    z-index: 1;
+    width: 100%;
+}
+
+.faq-box .faq-text{
+    position: absolute;
+    left: 0;
+    width: 100%;
+    padding: 30px;
+    bottom: 0;
+    z-index: 2;
+}
+
+.faq-box .faq-title{
+    font-size: 30px;
+    font-family: var(--heading-font-family);
+    color: #fff;
+    line-height: 1.2;
+}
+
+.faq-box .faq-title-img{
+  display: inline;
+  vertical-align: middle;
+  margin-left:10px;
+  width:auto;
+  max-height:20px;
+}
+
+.faq-box .faq-btn{
+    width: 160px;
+    height: 50px;
+    background: #fff;
+    color: #000;
+    margin: 0 auto;
+    margin-top: 20px;
+}
+.faq-box .faq-btn::after{
+    background: #000;
+}
+.faq-box .faq-btn:hover span,.faq-box .faq-btn:hover .btn-txt::before{
+    color: #fff;
+}
+
+.faq-box .faq-title-p{
+  font-size: 18px;
+  color: #fff;
+  line-height: 1.2;
+  margin-top: 20px;
+}
+
+.faq-box .faq-img-icon{
+  position: absolute;
+  width: 130px;
+  display: block;
+  top: 30px;
+  left: 30px;
+  z-index: 3;
+}
+
+  
+.faq-box .faq-item{
+    padding: 0 15px;
+    border-bottom: 2px solid #f0f0f0;
+}
+
+.faq-box .faq-item-title{
+    font-size: 20px;
+    color: #000;
+    font-family: var(--heading-font-family);
+    line-height: 1.2;
+    min-height: 58px;
+    position: relative;
+    padding-right: 40px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+.faq-box .faq-item-title .span{
+    position: absolute;
+    display: block;
+    width: 30px;
+    height: 30px;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    transition: all .4s ease;
+}
+.faq-box .faq-item-title .span::before,.faq-box .faq-item-title .span::after{
+    position: absolute;
+    content: '';
+    display: block;
+    background: #000;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    transition: all .4s ease;
+}
+
+.faq-box .faq-item-title .span::before{
+    width: 10px;
+    height: 2px;
+}
+
+.faq-box .faq-item-title .span::after{
+    width: 2px;
+    height: 10px;
+}
+
+.faq-box .active .faq-item-title .span{
+    transform: translateY(-50%) rotate(180deg);
+}
+
+.faq-box .active .faq-item-title .span::after{
+    transform: translate(-50%,-50%) rotate(90deg);
+}
+
+.faq-box .faq-item-cont{
+    font-size: 16px;
+    color: #000;
+    line-height: 1.4;
+    padding-bottom: 30px;
+    display: none;
+}
+.faq-box .faq-item-cont img{
+    display: block;
+    margin: 0;
+    width: 100%;
+}
+.faq-box .faq-item-cont .mb-box{
+    display: none;
+}
+
+@media (min-width:992px) {
+    .open-active.faq-box .faq-cont{
+        align-items: flex-start;
+    }
+    .open-active.faq-box .faq-left{
+        margin-top: 30px;
+        position: sticky;
+        top: 180px;
+    }
+}
+
+@media (max-width:1500px) {
+    .faq-box .faq-item-title{
+        font-size: 16px;
+        min-height: 55px;
+    }
+    .open-active.faq-box .faq-left{
+        margin-top: 25px;
+    }
+    .faq-box .faq-title{
+        font-size: 26px;
+    }
+    .faq-box .faq-left{
+        margin-right: 40px;
+    }
+    .faq-box .faq-left, .faq-box .faq-list{
+        width: calc(50% - 20px);
+    }
+}
+
+@media (max-width:1280px) {
+    .faq-box .faq-item-title{
+        min-height: 47px;
+    }
+    .open-active.faq-box .faq-left{
+        margin-top: 7px;
+    }
+  .faq-box .faq-img-icon{
+      width: 80px;
+      top: 20px;
+      left: 20px;
+    }
+    .faq-box .faq-text{
+      padding: 30px 20px;
+    }
+    .faq-box .faq-title{
+      font-size: 20px;
+    }
+    .faq-box .faq-title-p{
+      font-size: 14px;
+      margin-top: 10px;
+    }
+}
+
+@media (max-width:991px) {
+    .faq-box{
+        padding: 50px 0;
+    }
+    .faq-box .faq-cont{
+        display: block;
+        margin-top: 40px;
+    }
+    .faq-box .faq-left{
+        margin-right: 0;
+        margin-bottom: 30px;
+    }
+    .faq-box .faq-left, .faq-box .faq-list{
+        width: 100%;
+    }
+    .faq-box .faq-item-title{
+        font-size: 14px;
+        min-height: 50px;
+    }
+    .faq-box .faq-item{
+        padding-right: 0;
+    }
+    .faq-box .faq-item-cont .mb-box{
+        display: block;
+    }
+    .faq-box .faq-item-cont .pc-box{
+        display: none;
+    }
+    .faq-box .faq-item-cont{
+        font-size: 14px;
+    }
+    .faq-box .faq-text{
+        padding: 20px;
+    }
+    .faq-box .faq-title{
+        font-size: 18px;
+    }
+    .faq-box .faq-btn{
+        width: 150px;
+        height: 40px;
+        margin-top: 20px;
+    }
+  .faq-box .faq-title-img{
+    max-height:15px;
+  }
+}
+@media (max-width:640px) {
+  .faq-box .faq-img-icon{
+    width: 60px;
+  }
+}
+</style>
+<section class="section-box">
+  <div class="faq-box {{ section.settings.text2 }}" data-route="{{ section.settings.text3 }}">
+    <div class="container">
+       <div class="title-diy text-top">{{ section.settings.title }}</div>
+       <div class="faq-cont">
+        <div class="faq-left to-top">
+          {%- if section.settings.image != blank -%}
+            <img loading="lazy" class="faq-img" width="{{ section.settings.image.width }}" height="{{ section.settings.image.height }}" {% render 'image-attributes' , image: section.settings.image %} alt="{{ section.settings.image.alt | escape }}">
+          {%- endif -%}
+          {%- if section.settings.image1 != blank -%}
+            <img loading="lazy" class="faq-img-icon" width="{{ section.settings.image1.width }}" height="{{ section.settings.image1.height }}" {% render 'image-attributes' , image: section.settings.image1 %} alt="{{ section.settings.image1.alt | escape }}">
+          {%- endif -%}
+          <div class="faq-text">
+            <div class="faq-title text-top">
+              {{ section.settings.text }}
+              {%- if section.settings.image2 != blank -%}
+                <img loading="lazy" class="faq-title-img" width="{{ section.settings.image2.width }}" height="{{ section.settings.image2.height }}" {% render 'image-attributes' , image: section.settings.image2 %} alt="{{ section.settings.image2.alt | escape }}">
+              {%- endif -%}
+            </div>
+            {%- if section.settings.text1 != blank -%}
+              <div class="faq-title-p">{{ section.settings.text1 }}</div>
+            {%- endif -%}
+          </div>
+        </div>
+        <div class="faq-list">
+          {%- for block in section.blocks -%}
+            <div class="faq-item to-top">
+              <div class="faq-item-title text-top">
+                <div>
+                  {{ block.settings.title }}
+                </div>
+                <div class="span"></div>
+              </div>
+              <div class="faq-item-cont">
+                {%- if block.settings.image != blank -%}
+                  <img loading="lazy" class="pc-box" width="{{ block.settings.image.width }}" height="{{ block.settings.image.height }}" {% render 'image-attributes' , image: block.settings.image %} alt="{{ block.settings.image.alt | escape }}">
+                {%- endif -%}
+                {%- if block.settings.image1 != blank -%}
+                  <img loading="lazy" class="mb-box" width="{{ block.settings.image1.width }}" height="{{ block.settings.image1.height }}" {% render 'image-attributes' , image: block.settings.image1 %} alt="{{ block.settings.image1.alt | escape }}">
+                {%- endif -%}
+                <br/>
+                <div>
+                  {{ block.settings.content }}
+                </div>
+              </div>
+            </div>
+          {%- endfor -%}
+        </div>
+       </div>
+    </div>
+  </div>
+</section>
+<script>
+  (function() {
+    window.addEventListener('load', function () {
+      $('.faq-box .faq-item-title').click(function(){
+        $(this).siblings('.faq-item-cont').slideToggle()
+        $(this).parents('.faq-item').toggleClass('active').siblings('.faq-item').removeClass('active').find('.faq-item-cont').slideUp()
+        if($('.faq-box .faq-item.active').length>0){
+          $('.faq-box').addClass('open-active')
+        }else{
+          setTimeout(()=>{
+            $('.faq-box').removeClass('open-active')
+          },500)
+        }
+      })
+    })
+  })();
+</script>
+{% schema %}
+{
+"name": "faq-detail-module",
+"blocks": [
+    {
+    "name": "item",
+    "type": "item",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "image",
+        "label": "Image"
+      },
+      {
+        "type": "image_picker",
+        "id": "image1",
+        "label": "Mobile Image"
+      },
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Title"
+      },
+      {
+        "type": "richtext",
+        "id": "content",
+        "label": "Content"
+      }
+    ]
+    }
+  ],
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image1",
+      "label": "Icon"
+    },
+    {
+      "type": "image_picker",
+      "id": "image2",
+      "label": "Title Icon"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title"
+    },
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "text1",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "text2",
+      "label": "Route Name"
+    },
+    {
+      "type": "text",
+      "id": "text3",
+      "label": "Nav Name"
+    }
+  ],
+  "presets": [
+    {
+      "name": "faq-detail-module",
+      "blocks": []
+    }
+  ]
+}
+{% endschema %}

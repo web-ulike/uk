@@ -1,0 +1,222 @@
+<style>
+  {%- if section.settings.background != settings.background and section.settings.background != 'rgba(0,0,0,0)' -%}
+  {%- assign blends_with_background = false -%}
+  {%- else -%}
+    {%- assign blends_with_background = true -%}
+  {%- endif -%}
+  #shopify-section-{{ section.id }} {
+    {%- assign section_background_mobile = section.settings.mobile_text_background -%}
+    {%- if section.settings.background == 'rgba(0,0,0,0)' -%}
+      {%- assign section_background = settings.background -%}
+    {%- else -%}
+      {%- assign section_background = section.settings.background -%}
+    {%- endif -%}
+
+    {%- if section.settings.text_color == 'rgba(0,0,0,0)' -%}
+      {%- assign heading_color = settings.heading_color -%}
+      {%- assign text_color = settings.text_color -%}
+    {%- else -%}
+      {%- assign heading_color = section.settings.text_color -%}
+      {%- assign text_color = section.settings.text_color -%}
+    {%- endif -%}
+    
+    --heading-color: {{ heading_color.red }}, {{ heading_color.green }}, {{ heading_color.blue }};
+    --text-color: {{ text_color.red }}, {{ text_color.green }}, {{ text_color.blue }};
+    --section-background: {{ section_background.red }}, {{ section_background.green }}, {{ section_background.blue }};
+    --section-background-mobile: {{ section_background_mobile.red }}, {{ section_background_mobile.green }}, {{ section_background_mobile.blue }};
+    background: rgb(var(--section-background, var(--background)));
+  }
+  .bgimage_cnt{
+    position: relative;
+    overflow: hidden;
+  }
+  .bgimage_img{
+    position: relative;
+    width: 100%;
+    height: 100%;
+    max-height: 806px;
+  }
+  .bgimage_content-box{
+    display: grid;
+    grid-template-columns: repeat(12,minmax(0,1fr));
+    justify-items: center;
+    gap: 1rem;
+    padding: 0 40px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+  }
+  .bgimage_content{
+    position: relative;
+    z-index: 1;
+    align-self: center;
+    overflow: hidden;
+    grid-column: 1/span 12;
+    width: 100%;
+    max-width: 1520px;
+  }
+  .bgimage_content.bgimage_content-right{
+    grid-column: 8/span 5;
+  }
+  .bgimage_content h3.h3{
+    max-width: 650px;
+  }
+  .bgimage_content p{
+    max-width: 650px;
+  }
+  @media screen and (max-width: 768px){
+    .bg_extned .bgimage_content-box{
+      position: relative;
+      padding: 40px 35px 70px;
+      background: rgb(var(--section-background-mobile));
+          grid-template-rows: none;
+    }
+    .bg_extned .bgimage_img{
+    }
+   .bg_extned .bgimage_content.bgimage_content-right{
+      grid-column: 1/span 12;
+    }
+  }
+</style>
+
+<section class="bgimage_bix bg_extned">
+  <div class="bgimage_cnt">
+    <div class="bgimage_img">
+      {%- if section.settings.image != blank -%}
+        <div class="hidden-pocket">
+          {{- section.settings.image | image_url: width: section.settings.image.width | image_tag: loading: 'lazy', sizes: '100vw', widths: '600,700,800,1000,1200,1400,1600,1800,2000,2200,2400,2600,2800,3000' -}}
+        </div>
+      {%- endif -%}
+      {%- if section.settings.mobile_image != blank -%}
+        <div class="hidden-lap-and-up">
+          {{- section.settings.mobile_image | image_url: width: section.settings.mobile_image.width | image_tag: loading: 'lazy', sizes: '100vw', widths: '600,700,800,1000,1200,1400,1600,1800,2000,2200,2400,2600,2800,3000' -}}
+        </div>
+      {%- endif -%}
+    </div>
+    <div class="bgimage_content-box">
+      <div class="bgimage_content bgimage_content-{{ section.settings.text_alignment }}">
+        {%- if section.settings.title != blank -%}
+          <h3 class="heading h3">
+            <split-lines>{{ section.settings.title | escape }}</split-lines>
+          </h3>
+        {%- endif -%}
+        {%- if section.settings.content != blank -%}
+          {{- section.settings.content -}}
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "BackgroundImage With Text",
+  "class": "shopify-section--bgimage-with-text",
+  "settings": [
+    {
+      "type": "text",
+      "id": "custom_class",
+      "label": "Custom Class"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+        "type": "image_picker",
+        "id": "mobile_image",
+        "label": "Mobile image",
+        "info": "1000 x 1400px .jpg recommended. If none is set, desktop image will be used."
+    },
+    {
+        "type": "text",
+        "id": "subheading",
+        "label": "Subheading",
+        "default": "Subheading"
+      },
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Heading",
+        "default": "Image with text"
+      },
+      {
+        "type": "richtext",
+        "id": "content",
+        "label": "Content",
+        "default": "<p>Use image with text to give your customers insight into your brand. Select imagery and text that relates to your style and story.</p>"
+      },
+      {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Text alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "color",
+      "id": "mobile_text_background",
+      "label": "Mobile Text Background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 36
+    }
+  ],
+  "blocks": [
+  ],
+  "presets": [
+    {
+      "name": "BackgroundImage With Text",
+      "settings": {},
+      "blocks": [
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,279 @@
+<link href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/splide.min.css" rel="stylesheet">
+<style>
+.media-{{ section.id }}-padding {
+    padding-top: calc({{ section.settings.padding_top }}px);
+    padding-bottom: calc({{ section.settings.padding_bottom }}px);
+  }
+  #shopify-section-{{ section.id }} {
+    {%- if section.settings.background == 'rgba(0,0,0,0)' -%}
+      {%- assign section_background = settings.background -%}
+    {%- else -%}
+      {%- assign section_background = section.settings.background -%}
+    {%- endif -%}
+
+    {%- if section.settings.text_color == 'rgba(0,0,0,0)' -%}
+      {%- assign text_color = settings.text_color -%}
+    {%- else -%}
+      {%- assign text_color = section.settings.text_color -%}
+    {%- endif -%}
+    --text-color: {{ text_color.red }}, {{ text_color.green }}, {{ text_color.blue }};
+    --section-background: {{ section_background.red }}, {{ section_background.green }}, {{ section_background.blue }};
+  }
+  .carousel-extend-wrapper .logo-carousel-item{
+    background: #f9f9f9;
+    border-radius: 0 0 20px 20px;
+    padding: 53px 55px 30px;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    align-items: end;
+  }
+  .carousel-extend-wrapper .custom-comment__autor{
+font-size: 26px;
+font-weight: normal;
+color: #040000;
+line-height: 39px;
+  }
+  .carousel-extend-wrapper .logo-carousel-image{
+    display: inline-flex;
+  }
+@media screen and (max-width: 768px){
+  .media-{{ section.id }}-padding {
+    padding-top: calc({{ section.settings.padding_top }}px * 0.6);
+    padding-bottom: calc({{ section.settings.padding_bottom }}px * 0.6);
+  }
+  .carousel-extend-wrapper .logo-carousel-item{
+    padding: 30px 36px 20px;
+  }
+  .carousel-extend-wrapper .custom-comment__autor{
+    font-size: 16px;
+    line-height: 1.5;
+    margin-bottom: 50px;
+  }
+  .carousel-extend-wrapper .splide__pagination{
+    bottom: -2em;
+  }
+  .carousel-extend-wrapper .splide__pagination__page{
+    background: #d9d9d9;
+    opacity: 1;
+  }
+  .carousel-extend-wrapper .splide__pagination__page.is-active{
+    transform: scale(1);
+    background: #7a7a7a;
+  }
+}
+</style>
+
+<section class="section-carousel-extend">
+  <div class="carousel-extend-wrapper media-{{ section.id }}-padding{% if section.settings.custom_class != blank %} {{section.settings.custom_class}}{% endif %} to-top" style="transition-delay: 0.5s">
+    <div class="certify">
+        <div class="logo-carousel-inner splide splide-{{ section.id }}">
+          <div class="logo-carousel-carousel splide__track" id="logo-carousel-carousel">
+            <div class="splide-wrapper splide__list">
+            {%- for block in section.blocks -%}
+              <div class="logo-carousel-item splide__slide to-top" style="transition-delay: 0.{{ forloop.index }}s">
+                {%- if block.settings.title != blank -%}
+                  <div class="custom-comment__autor">{{ block.settings.title }}</div>
+                {%- endif -%}
+                {%- if block.settings.image != blank -%}
+                  <div class="logo-carousel-image">
+                    <img
+                        loading="lazy"
+                        class=""
+                        width="{{ block.settings.image.width }}"
+                        height="{{ block.settings.image.height }}"
+                        {% render 'image-attributes', image: block.settings.image %}
+                        alt="{{ block.settings.image.alt | escape }}"
+                      >
+                  </div>
+                {%- endif -%}
+              </div>
+            {%- endfor -%}
+            </div>
+          </div>
+        </div>
+    </div>
+  </div>
+</section>
+<script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@splidejs/splide-extension-auto-scroll@0.5.3/dist/js/splide-extension-auto-scroll.min.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    var splide = new Splide('.splide-{{ section.id }}', {
+      type   : 'loop',
+      drag   : 'free',
+      focus  : 'center',
+      pagination: false,
+      arrows: false,
+      height: '437px',
+      fixedWidth: 506,
+      gap: 43,
+      padding: {
+      left: '50px', // 左侧间距
+      right: '50px', // 右侧间距
+    },
+      autoScroll: {
+        speed: 1
+      },
+      breakpoints: {
+        768: {
+          perPage: 1, // 当屏幕宽度小于768px时，每页显示的滑块数量
+          autoScroll: false,
+          pagination: true,
+          height: 'auto',
+      fixedWidth: '100%',
+      gap: 20,
+      drag: true,
+      padding: {
+      left: '20px', // 左侧间距
+      right: '20px', // 右侧间距
+    }
+        }
+      }
+    })
+    // 动态调整 perPage 以适应屏幕宽度变化
+    splide.on('resize', function() {
+      var perPage = splide.options.breakpoints[splide.state.breakpoint].perPage;
+      splide.options.perPage = perPage;
+      splide.refresh();
+    });
+    splide.mount(window.splide.Extensions);
+  })
+</script>
+{% schema %}
+{
+  "name": "Logo Carousel Extend",
+  "class": "logo-carousel-extend",
+  "blocks": [
+    {
+      "name": "Column",
+      "type": "item",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image",
+          "info": "130 x 30px .jpg recommended"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "Your content"
+        },
+        {
+          "type": "richtext",
+          "id": "content",
+          "label": "Content",
+          "default": "<p>Unlike some devices which can burn the skin, the Ulike Sapphire Air has a significantly cooler head, making it more comfortable and practically painless to use. You’ll become obsessed with the results.</p>"
+        }
+      ]
+    }
+  ],
+  "settings": [
+    {
+      "type": "text",
+      "id": "custom_class",
+      "label": "Custom Class"
+    },
+     {
+      "type": "text",
+      "id": "title",
+      "default": "Custom Comment",
+      "label": "Heading"
+    },
+    {
+      "type": "text",
+      "id": "subTitle",
+      "default": "Custom Comment",
+      "label": "SubHeading"
+    },
+    {
+      "type": "text",
+      "id": "description",
+      "default": "Custom Comment",
+      "label": "Description"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "rgba(0,0,0,0)"
+    },
+     {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 36
+    },{
+      "type": "select",
+      "id": "textalign",
+      "label": "logo text position",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "left"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Logo Carousel Extend",
+      "blocks": [
+        {
+          "type": "item",
+          "settings": {
+            "title": "Column 1"
+          }
+        },
+        {
+          "type": "item",
+          "settings": {
+            "title": "Column 1"
+          }
+        },
+        {
+          "type": "item",
+          "settings": {
+            "title": "Column 1"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,550 @@
+<style>
+    #shopify-section-{{ section.id }} {
+    --text-color: {{  section.settings.text_color.red }}, {{  section.settings.text_color.green }}, {{  section.settings.text_color.blue }};
+    --section-background: {{ section.settings.background.red }}, {{ section.settings.background.green }}, {{ section.settings.background.blue }};
+    --color-border: 255, 255, 255;
+    background: rgb(var(--section-background, var(--background)));
+  }
+  .section-{{ section.id }}-padding {
+    padding-top: calc({{ section.settings.padding_top }}px);
+    padding-bottom: calc({{ section.settings.padding_bottom }}px);
+  }
+  @media screen and (max-width: 768px){
+  .section-{{ section.id }}-padding {
+    padding-top: calc({{ section.settings.padding_top }}px * 0.6);
+    padding-bottom: calc({{ section.settings.padding_bottom }}px * 0.6);
+  }
+}
+ .top_wrapper h3{
+  font-size: 44px;
+  margin-bottom: 20px;
+ }
+ .top_wrapper p{
+  font-size: 16px;
+  margin-top: 0;
+    max-width: 800px;
+    margin: 0 auto;
+ }
+ .compare_wrapper{
+  display: flex;
+  gap: 73px;
+  margin-top: 94px;
+ }
+ .compare_left{
+  flex-basis: 40%;
+ }
+ .compare_right {
+  flex-basis: 60%;
+ }
+ .compare_list_txt{
+  border-radius: 0px 0px 20px 20px;
+  background: #F4F4F4;
+  margin-bottom: 20px;
+  padding: 50px 45px;
+ }
+ .compare_list_txt.active{
+  background: linear-gradient(180deg, rgba(242, 208, 221, 0.00) -6.67%, #FFD6E4 100%);
+ }
+ .compare_title{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    font-weight: 500;
+    /* padding: 50px 45px 0; */
+ }
+ .compare_title .compare_check_txt{
+  font-size: 30px;
+    color: #000;
+    line-height: 125%;
+ }
+ .compare_list_box{
+  /* padding: 0 45px; */
+  display: none;
+ }
+ .compare_list_box .compare_tet{
+  color: #B8A7AD;
+font-size: 22px;
+font-style: normal;
+font-weight: 500;
+line-height: 125%;
+margin: 10px 0 0!important;
+ }
+ .compare_list_box .compare_p{
+  color: #000;
+font-size: 15px;
+font-style: normal;
+font-weight: 400;
+line-height: 150%;
+margin: 10px 0 0!important;
+ }
+ .product-results__sliders-list{
+  display: none;
+  /* position: relative; */
+ }
+.compare_wrapper .compare_list_txt:first-child .compare_list_box {
+    display: block;
+}
+.compare_wrapper .product-results__sliders-list:first-child{
+    display: block;
+}
+.compare_wrapper .compare_note{
+  color: #333;
+font-size: 20px;
+font-style: normal;
+font-weight: 400;
+line-height: 125%;
+text-decoration-line: underline;
+cursor: pointer;
+}
+.right_note{
+  font-size: 12px;
+    color: #fff;
+    width: 100%;
+    padding: 0 20px;
+    max-width: 510px;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 20px;
+    text-align: center;
+    z-index: 3;
+    position: absolute;
+    line-height: 1.2;
+}
+.compare_list_txt.active .animated-plus:before, .compare_list_txt.active .animated-plus:after {
+    transform: translate(-50%,-50%) rotate(90deg);
+}
+
+.compare_list_txt.active .animated-plus:before {
+    opacity: 0;
+}
+.compare_list_txt.active .animated-plus:before, .compare_list_txt.active .animated-plus:after {
+    transform: translate(-50%,-50%) rotate(90deg);
+}
+.compare_list_txt .animated-plus{
+  width: 25px;
+  height: 25px;
+}
+.compare_list_txt .animated-plus:before{
+  width: 25px;
+  height: 2.5px;
+}
+.compare_list_txt .animated-plus:after {
+    height: 25px;
+    width: 2.5px;
+}
+.mobile_show{
+  display: none;
+}
+  .compare-new .product-results__sliders-list .media img{
+    width: 100%;
+  }
+  @media (max-width: 767px){
+    .mobile_show{
+      display: block;
+    }
+    .destoke_show{
+      display: none;
+    }
+    .top_wrapper h3{
+      color: #000;
+text-align: center;
+font-size: 28px;
+font-style: normal;
+font-weight: 500;
+line-height: 125%;
+    }
+    .top_wrapper p{
+      color: #000;
+text-align: center;
+font-size: 14px;
+font-style: normal;
+font-weight: 400;
+line-height: 150%; 
+    }
+    .compare_wrapper{
+      flex-direction: column;
+      margin-top: 40px;
+    }
+    .compare_title .compare_check_txt{
+      font-size: 16px;
+    }
+    .compare_list_txt{
+      padding: 0;
+      border-radius: 0px 0px 11px 11px;
+      margin-bottom: 12px;
+    }
+    .compare_title{
+      padding: 30px 25px;
+    }
+    .compare_list_box .compare_tet{
+      padding: 0 25px;
+      font-size: 14px;
+    }
+    .compare_list_box .compare_p{
+      padding: 0 25px;
+      font-size: 12px;
+      margin: 10px 0 15px!important;
+    }
+    .compare_list_box{
+      margin-top: -30px;
+    }
+    .compare_list_txt .animated-plus{
+      width: 14px;
+      height: 14px;
+    }
+    .compare_list_txt .animated-plus:before {
+        width: 14px;
+        height: 1.5px;
+    }
+    .compare_list_txt .animated-plus:after {
+        height: 14px;
+        width: 1.5px;
+    }
+    .compare_wrapper .compare_note{
+    font-size: 14px;
+    }
+    .mobile_show .media img{
+  border-radius: 0px 0px 11px 11px;
+}
+.right_note{
+  font-size: 10px;
+  bottom: 10px;
+}
+  }
+</style>
+{{'section-image-comparison.css' | asset_url | stylesheet_tag }}
+<section class="compare-new section-{{ section.id }}-padding">
+  <div class="container">
+    <div class="top_wrapper text--center">
+      {%- if section.settings.title != blank -%}
+        <h3 class="heading h2">{{ section.settings.title | escape }}</h3>
+      {%- endif -%}
+
+      {%- if section.settings.subheading != blank -%}
+        <p class="sub_tle">{{ section.settings.subheading | escape }}</p>
+      {%- endif -%}
+    </div>
+    <div class="compare_wrapper">
+      <div class="compare_left">
+        {%- for block in section.blocks -%}
+        <div class="compare_list_txt to-top{% if forloop.index == 1 %} active{% endif %}"  style="transition-delay: 0.{{ forloop.index }}s">
+          <div class="compare_title">
+            <span class="compare_check_txt">{{ block.settings.compare_tle | escape }}</span>
+            <span class="animated-plus"></span>
+          </div>
+          <div class="compare_list_box">
+            {%- if block.settings.compare_sub != blank -%}
+            <p class="compare_tet">{{ block.settings.compare_sub | escape }}</p>
+            {%- endif -%}
+            {%- if block.settings.compare_des != blank -%}
+            <p class="compare_p">{{ block.settings.compare_des | escape }}</p>
+            {%- endif -%}
+            <div class="product-results__sliders-list mobile_show" id="mobile-content{{forloop.index}}">
+              {%- liquid
+                assign before = block.settings.before_img
+                assign after = block.settings.after_img
+                assign image_ratio_percent = 75
+  
+                if before != blank
+                  assign image_ratio_percent = 1 | divided_by: before.aspect_ratio | times: 100
+                elsif after != blank
+                  assign image_ratio_percent = 1 | divided_by: after.aspect_ratio | times: 100
+                endif
+              -%}
+              {%- if before != blank -%}
+                <image-comparison class="image-comparison" data-layout="horizontal" style="--image-ratio-percent: {{ image_ratio_percent }}%;" >
+                  <span class="image-comparison__animate"></span>
+                  {%- if before != blank -%}
+                    <div class="image-comparison__before media-wrapper image-comparison__item--start" {{ before.shopify_attributes }}>
+                      <h3 class="image-comparison__title button button--small small-hide">{{ block.settings.before_title | escape }}</h3>
+                      {%- if before != blank -%}
+                        <div class="media media--adapt" style="max-height:598px">
+                          <img
+                            srcset="{%- if before.width >= 375 -%}{{ before | image_url: width: 375 }} 375w{%- endif -%}
+                              {%- if before.width >= 750 -%},{{ before | image_url: width: 750 }} 750w{%- endif -%}
+                              {%- if before.width >= 1100 -%},{{ before | image_url: width: 1100 }} 1100w{%- endif -%}
+                              {%- if before.width >= 1500 -%},{{ before | image_url: width: 1500 }} 1500w{%- endif -%}
+                              {%- if before.width >= 2200 -%},{{ before | image_url: width: 2200 }} 2200w{%- endif -%}
+                              {%- if before.width >= 3000 -%},{{ before | image_url: width: 3000 }} 3000w{%- endif -%},
+                              {{ before | image_url }} {{ before.width }}w"
+                            src="{{ before | image_url: width: 750 }}"
+                            sizes="100vw"
+                            loading="lazy"
+                            alt="{{ before.alt | escape }}"
+                            width="{{ before.width }}"
+                            height="{{ before.height }}"
+                          />
+                        </div>
+                      {%- else -%}
+                        <div class="media media--adapt">
+                          {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder' }}
+                        </div>
+                      {%- endif -%}
+                    </div>
+                  {%- endif -%}
+                  {%- if after != blank -%}
+                    <div class="image-comparison__after media-wrapper image-comparison__item--start">
+                      <h3 class="image-comparison__title button button--small small-hide">{{ block.settings.after_title | escape }}</h3>
+                      {%- if after != blank -%}
+                        <div class="media media--adapt">
+                          <img
+                            srcset="{%- if after.width >= 375 -%}{{ after | image_url: width: 375 }} 375w{%- endif -%}
+                              {%- if after.width >= 750 -%},{{ after | image_url: width: 750 }} 750w{%- endif -%}
+                              {%- if after.width >= 1100 -%},{{ after | image_url: width: 1100 }} 1100w{%- endif -%}
+                              {%- if after.width >= 1500 -%},{{ after | image_url: width: 1500 }} 1500w{%- endif -%}
+                              {%- if after.width >= 2200 -%},{{ after | image_url: width: 2200 }} 2200w{%- endif -%}
+                              {%- if after.width >= 3000 -%},{{ after | image_url: width: 3000 }} 3000w{%- endif -%},
+                              {{ after | image_url }} {{ after.width }}w"
+                            src="{{ after | image_url: width: 750 }}"
+                            sizes="100vw"
+                            loading="lazy"
+                            alt="{{ after.alt | escape }}"
+                            width="{{ after.width }}"
+                            height="{{ after.height }}"
+                          />
+                        </div>
+                      {%- else -%}
+                        <div class="media media--adapt">
+                          {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder' }}
+                        </div>
+                      {%- endif -%}
+                    </div>
+                  {%- endif -%}
+  
+                  {%- if before != blank and after != blank -%}
+                    <button type="button" class="image-comparison__button">
+                      <span></span>
+                    </button>
+                  {%- endif -%}
+                  {%- if block.settings.note != blank -%}
+                    <div class="right_note">{{ block.settings.note | escape }}</div>
+                  {%- endif -%}
+                </image-comparison>
+                {%- endif -%}
+                
+            </div>
+          </div>
+        </div>
+        {%- endfor -%}
+        {%- if section.settings.note_text != blank -%}
+         <a href="{{ section.settings.link_url }}" class="compare_note">{{ section.settings.note_text | escape }}</a>
+        {%- endif -%}
+      </div>
+      <div class="compare_right destoke_show">
+        {%- for block in section.blocks -%}
+          <div class="product-results__sliders-list" id="content{{forloop.index}}">
+            {%- liquid
+              assign before = block.settings.before_img
+              assign after = block.settings.after_img
+              assign image_ratio_percent = 75
+
+              if before != blank
+                assign image_ratio_percent = 1 | divided_by: before.aspect_ratio | times: 100
+              elsif after != blank
+                assign image_ratio_percent = 1 | divided_by: after.aspect_ratio | times: 100
+              endif
+            -%}
+            {%- if before != blank -%}
+              <image-comparison class="image-comparison" data-layout="horizontal" style="--image-ratio-percent: {{ image_ratio_percent }}%;" >
+                <span class="image-comparison__animate"></span>
+                {%- if before != blank -%}
+                  <div class="image-comparison__before media-wrapper image-comparison__item--start" {{ before.shopify_attributes }}>
+                    <h3 class="image-comparison__title button button--small small-hide">{{ block.settings.before_title | escape }}</h3>
+                    {%- if before != blank -%}
+                      <div class="media media--adapt" style="max-height:598px">
+                        <img
+                          srcset="{%- if before.width >= 375 -%}{{ before | image_url: width: 375 }} 375w{%- endif -%}
+                            {%- if before.width >= 750 -%},{{ before | image_url: width: 750 }} 750w{%- endif -%}
+                            {%- if before.width >= 1100 -%},{{ before | image_url: width: 1100 }} 1100w{%- endif -%}
+                            {%- if before.width >= 1500 -%},{{ before | image_url: width: 1500 }} 1500w{%- endif -%}
+                            {%- if before.width >= 2200 -%},{{ before | image_url: width: 2200 }} 2200w{%- endif -%}
+                            {%- if before.width >= 3000 -%},{{ before | image_url: width: 3000 }} 3000w{%- endif -%},
+                            {{ before | image_url }} {{ before.width }}w"
+                          src="{{ before | image_url: width: 750 }}"
+                          sizes="100vw"
+                          loading="lazy"
+                          alt="{{ before.alt | escape }}"
+                          width="{{ before.width }}"
+                          height="{{ before.height }}"
+                        />
+                      </div>
+                    {%- else -%}
+                      <div class="media media--adapt">
+                        {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder' }}
+                      </div>
+                    {%- endif -%}
+                  </div>
+                {%- endif -%}
+                {%- if after != blank -%}
+                  <div class="image-comparison__after media-wrapper image-comparison__item--start">
+                    <h3 class="image-comparison__title button button--small small-hide">{{ block.settings.after_title | escape }}</h3>
+                    {%- if after != blank -%}
+                      <div class="media media--adapt">
+                        <img
+                          srcset="{%- if after.width >= 375 -%}{{ after | image_url: width: 375 }} 375w{%- endif -%}
+                            {%- if after.width >= 750 -%},{{ after | image_url: width: 750 }} 750w{%- endif -%}
+                            {%- if after.width >= 1100 -%},{{ after | image_url: width: 1100 }} 1100w{%- endif -%}
+                            {%- if after.width >= 1500 -%},{{ after | image_url: width: 1500 }} 1500w{%- endif -%}
+                            {%- if after.width >= 2200 -%},{{ after | image_url: width: 2200 }} 2200w{%- endif -%}
+                            {%- if after.width >= 3000 -%},{{ after | image_url: width: 3000 }} 3000w{%- endif -%},
+                            {{ after | image_url }} {{ after.width }}w"
+                          src="{{ after | image_url: width: 750 }}"
+                          sizes="100vw"
+                          loading="lazy"
+                          alt="{{ after.alt | escape }}"
+                          width="{{ after.width }}"
+                          height="{{ after.height }}"
+                        />
+                      </div>
+                    {%- else -%}
+                      <div class="media media--adapt">
+                        {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder' }}
+                      </div>
+                    {%- endif -%}
+                  </div>
+                {%- endif -%}
+
+                {%- if before != blank and after != blank -%}
+                  <button type="button" class="image-comparison__button">
+                    <span></span>
+                  </button>
+                {%- endif -%}
+                {%- if block.settings.note != blank -%}
+                  <div class="right_note">{{ block.settings.note | escape }}</div>
+                {%- endif -%}
+              </image-comparison>
+             {%- endif -%}
+             
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+  window.addEventListener('load',()=>{
+    $('.compare_wrapper .compare_title').on('click',function(){
+        let $this=$(this)
+        let index = $this.parents('.compare_list_txt').index()
+        $this.siblings('.compare_list_box').slideToggle()
+        $this.parents('.compare_list_txt').toggleClass('active').siblings('.compare_list_txt').removeClass('active').find('.compare_list_box').slideUp()
+        $this.closest('.compare_wrapper').find('.destoke_show .product-results__sliders-list').hide().eq(index).fadeIn()
+    })
+  })
+</script>
+{% schema %}
+{
+  "name": "Compare New",
+  "class": "shopify-section--compare-new", 
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Talk about your brand"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Subheading"
+    },
+    {
+      "type": "text",
+      "id": "note_text",
+      "label": "IPL Quiz"
+    },
+    {
+      "type": "url",
+      "id": "link_url",
+      "label": "IPL Quiz Link"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 40
+    }
+  ],
+  "blocks": [
+     {
+        "type": "item",
+        "name": "item",
+        "settings": [
+          {
+            "type": "text",
+            "id": "compare_tle",
+            "label": "Compare Title"
+          },
+          {
+            "type": "text",
+            "id": "compare_sub",
+            "label": "Compare subTitle"
+          },
+          {
+            "type": "text",
+            "id": "compare_des",
+            "label": "Compare Desscripte"
+          },
+          {
+          "type": "image_picker",
+          "id": "before_img",
+          "label": "Before"
+        },
+        {
+          "type": "text",
+          "id": "before_title",
+          "label": "Heading"
+        },
+        {
+          "type": "image_picker",
+          "id": "after_img",
+          "label": "After"
+        },
+        {
+          "type": "text",
+          "id": "after_title",
+          "label": "Heading"
+        },
+        {
+            "type": "text",
+            "id": "note",
+            "label": "Note"
+          }
+        ]
+      }
+  ],
+  "presets": [
+    {
+      "name": "Compare New"
+    }
+  ]
+}
+{% endschema %}

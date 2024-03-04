@@ -1,0 +1,240 @@
+<style>
+  .media-{{ section.id }}-padding {
+      padding-top: calc({{ section.settings.padding_top }}px);
+      padding-bottom: calc({{ section.settings.padding_bottom }}px);
+    }
+    #shopify-section-{{ section.id }} {
+      {%- if section.settings.background == 'rgba(0,0,0,0)' -%}
+        {%- assign section_background = settings.background -%}
+      {%- else -%}
+        {%- assign section_background = section.settings.background -%}
+      {%- endif -%}
+
+      {%- if section.settings.text_color == 'rgba(0,0,0,0)' -%}
+        {%- assign text_color = settings.text_color -%}
+      {%- else -%}
+        {%- assign text_color = section.settings.text_color -%}
+      {%- endif -%}
+      --text-color: {{ text_color.red }}, {{ text_color.green }}, {{ text_color.blue }};
+      --section-background: {{ section_background.red }}, {{ section_background.green }}, {{ section_background.blue }};
+    }
+    .effect_fill_wrapper {
+      background: rgb(var(--section-background, var(--background)));
+  }
+  .hero-fill-content{
+    display: flex;
+    flex-direction: column;
+    padding: 100px 20px;
+    width: 100%;
+    max-width: 100%;
+    position: relative;
+    align-items: center;
+  }
+  .hero-fill-content .content_wrapper{
+    width: 66.6667%;
+    max-width: 400px;
+    text-align: center;
+  }
+  .hero-fill-content h2.h2{
+    font-size: 48px;
+    margin-bottom: 20px;
+  }
+  .hero-fill-content .headline{
+    font-size: 16px;
+    line-height: 1.5;
+    margin-bottom: 40px;
+  }
+  .button_wide{
+    display: inline-flex;
+    padding: 14px 50px;
+    justify-content: center;
+    align-items: center;
+    background: #57C8BA;
+    color: #ffffff;
+    font-size: 16px;
+        line-height: 1.0;
+  }
+  .hero-fill-content.is-mask{
+    position: fixed;
+    top: 81.73px;
+    left: 0;
+    color: #fff;
+  }
+  .hero-fill-content.is-mask h2.h2{
+    color: #fff;
+  }
+  .hero_fill_media {
+    width:50%;
+    height: 100vh;
+    margin: 0 auto;
+    -webkit-clip-path: inset(0 0 0 0);
+    clip-path: inset(0 0 0 0);
+    z-index: 2;
+  }
+  .hero_fill_media .media_item{
+    height: 100%;
+  }
+  .hero_fill_media .media_item .media_image{
+    height: 100%;
+  }
+  .hero_fill_media .media_item img{
+    height: 100%;
+    object-fit: cover;
+  }
+  @media screen and (max-width: 768px){
+    .hero-fill-content .content_wrapper {
+      width: 100%;
+      max-width: 100%;
+    }
+    .hero-fill-content{
+      padding: 60px 20px;
+    }
+    .hero-fill-content h2.h2 {
+      font-size: 28px;
+          margin-bottom: 8px;
+    }
+     .hero-fill-content .headline{
+    font-size: 14px;
+  }
+  }
+</style>
+<section class="">
+  <div class="effect_fill_wrapper media-{{ section.id }}-padding">
+
+    <div class="hero-fill-content">
+      <div class="content_wrapper">
+        {%- if section.settings.title != blank -%}
+          <h2 class="heading h2">{{ section.settings.title }}</h2>
+        {%- endif -%}
+        {%- if section.settings.subheading != blank -%}
+          <div class="headline">{{ section.settings.subheading }}</div>
+        {%- endif -%}
+
+        {%- if section.settings.button_txt != blank -%}
+          <a href="{{ section.settings.button_url }}" class="button_wide">{{ section.settings.button_txt }}</a>
+        {%- endif -%}
+
+      </div>
+    </div>
+    <div class="hero_fill_media">
+      <div class="media_item">
+        {%- if section.settings.media_image != blank -%}
+          <div class="media_image{% if section.settings.mobile_media_image != blank %} hidden-pocket{% endif %}">
+            {{- section.settings.media_image | image_url: width: section.settings.media_image.width | image_tag: loading: '', sizes: '100vw', widths: '600,700,800,1000,1200,1400,1600,1800,2000,2200,2400,2600,2800,3000' -}}
+          </div>
+        {%- endif -%}
+        {%- if section.settings.mobile_media_image != blank -%}
+          <div class="media_image hidden-lap-and-up">
+            {{- section.settings.mobile_media_image | image_url: width: section.settings.mobile_media_image.width | image_tag: loading: '', sizes: '100vw', widths: '600,700,800,1000,1200,1400' -}}
+          </div>
+        {%- endif -%}
+      </div>
+      <div class="hero-fill-content is-mask">
+        <div class="content_wrapper">
+          {%- if section.settings.title != blank -%}
+            <h2 class="heading h2">{{ section.settings.title }}</h2>
+          {%- endif -%}
+          {%- if section.settings.subheading != blank -%}
+            <div class="headline">{{ section.settings.subheading }}</div>
+          {%- endif -%}
+
+          {%- if section.settings.button_txt != blank -%}
+            <a href="{{ section.settings.button_url }}" class="button_wide">{{ section.settings.button_txt }}</a>
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.11/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.11/dist/ScrollTrigger.min.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    gsap.registerPlugin(ScrollTrigger);
+    ScrollTrigger.create({
+    trigger: '.effect_fill_wrapper',
+     start: 'top 70%', 
+      end: 'bottom bottom',
+      scrub: true,
+      animation:
+      gsap.fromTo('.hero_fill_media',{width: '50%'},{width: '100%'})
+    });
+    ScrollTrigger.create({
+    trigger: '.effect_fill_wrapper',
+     start: 'top 81.73', 
+      end: 'bottom bottom',
+      pin: '.hero-fill-content',
+      pinSpacing: false // 可选项，如果为 true，将保留子级元素的高度占位，为 false 则覆盖父级元素
+    })
+    ScrollTrigger.create({
+    trigger: '.effect_fill_wrapper',
+     start: 'bottom 50%', 
+      end: 'bottom -20%',
+      scrub: true,
+      animation:
+      gsap.fromTo('.hero-fill-content.is-mask',{y: '0'},{y: '-430px'})
+    })
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Effect Fill",
+  "blocks": [
+    
+    ],
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Ulike Air 3"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading"
+    },
+    {
+      "type": "url",
+      "id": "button_url",
+      "label": "Button Link"
+    },
+    {
+      "type": "text",
+      "id": "button_txt",
+      "label": "Button Txt"
+    },
+    {
+        "type": "image_picker",
+        "id": "media_image",
+        "label": "Media image"
+      },
+      {
+        "type": "image_picker",
+        "id": "mobile_media_image",
+        "label": "Mobile Media image"
+      },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 36
+    }
+  ],
+   "presets": [
+    {
+      "name": "Effect Fill"
+    }]
+}
+{% endschema %}

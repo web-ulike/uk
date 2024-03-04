@@ -1,0 +1,49 @@
+<style>
+.bg-fixed-box{
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  background: var(--pc-bg-url) no-repeat;
+  background-size: cover;
+  z-index: -1;
+}
+
+@media (max-width:768px) {
+  .bg-fixed-box{
+    background: var(--mb-bg-url) no-repeat;
+    background-size: cover;
+  }
+}
+</style>
+<section class="section-box">
+  <div class="bg-fixed-box" style="--pc-bg-url:url({{ section.settings.image | img_url: 'original' }});--mb-bg-url:url({{ section.settings.image1 | img_url: 'original' }});"></div>
+</section>
+{% schema %}
+{
+  "name": "bg-fixed",
+  "blocks": [],
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image1",
+      "label": "Mobile Image"
+    }
+  ],
+  "presets": [
+    {
+      "name": "bg-fixed",
+      "blocks": []
+    }
+  ]
+}
+{% endschema %}
+
+
+

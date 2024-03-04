@@ -1,0 +1,196 @@
+<style>
+  .section-{{ section.id }}-padding {
+    padding-top: calc({{ section.settings.padding_top }}px);
+    padding-bottom: calc({{ section.settings.padding_bottom }}px);
+  }
+  @media screen and (max-width: 768px){
+  .section-{{ section.id }}-padding {
+    padding-top: calc({{ section.settings.padding_top }}px * 0.6);
+    padding-bottom: calc({{ section.settings.padding_bottom }}px * 0.6);
+  }
+}
+#shopify-section-{{ section.id }} {
+    --text-color: {{  section.settings.text_color.red }}, {{  section.settings.text_color.green }}, {{  section.settings.text_color.blue }};
+    --section-background: {{ section.settings.background.red }}, {{ section.settings.background.green }}, {{ section.settings.background.blue }};
+    background: rgb(var(--section-background, var(--background)));
+}
+.ipl_top{
+  display: flex;
+  gap: 83px;
+  margin-bottom: 70px;
+}
+.ipl_ct{
+  display: flex;
+  gap: 83px;
+  margin-bottom: 80px;
+}
+.ipl_ct .image_ipl{
+  flex: 1;
+  flex-basis: 50%;
+}
+.ipl_top .ipl_top-tltle{
+  flex-basis: 50%;
+}
+.ipl_top h2.h2{
+  font-size: 40px;
+  line-height: 1.5;
+}
+.ipl_top .ipl_top-txt{
+  font-size: 16px;
+  line-height: 1.5;
+}
+.ipl_top .ipl_top-txt-box {
+    flex-basis: 50%;
+}
+.ipl_top .ipl_top-tltle h2{
+  max-width: 479px;
+}
+.ipl_top .ipl_top-txt-box .ipl_top-txt{
+  max-width: 538px;
+}
+.section_ipl-new .button{
+
+}
+@media screen and (max-width: 767px){
+  .ipl_top{
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 37px;
+  }
+  .ipl_ct{
+    flex-direction: column;
+    gap: 32px;
+    margin-bottom: 25px;
+  }
+  .ipl_top h2.h2{
+    font-size: 24px;
+    line-height: 1.3;
+  }
+  .section_ipl-new .button.button--primary.button--animate{
+    width: 100%;
+  }
+}
+</style>
+
+<section class="section_ipl-new{% if section.settings.custom_class != blank %} {{section.settings.custom_class}}{% endif %}">
+  <div class="section-{{ section.id }}-padding">
+    <div class="container">
+      <div class="ipl_top to-top">
+        {%- if section.settings.title != blank -%}
+          <div class="ipl_top-tltle">
+            <h2 class="heading h2 text-top">
+              <split-lines>{{ section.settings.title | escape }}</split-lines>
+            </h2>
+          </div>
+        {%- endif -%}
+        {%- if section.settings.ipl_tle != blank -%}
+        <div class="ipl_top-txt-box text-top" style="transition-delay: 0.1s">
+          <div class="ipl_top-txt">{{ section.settings.ipl_tle | escape }}</div>
+        </div>
+        {%- endif -%}
+      </div>
+      <div class="ipl_ct to-top" style="transition-delay: 0.2s">
+        {%- if section.settings.image_ipl != blank -%}
+          <div class="image_ipl">
+          <img class="" src="{{ section.settings.image_ipl | image_url }}">
+          </div>
+        {%- endif -%}
+        {%- if section.settings.image_ipl_1 != blank -%}
+          <div class="image_ipl">
+          <img class="" src="{{ section.settings.image_ipl_1 | image_url }}">
+          </div>
+        {%- endif -%}
+      </div>
+      {%- if section.settings.button_text != blank -%}
+      <a href="{{ section.settings.button_link }}" class="button button--primary button--animate to-top" style="transition-delay: 0.3s">{{ section.settings.button_text }}</a>
+    {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "IPL New",
+  "class": "shopify-section--ipl-new",
+  "settings": [
+    {
+      "type": "text",
+      "id": "custom_class",
+      "label": "Custom Class"
+    },
+    {
+        "type": "text",
+        "id": "title",
+        "label": "Title",
+        "default": "Title"
+      },
+      {
+        "type": "text",
+        "id": "ipl_tle",
+        "label": "IPL Text"
+      },
+      {
+          "type": "image_picker",
+          "id": "image_ipl",
+          "label": "Image 1"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_ipl_1",
+          "label": "Image 2"
+        },
+        {
+          "type": "text",
+          "id": "button_text",
+          "label": "Button text"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Button link"
+        },
+      {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 36
+    }
+  ],
+  "blocks": [
+  ],
+  "presets": [
+    {
+      "name": "IPL New",
+      "settings": {},
+      "blocks": [
+      ]
+    }
+  ]
+}
+{% endschema %}

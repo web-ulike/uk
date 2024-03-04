@@ -1,0 +1,68 @@
+<style>
+.scroll_model-box {
+    position: fixed;
+    bottom: 20%;
+    right: 50px;
+  z-index: 10;
+  cursor: pointer;
+  opacity: 0;
+    transition: opacity 0.3s ease; 
+}
+  .scroll_model-box.visible {
+    opacity: 1; /* 显示时透明度为1 */
+}
+@media (max-width:768px) {
+.scroll_model-box {
+    bottom: 20px;
+    right: 20px;
+}
+}
+</style>
+<section>
+  <div class="scroll_model-box" id="scrollTopBtn">
+     <svg xmlns="http://www.w3.org/2000/svg" width="46" height="46" viewBox="0 0 46 46" fill="none">
+  <circle opacity="0.5" cx="23" cy="23" r="23" fill="#D9D9D9"/>
+  <path d="M24.0212 19.6265V31.4331C24.0212 31.8931 23.7122 32.1998 23.2488 32.1998C22.7854 32.1998 22.4764 31.8931 22.4764 31.4331V19.6265L16.9152 25.7598C16.6062 26.0665 16.1428 26.0665 15.8339 25.7598C15.5249 25.4531 15.5249 24.9931 15.8339 24.6865L22.7854 17.0198C23.0943 16.7131 23.5577 16.7131 23.8667 17.0198L30.8182 24.6865C31.1271 24.9931 31.1271 25.4531 30.8182 25.7598C30.5092 26.0665 30.0458 26.0665 29.7368 25.7598L24.0212 19.6265ZM16.2973 13.7998H30.2003C30.6637 13.7998 30.9727 14.1065 30.9727 14.5665C30.9727 15.0265 30.6637 15.3331 30.2003 15.3331H16.2973C15.8339 15.3331 15.5249 15.0265 15.5249 14.5665C15.5249 14.1065 15.8339 13.7998 16.2973 13.7998Z" fill="#828282"/>
+</svg>
+  </div>
+</section>
+  <script>
+    const scrollTopBtn = document.getElementById('scrollTopBtn');
+    function scrollToModule(id) {
+        var module = document.getElementById(id);
+        module.scrollIntoView({ behavior: 'smooth' });
+      }
+    // 监听页面滚动事件
+window.addEventListener('scroll', function() {
+    // 如果页面滚动超过100px，则显示按钮，否则隐藏按钮
+    if (window.pageYOffset > 1300) {
+        scrollTopBtn.classList.add('visible');
+    } else {
+       scrollTopBtn.classList.remove('visible');
+    }
+});
+    scrollTopBtn.addEventListener('click', function(){
+         scrollToModule('{{ section.settings.scroll_id }}')
+    })
+  </script>
+{% schema %}
+  {
+    "name": "Scroll Model",
+    "class": "scroll-model",
+    "blocks": [],
+    "settings": [
+      {
+        "type": "text",
+        "id": "scroll_id",
+        "label": "Scroll Id"
+      }
+     
+    ],
+    "presets": [
+      {
+        "name": "Scroll Model",
+        "blocks": []
+      }
+    ]
+  }
+{% endschema %}

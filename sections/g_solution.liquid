@@ -1,0 +1,116 @@
+{%- liquid
+  assign se_id = section.id
+  assign se_bks = section.blocks
+  assign se_stts = section.settings
+-%}
+
+<div class="box-image-text_{{se_id}}">
+  <div class="warp">
+    <p class="title">{{ se_stts.title }}</p>
+  </div>
+  <div class="images">
+    {{-
+      se_stts.image
+      | image_url: width: se_stts.image.width
+      | image_tag: loading: 'lazy', class: 'hidden-phone', draggable: false
+    -}}
+    {{-
+      se_stts.m_image
+      | image_url: width: se_stts.m_image.width
+      | image_tag: loading: 'lazy', class: 'hidden-desk', draggable: false
+    -}}
+  </div>
+</div>
+<style>
+  .box-image-text_{{se_id}}{
+    padding: 80px 0px;
+    display: block;
+    background: linear-gradient(0deg, rgba(224, 0, 77, 0.08) 0%, rgba(224, 0, 77, 0.08) 100%), #FFF;
+    .warp{
+      width: 50%;
+      margin: 0 auto;
+      text-align: center;
+    }
+    .title {
+      color: #000;
+      font-family: var(--heading-font-family);
+      font-size: 40px;
+      font-weight: 500;
+      line-height: 130%;
+      margin: 0px;
+    }
+    .images {
+      width: 50%;
+      margin: 40px auto 0px;
+      cursor: pointer;
+    }
+  }
+  @media screen and (max-width: 740px) {
+    .box-image-text_{{se_id}}{
+      display: block;
+      padding: 40px 20px;
+      .warp{
+        width: 100%;
+      }
+      .title {
+        font-size: 28px;
+      }
+      .desc {
+        font-size: 14px;
+        margin-top: 10px;
+      }
+      .images {
+        width: 100%;
+        margin: 40px auto 0px;
+        cursor: pointer;
+      }
+    }
+
+  }
+</style>
+{% schema %}
+{
+  "name": "g-solution",
+  "class": "g-solution",
+  "settings": [
+    {
+      "type": "textarea",
+      "id": "title",
+      "label": "标题"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "图片"
+    },
+    {
+      "type": "image_picker",
+      "id": "m_image",
+      "label": "移动端图片"
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "options": [
+        {
+          "value": "nt_full",
+          "label": "Full Width"
+        },
+        {
+          "value": "container",
+          "label": "Container"
+        }
+      ],
+      "label": "Layout"
+    }
+  ],
+  "blocks": [],
+  "presets": [
+    {
+      "name": "g-solution",
+      "category": "g-solution",
+      "blocks": []
+    }
+  ]
+}
+{% endschema %}

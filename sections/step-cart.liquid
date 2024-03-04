@@ -1,0 +1,344 @@
+<style>
+    #shopify-section-{{ section.id }} {
+      background: {{ section.settings.custom_background }};
+      --heading-color: {{ section.settings.text_color.red }}, {{ section.settings.text_color.green }}, {{ section.settings.text_color.blue }};
+      --text-color: {{ section.settings.text_color.red }}, {{ section.settings.text_color.green }}, {{ section.settings.text_color.blue }};
+       --mobile-text-color: {{ section.settings.mobile_text_color.red }}, {{ section.settings.mobile_text_color.green }}, {{ section.settings.mobile_text_color.blue }};
+      --device-height: 669px;
+      --r-localnav-height: 42px;
+    }
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+    @media screen and (max-width: 768px){
+    .section-{{ section.id }}-padding {
+      padding-top: calc({{ section.settings.padding_top }}px * 0.6);
+      padding-bottom: calc({{ section.settings.padding_bottom }}px * 0.6);
+    }
+  }
+  @media (max-width: 992px){
+
+  }
+  .section_na {
+      height: 500px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 24px;
+      background-color: bisque;
+    }
+    .step_cart_bix{
+      position: sticky;
+      top: 0;
+    }
+    .step_cart_list {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      opacity: 0;
+      transition: opacity 0.6s;
+  }
+  .step_cart_list.active{
+    opacity: 1;
+  }
+  .step_cart_image {
+      width: 46%;
+  }
+  .step_cart_content {
+      width: 40%;
+      padding-right: 20px;
+  }
+  .step_cart_wrrap{
+    position: sticky;
+    top: calc(50vh - var(--device-height)/2 + var(--r-localnav-height)/2);
+    left: 0;
+    overflow: hidden;
+  }
+  .step_cart_box{
+
+  }
+  .stepped-card_card__progress__mHMSX {
+      position: absolute;
+      right: 10px;
+      transform: translateX(50%);
+      height: 55%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-feature-settings: "tnum";
+      font-variant-numeric: tabular-nums;
+      transition: .6s opacity cubic-bezier(0.19,1,0.22,1);
+      top: 50%;
+      transform: translateY(-50%);
+  }
+  .stepped-card_card__progress__bar__Eny4_ {
+      height: 100%;
+      width: 2px;
+      margin: 5px 0;
+      position: relative;
+      background: #000000;
+  }
+  .stepped-card_card__progress__bar__Eny4_:after {
+      transition: .6s transform cubic-bezier(0.19,1,0.22,1);
+      position: absolute;
+      content: "";
+      top: 0;
+      left: 0;
+      width: 100%;
+      transform-origin: top;
+      transform: scaleY(var(--progress));
+      height: 100%;
+      background-color: #C5C5C5;
+  }
+  .step_cart_content>*{
+    opacity: 0;
+    transition: opacity .3s ease-in-out;
+  }
+  .step_cart_list.active .step_cart_content>* {
+      opacity: 1;
+  }
+  .step_cart_list.active .step_cart_content>:first-child {
+      transition-delay: 81ms;
+  }
+  .step_cart_list.active .step_cart_content>:nth-child(2) {
+      transition-delay: 241ms;
+  }
+  .step_cart_list.active .step_cart_content>:nth-child(3) {
+      transition-delay: 321ms;
+  }
+  .step_cart_list.active .step_cart_content>:nth-child(4) {
+      transition-delay: 391ms;
+  }
+    .step-cart-box .mth2{
+      margin-bottom:80px;
+       font-size: 48px;
+    }
+  @media screen and (max-width: 999px) {
+    .step_cart_list{
+      flex-direction: column;
+    }
+    .stepped-card_card__progress__mHMSX{
+      display: none;
+    }
+    .step_cart_image {
+      width: 100%;
+    }
+    .step_cart_content {
+      width: 100%;
+      top: 0;
+      padding: 20px 0px;
+      left: 0;
+      color: #fff;
+    }
+
+    .step_cart_content .heading.h2,.step_cart_content .step_cart_txt{
+      color: rgb(var(--mobile-text-color));
+    }
+    .step_cart_content .heading.h2 {
+      font-size: 21px;
+    }
+     .step-cart-box .mth2{
+      margin-bottom:30px;
+       font-size: 28px;
+    }
+  }
+</style>
+
+<section class="step-cart-box section-{{ section.id }}-padding">
+  {%- if section.settings.title != blank -%}
+    <h2 class="heading h2 text--center mth2">{{ section.settings.title | escape }}</h2>
+  {%- endif -%}
+  <div class="container step_cart_box">
+    <div class="step_cart_wrrap">
+      {%- for block in section.blocks -%}
+        <div class="step_cart_list{% if forloop.index == 1 %} active{% endif %}">
+          <div class="step_cart_image">
+            {%- if block.settings.image != blank -%}
+              <div class="step_cart_img {% if block.settings.mobile_image != blank %}hidden-pocket{% endif %}">
+                <img {% render 'image-attributes', image: block.settings.image %}>
+              </div>
+            {%- endif -%}
+            {%- if block.settings.mobile_image != blank -%}
+              <div class="step_cart_img hidden-lap-and-up">
+                <img {% render 'image-attributes', image: block.settings.mobile_image %}>
+              </div>
+            {%- endif -%}
+            {%- if block.settings.step_video != blank -%}
+              <div class="step_cart_img">
+                <native-video autoplay class="video-wrapper video-wrapper--native">
+                  {{-
+                    block.settings.step_video
+                    | video_tag:
+                      controls: false,
+                      autoplay: true,
+                      playsinline: true,
+                      muted: true,
+                      loop: true,
+                      image_size: '740x'
+                  -}}
+                </native-video>
+              </div>
+            {%- endif -%}
+          </div>
+          <div class="step_cart_content">
+            {%- if block.settings.title != blank -%}
+              <h2 class="heading h2">{{ block.settings.title | escape }}</h2>
+            {%- endif -%}
+            {%- if block.settings.content != blank -%}
+              <p class="step_cart_txt">{{- block.settings.content -}}</p>
+            {%- endif -%}
+          </div>
+        </div>
+      {%- endfor -%}
+      {% comment %}
+        <div class="stepped-card_card__progress__mHMSX p-eyebrow uppercase" style="--progress: 1; opacity: 1;">
+          <div class="step_num">01</div>
+          <div class="stepped-card_card__progress__bar__Eny4_"></div>
+          <div>0{{- section.blocks.size -}}</div>
+        </div>
+      {% endcomment %}
+    </div>
+  </div>
+</section>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/ScrollTrigger.min.js"></script>
+<script>
+  window.addEventListener('load', function () {
+    let itemLength = '{{section.blocks.size}}';
+    document.querySelector('.step_cart_box').style.height =
+      document.querySelector('.step_cart_list').clientHeight * itemLength + 'px';
+    document.querySelector('.step_cart_wrrap').style.height =
+      document.querySelector('.step_cart_list').clientHeight + 'px';
+    // document.querySelector('.step_cart_wrrap').style.setProperty('--device-height', ((document.querySelector('.step_cart_list').clientHeight) + 'px'))
+    // document.querySelector('.p-eyebrow').style.setProperty('--progress', 1/itemLength)
+    gsap.registerPlugin(ScrollTrigger);
+    var scrollElement = document.querySelector('.step_cart_wrrap');
+    ScrollTrigger.create({
+      trigger: '.step-cart-box',
+      start: 'top top',
+      end: 'bottom bottom',
+      scrub: false, //是否启用动画平滑过渡
+      onUpdate: (self) => {
+        // 根据滚动进度计算实时的偏移值
+        var offset = self.progress * itemLength;
+        let listIndex =
+          parseInt(self.progress / (1 / itemLength)) == itemLength
+            ? itemLength - 1
+            : parseInt(self.progress / (1 / itemLength));
+        // document.querySelector('.p-eyebrow').style.setProperty('--progress', (listIndex+1)*(1/itemLength))
+        // document.querySelector('.step_num').innerText= '0'+ (listIndex+1)
+        document.querySelectorAll('.step_cart_list').forEach((steplist) => {
+          steplist.classList.remove('active');
+        });
+        document.querySelectorAll('.step_cart_list')[listIndex].classList.add('active');
+      },
+    });
+  });
+</script>
+{% schema %}
+{
+  "name": "Step Cart",
+  "class": "shopify-section--step-cart",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "text",
+      "id": "custom_background",
+      "label": "Custom Background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "color",
+      "id": "mobile_text_color",
+      "label": "Mobile Text color",
+      "default": "#040000"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 36
+    }
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "Promotion blocks"
+        },
+        {
+          "type": "text",
+          "id": "content",
+          "label": "Content",
+          "default": "Use this text to share information about your brand with your customers."
+        },
+        {
+          "type": "video",
+          "id": "step_video",
+          "label": "Step Video",
+          "info": "Replaces the external video if both are set."
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Step Image"
+        },
+        {
+          "type": "image_picker",
+          "id": "mobile_image",
+          "label": "Mobile Step Image"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Step Cart"
+    }
+  ]
+}
+{% endschema %}

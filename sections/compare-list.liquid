@@ -1,0 +1,229 @@
+<style>
+.compare-list-box .compare-item-title{
+    font-size: 35px;
+    /* font-weight: bold; */
+    font-family: var(--heading-font-family);
+    color: #000;
+    background: #f6f6f6;
+    line-height: 1.2;
+    padding: 20px 0;
+    text-align: center;
+}
+.compare-list-box .compare-item-slist{
+    background: #fff;
+}
+.compare-list-box .compare-item-cont{
+    display: flex;
+}
+.compare-list-box .compare-sitem{
+    flex: 1;
+    padding: 125px 30px;
+    text-align: center;
+    font-size: 30px;
+    color: #000;
+    line-height: 1.4;
+    text-align: center;
+}
+
+.compare-list-box .compare-sitem:first-child{
+    padding-left: 0;
+}
+
+.compare-list-box .compare-sitem:last-child{
+    padding-right: 0;
+}
+
+.compare-list-box .compare-sitem-txt{
+    width: 100%;
+    max-width: 350px;
+    margin: 0 auto;
+    /* font-weight: bold; */
+    font-family: var(--heading-font-family);
+}
+.compare-list-box .compare-sitem-p{
+    font-size: 20px;
+    color: #000;
+    text-align: center;
+    margin-top: 30px;
+    line-height: 1.2;
+}
+.compare-list-box .sm-padding .compare-sitem{
+    padding-top: 80px;
+}
+.compare-list-box .sm-bottom .compare-sitem{
+    padding-bottom: 70px;
+}
+.compare-list-box .compare-sitem:first-child{
+    border-right: 1px solid #f6f6f6;
+}
+
+.compare-list-box .compare-sitem img{
+    margin-bottom: 50px;
+    max-height:110px;
+}
+.compare-list-box .sticky {
+    position: sticky;
+    top: var(--top);
+    z-index: 2;
+}
+
+@media (max-width:1600px) {
+    .compare-list-box .compare-item-title{
+        font-size: 25px;
+    }
+    .compare-list-box .compare-sitem{
+        font-size: 23px;
+    }
+    .compare-list-box .compare-sitem-p{
+        font-size: 16px;
+        margin-top: 10px;
+    }
+    .compare-list-box .compare-sitem img{
+        max-height: 80px;
+        margin-bottom: 30px;
+    }
+    .compare-list-box .compare-sitem{
+        padding: 80px 20px;
+    }
+}
+
+@media (max-width:640px) {
+    .compare-list-box .compare-sitem{
+        padding: 106px 15px !important;
+    }
+    .compare-list-box .compare-sitem img{
+        max-height: 50px;
+    }
+    .compare-list-box .compare-sitem{
+        font-size: 16px;
+    }
+    .compare-list-box .compare-item-title{
+        font-size: 23px;
+    }
+    .compare-list-box .compare-sitem:first-child{
+        padding-left: 0 !important;
+    }
+    .compare-list-box .compare-sitem:last-child{
+        padding-right: 0 !important;
+    }
+    .compare-list-box .compare-item-title span{
+        display: block;
+    }
+}
+</style>
+<section class="section-box">
+  <div class="compare-list-box">
+    {%- for block in section.blocks -%}
+    <div class="compare-item">
+        <div class="compare-item-title to-top">{{ block.settings.title }} {%- if block.settings.sub != blank -%}<span>{{ block.settings.sub }}</span>{%- endif -%}</div>
+        <div class="compare-item-slist">
+            <div class="container">
+                <div class="compare-item-cont {% if block.settings.small_top %}sm-padding{% endif %} {% if block.settings.small_bottom %}sm-bottom{% endif %}">
+                    <div class="compare-sitem to-top">
+                      {%- if block.settings.image != blank -%}
+                         <img loading="lazy" width="{{ block.settings.image.width }}" height="{{ block.settings.image.height }}" {% render 'image-attributes', image: block.settings.image %} alt="{{ block.settings.image.alt | escape }}" >
+                      {%- endif -%}
+                      {%- if block.settings.text != blank -%}
+                        <div class="compare-sitem-txt">
+                            {{ block.settings.text }}
+                        </div>
+                      {%- endif -%}
+                      {%- if block.settings.text1 != blank -%}
+                        <div class="compare-sitem-p">{{ block.settings.text1 }}</div>
+                      {%- endif -%}
+                    </div>
+                    <div class="compare-sitem to-top" style="transition-delay: 0.2s">
+                        {%- if block.settings.image1 != blank -%}
+                           <img loading="lazy" width="{{ block.settings.image1.width }}" height="{{ block.settings.image1.height }}" {% render 'image-attributes', image: block.settings.image1 %} alt="{{ block.settings.image1.alt | escape }}" >
+                        {%- endif -%}
+                      {%- if block.settings.text2 != blank -%}
+                        <div class="compare-sitem-txt">
+                            {{ block.settings.text2 }}
+                        </div>
+                      {%- endif -%}
+                      {%- if block.settings.text3 != blank -%}
+                        <div class="compare-sitem-p">{{ block.settings.text3 }}</div>
+                      {%- endif -%}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {%- endfor -%}
+  </div>
+</section>
+<script>
+  
+</script>
+{% schema %}
+{
+  "name": "compare-list",
+  "class": "compare-list",
+  "blocks": [
+    {
+      "name": "item",
+      "type": "item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title"
+        },
+        {
+          "type": "text",
+          "id": "sub",
+          "label": "Heading"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Icon"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text"
+        },
+        {
+          "type": "text",
+          "id": "text1",
+          "label": "Text"
+        },
+        {
+          "type": "image_picker",
+          "id": "image1",
+          "label": "Icon"
+        },
+        {
+          "type": "text",
+          "id": "text2",
+          "label": "Text"
+        },
+        {
+          "type": "text",
+          "id": "text3",
+          "label": "Text"
+        },
+        {
+          "type": "checkbox",
+          "id": "small_top",
+          "label": "Small top",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "small_bottom",
+          "label": "Small bottom",
+          "default": false
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "compare-list",
+      "blocks": []
+    }
+  ]
+}
+{% endschema %}

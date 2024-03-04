@@ -1,0 +1,304 @@
+<style>
+.media-{{ section.id }}-padding {
+    padding-top: calc({{ section.settings.padding_top }}px);
+    padding-bottom: calc({{ section.settings.padding_bottom }}px);
+  }
+  #shopify-section-{{ section.id }} {
+    {%- if section.settings.background == 'rgba(0,0,0,0)' -%}
+      {%- assign section_background = settings.background -%}
+    {%- else -%}
+      {%- assign section_background = section.settings.background -%}
+    {%- endif -%}
+
+    {%- if section.settings.text_color == 'rgba(0,0,0,0)' -%}
+      {%- assign text_color = settings.text_color -%}
+    {%- else -%}
+      {%- assign text_color = section.settings.text_color -%}
+    {%- endif -%}
+    --text-color: {{ text_color.red }}, {{ text_color.green }}, {{ text_color.blue }};
+    --section-background: {{ section_background.red }}, {{ section_background.green }}, {{ section_background.blue }};
+  }
+  .winner-annoucement-wrapper {
+    background: rgb(var(--background));
+    background: rgb(var(--section-background, var(--background)));
+}
+.winner-annoucement-wrapper .heading.h3 {
+  margin-bottom: 10px;
+}
+.winner-annoucement-wrapper .product_sub {
+  margin-bottom: 40px;
+}
+.winner_wrap{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 2px;
+}
+.winner-top{
+  height: 80px;
+  background: #0076bfff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #ffff;
+}
+.winner-top .winner_tle{
+  font-size: 24px;
+  line-height: 1.2;
+  font-family: var(--heading-font-family);
+  font-weight: var(--heading-font-weight);
+}
+.winner-top .winner_txt{
+  font-size: 14px;
+}
+.winner-bottom{
+background: #f9f9f9ff;
+}
+
+.winner-bottom {
+  font-size: 14px;
+  height: 270px;
+  box-sizing: border-box;
+  padding: 34px 0 0;
+  overflow: hidden;
+  position: relative;
+  text-align: center;
+}
+.lottery-winner-list {
+  line-height: 26px;
+  height: 330px;
+  -webkit-animation: 15s activity-lottery-slider linear infinite;
+  animation: 15s activity-lottery-slider linear infinite;
+  list-style: none;
+  padding: 0;
+}
+.lottery-winner-list>p {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  color: #040000;
+}
+.lottery-winner-list>p>strong {
+  padding: 0 5px;
+  font-family: var(--heading-font-family);
+  font-weight: var(--heading-font-weight);
+}
+@keyframes activity-lottery-slider {
+  0% {
+  }
+  100% {
+    transform: translateY(-330px);
+  }
+}
+@keyframes mobile-activity-lottery-slider {
+  0% {
+  }
+  100% {
+    transform: translateY(-140px);
+  }
+}
+@media screen and (max-width: 768px){
+  .media-{{ section.id }}-padding {
+    padding-top: calc({{ section.settings.padding_top }}px * 0.6);
+    padding-bottom: calc({{ section.settings.padding_bottom }}px * 0.6);
+  }
+}
+@media screen and (max-width: 1100px){
+
+}
+@media screen and (max-width: 768px){
+.winner-annoucement-wrapper .heading.h3 {
+      padding:0  20px;
+}
+.winner-annoucement-wrapper .product_sub {
+     padding:0  20px;
+      margin-bottom: 30px;
+}
+.winner_wrap {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-gap: 20px;
+}
+.winner-top{
+  height: auto;
+  padding: 10px 0;
+}
+.winner-top .winner_tle{
+  font-size: 16px;
+  line-height: 1.1;
+}
+.winner-top .winner_txt {
+    font-size: 10px;
+    line-height: 1.3;
+}
+.winner-bottom{
+  height: 140px;
+}
+.lottery-winner-list {
+  height: 190px;
+  -webkit-animation: 15s mobile-activity-lottery-slider linear infinite;
+  animation: 15s mobile-activity-lottery-slider linear infinite;
+}
+.lottery-winner-list>p{
+  padding: 0;
+}
+}
+</style>
+
+<section>
+  <div class="winner-annoucement-wrapper media-{{ section.id }}-padding">
+    <div class="container">
+      {%- if section.settings.main_title != blank -%}
+        <h3 class="heading h3 text--center">
+          {{ section.settings.main_title | escape }}
+        </h3>
+      {%- endif -%}
+      {%- if section.settings.main_sub != blank -%}
+        <div class="product_sub text--center">
+          {{ section.settings.main_sub | escape }}
+        </div>
+      {%- endif -%}
+      <div class="winner_wrap">
+        <div class="winner_item">
+          <div class="winner-top">
+            <div class="winner_tle">
+              Lucky Draw
+            </div>
+            <div class="winner_txt">
+              FREE Air 3 and Air+
+            </div>
+          </div>
+          <div class="winner-bottom">
+            <div class="lottery-winner-list">
+              {{- section.settings.content -}}
+              {{- section.settings.content -}}
+            </div>
+          </div>
+        </div>
+        <div class="winner_item">
+          <div class="winner-top">
+            <div class="winner_tle">
+              Luxurious Giveaway
+            </div>
+            <div class="winner_txt">
+              Up to $10,000 Worthy Gifts
+            </div>
+          </div>
+          <div class="winner-bottom">
+            <div class="lottery-winner-list">
+              {{- section.settings.content_1 -}}
+              {{- section.settings.content_1 -}}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+</script>
+{% schema %}
+{
+  "name": "Winner Annoucement",
+  "class": "winner-annoucement",
+  "blocks": [
+    {
+      "name": "Column",
+      "type": "item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Product Heading",
+          "default": "Product List"
+        },
+        {
+          "type": "text",
+          "id": "title_1",
+          "label": "Product Heading 1",
+          "default": "Your content"
+        },
+        {
+          "type": "text",
+          "id": "title_2",
+          "label": "Product Heading 2",
+          "default": "Your content"
+        },
+        {
+          "type": "richtext",
+          "id": "product_label_1",
+          "label": "Product Label 1"
+        },
+        {
+          "type": "richtext",
+          "id": "product_label_2",
+          "label": "Product Label 2"
+        }
+      ]
+    }
+  ],
+  "settings": [
+    {
+      "type": "text",
+      "id": "main_title",
+      "label": "Product Heading"
+    },
+    {
+      "type": "text",
+      "id": "main_sub",
+      "label": "Product subheading"
+    },
+    {
+        "type": "richtext",
+        "id": "content",
+        "label": "Content"
+    },
+    {
+        "type": "richtext",
+        "id": "content_1",
+        "label": "Content 1"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "rgba(0,0,0,0)"
+    },
+     {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 36
+    }
+  ],
+  "presets": [
+    {
+      "name": "Winner Annoucement"
+    }
+  ]
+}
+{% endschema %}

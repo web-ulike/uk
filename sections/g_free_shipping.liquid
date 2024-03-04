@@ -1,0 +1,146 @@
+{%- liquid
+  assign se_id = section.id
+  assign se_bks = section.blocks
+  assign se_stts = section.settings
+-%}
+<div class="g_freeshipping_{{se_id}}">
+  <div class="box-detail">
+    <p class="title">{{ se_stts.title }}</p>
+  </div>
+  <div class="box-image">
+    {%- for block in se_bks -%}
+      {%- assign item = block.settings -%}
+      <div class="item" index="{{forloop.index0}}">
+        {{- item.image | image_url: width: item.image.width | image_tag: loading: 'lazy', draggable: false -}}
+        <div class="name">{{ item.name }}</div>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+<style>
+  .g_freeshipping_{{se_id}}{
+    padding: 80px 0px;
+    background: #E6E2FF;
+    .box-detail{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex: 1;
+    }
+    .title {
+      color: #000;
+      font-family: var(--heading-font-family);
+      font-size: 40px;
+      font-weight: 500;
+      margin-bottom: 20px;
+      line-height: 48px;
+    }
+    .desc {
+      color: #000;
+      font-family: var(--heading-font-family);
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 150%;
+    }
+    .box-image {
+      display: flex;
+      width: 70%;
+      margin: 40px auto 0px;
+      gap: 60px;
+    }
+  }
+  .g_freeshipping_{{se_id}} .box-image .item{
+    border-radius: 35px;
+    background: rgba(255, 255, 255, 0.75);
+    padding: 60px 60px;
+    flex: 1;
+    text-align: center;
+    .name {
+      font-size: 24px;
+      font-weight: 500;
+    }
+  }
+  @media screen and (max-width: 740px) {
+    .g_freeshipping_{{se_id}}{
+      padding: 40px 0px 40px;
+      display: block;
+      .box-detail {
+        text-align: center;
+      }
+      .title {
+        font-size: 28px;
+        font-weight: 500;
+        line-height: 33px;
+        width: 70%;
+        margin: 0 auto;
+      }
+      .box-image {
+        display: block;
+        margin: 40px 0px 0px;
+        padding: 0px 20px;
+        width: 100%;
+      }
+    }
+    .g_freeshipping_{{se_id}} .box-image .item{
+      width: 100%;
+      margin-bottom: 20px;
+      padding: 26px;
+      .name {
+        font-size: 18px;
+      }
+    }
+
+  }
+</style>
+{% schema %}
+{
+  "name": "g-free-shipping",
+  "settings": [
+    {
+      "type": "textarea",
+      "id": "title",
+      "label": "标题"
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "options": [
+        {
+          "value": "nt_full",
+          "label": "Full Width"
+        },
+        {
+          "value": "container",
+          "label": "Container"
+        }
+      ],
+      "label": "Layout"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "item",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "图片"
+        },
+        {
+          "type": "textarea",
+          "id": "name",
+          "label": "描述"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "g-Free Shipping",
+      "category": "g-Free Shipping",
+      "blocks": []
+    }
+  ]
+}
+{% endschema %}
