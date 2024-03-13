@@ -154,7 +154,8 @@
 
     .button-buy-now {
       /* background: #f8f8f8; */
-      color: #000;
+      background: #000;
+      color: #fff;
       display: flex;
       align-items: center;
       cursor: pointer;
@@ -162,10 +163,11 @@
       border: 1px solid #000;
     }
     .button-buy-now.btn-diy:after{
-      background:#000;
+      background: #fff;
+      color: #000;
     }
     .button-buy-now:hover {
-      color: #fff;
+      color: #000;
     }
     .button-buy-now span{
       position: relative;
@@ -1008,49 +1010,52 @@
                   class="product-form__payment-container"
                   {{ block.shopify_attributes }}
                 >
-                  <button
-                    id="AddToCart"
-                    type="{% if product.selected_or_first_available_variant.available %}submit{%- else -%}button{%- endif -%}"
-                    is="loader-button"
-                    {% unless block.settings.show_payment_button and template.suffix != 'quick-buy-popover' %}
-                      data-use-primary
-                    {% endunless %}
-                    data-product-add-to-cart-button
-                    data-button-content="{% if product.template_suffix == 'pre-order' %}
-                      {{ 'product.form.pre_order' | t | escape }}
-                      {% else %}
-                        {% if block.settings.text != blank %}  
-                            {{ block.settings.text }}
+                  {% comment %} 判断是否显示分期按钮 {% endcomment %}
+                  {%- if block.settings.jump_settlement != true -%}
+                    <button
+                      id="AddToCart"
+                      type="{% if product.selected_or_first_available_variant.available %}submit{%- else -%}button{%- endif -%}"
+                      is="loader-button"
+                      {% unless block.settings.show_payment_button and template.suffix != 'quick-buy-popover' %}
+                        data-use-primary
+                      {% endunless %}
+                      data-product-add-to-cart-button
+                      data-button-content="{% if product.template_suffix == 'pre-order' %}
+                        {{ 'product.form.pre_order' | t | escape }}
+                        {% else %}
+                          {% if block.settings.text != blank %}  
+                              {{ block.settings.text }}
+                          {%- else -%}
+                            {{ 'product.form.add_to_cart' | t | escape }}
+                          {%- endif -%}
+                      {% endif %}"
+                      class="button form__add-button btn-diy {% unless product.selected_or_first_available_variant.available %}
+                        button--ternary
+                      {%- endunless -%}"
+                      {% comment %} product-form__add-button button button--animate 
+                      {% unless product.selected_or_first_available_variant.available %}
+                        button--ternary{% else %}
+                        {% if block.settings.show_payment_button and template.suffix != 'quick-buy-popover' %}button--secondary{% else %}button--primary{% endif %}{% endunless %}
+                        button--full" {% endcomment %}
+                      {% comment %} {% unless product.selected_or_first_available_variant.available %}
+                        disabled
+                      {% endunless %} {% endcomment %}
+                    >
+                      {%- if product.selected_or_first_available_variant.available -%}
+                        {%- if product.template_suffix == 'pre-order' -%}
+                          {{- 'product.form.pre_order' | t -}}
                         {%- else -%}
-                          {{ 'product.form.add_to_cart' | t | escape }}
+                          {% if block.settings.text != blank %}  
+                              {{ block.settings.text }}
+                          {%- else -%}
+                            {{- 'product.form.add_to_cart' | t -}}
+                          {%- endif -%}
                         {%- endif -%}
-                    {% endif %}"
-                    class="button form__add-button btn-diy {% unless product.selected_or_first_available_variant.available %}
-                      button--ternary
-                    {%- endunless -%}"
-                    {% comment %} product-form__add-button button button--animate 
-                    {% unless product.selected_or_first_available_variant.available %}
-                      button--ternary{% else %}
-                      {% if block.settings.show_payment_button and template.suffix != 'quick-buy-popover' %}button--secondary{% else %}button--primary{% endif %}{% endunless %}
-                       button--full" {% endcomment %}
-                    {% comment %} {% unless product.selected_or_first_available_variant.available %}
-                      disabled
-                    {% endunless %} {% endcomment %}
-                  >
-                    {%- if product.selected_or_first_available_variant.available -%}
-                      {%- if product.template_suffix == 'pre-order' -%}
-                        {{- 'product.form.pre_order' | t -}}
                       {%- else -%}
-                        {% if block.settings.text != blank %}  
-                            {{ block.settings.text }}
-                        {%- else -%}
-                          {{- 'product.form.add_to_cart' | t -}}
-                        {%- endif -%}
+                        {{- 'product.form.sold_out' | t -}}
                       {%- endif -%}
-                    {%- else -%}
-                      {{- 'product.form.sold_out' | t -}}
-                    {%- endif -%}
-                  </button>
+                    </button>
+                  {%- endif -%}
 
 
   
@@ -1066,10 +1071,12 @@
                     {%- endunless -%}
                   {%- endif -%}
 
-                  {% comment %} 增加直接购买按钮 {% endcomment %}
-                  <!-- <div class="button button-buy-now btn-diy  {% if product.selected_or_first_available_variant.available == false -%} p-btn-hide {%- endif -%} ">
-                      <span>Buy Now</span>
-                  </div> -->
+                  {%- if block.settings.jump_settlement == true -%}
+                   {% comment %} 增加直接购买按钮 {% endcomment %}
+                   <div class="button button-buy-now btn-diy  {% if product.selected_or_first_available_variant.available == false -%} p-btn-hide {%- endif -%} ">
+                        <span>TRY with £31.9</span>
+                    </div> 
+                  {%- endif -%}
 
                 </product-payment-container>
                    {% comment %} 增加礼物选项 {% endcomment %}

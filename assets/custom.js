@@ -302,5 +302,81 @@ function initGA() {
   $(document).on("click", "#launch-spinthewheel", function () {
     commonGtmEvent(`首页-win spin`, 'click', location.pathname);
   });
+}
 
+
+/**
+ * 分期按钮
+ * @param {*} pid 
+ */
+function JumpCheckout (productId) {
+  fetch('/cart/clear.js', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+  .then(() => {
+    // 购物车已清空，跳转到结账页面
+    fetch('/cart/add.js', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        id: productId,
+        quantity: 1, // 可根据需求设置购买数量
+        properties: { '_spp2-deposit': 1 },
+        selling_plan: 5258838303
+      }),
+    })
+    .then(response => response.json())
+    .then(data => {
+      fetch('/checkout', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          productId: productId,
+          properties: { '_spp2-deposit': 1 },
+          selling_plan: 5258838303,
+          quantity: 1,
+          form_type: 'product',
+          utf8: '✓'
+        }),
+      })
+      .then(response => {
+        console.log('response', response)
+        if (response.status === 302) {
+          // 获取重定向的 URL
+          const redirectUrl = response.headers.get('Location');
+          // 执行重定向
+          window.location.href = redirectUrl;
+        } else {
+          // 处理其他状态码的逻辑
+          return response
+        }
+      })
+      .then(data => {
+        // 处理购买成功后的逻辑
+        console.log('Purchase successful:', data);
+         // 执行跳转
+         window.location.href = data.url;
+        // 可以根据需求执行其他操作，例如显示购买成功提示、跳转到订单页面等
+      })
+      .catch(error => {
+        // 处理购买失败的逻辑
+        console.error('Purchase failed:', error);
+        // 可以根据需求执行其他错误处理操作
+      });
+    }).catch(error => {
+      // 添加购物车失败，处理错误
+      console.error('Error clearing cart:', error);
+  });
+  })
+  .catch(error => {
+    // 清空购物车失败，处理错误
+    console.error('Error clearing cart:', error);
+  });
 }
