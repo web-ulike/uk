@@ -148,6 +148,22 @@ function getCookie(name) {
 }
 
 /**
+ * 设置cookie
+ * @param {string} cookieName - cookie的名称
+ * @param {string} cookieValue - cookie的值
+ * @param {number} daysToExpire - cookie的过期天数，默认为0，表示永不过期
+ */
+function setCookie(cookieName, cookieValue, daysToExpire) {
+  var expires = "";
+  if (daysToExpire) {
+    var date = new Date();
+    date.setTime(date.getTime() + (daysToExpire * 24 * 60 * 60 * 1000));
+    expires = "; expires=" + date.toUTCString();
+  }
+  document.cookie = cookieName + "=" + cookieValue + expires + "; path=/";
+}
+
+/**
  * 初始化事件
  */
 function init(){

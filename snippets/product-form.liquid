@@ -3,206 +3,206 @@
 {%- assign size_label_list = 'general.label.size' | t | replace: ', ', ',' | downcase | split: ',' -%}
 {%- assign product_form_id = 'product-form-' | append: section.id | append: '-' | append: product.id -%}
 <style>
-  .color-shipping {
-    display: none;
-    width: max-content;
-    line-height: 40px;
-    font-weight: 600;
-  }
-  .shipping_show {
-    display: block;
-  }
-  .product-form-countdown {
-    /* font-weight: bold; */
-    font-family: var(--heading-font-family);
-  }
-.product-form-countdown-tip{
-  display: flex;
-  justify-content: space-between;
-}
-  .product-popup-img-diy {
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    background: rgba(0, 0, 0, 0.6);
-    z-index: 9;
-    display: none;
-  }
-
-  .product-popup-img-diy .product-popup-img-cont {
-    position: absolute;
-    width: calc(100% - 30px);
-    max-width: 600px;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-  }
-
-  .product-popup-img-diy .product-popup-img {
-    display: block;
-    width: 100%;
-    position: relative;
-    z-index: 1;
-  }
-
-  .product-popup-img-diy .mb-box {
-    display: none;
-  }
-
-  .product-popup-img-diy .product-popup-img-close {
-    position: absolute;
-    width: 40px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    top: 15px;
-    right: 15px;
-    z-index: 2;
-    cursor: pointer;
-  }
-  .product-popup-img-diy .product-popup-img-close svg {
-    display: block;
-    width: 18px;
-  }
-
-  .coupon-img-box-diy .coupon-img-box-btn {
-    cursor: pointer;
-  }
-  .gift-set-tips {
-    margin-top: 4px;
-    display: none;
-    margin-bottom: -40px;
-    font-weight: bold;
-    color: #e7004c;
-  }
-
-  .gift-set-desc {
-    display: none;
-    font-size: 16px;
-    color: #797979;
-    line-height: 1.8;
-    font-style: italic;
-  }
-
-  .product-form__payment-container{
-    margin-top:0;
-  }
-
-  .product-form .product-diy-gift {
-    padding: 5px 0;
-    display: flex;
-    align-items: center;
-    margin-top: 68px;
-    cursor: pointer;
-    justify-content: center;
-  }
-
-  .product-form .product-diy-gift label {
-    position: relative;
-  }
-
-  .product-form .product-gift-input {
-    position: absolute;
-    top: 0;
-    left: 0;
-    opacity: 0;
-    /* pointer-events: none; */
-  }
-  .product-form .checkbox-span {
-    width: 18px;
-    height: 18px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 1px solid #000;
-    border-radius: 2px;
-  }
-
-  .product-form .checkbox-span svg {
-    display: block;
-    opacity: 0;
-    pointer-events: none;
-  }
-
-  .product-form .product-gift-input:checked + .checkbox-span svg {
-    opacity: 1;
-  }
-
-  .product-form .product-diy-gift-text {
-    /* flex: 1; */
-    margin-left: 10px;
-  }
-
-  .product-form .gift-icon {
-    display: block;
-    width: 22px;
-    margin-left: 10px;
-  }
-  .form__add-button {
-    background: #000;
-    color: #fff;
-    border: 1px solid #000;
-  }
-  {% comment %} .form__add-button:hover {
-    background: #fff;
-    color: #000;
-  } {% endcomment %}
-
-  .button-buy-now {
-    /* background: #f8f8f8; */
-    color: #000;
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-    justify-content: center;
-    border: 1px solid #000;
-  }
-  .button-buy-now.btn-diy:after{
-    background:#000;
-  }
-  .button-buy-now:hover {
-    color: #fff;
-  }
-  .button-buy-now span{
-    position: relative;
-    z-index: 3;
-  }
-
-  .btn-diy .loader-button__text{
-    position: relative;
-    z-index: 3;
-  }
-  .btn-diy:hover .loader-button__text{
-    color: #000;
-  }
-
-  .product-form .p-btn-hide {
-    display: none;
-  }
-  @media (min-width: 768px) {
-    .product-form-countdown-tip{
-        margin-bottom:10px;
+    .color-shipping {
+      display: none;
+      width: max-content;
+      line-height: 40px;
+      font-weight: 600;
     }
-  }
-
-  @media (max-width: 640px) {
-    .product-popup-img-diy .mb-box {
+    .shipping_show {
       display: block;
     }
-    .product-popup-img-diy .pc-box {
+    .product-form-countdown {
+      /* font-weight: bold; */
+      font-family: var(--heading-font-family);
+    }
+  .product-form-countdown-tip{
+    display: flex;
+    justify-content: space-between;
+  }
+    .product-popup-img-diy {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      background: rgba(0, 0, 0, 0.6);
+      z-index: 9;
       display: none;
     }
-  }
+
+    .product-popup-img-diy .product-popup-img-cont {
+      position: absolute;
+      width: calc(100% - 30px);
+      max-width: 600px;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .product-popup-img-diy .product-popup-img {
+      display: block;
+      width: 100%;
+      position: relative;
+      z-index: 1;
+    }
+
+    .product-popup-img-diy .mb-box {
+      display: none;
+    }
+
+    .product-popup-img-diy .product-popup-img-close {
+      position: absolute;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      top: 15px;
+      right: 15px;
+      z-index: 2;
+      cursor: pointer;
+    }
+    .product-popup-img-diy .product-popup-img-close svg {
+      display: block;
+      width: 18px;
+    }
+
+    .coupon-img-box-diy .coupon-img-box-btn {
+      cursor: pointer;
+    }
+    .gift-set-tips {
+      margin-top: 4px;
+      display: none;
+      margin-bottom: -40px;
+      font-weight: bold;
+      color: #e7004c;
+    }
+
+    .gift-set-desc {
+      display: none;
+      font-size: 16px;
+      color: #797979;
+      line-height: 1.8;
+      font-style: italic;
+    }
+
+    .product-form__payment-container{
+      margin-top:0;
+    }
+
+    .product-form .product-diy-gift {
+      padding: 5px 0;
+      display: flex;
+      align-items: center;
+      margin-top: 68px;
+      cursor: pointer;
+      justify-content: center;
+    }
+
+    .product-form .product-diy-gift label {
+      position: relative;
+    }
+
+    .product-form .product-gift-input {
+      position: absolute;
+      top: 0;
+      left: 0;
+      opacity: 0;
+      /* pointer-events: none; */
+    }
+    .product-form .checkbox-span {
+      width: 18px;
+      height: 18px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid #000;
+      border-radius: 2px;
+    }
+
+    .product-form .checkbox-span svg {
+      display: block;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .product-form .product-gift-input:checked + .checkbox-span svg {
+      opacity: 1;
+    }
+
+    .product-form .product-diy-gift-text {
+      /* flex: 1; */
+      margin-left: 10px;
+    }
+
+    .product-form .gift-icon {
+      display: block;
+      width: 22px;
+      margin-left: 10px;
+    }
+    .form__add-button {
+      background: #000;
+      color: #fff;
+      border: 1px solid #000;
+    }
+    {% comment %} .form__add-button:hover {
+      background: #fff;
+      color: #000;
+    } {% endcomment %}
+
+    .button-buy-now {
+      /* background: #f8f8f8; */
+      color: #000;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      justify-content: center;
+      border: 1px solid #000;
+    }
+    .button-buy-now.btn-diy:after{
+      background:#000;
+    }
+    .button-buy-now:hover {
+      color: #fff;
+    }
+    .button-buy-now span{
+      position: relative;
+      z-index: 3;
+    }
+
+    .btn-diy .loader-button__text{
+      position: relative;
+      z-index: 3;
+    }
+    .btn-diy:hover .loader-button__text{
+      color: #000;
+    }
+
+    .product-form .p-btn-hide {
+      display: none;
+    }
+    @media (min-width: 768px) {
+      .product-form-countdown-tip{
+          margin-bottom:10px;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .product-popup-img-diy .mb-box {
+        display: block;
+      }
+      .product-popup-img-diy .pc-box {
+        display: none;
+      }
+    }
 </style>
 <script
   type="text/javascript"
 >
   
-   function Countdownbar(endDate) {
+  function Countdownbar(endDate) {
     // 获取当前时间和结束时间
     let serverTimestamp = {{ 'now' | date: '%s' }};
     let currentServerTime = new Date(serverTimestamp * 1000); // 将秒转换为毫秒
@@ -695,7 +695,7 @@
               alt="{{ block.settings.image.alt | escape }}"
             >
           </div>
-          {%- endif -%}
+        {%- endif -%}
         {%- comment -%}
           ----------------------------------------------------------------------------------------------------------------
           BUTTON
@@ -827,6 +827,7 @@
           PRODUCT DESCRIPTION
           ----------------------------------------------------------------------------------------------------------------
         {%- endcomment -%}
+
       {%- when 'description' -%}
         <div class="description-cont-flex">
           <div>
@@ -837,19 +838,19 @@
             {%- endif -%}
             <div class="product-form-countdown-tip">
               <div class="product-form-countdown" id="product-form-countdown"></div>
-              {% render "tip-custom" %}
+              {% render 'tip-custom' %}
             </div>
           </div>
           {%- if block.settings.image != blank -%}
             <div class="coupon-img-box-diy">
-                <img
-                  loading="lazy"
-                  class="bg-img pc-box coupon-img-box-btn"
-                  width="{{ block.settings.image.width }}"
-                  height="{{ block.settings.image.height }}"
-                  {% render 'image-attributes', image: block.settings.image %}
-                  alt="{{ block.settings.image.alt | escape }}"
-                >
+              <img
+                loading="lazy"
+                class="bg-img pc-box coupon-img-box-btn"
+                width="{{ block.settings.image.width }}"
+                height="{{ block.settings.image.height }}"
+                {% render 'image-attributes', image: block.settings.image %}
+                alt="{{ block.settings.image.alt | escape }}"
+              >
             </div>
           {%- endif -%}
           {% if block.settings.liquid != blank %}
@@ -1015,7 +1016,15 @@
                       data-use-primary
                     {% endunless %}
                     data-product-add-to-cart-button
-                    data-button-content="{% if product.template_suffix == 'pre-order' %}{{ 'product.form.pre_order' | t | escape }}{% else %}{{ 'product.form.add_to_cart' | t | escape }}{% endif %}"
+                    data-button-content="{% if product.template_suffix == 'pre-order' %}
+                      {{ 'product.form.pre_order' | t | escape }}
+                      {% else %}
+                        {% if block.settings.text != blank %}  
+                            {{ block.settings.text }}
+                        {%- else -%}
+                          {{ 'product.form.add_to_cart' | t | escape }}
+                        {%- endif -%}
+                    {% endif %}"
                     class="button form__add-button btn-diy {% unless product.selected_or_first_available_variant.available %}
                       button--ternary
                     {%- endunless -%}"
@@ -1032,7 +1041,11 @@
                       {%- if product.template_suffix == 'pre-order' -%}
                         {{- 'product.form.pre_order' | t -}}
                       {%- else -%}
-                        {{- 'product.form.add_to_cart' | t -}}
+                        {% if block.settings.text != blank %}  
+                            {{ block.settings.text }}
+                        {%- else -%}
+                          {{- 'product.form.add_to_cart' | t -}}
+                        {%- endif -%}
                       {%- endif -%}
                     {%- else -%}
                       {{- 'product.form.sold_out' | t -}}
@@ -1091,13 +1104,14 @@
             </store-pickup>
           {%- endif -%}
         {%- endcapture -%}
+        <div class="product-form-flex">
+          {{- variant_picker_info -}}
+          {{- quantity_selector_info -}}
+        </div>
+        {{- buy_buttons_info -}}
     {%- endcase -%}
   {%- endfor -%}
-  <div class="product-form-flex">
-    {{- variant_picker_info -}}
-    {{- quantity_selector_info -}}
-  </div>
-  {{- buy_buttons_info -}}
+
   {{- match_info -}}
   {%- comment -%}
     IMPLEMENTATION NOTE: under rare circumstances, merchant may want to show selectors but hide the add to cart button. This
@@ -1112,7 +1126,7 @@
     {%- endform -%}
   {%- endif -%}
 </div>
- {% render "product-slidebar-info" %}
+{% render 'product-slidebar-info' %}
 
 {%- if template.suffix == 'quick-buy-drawer' -%}
   <div class="product-form__view-details">

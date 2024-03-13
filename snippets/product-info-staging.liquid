@@ -31,60 +31,19 @@
       <h2 class="product-meta__vendor heading heading--small">{{ product.metafields.custom.subhead.value }}</h2>
     {%- endif -%}
     <div class="product-meta__price-list-container" role="region" aria-live="polite">
-      <div class="price-list" data-product-price-list>
-        {%- if product.selected_or_first_available_variant.compare_at_price
-            > product.selected_or_first_available_variant.price
-        -%}
-          <span class="price price--highlight price--large">
-            <span class="visually-hidden">{{ 'product.general.sale_price' | t }}</span>
-
-            {%- if settings.currency_code_enabled -%}
-              {{- product.selected_or_first_available_variant.price | money_with_currency -}}
-            {%- else -%}
-              {{- product.selected_or_first_available_variant.price | money -}}
-            {%- endif -%}
-          </span>
-
-          <span class="price price--compare">
-            <span class="visually-hidden">{{ 'product.general.regular_price' | t }}</span>
-
-            {%- if settings.currency_code_enabled -%}
-              {{- product.selected_or_first_available_variant.compare_at_price | money_with_currency -}}
-            {%- else -%}
-              {{- product.selected_or_first_available_variant.compare_at_price | money -}}
-            {%- endif -%}
-          </span>
-        {%- else -%}
-          <span class="price price--large">
-            <span class="visually-hidden">{{ 'product.general.sale_price' | t }}</span>
-            {%- if settings.currency_code_enabled -%}
-              {{- product.selected_or_first_available_variant.price | money_with_currency -}}
-            {%- else -%}
-              {{- product.selected_or_first_available_variant.price | money -}}
-            {%- endif -%}
-          </span>
-        {%- endif -%}
-
-        {%- if product.selected_or_first_available_variant.unit_price_measurement -%}
-          <div class="price text--subdued">
-            <div class="unit-price-measurement">
-              <span class="unit-price-measurement__price">
-                {{- product.selected_or_first_available_variant.unit_price | money -}}
-              </span>
-              <span class="unit-price-measurement__separator">/</span>
-
-              {%- if product.selected_or_first_available_variant.unit_price_measurement.reference_value != 1 -%}
-                <span class="unit-price-measurement__reference-value">
-                  {{- product.selected_or_first_available_variant.unit_price_measurement.reference_value -}}
-                </span>
-              {%- endif -%}
-
-              <span class="unit-price-measurement__reference-unit">
-                {{- product.selected_or_first_available_variant.unit_price_measurement.reference_unit -}}
-              </span>
-            </div>
-          </div>
-        {%- endif -%}
+      <div class="price-list">
+        <span class="price price--large">
+          {% comment %} <span class="visually-hidden">{{ 'product.general.sale_price' | t }}</span> {% endcomment %}
+          Now £219
+          <span
+            style="
+              color: #9b9b9b;
+              margin-left: 10px;
+              text-decoration: line-through;
+            "
+            >Was £319</span
+          >
+        </span>
       </div>
 
       <div class="product-meta__label-list label-list" data-product-label-list>
@@ -379,6 +338,7 @@
   // ga 事件名称，用来区别不一样的产品
   var gaName = '';
    window.addEventListener('load', function () {
+    setCookie("discount_code", "UlikeFB", 1);
     // 增加GA埋点
     var productId = '{{ product.id }}';
     if (productId === '8192641794335') {
@@ -394,7 +354,12 @@
       commonGtmEvent(gaName + '商详-IPL quiz', 'click', '');
     });
     $('.product-form').on('click', '#AddToCart', function () {
+      $('.spp2__widget .spp2__widget-option').eq(1).find('.spp2__payment-option-label').click();
       commonGtmEvent(gaName + '商详-add cart', 'click', '');
+      setTimeout(function(){
+        $('#scDiscountApp #code').val('ULIKEFB');
+        $('#scDiscountApp #submit').click()
+      }, 3000)
     });
     $('.product-form').on('click', '.shopify-payment-button__button', function () {
       commonGtmEvent(gaName + '商详-buy now', 'click', '');
@@ -419,7 +384,6 @@
       'click',
       'shopify-section-template--20413464117535__90c8af6d-b8be-4a70-ba15-62cb64f40da7 .image-comparison__button',
       function () {
-        console.log(1111);
         let index = $(
           'shopify-section-template--20413464117535__90c8af6d-b8be-4a70-ba15-62cb64f40da7 .product__result-item .product-results__sliders-list:visible'
         ).attr('index');
@@ -434,7 +398,12 @@
     );
 
     {% comment %}  分期付款 {% endcomment %}
-    $('.spp2__widget .spp2__widget-option').eq(1).find('.spp2__payment-option-label').click()
+    $('.spp2__widget .spp2__widget-option').eq(1).find('.spp2__payment-option-label').click();
+    $('.spp2__widget .spp2__widget-param:nth-child(1)').hide();
+    setTimeout(function(){
+      setCookie("discount_code", "UlikeFB", 3);
+      $('.spp2__widget .spp2__widget-option').eq(1).find('.spp2__payment-option-label').click()
+    }, 2000)
     $('.spp2__widget .spp2__widget-option').hide();
   });
 </script>

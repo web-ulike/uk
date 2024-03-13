@@ -117,6 +117,7 @@
   margin-top: 55px;
   cursor: pointer;
   border: 2px solid #000;
+      border-radius: 52px;
 }
 
 .before-after-box .before-after-text-btn:hover .btn-txt::before{
@@ -355,9 +356,24 @@
     line-height: 1.2;
   }
 }
+
+  .before-after-box.meta_b .before-after-text-btn {
+    width: 181px;
+    height: 44px;
+    border: 1px solid #000;
+    border-radius: 52px;
+}
+
+  @media (max-width: 991px){
+      .before-after-box.meta_b .before-after-text-btn {
+    font-size: 14px;
+    margin-top: 30px;
+    width: 100%;
+}
+  }
 </style>
 <section class="section-box">
-  <div class="before-after-box">
+  <div class="before-after-box{% if section.settings.custom_class != blank %} {{section.settings.custom_class}}{% endif %}">
     <div class="container">
       {%- if section.settings.image != blank -%}
         <img loading="lazy" class="bg-img" width="{{ section.settings.image.width }}" height="{{ section.settings.image.height }}" {% render 'image-attributes', image: section.settings.image %} alt="{{ section.settings.image.alt | escape }}" >
@@ -572,6 +588,11 @@
   }
 ],
 "settings": [
+   {
+      "type": "text",
+      "id": "custom_class",
+      "label": "Custom Class"
+    },
   {
     "type": "image_picker",
     "id": "image",

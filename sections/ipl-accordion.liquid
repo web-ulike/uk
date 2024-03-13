@@ -1,0 +1,897 @@
+<style>
+.ipl-accordion{
+  padding: 80px 0;
+  background: #f9f9f9;
+  position: relative;
+  overflow: hidden;
+}
+
+.ipl-accordion .ipl-accordion-list{
+  display: flex;
+  gap: 13px;
+  margin-top: 60px;
+  justify-content: space-between;
+}
+
+.ipl-accordion .ipl-accordion-item{
+  width: 15.5%;
+  position: relative;
+  overflow: hidden;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.ipl-accordion .ipl-accordion-item .img{
+  display: block;
+  height: 100%;
+  width: auto;
+  margin: 0 auto;
+  max-width: none;
+  z-index: 1;
+  position: absolute;
+  left: 50%;
+  top: 0;
+  transform: translateX(-50%);
+}
+
+.ipl-accordion .ipl-accordion-item.active .img{
+  width: 100%;
+  height: auto;
+  position: relative;
+  left: 0;
+  transform: translateX(0);
+  min-height: 100%;
+  object-fit: cover;
+}
+
+.ipl-accordion .ipl-accordion-item.active{
+  width: 34.69%;
+}
+
+.ipl-accordion .ipl-accordion-txt{
+  position: absolute;
+  width: 100%;
+  left: 0;
+  bottom: 25px;
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 2;
+}
+
+.ipl-accordion .ipl-accordion-p{
+  font-size: 20px;
+  line-height: 1.2;
+  color: #fff;
+  font-family: var(--heading-font-family);
+  flex-shrink: 0;
+  width: 100%;
+  max-width: 100%;
+  transition: width 0.8s cubic-bezier(0.4, 0.2, 0.2, 1);
+}
+
+.ipl-accordion .active .ipl-accordion-p{
+  width: auto;
+  flex: 1;
+}
+
+.ipl-accordion .ipl-accordion-btn{
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #fff;
+  position: relative;
+  margin-left: 15px;
+  cursor: pointer;
+  flex-shrink: 0;
+  transform: translateX(100px);
+  transition: transform 0.8s cubic-bezier(0.4, 0.2, 0.2, 1);
+  animation: pulse-shadow 2s infinite
+}
+
+@keyframes pulse-shadow {
+  0% {
+      box-shadow: 0 0 0 0 rgba(255,255,255,0.7)
+  }
+
+  70% {
+      box-shadow: 0 0 0 10px rgba(255,255,255,0)
+  }
+
+  100% {
+      box-shadow: 0 0 0 0 rgba(255,255,255,0)
+  }
+}
+
+.ipl-accordion .active .ipl-accordion-btn{
+  transform: translateX(0px);
+}
+
+.ipl-accordion .ipl-accordion-btn::before,.ipl-accordion .ipl-accordion-btn::after{
+  position: absolute;
+  content: '';
+  display: block;
+  background: #000;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+}
+
+.ipl-accordion .ipl-accordion-btn::before{
+  width: 12px;
+  height: 2px;
+}
+
+.ipl-accordion .ipl-accordion-btn::after{
+  width: 2px;
+  height: 12px;
+}
+
+.ipl-accordion-popup{
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background: rgba(0, 0, 0, .4);
+  backdrop-filter: blur(10px);
+  z-index: 99;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.ipl-accordion-popup.open{
+  pointer-events: all;
+  opacity: 1;
+  transition: all .8s cubic-bezier(0.645, 0.045, 0.355, 1);
+}
+
+
+.ipl-accordion-popup .ipl-accordion-popup-cont{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  width: 95%;
+  max-width: 1000px;
+}
+
+.ipl-accordion-popup .ipl-accordion-popup-box{
+  background: #fff;
+  border-radius: 10px;
+  padding: 35px;
+  color: #000;
+  line-height: 1.2;
+  transform: rotateX(35deg) scaleY(.8);
+  opacity: .5;
+  transition: all .5s cubic-bezier(0.645, 0.045, 0.355, 1);
+}
+.ipl-accordion-popup.open .ipl-accordion-popup-box{
+  transform: rotateX(0deg) scaleY(1);
+  opacity: 1;
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+}
+  
+.ipl-accordion-popup .ipl-accordion-popup-guide{
+  position: absolute;
+  width: 100%;
+  left: 0;
+  bottom: 0;
+  z-index: 2;
+  padding-top: 80px;
+  pointer-events: none;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1) 80%);
+  display: none;
+}
+  
+.ipl-accordion-popup .ipl-accordion-popup-guide img{
+  width: 100px;
+  display: block;
+  margin: 0 auto;
+  animation: img-translate 1s linear infinite;
+}
+
+@keyframes img-translate {
+  0% {
+    transform: translate3d(0,10%,0);
+    opacity: 1;
+  }
+  100% {
+    transform: translate3d(0,-10%,0);
+    opacity: 0;
+  }
+}
+  
+.ipl-accordion-popup .ipl-accordion-popup-h3{
+  font-size: 30px;
+  font-family: var(--heading-font-family);
+}
+
+.ipl-accordion-popup .ipl-accordion-popup-p{
+  font-size: 16px;
+  margin-top: 15px;
+}
+
+.ipl-accordion-popup .ipl-accordion-popup-p p{
+  margin: 0;
+}
+
+.ipl-accordion-popup .ipl-accordion-popup-p li{
+  font-size: 25px;
+  position: relative;
+}
+
+.ipl-accordion-popup .ipl-accordion-popup-list{
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.ipl-accordion-popup .ipl-accordion-popup-item{
+  flex: 1;
+}
+
+.ipl-accordion-popup .p-img{
+  display: block;
+  width: 100%;
+}
+
+.ipl-accordion-popup .ipl-accordion-popup-txt{
+  font-size: 18px;
+  margin-top: 10px;
+  text-align: center;
+}
+
+.ipl-accordion-popup .ipl-accordion-popup-txt p{
+  margin: 0;
+}
+
+.ipl-accordion-popup .ipl-accordion-popup-txt strong{
+  font-weight: normal;
+  font-family: var(--heading-font-family);
+}
+
+.ipl-accordion-popup .ipl-accordion-popup-close{
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin: 0 auto;
+  margin-top: 15px;
+  cursor: pointer;
+  border: 2px solid #fff;
+  position: relative;
+  transition: transform .5s cubic-bezier(0.645, 0.045, 0.355, 1);
+}
+
+.ipl-accordion-popup .ipl-accordion-popup-close:hover{
+  transform: rotate(360deg);
+}
+
+.ipl-accordion-popup .ipl-accordion-popup-close::after,
+.ipl-accordion-popup .ipl-accordion-popup-close::before{
+  position: absolute;
+  content: '';
+  display: block;
+  width: 2px;
+  height: 15px;
+  background: #fff;
+  left: 50%;
+  top: 50%;
+}
+
+.ipl-accordion-popup .ipl-accordion-popup-close::after{
+  transform: translate(-50%,-50%) rotate(45deg);
+}
+
+.ipl-accordion-popup .ipl-accordion-popup-close::before{
+  transform: translate(-50%,-50%) rotate(-45deg);
+}
+
+.ipl-accordion .ipl-accordion-cont{
+  position: relative;
+  z-index: 1;
+}
+
+.ipl-accordion .ipl-accordion-arraw{
+  position: absolute;
+  width: 100%;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 3;
+  justify-content: space-between;
+  display: none;
+  pointer-events: none;
+}
+
+.ipl-accordion .ipl-accordion-arraw-item{
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #000;
+  transition: all .4s ease;
+  position: relative;
+  cursor: pointer;
+  pointer-events: all;
+}
+
+.ipl-accordion .ipl-accordion-arraw-item:last-child{
+  transform: scale(-1,-1);
+}
+
+.ipl-accordion .ipl-accordion-arraw-item::before{
+  position: absolute;
+  content: '';
+  display: block;
+  width: 10px;
+  height: 10px;
+  top: 50%;
+  left: 50%;
+  border-left: 2px solid #fff;
+  border-top: 2px solid #fff;
+  transform: translate(-50%,-50%) rotate(-45deg);
+  margin-left: 2px;
+  transition: all .4s ease;
+}
+
+.ipl-accordion .ipl-accordion-arraw-item:hover{
+  background: #fff;
+}
+
+.ipl-accordion .ipl-accordion-arraw-item:hover::before{
+  border-color: #000;
+}
+
+  .ipl-accordion-popup .ipl-accordion-popup-p ul{
+    list-style: none;
+    position: relative;
+  }
+
+  .ipl-accordion-popup .ipl-accordion-popup-p li{
+    margin-bottom: 45px;
+    position: relative;
+  }
+  .ipl-accordion-popup .ipl-accordion-popup-p li:last-child{
+    margin-bottom: 0;
+  }
+  
+  .ipl-accordion-popup .ipl-accordion-popup-p strong{
+    font-weight: normal;
+    font-family: var(--heading-font-family);
+  }
+  
+  .ipl-accordion-popup .ipl-accordion-popup-p li::before{
+    position: absolute;
+    content: '';
+    display: block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    top: 12px;
+    left: -30px;
+    background: #e7004c;
+    box-shadow: 0 0 0 5px rgba(231,0,76,0.3);
+    z-index: 2;
+  }
+  
+  .ipl-accordion-popup .ipl-accordion-popup-p li::after{
+    position: absolute;
+    content: '';
+    display: block;
+    width: 2px;
+    height: calc(100% + 50px);
+    left: -24.5px;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    z-index: 1;
+    background: #eee;
+  }
+  
+  .ipl-accordion-popup .ipl-accordion-popup-p li:first-child:after{
+    top: 20px;
+    transform: translateX(-50%);
+  }
+  
+  .ipl-accordion-popup .ipl-accordion-popup-p li:last-child:after{
+    top: auto;
+    transform: translateX(-50%);
+    bottom: calc(100% - 20px);
+  }
+
+@media (max-width:1300px) {
+  .ipl-accordion .ipl-accordion-p{
+    font-size: 16px;
+  }
+}
+
+@media (max-width:991px) {
+  .ipl-accordion{
+    padding: 50px 0;
+  }
+
+  .ipl-accordion .ipl-accordion-list{
+    margin-top: 30px;
+    gap: 0;
+  }
+
+  .ipl-accordion .ipl-accordion-item,.ipl-accordion .ipl-accordion-item.active{
+    width: 280px;
+    flex-shrink: 0;
+    margin-left: 31px;
+  }
+
+  .ipl-accordion .active .ipl-accordion-p{
+    font-size: 13px;
+  }
+
+  .ipl-accordion .ipl-accordion-txt{
+    bottom: 20px;
+    padding: 0 15px;
+  }
+
+  .ipl-accordion .ipl-accordion-btn{
+    transform: translateX(0);
+    zoom: .8;
+  }
+
+  .ipl-accordion .ipl-accordion-p{
+    width: auto;
+    flex: 1;
+  }
+
+  .ipl-accordion .ipl-accordion-arraw{
+    display: flex;
+    padding: 0 12px;
+  }
+  .ipl-accordion-popup .ipl-accordion-popup-box{
+    padding:20px;
+  }
+  .ipl-accordion-popup .ipl-accordion-popup-scroll{
+    max-height: 400px;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    margin: 0 -13px;
+    padding: 0 13px;
+    scrollbar-width: thin;
+    position: relative;
+    z-index: 1;
+  }
+
+  .ipl-accordion-popup .ipl-accordion-popup-list{
+   flex-direction: column;
+  }
+
+  .ipl-accordion-popup .ipl-accordion-popup-h3{
+    font-size: 20px;
+  }
+
+  .ipl-accordion-popup .ipl-accordion-popup-p{
+    font-size: 14px;
+  }
+
+  .ipl-accordion-popup .ipl-accordion-popup-txt{
+    font-size: 16px;
+  }
+  .ipl-accordion-popup .ipl-accordion-popup-p li{
+    font-size:16px;
+  }
+  
+  .ipl-accordion-popup .ipl-accordion-popup-guide{
+    display:block;
+    transition: all .5s cubic-bezier(0.645, 0.045, 0.355, 1);
+  }
+  .ipl-accordion-popup.hide-guide .ipl-accordion-popup-guide{
+    opacity: 0;
+  }
+   .ipl-accordion-popup .ipl-accordion-popup-p li::before{
+     top:7px;
+   }
+  .ipl-accordion-popup .ipl-accordion-popup-p li:first-child:after{
+    top:15px;
+  }
+  .ipl-accordion-popup .ipl-accordion-popup-p li:last-child:after{
+    bottom: calc(100% - 15px);
+  }
+  .ipl-accordion-popup .ipl-accordion-popup-p li{
+    margin-bottom:20px;
+  }
+}
+
+</style>
+<section class="section-box">
+  <div class="ipl-accordion">
+    <div class="container">
+      <div class="title-diy to-top">{{ section.settings.title }}</div>
+      <div class="ipl-accordion-cont">
+        <div class="ipl-accordion-list">
+          {%- for block in section.blocks -%}
+          <div class="ipl-accordion-item active to-top" style="transition-delay: 0.{{ forloop.index }}s" data-index="{{ forloop.index }}">
+            {%- if block.settings.image != blank -%}
+               <img loading="lazy" class="img" width="{{ block.settings.image.width }}" height="{{ block.settings.image.height }}" {% render 'image-attributes', image: block.settings.image %} alt="{{ block.settings.image.alt | escape }}" >
+            {%- endif -%}
+            <div class="ipl-accordion-txt">
+              <div class="ipl-accordion-p">{{ block.settings.text }}</div>
+              <div class="ipl-accordion-btn"></div>
+            </div>
+          </div>
+          <div class="ipl-accordion-popup">
+            <div class="ipl-accordion-popup-cont">
+              <div class="ipl-accordion-popup-box">
+                <div class="ipl-accordion-popup-scroll">
+                  <div class="ipl-accordion-popup-h3">{{ block.settings.text }}</div>
+                  {%- if block.settings.text1 != blank -%}
+                    <div class="ipl-accordion-popup-p">{{ block.settings.text1 }}</div>
+                  {%- endif -%}
+                  <div class="ipl-accordion-popup-list">
+                    {%- if block.settings.image1 != blank -%}
+                      <div class="ipl-accordion-popup-item">
+                        <img loading="lazy" class="p-img" width="{{ block.settings.image1.width }}" height="{{ block.settings.image1.height }}" {% render 'image-attributes', image: block.settings.image1 %} alt="{{ block.settings.image1.alt | escape }}" >
+                        {%- if block.settings.text2 != blank -%}
+                          <div class="ipl-accordion-popup-txt">
+                            {{ block.settings.text2 }}
+                          </div>
+                        {%- endif -%}
+                      </div>
+                    {%- endif -%}
+                    {%- if block.settings.image2 != blank -%}
+                      <div class="ipl-accordion-popup-item">
+                        <img loading="lazy" class="p-img" width="{{ block.settings.image2.width }}" height="{{ block.settings.image2.height }}" {% render 'image-attributes', image: block.settings.image2 %} alt="{{ block.settings.image2.alt | escape }}" >
+                        {%- if block.settings.text3 != blank -%}
+                          <div class="ipl-accordion-popup-txt">
+                            {{ block.settings.text3 }}
+                          </div>
+                        {%- endif -%}
+                      </div>
+                    {%- endif -%}
+                    {%- if block.settings.image3 != blank -%}
+                    <div class="ipl-accordion-popup-item">
+                      <img loading="lazy" class="p-img" width="{{ block.settings.image3.width }}" height="{{ block.settings.image3.height }}" {% render 'image-attributes', image: block.settings.image3 %} alt="{{ block.settings.image3.alt | escape }}" >
+                      {%- if block.settings.text4 != blank -%}
+                        <div class="ipl-accordion-popup-txt">
+                          {{ block.settings.text4 }}
+                        </div>
+                      {%- endif -%}
+                    </div>
+                    {%- endif -%}
+                  </div>
+                  <div class="ipl-accordion-popup-p">
+                    {{ block.settings.text5 }}
+                  </div>
+                </div>
+                {%- if forloop.index < 4 and forloop.index != 1 -%}
+                  <div class="ipl-accordion-popup-guide">
+                    <img src="https://cdn.shopify.com/s/files/1/0656/9079/6273/files/tah.svg" alt="">
+                  </div>
+                {%- endif -%}
+              </div>
+              <div class="ipl-accordion-popup-close"></div>
+            </div>
+          </div>
+          {%- endfor -%}
+        </div>
+        <div class="ipl-accordion-arraw to-opacity">
+          <div class="ipl-accordion-arraw-item"></div>
+          <div class="ipl-accordion-arraw-item"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    window.addEventListener('load', function () {
+      let accTimer = null
+      $('html').on('click','.ipl-accordion-popup .ipl-accordion-popup-close',function(){
+        $(this).parents('.ipl-accordion-popup').removeClass('open')
+        $('.ipl-accordion-addHtml').remove()
+        clearTimeout(accTimer)
+      })
+      if (window.innerWidth > 991) {
+        $('.ipl-accordion .ipl-accordion-item').click(function(){
+          $('body').append(`<div class="ipl-accordion-addHtml">${$(this).next()[0].outerHTML}</div>`)
+            setTimeout(() => {
+              $('.ipl-accordion-addHtml .ipl-accordion-popup').addClass('open')
+            }, 50);
+        })
+        $('.ipl-accordion .ipl-accordion-item').css({
+          height:
+            $('.ipl-accordion .ipl-accordion-item')[0].offsetHeight + 'px',
+          width: '15.5%',
+        })
+        $('.ipl-accordion .ipl-accordion-item.active').css({
+          width: '34.69%',
+        })
+        // $('.ipl-accordion .ipl-accordion-item').hover(function () {
+        //   if ($(this).hasClass('active')) return
+        //   $(this).addClass('active').siblings().removeClass('active')
+        //   $(this)
+        //     .stop(true)
+        //     .animate({ width: '34.69%' }, 600)
+        //     .siblings('.ipl-accordion-item')
+        //     .stop(true)
+        //     .animate({ width: '15.5%' }, 600)
+        // })
+      }else{
+        function mediaRealSlider(name){
+          let $p=$(name)
+          let $list = $p.find('.ipl-accordion-list')
+          let $bottomArrow = $p.find('.ipl-accordion-arraw')
+          let width = $list.find('.ipl-accordion-item')[0].offsetWidth
+          let length = $list.find('.ipl-accordion-item').length
+          let index = -length //[0,-length-2]
+          let isLeftBtn = 1 //0左 1右
+          let timer = null
+          let timers = null
+          let dateTb = 0
+          let dateTs = 0
+          $list.html($list.html().repeat(3))
+          skewTransform(true)
+          $p.find('.ipl-accordion-arraw-item').click(function() {
+              let sIndex = $(this).index()
+              if(+new Date() - dateTb<600) return
+              dateTb = +new Date()
+              isLeftBtn = sIndex
+              index += sIndex ? -1 : 1
+              clearInterval(timer)
+              changeLeft()
+              timer = setInterval(() => {
+                  isLeftBtn = 1
+                  index--
+                  changeLeft()
+              }, 5000);
+          })
+          $p.find('.ipl-accordion-item').click(function(e){
+            e.stopPropagation()
+            $('body').append(`<div class="ipl-accordion-addHtml">${$(this).next()[0].outerHTML}</div>`)
+            setTimeout(() => {
+              $('.ipl-accordion-addHtml .ipl-accordion-popup').addClass('open')
+            }, 50);
+            accTimer = setTimeout(() => {
+              $('.ipl-accordion-addHtml .ipl-accordion-popup').addClass('hide-guide')
+            }, 3000);
+          })
+          function skewTransform(auto,tIndex = index,skew=0){
+              let translateX = (width + 31) * tIndex
+              if(auto){
+                  translateX+=skew
+                  $list.css({
+                      'transform': 'translateX(' + translateX  + 'px)',
+                      'transition': ' all 0s ease'
+                  })
+              }else{
+                  $list.css({
+                      'transform': 'translateX(' + translateX + 'px)',
+                      'transition': ' all .6s ease'
+                  })
+              }
+          }
+          function changeLeft(skew) {
+            if(isLeftBtn && index == -2*length){
+                skewTransform(true,-length + 1,skew)
+                index = -length
+            }
+            if(!isLeftBtn && index == -length + 1){
+                skewTransform(true,-2*length,skew)
+                index = -2*length + 1
+            }
+            setTimeout(() => {
+                skewTransform()
+            }, 10);
+          }
+
+          function getTranslateX($element) {
+              var matrix = $element.css('transform').replace(/[^0-9\-.,]/g, '').split(',');
+              var translateX = parseFloat(matrix[12] || matrix[4]);
+              return translateX;
+          }
+          
+          function initMobileCarousel() {
+            let startX = 0;
+            let listTar = 0;
+            let startY = 0;
+            let isScrolling = false;
+            let isDragging = false;
+
+            function clearTimer() {
+              if (timer) {
+                clearInterval(timer);
+                timer = null;
+              }
+            }
+
+            function setAutoPlay() {
+              clearTimer();
+              timer = setInterval(() => {
+                isLeftBtn = 1;
+                index--;
+                changeLeft();
+              }, 5000);
+            }
+
+            $list.on('touchstart mousedown', function(e) {
+              clearTimer();
+
+              if (e.type === 'touchstart') {
+                var touch = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
+                startX = touch.clientX;
+                startY = touch.clientY;
+              } else {
+                startX = e.clientX;
+                startY = e.clientY;
+              }
+
+              isScrolling = false;
+              isDragging = true;
+              listTar = getTranslateX($list);
+
+              $(document).on('touchmove mousemove', handleMove);
+              $(document).on('touchend mouseup', handleEnd);
+            });
+
+            function handleMove(e) {
+              if (isDragging) {
+                if (e.type === 'touchmove') {
+                  var touch = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
+                  var diffX = touch.clientX - startX;
+                  var diffY = touch.clientY - startY;
+                } else {
+                  var diffX = e.clientX - startX;
+                  var diffY = e.clientY - startY;
+                }
+
+                var translateX = listTar + diffX;
+
+                if (!isScrolling) {
+                  if (Math.abs(diffX) > Math.abs(diffY)) {
+                      isScrolling = true;
+                  }
+                }
+
+                if (isScrolling && e.cancelable) {
+                  e.preventDefault();
+                  $list.css({'transform': 'translateX(' + translateX + 'px)', 'transition': 'all 0s ease'});
+                }
+              }
+            }
+
+            function handleEnd(e) {
+              if (isDragging) {
+                  $(document).off('touchmove mousemove', handleMove);
+                  $(document).off('touchend mouseup', handleEnd);
+
+                  if (isScrolling) {
+                    if (e.type === 'touchend') {
+                      var touch = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
+                      var diffX = touch.clientX - startX;
+                    } else {
+                      var diffX = e.clientX - startX;
+                    }
+
+                    if (Math.abs(diffX) > window.innerWidth * 0.05) {
+                      if (diffX > 0) {
+                        index = index + 1;
+                        isLeftBtn = 0;
+                      } else {
+                        index = index - 1;
+                        isLeftBtn = 1;
+                      }
+                      changeLeft(diffX);
+                    }else{
+                      $list.css({'transform': 'translateX(' + listTar + 'px)', 'transition': 'all .4s ease'});
+                    }
+                  }
+
+                  isScrolling = false;
+                  isDragging = false;
+                  setAutoPlay(); // 保证只触发一次自动播放
+              }
+            }
+          }
+
+          initMobileCarousel()
+          clearInterval(timer)
+          timer = setInterval(() => {
+              isLeftBtn = 1
+              index--
+              changeLeft()
+          }, 5000);
+
+        $list.hover(function(){
+          clearInterval(timer)
+        },function(){
+          clearInterval(timer)
+          timer = setInterval(() => {
+              isLeftBtn = 1
+              index--
+              changeLeft()
+          }, 5000);
+        }) 
+      }
+      
+      mediaRealSlider('.ipl-accordion')
+      }
+    })
+  </script>
+</section>
+
+{% schema %}
+{
+  "name": "ipl-accordion",
+  "blocks": [
+    {
+      "name": "item",
+      "type": "item",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text"
+        },
+        {
+          "type": "header",
+          "content": "Popup Details"
+        },
+        {
+          "type": "text",
+          "id": "text1",
+          "label": "Text"
+        },
+        {
+          "type": "image_picker",
+          "id": "image1",
+          "label": "Image"
+        },
+        {
+          "type": "richtext",
+          "id": "text2",
+          "label": "Text"
+        },
+        {
+          "type": "image_picker",
+          "id": "image2",
+          "label": "Image"
+        },
+        {
+          "type": "richtext",
+          "id": "text3",
+          "label": "Text"
+        },
+        {
+          "type": "image_picker",
+          "id": "image3",
+          "label": "Image"
+        },
+        {
+          "type": "richtext",
+          "id": "text4",
+          "label": "Text"
+        },
+        {
+          "type": "richtext",
+          "id": "text5",
+          "label": "Text"
+        }
+      ]
+    }
+  ],
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title"
+    }
+  ],
+  "presets": [
+    {
+      "name": "ipl-accordion",
+      "blocks": []
+    }
+  ]
+}
+{% endschema %}
