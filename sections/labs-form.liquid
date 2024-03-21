@@ -1,0 +1,312 @@
+<style>
+.labs-form{
+  padding: 100px 0;
+  position: relative;
+  overflow: hidden;
+}
+.labs-form::before{
+  position: absolute;
+  content: '';
+  display: block;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 200%;
+  transform: scale(-1,1);
+  z-index: 0;
+  background: #d30534;
+  background-image: 
+      radial-gradient(closest-side, rgba(211, 5, 52, 1), rgba(211, 5, 52, 0)),
+      radial-gradient(closest-side, rgba(178, 1, 37, 1), rgba(178, 1, 37, 0)),
+      radial-gradient(closest-side, rgba(240, 66, 113, 1), rgba(240, 66, 113, 0)),
+      radial-gradient(closest-side, rgba(255, 255, 255, 1), rgba(254, 215, 227, 0)),
+      radial-gradient(closest-side, rgba(190, 67, 95, 1), rgba(190, 67, 95, 0));
+      background-size: 
+      130vmax 130vmax,
+      80vmax 80vmax,
+      90vmax 90vmax,
+      110vmax 110vmax,
+      90vmax 90vmax;
+    background-position:
+      -80vmax -80vmax,
+      60vmax -30vmax,
+      10vmax 10vmax,
+      -30vmax -10vmax,
+      50vmax 50vmax;
+    background-repeat: no-repeat;
+    backdrop-filter: blur(10px);
+    animation: 10s movement linear infinite;
+}
+
+@keyframes movement {
+  0%, 100% {
+    background-size: 
+      130vmax 130vmax,
+      80vmax 80vmax,
+      90vmax 90vmax,
+      110vmax 110vmax,
+      90vmax 90vmax;
+    background-position:
+      -80vmax -80vmax,
+      60vmax -30vmax,
+      10vmax 10vmax,
+      -30vmax -10vmax,
+      50vmax 50vmax;
+  }
+  25% {
+    background-size: 
+      100vmax 100vmax,
+      90vmax 90vmax,
+      100vmax 100vmax,
+      90vmax 90vmax,
+      60vmax 60vmax;
+    background-position:
+      -60vmax -90vmax,
+      50vmax -40vmax,
+      0vmax -20vmax,
+      -40vmax -20vmax,
+      40vmax 60vmax;
+  }
+  50% {
+    background-size: 
+      80vmax 80vmax,
+      110vmax 110vmax,
+      80vmax 80vmax,
+      60vmax 60vmax,
+      80vmax 80vmax;
+    background-position:
+      -50vmax -70vmax,
+      40vmax -30vmax,
+      10vmax 0vmax,
+      20vmax 10vmax,
+      30vmax 70vmax;
+  }
+  75% {
+    background-size: 
+      90vmax 90vmax,
+      90vmax 90vmax,
+      100vmax 100vmax,
+      90vmax 90vmax,
+      70vmax 70vmax;
+    background-position:
+      -50vmax -40vmax,
+      50vmax -30vmax,
+      20vmax 0vmax,
+      -10vmax 10vmax,
+      40vmax 60vmax;
+  }
+}
+
+.labs-form .container{
+  max-width: 1400px;
+  position: relative;
+  z-index: 1;
+}
+
+.labs-form .labs-form-cont{
+  display: flex;
+  align-items: center;
+  gap: 40px;
+}
+
+.labs-form .labs-form-text{
+  flex: 1;
+  color: #fff;
+}
+
+.labs-form .labs-form-title{
+  font-size: 35px;
+  font-family: var(--heading-font-family);
+  line-height: 1.2;
+}
+
+.labs-form .labs-form-p{
+  font-size: 20px;
+  margin-top: 20px;
+  line-height: 1;
+}
+.labs-form .labs-form-el{
+  width: 35%;
+}
+.labs-form .labs-form-input{
+  width: 100%;
+  background: rgba(255, 255, 255, .5);
+  border-radius: 5px;
+  padding: 8px;
+  padding-left: 15px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  position: relative;
+  overflow: hidden;
+}
+
+.labs-form .form-mark{
+  position: absolute;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background: #fff;
+  opacity: 0;
+  pointer-events: none;
+  transition: all .4s ease;
+}
+
+.labs-form .labs-form-input img{
+  width: 30px;
+  display: block;
+  position: relative;
+}
+
+.labs-form .labs-form-input input{
+  flex: 1;
+  border: none;
+  background: none;
+  outline: 0;
+  color: #000;
+  font-size: 16px;
+  width: 10px;
+}
+
+.labs-form .labs-form-input input:focus +.form-mark{
+  opacity: 1;
+}
+
+.labs-form .labs-form-input input::placeholder {
+  color: #a98890;
+}
+
+.labs-form .labs-form-btn{
+  width: 135px;
+  height: 50px;
+  border-radius: 5px;
+  background: #e7004c;
+  font-size: 14px;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.labs-form .labs-form-btn .btn-txt::before{
+  color: #fff;
+}
+
+.labs-form .labs-form-btn:after{
+  background: #a30a41;
+}
+
+@media (max-width:991px) {
+  .labs-form{
+    padding: 60px 0;
+  }
+  .labs-form .labs-form-input{
+    width: 45%;
+  }
+}
+
+@media (max-width:740px) {
+  .labs-form .labs-form-title{
+    font-size: 28px;
+    line-height: 1;
+  }
+  .labs-form .labs-form-p{
+    font-size: 16px;
+    margin-top: 15px;
+  }
+  .labs-form .labs-form-cont{
+    align-items: normal;
+    flex-direction: column;
+    gap: 30px;
+  }
+  .labs-form .labs-form-text{
+    flex: none;
+  }
+  .labs-form .labs-form-input img{
+    width: 25px;
+  }
+  .labs-form .labs-form-el{
+    width: 100%;
+  }
+  .labs-form .labs-form-input{
+    width: 100%;
+    gap: 10px;
+  }
+  .labs-form .labs-form-input input{
+    font-size: 14px;
+  }
+  .labs-form .labs-form-btn{
+    height: 45px;
+    width: 120px;
+  }
+}
+</style>
+
+<section class="section-box">
+  <div class="labs-form to-top">
+    <div class="container">
+      <div class="labs-form-cont">
+        <div class="labs-form-text to-top" style="transition-delay: 0.1s">
+          <div class="labs-form-title">{{ section.settings.title }}</div>
+          <div class="labs-form-p">{{ section.settings.text }}</div>
+        </div>
+        <form method="post" action="/contact#contact_form" accept-charset="UTF-8" class="labs-form-el"
+          onsubmit="window.Shopify.recaptchaV3.addToken(this, 'customer'); return false;">
+          <input type="hidden" name="form_type" value="customer">
+          <input type="hidden" name="utf8" value="✓">
+          <input type="hidden" name="contact[tags]" value="newsletter">
+          <input type="hidden" name="contact[context]" value="">
+          <div class="labs-form-input to-top" style="transition-delay: 0.2s">
+            {%- if section.settings.image != blank -%}
+               <img loading="lazy" width="{{ section.settings.image.width }}" height="{{ section.settings.image.height }}" {% render 'image-attributes', image: section.settings.image %} alt="{{ section.settings.image.alt | escape }}" >
+            {%- endif -%}
+            <input type="email" id="newsletter[footer][contact][email]" name="contact[email]" required="" placeholder="{{ section.settings.text1 }}" />
+            <div class="form-mark"></div>
+            <button type="submit" class="labs-form-btn btn-diy">
+              <div class="btn-txt" text="{{ section.settings.text2 }}">
+                <span>{{ section.settings.text2 }}</span>
+              </div>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+{% schema %}
+{
+  "name": "labs-form",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "title"
+    },
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "text1",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "text2",
+      "label": "Text"
+    }
+  ],
+  "presets": [
+    {
+      "name": "labs-form"
+    }
+  ]
+}
+{% endschema %}

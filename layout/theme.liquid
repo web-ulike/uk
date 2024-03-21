@@ -14,6 +14,7 @@
 {%- endcase -%}
 <html class="no-js" lang="en-GB" dir="{{ direction }}">
   <head>
+    {% render 'gcm-integration-script' %}
     <!-- Google Tag Manager -->
     <script>
       (function (w, d, s, l, i) {
@@ -28,7 +29,6 @@
       })(window, document, 'script', 'dataLayer', 'GTM-P7ZBDPLR');
     </script>
     <!-- End Google Tag Manager -->
-
     <meta name="google-site-verification" content="7KQBy-K0xvi4A40MnKJwiMeOGqfli8b5ZhPqHHinHlE">
     <meta charset="utf-8">
     <meta
@@ -142,40 +142,197 @@
     <script src="https://www.dwin1.com/33267.js" type="text/javascript" defer="defer"></script>
 
     <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=AW-11232852355"></script>
-    {% comment %} <script async src="https://www.googleoptimize.com/optimize.js?id=OPT-MG5HX7G"></script> {% endcomment %}
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag() {
-        dataLayer.push(arguments);
-      }
-      gtag('js', new Date());
+    <!--
+      <script async src="https://www.googletagmanager.com/gtag/js?id=AW-11232852355"></script>
+      {% comment %} <script async src="https://www.googleoptimize.com/optimize.js?id=OPT-MG5HX7G"></script> {% endcomment %}
+      <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() {
+          dataLayer.push(arguments);
+        }
+        gtag('js', new Date());
 
-      gtag('config', 'AW-11232852355');
-    </script>
+        gtag('config', 'AW-11232852355');
+      </script>
+    -->
+
     <!-- Bing Pixel -->
-    <script>
-      (function (w, d, t, r, u) {
-        var f, n, i;
-        (w[u] = w[u] || []),
-          (f = function () {
-            var o = { ti: '187075310', tm: 'shpfy_ui', enableAutoSpaTracking: true };
-            (o.q = w[u]), (w[u] = new UET(o)), w[u].push('pageLoad');
-          }),
-          (n = d.createElement(t)),
-          (n.src = r),
-          (n.async = 1),
-          (n.onload = n.onreadystatechange =
-            function () {
-              var s = this.readyState;
-              (s && s !== 'loaded' && s !== 'complete') || (f(), (n.onload = n.onreadystatechange = null));
+    <!--
+      <script>
+        (function (w, d, t, r, u) {
+          var f, n, i;
+          (w[u] = w[u] || []),
+            (f = function () {
+              var o = { ti: '187075310', tm: 'shpfy_ui', enableAutoSpaTracking: true };
+              (o.q = w[u]), (w[u] = new UET(o)), w[u].push('pageLoad');
             }),
-          (i = d.getElementsByTagName(t)[0]),
-          i.parentNode.insertBefore(n, i);
-      })(window, document, 'script', '//bat.bing.com/bat.js', 'uetq');
-    </script>
+            (n = d.createElement(t)),
+            (n.src = r),
+            (n.async = 1),
+            (n.onload = n.onreadystatechange =
+              function () {
+                var s = this.readyState;
+                (s && s !== 'loaded' && s !== 'complete') || (f(), (n.onload = n.onreadystatechange = null));
+              }),
+            (i = d.getElementsByTagName(t)[0]),
+            i.parentNode.insertBefore(n, i);
+        })(window, document, 'script', '//bat.bing.com/bat.js', 'uetq');
+      </script>
+    -->
     <!-- End Bing Pixel -->
+
+    <!-- Universal Event Tracking blocking script from GDPR/CCPA Compliance + Cookie Management App -->
+    <script id="gdpr-uet-blocking-script">
+      let isUETExecuted = false;
+      function executeUET() {
+        if (!isUETExecuted) {
+          // The content of Universal Event Tracking script goes here
+          (function (w, d, t, r, u) {
+            var f, n, i;
+            (w[u] = w[u] || []),
+              (f = function () {
+                var o = { ti: '187075310', tm: 'shpfy_ui', enableAutoSpaTracking: true };
+                (o.q = w[u]), (w[u] = new UET(o)), w[u].push('pageLoad');
+              }),
+              (n = d.createElement(t)),
+              (n.src = r),
+              (n.async = 1),
+              (n.onload = n.onreadystatechange =
+                function () {
+                  var s = this.readyState;
+                  (s && s !== 'loaded' && s !== 'complete') || (f(), (n.onload = n.onreadystatechange = null));
+                }),
+              (i = d.getElementsByTagName(t)[0]),
+              i.parentNode.insertBefore(n, i);
+          })(window, document, 'script', '//bat.bing.com/bat.js', 'uetq');
+          isUETExecuted = true;
+        }
+      }
+      function checkConsentForUET(adittionalChecks = 0) {
+        let cpdCookie = (document.cookie.match(
+          /^(?:.*;)?\s*cookieconsent_preferences_disabled(\s*=\s*([^;]+)?)(?:.*)?$/
+        ) || [, null])[1];
+        if (cpdCookie != null) {
+          if (parseInt(cpdCookie.indexOf('marketing')) === -1) {
+            executeUET();
+          }
+        } else {
+          let gdprCache = localStorage.getItem('gdprCache') ? JSON.parse(localStorage.getItem('gdprCache')) : null;
+          let gdprCacheConsentSettings =
+            gdprCache && gdprCache.getCookieConsentSettings ? JSON.parse(gdprCache.getCookieConsentSettings) : null;
+          let gdprCacheCountryDetection =
+            gdprCache && gdprCache.countryDetection ? JSON.parse(gdprCache.countryDetection) : null;
+          let ccsCookie = (document.cookie.match(/^(?:.*;)?\s*cookieconsent_status\s*=\s*([^;]+)(?:.*)?$/) || [
+            ,
+            null,
+          ])[1];
+          if (
+            (gdprCacheConsentSettings || (gdprCacheCountryDetection && gdprCacheCountryDetection.disable === '1')) &&
+            !ccsCookie
+          ) {
+            if (
+              (gdprCacheConsentSettings && gdprCacheConsentSettings.status === 'disabled') ||
+              gdprCacheCountryDetection.disable === '1'
+            ) {
+              executeUET();
+            } else {
+              let initPreferences = parseInt(gdprCacheConsentSettings.checkboxes_behavior);
+              if (initPreferences === 1 || initPreferences === 3 || initPreferences === 4 || initPreferences === 6) {
+                executeUET();
+              }
+            }
+          } else {
+            if (adittionalChecks > 0) {
+              setTimeout(function () {
+                checkConsentForUET(adittionalChecks - 1);
+              }, 1000);
+            } else {
+              executeUET();
+            }
+          }
+        }
+      }
+      window.addEventListener('click', function (e) {
+        if (
+          e.target &&
+          typeof e.target.className === 'string' &&
+          e.target.className.indexOf('isense-cc-submit-consent') >= 0
+        ) {
+          checkConsentForUET();
+        }
+      });
+      checkConsentForUET(3);
+    </script>
     <meta name="p:domain_verify" content="a26292589e44b417b847438bf5555070">
+
+    <!-- Google Ads integration- script from Consentmo GDPR Compliance App -->
+    <script async id="gads-loading-script"></script>
+    <script id="gdpr-gads-blocking-script">
+      let isGADSExecuted = false;
+      let gadsScript = document.getElementById('gads-loading-script');
+      let gadsLink = 'https://www.googletagmanager.com/gtag/js?id=AW-11232852355';
+
+      function executeGADS() {
+        if (!isGADSExecuted) {
+          gadsScript.setAttribute('src', gadsLink);
+          // The content of Google Ads script goes here
+          window.dataLayer = window.dataLayer || [];
+          function gtag() {
+            dataLayer.push(arguments);
+          }
+          gtag('js', new Date());
+
+          gtag('config', 'AW-11232852355');
+          isGADSExecuted = true;
+        }
+      }
+      function checkConsentForGADS(adittionalChecks = 0) {
+        let cpdCookie = (document.cookie.match(
+          /^(?:.*;)?\s*cookieconsent_preferences_disabled(\s*=\s*([^;]+)?)(?:.*)?$/
+        ) || [, null])[1];
+        if (cpdCookie != null) {
+          if (parseInt(cpdCookie.indexOf('marketing')) === -1) {
+            executeGADS();
+          }
+        } else {
+          let gdprCache = localStorage.getItem('gdprCache') ? JSON.parse(localStorage.getItem('gdprCache')) : null;
+          let gdprCacheConsentSettings =
+            gdprCache && gdprCache.getCookieConsentSettings ? JSON.parse(gdprCache.getCookieConsentSettings) : null;
+          let gdprCacheCountryDetection =
+            gdprCache && gdprCache.countryDetection ? JSON.parse(gdprCache.countryDetection) : null;
+          let ccsCookie = (document.cookie.match(/^(?:.*;)?\s*cookieconsent_status\s*=\s*([^;]+)(?:.*)?$/) || [
+            ,
+            null,
+          ])[1];
+          if (
+            (gdprCacheConsentSettings || (gdprCacheCountryDetection && gdprCacheCountryDetection.disable === '1')) &&
+            !ccsCookie
+          ) {
+            if (
+              (gdprCacheConsentSettings && gdprCacheConsentSettings.status === 'disabled') ||
+              gdprCacheCountryDetection.disable === '1'
+            ) {
+              executeGADS();
+            } else {
+              let initPreferences = parseInt(gdprCacheConsentSettings.checkboxes_behavior);
+              if (initPreferences === 1 || initPreferences === 3 || initPreferences === 4 || initPreferences === 6) {
+                executeGADS();
+              }
+            }
+          } else {
+            if (adittionalChecks > 0) {
+              setTimeout(function () {
+                checkConsentForGADS(adittionalChecks - 1);
+              }, 1000);
+            } else {
+              executeGADS();
+            }
+          }
+        }
+      }
+
+      checkConsentForGADS(3);
+    </script>
   </head>
 
   {%- assign feature_classes = '' -%}
@@ -303,7 +460,7 @@
     {% render 'criteo-tracking' %}
     <!-- CRITEO END -->
 
-    {% include 'preciso_Script' %}
+    {% comment %} {% include 'preciso_Script' %} {% endcomment %}
     <!-- Start of ukulike Zendesk Widget script -->
     <script
       id="ze-snippet"

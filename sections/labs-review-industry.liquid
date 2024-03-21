@@ -1,0 +1,688 @@
+<style>
+.title-diy{
+  font-size: 40px;
+}
+
+@media (max-width: 991px) {
+  .title-diy {
+    font-size: 28px;
+  }
+}
+ .review-industry{
+  padding: 90px 0;
+  background: #f9f9f9;
+  overflow: hidden;
+}
+
+.review-industry .container{
+  max-width: 1400px;
+}
+
+.review-industry .title-diy{
+  font-weight: normal;
+  margin:0;
+  margin-bottom: 60px;
+}
+
+
+.review-industry .review-industry-cont{
+  position: relative;
+  padding-top: 98px;
+  min-height: 340px;
+   --background:{{ section.settings.after_color}};
+}
+
+.review-industry .review-industry-img-list{
+  width: 100%;
+  max-width: 985px;
+  height: 306px;
+  overflow: hidden;
+  position: absolute;
+  top: 0;
+  mask: linear-gradient(90deg, #0000, var(--background) 0%, var(--background) 85%, #0000);
+}
+
+.review-industry .list-box{
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 306px;
+  display: flex;
+  align-items: flex-start;
+}
+
+.review-industry .img-item{
+  width: 98px;
+  height: 98px;
+  flex-shrink: 0;
+  margin-right: 26px;
+  filter: grayscale(100%);
+  cursor: pointer;
+  position: relative;
+  /* overflow: hidden; */
+}
+
+.review-industry .img-item .img{
+  width: 98px;
+  height: 98px;
+  display: block;
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 1;
+  border-radius: 0 0 50% 50%;
+}
+.review-industry .img-item .mb-box{
+  display: none;
+}
+
+.review-industry .img-item::before{
+  position: absolute;
+  display: block;
+  content: '';
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 2;
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 0 0 50% 50%;
+  transition: all .4s ease;
+}
+.review-industry .img-item:hover::before{
+  opacity: 0;
+}
+.review-industry .img-item.active{
+  width: 306px;
+  margin-right: 86px;
+  filter: grayscale(0%);
+}
+
+.review-industry .img-item.active .img{
+  transition: all .4s ease;
+  width: 306px;
+  height: 306px;
+}
+
+.review-industry .img-item.zero-am.active .img{
+  transition: all 0s ease;
+}
+.review-industry .img-item.active::before{display: none;}
+
+.review-industry .img-item.active .img{
+  height: 306px;
+}
+
+.review-industry .review-industry-right{
+  position: relative;
+  padding-left: 392px;
+  margin-top: 40px;
+}
+
+.review-industry .review-industry-text-list{
+  position: relative;
+}
+
+.review-industry .text-item{
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  z-index: 1;
+  overflow: hidden;
+  transition: all .4s ease;
+}
+
+.review-industry .posi-item{
+  position: relative;
+  z-index: 1;
+}
+
+.review-industry .text-item.active{
+  position: relative;
+  opacity: 1;
+  z-index: 2;
+}
+
+.review-industry .review-industry-text-p{
+  font-size: 30px;
+  font-family: var(--heading-font-family);
+  color: #000;
+  line-height: 1.3;
+  opacity: 0;
+  transform: translateX(-100px);
+  transition: all .4s ease;
+}
+
+.review-industry .review-industry-text-name{
+  position: relative;
+  padding-left: 35px;
+  margin-top: 35px;
+  opacity: 0;
+  transform: translateX(-100px);
+  transition: all .4s ease;
+  transition-delay: 0.1s
+}
+
+.review-industry .active .review-industry-text-p{
+  opacity: 1;
+  transform: translateX(0px);
+}
+
+.review-industry .active .review-industry-text-name{
+  opacity: 1;
+  transform: translateX(0px);
+}
+
+.review-industry .review-industry-name{
+  font-size: 18px;
+  color: #000;
+  font-family: var(--heading-font-family);
+  line-height: 1.2;
+  position: relative;
+}
+
+.review-industry .review-industry-name::before{
+  position: absolute;
+  content: '';
+  display: block;
+  width: 20px;
+  height: 2px;
+  top: 50%;
+  background: #e6e6e6;
+  left: -35px;
+  transform: translateY(-50%);
+}
+
+.review-industry .review-industry-sub{
+  font-size: 14px;
+  color: #818181;
+  line-height: 1.2;
+}
+
+.review-industry .review-industry-text-sub{
+  line-height: 1.2;
+  font-size: 14px;
+  color: #818181;
+  width: 640px;
+  margin-top: 50px;
+  max-width: 72%;
+}
+
+.review-industry .review-industry-arraw {
+  position: absolute;
+  right: 0;
+  top: -111.5px;
+  z-index: 2;
+  display: flex;
+  justify-content: space-between;
+  transition: all .4s ease;
+}
+
+.review-industry .review-industry-arraw-item {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  position: relative;
+  cursor: pointer;
+  transition: all .4s ease;
+  margin-left: 40px;
+  border: 2px solid #000;
+}
+
+.review-industry .review-industry-arraw-item:hover {
+  background: #000;
+}
+
+.review-industry .review-industry-arraw-item::before {
+  position: absolute;
+  content: '';
+  display: block;
+  width: 12px;
+  height: 12px;
+  border-top: 2px solid #000;
+  border-left: 2px solid #000;
+  top: 50%;
+  left: 50%;
+  margin-left: 2px;
+  transform: translate(-50% , -50%) rotate(-45deg);
+  transition: all .4s ease;
+}
+
+.review-industry .review-industry-arraw-item:hover::before {
+  border-color: #fff;
+}
+
+.review-industry .review-industry-arraw-item:last-child {
+  transform: scale(-1,-1);
+}
+
+.home-review.review-industry .review-industry-text-sub{
+  display: none;
+}
+
+@media (max-width:1250px) {
+  .review-industry .review-industry-img-list{
+    max-width: 740px;
+  }
+}
+
+@media (min-width:992px) {
+  .home-review.review-industry .title-diy{
+    display: none;
+  }
+  .home-review.review-industry .review-industry-img-list{
+    max-width: 672px;
+  }
+  .hide-small.review-industry .review-industry-text-list{
+    margin-top: 0;
+  }
+  
+  .hide-small.review-industry .review-industry-img-list{
+    max-width: 306px;
+    position: relative;
+  }
+  .hide-small.review-industry .list-box{
+    position: relative;
+  }
+  .hide-small.review-industry .review-industry-img-list::after{
+    display: none;
+  }
+  
+  .hide-small.review-industry .review-industry-right{
+    padding-left: 0;
+    margin-left: 84px;
+  }
+  
+  .hide-small.review-industry .img-item{
+    width: 306px;
+    height: 306px;
+    filter: grayscale(0%);
+  }
+  
+  .hide-small.review-industry .img-item .img{
+    width: 306px;
+    height: 306px;
+  }
+  
+  .hide-small.review-industry .img-item::before{
+    display: none;
+  }
+  
+  .hide-small.review-industry .review-industry-cont{
+    padding-top: 0;
+    display: flex;
+    min-height: auto;
+  }
+}
+
+
+@media (max-width:991px) {
+  .review-industry{
+    padding: 60px 0;
+  }
+  .review-industry .title-diy{
+    margin-bottom: 40px;
+  }
+  .review-industry .review-industry-cont{
+    min-height: auto;
+    padding-top: 0;
+  }
+  .review-industry .review-industry-img-list{
+    max-width: none;
+    position: relative;
+    height: auto;
+    mask: linear-gradient(90deg, #0000, var(--background) 0%, var(--background) 50%, #0000);
+  }
+  .review-industry .list-box{
+    width: auto;
+    height: auto;
+    position: relative;
+  }
+  .review-industry .img-item{
+    width: 56%;
+    height: auto;
+  }
+  .review-industry .img-item .img{
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+  .review-industry .img-item .mb-box{
+    display: block;
+  }
+  .review-industry .img-item .pc-box{
+    display: none;
+  }
+  .review-industry .img-item.active{
+    width: 56%;
+    margin-right: 26px;
+  }
+  .review-industry .img-item.active .img{
+    width: 100%;
+    height: auto;
+  }
+  .review-industry .review-industry-right{
+    padding-left: 0;
+  }
+  .review-industry .review-industry-arraw{
+    margin-top: 30px;
+    position: relative;
+    justify-content: center;
+    top: auto;
+    bottom: 0;
+  }
+  .review-industry .review-industry-img-list::after{
+    /* display: none; */
+    height: 100%;
+  }
+  .review-industry .review-industry-text-p{
+    font-size: 22px;
+    line-height: 1.2;
+  }
+  .review-industry .review-industry-text-list{
+    margin-top: 30px;
+  }
+  .review-industry .review-industry-text-name{
+    margin-top: 30px;
+  }
+  .review-industry .review-industry-arraw-item{
+    margin: 0 15px;
+  }
+  .review-industry .review-industry-text-sub{
+    display: none;
+  }
+  .home-review.review-industry .review-industry-img-list{
+    overflow: inherit;
+  }
+  .home-review.review-industry .review-industry-img-list::after{
+    display: none;
+  }
+  .home-review.review-industry .img-item{
+    width: 80%;
+  }
+  .home-review.review-industry .review-industry-arraw{
+    display: none;
+  }
+
+  .home-review.review-industry .text-item{
+    display: flex;
+    flex-direction: column-reverse;
+    padding: 0 15px;
+  }
+  .home-review.review-industry .review-industry-name::before{
+    display: none;
+  }
+  .home-review.review-industry .review-industry-text-name{
+    margin-top: 0;
+    margin-bottom: 20px;
+    padding: 0;
+  }
+  .home-review.review-industry .review-industry-text-p{
+    font-size: 14px;
+    font-family: inherit;
+  }
+
+  .home-review.review-industry .review-industry-name{
+    font-size: 16px;
+  }
+  .home-review.review-industry .review-industry-sub{
+    font-size: 12px;
+  }
+}
+</style>
+<section class="section-box">
+  <div class="review-industry {{ section.settings.class_text }}" style="background: {{ section.settings.background }};">
+    <div class="container">
+      {%- if section.settings.title != blank -%}
+        <h2 class="title-diy to-top">{{ section.settings.title }}</h2>
+      {%- endif -%}
+      <div class="review-industry-cont">
+        <div class="review-industry-img-list to-top">
+          <div class="list-box">
+            {%- for block in section.blocks -%}
+              {%- if block.settings.image != blank -%}
+                <div class="img-item" data-index="{{ forloop.index }}">
+                  <img loading="lazy" class="img {% if block.settings.image1 != blank %}pc-box{% endif %}" width="{{ block.settings.image.width }}" height="{{ block.settings.image.height }}" {%
+                render 'image-attributes' , image: block.settings.image %} alt="{{ block.settings.image.alt | escape }}">
+                  {%- if block.settings.image1 != blank -%}
+                      <img loading="lazy" class="img mb-box" width="{{ block.settings.image1.width }}" height="{{ block.settings.image1.height }}" {%
+                    render 'image-attributes' , image: block.settings.image1 %} alt="{{ block.settings.image1.alt | escape }}">
+                  {%- endif -%}
+                </div>
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+        </div>
+        <div class="review-industry-right to-top">
+          <div class="review-industry-text-list">
+            {%- for block in section.blocks -%}
+              <div class="text-item {% if forloop.index==1 %}active{% endif %}">
+                {%- if block.settings.text != blank -%}
+                  <div class="review-industry-text-p">
+                    {{ block.settings.text }}
+                  </div>
+                {%- endif -%}
+                <div class="review-industry-text-name">
+                  {%- if block.settings.text1 != blank -%}
+                    <div class="review-industry-name">{{ block.settings.text1 }}</div>
+                  {%- endif -%}
+                  {%- if block.settings.text2 != blank -%}
+                    <div class="review-industry-sub">{{ block.settings.text2 }}</div>
+                  {%- endif -%}
+                </div>
+              </div>
+            {%- endfor -%}
+          </div>
+          <div class="review-industry-arraw">
+            <div class="review-industry-arraw-item"></div>
+            <div class="review-industry-arraw-item"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+  function industrySwiper(name){
+    let timeNum = +new Date()
+    let $p = $(name)
+    let $list = $p.find('.list-box')
+    let $tList = $p.find('.review-industry-text-list')
+    let length = $p.find('.img-item').length
+    let width = $p.find('.img-item').width()
+    let index = length
+    $list.html($list.html()+$list.html()+$list.html())
+    $list.find('.img-item').eq(index).addClass('active')
+    skewTranslateX(0)
+    $p.find('.review-industry-arraw-item').click(function(){
+      let tIndex = $(this).index()
+      if(+new Date() - timeNum<800) return
+      timeNum = +new Date()
+      if(tIndex){
+        index ++
+      }else{
+        index--
+      }
+      skewTranslateX()
+    })
+
+    function skewTranslateX(time = 0.4){
+      $list.find('.img-item').removeClass('active')
+      $list.find('.img-item').eq(index).addClass('active')
+      $list.css({'transform': 'translateX(-'+ index*(width + 25) +'px)','transition':' all '+ time +'s ease'})
+      
+      if(time){
+        $tList.find('.text-item.active').addClass('posi-item')
+        $tList.find('.text-item').removeClass('active')
+        setTimeout(function(){
+          let sindex = index-length
+          if(sindex == length) sindex = 0
+          if(sindex == -1) sindex = length - 1
+          $tList.find('.text-item.posi-item').removeClass('posi-item')
+          $tList.find('.text-item').eq(Math.abs(sindex)).addClass('active')
+        },450)
+      }
+      if(index==length-1){
+        setTimeout(function(){
+          index = length*2-1
+          $list.find('.img-item').eq(index).addClass('zero-am')
+          skewTranslateX(0)
+          setTimeout(function(){
+            $list.find('.img-item').eq(index).removeClass('zero-am')
+          },50)
+        },450)
+      }
+      
+      if(index==length*2){
+        setTimeout(function(){
+          index = length
+          $list.find('.img-item').eq(index).addClass('zero-am')
+          skewTranslateX(0)
+          setTimeout(function(){
+            $list.find('.img-item').eq(index).removeClass('zero-am')
+          },50)
+        },450)
+      }
+    }
+
+    $p.on('click','.img-item',function(){
+      let newIndex = $(this).data('index')*1 - 1 + length
+      let isChange = newIndex ==index
+      index = $(this).data('index')*1 - 1 + length
+      if(!isChange) skewTranslateX()
+    })
+    
+    function addSwipeHandler(element, leftCallback, rightCallback) {
+      let startX = 0;
+      let startY = 0;
+      let isHorizontalScrolling = false;
+
+      element.addEventListener('touchstart', (e) => {
+        startX = e.touches[0].clientX;
+        startY = e.touches[0].clientY;
+        isHorizontalScrolling = false;
+      });
+
+      element.addEventListener('touchmove', (e) => {
+        let endX = e.touches[0].clientX;
+        let endY = e.touches[0].clientY;
+
+        let diffX = startX - endX;
+        let diffY = startY - endY;
+
+        if (!isHorizontalScrolling) {
+          if (Math.abs(diffX) > 15 && Math.abs(diffX) > Math.abs(diffY)) {
+            isHorizontalScrolling = true;
+            e.preventDefault(); 
+          }
+        } else {
+          e.preventDefault(); 
+        }
+      }, { passive: false });
+
+      element.addEventListener('touchend', (e) => {
+        if (isHorizontalScrolling) {
+          let endX = e.changedTouches[0].clientX;
+          let diffX = startX - endX;
+
+          if (diffX > 0) {
+            leftCallback(); 
+          } else {
+            rightCallback(); 
+          }
+          isHorizontalScrolling = false; 
+        }
+      });
+    }
+
+
+    let myElement = document.querySelector('.review-industry .review-industry-cont');
+
+    function onSwipeLeft() {
+      index ++ 
+      skewTranslateX()
+    }
+
+    function onSwipeRight() {
+      index --
+      skewTranslateX()
+    }
+
+    if(window.innerWidth<991){
+      addSwipeHandler(myElement, onSwipeLeft, onSwipeRight);
+    }
+  }
+
+  window.addEventListener('load',function(){
+    industrySwiper('.review-industry')
+  })
+</script>
+{% schema %}
+{
+"name": "labs-review-industry",
+"blocks": [
+  {
+    "name": "item",
+    "type": "item",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "image",
+        "label": "Image"
+      },
+      {
+        "type": "image_picker",
+        "id": "image1",
+        "label": "M Image"
+      },
+      {
+        "type": "text",
+        "id": "text",
+        "label": "Text"
+      },
+      {
+        "type": "text",
+        "id": "text1",
+        "label": "Name"
+      },
+      {
+        "type": "text",
+        "id": "text2",
+        "label": "Text"
+      }
+    ]
+  }
+],
+"settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title"
+    },
+    {
+      "type": "text",
+      "id": "class_text",
+      "label": "Custom Class"
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "color",
+      "id": "after_color",
+      "label": "Mark Color",
+      "default": "rgba(0,0,0,0)"
+    }
+  ],
+  "presets": [
+  {
+    "name": "labs-review-industry",
+    "blocks": []
+  }
+]
+}
+{% endschema %}

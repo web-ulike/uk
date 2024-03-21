@@ -21,21 +21,29 @@
     top: 50%;
     left: 0;
     transform: translateY(-50%);
+    color: #000;
     z-index: 2;
 }
 .compare-banner .compare-banner-title{
     font-size: 50px;
-    /* font-weight: bold; */
     font-family: var(--heading-font-family);
-    color: #000;
     line-height: 1.2;
+    font-weight: normal;
+    margin:0;
 }
 .compare-banner .compare-banner-p{
     font-size: 20px;
-    color: #000;
     line-height: 1.2;
     margin-top: 15px; 
 }
+
+.white-text .compare-banner-text{
+  color:#fff;
+}
+
+  .labs-banner .compare-banner-p{
+    max-width:500px;
+  }
 
 @media (max-width:1400px) {
     .compare-banner .compare-banner-title{
@@ -54,19 +62,18 @@
         top: auto;
         bottom: 60px;
         transform: translateY(0);
+        color: #fff;
     }
     .compare-banner .compare-banner-title{
         font-size: 28px;
-        color: #fff;
     }
     .compare-banner .compare-banner-p{
         font-size: 16px;
-        color: #fff;
     }
 }
 </style>
 <section class="section-box">
-  <div class="compare-banner">
+  <div class="compare-banner slide-to-left-white {{ section.settings.custom_class }}">
       {%- if section.settings.image != blank -%}
          <img loading="lazy" class="pc-box" width="{{ section.settings.image.width }}" height="{{ section.settings.image.height }}" {% render 'image-attributes', image: section.settings.image %} alt="{{ section.settings.image.alt | escape }}" >
       {%- endif -%}
@@ -76,7 +83,7 @@
       <div class="compare-banner-text">
           <div class="container">
             {%- if section.settings.title != blank -%}
-              <div class="compare-banner-title to-top">{{ section.settings.title }}</div>
+              <h1 class="compare-banner-title to-top">{{ section.settings.title }}</h1>
             {%- endif -%}
             {%- if section.settings.content != blank -%}
               <div class="compare-banner-p to-top" style="transition-delay: 0.1s">{{ section.settings.content }}</div>
@@ -110,6 +117,11 @@
       "type": "text",
       "id": "content",
       "label": "Content"
+    },
+    {
+      "type": "text",
+      "id": "custom_class",
+      "label": "Custom Class"
     }
   ],
   "presets": [
@@ -120,3 +132,6 @@
   ]
 }
 {% endschema %}
+
+
+

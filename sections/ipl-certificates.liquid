@@ -1,0 +1,186 @@
+<style>
+.ipl-certificates{
+  padding: 80px 0 150px 0;
+  background: var(--bg-img);
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.ipl-certificates .title-diy{
+  max-width: 460px;
+  margin: 0 auto;
+  color: #fff;
+  font-weight: normal;
+}
+
+.ipl-certificates .ipl-certificates-list{
+  margin-top: 95px;
+  display: flex;
+  gap: 60px;
+}
+
+.ipl-certificates .ipl-certificates-item{
+  flex: 1;
+  position: relative;
+  padding: 30px 10px;
+  text-align: center;
+  font-size: 14px;
+  line-height: 1.2;
+  color: #fff;
+  border-radius: 10px;
+  backdrop-filter: blur(2px);
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.ipl-certificates .ipl-certificates-item::before{
+  position: absolute;
+  content: '';
+  display: block;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  background: url(https://cdn.shopify.com/s/files/1/0656/9079/6273/files/f8.png) no-repeat;
+  background-size:100% 100%;
+}
+
+.ipl-certificates .ipl-certificates-img{
+  /* width: 100px;
+  height: 65px; */
+  max-width: 100%;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.ipl-certificates .ipl-certificates-img .img{
+  /* max-height: 100%; */
+  width: 65%;
+}
+
+@media (max-width:1500px) {
+  .ipl-certificates .ipl-certificates-list{
+    gap: 40px;
+  }
+  .ipl-certificates .ipl-certificates-img{
+    margin-bottom: 10px;
+  }
+}
+
+@media (max-width:1200px) {
+  .ipl-certificates .ipl-certificates-list{
+    gap: 20px;
+  }
+  .ipl-certificates .ipl-certificates-item{
+    padding: 20px 10px;
+  }
+}
+
+@media (max-width:991px) {
+  .ipl-certificates{
+    padding: 50px 0;
+    background: var(--bg-img-m);
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
+  .ipl-certificates .ipl-certificates-list{
+    flex-wrap: wrap;
+    gap: 19px;
+    margin-top: 30px;
+  }
+  .ipl-certificates .ipl-certificates-item{
+    flex: none;
+    width: calc(33.333% - 13px);
+  }
+}
+
+@media (max-width:640px) {
+  .ipl-certificates .ipl-certificates-list{
+    gap: 20px;
+  }
+  .ipl-certificates .ipl-certificates-item{
+    width: calc(50% - 10px);
+    padding: 15px 10px;
+    border-radius: 5px;
+    font-size: 12px;
+  }
+  .ipl-certificates .ipl-certificates-img{
+    margin-bottom: 10px;
+  }
+  .ipl-certificates .ipl-certificates-img {
+    zoom: .6;
+  }
+}
+</style>
+<section class="section-box">
+  <div class="ipl-certificates to-top" style="--bg-img: url({{ section.settings.image | img_url: 'original' }});--bg-img-m: url({{ section.settings.image1 | img_url: 'original' }});">
+    <div class="container">
+      <h2 class="title-diy to-top">
+        {{ section.settings.title }}
+      </h2>
+      <div class="ipl-certificates-list">
+        {%- for block in section.blocks -%}
+          <div class="ipl-certificates-item to-top" style="transition-delay: 0.{{ forloop.index }}s">
+            <div class="ipl-certificates-img">
+              {%- if block.settings.image != blank -%}
+                 <img loading="lazy" class="img" width="{{ block.settings.image.width }}" height="{{ block.settings.image.height }}" {% render 'image-attributes', image: block.settings.image %} alt="{{ block.settings.image.alt | escape }}" >
+              {%- endif -%}
+            </div>
+            {{ block.settings.text }}
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "ipl-certificates",
+  "blocks": [
+    {
+      "name": "item",
+      "type": "item",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text"
+        }
+      ]
+    }
+  ],
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Background"
+    },
+    {
+      "type": "image_picker",
+      "id": "image1",
+      "label": "Mobile Background"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title"
+    }
+  ],
+  "presets": [
+    {
+      "name": "ipl-certificates",
+      "blocks": []
+    }
+  ]
+}
+{% endschema %}

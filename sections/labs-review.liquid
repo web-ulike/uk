@@ -1,0 +1,793 @@
+<style>
+.title-diy{
+  font-size: 40px;
+}
+
+@media (max-width: 991px) {
+  .title-diy {
+    font-size: 28px;
+  }
+}
+.labs-review{
+  padding: 100px 0;
+  background: #f9f9f9;
+  overflow: hidden;
+}
+
+.labs-review .container{
+  max-width: 1400px;
+}
+
+.labs-review .labs-review-cont{
+  max-width: 380px;
+  margin: 0 auto;
+  margin-top: 75px;
+  position: relative;
+}
+
+.labs-review .labs-review-list{
+  display: flex;
+}
+
+.labs-review .labs-review-item{
+  width: 100%;
+  flex-shrink: 0;
+  margin-right: 100px;
+  padding: 45px 35px;
+  background: #fff;
+}
+
+.labs-review .labs-review-title{
+  font-size: 20px;
+  color: #000;
+  font-weight: normal;
+  font-family: var(--heading-font-family);
+  line-height: 1.2;
+  min-height: 48px;
+  margin:0;
+}
+
+.labs-review .labs-review-option{
+  display: flex;
+  gap: 30px;
+  margin-top: 50px;
+}
+
+.labs-review .labs-review-option-item{
+  /* flex: 1; */
+  width: calc(50% - 15px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 40px;
+  height: 40px;
+  background: #ebebeb;
+  font-size: 16px;
+  color: #000;
+  font-family: var(--heading-font-family);
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: all .4s ease;
+  position: relative;
+}
+
+.labs-review .labs-review-option-item span {
+    display: none;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background-color: #fff;
+    position: absolute;
+    top: 50%;
+    left: 1px;
+    transform: translateY(-50%);
+
+}
+
+.labs-review .labs-review-option-item:first-child span::before {
+  position: absolute;
+  content: "";
+  display: block;
+  border: 1.5px solid transparent;
+  border-color: transparent #66cc83 #66cc83 transparent;
+  width: 7px;
+  height: 13px;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) rotate(45deg);
+  margin-top: -2px;
+}
+.labs-review .labs-review-option-item:last-child span::before,.labs-review .labs-review-option-item:last-child span::after {
+  position: absolute;
+  content: "";
+  display: block;
+  width: 1px;
+  height: 13px;
+  background: #ea5959;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.labs-review .labs-review-option-item:last-child span::after {
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+.labs-review .labs-review-item:not(.active) .labs-review-option-item:hover,.labs-review .labs-review-option-item.check{
+  border-color: #000;
+}
+
+.labs-review .active .labs-review-option-item:first-child.check{
+  background: #66cc83;
+}
+
+.labs-review .active .labs-review-option-item:last-child.check{
+  background: #ea5959;
+}
+
+.labs-review .active .labs-review-option-item.check span{
+  display: block;
+}
+
+.labs-review .active .labs-review-option-item.check{
+  border-color: transparent;
+  color: #fff;
+  padding-left: 30px;
+}
+
+.labs-review .active .labs-review-option-item{
+  pointer-events: none;
+}
+
+.labs-review .labs-review-btn{
+  width: 100%;
+  height: 45px;
+  font-size: 16px;
+  color: #fff;
+  background: #000;
+  margin-top: 50px;
+  font-family: var(--heading-font-family);
+  cursor: pointer;
+  border: 2px solid #000;
+}
+
+.labs-review .labs-review-btn .btn-txt::before{
+  color: #000;
+}
+
+.labs-review .labs-review-arraw{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  pointer-events: none;
+  display: flex;
+  justify-content: space-between;
+  width: calc(100% + 140px);
+}
+
+.labs-review .labs-review-arraw-item{
+  pointer-events: all;
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  position: relative;
+  cursor: pointer;
+  transition: all .4s ease;
+  border: 2px solid #000;
+}
+
+.labs-review .labs-review-arraw-item:last-child{
+  transform: scale(-1,-1);
+}
+.labs-review .labs-review-arraw-item:hover{
+  background: #000;
+}
+.labs-review .labs-review-arraw-item::before{
+  position: absolute;
+  content: '';
+  display: block;
+  width: 12px;
+  height: 12px;
+  border-top: 2px solid #000;
+  border-left: 2px solid #000;
+  top: 50%;
+  left: 50%;
+  margin-left: 2px;
+  transform: translate(-50%, -50%) rotate(-45deg);
+  transition: all .4s ease;
+}
+
+.labs-review .labs-review-arraw-item:hover::before{
+  border-color: #fff;
+}
+
+.feedback {
+  --normal: #ECEAF3;
+  --normal-shadow: #D9D8E3;
+  --normal-mouth: #9795A4;
+  --normal-eye: #595861;
+  --active: #F8DA69;
+  --active-shadow: #F4B555;
+  --active-mouth: #F05136;
+  --active-eye: #313036;
+  --active-tear: #76b5e7;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  margin-right: 10px;
+}
+
+.feedback li {
+  position: relative;
+  border-radius: 50%;
+  background: var(--sb, var(--normal));
+  box-shadow: inset 3px -3px 4px var(--sh, var(--normal-shadow));
+  transition: background .4s, box-shadow .4s, transform .3s;
+  -webkit-tap-highlight-color: transparent;
+  display: none;
+  /* zoom: .8; */
+}
+
+.feedback li div {
+  width: 40px;
+  height: 40px;
+  position: relative;
+  transform: perspective(240px) translateZ(4px);
+}
+
+.feedback li div svg,
+.feedback li div:before,
+.feedback li div:after {
+  display: block;
+  position: absolute;
+  left: var(--l, 9px);
+  top: var(--t, 13px);
+  width: var(--w, 8px);
+  height: var(--h, 2px);
+  transform: rotate(var(--r, 0deg)) scale(var(--sc, 1)) translateZ(0);
+}
+
+.feedback li div svg {
+  fill: none;
+  stroke: var(--s);
+  stroke-width: 2px;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: stroke .4s;
+}
+
+.feedback li div svg.eye {
+  --s: var(--e, var(--normal-eye));
+  --t: 17px;
+  --w: 7px;
+  --h: 4px;
+}
+
+.feedback li div svg.eye.right-eye {
+  --l: 23px;
+}
+
+.feedback li div svg.mouth {
+  --s: var(--m, var(--normal-mouth));
+  --l: 11px;
+  --t: 23px;
+  --w: 18px;
+  --h: 7px;
+}
+
+.feedback li div:before,
+.feedback li div:after {
+  content: '';
+  z-index: var(--zi, 1);
+  border-radius: var(--br, 1px);
+  background: var(--b, var(--e, var(--normal-eye)));
+  transition: background .4s ease;
+}
+
+.feedback li.sad {
+  --step-1-rx: 20deg;
+  --step-1-ry: -12deg;
+  --step-2-rx: -18deg;
+  --step-2-ry: 14deg;
+}
+
+.feedback li.sad div:before,
+.feedback li.sad div:after {
+  --b: var(--active-tear);
+  --sc: 0;
+  --w: 5px;
+  --h: 5px;
+  --t: 15px;
+  --br: 50%;
+}
+
+.feedback li.sad div:after {
+  --l: 25px;
+}
+
+.feedback li.sad div svg.eye {
+  --t: 16px;
+}
+
+.feedback li.sad div svg.mouth {
+  --t: 24px;
+  stroke-dasharray: 9.5;
+  stroke-dashoffset: 33.25;
+}
+
+.feedback li.sad.active div:before,
+.feedback li.sad.active div:after {
+  animation: tear .6s linear forwards;
+}
+
+.feedback li.happy div {
+  --step-1-rx: 18deg;
+  --step-1-ry: 24deg;
+  --step-2-rx: 18deg;
+  --step-2-ry: -24deg;
+}
+
+.feedback li.happy div:before {
+  --sc: 0;
+}
+
+.feedback li.happy div:after {
+  --b: var(--m, var(--normal-mouth));
+  --l: 11px;
+  --t: 23px;
+  --w: 18px;
+  --h: 8px;
+  --br: 0 0 8px 8px;
+}
+
+.feedback li.happy.active div:after {
+  --middle-s-x: .95;
+  --middle-s-y: .75;
+  animation: toggle .8s linear forwards;
+}
+
+.feedback li.happy div svg.eye {
+    --t: 14px;
+    --sc: -1;
+}
+
+.feedback li:not(.active) {
+  cursor: pointer;
+}
+
+.feedback li:not(.active):active {
+  transform: scale(.925);
+}
+
+.feedback li.active {
+  --sb: var(--active);
+  --sh: var(--active-shadow);
+  --m: var(--active-mouth);
+  --e: var(--active-eye);
+}
+
+.feedback li.active div {
+  animation: shake-icon .8s linear forwards;
+}
+
+@keyframes shake-icon {
+  30% {
+    transform: perspective(240px) rotateX(var(--step-1-rx, 0deg)) rotateY(var(--step-1-ry, 0deg)) rotateZ(var(--step-1-rz, 0deg)) translateZ(10px);
+  }
+
+  60% {
+    transform: perspective(240px) rotateX(var(--step-2-rx, 0deg)) rotateY(var(--step-2-ry, 0deg)) rotateZ(var(--step-2-rz, 0deg)) translateZ(10px);
+  }
+
+  100% {
+    transform: perspective(240px) translateZ(4px);
+  }
+}
+
+@keyframes tear {
+  0% {
+    opacity: 0;
+    transform: translateY(-2px) scale(0) translateZ(0);
+  }
+
+  50% {
+    transform: translateY(12px) scale(.6, 1.2) translateZ(0);
+  }
+
+  20%,
+  80% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateY(24px) translateX(4px) rotateZ(-30deg) scale(.7, 1.1) translateZ(0);
+  }
+}
+
+.labs-review .labs-review-results{
+  margin-top: 40px;
+  font-size: 16px;
+  color: #000;
+  text-align: center;
+  font-family: var(--heading-font-family);
+  line-height: 1.3;
+  display: none;
+}
+
+.labs-review .labs-review-results-top{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.labs-review .labs-review-results-txt-item{
+  display: none;
+}
+
+.labs-review .labs-review-results-p{
+  margin-top: 5px;
+}
+
+
+@media (max-width:1335px) {
+  .labs-review .labs-review-item{
+    padding: 40px 25px;
+  }
+  .labs-review .labs-review-option{
+    margin-top: 40px;
+  }
+  .labs-review .labs-review-btn{
+    margin-top: 40px;
+  }
+  .labs-review .labs-review-title{
+    font-size: 18px;
+  }
+}
+
+@media (max-width:600px) {
+  .labs-review {
+    padding: 50px 0 100px 0;
+  }
+  .labs-review .labs-review-cont{
+    max-width: 100%;
+    margin-top: 30px;
+  }
+  .labs-review .labs-review-arraw{
+    width: 120px;
+    top: auto;
+    bottom: -70px;
+    transform: translate(-50% ,0);
+  }
+}
+</style>
+
+<section class="section-box">
+  <div class="labs-review to-top">
+    <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+      <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 7 4" id="eye">
+          <path d="M1,1 C1.83333333,2.16666667 2.66666667,2.75 3.5,2.75 C4.33333333,2.75 5.16666667,2.16666667 6,1"></path>
+      </symbol>
+      <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 7" id="mouth">
+          <path d="M1,5.5 C3.66666667,2.5 6.33333333,1 9,1 C11.6666667,1 14.3333333,2.5 17,5.5"></path>
+      </symbol>
+    </svg>
+    <div class="container">
+      <div class="title-diy to-top">{{ section.settings.title }}</div>
+      <div class="labs-review-cont">
+        <div class="labs-review-list">
+          {%- for block in section.blocks -%}
+            <div class="labs-review-item to-top" index="{{ forloop.index }}" style="transition-delay: 0.{{ forloop.index }}s" data-r="{{ block.settings.text2 }}">
+              <h3 class="labs-review-title">{{ block.settings.text }}</h3>
+              <div class="labs-review-option">
+                <div class="labs-review-option-item"><span></span>{{ section.settings.text }}</div>
+                <div class="labs-review-option-item"><span></span>{{ section.settings.text1 }}</div>
+              </div>
+              <div class="labs-review-btn btn-diy">
+                <div class="btn-txt" text="{{ section.settings.text2 }}">
+                  <span>{{ section.settings.text2 }}</span>
+                </div>
+              </div>
+              <div class="labs-review-results">
+                <div class="labs-review-results-top">
+                  <ul class="feedback">
+                    <li class="happy">
+                      <div>
+                        <svg class="eye left-eye">
+                          <use xlink:href="#eye">
+                        </svg>
+                        <svg class="eye right-eye">
+                          <use xlink:href="#eye">
+                        </svg>
+                      </div>
+                    </li>
+                    <li class="sad">
+                      <div>
+                        <svg class="eye left-eye">
+                          <use xlink:href="#eye">
+                        </svg>
+                        <svg class="eye right-eye">
+                          <use xlink:href="#eye">
+                        </svg>
+                        <svg class="mouth">
+                          <use xlink:href="#mouth">
+                        </svg>
+                      </div>
+                    </li>
+                  </ul>
+                  <div class="labs-review-results-txt">
+                    <div class="labs-review-results-txt-item">
+                      {{ section.settings.text3 }}
+                    </div>
+                    <div class="labs-review-results-txt-item">
+                      {{ section.settings.text4 }}
+                    </div>
+                  </div>
+                </div>
+                <div class="labs-review-results-p">
+                  {{ block.settings.text1 }}
+                </div>
+              </div>
+            </div>
+          {%- endfor -%}
+                          
+        </div>
+        <div class="labs-review-arraw">
+          <div class="labs-review-arraw-item"></div>
+          <div class="labs-review-arraw-item"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+    function labsReviewSlider($el) {
+      let $p = $el;
+      let $list = $p.find('.labs-review-list');
+      let $arraw = $p.find('.labs-review-arraw');
+      let length = $list.find('.labs-review-item').length;
+      let index = -length; //[0,-length-2]
+      let isLeftBtn = 1; //0左 1右
+      let timer = null;
+      let mrNum = parseFloat($list.find('.labs-review-item').css('margin-right'))
+      if (length < 5) return;
+      $list.html(
+        $list.html().repeat(3)
+      );
+      skewTransform(true);
+      function skewTransform(auto, tIndex = index, skew = 0) {
+        let width = $list
+          .find('.labs-review-item')
+          .eq(Math.abs(tIndex) - 1)
+          [0].offsetWidth;
+        let translateX = (width + mrNum) * tIndex;
+        if (auto) {
+          translateX += skew;
+          $list.css({
+            transform: 'translateX(' + translateX + 'px)',
+            transition: ' all 0s ease',
+          });
+        } else {
+          $list.css({
+            transform: 'translateX(' + translateX + 'px)',
+            transition: ' all .6s ease',
+          });
+        }
+      }
+      function changeLeft(skew) {
+        if (isLeftBtn && index == -2*length) {
+          skewTransform(true, -length + 1, skew);
+          index = -length;
+        }
+        if (!isLeftBtn && index == -length+1) {
+          skewTransform(true, -2*length, skew);
+          index = -2*length + 1;
+        }
+        setTimeout(() => {
+          skewTransform();
+        }, 10);
+      }
+
+      $arraw.find('.labs-review-arraw-item').click(function () {
+        isLeftBtn = $(this).index();
+        index+=(isLeftBtn?-1:1);
+        changeLeft()
+      })
+      $p.on('click','.labs-review-option-item',function () {
+        let $this = $(this);
+        let index = $this.index();
+        let $parent = $(this).parents('.labs-review-item');
+        let pIndex = $parent.attr('index');
+        if ($parent.hasClass('active')) return;
+        $list.find('.labs-review-item[index='+pIndex+']').each(function () {
+          $(this).find('.labs-review-option-item').removeClass('check').eq(index).addClass('check');
+        })
+      })
+
+      $p.on('click','.labs-review-btn',function () {
+        let $this = $(this);
+        let $parent = $(this).parents('.labs-review-item');
+        if($parent.find('.check').length == 0) return;
+        let answer = $parent.attr('data-r') || 0;
+        let index = $parent.find('.check').index();
+        let pIndex = $parent.attr('index');
+        if(answer==2){
+          index = index==0?1:0;
+        }
+        $list.find('.labs-review-item[index='+pIndex+']').each(function () {
+          let $pThis = $(this);
+          $pThis.addClass('active');
+          $pThis.find('.labs-review-btn').hide();
+          $pThis.find('.labs-review-results').fadeIn(300)
+          $pThis.find('.labs-review-results').find('li').eq(index).show()
+          $pThis.find('.labs-review-results').find('.labs-review-results-txt-item').eq(index).show()
+          setTimeout(() => {
+            $pThis.find('.labs-review-results').find('li').eq(index).addClass('active')
+          },300)
+        })
+      })
+
+      function getTranslateX($element) {
+        var matrix = $element
+          .css('transform')
+          .replace(/[^0-9\-.,]/g, '')
+          .split(',');
+        var translateX = parseFloat(matrix[12] || matrix[4]);
+        return translateX;
+      }
+
+      function initMobileCarousel() {
+        let startX = 0;
+        let listTar = 0;
+        let startY = 0;
+        let isScrolling = false;
+        let isDragging = false;
+        $list.on('touchstart', function (e) {
+          if (e.type === 'touchstart') {
+            var touch = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
+            startX = touch.clientX;
+            startY = touch.clientY;
+          } else {
+            startX = e.clientX;
+            startY = e.clientY;
+          }
+
+          isScrolling = false;
+          isDragging = true;
+          listTar = getTranslateX($list);
+          $(document).on('touchmove', handleMove);
+          $(document).on('touchend', handleEnd);
+        });
+
+        function handleMove(e) {
+          if (isDragging) {
+            if (e.type === 'touchmove') {
+              var touch = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
+              var diffX = touch.clientX - startX;
+              var diffY = touch.clientY - startY;
+            } else {
+              var diffX = e.clientX - startX;
+              var diffY = e.clientY - startY;
+            }
+
+            var translateX = listTar + diffX;
+
+            if (!isScrolling) {
+              if (Math.abs(diffX) > Math.abs(diffY)) {
+                isScrolling = true;
+              }
+            }
+            if (isScrolling && e.cancelable) {
+              e.preventDefault();
+              $list.css({ transform: 'translateX(' + translateX + 'px)', transition: 'all 0s ease' });
+            }
+          }
+        }
+
+        function handleEnd(e) { 
+          if (isDragging) {
+            $(document).off('touchmove', handleMove);
+            $(document).off('touchend', handleEnd);
+      
+            if (isScrolling) {
+              if (e.type === 'touchend') {
+                var touch = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
+                var diffX = touch.clientX - startX;
+              } else {
+                var diffX = e.clientX - startX;
+              }
+
+              if (Math.abs(diffX) > window.innerWidth * 0.05) {
+                if (diffX > 0) {
+                  index = index + 1;
+                  isLeftBtn = 0;
+                } else {
+                  index = index - 1;
+                  isLeftBtn = 1;
+                }
+                changeLeft(diffX);
+              } else {
+                $list.css({ transform: 'translateX(' + listTar + 'px)', transition: 'all .4s ease' });
+              }
+            }else{
+              isDragging = false;
+            }
+            isScrolling = false;
+            isDragging = false;
+          }
+        }
+      }
+      initMobileCarousel();
+    }
+
+    window.addEventListener('load', function () {
+      labsReviewSlider($('.labs-review'))
+    })
+  </script>
+{% schema %}
+{
+  "name": "labs-review",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "title"
+    },
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "text1",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "text2",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "text3",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "text4",
+      "label": "Text"
+    }
+  ],
+  "blocks": [
+    {
+      "name": "item",
+      "type": "item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text2",
+          "label": "Solution"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text"
+        },
+        {
+          "type": "text",
+          "id": "text1",
+          "label": "Text"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "labs-review"
+    }
+  ]
+}
+{% endschema %}

@@ -1,7 +1,7 @@
 {%- comment -%}
-This snippet structures the micro-data using JSON-LD specification. Please note that for Product especially,
-the schema often changes. We try to output as much info as possible, but Google may add new requirements over time,
-or change the format of some info
+  This snippet structures the micro-data using JSON-LD specification. Please note that for Product especially,
+  the schema often changes. We try to output as much info as possible, but Google may add new requirements over time,
+  or change the format of some info
 {%- endcomment -%}
 
 {%- if request.page_type == 'product' -%}
@@ -42,14 +42,12 @@ or change the format of some info
         }{% unless forloop.last %},{% endunless %}
       {%- endfor -%}
     ],
-    {%- if product.metafields.reviews.rating.value != blank and product.metafields.reviews.rating_count.value > 0 -%}
+    {%- if product.metafields.loox.num_reviews -%}
       "aggregateRating": {
-        "@type": "AggregateRating",
-        "ratingValue": "{{ product.metafields.reviews.rating.value }}",
-        "reviewCount": "{{ product.metafields.reviews.rating_count.value }}",
-        "worstRating": "{{ product.metafields.reviews.rating.value.scale_min }}",
-        "bestRating": "{{ product.metafields.reviews.rating.value.scale_max }}"
-      },
+        "@type": "AggregateRating",      
+        "ratingValue": "{{ product.metafields.loox.avg_rating }}",      
+        "reviewCount": "{{ product.metafields.loox.num_reviews }}"  
+       },
     {%- endif -%}
     "brand": {
       "@type": "Brand",
@@ -181,24 +179,27 @@ or change the format of some info
 
 {% if main_entity_microdata != blank %}
   <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    {{ main_entity_microdata }}
-  }
+    {
+      "@context": "https://schema.org",
+      {{ main_entity_microdata }}
+    }
   </script>
 {% endif %}
 
 {% if breadcrumb_entity_microdata != blank %}
   <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    {{ breadcrumb_entity_microdata }}
-  }
+    {
+      "@context": "https://schema.org",
+      {{ breadcrumb_entity_microdata }}
+    }
   </script>
 {% endif %}
 
 {%- if request.page_type == 'index' -%}
-  {%- assign potential_action_target = request.origin | append: routes.search_url | append: "?q={search_term_string}" -%}
+  {%- assign potential_action_target = request.origin
+    | append: routes.search_url
+    | append: '?q={search_term_string}'
+  -%}
 
   <script type="application/ld+json">
     {
@@ -216,46 +217,215 @@ or change the format of some info
 {%- endif -%}
 
 {%- if request.page_type == 'index' -%}
-<script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "Product",
-    "aggregateRating": {
-      "@type": "AggregateRating",
-      "ratingCount": "2490",
-      "reviewCount": "512",
-      "worstRating": "1",
-      "bestRating": "5"
-    },
-    "url":"https://www.ulike.com/products/sapphire-air-3-ipl-hair-removal",
-    "sku":"11U0628U32",
-    "name": "[ 4th of July Sale ] Ulike Sapphire Air3 IPL Hair Removal Handset",
-    "offers": [
-      {
-        "@type": "Offer",
-        "name": "Purple",
-        "availability": "http://schema.org/InStock",
-        "price": "319",
-        "priceCurrency": "GBP",
-        "sku":"11U0628U32",
-        "url":"https://www.ulike.com/products/sapphire-air-3-ipl-hair-removal?variant=43695950823665"
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Product",
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.2",
+        "reviewCount": "459"
       },
-      {
-        "@type": "Offer",
-        "name": "White",
-        "availability": "http://schema.org/InStock",
-        "price": "319",
-        "priceCurrency": "GBP",
-        "sku":"11U0610U34",
-        "url":"https://www.ulike.com/products/sapphire-air-3-ipl-hair-removal?variant=43727558508785"
-      }
-    ],
-    "image": {
+      "url": "https://uk.ulike.com/products/sapphire-air-3-ipl-hair-removal",
+      "sku": "11U0628B32",
+      "name": "Ulike Sapphire Air 3 IPL Hair Removal Handset",
+      "offers": [
+        {
+          "@type": "Offer",
+          "name": "Purple \/ UK Plug",
+          "availability": "https://schema.org/InStock",
+          "price": 319.0,
+          "priceCurrency": "GBP",
+          "priceValidUntil": "{{ 'now' | date: '%s' | plus: days_product_price_valid_until | date: '%Y-%m-%d' }}",
+          "sku": "11U0628B32",
+          "gtin13": "6971526222037",
+          "url": "/products/sapphire-air-3-ipl-hair-removal?variant=44752575889695"
+        },
+        {
+          "@type": "Offer",
+          "name": "Purple \/ EU Plug",
+          "availability": "https://schema.org/InStock",
+          "price": 319.0,
+          "priceCurrency": "GBP",
+          "priceValidUntil": "{{ 'now' | date: '%s' | plus: days_product_price_valid_until | date: '%Y-%m-%d' }}",
+          "sku": "11U0628E32",
+          "gtin13": "6971526222037",
+          "url": "/products/sapphire-air-3-ipl-hair-removal?variant=44752575922463"
+        },
+        {
+          "@type": "Offer",
+          "name": "White \/ UK Plug",
+          "availability": "https://schema.org/InStock",
+          "price": 319.0,
+          "priceCurrency": "GBP",
+          "priceValidUntil": "{{ 'now' | date: '%s' | plus: days_product_price_valid_until | date: '%Y-%m-%d' }}",
+          "sku": "11U0610B32",
+          "gtin": "6971526222037",
+          "url": "/products/sapphire-air-3-ipl-hair-removal?variant=44770181382431"
+        },
+        {
+          "@type": "Offer",
+          "name": "White \/ EU Plug",
+          "availability": "https://schema.org/InStock",
+          "price": 319.0,
+          "priceCurrency": "GBP",
+          "priceValidUntil": "{{ 'now' | date: '%s' | plus: days_product_price_valid_until | date: '%Y-%m-%d' }}",
+          "sku": "11U0610E32",
+          "gtin": "6971526222037",
+          "url": "/products/sapphire-air-3-ipl-hair-removal?variant=44770181415199"
+        }
+      ],
+      "image": {
         "@type": "ImageObject",
-        "url": "https://www.ulike.com/cdn/shop/files/Group457393213_f3160132-fb40-43a9-897d-384c4da3eab8.jpg?v=1688035546&width=1024",
-        "image": "https://www.ulike.com/cdn/shop/files/Group457393213_f3160132-fb40-43a9-897d-384c4da3eab8.jpg?v=1688035546&width=1024",
+        "url": "https://uk.ulike.com/cdn/shop/files/air3_-_1.jpg?v=1706584691&width=1024",
+        "image": "https://uk.ulike.com/cdn/shop/files/air3_-_1.jpg?v=1706584691&width=1024",
         "width": "1024",
         "height": "1024"
+      }
     }
-  }</script>
-  {%- endif -%}
+  </script>
+{%- endif -%}
+<!-- {{ page.url }} -->
+
+{%- if page.url == '/pages/meta-air-plus-product-detail' -%}
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Product",
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.4",
+        "reviewCount": "152"
+      },
+      "url": "https://uk.ulike.com{{page.url }}",
+      "sku": "11U0628B32",
+      "name": "Ulike Sapphire Air+ IPL Hair Removal Handset",
+      "offers": [
+        {
+          "@type": "Offer",
+          "name": "Dark Green \/ UK Plug",
+          "availability": "https://schema.org/InStock",
+          "price": 199.0,
+          "priceCurrency": "GBP",
+          "priceValidUntil": "{{ 'now' | date: '%s' | plus: days_product_price_valid_until | date: '%Y-%m-%d' }}",
+          "sku": "11UI04MD01",
+          "gtin13": "6971526220835",
+          "url": "/products/meta-air-plus-product-detail"
+        },
+        {
+          "@type": "Offer",
+          "name": "Dark Green \/ EU Plug",
+          "availability": "https://schema.org/InStock",
+          "price": 199.0,
+          "priceCurrency": "GBP",
+          "priceValidUntil": "{{ 'now' | date: '%s' | plus: days_product_price_valid_until | date: '%Y-%m-%d' }}",
+          "sku": "11UI04MC01",
+          "gtin13": "6971526220835",
+          "url": "/products/meta-air-plus-product-detail"
+        },
+        {
+          "@type": "Offer",
+          "name": "White \/ UK Plug",
+          "availability": "https://schema.org/InStock",
+          "price": 199.0,
+          "priceCurrency": "GBP",
+          "priceValidUntil": "{{ 'now' | date: '%s' | plus: days_product_price_valid_until | date: '%Y-%m-%d' }}",
+          "sku": "11UI04WD01",
+          "gtin13": "6971526220835",
+          "url": "/products/meta-air-plus-product-detail"
+        },
+        {
+          "@type": "Offer",
+          "name": "White \/ EU Plug",
+          "availability": "https://schema.org/InStock",
+          "price": 199.0,
+          "priceCurrency": "GBP",
+          "priceValidUntil": "{{ 'now' | date: '%s' | plus: days_product_price_valid_until | date: '%Y-%m-%d' }}",
+          "sku": "110A211E32",
+          "gtin13": "6971526220835",
+          "url": "/products/meta-air-plus-product-detail"
+        }
+      ],
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://uk.ulike.com/cdn/shop/files/air3_-_1.jpg?v=1706584691&width=1024",
+        "image": "https://uk.ulike.com/cdn/shop/files/air3_-_1.jpg?v=1706584691&width=1024",
+        "width": "1024",
+        "height": "1024"
+      }
+    }
+  </script>
+{%- endif -%}
+
+{%- if page.url == '/pages/meta-air-3-a'
+  or page.url == '/pages/meta-air-3-product-detail'
+  or page.url == '/pages/meta-air-3-b'
+-%}
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Product",
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.2",
+        "reviewCount": "459"
+      },
+      "url": "https://uk.ulike.com{{page.url }}",
+      "sku": "11U0628B32",
+      "name": "Ulike Sapphire Air 3 IPL Hair Removal Handset",
+      "offers": [
+        {
+          "@type": "Offer",
+          "name": "Purple \/ UK Plug",
+          "availability": "https://schema.org/InStock",
+          "price": 219.0,
+          "priceCurrency": "GBP",
+          "priceValidUntil": "{{ 'now' | date: '%s' | plus: days_product_price_valid_until | date: '%Y-%m-%d' }}",
+          "sku": "11U0628B32",
+          "gtin13": "6971526222037",
+          "url": "{{page.url }}"
+        },
+        {
+          "@type": "Offer",
+          "name": "Purple \/ EU Plug",
+          "availability": "https://schema.org/InStock",
+          "price": 219.0,
+          "priceCurrency": "GBP",
+          "priceValidUntil": "{{ 'now' | date: '%s' | plus: days_product_price_valid_until | date: '%Y-%m-%d' }}",
+          "sku": "11U0628E32",
+          "gtin13": "6971526222037",
+          "url": "{{page.url }}"
+        },
+        {
+          "@type": "Offer",
+          "name": "White \/ UK Plug",
+          "availability": "https://schema.org/InStock",
+          "price": 219.0,
+          "priceCurrency": "GBP",
+          "priceValidUntil": "{{ 'now' | date: '%s' | plus: days_product_price_valid_until | date: '%Y-%m-%d' }}",
+          "sku": "11U0610B32",
+          "gtin": "6971526222037",
+          "url": "{{page.url }}"
+        },
+        {
+          "@type": "Offer",
+          "name": "White \/ EU Plug",
+          "availability": "https://schema.org/InStock",
+          "price": 219.0,
+          "priceCurrency": "GBP",
+          "priceValidUntil": "{{ 'now' | date: '%s' | plus: days_product_price_valid_until | date: '%Y-%m-%d' }}",
+          "sku": "11U0610E32",
+          "gtin": "6971526222037",
+          "url": "{{page.url }}"
+        }
+      ],
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://uk.ulike.com/cdn/shop/files/air3_-_1.jpg?v=1706584691&width=1024",
+        "image": "https://uk.ulike.com/cdn/shop/files/air3_-_1.jpg?v=1706584691&width=1024",
+        "width": "1024",
+        "height": "1024"
+      }
+    }
+  </script>
+{%- endif -%}
