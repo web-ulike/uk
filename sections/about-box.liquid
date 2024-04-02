@@ -1,0 +1,185 @@
+<style>
+  .container_new {
+    padding: 0 60px;
+}
+.about_box{
+  background:  #FBFAF4;
+  padding-top: 100px;
+}
+.about_box h3{
+  font-family: var(--heading-font-family);
+    font-weight: var(--heading-font-weight);
+    font-style: var(--heading-font-style);
+  color: #190A0A;
+font-size: 48px;
+line-height: 1.2;
+}
+.about_num-box{
+  margin-top: 252px;
+}
+.about_num-item{
+  display: flex;
+  gap: 20px;
+}
+.about_num-item .about_num-li{
+  flex-basis: 50%;
+  border-top: 1px solid #3F3636;
+  padding-top: 30px;
+  padding-bottom: 120px;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 20px;
+}
+.about_num-li .about_num-cnt{
+  color:  #E0004D;
+  font-size: 128px;
+  line-height: 1.2;
+  grid-column: span 4;
+}
+.about_num-li .about_txt{
+  color: #3F3636;
+  font-size: 20px;
+  line-height: 1.2;
+  grid-column-start: 5;
+  grid-column: span 2;
+}
+
+@media screen and (max-width: 1249px) {
+  .about_num-li .about_num-cnt {
+    font-size: 98px;
+}
+}
+
+@media screen and (max-width: 992px) {
+  .about_num-box {
+    margin-top: 100px;
+}
+  .about_num-li .about_num-cnt {
+    font-size: 68px;
+}
+}
+
+@media screen and (max-width: 768px) {
+  .container_new {
+    padding: 0 20px;
+}
+  .about_box {
+    padding-top: 55px;
+}
+.about_box h3 {
+  font-size: 24px;
+  line-height: 1.25;
+}
+  .container_new {
+    padding: 0 20px;
+}
+  .about_num-box {
+    margin-top: 164px;
+}
+  .about_num-li .about_num-cnt {
+    font-size: 48px;
+}
+.about_num-li .about_txt{
+  font-size: 12px;
+}
+.about_num-item{
+  flex-direction: column;
+}
+.about_num-item .about_num-li {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 10px;
+    padding-bottom: 40px;
+}
+}
+</style>
+  <section>
+      <div class="about_box to-top">
+        <div class="about_wrapper">
+          <div class="container_new">
+            {%- if section.settings.title != blank -%}
+            <h3 class="to-top">{{ section.settings.title | escape }}</h3>
+            {%- endif -%}
+            <div class="about_num-box">
+              {%- for block in section.blocks -%}
+              <div class="about_num-item">
+                <div class="about_num-left about_num-li to-top" style="transition-delay: 0.1s">
+                  {%- if block.settings.tle_1 != blank -%}
+                  <div class="about_num-cnt number-anime">
+                   {{ block.settings.tle_1 | escape }}
+                  </div>
+                  {%- endif -%}
+                  {%- if block.settings.cnt_1 != blank -%}
+                  <div class="about_txt"> {{ block.settings.cnt_1 | escape }}</div>
+                  {%- endif -%}
+                </div>
+                <div class="about_num-right about_num-li to-top" style="transition-delay: 0.2s">
+                  {%- if block.settings.tle_2 != blank -%}
+                  <div class="about_num-cnt number-anime">
+                   {{ block.settings.tle_2 | escape }}
+                  </div>
+                  {%- endif -%}
+                  {%- if block.settings.cnt_2 != blank -%}
+                  <div class="about_txt"> {{ block.settings.cnt_2 | escape }}</div>
+                  {%- endif -%}
+                </div>
+              </div>
+             {%- endfor -%}
+              
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    animateNumbersVisibleAnime('.about_box .number-anime');
+  })
+</script>
+{% schema %}
+{
+"name": "about-box",
+"class": "about-box",
+"blocks": [
+        {
+      "name": "item",
+      "type": "item",
+      "settings": [
+         {
+      "type": "text",
+      "id": "tle_1",
+      "label": "Title 1"
+    },
+        {
+      "type": "text",
+      "id": "tle_2",
+      "label": "Title 2"
+    },
+        {
+      "type": "text",
+      "id": "cnt_1",
+      "label": "Content 1"
+    },
+         {
+      "type": "text",
+      "id": "cnt_2",
+      "label": "Content 2"
+    }
+      ]
+    }
+],
+  "settings": [
+     {
+      "type": "text",
+      "id": "title",
+      "label": "Title"
+    }
+  ],
+  "presets": [
+    {
+      "name": "about-box",
+      "blocks": []
+    }
+  ]
+}
+{% endschema %}

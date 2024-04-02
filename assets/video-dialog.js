@@ -177,6 +177,8 @@ function addToCart(productId, button, properties) {
      loaderElement.hidden = false;
   }
 
+  console.log(properties);
+
  fetch('/cart/add.js', {
    method: 'POST',
    headers: {
