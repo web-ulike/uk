@@ -346,7 +346,7 @@
     // 颜色切换
     $(document).on('click', '.product-components .color-swatch', function () {
       var inventory_quantity = $(this).attr('inventory_quantity');
-      let _position =  $(this).attr('position');
+      let _position =  $(this).attr('position') - 1;
       var thatVariant = $(this).closest('.variants-list');
       if(inventory_quantity > 0){
         $('.color-swatch-list .color-swatch__radio[name="option1"]').removeAttr('checked');
@@ -445,9 +445,10 @@
 
   {% comment %} 置底栏 {% endcomment %}
   function fixBottomBar() {
+    var topBar = $("#top-bar");
+    let barTop = $(topBar).offset().top + 200;
     $(window).scroll(function() {
-      var topBar = $("#top-bar");
-      if ($(this).scrollTop() > 100) {
+      if ($(this).scrollTop() > barTop ) {
           topBar.addClass("toolbar-fixed");
       } else {
           topBar.removeClass("toolbar-fixed");

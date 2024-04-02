@@ -1,0 +1,180 @@
+<style>
+.preheat-sticky-bottom{
+  padding: 23px 0;
+  background: #fff;
+  border-top: 1px solid #E4DDDD;
+  border-bottom: 1px solid #E4DDDD;
+}
+
+.preheat-sticky-bottom .preheat-sticky-bottom-cont{
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.preheat-sticky-bottom .preheat-sticky-bottom-left{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  flex: 1;
+}
+
+.preheat-sticky-bottom .preheat-sticky-bottom-flex{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.preheat-sticky-bottom .preheat-sticky-bottom-title{
+  color: #190A0A;
+  font-size: 20px;
+  line-height: 1.2;
+}
+
+.preheat-sticky-bottom .preheat-sticky-bottom-price{
+  color: #A1A1A1;
+  font-size: 14px;
+  line-height: 1.3;
+  text-decoration: line-through;
+}
+
+.preheat-sticky-bottom .preheat-sticky-bottom-sub{
+  color: #190A0A;
+  font-size: 16px;
+  line-height: 1.2;
+  letter-spacing: 0.16px;
+}
+
+.preheat-sticky-bottom .preheat-sticky-bottom-btn{
+  font-size: 14px;
+  width: 157px;
+  height: 42px;
+  background: #190A0A;
+  cursor: pointer;
+  border-radius: 42px;
+  border: 1px solid #190A0A;
+}
+
+.preheat-sticky-bottom .preheat-sticky-bottom-btn .btn-txt span{
+  color: #fff;
+}
+
+.fixed-bottom.preheat-sticky-bottom{
+  position: fixed;
+  width: 100%;
+  left: 0;
+  bottom: 0;
+  z-index: 10;
+  
+}
+
+@media (max-width:991px) {
+  .preheat-sticky-bottom{
+    padding: 15px 0;
+  }
+  .preheat-sticky-bottom .preheat-sticky-bottom-left{
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+  }
+  .preheat-sticky-bottom .preheat-sticky-bottom-cont{
+    gap: 30px;
+  }
+  .preheat-sticky-bottom .preheat-sticky-bottom-title{
+    font-size: 18px;
+  }
+
+  .preheat-sticky-bottom .preheat-sticky-bottom-sub{
+    font-size: 12px;
+  }
+  .preheat-sticky-bottom .preheat-sticky-bottom-btn{
+    width: 137px;
+  }
+}
+</style>
+
+<section class="section-box">
+  <div class="preheat-sticky-bottom-tags"></div>
+  <div class="preheat-sticky-bottom">
+    <div class="container">
+      <div class="preheat-sticky-bottom-cont">
+        <div class="preheat-sticky-bottom-left">
+          <div class="preheat-sticky-bottom-flex">
+            <div class="preheat-sticky-bottom-title">{{ section.settings.text }}</div>
+            <div class="preheat-sticky-bottom-price">{{ section.settings.text1 }}</div>
+          </div>
+          <div class="preheat-sticky-bottom-sub">{{ section.settings.text2 }}</div>
+        </div>
+        <div class="preheat-sticky-bottom-right">
+          {%- if section.settings.text3 != blank -%}
+            <div class="preheat-sticky-bottom-btn btn-diy" onclick="tagsScrollToTop()">
+              <div class="btn-txt" text="{{ section.settings.text3 }}">
+                <span>{{ section.settings.text3 }}</span>
+              </div>
+            </div>
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+  function tagsScrollToTop() {
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
+  }
+  function preheatStickyBottom(){
+    let winHeight = window.innerHeight
+    let $tags = document.querySelector('.preheat-sticky-bottom-tags')
+    let $p = document.querySelector('.preheat-sticky-bottom')
+    let height = $p.offsetHeight
+    let $tagsPosition = $tags.getBoundingClientRect()
+    if($tagsPosition.top <= winHeight - height){
+      $p.classList.add('fixed-bottom')
+      document.querySelector('body').style.setProperty('padding-bottom',height+'px')
+    }else{
+      $p.classList.remove('fixed-bottom')
+      document.querySelector('body').style.setProperty('padding-bottom','0px')
+    }
+  }
+  preheatStickyBottom()
+  window.addEventListener('scroll',preheatStickyBottom)
+</script>
+{% schema %}
+{
+  "name": "preheat-sticky-bottom",
+  "settings": [   
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "text1",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "text2",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "text3",
+      "label": "Text"
+    }
+  ],
+  "presets": [
+    {
+      "name": "preheat-sticky-bottom",
+      "settings": {},
+      "blocks": [
+      ]
+    }
+  ]
+}
+{% endschema %}
