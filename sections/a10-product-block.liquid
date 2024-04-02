@@ -1,0 +1,1502 @@
+{%- liquid
+  assign se_id = section.id
+  assign se_bks = section.blocks
+  assign se_stts = section.settings
+  assign product = se_stts.product
+-%}
+
+<link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
+<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+
+<div id="top-bar" class="toolbar-block">
+  <div class="container">
+    <div class="product-toolbar">
+      <div class="navbar">
+        <div class="box-price">
+          <div class="dis-price">
+            {{ product.price | money }}
+            <span class="price m-show">{{ product.compare_at_price | money }}</span>
+          </div>
+          <div class="original-price p-hide">
+            <div class="price ">{{ product.compare_at_price | money }}</div>
+            <div class="group-purchase-offer">Group ends in</div>
+          </div>
+        </div>
+        <div class="box-countdown">
+          <span class="m-show ends-text">Group ends in</span>
+          <div id="countdown-bar" class="countdown">
+            <div class="countdown__item">
+              <div class="countdown__bix">
+                <span class="countdown-time-bar countdown-hours">01</span>
+              </div>
+              <span class="countdown_txt">Hours</span>
+            </div>
+            <div class="countdown__er">:</div>
+            <div class="countdown__item">
+              <div class="countdown__bix">
+                <span class="countdown-time-bar countdown-minutes">20</span>
+              </div>
+              <span class="countdown_txt">minutes</span>
+            </div>
+            <div class="countdown__er">:</div>
+            <div class="countdown__item">
+              <span class="countdown__bix ">
+                <span class="countdown-time-bar countdown-seconds">10</span>
+              </span>
+              <span class="countdown_txt">seconds</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="right-panel">
+        <div class="btn-add-cart">
+          <span class="loader-button__text">ADD TO CART</span>
+          <span class="loader-button__loader" hidden>
+            <div class="spinner">
+              <svg focusable="false" width="24" height="24" class="icon icon--spinner" viewBox="25 25 50 50">
+                <circle cx="50" cy="50" r="20" fill="none" stroke="currentColor" stroke-width="5"></circle>
+              </svg>
+            </div>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="product-components">
+  <div class="product-left-panel">
+    <!-- 左侧轮播 -->
+    <div class="thumbs-swiper">
+      <div class="swiper myThumbs">
+        <div class="swiper-wrapper">
+          <!-- 缩略图 -->
+          {% for item in product.images %}
+            {% comment %} {% if block.type == 'product-image' %} {% endcomment %}
+            {% comment %} {% assign img = block.settings.image %} {% endcomment %}
+            <div class="swiper-slide">
+              {{- item | image_url: width: item.width | image_tag: loading: 'lazy', draggable: false -}}
+            </div>
+            {% comment %} {% endif %} {% endcomment %}
+          {% endfor %}
+          <!-- 更多缩略图 -->
+        </div>
+      </div>
+    </div>
+    <div class="main-image-swiper">
+      <!-- Swiper主图 -->
+      <div class="swiper myGallery">
+        <div class="swiper-wrapper">
+          <!-- 主图 -->
+          {% for item in product.images %}
+            <div class="swiper-slide">
+              {{- item | image_url: width: item.width | image_tag: loading: 'lazy', draggable: false -}}
+            </div>
+          {% endfor %}
+        </div>
+        <div class="swiper-pagination"></div>
+      </div>
+    </div>
+  </div>
+  <div class="product-right-panel">
+    <div class="tags">
+      <div class="new-tag">{{ se_stts.new }}</div>
+    </div>
+    <div class="title">{{ se_stts.title }}</div>
+    <div class="sub-title">{{ se_stts.desc }}</div>
+    <a href="#looxReviews">
+      <div
+        class="loox-rating"
+        data-id="{{ product.id }}"
+        data-rating="{{ product.metafields.loox.avg_rating }}"
+        data-raters="{{ product.metafields.loox.num_reviews }}"
+      ></div>
+    </a>
+    <div class="info-list">
+      <ul class="description">
+        {% for block in se_bks %}
+          {% if block.type == 'product-desc' %}
+            <li>{{ block.settings.name }}</li>
+          {% endif %}
+        {% endfor %}
+      </ul>
+      <div class="read-more">{{ se_stts['read-more'] }} +</div>
+    </div>
+    <div
+      class="variants-list"
+      handle="{{ product.handle }}"
+    >
+      {%- assign color_swatch_config = settings.color_swatch_config | newline_to_br | split: '<br />' -%}
+      {%- for option in product.options_with_values -%}
+        {%- assign option_name = option.name -%}
+        {% if option_name == 'Colour' %}
+          <div class="color-block swatch_{{ option_name}}">
+            <div class="name">
+              {{ option_name }}: <lable>{{ option.values | first }}</lable>
+            </div>
+            <div class="color-swatch-list">
+              {% for value in option.values %}
+                {%- assign variant_for_value = product.variants | where: 'option1', value | first -%}
+                <div
+                  class="color-swatch  {% if value == option.selected_value %} active {% endif%}"
+                  id="{{ variant_for_value.id }}"
+                  inventory_quantity="{{ variant_for_value.inventory_quantity }}"
+                  position="{{ variant_for_value.featured_media.position }}"
+                  name="{{ value }}"
+                >
+                  <input
+                    class="color-swatch__radio visually-hidden"
+                    type="radio"
+                    name="option1"
+                    {% if value == option.selected_value %}
+                      checked="checked"
+                    {% endif %}
+                    value="{{ value}}"
+                  >
+                  <label
+                    class="color-swatch__item"
+
+                    style="{% render 'color-swatch-style', color_swatch_config: color_swatch_config, value: value %}"
+                  >
+                    <span class="visually-hidden">{{ value }}</span>
+                  </label>
+                </div>
+              {% endfor %}
+            </div>
+          </div>
+        {% else %}
+          <div class="plug-block swatch_{{ option_name}}">
+            <div class="name">
+              {{ option_name }}: <label>{{ option.values | first }}</label>
+            </div>
+            <div class="plug-list">
+              {% for value in option.values %}
+                {%- assign variant_for_value = product.variants | where: 'option2', value | first -%}
+                <div
+                  class="item {% if forloop.index0 == 0 %} active {% endif %}"
+                  id="{{ variant_for_value.id }}"
+                  name="{{ value }}"
+                >
+                  <div class="text">{{ value }}</div>
+                </div>
+              {% endfor %}
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
+      <div class="product-tips">restocking</div>
+    </div>
+
+    <div class="price-block">
+      <div class="price">
+        <div class="dis-price">{{ product.price | money }}</div>
+        {% if product.compare_at_price %}
+          <div class="original-price">{{ product.compare_at_price | money }}</div>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="custom-reasons-block">
+      <div class="item">
+        <img class="img-2" src="https://cdn.shopify.com/s/files/1/0740/5882/6015/files/mask-group.svg?v=1711459813">
+        <div class="desc">Free 2-Day Shipping</div>
+      </div>
+      <div class="item">
+        <img class="img-2" src="https://cdn.shopify.com/s/files/1/0740/5882/6015/files/2-year.svg?v=1711459860">
+        <div class="desc">Lifetime Warranty</div>
+      </div>
+      <div class="item">
+        <img class="img-2" src="https://cdn.shopify.com/s/files/1/0740/5882/6015/files/group-3116.svg?v=1711459860">
+        <div class="desc">90-Day Easy Money back</div>
+      </div>
+    </div>
+
+    <div class="group-sharing">
+      <div class="detail">
+        <div class="left-box">
+          <div class="info">
+            <span class="user"><span>0</span> Users</span>
+            <span class="text"> Group-Purchased</span>
+          </div>
+          <p class="text-desc">Get Best Offer with Group Purchase</p>
+        </div>
+        <div class="right-box">
+          <div class="main-content">
+            <img
+              class="vector-2"
+              src="https://cdn.shopify.com/s/files/1/0740/5882/6015/files/vector-115.svg?v=1711459504"
+            >
+            <div class="current-text">
+              <div class="text">Current</div>
+              <div class="text-price">£{{ product.price | divided_by: 100 | floor }}</div>
+            </div>
+            <div class="offer-ends">
+              <div class="text">Offer Ends</div>
+              <div class="text-price">£{{ product.compare_at_price | divided_by: 100 | floor }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="winning-info">
+        <div class="group-wrapper">
+          <div class="m-image-block">
+            <img class="vector" src="https://cdn.shopify.com/s/files/1/0740/5882/6015/files/people.svg?v=1711459194">
+            <div class="name">Amy **</div>
+          </div>
+          <p class="desc">
+            <span class="text">initiated a group purchase, join in and enjoy the best offer, ends in soon </span>
+            <span class="time">00:00</span>
+          </p>
+        </div>
+        <div class="btn-group-purchase">
+          <span class="loader-button__text">{{ se_stts['group-purchase'] }}</span>
+          <span class="loader-button__loader" hidden>
+            <div class="spinner">
+              <svg focusable="false" width="24" height="24" class="icon icon--spinner" viewBox="25 25 50 50">
+                <circle cx="50" cy="50" r="20" fill="none" stroke="currentColor" stroke-width="5"></circle>
+              </svg>
+            </div>
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div class="pay-block">
+      <div class="btn-purchase">
+        <span class="loader-button__text">{{ se_stts['btn-purchase'] }}</span>
+        <span class="loader-button__loader" hidden>
+          <div class="spinner">
+            <svg focusable="false" width="24" height="24" class="icon icon--spinner" viewBox="25 25 50 50">
+              <circle cx="50" cy="50" r="20" fill="none" stroke="currentColor" stroke-width="5"></circle>
+            </svg>
+          </div>
+        </span>
+      </div>
+      <div class="more-payment">
+        <div class="text">More payment options</div>
+        <div class="payment-methods-list">
+          {% for block in se_bks %}
+            {% if block.type == 'payment-list' %}
+              {{-
+                block.settings.image
+                | image_url: width: block.settings.image.width
+                | image_tag: loading: 'lazy', draggable: false
+              -}}
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  var pid = '{{ product.variants[0].id }}';
+  document.addEventListener('DOMContentLoaded', function () {
+    const galleryThumbs = new Swiper('.myThumbs', {
+      spaceBetween: isMobile() ? 8 : 15,
+      slidesPerView: 'auto',
+      freeMode: true,
+      watchSlidesVisibility: true,
+      watchSlidesProgress: true,
+      direction: isMobile() ? 'horizontal' : 'vertical',
+    });
+    const galleryTop = new Swiper('.myGallery', {
+      spaceBetween: 10,
+      pagination: {
+        el: '.swiper-pagination',
+      },
+      thumbs: {
+        swiper: galleryThumbs,
+      },
+    });
+
+    //查看更多
+    $(document).on('click', '.read-more', function () {
+      $('.description').toggleClass('expanded');
+      if ($('.description').is('.expanded')) {
+        $(this).text('{{se_stts.read-more }} -');
+      } else {
+        $(this).text('{{se_stts.read-more }} +');
+      }
+    });
+
+    // 原价商品
+    $(document).on('click', '.btn-purchase', function () {
+      if ($(this).attr('disabled') != 'disabled') {
+        addToCart('44752575922463', $(this)[0]);
+      }
+    });
+
+    // 拼团商品
+    $(document).on('click', '.btn-group-purchase', function () {
+      if ($(this).attr('disabled') != 'disabled') {
+        addToCart(pid, $(this)[0]);
+      }
+    });
+
+    // 底部置顶栏 添加购物车
+    $(document).on('click', '.btn-add-cart', function () {
+      if ($(this).attr('disabled') != 'disabled') {
+        addToCart(pid, $(this)[0]);
+      }
+    });
+
+    // 颜色切换
+    $(document).on('click', '.product-components .color-swatch', function () {
+      var inventory_quantity = $(this).attr('inventory_quantity');
+      let _position =  $(this).attr('position');
+      var thatVariant = $(this).closest('.variants-list');
+      if(inventory_quantity > 0){
+        $('.color-swatch-list .color-swatch__radio[name="option1"]').removeAttr('checked');
+        $(this).find('.color-swatch__radio[name="option1"]').attr('checked', 'checked');
+        // 修改标题
+        $(this).closest('.color-block').find('.name lable').text($(this).find('.color-swatch__radio').val());
+        // 获取pid
+        pid = $(this).attr('id');
+
+        // 图片跳转
+        galleryTop.slideTo(_position);
+      } else {
+        // 没有库存
+        console.log('out of stock');
+        $(thatVariant).find('.product-tips').show();
+        setTimeout(function(){
+          $(thatVariant).find('.product-tips').fadeOut();
+        }, 3000)
+        galleryTop.slideTo(_position);
+      }
+    });
+
+    //规格切换
+    $(document).on('click', '.product-components .plug-list .item', function () {
+      var list = $(this).closest('.plug-block');
+      console.log(list);
+      list.find('.item').removeClass('active');
+      $(this).addClass('active');
+      // 修改标题
+      console.log($(this).attr('name'));
+      list.find('.name label').text($(this).attr('name'));
+
+      pid = $(this).attr('id');
+    });
+
+    // more payment
+    $(document).on('click', '.product-components .more-payment', function () {
+      $(this).find('.payment-methods-list').toggleClass('active');
+    });
+    randomName();
+    fixBottomBar();
+  });
+
+  function startCountdown(endTime, $element,type,callback) {
+    var countdownInterval = setInterval(function () {
+      // 获取当前时间
+      const now = new Date();
+      // 计算剩余时间（毫秒）
+      const difference = endTime - now;
+      // 如果时间到了，清除定时器并输出结束信息
+      if (difference <= 0) {
+          clearInterval(countdownInterval);
+          console.log("倒计时结束!");
+          if (typeof callback === 'function') {
+            callback();
+          }
+          return;
+      }
+      const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+
+      var displayMinutes = minutes < 10 ? '0' + minutes : minutes;
+      var displaySeconds = seconds < 10 ? '0' + seconds : seconds;
+
+      if(type == 1){
+        var displayDays = days > 0 ? days + ':' : '';
+        var displayHours = hours > 0 ? hours + ':' : '';
+        var newTime = displayDays + displayHours + displayMinutes + ':' + displaySeconds + '';
+        // 淡出旧时间，更新文本，然后淡入新时间
+        $element.fadeOut(200, function () {
+          $element.html(newTime).fadeIn(200);
+        });
+      }else if(type == 2){
+        var displayhours = hours < 10 ? '0' + hours : hours;
+        $($element).find('.countdown-hours').text(displayhours);
+        $($element).find('.countdown-minutes').text(displayMinutes);
+        $($element).find('.countdown-seconds').text(displaySeconds);
+      }
+    }, 1000);
+  }
+  function generateRandomName() {
+    // 定义一个随机名称的长度，例如从 5 到 10 个字符
+    const nameLength = Math.floor(Math.random() * 6) + 5;
+    // 定义一个包含字母的字符串，用于生成名称
+    const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+    // 随机生成一个名称
+    let name = '';
+    for (let i = 0; i < nameLength; i++) {
+      name += letters.charAt(Math.floor(Math.random() * letters.length));
+    }
+    return name;
+  }
+
+
+  {% comment %} 置底栏 {% endcomment %}
+  function fixBottomBar() {
+    $(window).scroll(function() {
+      var topBar = $("#top-bar");
+      if ($(this).scrollTop() > 100) {
+          topBar.addClass("toolbar-fixed");
+      } else {
+          topBar.removeClass("toolbar-fixed");
+      }
+    });
+  }
+
+  function randomName() {
+    var userCount = Math.floor(Math.random() * 301);
+    // 随机生成用户名称，3个词左右后面跟xxx
+    var userName = '';
+    for (var i = 0; i < 3; i++) {
+        let randomCharCode = Math.floor(Math.random() * 26) + 97;
+        userName += String.fromCharCode(randomCharCode);
+    }
+    userName += '**';
+    $('.group-sharing .user span').text(userCount);
+    $('.group-sharing .winning-info .name').text(userName);
+    $('.a10-product-cart-group .name lable').text(userName);
+    var endTime = new Date(new Date().getTime() + 15 * 60000).getTime();
+
+     // 倒计时
+     var $countdown = $('.winning-info .time');
+     startCountdown(endTime, $countdown, 1, function () {
+       console.log('倒计时结束！');
+       $countdown.hide();
+     });
+
+     var $countdown1 = $('.box-countdown .countdown');
+     startCountdown(endTime, $countdown1, 2, function () {
+      console.log('倒计时结束！');
+      $countdown.hide();
+    });
+    setCookie('groupName', userName, 1);
+    setCookie('groupTime', endTime, 1);
+  }
+</script>
+
+{% schema %}
+{
+  "name": "A10 Product Block",
+  "settings": [
+    {
+      "type": "product",
+      "id": "product",
+      "label": "产品选择"
+    },
+    {
+      "type": "textarea",
+      "id": "new",
+      "label": "标签",
+      "default": "new"
+    },
+    {
+      "type": "textarea",
+      "id": "title",
+      "label": "标题",
+      "default": "Ulike Air 10"
+    },
+    {
+      "type": "textarea",
+      "id": "desc",
+      "label": "副描述",
+      "default": "Super Hair Removal with DualBeam™ tech"
+    },
+    {
+      "type": "textarea",
+      "id": "read-more",
+      "label": "Read More",
+      "default": "Read More"
+    },
+    {
+      "type": "textarea",
+      "id": "group-purchase",
+      "label": "拼团按钮文案",
+      "default": "£249 GROUP PURCHASE"
+    },
+    {
+      "type": "textarea",
+      "id": "btn-purchase",
+      "label": "full Purchase按钮文案",
+      "default": "£369 FULL PRICE PURCHASE"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "product-image",
+      "name": "product-image",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        }
+      ]
+    },
+    {
+      "type": "product-desc",
+      "name": "product-desc",
+      "settings": [
+        {
+          "type": "textarea",
+          "id": "name",
+          "label": "描述",
+          "default": "Visible results in just one week"
+        }
+      ]
+    },
+    {
+      "type": "payment-list",
+      "name": "payment-list",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "u-a10-product-block",
+      "category": "u-a10-product-block",
+      "blocks": []
+    }
+  ]
+}
+{% endschema %}
+
+<style>
+  .swiper-pagination-bullet {
+    --swiper-pagination-color: #000000;
+    --swiper-pagination-bullet-inactive-color: #d9d9d9;
+    --swiper-pagination-bullet-border-radius: 80px;
+    --swiper-pagination-bullet-size: 12px;
+    --swiper-pagination-bullet-inactive-opacity: 1;
+    --swiper-pagination-bullet-horizontal-gap: 7px;
+  }
+
+  .product-components {
+    width: 100%;
+    display: flex;
+    margin-top: 40px;
+  }
+  .product-components p {
+    margin: 0px;
+  }
+  .product-components .product-left-panel {
+    width: 55%;
+    padding: 15px 30px 15px 50px;
+    display: flex;
+  }
+  .product-components .product-left-panel .thumbs-swiper {
+    width: 80px;
+    max-height: 770px;
+    display: flex;
+    justify-content: center;
+  }
+  .product-components .product-left-panel .thumbs-swiper .myThumbs {
+    height: 100%;
+  }
+  .product-components .product-left-panel .thumbs-swiper .myThumbs .swiper-slide {
+    height: 72px;
+    opacity: 0.7;
+    border-radius: 6px;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    -ms-border-radius: 6px;
+    -o-border-radius: 6px;
+  }
+  .product-components .product-left-panel .thumbs-swiper .myThumbs .swiper-slide img {
+    width: 70px;
+    border-radius: 6px;
+    height: auto;
+  }
+  .product-components .product-left-panel .thumbs-swiper .myThumbs .swiper-slide-thumb-active {
+    border: 1px solid #3f3636;
+    opacity: 1;
+  }
+  .product-components .product-left-panel .main-image-swiper {
+    margin-left: 20px;
+    width: calc(100% - 100px);
+  }
+  .product-components .product-left-panel .main-image-swiper .myGallery img {
+    width: 100%;
+  }
+  .product-components .product-right-panel {
+    width: 45%;
+    padding: 15px 50px 15px 50px;
+  }
+  .product-components .product-right-panel .new-tag {
+    background-color: rgb(255, 255, 255);
+    border-radius: 50px;
+    border-width: 1px;
+    border-style: solid;
+    border-color: rgb(224, 0, 77);
+    color: #e0004d;
+    font-size: 12px;
+    border-radius: 50px;
+    border: 1px solid #e0004d;
+    padding: 2px 10px;
+    display: inline-block;
+  }
+  .product-components .product-right-panel .tags {
+    margin-bottom: 5px;
+  }
+  .product-components .product-right-panel .title {
+    color: #333;
+    font-size: 40px;
+    font-style: normal;
+    line-height: 125%;
+    font-family: var(--heading-font-family);
+    font-weight: var(--heading-font-weight);
+  }
+  .product-components .product-right-panel .sub-title {
+    color: #333;
+    font-size: 16px;
+    line-height: 150%;
+  }
+  .product-components .product-right-panel .info-list {
+    margin-top: 10px;
+  }
+  .product-components .product-right-panel .info-list .description {
+    padding-inline-start: 20px;
+    margin-block-end: 0px;
+    max-height: 5em;
+    overflow: hidden;
+    transition: max-height 0.5s ease;
+  }
+  .product-components .product-right-panel .info-list .description li {
+    color: #3f3636;
+    font-size: 14px;
+    line-height: 180%; /* 25.2px */
+    text-transform: capitalize;
+  }
+  .product-components .product-right-panel .info-list .expanded {
+    max-height: initial;
+  }
+  .product-components .product-right-panel .read-more {
+    color: #e0004d;
+    font-size: 14px;
+    font-weight: 380;
+    line-height: 180%;
+    text-decoration-line: underline;
+    margin-bottom: 25px;
+    margin-left: 10px;
+    cursor: pointer;
+  }
+  .product-components .product-right-panel .variants-list {
+    display: grid;
+    grid-auto-rows: auto;
+    grid-template-columns: 30% 70%;
+    border-top: 1px solid #f2f2f2;
+    border-bottom: 1px solid #f2f2f2;
+    padding: 25px 0px;
+  }
+  .product-components .product-right-panel .variants-list .product-tips {
+    color: #e0004d;
+    font-size: 12px;
+    font-weight: 380;
+    margin-top: 6px;
+    display: none;
+  }
+  .product-components .product-right-panel .variants-list .color-block {
+    display: block;
+    margin-right: 47px;
+    position: relative;
+    width: 160px;
+  }
+  .product-components .product-right-panel .variants-list .color-block .name {
+    color: #333;
+    font-size: 16px;
+    line-height: 150%;
+    margin-bottom: 14px;
+  }
+  .product-components .product-right-panel .variants-list .color-block .color-swatch-list {
+    display: grid;
+    justify-content: flex-start;
+    grid-template-columns: repeat(auto-fit, 40px);
+    grid-gap: 8px;
+    gap: 8px;
+  }
+  .product-components .product-right-panel .variants-list .plug-block {
+    border-left: 1px solid #f2f2f2;
+    padding-left: 47px;
+    display: inline-flex;
+    flex-direction: column;
+    align-items: flex-start;
+    position: relative;
+    flex: 0 0 auto;
+  }
+  .product-components .product-right-panel .variants-list .plug-block .name {
+    color: #333;
+    font-size: 16px;
+    line-height: 150%;
+    margin-bottom: 14px;
+  }
+  .product-components .product-right-panel .variants-list .plug-block .plug-list {
+    display: flex;
+    gap: 10px;
+  }
+  .product-components .product-right-panel .variants-list .plug-block .plug-list .item {
+    color: #333;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 150%;
+    border-radius: 50px;
+    border: 1px solid #d9d9d9;
+    padding: 6px 30px;
+    cursor: pointer;
+  }
+  .product-components .product-right-panel .variants-list .plug-block .plug-list .item:hover {
+    border: 1px solid #333;
+  }
+  .product-components .product-right-panel .variants-list .plug-block .plug-list .item.active {
+    border: 1px solid #333;
+  }
+  .product-components .product-right-panel .variants-list .color-swatch__item {
+    position: relative;
+    display: block;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    border-radius: 100%;
+    background-size: cover;
+    background-position: center;
+    -webkit-tap-highlight-color: transparent;
+    border: 2px solid #d9d9d9;
+    -webkit-border-radius: 100%;
+    -moz-border-radius: 100%;
+    -ms-border-radius: 100%;
+    -o-border-radius: 100%;
+  }
+  .product-components .product-right-panel .variants-list .color-swatch__item::before {
+    top: -1px;
+    left: -1px;
+    width: calc(100% + 2px);
+    height: calc(100% + 2px);
+  }
+  .product-components .product-right-panel .variants-list .color-swatch__item::after {
+    top: -3px;
+    left: -3px;
+    width: calc(100% + 6px);
+    height: calc(100% + 6px);
+    border: 1px solid rgb(var(--section-background, var(--background)));
+    border-color: #3f3636;
+    opacity: 0;
+    transform: scale(0.8);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+  }
+  .product-components .product-right-panel .variants-list .color-swatch--white .color-swatch__item::before {
+    box-shadow: 0 0 0 1px rgba(var(--text-color), 0.3) inset;
+  }
+  .product-components .product-right-panel .variants-list .color-swatch:hover .color-swatch__item::after {
+    opacity: 1;
+    transform: scale(1);
+  }
+  .product-components .product-right-panel .variants-list .color-swatch__radio:checked + .color-swatch__item::after {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  .product-components .product-right-panel .price-block {
+    margin: 50px 0px 25px;
+  }
+  .product-components .product-right-panel .price-block .price {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .product-components .product-right-panel .price-block .price .dis-price {
+    color: #e0004d;
+    font-size: 32px;
+    font-weight: 380;
+    line-height: 130%; /* 41.6px */
+    text-transform: capitalize;
+  }
+  .product-components .product-right-panel .price-block .price .original-price {
+    color: #a1a1a1;
+    font-size: 20px;
+    font-weight: 380;
+    line-height: 130%; /* 26px */
+    text-decoration: line-through;
+    text-transform: capitalize;
+  }
+  .product-components .product-right-panel .custom-reasons-block {
+    display: flex;
+    gap: 50px;
+  }
+  .product-components .product-right-panel .custom-reasons-block .item {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+  }
+  .product-components .product-right-panel .custom-reasons-block .item .desc {
+    font-size: 14px;
+    line-height: 25px;
+    letter-spacing: 0.14px;
+    color: #040000;
+  }
+  .product-components .product-right-panel .group-sharing {
+    border: 1px solid #3f3636;
+    margin-top: 25px;
+    border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    -ms-border-radius: 10px;
+    -o-border-radius: 10px;
+    padding: 20px;
+  }
+  .product-components .product-right-panel .group-sharing .detail {
+    display: flex;
+  }
+  .product-components .product-right-panel .group-sharing .detail .left-box {
+  }
+  .product-components .product-right-panel .group-sharing .detail .left-box .info {
+    font-size: 14px;
+    color: #e0004d;
+  }
+  .product-components .product-right-panel .group-sharing .detail .left-box .info .text {
+    color: #3f3636;
+  }
+  .product-components .product-right-panel .group-sharing .detail .left-box .text-desc {
+    font-size: 16px;
+    font-weight: bold;
+    color: #3f3636;
+    margin-top: 10px;
+  }
+  .product-components .product-right-panel .group-sharing .detail .right-box {
+    padding: 0px 0px 0px 20px;
+  }
+  .product-components .product-right-panel .group-sharing .detail .right-box .main-content {
+    position: relative;
+    padding: 24px 0px 0px;
+  }
+  .product-components .product-right-panel .group-sharing .detail .right-box .main-content .current-text {
+    position: absolute;
+    width: 90px;
+    height: 55px;
+    top: 10px;
+    left: 16px;
+    text-align: center;
+    background: #190a0a;
+    color: #fff;
+    padding: 5px 15px 0px;
+    -webkit-clip-path: polygon(0% 0%, 100% 0, 100% 60%, 50% 100%, 0 60%);
+    clip-path: polygon(0% 0%, 100% 0, 100% 60%, 50% 100%, 0 60%);
+    font-size: 12px;
+    line-height: 18px;
+  }
+  .product-components .product-right-panel .group-sharing .detail .right-box .main-content .current-text .text-price {
+    font-size: 16px;
+    font-family: var(--heading-font-family);
+    font-weight: var(--heading-font-weight);
+  }
+  .product-components .product-right-panel .group-sharing .detail .right-box .main-content .offer-ends {
+    position: absolute;
+    top: 4px;
+    right: 0px;
+    color: #000;
+    text-align: right;
+    font-size: 12px;
+  }
+  .product-components .product-right-panel .group-sharing .detail .right-box .main-content .offer-ends .text-price {
+    font-size: 16px;
+    font-family: var(--heading-font-family);
+    font-weight: var(--heading-font-weight);
+  }
+  .product-components .product-right-panel .group-sharing .winning-info {
+    margin-top: 10px;
+  }
+  .product-components .product-right-panel .group-sharing .winning-info .group-wrapper {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    font-size: 14px;
+  }
+  .product-components .product-right-panel .group-sharing .winning-info .m-image-block {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+
+  .product-components .product-right-panel .group-sharing .winning-info .group-wrapper .name {
+    color: #e0004a;
+    font-weight: 400;
+    line-height: 150%;
+  }
+  .product-components .product-right-panel .group-sharing .winning-info .group-wrapper .time {
+    color: #e0004d;
+  }
+  .product-components .product-right-panel .group-sharing .winning-info .btn-group-purchase {
+    display: flex;
+    width: 100%;
+    height: 50px;
+    padding: 14px 60px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50px;
+    background: #190a0a;
+    color: var(--WHITE, #fff);
+    text-align: center;
+    font-size: 14px;
+    margin-top: 20px;
+    cursor: pointer;
+    overflow: hidden;
+    transition: all 0.4s ease;
+    position: relative;
+    font-family: var(--text-font-family);
+    font-weight: var(--text-font-bold-weight);
+  }
+  .product-components .product-right-panel .pay-block .btn-purchase {
+    display: flex;
+    height: 50px;
+    padding: 14px 60px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50px;
+    border: 1px solid #3f3636;
+    background: #fff;
+    cursor: pointer;
+    overflow: hidden;
+    transition: all 0.4s ease;
+    position: relative;
+    font-family: var(--text-font-family);
+    font-weight: var(--text-font-bold-weight);
+  }
+
+  .btn-purchase::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #190a0a;
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.4s;
+    border: 1px solid #000;
+    border-radius: 50px;
+  }
+
+  .product-components .product-right-panel .pay-block .btn-purchase:hover .loader-button__text {
+    color: #fff;
+    z-index: 3;
+    transition: all 0.4s ease;
+  }
+  .btn-purchase[aria-busy] .loader-button__loader {
+    opacity: 1;
+    display: block;
+    transform: translate(0, -50%);
+    color: #fff;
+    z-index: 4;
+  }
+  .btn-purchase[aria-busy] .loader-button__text {
+    opacity: 0;
+  }
+
+  .product-components .product-right-panel .group-sharing .winning-info .btn-group-purchase:hover .loader-button__text {
+    color: #190a0a;
+    z-index: 3;
+    transition: all 0.4s ease;
+  }
+
+  .btn-group-purchase[aria-busy] .loader-button__loader {
+    opacity: 1;
+    display: block;
+    transform: translate(0, -50%);
+    color: #190a0a;
+    z-index: 4;
+  }
+  .btn-group-purchase[aria-busy] .loader-button__text {
+    opacity: 0;
+  }
+
+  .btn-group-purchase::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #fff;
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.4s;
+    border: 1px solid #000;
+    border-radius: 50px;
+  }
+  .btn-group-purchase:hover::after,
+  .btn-purchase:hover::after {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+
+  .product-components .product-right-panel .pay-block {
+    margin: 25px 0px 10px;
+    width: 100%;
+  }
+
+  .product-components .product-right-panel .pay-block .more-payment {
+    margin: 10px 0px 10px;
+  }
+  .product-components .product-right-panel .pay-block .more-payment .text {
+    color: #797979;
+    font-size: 16px;
+    line-height: 24px;
+    text-decoration: underline;
+    text-align: center;
+    cursor: pointer;
+    margin-bottom: 10px;
+  }
+  .product-components .product-right-panel .pay-block .more-payment .payment-methods-list {
+    opacity: 0;
+    text-align: center;
+  }
+  .product-components .product-right-panel .pay-block .more-payment:hover {
+    color: #000;
+  }
+  .product-components .product-right-panel .pay-block .more-payment .active {
+    display: block;
+    opacity: 1;
+  }
+
+  .toolbar-block {
+    width: 100%;
+    background-color: #f8f8f8;
+    text-align: center;
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+    z-index: 4;
+    height: 80px;
+    border-top: 1px solid #e4dddd;
+    border-bottom: 1px solid #e4dddd;
+  }
+
+  .product-toolbar {
+    width: 100%;
+    padding: 10px 0;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .toolbar-fixed {
+    position: fixed;
+    bottom: 0;
+    z-index: 4;
+  }
+
+  .product-toolbar .navbar {
+    display: flex;
+    padding: 0px 40px;
+    align-items: center;
+  }
+  .product-toolbar .navbar .box-price {
+    display: flex;
+    align-items: center;
+  }
+  .product-toolbar .navbar .dis-price {
+    font-size: 32px;
+    line-height: 130%;
+    line-height: 130%;
+    text-transform: capitalize;
+    color: #e0004d;
+  }
+  .product-toolbar .navbar .original-price {
+    display: block;
+    text-align: left;
+    color: #3f3636;
+    font-size: 12px;
+    margin: 0px 20px 0px 10px;
+  }
+  .product-toolbar .navbar .original-price .price {
+    color: #a1a1a1;
+    font-size: 14px;
+    line-height: 130%;
+    text-decoration: line-through;
+    text-transform: capitalize;
+  }
+
+  .product-toolbar .right-panel {
+    display: flex;
+    align-items: center;
+    padding-right: 40px;
+  }
+
+  .product-toolbar .right-panel .btn-add-cart {
+    display: flex;
+    width: 160px;
+    padding: 16px 32px;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    font-size: 14px;
+    color: #fff;
+    background: #000;
+    border-radius: 130px;
+    cursor: pointer;
+    overflow: hidden;
+    transition: all 0.4s ease;
+    position: relative;
+    font-family: var(--text-font-family);
+    font-weight: var(--text-font-bold-weight);
+  }
+
+  .btn-add-cart::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #fff;
+    cursor: pointer;
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.4s;
+    border: 1px solid #000;
+    border-radius: 50px;
+  }
+
+  .btn-add-cart:hover::after {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+
+  .product-toolbar .right-panel .btn-add-cart:hover .loader-button__text {
+    color: #000;
+    z-index: 3;
+    transition: all 0.4s ease;
+  }
+  .btn-add-cart[aria-busy] .loader-button__loader {
+    opacity: 1;
+    display: block;
+    transform: translate(0, -50%);
+    color: #000;
+    z-index: 4;
+  }
+  .btn-add-cart[aria-busy] .loader-button__text {
+    opacity: 0;
+  }
+
+  .product-toolbar .countdown {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+    gap: 14px;
+  }
+
+  .product-toolbar .title {
+    margin-right: 62px;
+  }
+  .product-toolbar .countdown_txt {
+    font-size: 12px;
+    line-height: 18px;
+  }
+  .product-toolbar span.countdown__er {
+    font-size: 26px;
+  }
+  .countdown-time-bar {
+    font-family: var(--heading-font-family);
+    font-weight: var(--heading-font-weight);
+  }
+  .product-toolbar .countdown__item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 42px;
+  }
+
+  .product-toolbar .countdown__bix {
+    background: #190a0a;
+    color: #fff;
+    font-size: 22px;
+    font-weight: 380;
+    border-radius: 4px;
+    text-transform: uppercase;
+  }
+  .countdown_new_box .title {
+    font-size: 32px;
+    font-family: var(--heading-font-family);
+    font-weight: var(--heading-font-weight);
+  }
+  .product-toolbar .countdown-time-bar {
+    display: flex;
+    font-size: 22px;
+    justify-content: center;
+    align-items: center;
+    width: 42px;
+    height: 42px;
+  }
+  .product-toolbar .countdown__er {
+    display: flex;
+    transform: translateY(-12px);
+    font-size: 28px;
+  }
+
+  .p-hide {
+    display: block;
+  }
+
+  .m-show {
+    display: none;
+  }
+
+  @media (max-width: 1500px) {
+    .swiper-pagination-bullet {
+      --swiper-pagination-bullet-size: 6px;
+      --swiper-pagination-bullet-horizontal-gap: 6px;
+    }
+    .product-components .product-left-panel {
+      width: 55%;
+      padding: 15px 15px 15px 20px;
+    }
+    .product-components .product-right-panel .group-sharing .detail {
+      align-items: center;
+    }
+    .product-components .product-left-panel .main-image-swiper {
+      margin-left: 15px;
+    }
+    .product-components .product-right-panel {
+      width: 45%;
+      padding: 15px;
+    }
+    .product-components .product-right-panel .price-block {
+      margin: 30px 0px 20px;
+    }
+    .product-components .product-right-panel .group-sharing .detail .right-box {
+      padding-left: 10px;
+    }
+    .product-components .product-right-panel .group-sharing .detail .left-box .text-desc {
+      font-size: 12px;
+      line-height: 18px;
+      margin-top: 0px;
+    }
+    .product-components .product-right-panel .group-sharing .winning-info .group-wrapper {
+      font-size: 12px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .swiper-pagination-bullet {
+      --swiper-pagination-bullet-size: 4px;
+      --swiper-pagination-bullet-horizontal-gap: 4px;
+    }
+
+    .p-hide {
+      display: none !important;
+    }
+    .m-show {
+      display: block;
+    }
+    .product-components {
+      display: block;
+    }
+    .product-components .product-left-panel {
+      width: 100%;
+      display: inline-flex;
+      flex-wrap: wrap;
+      flex-direction: column-reverse;
+      padding: 0px 15px;
+    }
+    .product-components .product-left-panel .main-image-swiper {
+      width: 100%;
+      margin: 0px;
+    }
+    .product-components .product-left-panel .thumbs-swiper {
+      width: 100%;
+      display: block;
+      margin-top: 6px;
+    }
+    .product-components .product-left-panel .thumbs-swiper .myThumbs .swiper-slide {
+      width: 52px;
+      height: 52px;
+    }
+    .product-components .product-left-panel .thumbs-swiper .myThumbs .swiper-slide img {
+      width: 100%;
+      height: auto;
+    }
+    .product-components .product-right-panel {
+      width: 100%;
+      padding: 30px 20px 20px;
+    }
+    .product-components .product-right-panel .title {
+      font-size: 28px;
+    }
+    .product-components .product-right-panel .sub-title {
+      font-size: 12px;
+    }
+    .product-components .product-right-panel .info-list .description li {
+      font-size: 12px;
+    }
+    .product-components .product-right-panel .read-more {
+      font-size: 12px;
+      margin-bottom: 20px;
+    }
+    .product-components .product-right-panel .variants-list {
+      padding: 20px 0px;
+      grid-template-columns: 40% 60%;
+    }
+    .product-components .product-right-panel .variants-list .color-block {
+      margin-right: 20px;
+    }
+    .product-components .product-right-panel .variants-list .color-block .name {
+      font-size: 14px;
+      margin-bottom: 15px;
+    }
+    .product-components .product-right-panel .variants-list .plug-block {
+      padding-left: 20px;
+    }
+    .product-components .product-right-panel .variants-list .plug-block .name {
+      font-size: 14px;
+    }
+    .product-components .product-right-panel .variants-list .plug-block .plug-list .item {
+      width: 90px;
+      font-size: 12px;
+      padding: 6px 20px;
+    }
+    .product-components .product-right-panel .price-block {
+      margin: 20px 0px;
+    }
+    .product-components .product-right-panel .price-block .price .dis-price {
+      font-size: 24px;
+    }
+    .product-components .product-right-panel .price-block .price .original-price {
+      font-size: 16px;
+    }
+    .product-components .product-right-panel .custom-reasons-block {
+      display: block;
+    }
+    .product-components .product-right-panel .custom-reasons-block .item {
+      color: #333;
+      font-size: 12px;
+    }
+    .product-components .product-right-panel .group-sharing {
+      margin-top: 20px;
+    }
+    .product-components .product-right-panel .group-sharing .detail {
+      display: block;
+    }
+    .product-components .product-right-panel .group-sharing .detail .left-box {
+      text-align: center;
+    }
+    .product-components .product-right-panel .group-sharing .detail .left-box .info {
+      font-size: 12px;
+    }
+    .product-components .product-right-panel .group-sharing .detail .left-box .text-desc {
+      font-size: 14px;
+      margin-top: 4px;
+    }
+    .product-components .product-right-panel .group-sharing .detail .right-box {
+      padding: 15px 0px 0px;
+    }
+    .product-components .product-right-panel .group-sharing .detail .right-box img {
+      width: 100%;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      user-select: none;
+    }
+    .product-components .product-right-panel .group-sharing .detail .right-box .main-content .current-text {
+      top: 5px;
+      left: 9px;
+    }
+    .product-components .product-right-panel .group-sharing .winning-info .btn-group-purchase {
+      font-size: 12px;
+      height: 40px;
+    }
+    .product-components .product-right-panel .pay-block .btn-purchase {
+      font-size: 12px;
+      height: 40px;
+      font-weight: bold;
+    }
+
+    .product-components .product-right-panel .pay-block .more-payment .active {
+      display: grid;
+      justify-content: center;
+    }
+
+    .product-components .product-right-panel .group-sharing .winning-info .m-image-block {
+      display: grid;
+    }
+
+    .toolbar-block {
+      height: 75px;
+    }
+    .product-toolbar .navbar {
+      display: block;
+      padding: 0px 0px;
+    }
+    .product-toolbar .right-panel {
+      padding: 0px;
+      justify-content: space-between;
+    }
+    .product-toolbar .navbar .box-price {
+      display: block;
+    }
+    .product-toolbar .navbar .dis-price {
+      font-size: 24px;
+      line-height: 24px;
+    }
+    .product-toolbar .navbar .original-price {
+      margin: 0px;
+      font-size: 12px;
+    }
+    .product-toolbar .navbar .price {
+      color: #a1a1a1;
+      font-size: 14px;
+      text-decoration: line-through;
+      text-transform: capitalize;
+      display: inline-block;
+    }
+    .product-toolbar .box-countdown {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .product-toolbar .box-countdown .ends-text {
+      width: 50px;
+      font-size: 12px;
+      line-height: 14px;
+    }
+    .product-toolbar .countdown {
+      gap: 3px;
+    }
+    .product-toolbar .countdown__bix {
+      background: #3f3636;
+    }
+    .product-toolbar .countdown__item {
+      width: 25px;
+    }
+    .product-toolbar .countdown_txt {
+      display: none;
+    }
+    .product-toolbar .countdown-time-bar {
+      width: 25px;
+      height: 25px;
+      font-size: 12px;
+    }
+    .product-toolbar .countdown__er {
+      font-size: 12px;
+      transform: none;
+    }
+
+    .product-toolbar .right-panel .btn-add-cart {
+      width: 146px;
+      font-size: 12px;
+    }
+  }
+</style>

@@ -1,0 +1,292 @@
+{%- assign line_item = cart.items | where: 'id', 47972761862431 | first -%}
+
+{% if line_item.quantity > 0 %}
+  <div class="a10-product-cart-group">
+    <div class="box-group">
+      <div class="title">Join this group to enjoy the best offer!</div>
+      <div class="list">
+        <img src="https://cdn.shopify.com/s/files/1/0740/5882/6015/files/Group_457393775.svg?v=1711539842" alt="">
+        <div class="name">
+          <lable></lable>
+          <span class="add">+</span>
+        </div>
+        <img
+          src="https://cdn.shopify.com/s/files/1/0740/5882/6015/files/2184c1bce3f6fd599ad508a0d1b82a47.svg?v=1711616614"
+          alt=""
+        >
+      </div>
+    </div>
+    {% comment %} 倒计时 {% endcomment %}
+    <div class="box-end">
+      <div class="desc">Save £120 with Group Purchase, plus extra perks. Ends in →</div>
+      <div class="group-countdown">
+        <div class="countdown_b-item">
+          <div class="countdown_b-num countdown-hours">00</div>
+        </div>
+        <div class="countdown_b-sym">:</div>
+        <div class="countdown_b-item">
+          <div class="countdown_b-num countdown-minutes">00</div>
+        </div>
+        <div class="countdown_b-sym">:</div>
+        <div class="countdown_b-item">
+          <div class="countdown_b-num countdown-seconds">00</div>
+        </div>
+      </div>
+    </div>
+    <div class="group-product">
+      <line-item class="line-item">
+        <div class="line-item__content-wrapper">
+          <a href="{{ line_item.url }}" class="line-item__image-wrapper" tabindex="-1" aria-hidden="true">
+            <span class="line-item__loader" hidden>
+              <span class="line-item__loader-spinner spinner" hidden>
+                {%- render 'icon' with 'spinner', width: 16, height: 16, stroke_width: 6 -%}
+              </span>
+              <span class="line-item__loader-mark" hidden>
+                {%- render 'icon' with 'check', width: 20, height: 20 -%}
+              </span>
+            </span>
+
+            {{-
+              line_item.image
+              | image_url: width: line_item.image.width
+              | image_tag:
+                loading: 'lazy',
+                sizes: '(max-width: 740px) 80px, 92px',
+                widths: '80,92,160,184,240,276',
+                class: 'line-item__image'
+            -}}
+          </a>
+
+          {%- capture unit_price -%}
+            {%- if line_item.unit_price_measurement -%}
+              <div class="price text--subdued">
+                <div class="unit-price-measurement">
+                  <span class="unit-price-measurement__price">{{ line_item.unit_price | money }}</span>
+                  <span class="unit-price-measurement__separator">/</span>
+
+                  {%- if line_item.unit_price_measurement.reference_value != 1 -%}
+                    <span class="unit-price-measurement__reference-value">{{ line_item.unit_price_measurement.reference_value }}</span>
+                  {%- endif -%}
+
+                  <span class="unit-price-measurement__reference-unit">{{ line_item.unit_price_measurement.reference_unit }}</span>
+                </div>
+              </div>
+            {%- endif -%}
+          {%- endcapture -%}
+
+          {%- capture line_price -%}
+            <span class="price {% if line_item.original_line_price > line_item.final_line_price or line_item.final_line_price == 0 or line_item.variant.compare_at_price > line_item.variant.price %}price--highlight{% endif %}">
+              <span class="visually-hidden">{{ 'product.general.sale_price' | t }}</span>
+
+              {%- if line_item.final_line_price == 0 -%}
+                {{- 'cart.general.free' | t -}}
+              {%- else -%}
+                {{- line_item.final_line_price | money -}}
+              {%- endif -%}
+            </span>
+
+            <span class="group-purchase">Group Purchase</span>
+            {%- if line_item.original_line_price > line_item.final_line_price or line_item.variant.compare_at_price > line_item.variant.price -%}
+              <span class="price price--compare">
+                <span class="visually-hidden">{{ 'product.general.regular_price' | t }}</span>
+
+                {%- if line_item.original_line_price > line_item.final_line_price -%}
+                  {{- line_item.original_line_price | money -}}
+                {%- else -%}
+                  {{- line_item.variant.compare_at_price | times: line_item.quantity | money -}}
+                {%- endif -%}
+              </span>
+            {%- endif -%}
+
+          {%- endcapture -%}
+
+          <div class="line-item__info">
+            <div class="product-item-meta">
+              {%- if settings.show_vendor -%}
+                {%- assign vendor_handle = line_item.vendor | handle -%}
+                {%- assign collection_for_vendor = collections[vendor_handle] -%}
+
+                {%- unless collection_for_vendor.empty? -%}
+                  <a
+                    class="product-item-meta__vendor heading heading--xxsmall"
+                    href="{{ collection_for_vendor.url }}"
+                  >
+                    {{- line_item.vendor -}}
+                  </a>
+                {%- else -%}
+                  <a
+                    class="product-item-meta__vendor heading heading--xxsmall"
+                    href="{{ line_item.vendor | url_for_vendor }}"
+                  >
+                    {{- line_item.vendor -}}
+                  </a>
+                {%- endunless -%}
+              {%- endif -%}
+
+              <a href="{{ line_item.url }}" class="product-item-meta__title text--small">
+                {{- line_item.product.title -}}
+              </a>
+
+              {%- capture line_item_properties -%}
+                {%- unless line_item.product.has_only_default_variant -%}
+                  <span class="product-item-meta__property text--subdued text--xsmall">{{ line_item.variant.title }}</span>
+                {%- endunless -%}
+
+                {%- if line_item.selling_plan_allocation -%}
+                  <span class="product-item-meta__property text--subdued text--xsmall">{{ line_item.selling_plan_allocation.selling_plan.name }}</span>
+                {%- endif -%}
+
+                {%- unless line_item.properties == blank -%}
+                  <ul class="product-item-meta__property list--unstyled text--subdued text--xsmall" role="list">
+                    {%- for property in line_item.properties -%}
+                      {%- assign first_character_in_key = property.first | truncate: 1, '' -%}
+
+                      {%- if property.last == blank or first_character_in_key == '_' -%}
+                        {%- continue -%}
+                      {%- endif -%}
+
+                      <li>{{ property.first }}: {{ property.last }}</li>
+                    {%- endfor -%}
+                  </ul>
+                {%- endunless -%}
+              {%- endcapture -%}
+
+              {%- if line_item_properties != blank -%}
+                <div class="product-item-meta__property-list">
+                  {{- line_item_properties -}}
+                </div>
+              {%- endif -%}
+
+              <div class="product-item-meta__price-list-container text--small">
+                <div class="price-list hidden-tablet-and-up">
+                  {{- line_price -}}
+                  {{- unit_price -}}
+                </div>
+
+                {%- if unit_price != blank -%}
+                  <div class="price-list hidden-phone">
+                    {{- unit_price -}}
+                  </div>
+                {%- endif -%}
+              </div>
+            </div>
+
+            {%- if line_item.line_level_discount_allocations != blank -%}
+              <ul class="line-item__discount-list list--unstyled" role="list">
+                {%- for discount_allocation in line_item.line_level_discount_allocations -%}
+                  <li class="line-item__discount-badge discount-badge">
+                    {%- render 'icon' with 'discount-badge' -%}
+                    {{ discount_allocation.discount_application.title }} (-{{ discount_allocation.amount | money }})
+                  </li>
+                {%- endfor -%}
+              </ul>
+            {%- endif -%}
+
+            {%- assign max_allowed_quantity = '' -%}
+            {%- assign allow_more = true -%}
+
+            {%- if line_item.variant.inventory_management == 'shopify'
+              and line_item.variant.inventory_policy == 'deny'
+              and line_item.variant.inventory_quantity <= line_item.quantity
+            -%}
+              {%- assign max_allowed_quantity = line_item.variant.inventory_quantity -%}
+              {%- assign allow_more = false -%}
+            {%- endif -%}
+
+            <line-item-quantity class="line-item__quantity">
+              <div class="quantity-selector quantity-selector--small">
+                <a
+                  href="{{ routes.cart_change_url }}?quantity={{ line_item.quantity | minus: 1 }}&line=1"
+                  class="quantity-selector__button"
+                  aria-label="{{ 'cart.general.decrease_quantity' | t | escape }}"
+                  data-no-instant
+                >
+                  {%- render 'icon' with 'minus' -%}
+                </a>
+
+                <input
+                  is="input-number"
+                  class="quantity-selector__input text--xsmall"
+                  autocomplete="off"
+                  type="text"
+                  inputmode="numeric"
+                  name="updates[]"
+                  data-line="1"
+                  value="{{ line_item.quantity }}"
+                  {% if max_allowed_quantity != '' %}
+                    max="{{ max_allowed_quantity }}"
+                  {% endif %}
+                  size="{{ line_item.quantity | append: '' | size | at_least: 2 }}"
+                  aria-label="{{ 'cart.general.change_quantity' | t | escape }}"
+                >
+
+                {%- if allow_more -%}
+                  <a
+                    href="{{ routes.cart_change_url }}?quantity={{ line_item.quantity | plus: 1 }}&line=1"
+                    class="quantity-selector__button"
+                    aria-label="{{ 'cart.general.increase_quantity' | t | escape }}"
+                    data-no-instant
+                  >
+                    {%- render 'icon' with 'plus' -%}
+                  </a>
+                {%- else -%}
+                  <span
+                    class="quantity-selector__button"
+                    aria-label="{{ 'cart.general.no_more_stock' | t | escape }}"
+                    data-tooltip="{{ 'cart.general.no_more_stock' | t | escape }}"
+                  >
+                    {%- render 'icon' with 'plus' -%}
+                  </span>
+                {%- endif -%}
+              </div>
+
+              <a
+                href="{{ line_item.url_to_remove }}"
+                class="line-item__remove-button link text--subdued text--xxsmall"
+                data-no-instant
+              >
+                {{- 'cart.general.remove' | t -}}
+              </a>
+            </line-item-quantity>
+          </div>
+
+          <div class="line-item__price-list-container text--small hidden-phone">
+            {%- if settings.show_vendor -%}
+              <span class="product-item-meta__vendor heading heading--xxsmall" style="visibility: hidden">x</span>
+            {%- endif -%}
+            <div class="price-list price-list--stack">
+              {{- line_price -}}
+            </div>
+          </div>
+        </div>
+      </line-item>
+      {% comment %} 礼品赠送 {% endcomment %}
+      <div class="box-gift">
+        <div class="list">
+          <div class="p-image">
+            <img src="https://cdn.shopify.com/s/files/1/0740/5882/6015/files/6.jpg?v=1711541942">
+          </div>
+          <div class="detail">
+            <p class="name">Early Bird Gift</p>
+            <div class="desc">
+              Ulike Aloe Vera Gel
+              <span class="num">X {{ line_item.quantity }}</span>
+            </div>
+          </div>
+          <div class="price">
+            {% assign totalGiftPrice = line_item.quantity | times: 20.0 %}
+            <p>
+              FREE
+              <span class="money" data-currency-gbp="£{{ totalGiftPrice }}">£{{ totalGiftPrice -}}</span>
+            </p>
+          </div>
+        </div>
+        <div class="gift-info">
+          <img src="https://cdn.shopify.com/s/files/1/0740/5882/6015/files/1_b81b3c90-d0cd-43fe-9987-102c041dfc9b.svg?v=1711542613">
+          Extra Service: Free 2-Day Shipping & Lifetime Warranty
+        </div>
+      </div>
+    </div>
+  </div>
+  <link rel="stylesheet" href="{{ 'luke_test.scss.css' | asset_url }}">
+{% endif %}
