@@ -2,69 +2,76 @@
   assign se_id = section.id
   assign se_bks = section.blocks
   assign se_stts = section.settings
-  assign product = se_stts.product
+  if se_stts.product != blank
+    assign product = se_stts.product
+  endif
 -%}
 
 <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
 <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
 
-<div id="top-bar" class="toolbar-block">
-  <div class="container">
-    <div class="product-toolbar">
-      <div class="navbar">
-        <div class="box-price">
-          <div class="dis-price">
-            {{ product.price | money }}
-            <span class="price m-show">{{ product.compare_at_price | money }}</span>
-          </div>
-          <div class="original-price p-hide">
-            <div class="price ">{{ product.compare_at_price | money }}</div>
-            <div class="group-purchase-offer">Group ends in</div>
-          </div>
-        </div>
-        <div class="box-countdown">
-          <span class="m-show ends-text">Group ends in</span>
-          <div id="countdown-bar" class="countdown">
-            <div class="countdown__item">
-              <div class="countdown__bix">
-                <span class="countdown-time-bar countdown-hours">01</span>
+{% for block in se_bks %}
+  {% if block.type == 'product-bar' %}
+    {% assign addName = block.settings.name %}
+    <div id="top-bar" class="toolbar-block">
+      <div class="container">
+        <div class="product-toolbar">
+          <div class="navbar">
+            <div class="box-price">
+              <div class="dis-price">
+                {{ product.price | money }}
+                <span class="price m-show">{{ product.compare_at_price | money }}</span>
               </div>
-              <span class="countdown_txt">Hours</span>
-            </div>
-            <div class="countdown__er">:</div>
-            <div class="countdown__item">
-              <div class="countdown__bix">
-                <span class="countdown-time-bar countdown-minutes">20</span>
+              <div class="original-price p-hide">
+                <div class="price ">{{ product.compare_at_price | money }}</div>
+                <div class="group-purchase-offer">{{ block.settings.end_title }}</div>
               </div>
-              <span class="countdown_txt">minutes</span>
             </div>
-            <div class="countdown__er">:</div>
-            <div class="countdown__item">
-              <span class="countdown__bix ">
-                <span class="countdown-time-bar countdown-seconds">10</span>
+            <div class="box-countdown">
+              <span class="m-show ends-text">Group ends in</span>
+              <div id="countdown-bar" class="countdown">
+                <div class="countdown__item">
+                  <div class="countdown__bix">
+                    <span class="countdown-time-bar countdown-hours">01</span>
+                  </div>
+                  <span class="countdown_txt">Hours</span>
+                </div>
+                <div class="countdown__er">:</div>
+                <div class="countdown__item">
+                  <div class="countdown__bix">
+                    <span class="countdown-time-bar countdown-minutes">20</span>
+                  </div>
+                  <span class="countdown_txt">minutes</span>
+                </div>
+                <div class="countdown__er">:</div>
+                <div class="countdown__item">
+                  <span class="countdown__bix ">
+                    <span class="countdown-time-bar countdown-seconds">10</span>
+                  </span>
+                  <span class="countdown_txt">seconds</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="right-panel">
+            <div class="btn-add-cart">
+              <span class="loader-button__text">{{ addName }}</span>
+              <span class="loader-button__loader" hidden>
+                <div class="spinner">
+                  <svg focusable="false" width="24" height="24" class="icon icon--spinner" viewBox="25 25 50 50">
+                    <circle cx="50" cy="50" r="20" fill="none" stroke="currentColor" stroke-width="5"></circle>
+                  </svg>
+                </div>
               </span>
-              <span class="countdown_txt">seconds</span>
             </div>
           </div>
-        </div>
-      </div>
-      <div class="right-panel">
-        <div class="btn-add-cart">
-          <span class="loader-button__text">ADD TO CART</span>
-          <span class="loader-button__loader" hidden>
-            <div class="spinner">
-              <svg focusable="false" width="24" height="24" class="icon icon--spinner" viewBox="25 25 50 50">
-                <circle cx="50" cy="50" r="20" fill="none" stroke="currentColor" stroke-width="5"></circle>
-              </svg>
-            </div>
-          </span>
         </div>
       </div>
     </div>
-  </div>
-</div>
+  {% endif %}
+{% endfor %}
 
-<div class="product-components">
+<div class="product-components" id="product-components">
   <div class="product-left-panel">
     <!-- 左侧轮播 -->
     <div class="thumbs-swiper">
@@ -72,12 +79,9 @@
         <div class="swiper-wrapper">
           <!-- 缩略图 -->
           {% for item in product.images %}
-            {% comment %} {% if block.type == 'product-image' %} {% endcomment %}
-            {% comment %} {% assign img = block.settings.image %} {% endcomment %}
             <div class="swiper-slide">
               {{- item | image_url: width: item.width | image_tag: loading: 'lazy', draggable: false -}}
             </div>
-            {% comment %} {% endif %} {% endcomment %}
           {% endfor %}
           <!-- 更多缩略图 -->
         </div>
@@ -104,6 +108,7 @@
     </div>
     <div class="title">{{ se_stts.title }}</div>
     <div class="sub-title">{{ se_stts.desc }}</div>
+    <div class="shipped-text">{{ se_stts['shipped-text'] }}</div>
     <a href="#looxReviews">
       <div
         class="loox-rating"
@@ -118,9 +123,14 @@
           {% if block.type == 'product-desc' %}
             <li>{{ block.settings.name }}</li>
           {% endif %}
+          <div style="display: none;">
+            {% increment my_counter %}
+          </div>
         {% endfor %}
       </ul>
-      <div class="read-more">{{ se_stts['read-more'] }} +</div>
+      {% if my_counter > 2 %}
+        <div class="read-more">{{ se_stts['read-more'] }} +</div>
+      {% endif %}
     </div>
     <div
       class="variants-list"
@@ -184,7 +194,7 @@
           </div>
         {% endif %}
       {% endfor %}
-      <div class="product-tips">restocking</div>
+      <div class="product-tips">Restocking</div>
     </div>
 
     <div class="price-block">
@@ -218,7 +228,7 @@
             <span class="user"><span>0</span> Users</span>
             <span class="text"> Group-Purchased</span>
           </div>
-          <p class="text-desc">Get Best Offer with Group Purchase</p>
+          <p class="text-desc">{{ se_stts['text-group'] }}</p>
         </div>
         <div class="right-box">
           <div class="main-content">
@@ -245,7 +255,13 @@
             <div class="name">Amy **</div>
           </div>
           <p class="desc">
-            <span class="text">initiated a group purchase, join in and enjoy the best offer, ends in soon </span>
+            <span class="text hidden-phone"
+              >initiated a group purchase, join in and enjoy the best offer, ends in
+            </span>
+            <span class="text hidden-desk"
+              >initiated a group purchase, join in and enjoy the best offer, <br>
+              ends in
+            </span>
             <span class="time">00:00</span>
           </p>
         </div>
@@ -348,37 +364,41 @@
       var inventory_quantity = $(this).attr('inventory_quantity');
       let _position =  $(this).attr('position') - 1;
       var thatVariant = $(this).closest('.variants-list');
+      var colorBlock =  $(this).closest('.color-block');
       if(inventory_quantity > 0){
         $('.color-swatch-list .color-swatch__radio[name="option1"]').removeAttr('checked');
         $(this).find('.color-swatch__radio[name="option1"]').attr('checked', 'checked');
         // 修改标题
-        $(this).closest('.color-block').find('.name lable').text($(this).find('.color-swatch__radio').val());
+        colorBlock.find('.name lable').text($(this).find('.color-swatch__radio').val());
         // 获取pid
         pid = $(this).attr('id');
-
         // 图片跳转
         galleryTop.slideTo(_position);
       } else {
         // 没有库存
-        console.log('out of stock');
         $(thatVariant).find('.product-tips').show();
+        let oldName = colorBlock.find('.name lable').text();
+        colorBlock.find('.name lable').text($(this).find('.color-swatch__radio').val());
+        $('.color-swatch-list .color-swatch__radio[name="option1"]').removeAttr('checked');
+        $(this).find('.color-swatch__radio[name="option1"]').attr('checked', 'checked');
+        galleryTop.slideTo(_position);
         setTimeout(function(){
           $(thatVariant).find('.product-tips').fadeOut();
-        }, 3000)
-        galleryTop.slideTo(_position);
+          colorBlock.find('.name lable').text(oldName);
+          $('.color-swatch-list .color-swatch__radio[name="option1"]').removeAttr('checked');
+          $('.color-swatch-list .color-swatch__radio[name="option1"]').eq(0).attr('checked', 'checked');
+          galleryTop.slideTo(0);
+        }, 2000)
       }
     });
 
     //规格切换
     $(document).on('click', '.product-components .plug-list .item', function () {
       var list = $(this).closest('.plug-block');
-      console.log(list);
       list.find('.item').removeClass('active');
       $(this).addClass('active');
       // 修改标题
-      console.log($(this).attr('name'));
       list.find('.name label').text($(this).attr('name'));
-
       pid = $(this).attr('id');
     });
 
@@ -429,26 +449,13 @@
       }
     }, 1000);
   }
-  function generateRandomName() {
-    // 定义一个随机名称的长度，例如从 5 到 10 个字符
-    const nameLength = Math.floor(Math.random() * 6) + 5;
-    // 定义一个包含字母的字符串，用于生成名称
-    const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
-    // 随机生成一个名称
-    let name = '';
-    for (let i = 0; i < nameLength; i++) {
-      name += letters.charAt(Math.floor(Math.random() * letters.length));
-    }
-    return name;
-  }
-
 
   {% comment %} 置底栏 {% endcomment %}
   function fixBottomBar() {
     var topBar = $("#top-bar");
-    let barTop = $(topBar).offset().top + 200;
+    let barTop = $('#product-components').offset().top + 150;
     $(window).scroll(function() {
-      if ($(this).scrollTop() > barTop ) {
+      if ($(this).scrollTop() > barTop) {
           topBar.addClass("toolbar-fixed");
       } else {
           topBar.removeClass("toolbar-fixed");
@@ -457,17 +464,21 @@
   }
 
   function randomName() {
-    var userCount = Math.floor(Math.random() * 301);
-    // 随机生成用户名称，3个词左右后面跟xxx
-    var userName = '';
-    for (var i = 0; i < 3; i++) {
-        let randomCharCode = Math.floor(Math.random() * 26) + 97;
-        userName += String.fromCharCode(randomCharCode);
+    var userCount = parseInt(localStorage.getItem("userCount")) || Math.floor(Math.random() * 500);
+    userCount += Math.floor(Math.random() * 4); // 每次增加0到5之间的随机整数
+    if (userCount >= 999) {
+      userCount = 6; // 如果超过1000，将数字重置为10
     }
+    localStorage.setItem("userCount", userCount);
+    // 随机生成用户名称，3个词左右后面跟xxx
+    var userNames = ["Emily", "Charlotte", "Amelia", "Mia", "Harper", "Evelyn", "Abigail", "Ella", "Scarlett", "Grace", "Chloe", "Victoria", "Madison", "Avery", "Sofia", "Camila", "Aria", "Lily", "Zoey", "Riley", "Nora", "Hazel", "Ellie", "Stella", "Natalie", "Zoe", "Leah", "Audrey", "Savannah", "Brooklyn"];
+    var randomIndex= Math.floor(Math.random() * userNames.length)
+    var userName = userNames[randomIndex].substring(0, 3);
     userName += '**';
     $('.group-sharing .user span').text(userCount);
     $('.group-sharing .winning-info .name').text(userName);
     $('.a10-product-cart-group .name lable').text(userName);
+
     var endTime = new Date(new Date().getTime() + 15 * 60000).getTime();
 
      // 倒计时
@@ -475,12 +486,12 @@
      startCountdown(endTime, $countdown, 1, function () {
        console.log('倒计时结束！');
        $countdown.hide();
+       location.reload();
      });
 
      var $countdown1 = $('.box-countdown .countdown');
      startCountdown(endTime, $countdown1, 2, function () {
-      console.log('倒计时结束！');
-      $countdown.hide();
+      $countdown1.hide();
     });
     setCookie('groupName', userName, 1);
     setCookie('groupTime', endTime, 1);
@@ -516,6 +527,12 @@
     },
     {
       "type": "textarea",
+      "id": "shipped-text",
+      "label": "到货提醒",
+      "default": "Order will be shipped from 24 April."
+    },
+    {
+      "type": "textarea",
       "id": "read-more",
       "label": "Read More",
       "default": "Read More"
@@ -531,17 +548,30 @@
       "id": "btn-purchase",
       "label": "full Purchase按钮文案",
       "default": "£369 FULL PRICE PURCHASE"
+    },
+    {
+      "type": "textarea",
+      "id": "text-group",
+      "label": "group Purchase文案",
+      "default": "Get Best Offer with Group Purchase"
     }
   ],
   "blocks": [
     {
-      "type": "product-image",
-      "name": "product-image",
+      "type": "product-bar",
+      "name": "product-bar",
       "settings": [
         {
-          "type": "image_picker",
-          "id": "image",
-          "label": "Image"
+          "type": "textarea",
+          "id": "name",
+          "label": "按钮名称",
+          "default": "ADD TO CART"
+        },
+        {
+          "type": "textarea",
+          "id": "end_title",
+          "label": "End 文案",
+          "default": "Group ends in"
         }
       ]
     },
@@ -659,15 +689,17 @@
   .product-components .product-right-panel .title {
     color: #333;
     font-size: 40px;
-    font-style: normal;
     line-height: 125%;
-    font-family: var(--heading-font-family);
-    font-weight: var(--heading-font-weight);
   }
   .product-components .product-right-panel .sub-title {
     color: #333;
     font-size: 16px;
     line-height: 150%;
+  }
+  .product-components .product-right-panel .shipped-text {
+    color: #e0004d;
+    font-size: 12px;
+    line-height: 1.2;
   }
   .product-components .product-right-panel .info-list {
     margin-top: 10px;
@@ -682,9 +714,9 @@
   .product-components .product-right-panel .info-list .description li {
     color: #3f3636;
     font-size: 14px;
-    line-height: 180%; /* 25.2px */
-    text-transform: capitalize;
+    line-height: 180%;
   }
+
   .product-components .product-right-panel .info-list .expanded {
     max-height: initial;
   }
@@ -841,7 +873,7 @@
   }
   .product-components .product-right-panel .custom-reasons-block .item {
     display: flex;
-    gap: 4px;
+    gap: 8px;
     align-items: center;
   }
   .product-components .product-right-panel .custom-reasons-block .item .desc {
@@ -874,9 +906,11 @@
   }
   .product-components .product-right-panel .group-sharing .detail .left-box .text-desc {
     font-size: 16px;
-    font-weight: bold;
     color: #3f3636;
     margin-top: 10px;
+    font-family: var(--heading-font-family);
+    font-weight: var(--heading-font-weight);
+    font-style: var(--heading-font-style);
   }
   .product-components .product-right-panel .group-sharing .detail .right-box {
     padding: 0px 0px 0px 20px;
@@ -1085,6 +1119,7 @@
     height: 80px;
     border-top: 1px solid #e4dddd;
     border-bottom: 1px solid #e4dddd;
+    display: none;
   }
 
   .product-toolbar {
@@ -1098,6 +1133,7 @@
     position: fixed;
     bottom: 0;
     z-index: 4;
+    display: block;
   }
 
   .product-toolbar .navbar {
@@ -1289,6 +1325,7 @@
     }
     .product-components .product-right-panel .group-sharing .winning-info .group-wrapper {
       font-size: 12px;
+      line-height: 18px;
     }
   }
 
@@ -1333,21 +1370,38 @@
     }
     .product-components .product-right-panel {
       width: 100%;
-      padding: 30px 20px 20px;
+      padding: 30px 20px 0px;
     }
     .product-components .product-right-panel .title {
       font-size: 28px;
     }
     .product-components .product-right-panel .sub-title {
-      font-size: 12px;
+      font-size: 14px;
+    }
+
+    .product-components .product-right-panel .info-list .description {
+      max-height: 4.8em;
     }
     .product-components .product-right-panel .info-list .description li {
       font-size: 12px;
     }
+    .product-components .product-right-panel .info-list .expanded {
+      max-height: initial;
+    }
+
     .product-components .product-right-panel .read-more {
       font-size: 12px;
       margin-bottom: 20px;
     }
+    .product-components .product-right-panel .variants-list .color-swatch:hover .color-swatch__item::after {
+      opacity: 0;
+      transform: scale(0.8);
+    }
+    .product-components .product-right-panel .variants-list .color-swatch__radio:checked + .color-swatch__item::after {
+      opacity: 1;
+      transform: scale(1);
+    }
+
     .product-components .product-right-panel .variants-list {
       padding: 20px 0px;
       grid-template-columns: 40% 60%;
@@ -1370,6 +1424,7 @@
       font-size: 12px;
       padding: 6px 20px;
     }
+
     .product-components .product-right-panel .price-block {
       margin: 20px 0px;
     }
@@ -1385,9 +1440,11 @@
     .product-components .product-right-panel .custom-reasons-block .item {
       color: #333;
       font-size: 12px;
+      margin-bottom: 4px;
     }
     .product-components .product-right-panel .group-sharing {
       margin-top: 20px;
+      padding: 20px 0px;
     }
     .product-components .product-right-panel .group-sharing .detail {
       display: block;
@@ -1404,6 +1461,8 @@
     }
     .product-components .product-right-panel .group-sharing .detail .right-box {
       padding: 15px 0px 0px;
+      max-width: 300px;
+      margin: 0 auto;
     }
     .product-components .product-right-panel .group-sharing .detail .right-box img {
       width: 100%;
@@ -1412,8 +1471,8 @@
       user-select: none;
     }
     .product-components .product-right-panel .group-sharing .detail .right-box .main-content .current-text {
-      top: 5px;
-      left: 9px;
+      top: 6px;
+      left: 8px;
     }
     .product-components .product-right-panel .group-sharing .winning-info .btn-group-purchase {
       font-size: 12px;
@@ -1494,10 +1553,18 @@
       font-size: 12px;
       transform: none;
     }
+    .product-components .product-right-panel .group-sharing .winning-info {
+      max-width: 300px;
+      margin: 10px auto 0px;
+    }
+    .product-components .product-right-panel .group-sharing .winning-info .group-wrapper .name {
+      text-align: center;
+    }
 
     .product-toolbar .right-panel .btn-add-cart {
-      width: 146px;
+      width: 130px;
       font-size: 12px;
+      padding: 15px 20px;
     }
   }
 </style>

@@ -148,7 +148,7 @@
         </div>
         <div class="banner-box-text-right to-top" style="transition-delay: 0.3s">
           {%- if section.settings.text3 != blank -%}
-            <div class="banner-box-btn btn-diy" data-pid="{{ section.settings.text4 }}">
+            <div class="banner-box-btn btn-diy"  onclick="btnScrollToTop()">
               <div class="btn-txt" text="{{ section.settings.text3 }}">
                 <span>{{ section.settings.text3 }}</span>
               </div>
@@ -174,9 +174,17 @@
   </div>
 </section>
 <script>
-  document.querySelector('.banner-box .banner-box-btn').addEventListener('click', function() {
-    addToCart(this.getAttribute('data-pid'));
-  })
+  function btnScrollToTop() {
+    let rectD = document.querySelector('.banner-box').getBoundingClientRect()
+    console.log(rectD.height)
+    window.scrollTo({
+        top: rectD.height+80,
+        behavior: 'smooth'
+    });
+  }
+  // document.querySelector('.banner-box .banner-box-btn').addEventListener('click', function() {
+  //   addToCart(this.getAttribute('data-pid'));
+  // })
 </script>
 {% schema %}
 {

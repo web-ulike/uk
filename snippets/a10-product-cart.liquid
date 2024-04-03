@@ -3,7 +3,7 @@
 {% if line_item.quantity > 0 %}
   <div class="a10-product-cart-group">
     <div class="box-group">
-      <div class="title">Join this group to enjoy the best offer!</div>
+      <div class="title">{{ item.text }}</div>
       <div class="list">
         <img src="https://cdn.shopify.com/s/files/1/0740/5882/6015/files/Group_457393775.svg?v=1711539842" alt="">
         <div class="name">
@@ -18,7 +18,9 @@
     </div>
     {% comment %} 倒计时 {% endcomment %}
     <div class="box-end">
-      <div class="desc">Save £120 with Group Purchase, plus extra perks. Ends in →</div>
+      <div class="desc">
+        {{ item.endin }}
+      </div>
       <div class="group-countdown">
         <div class="countdown_b-item">
           <div class="countdown_b-num countdown-hours">00</div>
@@ -261,29 +263,32 @@
         </div>
       </line-item>
       {% comment %} 礼品赠送 {% endcomment %}
+
       <div class="box-gift">
-        <div class="list">
-          <div class="p-image">
-            <img src="https://cdn.shopify.com/s/files/1/0740/5882/6015/files/6.jpg?v=1711541942">
-          </div>
-          <div class="detail">
-            <p class="name">Early Bird Gift</p>
-            <div class="desc">
-              Ulike Aloe Vera Gel
-              <span class="num">X {{ line_item.quantity }}</span>
+        {% comment %}
+          <div class="list">
+            <div class="p-image">
+              <img src="https://cdn.shopify.com/s/files/1/0740/5882/6015/files/6.jpg?v=1711541942">
+            </div>
+            <div class="detail">
+              <p class="name">Early Bird Gift</p>
+              <div class="desc">
+                Ulike Aloe Vera Gel
+                <span class="num">X {{ line_item.quantity }}</span>
+              </div>
+            </div>
+            <div class="price">
+              {% assign totalGiftPrice = line_item.quantity | times: 20.0 %}
+              <p>
+                FREE
+                <span class="money" data-currency-gbp="£{{ totalGiftPrice }}">£{{ totalGiftPrice -}}</span>
+              </p>
             </div>
           </div>
-          <div class="price">
-            {% assign totalGiftPrice = line_item.quantity | times: 20.0 %}
-            <p>
-              FREE
-              <span class="money" data-currency-gbp="£{{ totalGiftPrice }}">£{{ totalGiftPrice -}}</span>
-            </p>
-          </div>
-        </div>
+        {% endcomment %}
         <div class="gift-info">
           <img src="https://cdn.shopify.com/s/files/1/0740/5882/6015/files/1_b81b3c90-d0cd-43fe-9987-102c041dfc9b.svg?v=1711542613">
-          Extra Service: Free 2-Day Shipping & Lifetime Warranty
+          {{ item.txt_extra }}
         </div>
       </div>
     </div>
