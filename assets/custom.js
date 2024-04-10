@@ -302,6 +302,18 @@ function initGA() {
   $(document).on("click", "#launch-spinthewheel", function () {
     commonGtmEvent(`首页-win spin`, 'click', location.pathname);
   });
+  $(document).on("click", "#launch-spinthewheel", function () {
+    commonGtmEvent(`首页-win spin`, 'click', location.pathname);
+  });
+
+  $(document).on("click", ".preheat-banner-form-cont .preheat-banner-form-btn", function () {
+    if($('.preheat-banner-form-input input').val()){ 
+      commonGtmEvent(`air10-subscribe`, 'click', location.pathname);
+      fbq('track', 'Lead');
+    }
+  });
+  
+ 
 }
 
 

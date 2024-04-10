@@ -5,6 +5,7 @@
   if se_stts.product != blank
     assign product = se_stts.product
   endif
+  assign product_selected_variant = product.selected_or_first_available_variant
 -%}
 
 <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
@@ -34,21 +35,21 @@
                   <div class="countdown__bix">
                     <span class="countdown-time-bar countdown-hours">01</span>
                   </div>
-                  <span class="countdown_txt">Hours</span>
+                  <span class="countdown_txt">hrs</span>
                 </div>
                 <div class="countdown__er">:</div>
                 <div class="countdown__item">
                   <div class="countdown__bix">
                     <span class="countdown-time-bar countdown-minutes">20</span>
                   </div>
-                  <span class="countdown_txt">minutes</span>
+                  <span class="countdown_txt">mins</span>
                 </div>
                 <div class="countdown__er">:</div>
                 <div class="countdown__item">
                   <span class="countdown__bix ">
                     <span class="countdown-time-bar countdown-seconds">10</span>
                   </span>
-                  <span class="countdown_txt">seconds</span>
+                  <span class="countdown_txt">secs</span>
                 </div>
               </div>
             </div>
@@ -99,6 +100,13 @@
           {% endfor %}
         </div>
         <div class="swiper-pagination"></div>
+        <div class="swiper-button-prev">
+          <img src="https://cdn.shopify.com/s/files/1/0740/5882/6015/files/Artwork_1.png?v=1712483416">
+        </div>
+        <div class="swiper-button-next">
+          <img src="https://cdn.shopify.com/s/files/1/0740/5882/6015/files/Artwork.png?v=1712482544">
+        </div>
+        {% comment %} https://cdn.shopify.com/s/files/1/0740/5882/6015/files/Artwork.png?v=1712482544 {% endcomment %}
       </div>
     </div>
   </div>
@@ -148,6 +156,7 @@
               {% for value in option.values %}
                 {%- assign variant_for_value = product.variants | where: 'option1', value | first -%}
                 <div
+                  href="{{ product.url }}?variant={{ variant_for_value.id }}"
                   class="color-swatch  {% if value == option.selected_value %} active {% endif%}"
                   id="{{ variant_for_value.id }}"
                   inventory_quantity="{{ variant_for_value.inventory_quantity }}"
@@ -163,6 +172,9 @@
                     {% endif %}
                     value="{{ value}}"
                   >
+                  <div class="j-variant-item" style="display: none;">
+                    {{ variant_for_value | json }}
+                  </div>
                   <label
                     class="color-swatch__item"
 
@@ -181,10 +193,11 @@
             </div>
             <div class="plug-list">
               {% for value in option.values %}
-                {%- assign variant_for_value = product.variants | where: 'option2', value | first -%}
+                {%- assign variant_for_value = product.variants | where: 'option1', product_selected_variant.option1 -%}
+
                 <div
                   class="item {% if forloop.index0 == 0 %} active {% endif %}"
-                  id="{{ variant_for_value.id }}"
+                  id="{{  variant_for_value[forloop.index0].id }}"
                   name="{{ value }}"
                 >
                   <div class="text">{{ value }}</div>
@@ -213,7 +226,7 @@
       </div>
       <div class="item">
         <img class="img-2" src="https://cdn.shopify.com/s/files/1/0740/5882/6015/files/2-year.svg?v=1711459860">
-        <div class="desc">Lifetime Warranty</div>
+        <div class="desc">2-Year Warranty</div>
       </div>
       <div class="item">
         <img class="img-2" src="https://cdn.shopify.com/s/files/1/0740/5882/6015/files/group-3116.svg?v=1711459860">
@@ -308,7 +321,7 @@
 </div>
 
 <script>
-  var pid = '{{ product.variants[0].id }}';
+  var pid = '{{ product.selected_or_first_available_variant.id }}';
   document.addEventListener('DOMContentLoaded', function () {
     const galleryThumbs = new Swiper('.myThumbs', {
       spaceBetween: isMobile() ? 8 : 15,
@@ -320,8 +333,13 @@
     });
     const galleryTop = new Swiper('.myGallery', {
       spaceBetween: 10,
-      pagination: {
+      {% comment %} pagination: {
         el: '.swiper-pagination',
+      }, {% endcomment %}
+      loop: true,
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
       },
       thumbs: {
         swiper: galleryThumbs,
@@ -331,6 +349,7 @@
     //查看更多
     $(document).on('click', '.read-more', function () {
       $('.description').toggleClass('expanded');
+      commonGtmEvent('A10_P_read', 'click', '');
       if ($('.description').is('.expanded')) {
         $(this).text('{{se_stts.read-more }} -');
       } else {
@@ -341,13 +360,15 @@
     // 原价商品
     $(document).on('click', '.btn-purchase', function () {
       if ($(this).attr('disabled') != 'disabled') {
-        addToCart('44752575922463', $(this)[0]);
+        commonGtmEvent('A10_P_full', 'click', '');
+        addToCart('48076053643551', $(this)[0]);
       }
     });
 
     // 拼团商品
     $(document).on('click', '.btn-group-purchase', function () {
       if ($(this).attr('disabled') != 'disabled') {
+        commonGtmEvent('A10_P_Gp', 'click', '');
         addToCart(pid, $(this)[0]);
       }
     });
@@ -365,15 +386,34 @@
       let _position =  $(this).attr('position') - 1;
       var thatVariant = $(this).closest('.variants-list');
       var colorBlock =  $(this).closest('.color-block');
+      // 变体 id
+      var vid = $(this).attr('id');
       if(inventory_quantity > 0){
         $('.color-swatch-list .color-swatch__radio[name="option1"]').removeAttr('checked');
         $(this).find('.color-swatch__radio[name="option1"]').attr('checked', 'checked');
         // 修改标题
         colorBlock.find('.name lable').text($(this).find('.color-swatch__radio').val());
         // 获取pid
-        pid = $(this).attr('id');
+        pid = vid;
         // 图片跳转
         galleryTop.slideTo(_position);
+        // 根据变体id 判断是否显示文案
+        if(pid == '47972761927967'){
+          $(thatVariant).find('.product-tips').text('{{ se_stts.arrival-reminder }}').show();
+        } else {
+          $(thatVariant).find('.product-tips').fadeOut();
+        }
+        // 判断是否切换变体ID
+        let variant_list = $(this).find('.j-variant-item').html();
+        if(variant_list){
+          variant_list = JSON.parse(variant_list);
+          var _variant_ids = variant_list.featured_image.variant_ids;
+          console.log(_variant_ids);
+          $(thatVariant).find('.plug-list .item').each(function(index, item){
+            console.log(index);
+            $(this).attr('id', _variant_ids[index]);
+          });
+        }
       } else {
         // 没有库存
         $(thatVariant).find('.product-tips').show();
@@ -404,14 +444,16 @@
 
     // more payment
     $(document).on('click', '.product-components .more-payment', function () {
+      commonGtmEvent('A10_P_PayOpt', 'click', '');
       $(this).find('.payment-methods-list').toggleClass('active');
     });
     randomName();
     fixBottomBar();
   });
 
+  var countdownInterval = null;
   function startCountdown(endTime, $element,type,callback) {
-    var countdownInterval = setInterval(function () {
+    countdownInterval = setInterval(function () {
       // 获取当前时间
       const now = new Date();
       // 计算剩余时间（毫秒）
@@ -554,6 +596,12 @@
       "id": "text-group",
       "label": "group Purchase文案",
       "default": "Get Best Offer with Group Purchase"
+    },
+    {
+      "type": "textarea",
+      "id": "arrival-reminder",
+      "label": "白色到货提醒文案",
+      "default": "Restocking! Orders ship in 25 days."
     }
   ],
   "blocks": [
@@ -631,12 +679,17 @@
     width: 55%;
     padding: 15px 30px 15px 50px;
     display: flex;
+    position: sticky;
+    top: 90px;
+    height: calc(100vh - 90px);
+    min-height: 860px;
+    max-height: 860px;
   }
   .product-components .product-left-panel .thumbs-swiper {
     width: 80px;
-    max-height: 770px;
     display: flex;
     justify-content: center;
+    height: 600px;
   }
   .product-components .product-left-panel .thumbs-swiper .myThumbs {
     height: 100%;
@@ -662,10 +715,26 @@
   .product-components .product-left-panel .main-image-swiper {
     margin-left: 20px;
     width: calc(100% - 100px);
+    --swiper-navigation-sides-offset: 30px;
   }
+  .product-components .product-left-panel .main-image-swiper .swiper-button-prev,
+  .product-components .product-left-panel .main-image-swiper .swiper-button-next {
+    display: none;
+  }
+  .product-components .product-left-panel .main-image-swiper:hover .swiper-button-prev,
+  .product-components .product-left-panel .main-image-swiper:hover .swiper-button-next {
+    display: block;
+  }
+
+  .main-image-swiper .swiper-button-prev:hover,
+  .main-image-swiper .swiper-button-next:hover {
+    opacity: 0.6;
+  }
+
   .product-components .product-left-panel .main-image-swiper .myGallery img {
     width: 100%;
   }
+
   .product-components .product-right-panel {
     width: 45%;
     padding: 15px 50px 15px 50px;
@@ -842,6 +911,14 @@
   .product-components .product-right-panel .variants-list .color-swatch__radio:checked + .color-swatch__item::after {
     opacity: 1;
     transform: scale(1);
+  }
+  .swiper-button-prev:after,
+  .swiper-rtl .swiper-button-next:after {
+    content: 'initial';
+  }
+  .swiper-button-next:after,
+  .swiper-rtl .swiper-button-prev:after {
+    content: 'initial';
   }
 
   .product-components .product-right-panel .price-block {
@@ -1300,13 +1377,23 @@
     }
     .product-components .product-left-panel {
       width: 55%;
-      padding: 15px 15px 15px 20px;
+      padding: 15px 15px 20px 20px;
+      position: sticky;
+      top: 90px;
+      height: calc(100vh - 90px);
+      min-height: 640px;
+      max-height: 640px;
+    }
+    .product-components .product-right-panel .title {
+      font-size: 36px;
+      line-height: 125%;
     }
     .product-components .product-right-panel .group-sharing .detail {
       align-items: center;
     }
     .product-components .product-left-panel .main-image-swiper {
-      margin-left: 15px;
+      margin-left: 20px;
+      width: calc(100% - 120px);
     }
     .product-components .product-right-panel {
       width: 45%;
@@ -1350,6 +1437,11 @@
       flex-wrap: wrap;
       flex-direction: column-reverse;
       padding: 0px 15px;
+      height: auto;
+      position: relative;
+      top: inherit;
+      min-height: inherit;
+      max-height: inherit;
     }
     .product-components .product-left-panel .main-image-swiper {
       width: 100%;
@@ -1359,6 +1451,7 @@
       width: 100%;
       display: block;
       margin-top: 6px;
+      height: auto;
     }
     .product-components .product-left-panel .thumbs-swiper .myThumbs .swiper-slide {
       width: 52px;
@@ -1368,6 +1461,11 @@
       width: 100%;
       height: auto;
     }
+    .product-components .product-left-panel .main-image-swiper:hover .swiper-button-prev,
+    .product-components .product-left-panel .main-image-swiper:hover .swiper-button-next {
+      display: none;
+    }
+
     .product-components .product-right-panel {
       width: 100%;
       padding: 30px 20px 0px;
@@ -1491,6 +1589,10 @@
 
     .product-components .product-right-panel .group-sharing .winning-info .m-image-block {
       display: grid;
+    }
+    .product-components .product-right-panel .pay-block .more-payment .text {
+      font-size: 12px;
+      line-height: 18px;
     }
 
     .toolbar-block {

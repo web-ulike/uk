@@ -809,13 +809,13 @@
 {%- if section.settings.click_btn_msg -%}
   <script>
     window.addEventListener('load',function(){
-      $('html').on('click','.color-swatch--white',function(){
-        if($('.product-tips-span').length) return
-        $('<div class="product-tips-span" style="color: #e0004d;font-size: 12px;margin-bottom: 6px;">Restocking</div>').insertAfter('.product-form-flex');
-        setTimeout(function(){
+      $('html').on('click','.color-swatch',function(){
+        if($(this).hasClass('color-swatch--white')){
+          if($('.product-tips-span').length) return
+          $('<div class="product-tips-span" style="color: #e0004d;font-size: 12px;margin-bottom: 6px;">{{section.settings.msg_text}}</div>').insertAfter('.product-form-flex');
+        }else{
           $('.product-tips-span').remove()
-          $('.color-swatch').eq(0).click()
-        },3000)
+        }
       })
     })
   </script>
@@ -1557,6 +1557,11 @@
       "id": "click_btn_msg",
       "label": "点击白色按钮添加提示",
       "default": false
+    },
+    {
+      "type": "text",
+      "id": "msg_text",
+      "label": "提示内容"
     }
   ]
 }

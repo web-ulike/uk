@@ -527,16 +527,19 @@
 
       <form id="mini-cart-form" action="{{ routes.cart_url }}" novalidate method="post">
         <input type="hidden" name="checkout">
-        {% comment %} 新品预售购物车 {% endcomment %}
         {% comment %} cart-group-item {% endcomment %}
+        {% comment %} 新品预售购物车 {% endcomment %}
         {% for block in se_bks %}
           {%- if block.type == 'cart-group-item' -%}
-            {% render 'a10-product-cart' item:block.settings %}
-           {%- endif -%}
+            {% render 'a10-product-cart', item: block.settings %}
+          {%- endif -%}
         {% endfor %}
 
+        {% assign item_ids = '47972761862431,47972761927967,47972761895199,47972761960735' %}
         {%- for line_item in cart.items -%}
-          {% if line_item.id != 47972761862431 %}
+          {% if item_ids contains line_item.id %}
+          {% else %}
+            {% comment %} 普通购物车 {% endcomment %}
             <line-item class="line-item">
               <div class="line-item__content-wrapper">
                 <a href="{{ line_item.url }}" class="line-item__image-wrapper" tabindex="-1" aria-hidden="true">

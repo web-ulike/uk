@@ -50,12 +50,12 @@
 
 .preheat-slide .preheat-slide-arraw svg{
   display: block;
-  opacity: .3;
+  opacity: 1;
   transition: all .4s ease;
 }
 
 .preheat-slide .preheat-slide-arraw:hover svg{
-  opacity: 1;
+  opacity: .3;
 }
 
 .preheat-slide .preheat-slide-right{
@@ -108,7 +108,13 @@
   height: 100%;
   object-fit: cover;
 }
-
+.preheat-slide .video-wrapper__play-button{
+    position: absolute;
+    margin-bottom:0;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
 .preheat-slide .preheat-slide-item-title{
   color: #272724;
   font-size: 30px;
@@ -132,6 +138,7 @@
 @media (max-width:991px) {
   .preheat-slide{
     padding: 40px 0;
+    background:#fff;
   }
   .preheat-slide .preheat-slide-left{
     display: none;
@@ -145,17 +152,17 @@
   }
   .preheat-slide .preheat-slide-item-text{
     font-size: 12px;
-    color: rgba(63, 54, 54, .2);
+    color: rgba(63, 54, 54, 1);
     margin-top: 10px;
   }
   .preheat-slide .preheat-slide-list{
     gap: 10px;
-    overflow-x: auto;
-    scrollbar-width: none;
-    scrollbar-color: transparent transparent;
   }
   .preheat-slide .preheat-slide-item{
     min-width: 300px;
+  }
+  .preheat-slide .video-wrapper__play-button{
+    zoom:.6;
   }
 }
 </style>
@@ -201,6 +208,20 @@
                 {%- endif -%}
                 {%- if block.settings.video != blank -%}
                   <native-video {% if block.settings.autoplay %}autoplay{% endif %} class="preheat-slide-wrapper">
+                    {%- unless block.settings.autoplay -%}
+                      <button type="button" class="video-wrapper__play-button video-wrapper__play-button--large video-wrapper__play-button--ripple" title="{{ 'general.accessibility.play_video' | t | escape }}">
+                        {%- if block.settings.v_icon != blank -%}
+                          <img
+                            loading="lazy"
+                            class="v_img"
+                            width="{{ block.settings.v_icon.width }}"
+                            height="{{ block.settings.v_icon.height }}"
+                            {% render 'image-attributes', image: block.settings.v_icon %}
+                            alt="{{ block.settings.v_icon.alt | escape }}"
+                          >
+                        {%- endif -%}
+                      </button>
+                    {%- endunless -%}
                     <template>
                       {{- block.settings.video | video_tag: controls: block.settings.show_video_controls, autoplay: block.settings.autoplay, muted: block.settings.autoplay, playsinline: block.settings.autoplay, loop: block.settings.autoplay -}}
                     </template>
@@ -222,6 +243,75 @@
     document.querySelector('.preheat-slide .preheat-slide-arraw').addEventListener('click', function() {
       document.querySelector('.preheat-slide').classList.add('active')
     })
+    function preheatSlideSwiper(){
+      let $p = $('.preheat-slide')
+      let $list = $p.find('.preheat-slide-list')
+      const content = document.querySelector('.preheat-slide .preheat-slide-right');
+      let length = $list.find('.preheat-slide-item').length
+      let width = $list.find('.preheat-slide-item')[0].offsetWidth
+      let index = 0
+      let pWidth = $p[0].offsetWidth
+      let marginW = 10
+      let lWidth = length * (width + marginW) + $list[0].offsetLeft
+      let translateX = 0
+
+      function changeTransform(num){
+        translateX += (width + marginW) * num
+        if(translateX > lWidth - pWidth) {
+          translateX = lWidth - pWidth
+        }
+        if(translateX<0) translateX = 0
+        $list.css({
+          transform: 'translateX(-' + translateX + 'px)',
+          transition: 'all 1s cubic-bezier(0.645, 0.045, 0.355, 1) 0s'
+        })
+      }
+      detectSwipe(content, () => {
+        changeTransform(1)
+      }, () => {
+        changeTransform(-1)
+      });
+
+      function detectSwipe(element, onSwipeLeft, onSwipeRight) {
+      let startX = 0;
+
+      const getEventX = (event) => {
+        return event.touches ? event.touches[0].clientX : event.clientX;
+      };
+
+      const handleTouchStart = (e) => {
+        startX = getEventX(e);
+      };
+
+      const handleTouchMove = (e) => {
+        const deltaX = getEventX(e) - startX;
+        if (Math.abs(deltaX) > 10 && e.cancelable) {
+          e.preventDefault();
+        }
+      };
+
+      const handleTouchEnd = (e) => {
+        const deltaX = getEventX(e.changedTouches ? e.changedTouches[0] : e) - startX;
+        if (deltaX > 10) {
+          onSwipeRight();
+        } else if (deltaX < -10) {
+          onSwipeLeft();
+        }
+      };
+
+      element.addEventListener('touchstart', handleTouchStart);
+      element.addEventListener('touchmove', handleTouchMove);
+      element.addEventListener('touchend', handleTouchEnd);
+
+      // Add mouse event listeners for PC compatibility
+      element.addEventListener('mousedown', handleTouchStart);
+      element.addEventListener('mousemove', handleTouchMove);
+      element.addEventListener('mouseup', handleTouchEnd);
+    }
+    }
+    if(window.innerWidth < 991) {
+      preheatSlideSwiper()
+    }
   })
 </script>
 {% schema %}
@@ -278,6 +368,11 @@
             "label": "Show video controls",
             "info": "Only applicable with native video.",
             "default": false
+          },
+          {
+            "type": "image_picker",
+            "id": "v_icon",
+            "label": "Video Icon"
           }
         ]
       }

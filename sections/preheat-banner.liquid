@@ -6,7 +6,7 @@
 .banner-box::before{
   position: absolute;
   content: '';
-  display: block;
+  display: none;
   width: 100%;
   height: 100%;
   top: 0;
@@ -29,15 +29,17 @@
   position: absolute;
   width: 100%;
   left: 0;
-  bottom: 65px;
+  top: 60px;
   z-index: 4;
+  text-align: center;
 }
 
 .banner-box .container{
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 30px;
+  display:flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 20px;
 }
 
 .banner-box .banner-box-text-left{
@@ -45,22 +47,21 @@
 }
 
 .banner-box .banner-box-sub{
-  color: #190A0A;
+  color: #000;
   font-size: 22px;
-  font-family: var(--heading-font-family);
   line-height: 1.5;
   letter-spacing: 0.22px;
 }
 
 .banner-box .banner-box-title{
-  color: #190A0A;
+  color: #000;
   font-size: 60px;
   line-height: 1.2;
   letter-spacing: 0.6px;
 }
 
 .banner-box .banner-box-p{
-  color: #190A0A;
+  color: #000;
   font-size: 60px;
   line-height: 1.2;
   letter-spacing: 0.6px;
@@ -78,7 +79,12 @@
 .banner-box .banner-box-btn span{
   color: #fff;
 }
-
+/* .banner-box .banner-box-btn:after{
+  background: #190A0A;
+} */
+.banner-box .banner-box-btn .btn-txt:before{
+    /* color:#fff; */
+  }
   .banner-box .banner-box-wrapper{
     position: absolute;
     width: 100%;
@@ -97,15 +103,12 @@
 @media (max-width:991px) {
   .banner-box .banner-box-sub{
     font-size: 16px;
-    color: #fff;
   }
   .banner-box .banner-box-title{
     font-size: 34px;
-    color: #fff;
   }
   .banner-box .banner-box-p{
     font-size: 14px;
-    color: #fff;
   }
   .banner-box .mb-box{
     display: block;
@@ -117,13 +120,10 @@
 }
 
 @media (max-width:740px) {
-  .banner-box .container{
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: flex-start;
-  }
-  .banner-box .banner-box-text{
-    bottom: 35px;
+ .banner-box .banner-box-text{
+    bottom: auto;
+    top:50px;
+    text-align: center;
   }
   .banner-box .banner-box-btn{
     width: 175px;
@@ -132,12 +132,26 @@
 </style>
 
 <section class="section-box">
-  <div class="banner-box to-top">
+  <div class="banner-box">
     {%- if section.settings.background_image != blank -%}
-      <img loading="lazy" class="img pc-box" src="{{ section.settings.background_image | image_url }}"/>
+      <img
+        loading="lazy"
+        class="img pc-box"
+        width="{{ section.settings.background_image.width }}"
+        height="{{ section.settings.background_image.height }}"
+        {% render 'image-attributes', image: section.settings.background_image %}
+        alt="{{ section.settings.background_image.alt | escape }}"
+      >
     {%- endif -%}
     {%- if section.settings.background_image_mobile != blank -%}
-      <img loading="lazy" class="img mb-box" src="{{ section.settings.background_image_mobile | image_url }}"/>
+      <img
+        loading="lazy"
+        class="img mb-box"
+        width="{{ section.settings.background_image_mobile.width }}"
+        height="{{ section.settings.background_image_mobile.height }}"
+        {% render 'image-attributes', image: section.settings.background_image_mobile %}
+        alt="{{ section.settings.background_image_mobile.alt | escape }}"
+      >
     {%- endif -%}
     <div class="banner-box-text">
       <div class="container">
@@ -176,7 +190,6 @@
 <script>
   function btnScrollToTop() {
     let rectD = document.querySelector('.banner-box').getBoundingClientRect()
-    console.log(rectD.height)
     window.scrollTo({
         top: rectD.height+80,
         behavior: 'smooth'

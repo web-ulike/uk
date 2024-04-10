@@ -101,6 +101,14 @@
     object-fit: cover;
   }
 
+  .preheat-video-results .video-wrapper__play-button{
+    position: absolute;
+    margin-bottom:0;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+
 @media (max-width:1500px) {
   .preheat-video-results .preheat-video-results-flex{
     zoom: .6;
@@ -121,7 +129,7 @@
     bottom: 0;
   }
   .preheat-video-results .preheat-video-results-cont{
-    margin: 30px 0;
+    margin: 30px 24px;
   }
   .preheat-video-results .preheat-video-results-title{
     font-size: 24px;
@@ -156,6 +164,9 @@
     font-size: 35px;
     line-height: 1.2;
   }
+  .preheat-video-results .video-wrapper__play-button{
+    zoom:.6;
+  }
 }
 </style>
 
@@ -176,6 +187,20 @@
       {%- endif -%}
       {%- if section.settings.video != blank -%}
         <native-video {% if section.settings.autoplay %}autoplay{% endif %} class="preheat-video-results-wrapper{% if section.settings.mobile_video != blank %} pc-box{% endif %}">
+          {%- unless section.settings.autoplay -%}
+              <button type="button" class="video-wrapper__play-button video-wrapper__play-button--large video-wrapper__play-button--ripple" title="{{ 'general.accessibility.play_video' | t | escape }}">
+                {%- if section.settings.v_icon != blank -%}
+                  <img
+                    loading="lazy"
+                    class="v_img"
+                    width="{{ section.settings.v_icon.width }}"
+                    height="{{ section.settings.v_icon.height }}"
+                    {% render 'image-attributes', image: section.settings.v_icon %}
+                    alt="{{ section.settings.v_icon.alt | escape }}"
+                  >
+                {%- endif -%}
+              </button>
+            {%- endunless -%}
           <template>
             {{- section.settings.video | video_tag: controls: section.settings.show_video_controls, autoplay: section.settings.autoplay, muted: section.settings.autoplay, playsinline: section.settings.autoplay, loop: section.settings.autoplay -}}
           </template>
@@ -183,6 +208,20 @@
       {%- endif -%}
       {%- if section.settings.mobile_video != blank -%}
          <native-video {% if section.settings.autoplay %}autoplay{% endif %} class="preheat-video-results-wrapper mb-box">
+           {%- unless section.settings.autoplay -%}
+              <button type="button" class="video-wrapper__play-button video-wrapper__play-button--large video-wrapper__play-button--ripple" title="{{ 'general.accessibility.play_video' | t | escape }}">
+                {%- if section.settings.v_icon != blank -%}
+                  <img
+                    loading="lazy"
+                    class="v_img"
+                    width="{{ section.settings.v_icon.width }}"
+                    height="{{ section.settings.v_icon.height }}"
+                    {% render 'image-attributes', image: section.settings.v_icon %}
+                    alt="{{ section.settings.v_icon.alt | escape }}"
+                  >
+                {%- endif -%}
+              </button>
+            {%- endunless -%}
           <template>
             {{- section.settings.mobile_video | video_tag: controls: section.settings.show_video_controls, autoplay: section.settings.autoplay, muted: section.settings.autoplay, playsinline: section.settings.autoplay, loop: section.settings.autoplay -}}
           </template>
@@ -329,6 +368,11 @@
       "label": "Show video controls",
       "info": "Only applicable with native video.",
       "default": false
+    },
+    {
+      "type": "image_picker",
+      "id": "v_icon",
+      "label": "Video Icon"
     }
   ],
   "presets": [
