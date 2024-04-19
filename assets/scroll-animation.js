@@ -134,7 +134,9 @@ function wrapWordsWithSpanAndAddClass1(node,width) {
         // 添加最后一行内容（如果有剩余内容）
         if (line.trim() !== '') {
           newContainer.appendChild(document.createElement('span')).textContent = line.trim();
-          node.parentNode.removeChild(testElement);
+          if(node.parentNode.querySelector('.test-span-ulike')){
+            node.parentNode.removeChild(testElement);
+          }
         }
         node.parentNode.insertBefore(newContainer, node);
         node.remove()

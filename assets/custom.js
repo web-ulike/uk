@@ -27,12 +27,11 @@ theme.initWhenVisible = function(options) {
 class ImageComparison extends HTMLElement {
   constructor() {
     super();
-
+    console.log(' this.button-----', this);
     this.active = false;
     this.button = this.querySelector('button');
     this.horizontal = this.dataset.layout === 'horizontal';
     this.init();
-
     theme.initWhenVisible({
       element: this.querySelector('.image-comparison__animate'),
       callback: this.animate.bind(this),
@@ -167,12 +166,27 @@ function setCookie(cookieName, cookieValue, daysToExpire) {
  * 初始化事件
  */
 function init(){
-  if(location.pathname.includes('/pages/meta-air-3-product-detail') || location.pathname.includes('/pages/meta-air-plus-product-detail')){
-    $('#cart_count_down_mini-cart').hide();
-    setTimeout(function(){
-      $('#cart_count_down_mini-cart').hide();
-    }, 5000)
+
+  // 处理全局折扣码
+  let gDiscount = getUrlParameter("discount");
+  if (gDiscount) {
+    setCookie('discount_code', gDiscount, 1);
+    setTimeout(function () {
+      var codeArr = window.discountOnCartProApp.codes;
+      if(codeArr.length > 0){
+        window.discountOnCartProApp.removeCode(codeArr[0]);
+      }
+      setTimeout(function(){
+         window.discountOnCartProApp.applyCode(pDiscount);
+      }, 1200)
+    }, 6000)
   }
+  // if(location.pathname.includes('/pages/meta-air-3-product-detail') || location.pathname.includes('/pages/meta-air-plus-product-detail')){
+  //   $('#cart_count_down_mini-cart').hide();
+  //   setTimeout(function(){
+  //     $('#cart_count_down_mini-cart').hide();
+  //   }, 5000)
+  // }
 }
 
 document.addEventListener("DOMContentLoaded", function() {
@@ -391,4 +405,17 @@ function JumpCheckout (productId) {
     // 清空购物车失败，处理错误
     console.error('Error clearing cart:', error);
   });
+}
+
+
+/**
+ * 从URL中获取指定参数的值
+ * @param {string} paramName 需要获取的参数名
+ * @return {string|null} 如果找到指定参数，则返回其值；否则，返回null
+ */
+function getUrlParameter(paramName) {
+  // 创建一个URLSearchParams对象，用于解析URL中的查询参数
+  const params = new URLSearchParams(window.location.search);
+  // 使用指定的参数名获取参数值并返回
+  return params.get(paramName);
 }

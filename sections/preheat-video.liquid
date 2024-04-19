@@ -34,6 +34,10 @@
     z-index: 2;
   }
 
+  .officially-video-diy .preheat-video-cont{
+    bottom: 23px;
+  }
+
   .preheat-video .preheat-video-cont .container{
     display: flex;
     justify-content: space-between;
@@ -211,9 +215,15 @@
     .is-video .preheat-video .preheat-video-box{
       margin:0 24px;
     }
-  .preheat-video .video-wrapper__play-button{
-    zoom:.6;
-  }
+    .preheat-video .video-wrapper__play-button{
+      zoom:.6;
+    }
+    .officially-video-diy .preheat-video-title{
+      color:#000;
+    }
+    .officially-video-diy .preheat-video-text{
+      color:#000;
+    }
   }
   .sticky-box-p{
     position: relative;
@@ -222,9 +232,10 @@
     opacity: calc(1 - 0.5*var(--style-num));
     transform: scale(calc(1 - 0.1*var(--style-num)));
   }
+  
 </style>
 
-<section class="section-box {% if section.settings.text3 != blank %}sticky-box-p{% endif %} {% if section.settings.video != blank %}is-video{% endif %}">
+<section class="section-box {% if section.settings.text4 != blank %}{{ section.settings.text4 }}{% endif %} {% if section.settings.text3 != blank %}sticky-box-p{% endif %} {% if section.settings.video != blank %}is-video{% endif %}">
   <div class="preheat-video to-top">
     <div class="preheat-video-top">
       <div class="preheat-video-cont">
@@ -304,7 +315,7 @@
                   autoplay: section.settings.autoplay,
                   muted: section.settings.autoplay,
                   playsinline: section.settings.autoplay,
-                  loop: section.settings.autoplay
+                  loop: true
               -}}
             </template>
           </native-video>
@@ -338,7 +349,7 @@
                   autoplay: section.settings.autoplay,
                   muted: section.settings.autoplay,
                   playsinline: section.settings.autoplay,
-                  loop: section.settings.autoplay
+                  loop: true
               -}}
             </template>
           </native-video>
@@ -347,6 +358,14 @@
     </div>
   </div>
 </section>
+  <script>
+    window.addEventListener('load', function () {
+      $('.preheat-video-btn').on('click', function () {
+        console.log('A10_P_try');
+        commonGtmEvent('A10_P_try', 'click', '');
+      });
+    });
+  </script>                   
 {%- if section.settings.text3 != blank -%}
   <script>
     window.addEventListener('load', function () {
@@ -354,10 +373,6 @@
 
       window.addEventListener('scroll', function () {
         scrollChangeFade();
-      });
-      $('.preheat-video-btn').on('click', function () {
-        console.log('A10_P_try');
-        commonGtmEvent('A10_P_try', 'click', '');
       });
     });
 
@@ -447,6 +462,11 @@
       "type": "text",
       "id": "text3",
       "label": "Next Class"
+    },
+    {
+      "type": "text",
+      "id": "text4",
+      "label": "自定义Class"
     },
     {
       "type": "image_picker",

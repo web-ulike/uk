@@ -8,8 +8,8 @@
   assign product_selected_variant = product.selected_or_first_available_variant
 -%}
 
-<link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
-<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+<link rel="stylesheet" href="https://cdn.shopify.com/s/files/1/0740/5882/6015/files/swiper-bundle.min.css?v=1712905202">
+<script src="https://cdn.shopify.com/s/files/1/0740/5882/6015/files/swiper-bundle.min.js?v=1712905203"></script>
 
 {% for block in se_bks %}
   {% if block.type == 'product-bar' %}
@@ -172,9 +172,7 @@
                     {% endif %}
                     value="{{ value}}"
                   >
-                  <div class="j-variant-item" style="display: none;">
-                    {{ variant_for_value | json }}
-                  </div>
+
                   <label
                     class="color-swatch__item"
 
@@ -182,6 +180,9 @@
                   >
                     <span class="visually-hidden">{{ value }}</span>
                   </label>
+                  <div class="j-variant-item" style="display: none;">
+                    {{ variant_for_value | json }}
+                  </div>
                 </div>
               {% endfor %}
             </div>
@@ -393,26 +394,27 @@
         $(this).find('.color-swatch__radio[name="option1"]').attr('checked', 'checked');
         // 修改标题
         colorBlock.find('.name lable').text($(this).find('.color-swatch__radio').val());
-        // 获取pid
-        pid = vid;
         // 图片跳转
         galleryTop.slideTo(_position);
-        // 根据变体id 判断是否显示文案
-        if(pid == '47972761927967'){
-          $(thatVariant).find('.product-tips').text('{{ se_stts.arrival-reminder }}').show();
-        } else {
-          $(thatVariant).find('.product-tips').fadeOut();
-        }
         // 判断是否切换变体ID
         let variant_list = $(this).find('.j-variant-item').html();
         if(variant_list){
           variant_list = JSON.parse(variant_list);
           var _variant_ids = variant_list.featured_image.variant_ids;
-          console.log(_variant_ids);
           $(thatVariant).find('.plug-list .item').each(function(index, item){
-            console.log(index);
             $(this).attr('id', _variant_ids[index]);
+            // 赋值 变体id
+            if($(this).hasClass('active')){
+              pid = _variant_ids[index]
+            }
           });
+        }
+        // 根据变体id 判断是否显示文案
+        if(pid == '47972761927967'){
+          $(thatVariant).find('.product-tips').text('{{ se_stts.arrival-reminder }}').show();
+        } else {
+          $(thatVariant).find('.product-tips').text('Orders ship in 7 days').show();
+          {% comment %} $(thatVariant).find('.product-tips').fadeOut(); {% endcomment %}
         }
       } else {
         // 没有库存
@@ -449,19 +451,35 @@
     });
     randomName();
     fixBottomBar();
+
+    var pDiscount = getUrlParameter("add-discount");
+    if(pDiscount) {
+      addToCart(pid);
+      setTimeout(function(){
+          // 应用优惠劵
+        var codeArr = window.discountOnCartProApp.codes;
+        if(codeArr.length > 0){
+          window.discountOnCartProApp.removeCode(codeArr[0]);
+        }
+        setTimeout(function(){
+            window.discountOnCartProApp.applyCode(pDiscount);
+        }, 1200)
+      }, 6000)
+    }
+
   });
 
   var countdownInterval = null;
-  function startCountdown(endTime, $element,type,callback) {
+  function startCountdown(endTime, $element,$groupElement,callback) {
     countdownInterval = setInterval(function () {
       // 获取当前时间
-      const now = new Date();
+      let now = new Date();
       // 计算剩余时间（毫秒）
-      const difference = endTime - now;
+      let difference = endTime - now;
       // 如果时间到了，清除定时器并输出结束信息
       if (difference <= 0) {
           clearInterval(countdownInterval);
-          console.log("倒计时结束!");
+          countdownInterval = null
           if (typeof callback === 'function') {
             callback();
           }
@@ -474,21 +492,15 @@
 
       var displayMinutes = minutes < 10 ? '0' + minutes : minutes;
       var displaySeconds = seconds < 10 ? '0' + seconds : seconds;
+      var displayHours = hours < 10 ? '0' + hours : hours;
 
-      if(type == 1){
-        var displayDays = days > 0 ? days + ':' : '';
-        var displayHours = hours > 0 ? hours + ':' : '';
-        var newTime = displayDays + displayHours + displayMinutes + ':' + displaySeconds + '';
-        // 淡出旧时间，更新文本，然后淡入新时间
-        $element.fadeOut(200, function () {
-          $element.html(newTime).fadeIn(200);
-        });
-      }else if(type == 2){
-        var displayhours = hours < 10 ? '0' + hours : hours;
-        $($element).find('.countdown-hours').text(displayhours);
-        $($element).find('.countdown-minutes').text(displayMinutes);
-        $($element).find('.countdown-seconds').text(displaySeconds);
-      }
+      var displayDays = days > 0 ? days + ':' : '';
+      var newTime = displayDays + displayHours +  ':' + displayMinutes + ':' + displaySeconds + '';
+      // 淡出旧时间，更新文本，然后淡入新时间
+      $element.html(newTime).fadeIn(200);
+      $($groupElement).find('.countdown-hours').text(displayHours);
+      $($groupElement).find('.countdown-minutes').text(displayMinutes);
+      $($groupElement).find('.countdown-seconds').text(displaySeconds);
     }, 1000);
   }
 
@@ -524,16 +536,10 @@
     var endTime = new Date(new Date().getTime() + 15 * 60000).getTime();
 
      // 倒计时
-     var $countdown = $('.winning-info .time');
-     startCountdown(endTime, $countdown, 1, function () {
-       console.log('倒计时结束！');
-       $countdown.hide();
-       location.reload();
-     });
-
-     var $countdown1 = $('.box-countdown .countdown');
-     startCountdown(endTime, $countdown1, 2, function () {
-      $countdown1.hide();
+     var $countdownGroup = $('.winning-info .time');
+     var $countdown = $('.box-countdown .countdown');
+     startCountdown(endTime,$countdownGroup, $countdown, function () {
+      location.reload();
     });
     setCookie('groupName', userName, 1);
     setCookie('groupTime', endTime, 1);
@@ -1178,6 +1184,7 @@
   .product-components .product-right-panel .pay-block .more-payment .payment-methods-list {
     opacity: 0;
     text-align: center;
+    display: none;
   }
   .product-components .product-right-panel .pay-block .more-payment:hover {
     color: #000;

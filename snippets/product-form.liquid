@@ -185,6 +185,19 @@
     .product-form .p-btn-hide {
       display: none;
     }
+  .diy-btn-link{
+    font-family: var(--heading-font-family);
+    font-size: calc(var(--base-font-size) - 2px);
+    height: 53px;
+    margin-top: 20px;
+    border: 2px solid #000;
+  }
+  .diy-btn-link .btn-txt:before{
+    color:#fff;
+  }
+  .diy-btn-link:after{
+    background:#000;
+  }
     @media (min-width: 768px) {
       .product-form-countdown-tip{
           margin-bottom:10px;
@@ -197,6 +210,9 @@
       }
       .product-popup-img-diy .pc-box {
         display: none;
+      }
+      .diy-btn-link{
+        height:49px;
       }
     }
 </style>
@@ -234,17 +250,34 @@
     // 页面加载时初始化倒计时
     updateCountdownbar();
   }
-  let ediftendDate = ('{{section.settings.end_date }}');
-  // 使用示例
-  let endDate = new Date(`${ediftendDate}`).getTime(); // 设置结束时间
-  let countdown = new Countdownbar(endDate);
+ 
 
   let variantId = "{{ product.selected_or_first_available_variant.id }}";
   window.addEventListener('load',function(){
+     let ediftendDate = ('{{section.settings.end_date }}');
+    // 使用示例
+    let endDate = new Date(`${ediftendDate}`).getTime(); // 设置结束时间
+    let countdown = new Countdownbar(endDate);
+    
     if(variantId == 44752575922463 || variantId == 45212834005279 || variantId == 44770181415199 || variantId == 45212834070815) {
       $('.color-shipping').show()
     } else {
       $('.color-shipping').hide()
+    }
+
+    var pDiscount = getUrlParameter("add-discount");
+    if(pDiscount) {
+        addToCart(variantId);
+        setTimeout(function(){
+           // 应用优惠劵
+          var codeArr = window.discountOnCartProApp.codes;
+          if(codeArr.length > 0){
+            window.discountOnCartProApp.removeCode(codeArr[0]);
+          }
+          setTimeout(function(){
+             window.discountOnCartProApp.applyCode(pDiscount);
+          }, 1200)
+        }, 6000)
     }
   })
 </script>
@@ -1116,6 +1149,13 @@
           {{- quantity_selector_info -}}
         </div>
         {{- buy_buttons_info -}}
+        {%- if section.settings.diy_btn_text != blank -%}
+          <a href="{{ section.settings.diy_btn_link }}" class="diy-btn-link btn-diy">
+            <div class="btn-txt" text="{{ section.settings.diy_btn_text }}">
+              <span>{{ section.settings.diy_btn_text }}</span>
+            </div>
+          </a>
+        {%- endif -%}
     {%- endcase -%}
   {%- endfor -%}
 

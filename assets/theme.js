@@ -5259,7 +5259,6 @@
       return this.getAttribute("unit-price-class") || "";
     }
     _onVariantChanged(event) {
-      console.log("vid------: " + event.detail.variant.id);
       var vid = event.detail.variant.id;
       // $('.color-shipping').show()
       if(vid == 44752575922463 || vid == 45212834005279 || vid == 44770181415199 || vid == 45212834070815) {

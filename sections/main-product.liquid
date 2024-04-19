@@ -809,16 +809,83 @@
 {%- if section.settings.click_btn_msg -%}
   <script>
     window.addEventListener('load',function(){
+      let colorSwatchTimer = null
       $('html').on('click','.color-swatch',function(){
+        clearTimeout(colorSwatchTimer)
         if($(this).hasClass('color-swatch--white')){
-          if($('.product-tips-span').length) return
+          $('.product-tips-span').remove()
+          // if($('.product-tips-span').length) return
           $('<div class="product-tips-span" style="color: #e0004d;font-size: 12px;margin-bottom: 6px;">{{section.settings.msg_text}}</div>').insertAfter('.product-form-flex');
         }else{
           $('.product-tips-span').remove()
+          // if($('.product-tips-span').length) return
+          $('<div class="product-tips-span" style="color: #e0004d;font-size: 12px;margin-bottom: 6px;">{{section.settings.msg_text1}}</div>').insertAfter('.product-form-flex');
         }
+        colorSwatchTimer = setTimeout(() => {
+          if($('.product-tips-span').length){
+            $('.product-tips-span').remove()
+          }
+        }, 3000);
       })
     })
   </script>
+{%- endif -%}
+{%- if section.settings.sold_out_bol -%}
+<style>
+   #AddToCart.disabled-btn{
+     cursor: pointer;
+   }
+  #AddToCart.disabled-btn .loader-button__text{
+    color: transparent;
+  }
+  #AddToCart.disabled-btn:before{
+      cursor: pointer;
+      position: absolute;
+      content: '{{ section.settings.sold_out_text }}';
+      width: 100%;
+      height: 100%;
+      left: 0;
+      top: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      z-index:2;
+  }
+  #AddToCart.disabled-btn:hover:before{
+      color: #000;
+  }
+  
+</style>
+  
+<script>
+  window.addEventListener('load',function(){
+      setTimeout(function(){
+        if($('#AddToCart .loader-button__text').text().trim() != $('#AddToCart').attr('data-button-content').trim()){
+          $('#AddToCart').addClass('disabled-btn')
+        }
+      },50)
+    $('html').on('click','.color-swatch .color-swatch__item,.block-swatch .block-swatch__item',function(){
+      $('#AddToCart').removeClass('disabled-btn')
+      setTimeout(function(){
+        if($('#AddToCart').attr('disabled') == 'disabled' || $('#AddToCart').hasClass('disabled-btn')){
+          $('#AddToCart').removeAttr('disabled')
+          $('#AddToCart').addClass('disabled-btn')
+        }else{
+          $('#AddToCart').removeClass('disabled-btn')
+        }
+      },50)
+    })
+  
+    $('html').on('click','#AddToCart',function(e){
+      if($(this).hasClass('disabled-btn')){
+        window.location.href = '{{ section.settings.sold_out_link }}'
+        return false
+      }
+    })
+  })
+
+</script>
 {%- endif -%}
 
 {% schema %}
@@ -1555,13 +1622,44 @@
     {
       "type": "checkbox",
       "id": "click_btn_msg",
-      "label": "点击白色按钮添加提示",
+      "label": "点击按钮添加提示",
       "default": false
     },
     {
       "type": "text",
+      "id": "msg_text1",
+      "label": "紫色按钮提示内容"
+    },
+    {
+      "type": "text",
       "id": "msg_text",
-      "label": "提示内容"
+      "label": "白色按钮提示内容"
+    },
+    {
+      "type": "checkbox",
+      "id": "sold_out_bol",
+      "label": "售罄跳转",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "sold_out_text",
+      "label": "按钮文字"
+    },
+    {
+      "type": "url",
+      "id": "sold_out_link",
+      "label": "跳转链接"
+    },
+    {
+      "type": "text",
+      "id": "diy_btn_text",
+      "label": "自定义按钮文字"
+    },
+    {
+      "type": "url",
+      "id": "diy_btn_link",
+      "label": "自定义按钮跳转链接"
     }
   ]
 }

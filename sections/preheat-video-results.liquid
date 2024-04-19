@@ -36,6 +36,22 @@
   max-width: 590px;
   margin-top: 30px;
 }
+.preheat-video-results .preheat-video-results-sub p{
+  margin: 0;
+}
+
+.preheat-video-results .preheat-video-results-sub strong{
+  font-weight: normal;
+  font-family: var(--heading-font-family);
+}
+  
+.preheat-video-results .preheat-video-results-p{
+  color: #3F3636;
+  font-size: 14px;
+  line-height: 1.5;
+  margin-top: 30px;
+  max-width: 738px;
+}
 .preheat-video-results .preheat-video-results-bottom{
   position: absolute;
   width: 100%;
@@ -109,6 +125,10 @@
     transform: translate(-50%, -50%);
   }
 
+  .preheat-video-results .video-wrapper__play-button img{
+    width:100px;
+  }
+
 @media (max-width:1500px) {
   .preheat-video-results .preheat-video-results-flex{
     zoom: .6;
@@ -176,6 +196,9 @@
       <div class="container">
         <div class="preheat-video-results-title line-top">{{ section.settings.text }}</div>
         <div class="preheat-video-results-sub line-top">{{ section.settings.text1 }}</div>
+        {%- if section.settings.text12 != blank -%}
+          <div class="preheat-video-results-p line-top" style="transition-delay: 0.1s">{{ section.settings.text12 }}</div>
+        {%- endif -%}
       </div>
     </div>
     <div class="preheat-video-results-cont">
@@ -202,7 +225,7 @@
               </button>
             {%- endunless -%}
           <template>
-            {{- section.settings.video | video_tag: controls: section.settings.show_video_controls, autoplay: section.settings.autoplay, muted: section.settings.autoplay, playsinline: section.settings.autoplay, loop: section.settings.autoplay -}}
+            {{- section.settings.video | video_tag: controls: section.settings.show_video_controls, autoplay: section.settings.autoplay, muted: section.settings.autoplay, playsinline: section.settings.autoplay, loop: true -}}
           </template>
         </native-video>
       {%- endif -%}
@@ -223,7 +246,7 @@
               </button>
             {%- endunless -%}
           <template>
-            {{- section.settings.mobile_video | video_tag: controls: section.settings.show_video_controls, autoplay: section.settings.autoplay, muted: section.settings.autoplay, playsinline: section.settings.autoplay, loop: section.settings.autoplay -}}
+            {{- section.settings.mobile_video | video_tag: controls: section.settings.show_video_controls, autoplay: section.settings.autoplay, muted: section.settings.autoplay, playsinline: section.settings.autoplay, loop: true -}}
           </template>
         </native-video>
       {%- endif -%}
@@ -296,8 +319,13 @@
       "label": "Text"
     },
     {
-      "type": "text",
+      "type": "richtext",
       "id": "text1",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "text12",
       "label": "Text"
     },
     {

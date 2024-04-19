@@ -1012,7 +1012,7 @@
     // 倒计时
     if (userName && endTime) {
       cartCountdown(endTime, userName, function () {
-        console.log('倒计时结束！');
+        // console.log('倒计时结束！');
         hasExecuted = true;
         generateGroup();
       });
@@ -1063,20 +1063,22 @@
     hasExecuted = false;
   }
 
+  var countdowInterval = null;
   function cartCountdown(endTime, name, callback) {
-    let countdowInterval = setInterval(function () {
+    countdowInterval = setInterval(function () {
       var $element = $('.a10-product-cart-group .group-countdown');
       if (hasExecuted) {
         clearInterval(countdowInterval);
+        countdowInterval = null;
         hasExecuted = false;
         return;
       } else {
         $element.show();
       }
       // 获取当前时间
-      const now = new Date();
+      let now = new Date();
       // 计算剩余时间（毫秒）
-      const difference = endTime - now;
+      let difference = endTime - now;
       // 如果时间到了，清除定时器并输出结束信息
       if (difference <= 0) {
         clearInterval(countdowInterval);
@@ -1143,7 +1145,7 @@
       navigator.clipboard.writeText(code);
     {% endif %}
     commonGtmEvent('弃购-pop copy', 'cart', '');
-    console.log(4444);
+    // console.log(4444);
     $('#minicart-dialog-list').hide();
   }
 
@@ -1220,7 +1222,7 @@
     {% endif %}
 
     let endDate = new Date(`${ediftendDate}`).getTime(); // 设置结束时间
-    console.log(endDate);
+    // console.log(endDate);
     {%- if se_stts.is_cart_coupon == true -%}
        var countdowN = new Countdownbar('#minicart-dialog-list .j-countdown-name', endDate);
     {%else%}

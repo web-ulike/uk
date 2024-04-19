@@ -1,0 +1,124 @@
+<style>
+.order-status{
+  padding: 80px 0 110px 0;
+}
+
+.order-status .order-status-list{
+  margin-top: 80px;
+  display: flex;
+  gap: 36px;
+}
+
+.order-status .order-status-item{
+  flex: 1;
+  background: #f9f9f9;
+  padding: 35px 35px 100px 35px;
+}
+
+.order-status .order-status-num{
+  font-size: 65px;
+  line-height: 1;
+  font-family: var(--heading-font-family);
+  color: #000;
+}
+
+.order-status .order-status-sub{
+  font-size: 25px;
+  font-family: var(--heading-font-family);
+  color: #000;
+  line-height: 1;
+  margin-top: 45px;
+}
+
+.order-status .order-status-p{
+  color: #595959;
+  font-size: 14px;
+  line-height: 1.2;
+  margin-top: 25px;
+}
+
+.order-status .order-status-p p{
+  margin:0;
+}
+
+.order-status .order-status-p a{
+  text-decoration: underline;
+  color: #000;
+}
+
+@media (max-width:991px) {
+  .order-status{
+    padding: 50px 0;
+  }
+  .order-status .order-status-list{
+    flex-direction: column;
+    gap: 30px;
+    margin-top: 30px;
+  }
+  .order-status .order-status-item{
+    padding: 20px 20px 50px 20px;
+  }
+  .order-status .order-status-num{
+    font-size: 45px;
+  }
+  .order-status .order-status-sub{
+    font-size: 20px;
+    margin-top: 25px;
+  }
+  .order-status .order-status-p{
+    margin-top: 15px;
+  }
+}
+</style>
+<section class="section-box">
+  <div class="order-status">
+    <div class="container">
+      <div class="title-diy to-top">{{ section.settings.title }}</div>
+      <div class="order-status-list">
+        {%- for block in section.blocks -%}
+          <div class="order-status-item to-top" style="transition-delay: 0.{{ forloop.index }}s">
+            <div class="order-status-num">0{{ forloop.index }}</div>
+            <div class="order-status-sub">{{ block.settings.text }}</div>
+            <div class="order-status-p">{{ block.settings.text1 }}</div>
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</section>
+{% schema %}
+{
+"name": "order-status",
+"blocks": [
+    {
+    "name": "item",
+    "type": "item",
+    "settings": [
+      {
+        "type": "text",
+        "id": "text",
+        "label": "Text"
+      },
+      {
+        "type": "richtext",
+        "id": "text1",
+        "label": "Text"
+      }
+    ]
+    }
+  ],
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title"
+    }
+  ],
+  "presets": [
+    {
+      "name": "order-status",
+      "blocks": []
+    }
+  ]
+}
+{% endschema %}
