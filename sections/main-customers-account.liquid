@@ -154,6 +154,7 @@
                                 {{- 'customer.orders.total' | t -}}
                               </span>
                             </th>
+                            <th></th>
                           </tr>
                         </thead>
 
@@ -161,7 +162,7 @@
                           {%- for order in customer.orders -%}
                             <tr
                               class="account__order-table-item"
-                              onclick="window.location.href = '{{ order.customer_url }}'"
+                              {% comment %} onclick="window.location.href = '{{ order.customer_url }}'" {% endcomment %}
                             >
                               <td>
                                 <span class="link--animated">{{ order.name }}</span>
@@ -170,6 +171,20 @@
                               <td>{{ order.financial_status_label }}</td>
                               <td>{{ order.fulfillment_status_label }}</td>
                               <td class="text--right">{{ order.total_net_amount | money }}</td>
+                              {% comment %} 换购需求 Fulfilled  {% endcomment %}
+                              <td class="box-exchange-block">
+                                {% if order.fulfillment_status_label == 'Unfulfilled' %}
+                                  {% if order.line_items.size > 1 %}
+                                    {% assign oldName = 'Dark Green / UK Plug' %}
+                                  {% else %}
+                                    {% assign oldName = order.line_items[0].variant.title %}
+                                  {% endif %}
+                                  <div class="btn-exchange j_btn_exchange" title="{{ oldName }}">
+                                    {{ block.settings.text }}
+                                  </div>
+                                  <div class="btn-desc">{{ block.settings.text2 }}</div>
+                                {% endif %}
+                              </td>
                             </tr>
                           {%- endfor -%}
                         </tbody>
@@ -231,6 +246,125 @@
   </div>
 </section>
 
+<script>
+  $(function () {
+    const user_token = getCookie('authorized-token');
+    const activityId = '13006604374900737';
+    var settings = {
+      url: '//api.idsoy.com/promotion/queryActivityInfo',
+      method: 'POST',
+      timeout: 0,
+      headers: {
+        'x-ulike-user-token': user_token,
+        'Content-Type': 'application/json',
+      },
+      data: JSON.stringify({
+        siteCode: 'UK',
+        activityId,
+        includeBenefit: true
+        {% comment %} userEmail: '{{ customer.email }}', {% endcomment %}
+      }),
+    };
+    var product_status = 2;
+    {% for block in section.blocks %}
+      {%  if block.type == "orders" %}
+       product_status = '{{  block.settings.product_status }}';
+      {% endif %}
+    {% endfor %}
+
+   // 状态为0 为可以兑换。 1 为预售 2 不可兑换
+    if(product_status == '0' ){
+      var activityItemDtoList = [];
+      var applyStatus = '';
+      var benefitInfoDtoList = [];
+      $.ajax(settings).done(function (response) {
+        console.log(response);
+        if (response.code == 0) {
+          activityItemDtoList = response.data.activityItemDtoList;
+          applyStatus = response.data.applyStatus;
+          benefitInfoDtoList = response.data.benefitInfoDtoList;
+          $('.box-exchange-block').show()
+        } else {
+          console.log('error');
+        }
+      });
+
+      $(document).on('click', '.account--order-list .j_btn_exchange', function (e) {
+        e.preventDefault();
+        var title = $(this).attr('title');
+        // 如果是白色就更换成紫色
+        if (title.indexOf('White') > -1) {
+          title = title.replace('White', 'Dark Green');
+        }
+        // 得到 title id
+         // 得到 title id
+         var newObj = activityItemDtoList.filter((item) => item.itemName == title);
+         let vid = newObj[0].resourceId;
+         console.log(applyStatus);
+         if(applyStatus == 'APPLIED'){
+          // 获取第一个 code
+          setCookie("discount_code", benefitInfoDtoList[0].instanceId, 1);
+          buyProduct(vid);
+         }else if (applyStatus == 'NORMAL'){
+          // 发送code
+           sendCodeCart(vid);
+         }
+      });
+
+      function sendCodeCart(vid) {
+        var settings = {
+           "url": "//api.idsoy.com/promotion/sendBenefit",
+           "method": "POST",
+           "headers": {
+             "x-ulike-user-token": user_token,
+             "Content-Type": "application/json"
+           },
+           "data": JSON.stringify({
+             "siteCode": "UK",
+             activityId
+           }),
+         };
+
+         $.ajax(settings).done(function (response) {
+           console.log(response)
+             if(response.code == 0 ){
+               console.log(response.data.instanceId);
+               setCookie("discount_code", response.data.instanceId, 1);
+               buyProduct(vid);
+               console.log(response.data)
+             }
+         });
+      }
+    }
+  });
+</script>
+
+<style>
+  .account__order-table-item .box-exchange-block {
+    font-size: 12px;
+    padding: 15px 4px !important;
+    text-align: center !important;
+    display: none;
+  }
+  .account__order-table-item .box-exchange-block .btn-exchange {
+    font-size: 12px;
+    background: #0a0a0a;
+    display: inline-block;
+    padding: 10px;
+    text-align: center;
+    color: #fff;
+    margin: 6px auto;
+    cursor: pointer;
+  }
+  .account__order-table-item .box-exchange-block .btn-desc {
+    font-size: 12px;
+    line-height: 16px;
+  }
+  .account__order-table-item .box-exchange-block .btn-desc span {
+    color: #e0004d;
+  }
+</style>
+
 {% schema %}
 {
   "name": "Customer account",
@@ -254,7 +388,41 @@
     {
       "type": "orders",
       "name": "Order list",
-      "limit": 1
+      "limit": 1,
+      "settings": [
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "按钮名称",
+          "default": "One-Click Upgrade"
+        },
+        {
+          "type": "textarea",
+          "id": "text2",
+          "label": "底部提示文案",
+          "default": "Pay <span>only E159</span> to get Air 10"
+        },
+        {
+          "type": "select",
+          "id": "product_status",
+          "label": "商品状态",
+          "options": [
+            {
+              "value": "0",
+              "label": "可售"
+            },
+            {
+              "value": "1",
+              "label": "预售"
+            },
+            {
+              "value": "2",
+              "label": "缺货"
+            }
+          ],
+          "default": "0"
+        }
+      ]
     }
   ]
 }
