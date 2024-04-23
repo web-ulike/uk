@@ -9,6 +9,10 @@
     padding: 20px 0;
     text-align: center;
 }
+ .compare-list-box .line-div{
+    padding: 0;
+    height:1px;
+  }
 .compare-list-box .compare-item-slist{
     background: #fff;
 }
@@ -115,7 +119,11 @@
   <div class="compare-list-box">
     {%- for block in section.blocks -%}
     <div class="compare-item">
-        <div class="compare-item-title to-top">{{ block.settings.title }} {%- if block.settings.sub != blank -%}<span>{{ block.settings.sub }}</span>{%- endif -%}</div>
+      {%- if block.settings.title != blank or block.settings.sub != blank  -%}
+           <div class="compare-item-title to-top">{{ block.settings.title }} {%- if block.settings.sub != blank -%}<span>{{ block.settings.sub }}</span>{%- endif -%}</div>
+        {%- else -%}
+          <div class="compare-item-title to-top line-div"></div>
+        {%- endif -%}
         <div class="compare-item-slist">
             <div class="container">
                 <div class="compare-item-cont {% if block.settings.small_top %}sm-padding{% endif %} {% if block.settings.small_bottom %}sm-bottom{% endif %}">

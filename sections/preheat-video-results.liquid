@@ -96,10 +96,12 @@
 
 .preheat-video-results .results-right-text{
   color: #190A0A;
-  leading-trim: both;
-  text-edge: cap;
-  font-size: 100px;
+  font-size: 60px;
   line-height: 1;
+}
+
+.preheat-video-results .results-right-text span{
+  font-size: 100px;
 }
 
   .preheat-video-results .preheat-video-results-wrapper{
@@ -181,8 +183,11 @@
     font-size: 12px;
   }
   .preheat-video-results .results-right-text{
-    font-size: 35px;
+    font-size: 25px;
     line-height: 1.2;
+  }
+  .preheat-video-results .results-right-text span{
+    font-size: 35px;
   }
   .preheat-video-results .video-wrapper__play-button{
     zoom:.6;
@@ -283,9 +288,49 @@
   </div>
 </section>
 <script>
-  document.addEventListener("DOMContentLoaded", function() {
-    animateNumbersVisibleAnime('.preheat-video-results .number-anime');
+  function wrapStringsWithSpan(element) {
+      let text = element.innerText;
+      let parts = text.split(/(\.|\%)/);
+      let html = "";
+      let isPoint = parts.includes('.')
+      let dotFound = false;
+      let isFirst = true
+      for (let i = 0; i < parts.length; i++) {
+          if(parts[i] !==''){
+              if (parts[i] === ".") {
+                  dotFound = true;
+                  html += "</span>" + parts[i];
+              } else if (parts[i] === "%" && dotFound||parts[i] === "%" && !isPoint) {
+                  if(!isPoint){
+                      html += "</span>" + parts[i]
+                  }else{
+                      html += parts[i]
+                      dotFound = false;
+                  }
+              } else {
+                  if(isFirst) {
+                      html+= "<span>" + parts[i];
+                      isFirst = false
+                  }else{
+                      html += parts[i];
+                  }
+              }
+          }
+      }
+  
+      element.innerHTML = html;
+  }
+  document.querySelectorAll('.preheat-video-results .number-anime').forEach(ele=>{
+    wrapStringsWithSpan(ele)
   })
+  window.addEventListener('load', () => {
+    animateNumbersVisibleAnime('.preheat-video-results .number-anime span');
+  })
+
+  // document.addEventListener("DOMContentLoaded", function() {
+  //   animateNumbersVisibleAnime('.preheat-video-results .number-anime');
+  // })
+  
 </script>
 {% schema %}
 {
