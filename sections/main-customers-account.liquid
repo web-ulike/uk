@@ -173,7 +173,7 @@
                               <td class="text--right">{{ order.total_net_amount | money }}</td>
                               {% comment %} 换购需求 Fulfilled  {% endcomment %}
                               <td class="box-exchange-block">
-                                {% if order.fulfillment_status_label == 'Unfulfilled' %}
+                                {% if order.fulfillment_status_label == 'Fulfilled' %}
                                   {% if order.line_items.size > 1 %}
                                     {% assign oldName = 'Dark Green / UK Plug' %}
                                   {% else %}
@@ -249,9 +249,11 @@
 <script>
   $(function () {
     const user_token = getCookie('authorized-token');
-    const activityId = '13006604374900737';
+    const activityId = '13820732110798849';
+    const siteCode = 'UK'
+    console.log(user_token);
     var settings = {
-      url: '//api.idsoy.com/promotion/queryActivityInfo',
+      url: '//api.ulike.com/promotion/queryActivityInfo',
       method: 'POST',
       timeout: 0,
       headers: {
@@ -259,7 +261,7 @@
         'Content-Type': 'application/json',
       },
       data: JSON.stringify({
-        siteCode: 'UK',
+        siteCode: siteCode,
         activityId,
         includeBenefit: true
         {% comment %} userEmail: '{{ customer.email }}', {% endcomment %}
@@ -313,14 +315,14 @@
 
       function sendCodeCart(vid) {
         var settings = {
-           "url": "//api.idsoy.com/promotion/sendBenefit",
+           "url": "//api.ulike.com/promotion/sendBenefit",
            "method": "POST",
            "headers": {
              "x-ulike-user-token": user_token,
              "Content-Type": "application/json"
            },
            "data": JSON.stringify({
-             "siteCode": "UK",
+             "siteCode": siteCode,
              activityId
            }),
          };
