@@ -412,9 +412,10 @@
         }
         // 根据变体id 判断是否显示文案
         if(pid == '47972761927967'){
+          // 白色
           $(thatVariant).find('.product-tips').text('{{ se_stts.arrival-reminder }}').show();
         } else {
-          $(thatVariant).find('.product-tips').text('Orders ship in 3 days').show();
+          $(thatVariant).find('.product-tips').text('{{ se_stts.purple-arrives }}').show();
           {% comment %} $(thatVariant).find('.product-tips').fadeOut(); {% endcomment %}
         }
       } else {
@@ -609,6 +610,12 @@
       "id": "arrival-reminder",
       "label": "白色到货提醒文案",
       "default": "Restocking! Orders ship in 25 days."
+    },
+    {
+      "type": "textarea",
+      "id": "purple-arrives",
+      "label": "紫色到货提醒文案",
+      "default": "Orders ship in 3 days"
     }
   ],
   "blocks": [
@@ -1209,7 +1216,7 @@
 
   .product-toolbar {
     width: 100%;
-    padding: 10px 0;
+    padding: 19px 0;
     display: flex;
     justify-content: space-between;
   }
@@ -1261,7 +1268,7 @@
   .product-toolbar .right-panel .btn-add-cart {
     display: flex;
     width: 160px;
-    padding: 16px 32px;
+    padding: 6px 32px;
     justify-content: center;
     align-items: center;
     gap: 16px;
@@ -1319,15 +1326,16 @@
     justify-content: center;
     align-items: center;
     padding: 0;
-    gap: 14px;
+    gap: 8px;
+    height: 42px;
   }
 
   .product-toolbar .title {
     margin-right: 62px;
   }
   .product-toolbar .countdown_txt {
-    font-size: 12px;
-    line-height: 18px;
+    font-size: 10px;
+    line-height: 12px;
   }
   .product-toolbar span.countdown__er {
     font-size: 26px;
@@ -1358,11 +1366,11 @@
   }
   .product-toolbar .countdown-time-bar {
     display: flex;
-    font-size: 22px;
+    font-size: 16px;
     justify-content: center;
     align-items: center;
-    width: 42px;
-    height: 42px;
+    width: 30px;
+    height: 30px;
   }
   .product-toolbar .countdown__er {
     display: flex;
@@ -1606,6 +1614,9 @@
     .toolbar-block {
       height: 75px;
     }
+    .product-toolbar{
+      padding: 10px 0px;
+    }
     .product-toolbar .navbar {
       display: block;
       padding: 0px 0px;
@@ -1644,6 +1655,7 @@
     }
     .product-toolbar .countdown {
       gap: 3px;
+      height: auto;
     }
     .product-toolbar .countdown__bix {
       background: #3f3636;
@@ -1674,7 +1686,7 @@
     .product-toolbar .right-panel .btn-add-cart {
       width: 130px;
       font-size: 12px;
-      padding: 15px 20px;
+      padding: 10px 20px;
     }
   }
 </style>
