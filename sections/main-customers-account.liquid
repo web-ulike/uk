@@ -164,13 +164,17 @@
                               class="account__order-table-item"
                               {% comment %} onclick="window.location.href = '{{ order.customer_url }}'" {% endcomment %}
                             >
-                              <td>
+                              <td onclick="window.location.href = '{{ order.customer_url }}'">
                                 <span class="link--animated">{{ order.name }}</span>
                               </td>
-                              <td>{{ order.created_at | date: format: 'date' }}</td>
+                              <td onclick="window.location.href = '{{ order.customer_url }}'">
+                                {{ order.created_at | date: format: 'date' }}
+                              </td>
                               <td>{{ order.financial_status_label }}</td>
                               <td>{{ order.fulfillment_status_label }}</td>
-                              <td class="text--right">{{ order.total_net_amount | money }}</td>
+                              <td onclick="window.location.href = '{{ order.customer_url }}'" class="text--right">
+                                {{ order.total_net_amount | money }}
+                              </td>
                               {% comment %} 换购需求 Fulfilled  {% endcomment %}
                               <td class="box-exchange-block">
                                 {% if order.fulfillment_status_label == 'Fulfilled'
@@ -317,12 +321,18 @@
         var title = $(this).attr('title');
         // 如果是白色就更换成紫色
         if (title.indexOf('White') > -1) {
-          title = title.replace('White', 'Dark Green');
+          title = title.replace('White', 'Purple');
         }
-        // 得到 title id
+         // 得到 title id
          // 得到 title id
          var newObj = activityItemDtoList.filter((item) => item.itemName == title);
-         let vid = newObj[0].resourceId;
+         let vid = 0;
+         if(newObj.length > 0){
+           vid = newObj[0].resourceId;
+         } else {
+           vid = activityItemDtoList[0].resourceId
+         }
+
          console.log(applyStatus);
          if(applyStatus == 'APPLIED'){
           // 获取第一个 code

@@ -325,3 +325,86 @@ function copyCodeExtend(code, codeTxt, bt,event){
   bt.innerHTML = codeTxt;
  },7000)
 }
+
+class ImgPlay {
+  constructor(cont,urlRoot,maxLength) {
+    this.urlRoot = urlRoot;
+    this.indexRange = [0, maxLength - 1];
+    this.maxLength = maxLength
+    this.eleContainer = document.querySelector(cont);
+    this.percent = 0
+    this.store = {
+      length: 0
+    }
+    this.isPlay = false
+    this.pictureNum = null
+  }
+
+  loadImg(){
+    // 图片序列预加载
+    for ( let start = this.indexRange[0]; start <= this.indexRange[1]; start++) {
+        ((index)=> {
+          let that = this
+          let img = new Image();
+            img.onload = function () {
+                that.store.length++;
+                // 存储预加载的图片对象
+                that.store[index] = this;
+                that.updateLoading();
+            };
+            img.onerror = function () {
+              that.store.length++;
+              that.updateLoading();
+            };
+            img.src = that.urlRoot + index + '.jpg';
+        })(start);
+    }
+  }
+
+  updateLoading(){
+    // loading进度
+    this.percent = Math.round(100 * this.store.length / this.maxLength);
+    if(this.percent == 100 && this.isPlay){
+      this.playImg(this.pictureNum)
+    }
+  }
+
+  playImg(num = null){
+    // 全部加载完毕，无论成功还是失败
+    if (this.percent == 100) {
+      let index = num || this.indexRange[0];
+      this.eleContainer.innerHTML = '';
+      // 依次append图片对象
+      let step = ()=> {
+          if (this.store[index - 1] && num == null) {
+              this.eleContainer.removeChild(this.store[index - 1]);
+          }
+          this.eleContainer.appendChild(this.store[index]);
+          // 序列增加
+          index++;
+          // 如果超过最大限制
+          if (index <= this.indexRange[1]) {
+            if(num == null){
+              setTimeout(step, 42);
+            }else{
+
+            }
+          } else {
+              // 本段播放结束回调
+              // 我这里就放一个重新播放的按钮
+              // this.eleContainer.insertAdjacentHTML('beforeEnd', '<button onclick="">再看一遍</button>');
+          }
+      };
+      if(num == null){
+        // 等100%动画结束后执行播放
+        setTimeout(step, 100);
+      }else{
+        step()
+      }
+      
+    }else{
+      this.isPlay = true
+      this.pictureNum = num
+    }
+  }
+}

@@ -52,6 +52,9 @@
   z-index: 3;
   opacity: 0;
 }
+.officially-product .officially-product-video img{
+  width:100%;
+}
 
 .officially-product .officially-product-light{
   position: absolute;
@@ -248,6 +251,12 @@
   z-index: 2;
 }
 
+.officially-product-popup .video-wrapper__play-button{
+    left: 50%;
+    top:50%;
+    transform: translate(-50%,-50%);
+  }
+
 @media (max-width:1280px) {
   .officially-product-popup .officially-product-popup-det{
     gap: 60px;
@@ -440,18 +449,19 @@
             alt="{{ section.settings.image10.alt | escape }}"
           >
         {%- endif -%}
-         {%- if section.settings.video_link != blank -%}
+         <!-- {%- if section.settings.video_link != blank -%}
             <video class="officially-product-video pc-box" muted>
               <source src="{{ section.settings.video_link }}" type="video/mp4">
               Your browser does not support HTML video.
             </video>
-        {%- endif -%}
-        {%- if section.settings.video_link != blank -%}
+        {%- endif -%} -->
+        <!-- {%- if section.settings.video_link != blank -%}
           <video class="officially-product-video mb-box" muted preload="none" x-webkit-airplay="allow" x5-playsinline="" webkit-playsinline="" playsinline="true">
             <source src="{{ section.settings.video_link }}" type="video/mp4">
             Your browser does not support HTML video.
           </video>
-        {%- endif -%}
+        {%- endif -%} -->
+        <div class="officially-product-video"></div>
       </div>
       <div class="officially-product-text officially-text-one">
         {%- if section.settings.image2 != blank -%}
@@ -637,23 +647,25 @@
 </section>
 <script>
   function productScrollTo(){
-    const pv = document.querySelector('.officially-product-video')
-    let isPlay = false
-    document.querySelector('#main').addEventListener('touchstart', function(event) {
-      let vt=pv.getAttribute('is-t')
-      if(vt) return
-      pv.setAttribute('is-t',true)
-      let playPromise = pv.play();
-      if (playPromise !== undefined) {
-        playPromise.then(_ => {
-          isPlay = true
-          pv.pause();
-          pv.currentTime = 0.01
-        })
-        .catch(error => {
-        });   
-      }
-    });
+    // const pv = document.querySelector('.officially-product-video')
+    // let isPlay = false
+    // document.querySelector('#main').addEventListener('touchstart', function(event) {
+    //   let vt=pv.getAttribute('is-t')
+    //   if(vt) return
+    //   pv.setAttribute('is-t',true)
+    //   let playPromise = pv.play();
+    //   if (playPromise !== undefined) {
+    //     playPromise.then(_ => {
+    //       isPlay = true
+    //       pv.pause();
+    //       pv.currentTime = 0.01
+    //     })
+    //     .catch(error => {
+    //     });   
+    //   }
+    // });
+    let imgP = new ImgPlay('.officially-product-video','https://cdn.shopify.com/s/files/1/0740/5882/6015/files/officially-product-ulike-',16)
+    imgP.loadImg()
     let pam = {
       ml:'-8%',
       ml1:'8%',
@@ -723,18 +735,20 @@
       scrub: true,
       // markers:true,
       onUpdate(self){
-        if(isPlay||window.innerWidth>991){
+          const video = document.querySelector('.officially-product-video')
+        // if(isPlay||window.innerWidth>991){
           if(self.progress){
-            pv.style.setProperty('opacity','1')
+            video.style.setProperty('opacity','1')
           }else{
-            pv.style.setProperty('opacity','0')
+            video.style.setProperty('opacity','0')
           }
           try {
-            pv.currentTime = self.progress * pv.duration
+            // pv.currentTime = self.progress * pv.duration
+           imgP.playImg(Math.round(self.progress*15))
           } catch (error) {
             console.log(error);
           }
-        }
+        // }
       },
       animation:
       gsap.timeline()
@@ -742,11 +756,11 @@
     })
   }
   window.addEventListener('load', () => {
-    if(window.innerWidth<991){
-      $('.officially-product .officially-product-video.pc-box').remove()
-    }else{
-      $('.officially-product .officially-product-video.mb-box').remove()
-    }
+    // if(window.innerWidth<991){
+    //   $('.officially-product .officially-product-video.pc-box').remove()
+    // }else{
+    //   $('.officially-product .officially-product-video.mb-box').remove()
+    // }
     productScrollTo()
     $('.officially-product-btn').click(function(){
       let $p =  $('.officially-product-popup')
