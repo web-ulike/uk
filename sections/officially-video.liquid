@@ -18,9 +18,16 @@
   object-fit: cover;
   top: 0;
   left: 0;
+  z-index: 1;
+}
+.officially-video .officially-video-bg{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
   z-index: 0;
 }
-
 .officially-video .mb-box{
   display: none;
 }
@@ -107,10 +114,11 @@
   }
   .officially-video .officially-video-mark-t{
     font-size: 64px;
+    line-height: 1;
   }
   .officially-video .officially-video-mark-p{
     font-size: 12px;
-    margin-top: 10px;
+    margin-top: 3px;
   }
   .officially-video .pc-box{
     display: none;
@@ -134,10 +142,19 @@
         </div>
       </div>
       {%- if section.settings.text2 != blank -%}
-        <video class="officially-video-el pc-box" src="{{ section.settings.text2 }}"></video>
+        <video class="officially-video-el pc-box" muted>
+        <source src="{{ section.settings.text2 }}" type="video/mp4">
+        Your browser does not support HTML video.
+      </video>
       {%- endif -%}
       {%- if section.settings.text3 != blank -%}
-        <video class="officially-video-el mb-box" src="{{ section.settings.text3 }}"></video>
+        <video class="officially-video-el mb-box" muted preload="none" x-webkit-airplay="allow" x5-playsinline="" webkit-playsinline="" playsinline="true">
+          <source src="{{ section.settings.text3 }}" type="video/mp4">
+          Your browser does not support HTML video.
+        </video>
+      {%- endif -%}
+      {%- if section.settings.image != blank -%}
+        <img loading="lazy" class="officially-video-bg mb-box" src="{{ section.settings.image | image_url }}">
       {%- endif -%}
       <div class="officially-video-mark">
         <div class="officially-video-mark-cont">
@@ -156,6 +173,16 @@
 </section>
 <script>
    function videoScrollTo(){
+    const videoEl = document.querySelector('.officially-video-el')
+    document.body.addEventListener('touchstart', function(event) {
+      let v=videoEl.getAttribute('is-t')
+      if(v) return
+      videoEl.setAttribute('is-t',true)
+      videoEl.play();
+      videoEl.pause();
+      videoEl.currentTime = 0.01
+      
+    });
     ScrollTrigger.create({
       trigger: ".officially-video",
       start: "top-=19% top",
@@ -175,7 +202,12 @@
       scrub: true,
       // pin: true,
       onUpdate(self){
-        const videoEl = document.querySelector('.officially-video-el')
+        // const videoEl = document.querySelector('.officially-video-el')
+        if(self.progress){
+          videoEl.style.setProperty('opacity','1')
+        }else{
+          videoEl.style.setProperty('opacity','0')
+        }
         try {
           videoEl.currentTime = self.progress * videoEl.duration
         } catch (error) {
@@ -226,6 +258,11 @@
       "type": "text",
       "id": "text3",
       "label": "Video m Link"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "M Image"
     },
     {
       "type": "text",

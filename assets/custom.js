@@ -97,6 +97,9 @@ customElements.define('image-comparison', ImageComparison);
 
 // 用户自定义js公共库
 function isMobile() {
+  if(window.innerWidth < 768){
+    return true;
+  }
   return (/Android|iPhone|iPad|iPod|BlackBerry/i).test(navigator.userAgent || navigator.vendor || window.opera);
 }
 

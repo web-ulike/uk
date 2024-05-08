@@ -76,6 +76,15 @@
   pointer-events: all;
 }
 
+.officially-test-popup .officially-test-popup-mark{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height:100%;
+  z-index:1;
+}
+
 .officially-test-popup .officially-test-popup-cont{
   width: 100%;
   height: 100%;
@@ -83,6 +92,7 @@
   background: #FBFAF4;
   padding: 78px;
   position: relative;
+  z-index:2;
   transform: translateX(100%);
   transition: all .4s ease;
 }
@@ -229,8 +239,8 @@
   align-items: center;
   justify-content: center;
   gap: 10px;
-  border: 1px solid #3F3636;
-  color: #3F3636;
+  border: 1px solid #190A0A;
+  color: #190A0A;
   font-size: 12px;
   line-height: 1.5;
   cursor: pointer;
@@ -244,7 +254,7 @@
 }
 
 .officially-test-popup .officially-test-popup-btn.active{
-  background: #3F3636;
+  background: #190A0A;
   color: #fff;
   opacity: 1;
   pointer-events: all;
@@ -363,7 +373,7 @@
   }
   .officially-test-popup .officially-test-popup-det{
     max-height: 80vh;
-    padding-right: 5px;
+    padding-right: 0px;
   }
   .officially-test-popup .officially-test-popup-det::-webkit-scrollbar {
     width: 5px;
@@ -497,6 +507,7 @@
     </div>
   </div>
   <div class="officially-test-popup">
+    <div class="officially-test-popup-mark"></div>
     <div class="officially-test-popup-cont">
       <div class="officially-test-popup-close">
         <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" viewBox="0 0 23 23" fill="none">
@@ -705,7 +716,7 @@
         $('.officially-test-popup').addClass('active')
         $('body').css('overflow','hidden')
       })
-      $('.officially-test-popup-close').click(function(){
+      $('.officially-test-popup-close,.officially-test-popup-mark').click(function(){
         $('.officially-test-popup').removeClass('active')
         $('body').css('overflow','')
       })

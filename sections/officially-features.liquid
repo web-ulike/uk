@@ -121,6 +121,10 @@
   line-height: 1.5;
 }
 
+.officially-features .officially-features-three .officially-features-btn{
+  width: 217px;
+}
+
 .officially-features-popup{
   position: fixed;
   top: 0;
@@ -141,6 +145,15 @@
   pointer-events: all;
 }
 
+.officially-features-popup .officially-features-popup-mark{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height:100%;
+  z-index:1;
+}
+
 .officially-features-popup .officially-features-popup-cont{
   width: 100%;
   height: 100%;
@@ -148,6 +161,7 @@
   background: #FBFAF4;
   padding: 80px 15px 80px 60px;
   position: relative;
+  z-index:2;
   transform: translateX(100%);
   transition: all .4s ease;
 }
@@ -237,12 +251,15 @@
   position: absolute;
   width: 100%;
   height: 100%;
-  object-fit: cover;
   top: 0;
   left: 0;
   z-index: 2;
 }
-
+.officially-features-popup .product-video video{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
 .officially-features-popup .officially-features-popup-list{
   display: flex;
   flex-wrap: wrap;
@@ -545,8 +562,12 @@
 
   .officially-features .officially-features-btn{
     font-size: 12px;
-    width: 210px;
+    width: 189px;
     margin-top: 20px;
+  }
+
+  .officially-features .officially-features-three .officially-features-btn{
+    width: 171px;
   }
 
   .officially-features .officially-features-two .svg-icon-box{
@@ -647,6 +668,7 @@
     </div>
   </div>
   <div class="officially-features-popup officially-features-popup-one">
+    <div class="officially-features-popup-mark"></div>
     <div class="officially-features-popup-cont">
       <div class="officially-features-popup-close">
         <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" viewBox="0 0 23 23" fill="none">
@@ -664,8 +686,42 @@
             {%- if section.settings.image4 != blank -%}
               <img loading="lazy" class="img" width="{{ section.settings.image4.width }}" height="{{ section.settings.image4.height }}" {% render 'image-attributes', image: section.settings.image4 %} alt="{{ section.settings.image4.alt | escape }}" >
             {%- endif -%}
-            {%- if section.settings.text6 != blank -%}
+            <!-- {%- if section.settings.text6 != blank -%}
               <video class="product-video" src="{{ section.settings.text6 }}" loop muted></video>
+            {%- endif -%} -->
+            {%- if section.settings.video != blank -%}
+              <native-video
+                {% if section.settings.autoplay %}
+                  autoplay
+                {% endif %}
+                class="officially-features-popup-wrapper product-video"
+              >
+                {%- unless section.settings.autoplay -%}
+                  <button type="button" class="video-wrapper__play-button video-wrapper__play-button--large video-wrapper__play-button--ripple" title="{{ 'general.accessibility.play_video' | t | escape }}">
+                    {%- if section.settings.v_icon != blank -%}
+                      <img
+                        loading="lazy"
+                        class="v_img"
+                        width="{{ section.settings.v_icon.width }}"
+                        height="{{ section.settings.v_icon.height }}"
+                        {% render 'image-attributes', image: section.settings.v_icon %}
+                        alt="{{ section.settings.v_icon.alt | escape }}"
+                      >
+                    {%- endif -%}
+                  </button>
+                {%- endunless -%}
+                <template>
+                  {{-
+                    section.settings.video
+                    | video_tag:
+                      controls: section.settings.show_video_controls,
+                      autoplay: section.settings.autoplay,
+                      muted: section.settings.autoplay,
+                      playsinline: section.settings.autoplay,
+                      loop: true
+                  -}}
+                </template>
+              </native-video>
             {%- endif -%}
           </div>
           <div class="officially-features-popup-list">
@@ -691,6 +747,7 @@
     </div>
   </div>
   <div class="officially-features-popup officially-features-popup-two">
+    <div class="officially-features-popup-mark"></div>
     <div class="officially-features-popup-cont">
       <div class="officially-features-popup-close">
         <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" viewBox="0 0 23 23" fill="none">
@@ -794,8 +851,8 @@
     if(window.innerWidth<992){
       pam.right1 = '36%'
       pam.right2 = '108%'
-      pam.top1='-96%',
-      pam.top2='-150%'
+      pam.top1='-90%',
+      pam.top2='-145%'
     }
     ScrollTrigger.create({
       trigger: ".officially-features",
@@ -820,18 +877,19 @@
       let name = $(this).data('popup')
       let $p =  $('.'+name)
       $p.addClass('active')
-      if($p.find('.product-video').length > 0){
-        $p.find('.product-video').get(0).play()
+      if($p.find('.product-video .video-wrapper__play-button').length > 0){
+        // $p.find('.officially-features-popup-video video').get(0).play()
+        $p.find('.product-video .video-wrapper__play-button').click()
       }
       $('body').css('overflow','hidden')
     })
-    $('.officially-features-popup-close').click(function(){
+    $('.officially-features-popup-close,.officially-features-popup-mark').click(function(){
       let $p =  $('.officially-features-popup')
       $p.removeClass('active')
-      if($p.find('.product-video').length > 0){
-        $p.find('.product-video').get(0).pause()
-        $p.find('.product-video').get(0).currentTime = 0
-      }
+      // if($p.find('.officially-features-popup-video video').length > 0){
+      //   $p.find('.officially-features-popup-video video').get(0).pause()
+      //   $p.find('.officially-features-popup-video video').get(0).currentTime = 0
+      // }
       $('body').css('overflow','')
     })
   })
@@ -898,9 +956,10 @@
       "label": "Image"
     },
     {
-      "type": "text",
-      "id": "text6",
-      "label": "Video link"
+      "type": "video",
+      "id": "video",
+      "label": "Video",
+      "info": "Replaces the external video if both are set."
     },
     {
       "type": "text",
@@ -941,6 +1000,20 @@
       "type": "text",
       "id": "text14",
       "label": "Text"
+    },
+    {
+      "type": "checkbox",
+      "id": "autoplay",
+      "label": "Autoplay",
+      "info": "Video is muted automatically to allow autoplay.",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_video_controls",
+      "label": "Show video controls",
+      "info": "Only applicable with native video.",
+      "default": false
     },
     {
       "type": "header",
