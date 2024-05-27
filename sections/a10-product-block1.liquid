@@ -92,7 +92,7 @@
     padding: 15px 50px 15px 50px;
   }
   .product-components .product-right-panel .new-tag {
-    background-color: rgb(255, 255, 255);
+    /* background-color: rgb(255, 255, 255); */
     border-radius: 50px;
     border-width: 1px;
     border-style: solid;
@@ -409,10 +409,86 @@
     border: 1px solid #000;
     border-radius: 50px;
   }
-  .btn-group-purchase:hover::after{
+  .btn-group-purchase:hover::after,
+  .btn-purchase:hover::after{
     transform: scaleX(1);
     transform-origin: left;
   }
+
+   .product-components .product-right-panel .btn-purchase {
+    display: flex;
+    height: 50px;
+    padding: 14px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50px;
+    border: 1px solid #3f3636;
+    background: #fff;
+    cursor: pointer;
+    overflow: hidden;
+    transition: all 0.4s ease;
+    position: relative;
+    font-family: var(--text-font-family);
+     margin-top:10px;
+  }
+
+  .btn-purchase::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #190a0a;
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.4s;
+    border: 1px solid #000;
+    border-radius: 50px;
+  }
+
+  .product-components .product-right-panel .btn-purchase:hover .loader-button__text {
+    color: #fff;
+    z-index: 3;
+    transition: all 0.4s ease;
+  }
+  
+  .btn-purchase[aria-busy] .loader-button__loader {
+    opacity: 1;
+    display: block;
+    transform: translate(0, -50%);
+    color: #fff;
+    z-index: 4;
+  }
+  .btn-purchase[aria-busy] .loader-button__text {
+    opacity: 0;
+  }
+
+  .summer-sale-diy .product-right-panel .group-sharing .winning-info .btn-group-purchase {
+    background: none;
+    color:#190A0A;
+    border: 1px solid #190A0A;
+  }
+   .summer-sale-diy .product-right-panel .btn-purchase {
+     background: #190A0A;
+     color:#fff;
+   }
+
+   .summer-sale-diy .btn-group-purchase::after {
+     background: #190a0a;
+   }
+
+   .summer-sale-diy .btn-purchase::after {
+     background: #fff;
+   }
+
+   .summer-sale-diy .product-right-panel .group-sharing .winning-info .btn-group-purchase:hover .loader-button__text {
+      color: #fff;
+    }
+
+    .summer-sale-diy .product-right-panel .btn-purchase:hover .loader-button__text {
+      color: #190a0a;
+    }
   
   .toolbar-block {
     width: 100%;
@@ -686,7 +762,9 @@
   }
 
   .text-code{
-    display:none;
+    position: absolute;
+    pointer-events: none;
+    opacity: 0;
   }
   .text-left{
     font-family: var(--heading-font-family);
@@ -700,6 +778,25 @@
     display:block;
   }
 
+  .summer-sale-diy{
+    margin-top:0;
+    background: linear-gradient(180deg, rgba(203, 241, 244, 0.80) 6.66%, rgba(255, 255, 255, 0.80) 96.76%);
+    padding:135px 0 68px 0;
+  }
+
+  .summer-sale-diy .copyButton text{
+    fill:#000;
+  }
+  .summer-sale-diy linearGradient stop:first-child{
+    stop-color: #A4F1F4;
+  }
+  
+  .summer-sale-diy linearGradient stop:last-child{
+    stop-color: #A4F1F4;
+  }
+  .summer-sale-diy .product-right-panel .variants-list{
+    border-color:rgba(63, 54, 54, .1);
+  }
   @media (max-width: 1500px) {
     .swiper-pagination-bullet {
       --swiper-pagination-bullet-size: 6px;
@@ -752,6 +849,9 @@
       --swiper-pagination-bullet-horizontal-gap: 4px;
     }
 
+    .summer-sale-diy{
+      padding:42px 0 0 0;
+    }
     .p-hide {
       display: none !important;
     }
@@ -892,6 +992,12 @@
     .product-components .product-right-panel .group-sharing .winning-info .btn-group-purchase {
       font-size: 12px;
       height: 40px;
+    }
+
+    .product-components .product-right-panel .btn-purchase {
+      font-size: 12px;
+      height: 40px;
+      font-weight: bold;
     }
 
     .product-components .product-right-panel .pay-block .more-payment .active {
@@ -1069,7 +1175,7 @@
   {% endif %}
 {% endfor %}
 
-<div class="product-components" id="product-components">
+<div class="product-components {{ section.settings.text6 }}" id="product-components">
   <div class="product-left-panel">
     <!-- 左侧轮播 -->
     <div class="thumbs-swiper">
@@ -1231,7 +1337,7 @@
         </div>
       </div>
     </div>
-    <span class="text-code">{{ section.settings.text1 }}</span>
+    <div class="text-code">{{ section.settings.text1 }}</div>
     <svg class="copyButton" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="335" height="53" viewBox="0 0 335 53" fill="none">
       <mask id="mask0_2223_3235" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="335" height="53">
       <path fill-rule="evenodd" clip-rule="evenodd" d="M160 1.19336C160 3.67864 157.985 5.69336 155.5 5.69336C153.015 5.69336 151 3.67864 151 1.19336C151 0.979928 151.015 0.769966 151.044 0.564453H5C2.23858 0.564453 0 2.80303 0 5.56445V47.5645C0 50.3259 2.23857 52.5645 5 52.5645H151.027C151.276 50.3145 153.184 48.5645 155.5 48.5645C157.816 48.5645 159.724 50.3145 159.973 52.5645H330C332.761 52.5645 335 50.3259 335 47.5645V5.56445C335 2.80303 332.761 0.564453 330 0.564453H159.956C159.985 0.769966 160 0.979928 160 1.19336Z" fill="url(#pattern0_2223_3235)"/>
@@ -1275,16 +1381,37 @@
     </svg>
     <div class="group-sharing">
       <div class="winning-info">
-        <div class="btn-group-purchase">
-          <span class="loader-button__text">{{ se_stts['group-purchase'] }}</span>
-          <span class="loader-button__loader" hidden>
-            <div class="spinner">
-              <svg focusable="false" width="24" height="24" class="icon icon--spinner" viewBox="25 25 50 50">
-                <circle cx="50" cy="50" r="20" fill="none" stroke="currentColor" stroke-width="5"></circle>
-              </svg>
-            </div>
-          </span>
-        </div>
+        {% if se_stts['group-purchase'] != blank  %}
+          <div class="btn-group-purchase">
+            <span class="loader-button__text">{{ se_stts['group-purchase'] }}</span>
+            <span class="loader-button__loader" hidden>
+              <div class="spinner">
+                <svg focusable="false" width="24" height="24" class="icon icon--spinner" viewBox="25 25 50 50">
+                  <circle cx="50" cy="50" r="20" fill="none" stroke="currentColor" stroke-width="5"></circle>
+                </svg>
+              </div>
+            </span>
+          </div>
+        {% endif %}
+        {% if se_stts['btn-purchase'] != blank  %}
+          <div class="btn-purchase">
+            <span class="loader-button__text">{{ se_stts['btn-purchase'] }}</span>
+            <span class="loader-button__loader" hidden>
+              <div class="spinner">
+                <svg focusable="false" width="24" height="24" class="icon icon--spinner" viewBox="25 25 50 50">
+                  <circle cx="50" cy="50" r="20" fill="none" stroke="currentColor" stroke-width="5"></circle>
+                </svg>
+              </div>
+            </span>
+          </div>
+        {% endif %}
+        
+      </div>
+    </div>
+    <div class="custom-reasons-block" style="margin-top:8px;justify-content: center;">
+      <div class="item">
+        <img class="img-2" src="https://cdn.shopify.com/s/files/1/0740/5882/6015/files/PayPal.svg">
+        <div class="desc" style="opacity:.5;">Pay in 4 interest-free installments. £92.3/mo. for 4 mo.</div>
       </div>
     </div>
     <div class="custom-reasons-block">
@@ -1640,6 +1767,11 @@
     },
     {
       "type": "textarea",
+      "id": "btn-purchase",
+      "label": "full Purchase按钮文案"
+    },
+    {
+      "type": "textarea",
       "id": "arrival-reminder",
       "label": "白色到货提醒文案",
       "default": "Restocking! Orders ship in 25 days."
@@ -1675,8 +1807,12 @@
       "type": "text",
       "id": "text3",
       "label": "复制成功"
+    },
+    {
+      "type": "text",
+      "id": "text6",
+      "label": "自定义class"
     }
-    
   ],
   "blocks": [
     {

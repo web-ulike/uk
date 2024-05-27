@@ -42,13 +42,17 @@
 
   .compared_prd-bix .prd_name{
     color:  #190A0A;
-  text-align: center;
-  font-size: 36px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 125%;
-  margin-top: 5px;
-  margin-bottom: 5px;
+    text-align: center;
+    font-size: 36px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 125%;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
   }
   .compared_prd-bix .prd_price{
     color: #190A0A;
@@ -138,6 +142,31 @@
     width:80px;
     height:80px;
   }
+
+  .summer-sale-diy .compared_prd-bix img{
+    max-width:332px;
+  }
+  .summer-sale-diy .com_dd-tl{
+    font-family: var(--heading-font-family);
+  }
+  .summer-sale-diy .w_box,.summer-sale-diy .vod {
+    max-width: 220px;
+  }
+  .tag-box{
+    display: flex;
+    padding: 0 15px;
+    justify-content: center;
+    align-items: center;
+    height:26px;
+    border-radius: 50px;
+    border: 1px solid #E0004D;
+    color: #E0004D;
+    font-size: 12px;
+    line-height: 1;
+  }
+  .summer-sale-diy .compared_prd-dd{
+    
+  }
   @media screen and (max-width: 992px) {
     .compared_prd-box{
       flex-direction: column;
@@ -194,7 +223,7 @@
   }
 </style>
 <section>
-  <div class="compared_prdt-wrapper section-{{ section.id }}-padding">
+  <div class="compared_prdt-wrapper section-{{ section.id }}-padding {{section.settings.class_name}}" style="background:{{ section.settings.background_color }}">
     <div class="container">
       <div class="compared_prd-box">
         {%- if section.settings.title != blank -%}
@@ -251,7 +280,11 @@
                         
                       </div>
                     {%- if block.settings.product_name1 != blank -%}
-                      <div class="prd_name">{{ block.settings.product_name1 }}</div>
+                      <div class="prd_name">{{ block.settings.product_name1 }} 
+                        {%- if block.settings.tag_name != blank -%}
+                          <div class="tag-box">{{ block.settings.tag_name }}</div>
+                        {%- endif -%}
+                      </div>
                       {%- endif -%}
                       {%- if block.settings.product_price1 != blank -%}
                       <div class="prd_price">{{ block.settings.product_price1 }}</div>
@@ -302,7 +335,11 @@
                         
                       </div>
                        {%- if block.settings.product_name2 != blank -%}
-                      <div class="prd_name">{{ block.settings.product_name2 }}</div>
+                      <div class="prd_name">{{ block.settings.product_name2 }}
+                        {%- if block.settings.tag_name1 != blank -%}
+                          <div class="tag-box">{{ block.settings.tag_name1 }}</div>
+                        {%- endif -%}
+                      </div>
                       {%- endif -%}
                       {%- if block.settings.product_price2 != blank -%}
                       <div class="prd_price">{{ block.settings.product_price2 }}</div>
@@ -428,6 +465,16 @@ document.querySelectorAll('.compared_prd-bix').forEach( function(item, index) {
       "unit": "px",
       "label": "Padding Bottom",
       "default": 40
+    },
+    {
+      "type": "text",
+      "id": "class_name",
+      "label": "自定义class"
+    },
+    {
+      "type": "text",
+      "id": "background_color",
+      "label": "渐变背景色"
     }
   ],
   "blocks": [
@@ -466,10 +513,6 @@ document.querySelectorAll('.compared_prd-bix').forEach( function(item, index) {
           "id": "product2_image3",
           "label": "Product 2 Images 3"
         },
-
-
-
-
         {
           "type": "image_picker",
           "id": "mobile_product1_image1",
@@ -540,6 +583,16 @@ document.querySelectorAll('.compared_prd-bix').forEach( function(item, index) {
           "type": "text",
           "id": "product_name2",
           "label": "Product Name 2"
+        },
+        {
+          "type": "text",
+          "id": "tag_name",
+          "label": "标签1"
+        },
+        {
+          "type": "text",
+          "id": "tag_name1",
+          "label": "标签 2"
         },
         {
           "type": "text",

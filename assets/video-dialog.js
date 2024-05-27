@@ -422,18 +422,19 @@ class Countdown {
       this.loop = loop
       this.setEndTime(endTime);
       this.start();
+      this.locaName = elName+'loopTime'
     }
     setEndTime(endTime) {
       if (endTime) {
         this.endTime = new Date(endTime).getTime();
       } else {
         if(this.loop){
-          let locTime = localStorage.getItem('loopTime');
+          let locTime = localStorage.getItem(this.locaName);
           if(locTime && locTime*1 > new Date().getTime()){
             this.endTime = locTime*1
           }else{
             this.endTime = new Date().getTime() + 2 * 24 * 60 * 60 * 1000;
-            localStorage.setItem('loopTime', this.endTime)
+            localStorage.setItem(this.locaName, this.endTime)
           }
         }else{
           this.endTime = new Date().getTime();
@@ -454,7 +455,7 @@ class Countdown {
       if (distance < 0) {
         if(this.loop){
           this.endTime = new Date().getTime() + 2 * 24 * 60 * 60 * 1000;
-          localStorage.setItem('loopTime', this.endTime)
+          localStorage.setItem(this.locaName, this.endTime)
         }else{
           clearInterval(this.timer);
           hours = 0;

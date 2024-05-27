@@ -1,7 +1,11 @@
 <style>
 .comparison-top-sticky-box{
   position: sticky;
-  top: 80px;
+  {%- if section.settings.bottom_s -%}
+    top: calc(100vh - 70px);
+  {%- else -%%}
+    top: 80px;
+  {%- endif -%}
   z-index: 6;
   background: #fff;
   padding: 16px 0;
@@ -145,7 +149,11 @@
 
 @media (max-width:991px) {
   .comparison-top-sticky-box {
-    top: 60px;
+    {%- if section.settings.bottom_s -%}
+      top: calc(100vh - 61px);
+    {%- else -%%}
+      top: 60px;
+    {%- endif -%}
     padding: 10px 0;
     overflow: hidden;
   }
@@ -237,11 +245,15 @@
   <div class="comparison-top-sticky">
     <div class="container">
       <div class="comparison-top-sticky-cont">
-        <div class="comparison-top-sticky-left">
-          <div class="comparison-top-sticky-item" data-name="{{ section.settings.text6 }}">{{ section.settings.text5 }}</div>
-          <div class="comparison-top-sticky-item" data-name="{{ section.settings.text8 }}">{{ section.settings.text7 }}</div>
-          <div class="comparison-top-sticky-item" data-name="{{ section.settings.text10 }}">{{ section.settings.text9 }}</div>
-        </div>
+        {%- if section.settings.text5 != blank or section.settings.text7 != blank or section.settings.text9 != blank -%}
+          <div class="comparison-top-sticky-left">
+            <div class="comparison-top-sticky-item" data-name="{{ section.settings.text6 }}">{{ section.settings.text5 }}</div>
+            <div class="comparison-top-sticky-item" data-name="{{ section.settings.text8 }}">{{ section.settings.text7 }}</div>
+            <div class="comparison-top-sticky-item" data-name="{{ section.settings.text10 }}">{{ section.settings.text9 }}</div>
+          </div>
+        {%- else -%}
+          <div></div>
+        {%- endif -%}
         <div class="comparison-top-sticky-right">
           <div class="hair-ads-sticky-cont">
             <div class="hair-ads-sticky-left">
@@ -331,6 +343,12 @@
   "name": "comparison-top-sticky",
   "class": "comparison-top-sticky-box",
   "settings": [
+    {
+      "type": "checkbox",
+      "id": "bottom_s",
+      "label": "固定底部",
+      "default":false
+    },
     {
       "type": "text",
       "id": "text5",

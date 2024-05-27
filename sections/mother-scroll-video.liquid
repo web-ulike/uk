@@ -1,0 +1,442 @@
+<style>
+  .mother-scroll-video{
+    z-index: 9;
+    position: relative;
+  }
+.module5_box{
+  display: flex;
+}
+.module5_content{
+  padding: 60px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  height: 100vh
+}
+.module5_pos.module5_pos--reverse .module5_content {
+    justify-content: center;
+}
+.cnt_bix{
+  max-width: 606px;
+}
+.cnt_bix picture{
+  display:block;
+  margin-top: 60px;
+}
+.module5_content h3{
+  color: #190A0A;
+  font-size: 48px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 120%;
+  margin-bottom: 30px;
+}
+.module5_content .tle1{
+  color: #190A0A;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: 150%;
+  margin-bottom: 20px;
+}
+.module5_content ul li{
+  color: #190A0A;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: 150%;
+}
+
+.module_img picture,.module_img picture img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: relative;
+  display: block;
+}
+  
+.module_img video{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: relative;
+  display: block;
+}
+.module5_pos{
+  display: flex;
+}
+  .module5_pos.module5_pos--reverse{
+    flex-direction: row-reverse;
+  }
+.module_left-box,.module_right-box{
+  width: 50%;
+}
+.module_left-box{
+  background: #fff;
+}
+.module_right-box{
+  position: relative;
+}
+.sticky-box{
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+}
+.module_img{
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  transition: all .6s;
+}
+.module_img_active{
+  opacity: 1;
+}
+.btn_box-scroll{
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  position: absolute;
+  top: 50%;
+  left: 30%;
+  transform: translate(-50%);
+}
+.module5_pos.module5_pos--reverse .btn_box-scroll{
+  left: 60px;
+  transform: translate(0,-50%);
+}
+.btn_box-scroll .btn_item{
+  display: flex;
+padding: 10px 35px;
+justify-content: center;
+align-items: center;
+gap: 15px;
+border-radius: 67.5px;
+border: 1.5px solid #FBFAF4;
+backdrop-filter: blur(15px);
+color:  #FBFAF4;
+font-size: 21px;
+font-style: normal;
+font-weight: 400;
+line-height: 37.5px;
+width: max-content;
+transition: .5s cubic-bezier(.3, 1, .3, 1);
+}
+.btn_box-scroll .btn_item.active{
+background: rgba(251, 250, 244, 0.25);
+border: 1.5px solid rgba(251, 250, 244, 0);
+}
+  .btn_box-scroll .btn_item img{
+    display:none;
+  }
+   .btn_box-scroll .btn_item.active img{
+    display:block;
+  }
+  .cnt_bix ul{
+    padding-left: 20px;
+  }
+  .summer-block-diy .cnt_bix picture{
+    max-width:460px;
+  }
+@media screen and (max-width: 992px) {
+.module5_pos,.module5_pos.module5_pos--reverse{
+  flex-direction: column-reverse;
+}
+.module_left-box, .module_right-box{
+  width: 100%;
+}
+.sticky-box {
+  position: static;
+  height: 100%;
+}
+.module5_content {
+  height: 55vh;
+}
+.module_right-box{
+  position: sticky;
+  top: 0;
+  height: 45vh;
+}
+  .cnt_bix picture{
+  margin-top: 0;
+}
+}
+@media screen and (max-width: 750px) {
+  .module5_content h3{
+    font-size: 26px;
+    margin-bottom: 15px;
+  }
+  .module5_content ul li,.module5_content .tle1 {
+    font-size: 14px;
+}
+.btn_box-scroll .btn_item{
+  font-size: 12px;
+  padding: 5px 16px;
+  line-height: 18.75px;
+  height:30px;
+}
+.btn_box-scroll,.module5_pos.module5_pos--reverse .btn_box-scroll{
+  left: 20px;
+  transform: translate(0, -50%);
+  gap: 8px;
+}
+  .module5_content {
+ padding: 30px 20px;
+}
+  .btn_box-scroll .btn_item.active img{
+    height:100%;
+  }
+}
+</style>
+  <section>
+    <div class="module5_wrapper">
+      <div class="module5_pos{% if section.settings.image_position == 'left' %} module5_pos--reverse{% endif %}">
+        <div class="module_left-box">
+          
+          {%- for block in section.blocks -%}
+          <div class="module5_content {{ block.settings.class_name }}" data-darget = "{{ forloop.index0 }}">
+            <div class="cnt_bix">
+              {%- if block.settings.title != blank -%}
+              <h3>{{ block.settings.title | escape }}</h3>
+              {%- endif -%}
+              {%- if block.settings.subtitle != blank -%}
+              <div class="tle1">{{ block.settings.subtitle | escape }}</div>
+              {%- endif -%}
+              {%- if block.settings.text_li1 != blank -%}
+              <ul>
+                <li>{{ block.settings.text_li1 | escape }}</li>
+                <li>{{ block.settings.text_li2 | escape }}</li>
+              </ul>
+              {%- endif -%}
+               <picture>
+                {%- if block.settings.image_mobile -%}
+               <source
+                  media="(max-width: 767px)"
+                  srcset="{{ block.settings.image_mobile | image_url: width: '400x' }} 400w, {{ block.settings.image_mobile | image_url: width: '600x' }} 600w, {{ block.settings.image_mobile | image_url: width: '800x' }} 800w, {{ block.settings.image_mobile | image_url: width: '1000x' }} 1000w"
+                  width="{{ block.settings.image_mobile.width }}"
+                  height="{{ block.settings.image_mobile.height }}"
+                >
+                {%- endif -%}
+                {%- if block.settings.image -%}
+                 {{- block.settings.image | image_url: width: block.settings.image.width | image_tag: loading: 'eager', sizes: '100vw', widths: '300,400,500,600,700,800,900,1000,1200,1400,1600,1800,2000,2200,2400,2600,2800,3000,3200', class: 'trade_banner__image' -}}
+                {%- endif -%}
+              </picture>
+            </div>
+          </div>
+          {%- endfor -%}
+          
+        </div>
+        <div class="module_right-box">
+          <div class="sticky-box">
+            {%- for block in section.blocks -%}
+            <div class="module_img{% if forloop.index == 1 %} module_img_active{% endif %}">
+              {%- if block.settings.video != blank -%}
+                <native-video autoplay class="">
+                {{- block.settings.video | video_tag: controls: false, autoplay: true, playsinline: true, muted: true, loop: true , image_size: '740x' -}}
+                </native-video>
+              {%- endif -%}
+              
+              {%- if block.settings.video_image -%}
+               <picture>
+                {%- if block.settings.video_image_mobile -%}
+               <source
+                  media="(max-width: 767px)"
+                  srcset="{{ block.settings.video_image_mobile | image_url: width: '400x' }} 400w, {{ block.settings.video_image_mobile | image_url: width: '600x' }} 600w, {{ block.settings.video_image_mobile | image_url: width: '800x' }} 800w, {{ block.settings.video_image_mobile | image_url: width: '1000x' }} 1000w"
+                  width="{{ block.settings.video_image_mobile.width }}"
+                  height="{{ block.settings.video_image_mobile.height }}"
+                >
+                {%- endif -%}
+                {%- if block.settings.video_image -%}
+                 {{- block.settings.video_image | image_url: width: block.settings.video_image.width | image_tag: loading: 'eager', sizes: '100vw', widths: '300,400,500,600,700,800,900,1000,1200,1400,1600,1800,2000,2200,2400,2600,2800,3000,3200', class: 'trade_banner__image' -}}
+                {%- endif -%}
+              </picture>
+              {%- endif -%}
+              
+            </div>
+            {%- endfor -%}
+            <div class="btn_box-scroll">
+              {%- for block in section.blocks -%}
+                {%- if block.settings.btn_txt != blank -%}
+                <div class="btn_item{% if forloop.index == 1 %} active{% endif %}">
+                  {%- if block.settings.btn_image -%}
+                  <img src="{{ block.settings.btn_image | image_url }}" />
+                  {%- endif -%}
+                  <span>{{ block.settings.btn_txt | escape }}</span>
+                </div>
+                {%- endif -%}
+              {%- endfor -%}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+<script>
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+      init_scroll();
+    });
+  } else {
+    init_scroll();
+  }
+
+  function init_scroll() {
+    const sections = gsap.utils.toArray(".module5_content");
+    var images = document.querySelectorAll('.module_img');
+    var btns = document.querySelectorAll('.btn_item');
+    
+    sections.forEach(function(section, i) {
+      if (i >= 0) {
+        gsap.from(section, {
+          scrollTrigger: {
+            trigger: section,
+            start: "top center",
+            end: "bottom center",
+            toggleActions: "play none none reverse",
+            toggleClass: 'inView',
+            markers: false,
+            onEnter() {
+              section.classList.add('show-bullet');
+            },
+            onLeaveBack() {
+              section.classList.remove('show-bullet');
+            }
+          }
+        });
+
+
+        gsap.from(btns[i], {
+            scrollTrigger: {
+                trigger: section,
+                start: "top center",
+                end: "bottom center",
+                onToggle() {
+                    btns.forEach((btn, index) => {
+                        if (index === i) {
+                            btn.classList.add('active');
+                        } else {
+                            btn.classList.remove('active');
+                        }
+                    });
+                }
+            }
+        });
+
+        gsap.to(images[i], {
+          autoAlpha:1,
+          scrollTrigger: {
+            trigger: section,
+            start: "top center",
+            end: "bottom center",
+            toggleActions: "play none none reverse",
+            markers: false
+          }
+        });
+      }
+
+    });
+  }
+</script>
+{% schema %}
+{
+"name": "Mother Scroll Video",
+"class": "mother-scroll-video",
+"blocks": [{
+  "name": "item",
+  "type": "item",
+  "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title"
+        },
+             {
+          "type": "text",
+          "id": "subtitle",
+          "label": "subtitle"
+        },
+          {
+          "type": "text",
+          "id": "text_li1",
+          "label": "Text Li 1"
+        },
+            {
+          "type": "text",
+          "id": "text_li2",
+          "label": "Text Li 2"
+        },
+         {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_mobile",
+          "label": "Mobile Image"
+        },
+        
+         {
+          "type": "image_picker",
+          "id": "btn_image",
+          "label": "Button Image"
+        },
+       {
+          "type": "text",
+          "id": "btn_txt",
+          "label": "Button Text"
+        },
+        {
+          "type": "video",
+          "id": "video",
+          "label": "Video",
+          "info": "Replaces the external video if both are set."
+        },
+          
+         {
+          "type": "image_picker",
+          "id": "video_image",
+          "label": "Video Image"
+        },
+        {
+          "type": "image_picker",
+          "id": "video_image_mobile",
+          "label": "Video Mobile Image"
+        },
+        {
+          "type": "text",
+          "id": "class_name",
+          "label": "自定义class"
+        }
+      ]
+    }
+],
+  "settings": [
+      {
+      "type": "select",
+      "id": "image_position",
+      "label": "Desktop image position",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "right"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Mother Scroll Video",
+      "blocks": []
+    }
+  ]
+}
+{% endschema %}
