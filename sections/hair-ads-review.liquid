@@ -253,7 +253,7 @@
 <div class="review-list-diy" data-text="{{ section.settings.r_text1 }},{{ section.settings.r_text2 }},{{ section.settings.r_text3 }},{{ section.settings.r_text4 }}">
   <div class="container">
     <div class="review-list-top">
-      <div class="title-diy to-top">
+      <div class="review-list-title to-top">
         {{ section.settings.title }}
       </div>
       <div class="review-list-sub to-top" style="transition-delay: 0.1s">{{ section.settings.text }}</div>
@@ -299,6 +299,8 @@
       $('.review-list-diy .review-list-btn').click(function(){
         let textL = $(this).closest('.review-list-diy').attr('data-text').split(',').filter(item=>item)
         let imgL = $(this).attr('data-src').split(',').filter(item=>item)
+        console.log(textL)
+        console.log(imgL)
         if(textL.length >= imgL.length){
           let html = imgL.map((item,index)=>{
             return `<div class="review-list-popup-item">
@@ -314,10 +316,12 @@
           
           $('.review-list-popup .review-list-popup-img').html(html)
           $('.review-list-popup-box').fadeIn(400)
+          $('.review-list-popup').css({'display':'flex'})
       }
     })
     $('.review-list-popup .review-list-popup-close').click(function(){
       $('.review-list-popup-box').fadeOut(400)
+      $('.review-list-popup').css({'display':'none'})
       $('.review-list-popup').removeClass('no-img')
     })
 

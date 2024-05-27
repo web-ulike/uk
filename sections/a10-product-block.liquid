@@ -89,7 +89,7 @@
 
   .product-components .product-right-panel {
     width: 45%;
-    padding: 15px 50px 15px 50px;
+    padding: 15px 50px 40px 50px;
   }
   .product-components .product-right-panel .new-tag {
     background-color: rgb(255, 255, 255);
@@ -274,7 +274,7 @@
   }
 
   .product-components .product-right-panel .price-block {
-    margin: 50px 0px 25px;
+    margin: 50px 0px 40px;
   }
   .product-components .product-right-panel .price-block .price {
     display: flex;
@@ -733,6 +733,95 @@
     display: none;
   }
 
+  .box-collapsible-bar {
+    margin-top: 25px;
+  }
+  .box-collapsible-bar .list{
+    
+  }
+
+  .box-collapsible-bar .list .item{
+    position: relative;
+    border-top: 1px solid #3F3636;
+    padding: 15px 0;
+  }
+  .box-collapsible-bar .list .item:last-child{
+    border-bottom: 1px solid #3F3636;
+  }
+
+  .box-collapsible-bar .list .item .name{
+    font-size: 18px;
+    line-height: 33px;
+    color: #3F3636;
+    font-family: var(--heading-font-family);
+    font-weight: var(--heading-font-weight);
+    cursor: pointer;
+  }
+  .box-collapsible-bar .list .item .box-detail {
+    margin-top: 15px;
+    display: none;
+  }
+  .box-collapsible-bar .list .item .box-detail .collapsible-swiper{
+    width: 100%;
+    overflow: hidden;
+    padding-bottom: 30px;
+  }
+  
+  .box-collapsible-bar .list .item .box-detail .collapsible-swiper .swiper-button-prev,
+  .box-collapsible-bar .list .item .box-detail .collapsible-swiper .swiper-button-next {
+    display: none;
+    margin-top: 0px;
+  }
+
+  .box-collapsible-bar .list .item .box-detail .collapsible-swiper:hover .swiper-button-prev,
+  .box-collapsible-bar .list .item .box-detail .collapsible-swiper:hover .swiper-button-next {
+    display: block;
+  }
+
+  .main-image-swiper .swiper-button-prev:hover,
+  .main-image-swiper .swiper-button-next:hover {
+    opacity: 0.6;
+  }
+
+  .box-collapsible-bar .list .item .box-detail .collapsible-swiper .swiper-pagination-bullet {
+    --swiper-pagination-bullet-size: 10px;
+  }
+
+  .box-collapsible-bar .list .item .box-detail ul{
+    padding-inline-start: 20px;
+    font-size: 16px;
+    color: #333;
+  }
+
+  .box-collapsible-bar .list .item .abs-op{
+    position: absolute;
+    top: 15px;
+    right: 0px;
+  }
+  .box-collapsible-bar .list .item .add {
+    display: flex;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    height: 33px;
+    width: 30px;
+  }
+
+  .box-collapsible-bar .list .item .minus {
+    display: flex;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    height: 33px;
+    width: 30px;
+    cursor: pointer;
+    opacity: 0;
+    position: absolute;
+    top: 0px;
+  }
+
+
+
   @media (max-width: 1500px) {
     .swiper-pagination-bullet {
       --swiper-pagination-bullet-size: 6px;
@@ -923,7 +1012,7 @@
     }
     .product-components .product-right-panel .group-sharing .detail .right-box {
       padding: 15px 0px 0px;
-      max-width: 300px;
+      max-width: 320px;
       margin: 0 auto;
     }
     .product-components .product-right-panel .group-sharing .detail .right-box img {
@@ -1024,7 +1113,7 @@
       transform: none;
     }
     .product-components .product-right-panel .group-sharing .winning-info {
-      max-width: 300px;
+      max-width: 320px;
       margin: 10px auto 0px;
     }
     .product-components .product-right-panel .group-sharing .winning-info .group-wrapper .name {
@@ -1035,6 +1124,21 @@
       width: 130px;
       font-size: 12px;
       padding: 10px 20px;
+    }
+
+    .box-collapsible-bar .list .item .name {
+      font-size: 12px;
+      line-height: 18px;
+    }
+    .box-collapsible-bar .list .item .box-detail .collapsible-swiper .swiper-pagination-bullet {
+      --swiper-pagination-bullet-size: 6px;
+    }
+    .box-collapsible-bar .list .item .add, .box-collapsible-bar .list .item .minus{
+      height: 18px;
+      width: 14px;
+    }
+    .box-collapsible-bar .list .item .box-detail ul {
+      font-size: 12px;
     }
   }
 </style>
@@ -1349,16 +1453,78 @@
         </div>
       </div>
     </div>
+
+    {% comment %}  增加折叠栏 {% endcomment %}
+    <div class="box-collapsible-bar" style="margin-top: 25px;">
+      <div class="list">
+         {% for item in se_bks %}
+           {% if item.type == 'collapsible-item' %}
+            {% assign se_item = item.settings %}
+            <div class="item">
+              <div class="box-head">
+                 <p class="name">{{ se_item.title }}</p>
+                 <div class="abs-op">
+                    <div class="add">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" viewBox="0 0 19 19" fill="none">
+                        <path d="M17.8066 8.80506H10.1918V1.19338C10.1918 0.810934 9.87778 0.5 9.49844 0.5C9.116 0.5 8.80506 0.814043 8.80506 1.19338V8.80506H1.19338C0.810934 8.80506 0.5 9.1191 0.5 9.49844C0.5 9.88089 0.814043 10.1918 1.19338 10.1918H8.80506V17.8066C8.80506 18.1891 9.1191 18.5 9.49844 18.5C9.88089 18.5 10.1918 18.186 10.1918 17.8066V10.1918H17.8035C18.186 10.1918 18.4969 9.87778 18.5 9.49844C18.5 9.116 18.186 8.80506 17.8066 8.80506Z" fill="#3F3636"/>
+                      </svg>
+                    </div>
+                    <div class="minus">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="3" viewBox="0 0 20 3" fill="none">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M0.800781 1.4998C0.800781 1.11321 1.11418 0.799805 1.50078 0.799805H18.5008C18.8874 0.799805 19.2008 1.11321 19.2008 1.4998C19.2008 1.8864 18.8874 2.1998 18.5008 2.1998H1.50078C1.11418 2.1998 0.800781 1.8864 0.800781 1.4998Z" fill="#3F3636"/>
+                      </svg>
+                    </div>
+                 </div>
+              </div>
+              <div class="box-detail">
+                {% if se_item.check_img == true %}
+                  <div class="title"></div>
+                  {% comment %} 轮播 {% endcomment %}
+                  <div class="collapsible-swiper">
+                    <div class="swiper-wrapper">
+                      {% for itemimg in se_bks %}
+                        {% if itemimg.type == 'collapsible-image' %}
+                        {% assign se_itemimg = itemimg.settings %}
+                          <div class="swiper-slide">
+                            {{-
+                              se_itemimg.image
+                              | image_url: width: se_itemimg.image.width
+                              | image_tag: loading: 'lazy', draggable: false
+                            -}}
+                          </div>
+                        {% endif %}
+                      {% endfor %}
+                    </div>
+                    <div class="swiper-button-prev">
+                      <img src="https://cdn.shopify.com/s/files/1/0740/5882/6015/files/Artwork_1.png?v=1712483416">
+                    </div>
+                    <div class="swiper-button-next">
+                      <img src="https://cdn.shopify.com/s/files/1/0740/5882/6015/files/Artwork.png?v=1712482544">
+                    </div>
+                    <div class="swiper-pagination"></div>
+                  </div>
+
+                {% else %}
+                  {{ se_item.text_html }}
+                {% endif %}
+              </div>
+            </div>
+          {% endif %}
+            {% endfor %}
+      </div>
+    </div>
   </div>
 </div>
 
 <script>
   var pid = '{{ product.selected_or_first_available_variant.id }}';
   document.addEventListener('DOMContentLoaded', function () {
-    console.log(window.innerWidth, '-------innerWidth', isMobile());
     const galleryThumbs = new Swiper('.myThumbs', {
       spaceBetween: isMobile() ? 8 : 15,
       slidesPerView: 'auto',
+      lazy: {
+        loadPrevNext: true, // 预加载前后两张图片
+      },
       freeMode: true,
       watchSlidesVisibility: true,
       watchSlidesProgress: true,
@@ -1521,6 +1687,35 @@
       }
    });
 
+    // 折叠
+    const myCollswiper = new Swiper('.collapsible-swiper', {
+      loop: true, // 循环模式选项
+      pagination: {
+        el: '.swiper-pagination',
+        clickable: true,
+      },
+      lazy: {
+        loadPrevNext: true, // 预加载前后两张图片
+      },
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+      },
+    });
+
+    $(document).on('click', '.box-collapsible-bar .item .box-head', function () {
+      var item = $(this).closest('.item');
+      console.log($(item).find('.box-detail').is(":hidden"));
+      if($(item).find('.box-detail').is(":hidden")){
+        $(this).find('.add').fadeTo( "slow", 0);
+        $(this).find('.minus').fadeTo( "slow", 1);
+      } else {
+        $(this).find('.add').fadeTo( "slow", 1);
+        $(this).find('.minus').fadeTo( "slow", 0);
+      }
+      $(item).find('.box-detail').slideToggle('slow');
+    });
+
   });
 
   var countdownInterval = null;
@@ -1592,9 +1787,9 @@
      // 倒计时
      var $countdownGroup = $('.winning-info .time');
      var $countdown = $('.box-countdown .countdown');
-     startCountdown(endTime,$countdownGroup, $countdown, function () {
-      location.reload();
-    });
+      startCountdown(endTime,$countdownGroup, $countdown, function () {
+        location.reload();
+      });
     setCookie('groupName', userName, 1);
     setCookie('groupTime', endTime, 1);
   }
@@ -1711,7 +1906,47 @@
           "label": "Image"
         }
       ]
+    },
+    {
+      "type": "collapsible-item",
+      "name": "collapsible-item",
+      "settings": [
+        {
+          "type": "textarea",
+          "id": "title",
+          "label": "标题",
+          "default": "Air 10 vs. Air 3"
+        },
+        {
+          "type": "textarea",
+          "id": "sub_title",
+          "label": "子标题",
+          "default": "Effectiveness"
+        },
+        {
+          "type": "richtext",
+          "id": "text_html",
+          "label": "描述"
+        },
+        {
+          "type": "checkbox",
+          "id": "check_img",
+          "label": "是否显示图片"
+        }
+      ]
+    },
+    {
+      "type": "collapsible-image",
+      "name": "collapsible-image",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "图片描述"
+        }
+      ]
     }
+
   ],
   "presets": [
     {

@@ -1,0 +1,188 @@
+{{ 'phoneNumber.css' | asset_url | stylesheet_tag: preload: true }}
+{{ 'subscript-plug.css' | asset_url | stylesheet_tag: preload: true }}
+<script src="{{ 'phoneNumber.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'subscriptPlug.js' | asset_url }}" defer="defer"></script>
+{%- liquid
+  assign se_id = section.id
+  assign se_bks = section.blocks
+  assign se_stts = section.settings
+-%}
+<div id="subscript-plug">
+  <div class="subscription-popup spin-popup">
+    <div class="popup-content">
+      <div class="close">
+        <img
+          src="https://cdn.shopify.com/s/files/1/0656/9079/6273/files/ac0c40fa988941eb003ac926c582b44c.svg?v=1715239080"
+          loading="lazy"
+        >
+      </div>
+      <div class="popup-content-wrap">
+        <div class="p-hide m-box-head">
+          <p class="title">Win FREE Air3 or $100 OFF!</p>
+          <p class="desc">100% chance to win</p>
+        </div>
+        <div class="slide-left">
+          <div class="spin-wheel turntable-wrap">
+            <div class="turntable spin-start" id="turntable">
+              <ul class="bg" id="turntable_bg"></ul>
+              <ul class="gift" id="turntable_gift"></ul>
+            </div>
+            <div class="pointer disabled" id="turntable_pointer">
+              <img src="https://cdn.shopify.com/s/files/1/0656/9079/6273/files/logo_8b3ee7a2-69e0-4bb0-a363-49583a8aac18.svg?v=1715582011">
+            </div>
+          </div>
+          <!-- 悬浮箭头 -->
+          {% comment %}
+            <div class="arrow-wrap">
+              <div class="arrow-up"></div>
+              <div class="arrow-down"></div>
+            </div>
+          {% endcomment %}
+          <!-- 悬浮箭头 -->
+          <div class="abs-prize-arrow">
+            <img src="https://cdn.shopify.com/s/files/1/0841/4596/3322/files/Union.png?v=1714043648">
+          </div>
+          <!-- 奖品图片 -->
+          <div class="abs-prize-pictures">
+            <img src="" lazy="lazy">
+          </div>
+        </div>
+        <div class="slide-right">
+          <div class="step-one">
+            <div class="p-show">
+              <p class="title">Win FREE Air3 or $100 OFF!</p>
+              <p class="desc">100% chance to win</p>
+            </div>
+            <div class="btn-wrap">Spin</div>
+            <div class="info">
+              <p>- From Dec 24th to Jan 10th.</p>
+              <p>- Each user can only play it once.</p>
+              <p>- Activity Rules and Winner List.</p>
+            </div>
+          </div>
+          <div class="setp-two">
+            <div class="p-show">
+              <p class="title">Win FREE Air3 or $100 OFF!</p>
+              <p class="desc">100% chance to win</p>
+            </div>
+            <div class="box-email">
+              <div class="input-email">
+                <input type="text" class="j_user_email" placeholder="Enter your email">
+              </div>
+            </div>
+            <div class="box-phone">
+              <div class="phone-input-container">
+                <div class="dropdown">
+                  <div class="dropdown-selected">
+                    <span class="flag-icon" data-chosen="us"></span>
+                    <span class="country-code">+1</span>
+                    <span class="caret">&#9660;</span>
+                  </div>
+                  <ul class="dropdown-menu">
+                    <!-- 更多国家选项 -->
+                  </ul>
+                </div>
+              </div>
+              <input class="input-phone" type="text" placeholder="Phone">
+            </div>
+            <div class="spin-it">Spin It</div>
+            <div class="msg"></div>
+            <div class="box-receive">
+              <div class="checkbox-label">
+                <input type="checkbox" id="policy-checkbox" name="checkbox-span" value="checkbox">
+                <label class="custom-checkbox"> </label>
+              </div>
+              <div class="text">Receive offers via text message</div>
+            </div>
+            <div class="box-marketing">
+              By checking this box, I consent to receive marketing text messages through an automatic telephone dialing
+              system at the number provided. Consent is not a condition to purchase. Check our privacy policy. From Dec
+              24th to Jan 10th.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- 弹出框成功 -->
+  <div class="subscription-popup success-popup" style="display: none;">
+    <div class="subscription-popup">
+      <div class="popup-content">
+        <div class="close">
+          <img
+            src="https://cdn.shopify.com/s/files/1/0656/9079/6273/files/Frame_457393924.svg?v=1715239869"
+            loading="lazy"
+          >
+        </div>
+        <div class="popup-content-wrap">
+          <div class="slide-left">
+            <img src="https://cdn.shopify.com/s/files/1/0841/4596/3322/files/2_6563f96b-e911-4c80-803b-6f837c1c04a4.jpg?v=1714043931">
+          </div>
+          <div class="slide-right">
+            <p class="title">Congrats! You've won</p>
+            <p class="desc">We will also send the coupon code to your Email, please check for receive.</p>
+            <div class="award-information">
+              <!-- code -->
+              <div class="box-codes">
+                <div class="left-code">
+                  <span class="name">$80</span>
+                  {% comment %} <span>OFF</span> {% endcomment %}
+                </div>
+                <div class="right-detail">
+                  <p class="code">Code: <span>CSFA1521</span></p>
+                  <p class="expire">Expires in 48 Hours</p>
+                </div>
+              </div>
+            </div>
+            <!-- 推荐商品 -->
+            <div class="recommended-products">
+              <div class="image-left">
+                <img src="{{ se_stts.product.featured_image | img_url }}" alt="{{ product.title }}">
+              </div>
+              <div class="product-right">
+                <p class="name">{{ se_stts.product.title }}</p>
+                <div class="price">
+                  {{ se_stts.product.price | money }}
+                  <p class="original-price">{{ se_stts.product.compare_at_price | money }}</p>
+                </div>
+                <div class="txt-info">
+                  {{ se_stts.text }}
+                </div>
+                <div class="btn-add-cart" pid="{{ se_stts.product.first_available_variant.id }}">Add to cart</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Teaser 弹出框 -->
+<div class="teaser-app">
+  <div class="flex-block">
+    <div class="close">
+      <img src="https://cdn.shopify.com/s/files/1/0656/9079/6273/files/Frame_457393924_1.svg?v=1715326764">
+    </div>
+    <img src="" loading="lazy" class="teaser-image">
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "subscript-plug",
+  "settings": [
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Text",
+      "default": "Long-last hair removal solution."
+    },
+    {
+      "type": "product",
+      "id": "product",
+      "label": "Porduct"
+    }
+  ],
+  "blocks": []
+}
+{% endschema %}

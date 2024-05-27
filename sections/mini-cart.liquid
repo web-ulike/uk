@@ -1142,10 +1142,10 @@
       if(adUrlArr.includes(location.pathname)){
         code = $('#mini-cart .btn-coupon').attr('adcode');
       }
+      window.discountOnCartProApp.applyCode(code);
       navigator.clipboard.writeText(code);
     {% endif %}
     commonGtmEvent('弃购-pop copy', 'cart', '');
-    // console.log(4444);
     $('#minicart-dialog-list').hide();
   }
 
@@ -1222,7 +1222,7 @@
     {% endif %}
 
     let endDate = new Date(`${ediftendDate}`).getTime(); // 设置结束时间
-    // console.log(endDate);
+    console.log(endDate);
     {%- if se_stts.is_cart_coupon == true -%}
        var countdowN = new Countdownbar('#minicart-dialog-list .j-countdown-name', endDate);
     {%else%}

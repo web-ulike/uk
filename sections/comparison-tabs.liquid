@@ -1,7 +1,6 @@
 <style>
 .hair-ads-tabs{
   padding: 82px 0;
-  background: #FBFAF4;
 }
 
 .hair-ads-tabs .hair-ads-tabs-top{
@@ -23,10 +22,51 @@
   line-height: 1.5;
 }
 
+.hair-ads-tabs .hair-ads-tabs-list-top{
+  margin-top: 54px;
+  display: flex;
+  gap: 12px;
+
+}
+.hair-ads-tabs .hair-ads-tabs-list-item{
+  display: flex;
+  align-items: center;
+  padding: 0 70px;
+  height: 67px;
+  color: #3F3636;
+  font-size: 24px;
+  line-height: 1.4;
+  background: #F8F8F8;
+  position: relative;
+  z-index: 1;
+  border-radius: 16px 16px 0 0;
+  border: 1.68px solid #E4DDDD;
+  border-bottom: 0;
+  cursor: pointer;
+  padding-top: 8px;
+}
+
+.hair-ads-tabs .hair-ads-tabs-list-item.active{
+  color: #E0004D;
+  font-family: var(--heading-font-family);
+  background: #FBFAF4;
+  z-index: 3;
+}
+
 .hair-ads-tabs .hair-ads-tabs-cont{
+  position: relative;
+  top: -1.68px;
+  z-index: 2;
+  background: #FBFAF4;
   display: flex;
   gap: 20px;
-  margin-top: 52px;
+  padding: 43px;
+  border: 1.68px solid #E4DDDD;
+  border-radius: 0 16px 16px 16px;
+}
+
+.radius-left.hair-ads-tabs .hair-ads-tabs-cont{
+  border-radius: 16px;
 }
 
 .hair-ads-tabs .hair-ads-tabs-left,
@@ -39,7 +79,7 @@
   font-size: 28px;
   line-height: 1.5;
   border-bottom: 0.7px solid #3F3636;
-  margin-bottom: 24px;
+  margin-top: 18px;
   display: flex;
   align-items: center;
   gap: 10px;
@@ -54,21 +94,14 @@
   cursor: pointer;
 }
 
-.hair-ads-tabs .hair-ads-tabs-left .hair-ads-tabs-p,.hair-ads-tabs .hair-ads-tabs-p .active{
-  font-family: var(--heading-font-family);
+.hair-ads-tabs .hair-ads-tabs-left .hair-ads-tabs-p{
   color: #E0004D;
 }
 
-.hair-ads-tabs .hair-ads-tabs-p .active{
-  color: #3F3636;
-}
-
 .hair-ads-tabs .hair-ads-tabs-flex-m{
-  margin-bottom: 22px;
-}
-
-.hair-ads-tabs .hair-ads-tabs-select-txt{
-  display: none;
+  display: flex;
+  flex-direction: column-reverse;
+  margin-bottom: 12px;
 }
 
 .hair-ads-tabs .hair-ads-tabs-text-p{
@@ -118,6 +151,41 @@
   transition: all .4s ease;
 }
 
+.hair-ads-tabs .svg-icon{
+  position: absolute;
+  bottom: 0.3px;
+  width: 16px;
+  height: 16px;
+  overflow: hidden;
+  pointer-events: none;
+}
+.hair-ads-tabs .svg-left{
+  transform: scale(-1,1);
+  left: -16px;
+}
+.hair-ads-tabs .svg-right{
+  right: -16px;
+}
+.hair-ads-tabs .hair-ads-tabs-list-item:first-child .svg-left{
+  opacity: 0;
+}
+.hair-ads-tabs .hair-ads-tabs-list-item:first-child::before{
+  content: '';
+  position: absolute;
+  width: 15px;
+  height: 50px;
+  background: #F8F8F8;
+  pointer-events: none;
+  left: -1.6px;
+  border-left: 1.68px solid #E4DDDD;
+  bottom: -30px;
+  z-index: 1;
+}
+
+.hair-ads-tabs .hair-ads-tabs-list-item.active::before{
+  display: none;
+}
+
 @media (max-width:1600px) {
   .hair-ads-tabs .hair-ads-tabs-p{
     font-size: 20px;
@@ -125,8 +193,10 @@
   .hair-ads-tabs .hair-ads-tabs-text-p{
     font-size: 20px;
   }
-  .hair-ads-tabs .hair-ads-tabs-text-p svg{
-    zoom: .8;
+  .hair-ads-tabs .hair-ads-tabs-list-item{
+    font-size: 18px;
+    height: 55px;
+    padding: 0 40px;
   }
 }
 
@@ -167,15 +237,15 @@
     flex-direction: column;
   }
   .hair-ads-tabs .hair-ads-tabs-cont{
-    margin-top: 25px;
     gap: 11px;
+    padding: 18px;
+    border-radius: 0 10px 10px 10px;
+  }
+  .radius-left.hair-ads-tabs .hair-ads-tabs-cont{
+    border-radius: 10px;
   }
   .hair-ads-tabs .hair-ads-tabs-flex-m{
-    display: flex;
-    flex-direction: column-reverse;
     margin-bottom: 0;
-    padding-top: 10px;
-    border-top: 1px solid #3F3636;
   }
   .hair-ads-tabs .hair-ads-tabs-p{
     margin-bottom: 0;
@@ -187,36 +257,7 @@
   .hair-ads-tabs .hair-ads-tabs-p-span{
     display: none;
   }
-  .hair-ads-tabs .hair-ads-tabs-select-txt{
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    padding-bottom: 12px;
-    margin-top: 7px;
-    font-family: var(--heading-font-family);
-    font-size: 14px;
-    line-height: 1.5;
-    position: relative;
-  }
 
-  .hair-ads-tabs .hair-ads-tabs-select{
-    position: relative;
-  }
-
-  .hair-ads-tabs .hair-ads-tabs-right .hair-ads-tabs-p{
-    display: none;
-    position: absolute;
-    border: 0.5px solid #3F3636;
-    background: #FBFAF4;
-    z-index: 2;
-    flex-direction: column;
-    align-items: flex-start;
-    padding: 13px 9px;
-    top: -10px;
-  }
-  .hair-ads-tabs .hair-ads-tabs-p .active{
-    border-bottom: 1px solid #3F3636;
-  }
   .hair-ads-tabs .hair-ads-tabs-text-p{
     font-size: 12px;
     gap: 14px;
@@ -253,16 +294,74 @@
     padding: 12px 0;
     border: 0;
   }
+  .hair-ads-tabs .hair-ads-tabs-list-top{
+    gap: 7px;
+    margin-top: 40px;
+  }
+  .hair-ads-tabs .hair-ads-tabs-list-item{
+    height: 34px;
+    font-size: 12px;
+    padding: 0 20px;
+    padding-top: 5px;
+    border-radius: 10px 10px 0 0;
+  }
+  .hair-ads-tabs .svg-icon{
+    width: 10px;
+    height: 10px;
+  }
+  .hair-ads-tabs .svg-left{
+    left: -10px;
+  }
+  .hair-ads-tabs .svg-right{
+    right: -10px;
+  }
 }
 </style>
 <section class="section-box">
-  <div class="hair-ads-tabs">
+  <div class="hair-ads-tabs tabs-{{ section.id }}">
     <div class="container">
       <div class="hair-ads-tabs-top">
         <div class="hair-ads-tabs-title to-top">{{ section.settings.title }}</div>
         <div class="hair-ads-tabs-sub to-top" style="transition-delay: 0.1s">{{ section.settings.text }}</div>
       </div>
-      <div class="hair-ads-tabs-cont to-top" style="transition-delay: 0.2s">
+      <div class="to-top" style="transition-delay: 0.2s">
+        <div class="hair-ads-tabs-list-top">
+          {%- for block in section.blocks -%}               
+            <div class="hair-ads-tabs-list-item {% if forloop.index == 1 %}active{% endif %}">{{ block.settings.text4 }}
+              <svg xmlns="http://www.w3.org/2000/svg" class="svg-icon svg-left" width="88" height="88" viewBox="0 0 88 88" fill="none">
+                <g clip-path="url(#clip0_2285_2559)">
+                  <rect width="88" height="88" fill="none"></rect>
+                  <mask id="path-1-inside-1_2285_2559" fill="white">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M6.43471 -113.783C6.43471 -147.592 -20.9733 -175 -54.7827 -175H-693.739C-727.549 -175 -754.957 -147.592 -754.957 -113.783V20.1305C-754.957 53.9399 -782.365 81.3478 -816.174 81.3478H-2518.78C-2552.59 81.3478 -2580 108.756 -2580 142.565V2564.48C-2580 2598.29 -2552.59 2625.7 -2518.78 2625.7H4245.74C4279.55 2625.7 4306.96 2598.29 4306.96 2564.48V142.565C4306.96 108.756 4279.55 81.3478 4245.74 81.3478H67.6521C33.8427 81.3478 6.43471 53.9399 6.43471 20.1304V-113.783Z"></path>
+                  </mask>
+                  <path fill-rule="evenodd" clip-rule="evenodd" d="M6.43471 -113.783C6.43471 -147.592 -20.9733 -175 -54.7827 -175H-693.739C-727.549 -175 -754.957 -147.592 -754.957 -113.783V20.1305C-754.957 53.9399 -782.365 81.3478 -816.174 81.3478H-2518.78C-2552.59 81.3478 -2580 108.756 -2580 142.565V2564.48C-2580 2598.29 -2552.59 2625.7 -2518.78 2625.7H4245.74C4279.55 2625.7 4306.96 2598.29 4306.96 2564.48V142.565C4306.96 108.756 4279.55 81.3478 4245.74 81.3478H67.6521C33.8427 81.3478 6.43471 53.9399 6.43471 20.1304V-113.783Z" fill="#F8F8F8"></path>
+                  <path d="M-693.739 -168.569H-54.7827V-181.431H-693.739V-168.569ZM-748.526 20.1305V-113.783H-761.387V20.1305H-748.526ZM-2518.78 87.7785H-816.174V74.9172H-2518.78V87.7785ZM-2573.57 2564.48V142.565H-2586.43V2564.48H-2573.57ZM4245.74 2619.27H-2518.78V2632.13H4245.74V2619.27ZM4300.53 142.565V2564.48H4313.39V142.565H4300.53ZM67.6521 87.7785H4245.74V74.9172H67.6521V87.7785ZM0.00409193 -113.783V20.1304H12.8653V-113.783H0.00409193ZM67.6521 74.9172C37.3942 74.9172 12.8653 50.3883 12.8653 20.1304H0.00409193C0.00409193 57.4914 30.2911 87.7785 67.6521 87.7785V74.9172ZM4313.39 142.565C4313.39 105.204 4283.1 74.9172 4245.74 74.9172V87.7785C4276 87.7785 4300.53 112.307 4300.53 142.565H4313.39ZM4245.74 2632.13C4283.1 2632.13 4313.39 2601.84 4313.39 2564.48H4300.53C4300.53 2594.74 4276 2619.27 4245.74 2619.27V2632.13ZM-2586.43 2564.48C-2586.43 2601.84 -2556.14 2632.13 -2518.78 2632.13V2619.27C-2549.04 2619.27 -2573.57 2594.74 -2573.57 2564.48H-2586.43ZM-2518.78 74.9172C-2556.14 74.9172 -2586.43 105.204 -2586.43 142.565H-2573.57C-2573.57 112.307 -2549.04 87.7785 -2518.78 87.7785V74.9172ZM-761.387 20.1305C-761.387 50.3883 -785.916 74.9172 -816.174 74.9172V87.7785C-778.813 87.7785 -748.526 57.4914 -748.526 20.1305H-761.387ZM-54.7827 -168.569C-24.5248 -168.569 0.00409193 -144.041 0.00409193 -113.783H12.8653C12.8653 -151.144 -17.4218 -181.431 -54.7827 -181.431V-168.569ZM-693.739 -181.431C-731.1 -181.431 -761.387 -151.144 -761.387 -113.783H-748.526C-748.526 -144.04 -723.997 -168.569 -693.739 -168.569V-181.431Z" fill="#E4DDDD" mask="url(#path-1-inside-1_2285_2559)"></path>
+                </g>
+                <defs>
+                  <clipPath id="clip0_2285_2559">
+                    <rect width="88" height="88" fill="white"></rect>
+                  </clipPath>
+                </defs>
+              </svg>
+              <svg xmlns="http://www.w3.org/2000/svg" class="svg-icon svg-right" width="88" height="88" viewBox="0 0 88 88" fill="none">
+                <g clip-path="url(#clip0_2285_2559)">
+                  <rect width="88" height="88" fill="none"></rect>
+                  <mask id="path-1-inside-1_2285_2559" fill="none">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M6.43471 -113.783C6.43471 -147.592 -20.9733 -175 -54.7827 -175H-693.739C-727.549 -175 -754.957 -147.592 -754.957 -113.783V20.1305C-754.957 53.9399 -782.365 81.3478 -816.174 81.3478H-2518.78C-2552.59 81.3478 -2580 108.756 -2580 142.565V2564.48C-2580 2598.29 -2552.59 2625.7 -2518.78 2625.7H4245.74C4279.55 2625.7 4306.96 2598.29 4306.96 2564.48V142.565C4306.96 108.756 4279.55 81.3478 4245.74 81.3478H67.6521C33.8427 81.3478 6.43471 53.9399 6.43471 20.1304V-113.783Z"></path>
+                  </mask>
+                  <path fill-rule="evenodd" clip-rule="evenodd" d="M6.43471 -113.783C6.43471 -147.592 -20.9733 -175 -54.7827 -175H-693.739C-727.549 -175 -754.957 -147.592 -754.957 -113.783V20.1305C-754.957 53.9399 -782.365 81.3478 -816.174 81.3478H-2518.78C-2552.59 81.3478 -2580 108.756 -2580 142.565V2564.48C-2580 2598.29 -2552.59 2625.7 -2518.78 2625.7H4245.74C4279.55 2625.7 4306.96 2598.29 4306.96 2564.48V142.565C4306.96 108.756 4279.55 81.3478 4245.74 81.3478H67.6521C33.8427 81.3478 6.43471 53.9399 6.43471 20.1304V-113.783Z" fill="#F8F8F8"></path>
+                  <path d="M-693.739 -168.569H-54.7827V-181.431H-693.739V-168.569ZM-748.526 20.1305V-113.783H-761.387V20.1305H-748.526ZM-2518.78 87.7785H-816.174V74.9172H-2518.78V87.7785ZM-2573.57 2564.48V142.565H-2586.43V2564.48H-2573.57ZM4245.74 2619.27H-2518.78V2632.13H4245.74V2619.27ZM4300.53 142.565V2564.48H4313.39V142.565H4300.53ZM67.6521 87.7785H4245.74V74.9172H67.6521V87.7785ZM0.00409193 -113.783V20.1304H12.8653V-113.783H0.00409193ZM67.6521 74.9172C37.3942 74.9172 12.8653 50.3883 12.8653 20.1304H0.00409193C0.00409193 57.4914 30.2911 87.7785 67.6521 87.7785V74.9172ZM4313.39 142.565C4313.39 105.204 4283.1 74.9172 4245.74 74.9172V87.7785C4276 87.7785 4300.53 112.307 4300.53 142.565H4313.39ZM4245.74 2632.13C4283.1 2632.13 4313.39 2601.84 4313.39 2564.48H4300.53C4300.53 2594.74 4276 2619.27 4245.74 2619.27V2632.13ZM-2586.43 2564.48C-2586.43 2601.84 -2556.14 2632.13 -2518.78 2632.13V2619.27C-2549.04 2619.27 -2573.57 2594.74 -2573.57 2564.48H-2586.43ZM-2518.78 74.9172C-2556.14 74.9172 -2586.43 105.204 -2586.43 142.565H-2573.57C-2573.57 112.307 -2549.04 87.7785 -2518.78 87.7785V74.9172ZM-761.387 20.1305C-761.387 50.3883 -785.916 74.9172 -816.174 74.9172V87.7785C-778.813 87.7785 -748.526 57.4914 -748.526 20.1305H-761.387ZM-54.7827 -168.569C-24.5248 -168.569 0.00409193 -144.041 0.00409193 -113.783H12.8653C12.8653 -151.144 -17.4218 -181.431 -54.7827 -181.431V-168.569ZM-693.739 -181.431C-731.1 -181.431 -761.387 -151.144 -761.387 -113.783H-748.526C-748.526 -144.04 -723.997 -168.569 -693.739 -168.569V-181.431Z" fill="#E4DDDD" mask="url(#path-1-inside-1_2285_2559)"></path>
+                </g>
+                <defs>
+                  <clipPath id="clip0_2285_2559">
+                    <rect width="88" height="88" fill="white"></rect>
+                  </clipPath>
+                </defs>
+              </svg>
+            </div>
+          {%- endfor -%}
+        </div>
+      <div class="hair-ads-tabs-cont">
         <div class="hair-ads-tabs-left">
           <div class="hair-ads-tabs-flex-m">
             <div class="hair-ads-tabs-p">
@@ -320,21 +419,11 @@
         </div>
         <div class="hair-ads-tabs-right">
           <div class="hair-ads-tabs-flex-m">
-            <div class="hair-ads-tabs-select">
-              <div class="hair-ads-tabs-select-txt">
-                <span>{{ section.settings.text7 }}</span>
-                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14" fill="none">
-                  <path d="M11.1099 5.40188C9.42838 7.0834 6.83456 9.67193 6.83456 9.67193L2.56445 5.40186" stroke="#272724" stroke-width="1.04935" stroke-linecap="round" stroke-linejoin="round"/>
-                  </svg>
-              </div>
               <div class="hair-ads-tabs-p">
-                <div class="hair-ads-tabs-p-item active">{{ section.settings.text7 }}</div>
-                <div class="hair-ads-tabs-p-item">{{ section.settings.text8 }}</div>
-                <div class="hair-ads-tabs-p-item">{{ section.settings.text9 }}</div>
-                <div class="hair-ads-tabs-p-item">{{ section.settings.text10 }}</div>
-                <div class="hair-ads-tabs-p-span"></div>
+                {%- for block in section.blocks -%}
+                  <div class="hair-ads-tabs-item {% if forloop.index == 1 %}active{% endif %}">{{ block.settings.text4 }}</div>
+                {%- endfor -%}
               </div>
-            </div>
             <div class="hair-ads-tabs-img-list">
               {%- for block in section.blocks -%}
                 <div class="img-box {% if forloop.index == 1 %}active{% endif %}">
@@ -419,52 +508,48 @@
         </div>
       </div>
     </div>
+    </div>
   </div>
 </section>
 <script>
   window.addEventListener('load', function() {
-    function hairAdsTabs() {
-      let $p = $('.hair-ads-tabs');
+    function hairAdsTabs{{ section.id | replace: "_", "" | replace: "-", "" }}() {
+      let $p = $('.hair-ads-tabs.tabs-{{ section.id }}');
       let $items = $p.find('.hair-ads-tabs-item');
-      let $tap = $p.find('.hair-ads-tabs-p-item');
+      let $tap = $p.find('.hair-ads-tabs-list-item');
       let $imgs = $p.find('.hair-ads-tabs-img-list .img-box');
       let $txtP = $p.find('.hair-ads-tabs-right .hair-ads-tabs-p');
       $tap.on('click', function(e) {
         setTab($(this).index())
       })
-  
+
       function setTab(index) {
-        if(window.innerWidth>991){
-          let left = $tap.eq(index)[0].offsetLeft
-          let width = $tap.eq(index)[0].offsetWidth
-          $txtP.attr('style', '--left-num: '+ left +'px; --width-num: '+ width +'px')
+        if(index!=0){
+          $p.addClass('radius-left')
         }else{
-          $tap.parents('.hair-ads-tabs-p').slideUp()
-          $tap.parents('.hair-ads-tabs-p').siblings('.hair-ads-tabs-select-txt').find('span').text($tap.eq(index).text())
+          $p.removeClass('radius-left')
         }
         $tap.eq(index).addClass('active').siblings().removeClass('active');
         $imgs.eq(index).addClass('active').siblings().removeClass('active');
         $items.eq(index).addClass('active').siblings().removeClass('active');
       }
-  
-      setTab(0)
-      if(window.innerWidth<991){
-        $p.find('.hair-ads-tabs-select-txt').click(function(){
-          $(this).siblings('.hair-ads-tabs-p').slideDown()
-        })
-      }
     }
-    hairAdsTabs()
+    hairAdsTabs{{ section.id | replace: "_", "" | replace: "-", ""}}()
   })
 </script>
 {% schema %}
 {
-"name": "hair-ads-tabs",
+"name": "comparison-tabs",
 "blocks": [
     {
     "name": "item",
     "type": "item",
     "settings": [
+      {
+        "type": "text",
+        "id": "text4",
+        "label": "标签"
+      },
       {
         "type": "image_picker",
         "id": "image",
@@ -548,35 +633,11 @@
       "type": "text",
       "id": "text6",
       "label": "Text"
-    },
-    {
-      "type": "header",
-      "content": "Tabs"
-    },
-    {
-      "type": "text",
-      "id": "text7",
-      "label": "Text"
-    },
-    {
-      "type": "text",
-      "id": "text8",
-      "label": "Text"
-    },
-    {
-      "type": "text",
-      "id": "text9",
-      "label": "Text"
-    },
-    {
-      "type": "text",
-      "id": "text10",
-      "label": "Text"
     }
   ],
   "presets": [
     {
-      "name": "hair-ads-tabs",
+      "name": "comparison-tabs",
       "blocks": []
     }
   ]

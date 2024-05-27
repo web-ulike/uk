@@ -3,6 +3,10 @@
   padding: 80px 0 120px 0;
 }
 
+.hair-ads-identity{
+  padding:90px 0;
+}
+
 .preheat-identity .preheat-identity-cont{
   display: flex;
   align-items: center;
@@ -57,9 +61,13 @@
   flex: 1;
 }
 
-.preheat-identity .preheat-identity-item-cont .img{
+.preheat-identity .img{
   display: block;
   width: 100%;
+}
+
+.preheat-identity .mb-box{
+  display:none;
 }
 
 .preheat-identity .preheat-identity-item-text{
@@ -101,16 +109,27 @@
 }
 
 @media (max-width:991px) {
+  .hair-ads-identity{
+    padding:65px 0 30px 0;
+  }
+  .preheat-identity .pc-box{
+    display:none;
+  }
+  .preheat-identity .mb-box{
+    display:block;
+  }
   .preheat-identity .preheat-identity-cont{
     flex-direction: column;
     gap: 40px;
+  }
+  .hair-ads-identity .preheat-identity-cont{
+    align-items: flex-start;
   }
   .preheat-identity .preheat-identity-left{
     flex: none;
   }
   .preheat-identity .preheat-identity-right{
     width: 100%;
-    overflow-x: hidden;
   }
   .preheat-identity .preheat-identity-title{
     font-size: 24px;
@@ -162,7 +181,7 @@
               {%- if block.settings.image != blank -%}
                 <img
                   loading="lazy"
-                  class="img"
+                  class="img {% if block.settings.image1 != blank %}pc-box{% endif %}"
                   data-index="{{ forloop.index }}"
                   width="{{ block.settings.image.width }}"
                   height="{{ block.settings.image.height }}"
@@ -170,12 +189,25 @@
                   alt="{{ block.settings.image.alt | escape }}"
                 >
               {%- endif -%}
-              <div class="preheat-identity-item-text">
-                <div class="preheat-identity-item-sub line-top">{{ block.settings.text1 }}</div>
-                <div class="preheat-identity-item-p line-top" style="transition-delay: .1s;">
-                  {{ block.settings.text2 }}
+              {%- if block.settings.image1 != blank -%}
+                <img
+                  loading="lazy"
+                  class="img mb-box"
+                  data-index="{{ forloop.index }}"
+                  width="{{ block.settings.image1.width }}"
+                  height="{{ block.settings.image1.height }}"
+                  {% render 'image-attributes', image: block.settings.image1 %}
+                  alt="{{ block.settings.image1.alt | escape }}"
+                >
+              {%- endif -%}
+              {%- if block.settings.text1 != blank or block.settings.text2 != blank -%}
+                <div class="preheat-identity-item-text">
+                  <div class="preheat-identity-item-sub line-top">{{ block.settings.text1 }}</div>
+                  <div class="preheat-identity-item-p line-top" style="transition-delay: .1s;">
+                    {{ block.settings.text2 }}
+                  </div>
                 </div>
-              </div>
+              {%- endif -%}
             </div>
           </div>
           {%- endfor -%}
@@ -286,6 +318,11 @@
           {
             "type": "image_picker",
             "id": "image",
+            "label": "Image"
+          },
+          {
+            "type": "image_picker",
+            "id": "image1",
             "label": "Image"
           },
           {

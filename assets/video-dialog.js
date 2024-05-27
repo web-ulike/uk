@@ -326,6 +326,12 @@ function copyCodeExtend(code, codeTxt, bt,event){
  },7000)
 }
 
+ // 定义函数来滚动到特定的 section
+function scrollToSection(sectionId) {
+  var section = document.getElementById(sectionId);
+  section.scrollIntoView({ behavior: 'smooth' });
+}
+
 class ImgPlay {
   constructor(cont,urlRoot,maxLength) {
     this.urlRoot = urlRoot;
@@ -408,3 +414,65 @@ class ImgPlay {
     }
   }
 }
+
+class Countdown {
+    constructor(endTime, elName,loop = null) {
+      this.displayElement = document.querySelector(elName);
+      this.timer = null;
+      this.loop = loop
+      this.setEndTime(endTime);
+      this.start();
+    }
+    setEndTime(endTime) {
+      if (endTime) {
+        this.endTime = new Date(endTime).getTime();
+      } else {
+        if(this.loop){
+          let locTime = localStorage.getItem('loopTime');
+          if(locTime && locTime*1 > new Date().getTime()){
+            this.endTime = locTime*1
+          }else{
+            this.endTime = new Date().getTime() + 2 * 24 * 60 * 60 * 1000;
+            localStorage.setItem('loopTime', this.endTime)
+          }
+        }else{
+          this.endTime = new Date().getTime();
+        }
+      }
+    }
+    start() {
+      this.timer = setInterval(() => this.update(), 1000);
+    }
+
+    update() {
+      const now = new Date().getTime();
+      const distance = this.endTime - now;
+      let hours = 0;
+      let minutes = 0;
+      let seconds = 0;
+
+      if (distance < 0) {
+        if(this.loop){
+          this.endTime = new Date().getTime() + 2 * 24 * 60 * 60 * 1000;
+          localStorage.setItem('loopTime', this.endTime)
+        }else{
+          clearInterval(this.timer);
+          hours = 0;
+          minutes = 0;
+          seconds = 0;
+        }
+        
+      }else{
+        hours = Math.floor(distance / (1000 * 60 * 60));
+        minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        seconds = Math.floor((distance % (1000 * 60)) / 1000);
+      }
+
+      this.displayElement.querySelector('.h').innerHTML = this.formatTime(hours)
+      this.displayElement.querySelector('.m').innerHTML = this.formatTime(minutes)
+      this.displayElement.querySelector('.s').innerHTML = this.formatTime(seconds)
+    }
+    formatTime(time) {
+      return time < 10 ? `0${time}` : time;
+    }
+  }

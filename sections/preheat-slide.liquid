@@ -164,17 +164,37 @@
   .preheat-slide .video-wrapper__play-button{
     zoom:.6;
   }
+  .preheat-slide .preheat-slide-cont{
+    flex-direction: column;
+    gap:40px;
+  }
+  .preheat-slide .preheat-slide-title{
+    font-size: 24px;
+  }
+  .preheat-slide .preheat-slide-text{
+    font-size: 14px;
+    margin-top:10px;
+  }
+  .hair-ads-slide .preheat-slide-left{
+    display:block;
+  }
+  .hair-ads-slide .preheat-slide-right{
+    overflow: visible;
+  }
+  .hair-ads-slide {
+    overflow:hidden;
+  }
 }
 </style>
 
 <section class="section-box">
-  <div class="preheat-slide">
+  <div class="preheat-slide {{ section.settings.text2 }}" style="background:{{ section.settings.bg_color }}">
     <div class="container">
       <div class="preheat-slide-cont to-top">
         <div class="preheat-slide-left">
           <div class="preheat-slide-title line-top"> {{ section.settings.text }} </div>
           <div class="preheat-slide-text line-top">{{ section.settings.text1 }}</div>
-          {%- if section.blocks.size > 0 -%}
+          {%- if section.blocks.size > 2 -%}
             <div class="preheat-slide-arraw">
               <svg xmlns="http://www.w3.org/2000/svg" width="36" height="27" viewBox="0 0 36 27" fill="none">
                 <g clip-path="url(#clip0_860_8658)">
@@ -240,9 +260,12 @@
 </section>
 <script>
   window.addEventListener('load', function() {
-    document.querySelector('.preheat-slide .preheat-slide-arraw').addEventListener('click', function() {
-      document.querySelector('.preheat-slide').classList.add('active')
-    })
+    if(document.querySelector('.preheat-slide .preheat-slide-arraw')){
+      document.querySelector('.preheat-slide .preheat-slide-arraw').addEventListener('click', function() {
+        document.querySelector('.preheat-slide').classList.add('active')
+      })
+    }
+    
     function preheatSlideSwiper(){
       let $p = $('.preheat-slide')
       let $list = $p.find('.preheat-slide-list')
@@ -327,6 +350,17 @@
       "type": "text",
       "id": "text1",
       "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "text2",
+      "label": "自定义Class"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "背景颜色",
+      "default": "#ffffff"
     }
   ],
   "blocks": [
