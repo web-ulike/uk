@@ -129,12 +129,15 @@
     line-height: normal;
         margin-top: 6px;
   }
- .compared_prd-bix picture{
+ .compared_prd-bix .picture{
    display:none;
  }
-  .compared_prd-bix picture:first-child{
+  .compared_prd-bix .picture:first-child{
   display:block;
 }
+  .compared_prd-bix .picture .mb-box{
+    display:none;
+  }
   .w_box{
   text-align: center;
   }
@@ -193,7 +196,11 @@
   }
   .compared_prd-bix .prd_name{
     font-size: 24px;
+    gap:5px;
   }
+    .tag-box{
+      zoom:.6;
+    }
   .compared_prd-bix .prd_price{
     font-size: 16px;
   }
@@ -220,6 +227,12 @@
     width:45px;
     height:45px;
   }
+    .compared_prd-bix .picture .pc-box{
+      display:none;
+    }
+    .compared_prd-bix .picture .mb-box{
+      display:block;
+    }
   }
 </style>
 <section>
@@ -237,30 +250,30 @@
                   <div class="compared_prd-dd">
                     <div class="vod fl1"></div>
                     <div class="compared_prd-bix fl1">
-                       <picture>
-                          {%- if block.settings.mobile_product1_image1 -%}
-                          <source media="(max-width: 767px)" srcset="{{ block.settings.mobile_product1_image1 | image_url }}" sizes="">
+                       <div class="picture">
+                         {%- if block.settings.mobile_product1_image1 -%}
+                          <img class="mb-box" src="{{ block.settings.mobile_product1_image1 | image_url }}" alt="" srcset="">
                           {%- endif -%}
                          {%- if block.settings.product1_image1 -%}
-                          <img src="{{ block.settings.product1_image1 | image_url }}" alt="" srcset="">
+                          <img class="{% if block.settings.mobile_product1_image1 %}pc-box{% endif %}" src="{{ block.settings.product1_image1 | image_url }}" alt="" srcset="">
                           {%- endif -%}
-                       </picture>
-                      <picture>
+                       </div>
+                       <div class="picture">
                           {%- if block.settings.mobile_product1_image2 -%}
-                          <source media="(max-width: 767px)" srcset="{{ block.settings.mobile_product1_image2 | image_url }}" sizes="">
+                          <img class="mb-box" src="{{ block.settings.mobile_product1_image2 | image_url }}" alt="" srcset="">
                           {%- endif -%}
                          {%- if block.settings.product1_image2 -%}
-                          <img src="{{ block.settings.product1_image2 | image_url }}" alt="" srcset="">
+                          <img class="{% if block.settings.mobile_product1_image2 %}pc-box{% endif %}" src="{{ block.settings.product1_image2 | image_url }}" alt="" srcset="">
                           {%- endif -%}
-                       </picture>
-                       <picture>
-                          {%- if block.settings.mobile_product1_image3 -%}
-                          <source media="(max-width: 767px)" srcset="{{ block.settings.mobile_product1_image3 | image_url  }}" sizes="">
+                       </div>
+                       <div class="picture">
+                         {%- if block.settings.mobile_product1_image3 -%}
+                          <img class="mb-box" src="{{ block.settings.mobile_product1_image3 | image_url }}" alt="" srcset="">
                           {%- endif -%}
                          {%- if block.settings.product1_image3 -%}
-                          <img src="{{ block.settings.product1_image3 | image_url }}" alt="" srcset="">
+                          <img class="{% if block.settings.mobile_product1_image3 %}pc-box{% endif %}" src="{{ block.settings.product1_image3 | image_url }}" alt="" srcset="">
                           {%- endif -%}
-                       </picture>
+                       </div>
                       <div class="select_val-box">
                         {%- if block.settings.product1_color1 != blank -%}
                         <div class="select_val-item active" data-index="{{ forloop.index }}">
@@ -292,30 +305,30 @@
                     </div>
 
                     <div class="compared_prd-bix fl1">
-                       <picture>
-                          {%- if block.settings.mobile_product2_image1 -%}
-                          <source media="(max-width: 767px)" srcset="{{ block.settings.mobile_product2_image1 | image_url }}" sizes="">
+                       <div class="picture">
+                         {%- if block.settings.mobile_product2_image1 -%}
+                          <img class="mb-box" src="{{ block.settings.mobile_product2_image1 | image_url }}" alt="" srcset="">
                           {%- endif -%}
                          {%- if block.settings.product2_image1 -%}
-                          <img src="{{ block.settings.product2_image1 | image_url }}" alt="" srcset="">
+                          <img class=" {% if block.settings.mobile_product2_image1 %}pc-box{% endif %}" src="{{ block.settings.product2_image1 | image_url }}" alt="" srcset="">
                           {%- endif -%}
-                       </picture>
-                      <picture>
-                          {%- if block.settings.mobile_product2_image2 -%}
-                          <source media="(max-width: 767px)" srcset="{{ block.settings.mobile_product2_image2 | image_url }}" sizes="">
+                       </div>
+                       <div class="picture">
+                         {%- if block.settings.mobile_product2_image2 -%}
+                          <img class="mb-box" src="{{ block.settings.mobile_product2_image2 | image_url }}" alt="" srcset="">
                           {%- endif -%}
                          {%- if block.settings.product2_image2 -%}
-                          <img src="{{ block.settings.product2_image2 | image_url }}" alt="" srcset="">
+                          <img class="{% if block.settings.mobile_product2_image2 %}pc-box{% endif %}" src="{{ block.settings.product2_image2 | image_url }}" alt="" srcset="">
                           {%- endif -%}
-                       </picture>
-                       <picture>
-                          {%- if block.settings.mobile_product2_image3 -%}
-                          <source media="(max-width: 767px)" srcset="{{ block.settings.mobile_product2_image3 | image_url }}" sizes="">
+                       </div>
+                       <div class="picture">
+                         {%- if block.settings.mobile_product2_image3 -%}
+                          <img class="mb-box" src="{{ block.settings.mobile_product2_image3 | image_url }}" alt="" srcset="">
                           {%- endif -%}
                          {%- if block.settings.product2_image3 -%}
-                          <img src="{{ block.settings.product2_image3 | image_url }}" alt="" srcset="">
+                          <img class="{% if block.settings.mobile_product2_image3 %}pc-box{% endif %}" src="{{ block.settings.product2_image3 | image_url }}" alt="" srcset="">
                           {%- endif -%}
-                       </picture>
+                       </div>
                       <div class="select_val-box">
                         {%- if block.settings.product2_color1 != blank -%}
                         <div class="select_val-item active" data-index="{{ forloop.index }}">
@@ -407,10 +420,10 @@ document.querySelectorAll('.compared_prd-bix').forEach( function(item, index) {
     item.querySelectorAll('.select_val-item').forEach(function(er){
       er.classList.remove('active')
     })
-    item.querySelectorAll('picture').forEach(function(pic){
+    item.querySelectorAll('.picture').forEach(function(pic){
       pic.style.display = "none"
     })
-    item.querySelectorAll('picture')[id].style.display = "block"
+    item.querySelectorAll('.picture')[id].style.display = "block"
     this.classList.add('active')
 
       

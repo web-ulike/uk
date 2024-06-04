@@ -650,7 +650,6 @@
   .countdown_new_box .title {
     font-size: 32px;
     font-family: var(--heading-font-family);
-    font-weight: var(--heading-font-weight);
   }
   .product-toolbar .countdown-time-bar {
     display: flex;
@@ -683,19 +682,17 @@
 
   .box-collapsible-bar .list .item{
     position: relative;
-    border-top: 1px solid #3F3636;
+    border-top: 1px solid rgba(63,54 ,54,.5);
     padding: 15px 0;
   }
   .box-collapsible-bar .list .item:last-child{
-    border-bottom: 1px solid #3F3636;
+    border-bottom: 1px solid rgba(63,54 ,54,.5);
   }
 
   .box-collapsible-bar .list .item .name{
     font-size: 18px;
     line-height: 33px;
     color: #3F3636;
-    font-family: var(--heading-font-family);
-    font-weight: var(--heading-font-weight);
     cursor: pointer;
   }
   .box-collapsible-bar .list .item .box-detail {
@@ -797,6 +794,32 @@
   .summer-sale-diy .product-right-panel .variants-list{
     border-color:rgba(63, 54, 54, .1);
   }
+  .product-components .product-left-panel-box{
+     width: 100%;
+  }
+  .comparison-box-diy{
+    margin-top:0;
+    padding-top:100px;
+  }
+  @media (min-width: 992px) {
+    .product-components .product-left-panel {
+      align-items: flex-start;
+    }
+   .product-components .product-left-panel-box{
+      display: flex;
+      align-items: flex-start;
+      position: relative;
+    }
+    .product-components .product-left-panel .thumbs-swiper{
+      padding-bottom: 0;
+      position: absolute;
+      left:0;
+      top:0;
+    }
+    .product-components .product-left-panel .main-image-swiper{
+      margin-left:100px;
+    }
+  }
   @media (max-width: 1500px) {
     .swiper-pagination-bullet {
       --swiper-pagination-bullet-size: 6px;
@@ -819,7 +842,7 @@
       align-items: center;
     }
     .product-components .product-left-panel .main-image-swiper {
-      margin-left: 20px;
+      /* margin-left: 20px; */
       width: calc(100% - 120px);
     }
     .product-components .product-right-panel {
@@ -843,7 +866,7 @@
     }
   }
 
-  @media (max-width: 768px) {
+  @media (max-width: 991px) {
     .swiper-pagination-bullet {
       --swiper-pagination-bullet-size: 4px;
       --swiper-pagination-bullet-horizontal-gap: 4px;
@@ -851,6 +874,9 @@
 
     .summer-sale-diy{
       padding:42px 0 0 0;
+    }
+    .comparison-box-diy{
+      padding:50px 0;
     }
     .p-hide {
       display: none !important;
@@ -872,6 +898,10 @@
       top: inherit;
       min-height: inherit;
       max-height: inherit;
+    }
+    .product-components .product-left-panel-box{
+      display: flex;
+      flex-direction: column-reverse;
     }
     .product-components .product-left-panel .main-image-swiper {
       width: 100%;
@@ -1108,8 +1138,66 @@
     .copyButton{
       /* width:100%; */
       zoom:1.045;
+      max-width: 100%;
     }
   }
+  .info-gift-flex{
+  display: flex;
+  align-items: center;
+}
+
+.info-gift{
+  background: #fff;
+  padding: 14px 28px;
+  border-radius: 10px;
+  border: 1px solid #E4DDDD;
+  gap: 14px;
+  margin: 20px 0;
+}
+
+.info-gift .img{
+  width: 72px;
+}
+
+.info-gift .info-gift-txt{
+  flex: 1;
+}
+
+.info-gift .info-gift-title{
+  color: #190A0A;
+  font-size: 16px;
+  font-family: var(--heading-font-family);
+  line-height: 1.5;
+}
+
+.info-gift .info-gift-p{
+  color: #190A0A;
+  font-size: 14px;
+  line-height: 1.5;
+  gap: 24px;
+}
+
+.info-gift .info-gift-r{
+  color: #E0004D;
+  gap:8px;
+}
+
+.info-gift .info-gift-r span{
+  color: #767676;
+  text-decoration: line-through;
+}
+
+@media (max-width:991px) {
+  .info-gift{
+    padding: 12px 15px;
+    border-radius: 5px;
+    gap:10px;
+  }
+  .info-gift .info-gift-p{
+    font-size: 12px;
+    gap:19px;
+  }
+}
 </style>
 
 <script src="https://cdn.shopify.com/s/files/1/0740/5882/6015/files/swiper-bundle.min.js?v=1712905203"></script>
@@ -1177,39 +1265,41 @@
 
 <div class="product-components {{ section.settings.text6 }}" id="product-components">
   <div class="product-left-panel">
-    <!-- 左侧轮播 -->
-    <div class="thumbs-swiper">
-      <div class="swiper myThumbs">
-        <div class="swiper-wrapper">
-          <!-- 缩略图 -->
-          {% for item in product.images %}
-            <div class="swiper-slide">
-              {{- item | image_url: width: item.width | image_tag: loading: 'lazy', draggable: false -}}
-            </div>
-          {% endfor %}
-          <!-- 更多缩略图 -->
+    <div class="product-left-panel-box">
+      <!-- 左侧轮播 -->
+      <div class="thumbs-swiper">
+        <div class="swiper myThumbs">
+          <div class="swiper-wrapper">
+            <!-- 缩略图 -->
+            {% for item in product.images %}
+              <div class="swiper-slide">
+                {{- item | image_url: width: item.width | image_tag: loading: 'lazy', draggable: false -}}
+              </div>
+            {% endfor %}
+            <!-- 更多缩略图 -->
+          </div>
         </div>
       </div>
-    </div>
-    <div class="main-image-swiper">
-      <!-- Swiper主图 -->
-      <div class="swiper myGallery">
-        <div class="swiper-wrapper">
-          <!-- 主图 -->
-          {% for item in product.images %}
-            <div class="swiper-slide">
-              {{- item | image_url: width: item.width | image_tag: loading: 'lazy', draggable: false -}}
-            </div>
-          {% endfor %}
+      <div class="main-image-swiper">
+        <!-- Swiper主图 -->
+        <div class="swiper myGallery">
+          <div class="swiper-wrapper">
+            <!-- 主图 -->
+            {% for item in product.images %}
+              <div class="swiper-slide">
+                {{- item | image_url: width: item.width | image_tag: loading: 'lazy', draggable: false -}}
+              </div>
+            {% endfor %}
+          </div>
+          <div class="swiper-pagination"></div>
+          <div class="swiper-button-prev">
+            <img src="https://cdn.shopify.com/s/files/1/0740/5882/6015/files/Artwork_1.png?v=1712483416">
+          </div>
+          <div class="swiper-button-next">
+            <img src="https://cdn.shopify.com/s/files/1/0740/5882/6015/files/Artwork.png?v=1712482544">
+          </div>
+          {% comment %} https://cdn.shopify.com/s/files/1/0740/5882/6015/files/Artwork.png?v=1712482544 {% endcomment %}
         </div>
-        <div class="swiper-pagination"></div>
-        <div class="swiper-button-prev">
-          <img src="https://cdn.shopify.com/s/files/1/0740/5882/6015/files/Artwork_1.png?v=1712483416">
-        </div>
-        <div class="swiper-button-next">
-          <img src="https://cdn.shopify.com/s/files/1/0740/5882/6015/files/Artwork.png?v=1712482544">
-        </div>
-        {% comment %} https://cdn.shopify.com/s/files/1/0740/5882/6015/files/Artwork.png?v=1712482544 {% endcomment %}
       </div>
     </div>
   </div>
@@ -1243,6 +1333,25 @@
         <div class="read-more">{{ se_stts['read-more'] }} +</div>
       {% endif %}
     </div>
+    {%- if section.settings.image1 != blank -%}
+      <div class="info-gift info-gift-flex">
+          <img
+            loading="lazy"
+            class="img"
+            width="{{ section.settings.image1.width }}"
+            height="{{ section.settings.image1.height }}"
+            {% render 'image-attributes', image: section.settings.image1 %}
+            alt="{{ section.settings.image1.alt | escape }}"
+          >
+        <div class="info-gift-txt">
+          <div class="info-gift-title">{{ section.settings.text8 }}</div>
+          <div class="info-gift-p info-gift-flex">
+            {{ section.settings.text9 }}
+            <div class="info-gift-r info-gift-flex">{{ section.settings.text10 }} <span>{{ section.settings.text11 }}</span></div>
+          </div>
+        </div>
+      </div>
+    {%- endif -%}
     <div
       class="variants-list"
       handle="{{ product.handle }}"
@@ -1350,7 +1459,7 @@
       <rect y="0.306641" width="339" height="62" fill="url(#paint2_linear_2223_3235)"/>
       </g>
       <text class="text-left" x="23" y="36" font-size="24" fill="#fff">{{ section.settings.text }}</text>
-      <text x="180" y="33" font-size="14" fill="#fff">Code:{{ section.settings.text1 }}</text>
+      <text x="180" y="33" font-size="14" fill="#fff">{{ section.settings.text1 }}</text>
       <text class="text-copy-btn" x="283" y="31" font-size="14" fill="#fff" data-txt="{{ section.settings.text3 }}" data-txt1="{{ section.settings.text2 }}">{{ section.settings.text2 }}</text>
       <!-- <path d="M283.312 33.5495H315.69V34.5995H283.312V33.5495Z" fill="white"/> -->
       <line x1="155.5" y1="5.93555" x2="155.5" y2="48.9355" stroke="white" stroke-linecap="round" stroke-dasharray="3 3"/>
@@ -1408,12 +1517,23 @@
         
       </div>
     </div>
-    <div class="custom-reasons-block" style="margin-top:8px;justify-content: center;">
-      <div class="item">
-        <img class="img-2" src="https://cdn.shopify.com/s/files/1/0740/5882/6015/files/PayPal.svg">
-        <div class="desc" style="opacity:.5;">Pay in 4 interest-free installments. £92.3/mo. for 4 mo.</div>
+    {%- if section.settings.image != blank or section.settings.text7 != blank -%}
+      <div class="custom-reasons-block" style="margin-top:8px;justify-content: center;">
+        <div class="item">
+          {%- if section.settings.image != blank -%}
+            <img
+              loading="lazy"
+              class="img-2"
+              width="{{ section.settings.image.width }}"
+              height="{{ section.settings.image.height }}"
+              {% render 'image-attributes', image: section.settings.image %}
+              alt="{{ section.settings.image.alt | escape }}"
+            >
+          {%- endif -%}
+          <div class="desc" style="opacity:.5;">{{ section.settings.text7 }}</div>
+        </div>
       </div>
-    </div>
+    {%- endif -%}
     <div class="custom-reasons-block">
       <div class="item">
         <img class="img-2" src="https://cdn.shopify.com/s/files/1/0740/5882/6015/files/mask-group.svg?v=1711459813">
@@ -1493,9 +1613,12 @@
 
 <script>
   var pid = '{{ product.selected_or_first_available_variant.id }}';
+  function isMobileW(){
+    return window.innerWidth < 992
+  }
   document.addEventListener('DOMContentLoaded', function () {
     const galleryThumbs = new Swiper('.myThumbs', {
-      spaceBetween: isMobile() ? 8 : 15,
+      spaceBetween: isMobileW() ? 8 : 15,
       slidesPerView: 'auto',
       lazy: {
         loadPrevNext: true, // 预加载前后两张图片
@@ -1503,7 +1626,7 @@
       freeMode: true,
       watchSlidesVisibility: true,
       watchSlidesProgress: true,
-      direction: isMobile() ? 'horizontal' : 'vertical',
+      direction: isMobileW() ? 'horizontal' : 'vertical',
     });
     const galleryTop = new Swiper('.myGallery', {
       spaceBetween: 10,
@@ -1637,8 +1760,8 @@
    //  // 提示框
    //  $('.tooltip').tooltipster({
    //    theme: 'tooltipster', // 使用 borderless 主题
-   //    maxWidth: isMobile()? 250: 300,
-   //    side: isMobile()? "left": "top",
+   //    maxWidth: isMobileW()? 250: 300,
+   //    side: isMobileW()? "left": "top",
    //    trigger: 'custom', // 设置自定义触发方式
    //    triggerOpen: {
    //      click: true, // 点击时打开
@@ -1760,6 +1883,31 @@
       "default": "Read More"
     },
     {
+      "type": "image_picker",
+      "id": "image1",
+      "label": "赠品图片"
+    },
+    {
+      "type": "text",
+      "id": "text8",
+      "label": "赠品标题"
+    },
+    {
+      "type": "text",
+      "id": "text9",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "text10",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "text11",
+      "label": "Text"
+    },
+    {
       "type": "textarea",
       "id": "group-purchase",
       "label": "加购按钮文案",
@@ -1807,6 +1955,16 @@
       "type": "text",
       "id": "text3",
       "label": "复制成功"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "图标"
+    },
+    {
+      "type": "text",
+      "id": "text7",
+      "label": "Text"
     },
     {
       "type": "text",

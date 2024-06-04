@@ -20,8 +20,34 @@
 
 .comparison-image-text .comparison-image-text-txt,.comparison-image-text .comparison-image-text-img{
   width: 50%;
+  position: relative;
+}
+.comparison-image-text .comparison-image-text-img .img{
+  position: relative;
+  z-index:0;
+}
+.comparison-image-text .comparison-image-wrapper{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  z-index: 2;
 }
 
+.comparison-image-text .comparison-image-wrapper video{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.comparison-image-text .video-wrapper__play-button{
+  position: absolute;
+  margin-bottom:0;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
 .comparison-image-text .comparison-image-text-txt{
   padding: 0 40px;
 }
@@ -95,6 +121,9 @@
     font-size: 12px;
     margin-top: 20px;
   }
+  .comparison-image-text .video-wrapper__play-button{
+      zoom:.6;
+    }
 }
 </style>
 
@@ -114,6 +143,40 @@
                   {% render 'image-attributes', image: block.settings.image %}
                   alt="{{ block.settings.image.alt | escape }}"
                 >
+              {%- endif -%}
+              {%- if block.settings.video != blank -%}
+                <native-video
+                  {% if block.settings.autoplay %}
+                    autoplay
+                  {% endif %}
+                  class="comparison-image-wrapper"
+                >
+                  {%- unless block.settings.autoplay -%}
+                    <button type="button" class="video-wrapper__play-button video-wrapper__play-button--large video-wrapper__play-button--ripple" title="{{ 'general.accessibility.play_video' | t | escape }}">
+                      {%- if block.settings.v_icon != blank -%}
+                        <img
+                          loading="lazy"
+                          class="v_img"
+                          width="{{ block.settings.v_icon.width }}"
+                          height="{{ block.settings.v_icon.height }}"
+                          {% render 'image-attributes', image: block.settings.v_icon %}
+                          alt="{{ block.settings.v_icon.alt | escape }}"
+                        >
+                      {%- endif -%}
+                    </button>
+                  {%- endunless -%}
+                  <template>
+                    {{-
+                      block.settings.video
+                      | video_tag:
+                        controls: block.settings.show_video_controls,
+                        autoplay: block.settings.autoplay,
+                        muted: block.settings.autoplay,
+                        playsinline: block.settings.autoplay,
+                        loop: true
+                    -}}
+                  </template>
+                </native-video>
               {%- endif -%}
             </div>
             <div class="comparison-image-text-txt to-top" style="transition-delay: 0.1s">
@@ -165,6 +228,12 @@
             "label": "Image"
           },
           {
+            "type": "video",
+            "id": "video",
+            "label": "Video",
+            "info": "Replaces the external video if both are set."
+          },
+          {
             "type": "text",
             "id": "text",
             "label": "标题"
@@ -183,6 +252,25 @@
             "type": "text",
             "id": "text3",
             "label": "弹窗名字"
+          },
+          {
+            "type": "checkbox",
+            "id": "autoplay",
+            "label": "Autoplay",
+            "info": "Video is muted automatically to allow autoplay.",
+            "default": true
+          },
+          {
+            "type": "checkbox",
+            "id": "show_video_controls",
+            "label": "Show video controls",
+            "info": "Only applicable with native video.",
+            "default": false
+          },
+          {
+            "type": "image_picker",
+            "id": "v_icon",
+            "label": "Video Icon"
           }
         ]
       }

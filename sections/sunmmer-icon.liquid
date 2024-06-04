@@ -1,0 +1,238 @@
+<style>
+.sunmmer-icon{
+  padding: 98px 0 110px 0;
+}
+
+.sunmmer-icon .sunmmer-icon-cont{
+  display: flex;
+  align-items: center;
+  gap: 9.22%;
+}
+
+.sunmmer-icon .sunmmer-icon-left{
+  width: 26.333%;
+}
+
+.sunmmer-icon .sunmmer-icon-top{
+  display: flex;
+  align-items: flex-end;
+  gap: 15px;
+  position: relative;
+}
+
+.sunmmer-icon .title-img{
+  width: 58.82%;
+  position: absolute;
+  bottom: 0;
+  margin-left: 15px;
+}
+
+.sunmmer-icon .sunmmer-icon-title{
+  color: #3F3636;
+  font-size: 48px;
+  line-height: 1.25;
+  max-width: 60.97%;
+  position: relative;
+}
+
+.sunmmer-icon .sunmmer-icon-sub{
+  color: #190A0A;
+  font-size: 18px;
+  line-height: 1.5;
+}
+
+.sunmmer-icon .sunmmer-icon-right{
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  flex: 1;
+}
+
+.sunmmer-icon .sunmmer-icon-item{
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 220px;
+  align-items: center;
+  text-align: center;
+  flex: 1;
+}
+
+.sunmmer-icon .sunmmer-icon-p{
+  color: #190A0A;
+  font-size: 18px;
+  line-height: 1.25;
+}
+
+.sunmmer-icon .sunmmer-icon-dot{
+  display: none;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 30px;
+}
+
+.sunmmer-icon .sunmmer-icon-dot-item{
+  width: 5px;
+  height: 5px;
+  border-radius: 30px;
+  background: #D9D9D9;
+}
+
+.sunmmer-icon .sunmmer-icon-dot-item.active{
+  background: #7A7A7A;
+}
+
+@media (max-width:1400px) {
+  .sunmmer-icon .sunmmer-icon-title{
+    font-size: 38px;
+  }
+  .sunmmer-icon .sunmmer-icon-item .icon-img{
+    height: 90px;
+  }
+  .sunmmer-icon .sunmmer-icon-p{
+    font-size: 16px;
+  }
+  .sunmmer-icon .sunmmer-icon-sub{
+    font-size: 16px;
+  }
+}
+
+@media (max-width:991px) {
+  .sunmmer-icon{
+    padding: 60px 0 40px 0;
+    overflow: hidden;
+  }
+  .sunmmer-icon .sunmmer-icon-cont{
+    flex-direction: column;
+    gap: 60px;
+    align-items: flex-start;
+  }
+  .sunmmer-icon .sunmmer-icon-left{
+    width: 100%;
+  }
+
+  .sunmmer-icon .sunmmer-icon-title{
+    font-size: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-width: none;
+    flex: 1;
+  }
+  .sunmmer-icon .title-img{
+    width: 105px;
+    bottom: auto;
+    position: relative;
+    margin-left:5px;
+  }
+
+  .sunmmer-icon .sunmmer-icon-sub{
+    font-size: 14px;
+    text-align: center;
+    margin-top: 10px;
+  }
+  .sunmmer-icon .sunmmer-icon-p{
+    font-size: 14px;
+  }
+}
+
+@media (max-width:640px) {
+  .sunmmer-icon .sunmmer-icon-right{
+    gap: 40px;
+  }
+  .sunmmer-icon .sunmmer-icon-item{
+    flex: none;
+    width: 275px;
+    flex-shrink: 0;
+    flex-direction: row;
+    text-align: left;
+    max-width: none;
+  }
+  .sunmmer-icon .sunmmer-icon-dot{
+    display: flex;
+  }
+}
+</style>
+   <section>
+     <div class="sunmmer-icon">
+      <div class="container">
+        <div class="sunmmer-icon-cont">
+          <div class="sunmmer-icon-left to-top">
+            <div class="sunmmer-icon-top">
+              {%- if section.settings.title != blank -%}            
+                <div class="sunmmer-icon-title">
+                  {{ section.settings.title }}
+                  {%- if section.settings.image != blank -%}
+                    <img class="title-img" src="{{ section.settings.image | image_url }}" alt="{{ section.settings.image | escape }}"/>
+                  {%- endif -%}
+                </div>
+              {%- endif -%}
+            </div>
+            <div class="sunmmer-icon-sub">{{ section.settings.text }}</div>
+          </div>
+          <div class="sunmmer-icon-right to-top">
+            {%- for block in section.blocks -%}
+              <div class="sunmmer-icon-item to-top" style="transition-delay: 0.{{ forloop.index }}s">
+                {%- if block.settings.img != blank -%}
+                   <img class="icon-img" src="{{ block.settings.img | image_url }}" alt="{{ block.settings.img | escape }}"/>
+                {%- endif -%}
+                <div class="sunmmer-icon-p">{{ block.settings.cnt | escape }}</div>
+              </div>
+            {%- endfor -%}
+          </div>
+        </div>
+        <div class="sunmmer-icon-dot">
+          {%- for block in section.blocks -%}
+            <div class="sunmmer-icon-dot-item {% if forloop.index == 1 %}active{% endif %}"></div>
+          {%- endfor -%}
+        </div>
+      </div>
+    </div>
+  </section>
+{% schema %}
+{
+"name": "sunmmer-icon",
+"blocks": [
+  {
+    "name": "item",
+    "type": "item",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "img",
+        "label": "Image"
+      },
+      {
+        "type": "text",
+        "id": "cnt",
+        "label": "Content"
+      }
+    ]
+  }
+],
+  "settings": [
+      {
+        "type": "image_picker",
+        "id": "image",
+        "label": "Image"
+      },
+     {
+      "type": "text",
+      "id": "title",
+      "label": "Title"
+    },
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Text"
+    }
+  ],
+  "presets": [
+    {
+      "name": "sunmmer-icon",
+      "blocks": []
+    }
+  ]
+}
+{% endschema %}
