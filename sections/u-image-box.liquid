@@ -1,0 +1,239 @@
+<style>
+.u-image-box {
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.u-image-box .img {
+  display: block;
+  width: 100%;
+  position: relative;
+  z-index: 1;
+}
+
+.u-image-box .u-image-cont {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 2;
+  padding: 60px 0;
+}
+
+.u-image-box .u-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.u-image-box .u-image-text {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  color: #fff;
+}
+
+.u-image-box .u-image-sub {
+  font-size: 18px;
+  line-height: 1.2;
+}
+
+.u-image-box .u-image-title {
+  font-size: 40px;
+  font-family: var(--heading-font-family);
+  max-width: 535px;
+  font-weight: normal;
+  line-height: 1;
+  margin-top: 10px;
+}
+
+.u-image-box .u-image-btn {
+  width: 150px;
+  height: 45px;
+  background: none;
+  border: 2px solid #fff;
+  font-size: 16px;
+  color: #fff;
+}
+
+.u-image-box .u-image-btn .btn-txt::before {
+  color: #000;
+}
+
+.left-center .u-container{
+  justify-content: center;
+}
+
+.left-center .u-image-text{
+  display: block;
+}
+.left-center .u-image-right{
+  margin-top: 30px;
+}
+
+.u-list-banner .u-container{
+  justify-content: space-between;
+}
+
+.u-image-box .u-image-top{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #fff;
+  font-size: 18px;
+}
+
+.u-image-box .u-image-time-t{
+  font-size: 25px;
+  font-family: var(--heading-font-family);
+}
+
+@media (max-width:1200px) {
+  .u-image-box .u-image-title{
+    font-size: 35px;
+  }
+}
+
+@media (min-width:992px) {
+  .u-image-padding.u-image-box .u-image-cont{
+    padding-top: 131px;
+  }
+}
+
+@media (max-width:991px) {
+  
+  .u-image-box .u-image-top{
+    font-size: 16px;
+  }
+  .u-image-box .u-image-time-t{
+    font-size: 18px;
+  }
+  .u-image-box .u-image-title{
+    font-size: 25px;
+    line-height: 1.2;
+  }
+  .u-image-box .u-image-sub{
+    font-size: 16px;
+  }
+  .u-image-box .u-image-text{
+    flex-direction: column;
+    gap: 20px;
+    align-items: flex-start;
+  }
+  .u-image-box .u-image-cont{
+    padding:20px 0 30px 0;
+  }
+  .u-image-padding.u-image-box .u-image-cont{
+    padding-top: 81px;
+  }
+  .left-center .u-container{
+    justify-content: flex-end;
+  }
+}
+</style>
+<section class="section-box">
+  <div class="u-image-box u-image-padding {% if section.settings.text != blank or section.settings.text1 != blank %}u-list-banner{% endif %} {% if section.settings.left_center %}left-center{% endif %}">
+    <picture>
+      <source srcset="{{ section.settings.image_m | image_url }}" media="(max-width: 991px)">
+      <img class="img" src="{{ section.settings.image | image_url }}" width="{{ section.settings.image.width }}" height="{{ section.settings.image.height }}" alt="{{ section.settings.image.alt | escape }}">
+    </picture>
+    <div class="u-image-cont">
+      <div class="u-container container">
+        {%- if section.settings.text != blank or section.settings.text1 != blank -%}
+          <div class="u-image-top">
+            {%- if section.settings.text != blank -%}
+            <div class="u-image-time-t">{{ section.settings.text }}</div>
+            {%- endif -%}
+            {%- if section.settings.text1 != blank -%}
+            <div class="u-image-time">{{ section.settings.text1 }}</div>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+        <div class="u-image-text">
+          <div class="u-image-left">
+            {%- if section.settings.text2 != blank -%}
+              <div class="u-image-sub">{{ section.settings.text2 }}</div>
+            {%- endif -%}
+            {%- if section.settings.text3 != blank -%}
+              <h2 class="u-image-title">
+                {{ section.settings.text3 }}
+              </h2>
+            {%- endif -%}
+          </div>
+          {%- if section.settings.text4 != blank -%}
+            <div class="u-image-right">
+              <a href="{{ section.settings.text5 }}" class="u-image-btn btn-diy">
+                <div class="btn-txt" text="{{ section.settings.text4 }}">
+                  <span>{{ section.settings.text4 }}</span>
+                </div>
+              </a>
+            </div>
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% schema %}
+{
+"name": "u-image-box",
+"settings": [
+  {
+    "type": "checkbox",
+    "id": "left_center",
+    "label": "left center",
+    "default":false
+  },
+  {
+    "type": "image_picker",
+    "id": "image",
+    "label": "Image"
+  },
+  {
+    "type": "image_picker",
+    "id": "image_m",
+    "label": "Mobile Image"
+  },
+  {
+    "type": "text",
+    "id": "text",
+    "label": "Text"
+  },
+  {
+    "type": "text",
+    "id": "text1",
+    "label": "Text"
+  },
+  {
+    "type": "text",
+    "id": "text2",
+    "label": "Text"
+  },
+  {
+    "type": "text",
+    "id": "text3",
+    "label": "Text"
+  },
+  {
+    "type": "text",
+    "id": "text4",
+    "label": "Text"
+  },
+  {
+    "type": "url",
+    "id": "text5",
+    "label": "Link"
+  }
+],
+  "presets": [
+  {
+    "name": "u-image-box",
+    "blocks": []
+  }
+]
+}
+{% endschema %}

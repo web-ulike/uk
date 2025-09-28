@@ -1,0 +1,689 @@
+<style>
+  .product-area-box {
+    position: relative;
+    z-index: 1;
+    padding: 80px 0;
+    background: #fff;
+  }
+
+  .product-area-box .product-area-list {
+    display: flex;
+  }
+
+  .product-area-box .product-area-item {
+    position: relative;
+    overflow: hidden;
+    flex: 1;
+  }
+
+  .product-area-box .product-area-item:first-child {
+    margin-right: 36px;
+  }
+
+  .product-area-box .product-area-tag {
+    position: absolute;
+    background: #e0004d;
+    font-size: 16px;
+    font-family: var(--heading-font-family);
+    color: #fff;
+    top: 15px;
+    left: 15px;
+    z-index: 3;
+    padding: 3px 10px;
+    overflow: hidden;
+  }
+
+  .product-area-box .product-area-tag::before {
+    position: absolute;
+    content: '';
+    display: block;
+    width: 200%;
+    height: 200%;
+    z-index: 2;
+    background: linear-gradient(
+      -45deg,
+      rgba(255, 255, 255, 0) 40%,
+      rgba(255, 255, 255, 0.5) 50%,
+      rgba(255, 255, 255, 0) 60%
+    );
+    animation: scanning 3s linear infinite;
+  }
+
+  @keyframes scanning {
+    0% {
+      transform: translate(-100%, -100%);
+    }
+
+    100% {
+      transform: translate(100%, 100%);
+    }
+  }
+
+  .product-area-box .product-area-img-list {
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+    display: block;
+  }
+
+  .product-area-box .product-area-img-item {
+    width: 100%;
+    overflow: hidden;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    display: none;
+  }
+
+  .product-area-box .product-area-img-item.active {
+    position: relative;
+    display: block;
+  }
+
+  .product-area-box .product-area-img-item.close {
+    z-index: 3;
+    transition: width 0.6s ease;
+    width: 0;
+    height: 100%;
+    display: block;
+  }
+
+  .product-area-box .product-area-img-item.close .img {
+    width: auto;
+    max-width: none;
+    height: 100%;
+  }
+
+  .product-area-box .product-area-item .img {
+    display: block;
+    position: relative;
+    z-index: 1;
+    width: 100%;
+  }
+
+  .product-area-box .product-area-cont {
+    background: #f8f8f8;
+    padding: 35px 25px;
+    position: relative;
+  }
+
+  .product-area-box .product-area-dot {
+    position: absolute;
+    right: 25px;
+    top: 35px;
+    z-index: 3;
+    display: flex;
+  }
+
+  .product-area-box .product-area-dot .product-area-dot-item {
+    position: relative;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    margin-left: 12px;
+    cursor: pointer;
+    background: linear-gradient(to bottom, #fff 80%, rgba(0, 0, 0, 0.1) 100%);
+    box-shadow: inset 0 0 2px 1px rgba(0, 0, 0, 0.05), inset 0 0 2px 1px rgba(255, 255, 255, 0.05);
+  }
+
+  .product-area-box .product-area-dot .product-area-dot-item::after {
+    /* position: absolute;
+  content: "";
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  top: 0;
+  left: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0),
+    rgba(0, 0, 0, 0.1) 100%
+  );
+  z-index: 2; */
+    border-radius: inherit;
+    box-shadow: inset 0 1px 1px rgb(0 0 0 / 10%);
+    content: '';
+    display: block;
+    height: inherit;
+    position: absolute;
+    width: inherit;
+  }
+
+  .product-area-box .product-area-dot .product-area-dot-item.active::before {
+    position: absolute;
+    content: '';
+    display: block;
+    width: 120%;
+    height: 120%;
+    border-radius: 50%;
+    border: 1px solid #000;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .product-area-box .product-area-h3 {
+    font-size: 30px;
+    font-family: var(--heading-font-family);
+    color: #000;
+    line-height: 1.2;
+    margin: 0;
+  }
+
+  .product-area-box .product-area-p {
+    font-size: 20px;
+    color: #9b9b9b;
+    line-height: 1.2;
+  }
+
+  .product-area-box .product-area-price {
+    font-size: 20px;
+    color: #000;
+    font-family: var(--heading-font-family);
+    line-height: 1.2;
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .product-area-box .product-area-price .price-txt{
+    color: #e7004c;
+    font-family: var(--heading-font-family);
+  }
+  
+  .product-area-box .product-area-price .price-original-txt{
+    text-decoration: line-through;
+    color: #bebebe;
+  }
+
+  .product-area-box .product-area-price .product-area-tag {
+    display: none;
+  }
+
+  .product-area-box .product-area-price span {
+    color: #bcbcbc;
+    font-weight: normal;
+    text-decoration: line-through;
+    display: inline-block;
+    margin-left: 15px;
+  }
+
+  .product-area-box .product-area-btn {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+    overflow: hidden;
+  }
+
+  .product-area-box .product-area-btn-item {
+    background: #000;
+    flex: 1;
+    color: #fff;
+    font-size: 16px;
+    height: 74px;
+    margin-left: 25px;
+    line-height: 1;
+    border: 2px solid #000;
+    cursor: pointer;
+  }
+
+  .product-area-box .product-area-btn-item::after {
+    background: #f8f8f8;
+  }
+
+  .product-area-box .product-area-btn-item:hover {
+    color: #000;
+  }
+
+  .product-area-box .product-area-btn-item:first-child {
+    margin-left: 0;
+    background: #f8f8f8;
+    color: #000;
+  }
+
+  .product-area-box .product-area-btn-item:first-child:hover {
+    color: #fff;
+  }
+
+  .product-area-box .product-area-btn-item:first-child::after {
+    background: #000;
+  }
+
+  @media (max-width: 1400px) {
+    .product-area-box .product-area-h3 {
+      font-size: 25px;
+    }
+
+    .product-area-box .product-area-p {
+      font-size: 16px;
+    }
+
+    /* .product-area-box .product-area-price {
+      font-size: 20px;
+    } */
+
+    .product-area-box .product-area-btn-item {
+      height: 55px;
+    }
+  }
+
+  @media (max-width: 991px) {
+    .product-area-box {
+      padding: 50px 0;
+    }
+
+    .product-area-box .product-area-list {
+      flex-wrap: wrap;
+    }
+
+    .product-area-box .product-area-item {
+      flex: auto;
+      width: 100%;
+    }
+
+    .product-area-box .product-area-item:first-child {
+      margin-bottom: 30px;
+      margin-right: 0;
+    }
+
+    .product-area-box .product-area-cont {
+      padding: 25px 15px;
+    }
+
+    .product-area-box .product-area-h3 {
+      font-size: 25px;
+      text-align: center;
+    }
+
+    .product-area-box .product-area-p {
+      font-size: 18px;
+      text-align: center;
+    }
+
+    .product-area-box .product-area-price {
+      font-size: 16px;
+      margin-top: 10px;
+      justify-content: center;
+    }
+
+    .product-area-box .product-area-price .product-area-tag {
+      display: block;
+      position: relative;
+      margin-left: 10px;
+      font-size: 12px;
+      line-height: 1;
+      padding: 4px 8px;
+      top: 0;
+      left: 0;
+    }
+
+    .product-area-box .product-area-btn {
+      margin-top: 30px;
+    }
+
+    .product-area-box .product-area-btn-item {
+      height: 45px;
+    }
+
+    .product-area-box .product-area-dot {
+      top: 0;
+      right: 0;
+      position: relative;
+      justify-content: center;
+      margin-top: 20px;
+    }
+
+    .product-area-box .product-area-dot .product-area-dot-item {
+      width: 30px;
+      height: 30px;
+      margin: 0 8px;
+    }
+
+    .product-area-box .product-area-tag {
+      font-size: 12px;
+      padding: 1px 8px;
+      display: none;
+    }
+  }
+</style>
+<section class="section-box">
+  <div class="product-area-box" style="background:{{section.settings.background}}">
+    {%- assign color_swatch_config = settings.color_swatch_config | newline_to_br | split: '<br />' -%}
+    <div class="container">
+      <div class="product-area-list">
+        {%- for block in section.blocks -%}
+          <div class="product-area-item to-top" style="transition-delay: 0.1s">
+            {%- if block.settings.tag != blank -%}
+              <div class="product-area-tag">{{ block.settings.tag }}</div>
+            {%- endif -%}
+
+            <a href="{{ block.settings.link }}" class="product-area-img-list">
+              {%- if block.settings.image != blank -%}
+                <div class="product-area-img-item active">
+                  <img
+                    loading="lazy"
+                    class="img"
+                    {% render 'image-attributes', image: block.settings.image %}
+                    alt="{{ block.settings.image.alt | escape }}"
+                  >
+                </div>
+              {%- endif -%}
+              {%- if block.settings.image1 != blank -%}
+                <div class="product-area-img-item">
+                  <img
+                    loading="lazy"
+                    class="img"
+                    {% render 'image-attributes', image: block.settings.image1 %}
+                    alt="{{ block.settings.image1.alt | escape }}"
+                  >
+                </div>
+              {%- endif -%}
+              {%- if block.settings.image2 != blank -%}
+                <div class="product-area-img-item">
+                  <img
+                    loading="lazy"
+                    class="img"
+                    width="{{ block.settings.image2.width }}"
+                    height="{{ block.settings.image2.height }}"
+                    {% render 'image-attributes', image: block.settings.image2 %}
+                    alt="{{ block.settings.image2.alt | escape }}"
+                  >
+                </div>
+              {%- endif -%}
+            </a>
+            <div class="product-area-cont">
+              {%- if block.settings.title != blank -%}
+                <div class="product-area-h3 to-top">
+                  {{ block.settings.title }}
+                </div>
+              {%- endif -%}
+              {%- if block.settings.content != blank -%}
+                <div class="product-area-p to-top">
+                  {{ block.settings.content }}
+                </div>
+              {%- endif -%}
+              {%- if block.settings.price != blank or block.settings.tag != blank -%}
+                <div class="product-area-price to-top">
+                  {%- if block.settings.price != blank -%}
+                    <div class="price-txt">{{ block.settings.v_price }}</div>
+                  {%- endif -%}
+                  {%- if block.settings.v_original_price != blank -%}
+                    <div class="price-original-txt">{{ block.settings.v_original_price }}</div>
+                  {%- endif -%}
+                  
+                  {%- if block.settings.tag != blank -%}
+                    <div class="product-area-tag">{{ block.settings.tag }}</div>
+                  {%- endif -%}
+                </div>
+              {%- endif -%}
+              <div class="product-area-dot to-top">
+                {%- if block.settings.color != blank -%}
+                  <div
+                    class="product-area-dot-item active"
+                    data-product-id="{{ block.settings.productId }}"
+                    data-title="{{ block.settings.title1 }}"
+                    data-price="{{ block.settings.v_price }}"
+                    data-original-price="{{ block.settings.v_original_price }}"
+                    style="{% render 'color-swatch-style', color_swatch_config: color_swatch_config, value: block.settings.color %};background-size: 100% 100%;"
+                  ></div>
+                {%- endif -%}
+                {%- if block.settings.color1 != blank -%}
+                  <div
+                    class="product-area-dot-item"
+                    data-product-id="{{ block.settings.productId1 }}"
+                    data-title="{{ block.settings.title2 }}"
+                    data-price="{{ block.settings.v_price1 }}"
+                    data-original-price="{{ block.settings.v_original_price1 }}"
+                    style="{% render 'color-swatch-style', color_swatch_config: color_swatch_config, value: block.settings.color1 %};background-size: 100% 100%;"></div>
+                {%- endif -%}
+                {%- if block.settings.color2 != blank -%}
+                  <div
+                    class="product-area-dot-item"
+                    data-product-id="{{ block.settings.productId2 }}"
+                    data-title="{{ block.settings.title3 }}"
+                    data-price="{{ block.settings.v_price2 }}"
+                    data-original-price="{{ block.settings.v_original_price2 }}"
+                    style="{% render 'color-swatch-style', color_swatch_config: color_swatch_config, value: block.settings.color2 %};background-size: 100% 100%;"
+                  ></div>
+                {%- endif -%}
+              </div>
+              <div class="product-area-btn-box">
+                <div class="product-area-btn to-top">
+                  {%- if block.settings.btn_txt1 != blank -%}
+                    <a
+                      href="{{ block.settings.link1 }}"
+                      title="{{ block.settings.title }} {{ block.settings.btn_txt1 }}"
+                      aria-label="{{ block.settings.title }} {{ block.settings.btn_txt1 }}"
+                      class="product-area-btn-item btn-diy"
+                    >
+                      <div class="btn-txt" text="{{ block.settings.btn_txt1 }}">
+                        <span>{{ block.settings.btn_txt1 }}</span>
+                      </div>
+                    </a>
+                  {%- endif -%}
+                  {%- if block.settings.btn_txt != blank -%}
+                    <div
+                      class="product-area-btn-item btn-diy add-to-cart-diy"
+                      data-code="{{ block.settings.p_code }}"
+                      data-product-id="{{ block.settings.productId }}"
+                    >
+                      <div class="btn-txt" text="{{ block.settings.btn_txt }}">
+                        <span>
+                          {{ block.settings.btn_txt }}
+                        </span>
+                      </div>
+                    </div>
+                  {%- endif -%}
+                </div>
+              </div>
+            </div>
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+  window.addEventListener('load', function () {
+    $('html').on('click', '#shopify-section-{{ section.id }} .product-area-box .product-area-dot-item', function () {
+      let $this = $(this);
+      let index = $this.index();
+      if ($this.hasClass('active')) return;
+      $this.closest('.product-area-item').find('.product-area-img-item.close').removeClass('close');
+      $this.addClass('active').siblings().removeClass('active');
+      $this.closest('.product-area-item').find('.product-area-img-item.active').removeClass('active').addClass('close');
+      $this.closest('.product-area-item').find('.product-area-img-item').eq(index).addClass('active');
+      if($this.attr('data-title')){
+        $this.closest('.product-area-item').find('.product-area-h3').html($this.attr('data-title'))
+      }
+      // 增加价格筛选
+      if($this.attr('data-price')){
+        $this.closest('.product-area-item').find('.price-txt').html($this.attr('data-price'))
+      }
+      if($this.attr('data-original-price')){
+        $this.closest('.product-area-item').find('.price-original-txt').html($this.attr('data-original-price'))
+      }
+      
+
+
+      $this
+        .closest('.product-area-item')
+        .find('.add-to-cart-diy')
+        .attr('data-product-id', $this.attr('data-product-id'));
+      setTimeout(() => {
+        $this.closest('.product-area-item').find('.product-area-img-item.close').removeClass('close');
+      }, 600);
+    });
+    document.querySelectorAll('#shopify-section-{{ section.id }} .add-to-cart-diy').forEach((el) => {
+      el.addEventListener('click', function () {
+        addToCart(this.getAttribute('data-product-id'),'', null, this.getAttribute('data-code'));
+      });
+    });
+  });
+</script>
+{% schema %}
+{
+  "name": "product-area",
+  "class": "product-area-diy",
+  "blocks": [
+    {
+      "name": "item",
+      "type": "item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "tag",
+          "label": "label"
+        },
+        {
+          "type": "text",
+          "id": "title1",
+          "label": "变体标题"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "productId",
+          "label": "Product Id"
+        },
+        {
+          "type": "text",
+          "id": "color",
+          "label": "Color"
+        },
+        {
+          "type": "text",
+          "id": "v_price",
+          "label": "变体价格"
+        },
+        {
+          "type": "text",
+          "id": "v_original_price",
+          "label": "变体原价"
+        },
+        {
+          "type": "text",
+          "id": "title2",
+          "label": "变体标题"
+        },
+        {
+          "type": "image_picker",
+          "id": "image1",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "productId1",
+          "label": "Product Id"
+        },
+        {
+          "type": "text",
+          "id": "color1",
+          "label": "Color"
+        },
+        {
+          "type": "text",
+          "id": "v_price1",
+          "label": "变体2价格"
+        },
+        {
+          "type": "text",
+          "id": "v_original_price1",
+          "label": "变体原价2"
+        },
+        {
+          "type": "text",
+          "id": "title3",
+          "label": "变体标题"
+        },
+        {
+          "type": "image_picker",
+          "id": "image2",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "productId2",
+          "label": "Product Id"
+        },
+        {
+          "type": "text",
+          "id": "color2",
+          "label": "Color"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title"
+        },
+        {
+          "type": "text",
+          "id": "content",
+          "label": "Heading"
+        },
+        {
+          "type": "text",
+          "id": "price",
+          "label": "Price"
+        },
+        {
+          "type": "text",
+          "id": "v_price2",
+          "label": "变体3价格"
+        },
+        {
+          "type": "text",
+          "id": "v_original_price2",
+          "label": "变体原价3"
+        },
+        {
+          "type": "text",
+          "id": "btn_txt",
+          "label": "Button text"
+        },
+        {
+          "type": "text",
+          "id": "btn_txt1",
+          "label": "Button text"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        },
+        {
+          "type": "url",
+          "id": "link1",
+          "label": "Link"
+        },
+        {
+          "type": "text",
+          "id": "p_code",
+          "label": "添加购物车应用code"
+        }
+      ]
+    }
+  ],
+  "settings": [
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background",
+      "default": "rgba(0,0,0,0)"
+    }
+  ],
+  "presets": [
+    {
+      "name": "product-area",
+      "blocks": []
+    }
+  ]
+}
+{% endschema %}

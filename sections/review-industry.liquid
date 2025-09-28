@@ -8,6 +8,10 @@
   max-width: 1400px;
 }
 
+.new-a3-max .container{
+  max-width: 1600px;
+}
+
 .review-industry .title-diy{
   margin-bottom: 90px;
 }
@@ -110,6 +114,7 @@
 .review-industry .review-industry-right{
   position: relative;
   padding-left: 392px;
+  flex:1;
 }
 
 .review-industry .review-industry-text-list{
@@ -252,6 +257,30 @@
 
 .home-review.review-industry .review-industry-text-sub{
   display: none;
+}
+
+.seo-diy .review-industry-text-name{
+  padding-left:0;
+  margin-top: 20px;
+}
+
+.seo-diy .review-industry-text-sub{
+  margin-top:0;
+}
+
+.review-industry .review-industry-text-btn{
+  display: flex;
+  width: 102px;
+  height: 31px;
+  justify-content: center;
+  align-items: center;
+  color: #FFF;
+  text-align: center;
+  font-size: 14px;
+  line-height: 1.5;
+  font-family: var(--heading-font-family);
+  margin-top:50px;
+  background: #E0004D;
 }
 
 @media (min-width:992px) {
@@ -412,6 +441,19 @@
   .home-review.review-industry .review-industry-sub{
     font-size: 12px;
   }
+  .seo-diy .review-industry-text-sub{
+    display:block;
+    max-width:100%;
+  }
+  .seo-diy .review-industry-text-name{
+    margin-top:15px;
+  }
+  .review-industry .review-industry-text-btn{
+    margin-top:25px;
+  }
+  .seo-diy .review-industry-img-list::after{
+    display:none;
+  }
 }
 </style>
 <section class="section-box">
@@ -459,6 +501,11 @@
                     </div>
                   {%- endif -%}
                 </div>
+                {%- if block.settings.text4 != blank -%}
+                  <div class="review-industry-text-btn" data-link="{{ block.settings.link }}">
+                    {{ block.settings.text4 }}
+                  </div>
+                {%- endif -%}
               </div>
             {%- endfor -%}
           </div>
@@ -472,6 +519,15 @@
   </div>
 </section>
 <script>
+  document.querySelectorAll(".review-industry .review-industry-text-btn").forEach(item => {
+    item.addEventListener("click", function() {
+        const link = this.getAttribute("data-link");
+        if (link) {
+            window.open(link, "_blank");
+        } else {
+        }
+    });
+  });
   function industrySwiper(name){
     let timeNum = +new Date()
     let $p = $(name)
@@ -643,6 +699,16 @@
         "type": "text",
         "id": "text3",
         "label": "Text"
+      },
+      {
+        "type": "text",
+        "id": "text4",
+        "label": "按钮文案"
+      },
+      {
+        "type": "url",
+        "id": "link",
+        "label": "链接"
       }
     ]
   }

@@ -1,0 +1,336 @@
+<div class="header-new-popup" style="display:none;">
+  <div class="header-new-cont">
+    <div class="container">
+      <div class="header-new-cont-list">
+        {%- for link in menu.links -%}   
+          {%- assign forloop_index = forloop.index -%}
+          {%- assign link_title = link.title | strip | downcase -%}
+          {%- assign block_item = '' -%}
+          {%- assign market_item = '' -%}
+          
+          {%- for item in section.blocks -%}
+            {%- assign name_txt = item.settings.name_txt | strip | downcase -%}
+            {%- if link_title == name_txt -%}
+              {%- assign block_item = item -%}
+            {% endif %}
+          {%- endfor -%}
+
+          {%- for item in section.blocks -%}
+            {%- assign market_txt = item.settings.market_txt | strip | downcase -%}
+            {%- if link_title == market_txt -%}
+              {%- assign market_item = item -%}
+            {% endif %}
+          {%- endfor -%}
+
+          {%- if block_item != '' -%}
+            <div class="header-new-hide" id="desktop-menu-{{ forloop_index }}">
+              <div class="header-new-item">
+                {%- for item in section.blocks -%}
+                  {%- assign name_txt_s = item.settings.name_txt | strip | downcase -%}
+                  {%- if name_txt_s == link_title -%}
+                    <div class="header-new-item-sm">
+                      {%- if item.settings.text != blank -%}
+                        <div class="header-new-item-title">{{ item.settings.text }}</div>
+                      {%- endif -%}
+                      <div class="header-new-item-sm-list">
+                        <!-- 二级菜单-产品 -->
+                        {% if item.type == 'product_range' and item.settings.collection != blank %}
+                          {% assign selected_collection = collections[item.settings.collection] %}
+                          {% for product in selected_collection.products limit: 3 %}
+                            <a href="{{ product.url }}" class="header-new-product-item">
+                              <div  class="header-new-product-img">
+                                {%  if product.metafields.custom["head_img"] != blank -%}
+                                  <img src="{{ product.metafields.custom["head_img"] | image_url }}" width="" height="" alt="{{ product.title }}" loading="lazy">
+                                {% else %}
+                                  <img src="{{ product.featured_image | image_url }}" width="" height="" alt="{{ product.title }}" loading="lazy">
+                                {% endif %}
+                              </div>
+                              <div class="header-new-product-info">
+                                <div class="header-new-product-title">{{ product.title }}
+                                {%  if product.metafields.custom["tag"] != blank -%}
+                                  <span>{{ product.metafields.custom["tag"] }}</span>
+                                {% endif %}
+                                </div>
+                                <div class="header-new-product-star">
+                                  <div class='jdgm-widget jdgm-preview-badge'>
+                                    {{ product.metafields.judgeme.badge }}
+                                  </div>
+                                </div>
+                                <div class="header-new-product-price">
+                                  {%  if product.metafields.custom["n_price"] != blank -%}
+                                    {{ product.metafields.custom["n_price"] }}
+                                  {% else %}
+                                    {{ product.price | money }}
+                                  {% endif %}
+                                  {%  if product.metafields.custom["o_price"] != blank -%}
+                                    <span class="head-o-price">{{ product.metafields.custom["o_price"] }}</span>
+                                  {% endif %}
+                                </div>
+                                {%- if item.settings.text1 != blank -%}
+                                  <div class="header-new-product-btn" data-id="{{ product.variants.first.id }}" data-code="{{ product.metafields.custom["discount_code"] }}">
+                                    {{ item.settings.text1 }}
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="11" viewBox="0 0 14 11" fill="none">
+                                      <path d="M0 5.50061L13.087 5.5" stroke="#E0004D" stroke-width="0.608696" />
+                                      <path d="M10.3477 2.76099L13.553 5.50073L10.3477 8.17107" stroke="#E0004D"
+                                        stroke-width="0.608696" stroke-linejoin="round" />
+                                    </svg>
+                                  </div>
+                                {%- endif -%}
+                              </div>
+                            </a>
+                          {%- endfor -%}
+                        {% endif %}
+                        
+                        {% if item.type == 'operate_block' %}
+                          <!-- 二级菜单-活动 -->
+                          <div class="header-new-operate-item">
+                            <img src="{{ item.settings.image | image_url }}" loading="lazy" width="" height="" alt="{{ item.settings.image.alt }}" class="img">
+                            <div class="header-new-operate-txt">
+                              <div class="header-new-operate-title">
+                                {{ item.settings.text1 }}
+                              </div>
+                              {%- if item.settings.text3 != blank -%}
+                                <div data-link="{{ item.settings.link1 }}" class="header-new-operate-btn">{{ item.settings.text3 }}</div>
+                              {%- endif -%}
+                            </div>
+                          </div>
+                        {% endif %}
+                      </div>
+                       {%- if item.type == 'product_range' and item.settings.rm_text !='' -%}
+                        <a href="{{ item.settings.rm_link }}" class="header-new-all">
+                          {{ item.settings.rm_text }}
+                          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="11" viewBox="0 0 14 11" fill="none">
+                            <path d="M0 5.50061L13.087 5.5" stroke="#E0004D" stroke-width="0.608696" />
+                            <path d="M10.3477 2.76099L13.553 5.50073L10.3477 8.17107" stroke="#E0004D" stroke-width="0.608696"
+                              stroke-linejoin="round" />
+                          </svg>
+                        </a>
+                     {%- endif -%}
+                    </div>
+                  {% endif %}   
+                {%- endfor -%}
+              </div>
+             {% if block_item.type == 'operate_block' or block_item.type == 'product_range' %}
+               {%- assign rm_text = '' -%}
+               {%- assign rm_link = '' -%}
+                 
+              {% if block_item.type == 'operate_block' and section.settings.rm_text != blank %}       
+               {%- assign rm_text = section.settings.rm_text -%}
+              {%- endif -%}
+              {% if block_item.type == 'operate_block' and section.settings.rm_link != blank %}
+               {%- assign rm_link = section.settings.rm_link -%}
+              {%- endif -%}
+              {% if block_item.type == 'product_range' and section.settings.rm_text1 != blank %}       
+               {%- assign rm_text = section.settings.rm_text1 -%}
+              {%- endif -%}
+              {% if block_item.type == 'product_range' and section.settings.rm_link1 != blank %}
+               {%- assign rm_link = section.settings.rm_link1 -%}
+              {%- endif -%}
+              {%- if rm_text !='' -%}
+                <a href="{{ rm_link }}" class="header-new-all">
+                  {{ rm_text }}
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="11" viewBox="0 0 14 11" fill="none">
+                    <path d="M0 5.50061L13.087 5.5" stroke="#E0004D" stroke-width="0.608696" />
+                    <path d="M10.3477 2.76099L13.553 5.50073L10.3477 8.17107" stroke="#E0004D" stroke-width="0.608696"
+                      stroke-linejoin="round" />
+                  </svg>
+                </a>
+             {%- endif -%}
+            {%- endif -%}
+          </div>
+          {% endif %}
+            {%- if link.links.size > 0 -%}
+              <!-- 三级菜单-链接 -->
+              <div class="header-new-hide {% if market_item != '' %}market-cont-menu{% endif %}" id="desktop-menu-{{ forloop_index }}">
+                <div class="header-new-item">
+                  {%- for sub_link in link.links -%}
+                    <div class="header-new-item-sm">
+                    {%- if sub_link.links.size > 0 -%}   
+                      <div class="header-new-item-title">{{ sub_link.title }}</div>
+                      <div class="header-new-item-sm-list">
+                        {%- for sub_sub_link in sub_link.links -%}
+                          {%- assign link_title_downcase = sub_sub_link.title | strip | downcase -%}
+                          {%- assign menu_tag_block_img = '' -%}
+                          {%- for sblock in section.blocks -%}
+      
+                            {%- assign menu_tag_downcase = sblock.settings.menu_tag | strip | downcase -%}
+                    
+                            {%- if menu_tag_downcase == link_title_downcase -%}
+                              {%- if sblock.settings.image_link_tag != blank -%}
+                                {%- assign menu_tag_block_img = sblock.settings.image_link_tag -%}
+                              {%- endif -%}
+                              {%- break -%}
+                            {%- endif -%}
+                          {%- endfor -%}
+                          <a href="{{ sub_sub_link.url }}" text="{{ sub_sub_link.title }}"  class="header-new-link-item {% if menu_tag_block_img != '' %}link-menu-icon-a{% endif %}">
+                            {%- if menu_tag_block_img != '' -%}
+                              <img class="link-menu-icon" src="{{ menu_tag_block_img | image_url }}" width="" height="" alt="{{ menu_tag_block_img.alt }}" />
+                            {%- endif -%}
+                            <span>
+                              {{ sub_sub_link.title }}
+                            </span>
+                          </a>
+                        {%- endfor -%}
+                      </div>
+                    {%- else -%}
+                      <a href="{{ sub_link.url }}" class="header-new-item-title">{{ sub_link.title }}</a>
+                    {%- endif -%}
+                    </div>
+                  {%- endfor -%}
+                </div>
+                {% if market_item != '' %}
+                  <div class="market-cont-menu-list">
+                    {%- if market_item.settings.image != blank or market_item.settings.text != blank or market_item.settings.text1 != blank -%}
+                      <a href="{{ market_item.settings.link }}" class="market-cont-menu-item">
+                        {%- if market_item.settings.image != blank -%}
+                          <img class="market-cont-menu-img" src="{{ market_item.settings.image | image_url  }}" width="" height="" alt="{{ market_item.settings.image.alt }}" />
+                        {%- endif -%}
+                        {%- if market_item.settings.text != blank -%}
+                          <h3 class="market-cont-menu-h3">{{ market_item.settings.text }}</h3>
+                        {%- endif -%}
+                        {%- if market_item.settings.text1 != blank -%}
+                          <p class="market-cont-menu-p">{{ market_item.settings.text1 }}</p>
+                        {%- endif -%}
+                      </a>
+                    {%- endif -%}
+                    {%- if market_item.settings.image1 != blank or market_item.settings.text2 != blank or market_item.settings.text3 != blank -%}
+                      <a href="{{ market_item.settings.link1 }}" class="market-cont-menu-item">
+                        {%- if market_item.settings.image1 != blank -%}
+                          <img class="market-cont-menu-img" src="{{ market_item.settings.image1 | image_url  }}" width="" height="" alt="{{ market_item.settings.image1.alt }}" />
+                        {%- endif -%}
+                        {%- if market_item.settings.text2 != blank -%}
+                          <h3 class="market-cont-menu-h3">{{ market_item.settings.text2 }}</h3>
+                        {%- endif -%}
+                        {%- if market_item.settings.text3 != blank -%}
+                          <p class="market-cont-menu-p">{{ market_item.settings.text3 }}</p>
+                        {%- endif -%}
+                      </a>
+                    {%- endif -%}
+                  </div>
+                {%- endif -%}
+              </div>      
+           {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  document.querySelectorAll('.header-new-popup .header-new-operate-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const link = btn.getAttribute('data-link');
+      if (link) {
+        window.location.href = link;
+      }
+    });
+  });
+
+  class HeaderHoverMenu {
+    constructor(options) {
+      this.itemSelector = options.itemSelector;
+      this.linkSelector = options.linkSelector;
+      this.popupSelector = options.popupSelector;
+      this.popupContentSelector = options.popupContentSelector;
+  
+      this.items = document.querySelectorAll(this.itemSelector);
+      this.popup = document.querySelector(this.popupSelector);
+      this.popupContent = document.querySelector(this.popupContentSelector);
+  
+      this.activeTarget = null;
+      this.hideTimeout = null;
+  
+      this.init();
+      this.updatePopupPosition();
+
+      // 监听滚动与尺寸变化
+      window.addEventListener('scroll', () => this.updatePopupPosition());
+      window.addEventListener('resize', () => this.updatePopupPosition());
+    }
+  
+    init() {
+      this.items.forEach(item => {
+        const link = item.querySelector(this.linkSelector);
+        if (!link) return;
+  
+        const targetId = link.getAttribute('aria-id');
+        const targetEl = document.getElementById(targetId);
+        
+        if (!targetEl) return;
+        // const targetElS = targetEl.querySelector('.header-new-item');
+        // if (!targetElS) return;
+  
+        // 鼠标进入主菜单项
+        item.addEventListener('mouseenter', () => {
+          this.show(targetEl);
+        });
+  
+        // 鼠标离开主菜单项
+        item.addEventListener('mouseleave', () => {
+          this.delayHide();
+        });
+      });
+  
+      // 鼠标进入浮层，不隐藏
+      this.popupContent.addEventListener('mouseenter', () => {
+        this.cancelHide();
+      });
+  
+      // 鼠标离开浮层，隐藏
+      this.popupContent.addEventListener('mouseleave', () => {
+        this.delayHide();
+      });
+      // this.popup.querySelectorAll('.header-new-product-btn').forEach(button => {
+      //   button.addEventListener('click', () => {
+      //     const id = button.getAttribute('data-id');
+      //     const code = button.getAttribute('data-code');
+      //     addToCart(id,null,{}, code);
+      //   });
+      // });
+    }
+  
+    show(targetEl) {
+      this.cancelHide();
+  
+      // 移除之前的 active
+      if (this.activeTarget && this.activeTarget !== targetEl) {
+        this.activeTarget.style.setProperty('display','none')
+        this.activeTarget.querySelector('.header-new-item').classList.remove('active');
+      }
+  
+      this.activeTarget = targetEl;
+      this.popup.style.setProperty('display','block');
+      this.activeTarget.querySelector('.header-new-item').classList.add('active');
+      this.activeTarget.style.setProperty('display','flex')
+      this.updatePopupPosition();
+      document.querySelector('store-header').classList.add('bg-color-w')
+    }
+
+    delayHide() {
+      this.hideTimeout = setTimeout(() => {
+        if (this.activeTarget) {
+          this.activeTarget.querySelector('.header-new-item').classList.remove('active');
+          this.activeTarget.style.setProperty('display','none')
+        }
+        document.querySelector('store-header').classList.remove('bg-color-w')
+        this.popup.style.setProperty('display','none');
+      }, 200);
+    }
+  
+    cancelHide() {
+      clearTimeout(this.hideTimeout);
+    }
+    updatePopupPosition() {
+      const rect = document.querySelector('store-header').getBoundingClientRect();
+      this.popup.style.setProperty('--hend-top', `${rect.top}px`)
+    }
+  }
+  
+  // 调用
+  new HeaderHoverMenu({
+    itemSelector: '.header__linklist-item',
+    linkSelector: '.header__linklist-link',
+    popupSelector: '.header-new-popup',
+    popupContentSelector: '.header-new-popup .header-new-cont'
+  });
+
+</script>

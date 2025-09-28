@@ -150,10 +150,16 @@
    .slideshow__slide-list .custom_logo-img2{
      max-width: 475px;
    }
+  .black__2024 h2.heading.heading--large.home-heading__h2 {
+    font-size: 48px;
+}
      @media screen and (max-width: 768px){
+         .black__2024 .home-heading__h2{
+          font-size: 28px;
+        }
        .slideshow__slide-list .custom_logo-img1{
-    display: none;
-   }
+          display: none;
+        }
        .slide-show-icons__custom-icon-start{
          margin: 0px !important;
        }
@@ -165,10 +171,9 @@
          margin: 75px auto 0;
        }
        #shopify-section-{{ section.id }} .prime{
-
-    --heading-color: 255, 255, 255;
-       --primary-button-background: 255, 255, 255;
-       --primary-button-text-color: 4, 0, 0;
+         --heading-color: 255, 255, 255;
+         --primary-button-background: 255, 255, 255;
+         --primary-button-text-color: 4, 0, 0;
        }
         .th_slide_txt{
        font-size: 14px;
@@ -198,17 +203,17 @@
          font-size:12px;
       }
         .prime_bix_bn .home-heading__h2{
-       color:#ffffff;
-     }
-     .prime_bix_bn .home-heading__h3{
-           color:#ffffff;
-        font-size: 28px;
-     }
-     .prime_bix_bn .discount-txt{
-         color:#ffffff;
-         font-size: 14px;
-         margin-bottom: 400px;
-     }
+          color:#ffffff;
+        }
+        .prime_bix_bn .home-heading__h3{
+              color:#ffffff;
+            font-size: 28px;
+        }
+        .prime_bix_bn .discount-txt{
+            color:#ffffff;
+            font-size: 14px;
+            margin-bottom: 400px;
+        }
      .slideshow .slideshow-tag{
         font-size: 14px;
       }
@@ -218,6 +223,16 @@
        .banner-diy-box .home-heading__h3{
           font-size: 18px;
        }
+       .chr-2024 .home-heading__h3{
+         margin-top:0;
+        font-size: 14px;
+       }
+       .chr-2024 .heading+.button-wrapper{
+         margin-top:10px;
+       }
+       .chr-2024 .slideshow-tag {
+          margin-bottom: 10px;
+        }
        .banner-diy-box .mobile-content-box--center{
           margin-left: 0px!important;
           margin-right: 0px!important;
@@ -228,18 +243,39 @@
        .banner-diy-box.mobile-slideshow__text-wrapper--top .text-container .heading--large{
          margin-top:20px;
        }
-    .slideshow .bf-diy-slideshow .home-heading__h3{
-        font-size:12px;
-      }
+      .slideshow .bf-diy-slideshow .home-heading__h3{
+          font-size:12px;
+        }
         .slideshow .contact-diy .home-heading__h2{
           font-size:30px;
         }
+       .sum-end{
+         padding-top:60px;
+       }
+       .treatment-tracker .slide-show-icons__icon {
+          position: absolute;
+          opacity: 0;
+          pointer-events: none;
+       }
      }
 
     .return-policy .heading--large{
       font-size: 50px;
     }
-
+  .custom_logo-img {
+  /* animation: bounce 1s infinite; */
+}
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(10px);
+  }
+  60% {
+    transform: translateY(5px);
+  }
+}
     @media screen and (max-width: 640px){
       .christmas-banner .slide-show-icons__icon {
         transform: translateX(-30px);
@@ -329,6 +365,7 @@
       top:0;
       transform: scaleX(0);
       transform-origin: right;
+      left:0;
     }
 
     .white-btn .button.button--primary.button--animate:after{
@@ -353,6 +390,20 @@
     .christmas-banner .button.button--primary.button--animate{
       border:2px solid #000;
     }
+    .chr-2024 .slideshow-tag{
+      margin-bottom:0px;
+    }
+    .chr-2024 .slideshow-tag:before {
+      display: none;
+    }
+
+    .treatment-tracker .slide-show-icons__custom-icon {
+      transform: translateX(-5%);
+      max-width: 85%;
+    }
+    .treatment-tracker .home-btn:hover {
+      color: #000;
+    }
 
      @media (min-width:1400px) {
       #shopify-section-{{ section.id }}{
@@ -367,7 +418,11 @@
         #shopify-section-{{ section.id }} {
           --heading-large-font-size:65px;
         }
-      }
+        .treatment-tracker .slide-show-icons__custom-icon{
+          transform: translateX(-10%);
+          max-width: 120%;
+        }
+    }
 
     @media screen and (min-width: 1000px) {
         .bf-diy-slideshow .content-box--medium{
@@ -394,11 +449,17 @@
       .margin-r .content-box--right{
         margin-right: 0;
       }
-
-        .banner-diy-box .heading--large{
-          letter-spacing: 2px;
-        }
+      .banner-diy-box .heading--large{
+        letter-spacing: 2px;
       }
+      .treatment-tracker .content-box--medium{
+        max-width:840px;
+      }
+      .treatment-tracker-banner{
+        margin-top:-20%;
+      }
+
+    }
 </style>
 
 <section class="section section--flush">
@@ -440,34 +501,89 @@
         {%- endif -%}
 
         {%- capture slide_content -%}
-          <div class="slideshow__image-wrapper {% if mobile_image != blank %}hidden-pocket{% endif %}" {% if section.settings.transition_type == 'reveal' %}reveal-visibility{% endif %}>
-           <a href="{% if block.settings.button_1_link != blank %}{{ block.settings.button_1_link }}{% else %}javascript:;{% endif %}" class="home_img_url-{{ section.id }}">
-              {%- if image != blank -%}
-                {%- capture sizes_attributes -%}{% if split_image != blank %}(min-width: 1000px) 50vw{% else %}100vw{% endif %}{%- endcapture -%}
-                {{- image | image_url: width: 3000 | image_tag: loading: loading_attribute_value, draggable: false, class: 'slideshow__image', sizes: sizes_attributes, widths: '600,700,800,1000,1200,1400,1600,1800,2000,2200,2400,2600,2800,3000' -}}
-              {%- else -%}
-              {%- if block.settings.video == blank -%}
-                {% capture image_name %}lifestyle-{% cycle '1', '2' %}{%- endcapture -%}
-                {{- image_name | placeholder_svg_tag: 'slideshow__image slideshow__image--placeholder' -}}
-              {%- endif -%}
-              {%- endif -%}
-           </a>
+              <!-- pc image -->
+          <div class="slideshow__image-wrapper " {% if section.settings.transition_type == 'reveal' %}reveal-visibility{% endif %}>
+           {%- capture slide_img -%}
+               {%- if image != blank -%}
+                  <picture class="slideshow__image">
+                      {%- if mobile_image != blank -%}
+                        <source
+                          media="(max-width: 767px)"
+                          srcset="{{ mobile_image | image_url: width: '400x' }} 400w, 
+                                 {{ mobile_image | image_url: width: '600x' }} 600w, 
+                                 {{ mobile_image | image_url: width: '800x' }} 800w"
+                          width="{{ mobile_image.width }}"
+                          height="{{ mobile_image.height }}"
+                          loading="{{ loading_attribute_value }}"
+                        >
+                      {%- endif -%}
+                      {{-
+                        image
+                        | image_url: width: image.width
+                        | image_tag:
+                          loading: loading_attribute_value,
+                          widths: '1200,1600,1920, 3200',
+                          class: 'slideshow__image'
+                      -}}
+                    </picture>
+               {%- else -%}
+                  {%- if block.settings.video == blank -%}
+                    {% capture image_name %}lifestyle-{% cycle '1', '2' %}{%- endcapture -%}
+                    {{- image_name | placeholder_svg_tag: 'slideshow__image slideshow__image--placeholder' -}}
+                  {%- endif -%}
+             {%- endif -%}
+            {%- endcapture -%}
+           
+      
+            {%- if block.settings.button_1_link != blank
+                  and block.settings.button_1_text == blank
+                -%}
+                  <a
+                    class="slideshow__image"
+                    href="{{ block.settings.button_1_link }}"
+                  >
+                    {{- slide_img -}}
+                  </a>
+                {%- else -%}
+                   {{- slide_img -}}
+                {%- endif -%}
           </div>
 
           {%- comment -%}If a second image (split image) is uploaded, we use it. Note that we use the same ratio as the first image (to have equal column height){% endcomment %}
           {%- if image != blank and split_image != blank -%}
             <div class="slideshow__image-wrapper slideshow__image-wrapper--secondary hidden-pocket" {% if section.settings.transition_type == 'reveal' %}reveal-visibility{% endif %}>
-              {{- split_image | image_url: width: 3000 | image_tag: loading: loading_attribute_value, draggable: false, class: 'slideshow__image', sizes: '50vw', widths: '600,700,800,1000,1200,1400,1600,1800,2000,2200,2400,2600,2800,3000' -}}
+              {%- if block.settings.button_1_link != blank
+                  and block.settings.button_1_text == blank
+                -%}
+                  <a
+                    class="slideshow__image"
+                    href="{{ block.settings.button_1_link }}"
+                  >
+                    {{- split_image | image_url: width: split_image.width | image_tag: draggable: false, class: 'slideshow__image', sizes: '100vw', widths: '600,700,800,1000,1200,1400,1600,1800,2000,2200,2400,2600,2800,3000' -}}
+                  </a>
+                {%- else -%}
+                  {{- split_image | image_url: width: split_image.width | image_tag: draggable: false, class: 'slideshow__image', sizes: '100vw', widths: '600,700,800,1000,1200,1400,1600,1800,2000,2200,2400,2600,2800,3000' -}}
+                {%- endif -%}
             </div>
           {%- endif -%}
-
+{% comment %} 
           {%- if mobile_image != blank -%}
+            <!-- mobile image -->
             <div class="slideshow__image-wrapper hidden-lap-and-up" {% if section.settings.transition_type == 'reveal' %}reveal-visibility{% endif %}>
-            <a href="{% if block.settings.button_1_link != blank %}{{ block.settings.button_1_link }}{% else %}javascript:;{% endif %}" class="home_img_url-{{ section.id }}">
-                {{- mobile_image | image_url: width: 3000 | image_tag: loading: loading_attribute_value, draggable: false, class: 'slideshow__image', sizes: '100vw', widths: '600,700,800,1000,1200,1400,1600,1800,2000,2200,2400,2600,2800,3000' -}}
-             </a>
-            </div>
-          {%- endif -%}
+            {%- if block.settings.button_1_link != blank
+              and block.settings.button_1_text == blank
+            -%}
+              <a
+                class="slideshow__image"
+                href="{{ block.settings.button_1_link }}"
+              >
+                {{- mobile_image | image_url: width: mobile_image.width | image_tag: draggable: false, class: 'slideshow__image', sizes: '100vw', widths: '600,700,800,1000,1200,1400,1600,1800,2000,2200,2400,2600,2800,3000' -}}
+              </a>
+            {%- else -%}
+              {{- mobile_image | image_url: width: mobile_image.width | image_tag: draggable: false, class: 'slideshow__image', sizes: '100vw', widths: '600,700,800,1000,1200,1400,1600,1800,2000,2200,2400,2600,2800,3000' -}}
+            {%- endif -%}
+              </div>
+          {%- endif -%} {% endcomment %}
 
           {%- if block.settings.video != blank -%}
             <native-video autoplay class="slideshow__image-wrapper{% if block.settings.mobile_video != blank %} hidden-pocket{% endif %}" {% if section.settings.transition_type == 'reveal' %}reveal-visibility{% endif %}>
@@ -492,28 +608,34 @@
           {%- endcomment -%}
 
           {%- capture section_content -%}
-            <div class="custom_activity-box__icon hidden-pocket">
-              {%- if block.settings.custom_activity_icon != blank -%}
-                 <img loading="lazy" class="custom_activity-icon" {% render 'image-attributes', image: block.settings.custom_activity_icon %}>
-              {%- endif -%}
-            </div>
-            <div class="custom_activity-box__icon hidden-lap-and-up">
-              {%- if block.settings.custom_mobile_activity_icon != blank -%}
-                 <img loading="lazy" class="custom_activity-icon" {% render 'image-attributes', image: block.settings.custom_mobile_activity_icon %}>
-              {%- endif -%}
-            </div>
-           <div class="slide-show-icons__icon">
-              {%- if block.settings.custom_icon != blank -%}
+            {%- if block.settings.tag != blank -%}
+              <split-lines>
+                <div class="slideshow-tag" style="background:{{ block.settings.tag_background }};color:{{ block.settings.tag_color }};zoom:{{ block.settings.tag_zoom }}; {% if block.settings.tag_jb %}background-clip: text;-webkit-background-clip: text;-webkit-text-fill-color: transparent;{% endif %}">{{ block.settings.tag }}</div>
+              </split-lines>   
+            {%- endif -%}
+            {%- if block.settings.custom_activity_icon != blank -%}
+              <div class="custom_activity-box__icon hidden-pocket">
+                <img loading="lazy" class="custom_activity-icon" {% render 'image-attributes', image: block.settings.custom_activity_icon %}>
+              </div>
+            {%- endif -%}
+            {%- if block.settings.custom_mobile_activity_icon != blank -%}
+              <div class="custom_activity-box__icon hidden-lap-and-up">
+                <img loading="lazy" class="custom_activity-icon" {% render 'image-attributes', image: block.settings.custom_mobile_activity_icon %}>
+              </div>
+            {%- endif -%}
+            {%- if block.settings.custom_icon != blank -%}
+               <div class="slide-show-icons__icon">
                 <split-lines>
                 <img loading="lazy" class="slide-show-icons__custom-icon" {% render 'image-attributes', image: block.settings.custom_icon %}>
                 </split-lines>
-              {%- endif -%}
-            </div>
-            {%- if block.settings.tag != blank -%}
-               <split-lines>
-                <div class="slideshow-tag" style="background:{{ block.settings.tag_background }};color:{{ block.settings.tag_color }};zoom:{{ block.settings.tag_zoom }};">{{ block.settings.tag }}</div>
-                </split-lines>   
+              </div>
             {%- endif -%}
+            {%- if block.settings.custom_title_icon != blank -%}
+                <split-lines>
+                <img loading="lazy" class="slide-show-icons__custom-title-icon" {% render 'image-attributes', image: block.settings.custom_title_icon %}>
+                </split-lines>
+              {%- endif -%}
+            
             {%- if block.settings.title != blank -%}
               <h2 class="heading heading--large home-heading__h2 {% if block.settings.custom_icon != blank or block.settings.custom_activity_icon != blank %}heading--mark{% endif %} {% if block.settings.custom_icon != blank or block.settings.custom_activity_icon != blank %}heading-custom--mark{% endif %}" {% if block.settings.tag != blank %}style="margin-top: 0;"{% endif %}>
                 <split-lines {% if section.settings.transition_type != 'fade' %}reveal{% endif %}>{{ block.settings.title | escape }}</split-lines>
@@ -580,11 +702,19 @@
               </div>
             {%- endif -%}
 
+            {% comment %} 增加倒计时 {% endcomment %}
+            {% if block.settings.is_countdown_date != blank %}
+              {% render 'countdown-luke', countdown_date: block.settings.countdown_date, countdown_title: block.settings.countdown_title, id_prefix: block.settings.countdown_id_prefix, justify_content: "flex-start" %}
+            {%- endif -%}
+
+
             {%- if block.settings.subheading_1 != blank -%}
             <div class="heading home-heading__h3">
               <split-lines {% if section.settings.transition_type != 'fade' %}reveal{% endif %}>{{ block.settings.subheading_1 | escape }}</split-lines>
             </div>
           {%- endif -%}
+
+
 
 
            {%- if block.settings.logo_1 != blank -%}
@@ -632,21 +762,10 @@
           {% endif %}
           {{ slide_attributes }}
         >
-          {%- if block.settings.button_1_link != blank
-            and block.settings.button_1_text == blank
-            and block.settings.button_2_text == blank
-          -%}
-            <a
-              class="slideshow__slide-inner {% if section.settings.fixed_height %}slideshow__slide-height{% endif %}"
-              href="{{ block.settings.button_1_link }}"
-            >
-              {{- slide_content -}}
-            </a>
-          {%- else -%}
+          
             <div class="slideshow__slide-inner {% if section.settings.fixed_height %}slideshow__slide-height{% endif %}">
               {{- slide_content -}}
             </div>
-          {%- endif -%}
         </slide-show-item>
       {%- endfor -%}
     </div>
@@ -955,7 +1074,7 @@
           "label": "Tag"
         },
         {
-          "type": "color",
+          "type": "color_background",
           "id": "tag_background",
           "label": "Tag Background",
           "default": "#e7004c"
@@ -976,6 +1095,12 @@
           "default": 1
         },
         {
+          "type": "checkbox",
+          "id": "tag_jb",
+          "label": "Tag 文字颜色渐变",
+          "default": false
+        },
+        {
           "type": "text",
           "id": "subheading",
           "label": "Subheading",
@@ -986,6 +1111,11 @@
           "id": "title",
           "label": "Heading",
           "default": "Slide title"
+        },
+         {
+          "type": "image_picker",
+          "id": "custom_title_icon",
+          "label": "custom title icon"
         },
         {
           "type": "richtext",
@@ -1090,6 +1220,30 @@
           "step": 1,
           "unit": "%",
           "default": 30
+        },
+        {
+          "type": "checkbox",
+          "id": "is_countdown_date",
+          "label": "是否显示倒计时",
+          "default": false
+        },
+        {
+          "type": "text",
+          "id": "countdown_date",
+          "label": "倒计时时间",
+          "info": "格式: 2024-11-28T23:59:59"
+        },
+        {
+          "type": "text",
+          "id": "countdown_title",
+          "label": "倒计时标题",
+          "default": "CYBER MONDAY DEAL Ends in"
+        },
+        {
+          "type": "text",
+          "id": "countdown_id_prefix",
+          "label": "倒计时ID名称",
+          "info": "随便取值,不要一样。countdown_id_prefix"
         }
       ]
     }

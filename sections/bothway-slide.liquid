@@ -16,6 +16,8 @@
 .bothway-slide .bothway-slide-txt .txt-img{
   display: block;
   width: 100%;
+  max-height: 105px;
+  object-fit: contain;
 }
 .bothway-slide .bothway-slide-txt .mb-box{
   display: none;
@@ -65,15 +67,18 @@
     width:100px;
     margin-right:6px;
   }
+  .bothway-slide .bothway-slide-txt .txt-img{
+    max-height: 15px;
+  }
 }
 </style>
 
 <section class="section-box">
-  <div class="bothway-slide">
+  <div class="bothway-slide to-top">
     <div class="container">
       {%- for block in section.blocks -%}
         <div class="bothway-slide-box {% if block.settings.flip %}flip-bothway{% endif %}">
-          <div class="bothway-slide-txt to-top" >
+          <div class="bothway-slide-txt" >
             {%- if block.settings.image != blank -%}
               <img
                 class="txt-img pc-box"
@@ -93,12 +98,11 @@
               >
             {%- endif -%}
           </div>
-          <div class="bothway-slide-img to-top" style="transition-delay: 0.1s">
+          <div class="bothway-slide-img" >
             <div class="bothway-slide-list">
               {%- if block.settings.image2 != blank -%}
                 <img
-                  class="img to-top"
-                  style="transition-delay: 0.1s"
+                  class="img"
                   width="{{ block.settings.image2.width }}"
                   height="{{ block.settings.image2.height }}"
                   {% render 'image-attributes', image: block.settings.image2 %}
@@ -107,8 +111,7 @@
               {%- endif -%}
               {%- if block.settings.image3 != blank -%}
                 <img
-                  class="img to-top"
-                  style="transition-delay: 0.2s"
+                  class="img"
                   width="{{ block.settings.image3.width }}"
                   height="{{ block.settings.image3.height }}"
                   {% render 'image-attributes', image: block.settings.image3 %}
@@ -117,8 +120,7 @@
               {%- endif -%}
               {%- if block.settings.image4 != blank -%}
                 <img
-                  class="img to-top"
-                  style="transition-delay: 0.3s"
+                  class="img"
                   width="{{ block.settings.image4.width }}"
                   height="{{ block.settings.image4.height }}"
                   {% render 'image-attributes', image: block.settings.image4 %}
@@ -127,8 +129,7 @@
               {%- endif -%}
               {%- if block.settings.image5 != blank -%}
                 <img
-                  class="img to-top"
-                  style="transition-delay: 0.4s"
+                  class="img"
                   width="{{ block.settings.image5.width }}"
                   height="{{ block.settings.image5.height }}"
                   {% render 'image-attributes', image: block.settings.image5 %}
@@ -137,8 +138,7 @@
               {%- endif -%}
               {%- if block.settings.image6 != blank -%}
                 <img
-                  class="img to-top"
-                  style="transition-delay: 0.5s"
+                  class="img"
                   width="{{ block.settings.image6.width }}"
                   height="{{ block.settings.image6.height }}"
                   {% render 'image-attributes', image: block.settings.image6 %}
@@ -147,7 +147,7 @@
               {%- endif -%}
               {%- if block.settings.image7 != blank -%}
                 <img
-                  class="img to-top"
+                  class="img"
                   width="{{ block.settings.image7.width }}"
                   height="{{ block.settings.image7.height }}"
                   {% render 'image-attributes', image: block.settings.image7 %}
@@ -199,54 +199,114 @@
 </section>
 <script>
    window.addEventListener('load',function(){
-    function scrollSlide(){
-      let $p= $('.bothway-slide')
-      let $box = $p.find('.bothway-slide-img')
-      let $cont = $p.find('.bothway-slide-box')
-      let pWidth = $box[0].offsetWidth // 父级宽度
-      let cWidth = ($p[0].offsetWidth - $cont[0].offsetWidth) /2 //内容区域外平分宽度
-      let $contBox = $p.find('.container')
-      let Aheight = $contBox[0].offsetHeight
+    // function scrollSlide(){
+    //   let $p= $('.bothway-slide')
+    //   let $box = $p.find('.bothway-slide-img')
+    //   let $cont = $p.find('.bothway-slide-box')
+    //   let pWidth = $box[0].offsetWidth // 父级宽度
+    //   let cWidth = ($p[0].offsetWidth - $cont[0].offsetWidth) /2 //内容区域外平分宽度
+    //   let $contBox = $p.find('.container')
+    //   let Aheight = $contBox[0].offsetHeight
 
-      let wd1 = $('.bothway-slide-box').width()
-      let wd2 = $('.bothway-slide-txt').width()
-      let wdh = ( wd1 - wd2 )/ 2
+    //   let wd1 = $('.bothway-slide-box').width()
+    //   let wd2 = $('.bothway-slide-txt').width()
+    //   let wdh = ( wd1 - wd2 )/ 2
 
-      function changeLeft(){
-        let wHeight = window.innerHeight
-        $cont.each(function(){
-          let react = $contBox[0].getBoundingClientRect()
-          let top = react.top
-          let length = $(this).find('.bothway-slide-list').find('.img').length
-          let width = $(this).find('.bothway-slide-list').find('.img')[0].offsetWidth*1 + 26 //单个图片宽度
-          let height = $(this).find('.bothway-slide-list').find('.img')[0].offsetHeight
+    //   function changeLeft(){
+    //     let wHeight = window.innerHeight
+    //     $cont.each(function(){
+    //       let react = $contBox[0].getBoundingClientRect()
+    //       let top = react.top
+    //       let length = $(this).find('.bothway-slide-list').find('.img').length
+    //       let width = $(this).find('.bothway-slide-list').find('.img')[0].offsetWidth*1 + 26 //单个图片宽度
+    //       let height = $(this).find('.bothway-slide-list').find('.img')[0].offsetHeight
           
-           if(window.innerWidth<991){
-             width -=20
-           }
-          let percentum = 1
-          if(top<(wHeight/2 - Aheight/2) && top>-(wHeight - Aheight)){
-            percentum =1- ((top +(wHeight - Aheight)) / (wHeight +(wHeight - Aheight) - Aheight))
-            let left = (width * length - pWidth - cWidth)
-            $(this).find('.bothway-slide-list').css({'transform': 'translateX(-'+left*percentum +'px)'})
-            $(this).find('.bothway-slide-txt').css({'transform': 'translateX(-'+left*percentum +'px)'})
-          }
+    //        if(window.innerWidth<991){
+    //          width -=20
+    //        }
+    //       let percentum = 1
+    //       if(top<(wHeight/2 - Aheight/2) && top>-(wHeight - Aheight)){
+    //         percentum =1- ((top +(wHeight - Aheight)) / (wHeight +(wHeight - Aheight) - Aheight))
+    //         let left = (width * length - pWidth - cWidth)
+    //         $(this).find('.bothway-slide-list').css({'transform': 'translateX(-'+left*percentum +'px)'})
+    //         $(this).find('.bothway-slide-txt').css({'transform': 'translateX(-'+left*percentum +'px)'})
+    //       }
 
-          if(top<-(wHeight - Aheight)){
-            let left = (width * length - pWidth - cWidth)
-            $(this).find('.bothway-slide-txt').css({'transform': 'translateX(-'+left +'px)','transition': 'transform 0.1s cubic-bezier(0.4, 0.2, 0.2, 1)'})
-            $(this).find('.bothway-slide-list').css({'transform': 'translateX(-'+left +'px)','transition': 'transform 0.1s cubic-bezier(0.4, 0.2, 0.2, 1)'})
-          }
-          if(top>(wHeight/2 - Aheight/2)){
-            $(this).find('.bothway-slide-txt').css({'transform': 'translateX(+'+wdh +'px)','transition': 'transform 0.1s cubic-bezier(0.4, 0.2, 0.2, 1)'})
-            $(this).find('.bothway-slide-list').css({'transform': 'translateX(+'+wdh +'px)','transition': 'transform 0.1s cubic-bezier(0.4, 0.2, 0.2, 1)'})
-          }
+    //       if(top<-(wHeight - Aheight)){
+    //         let left = (width * length - pWidth - cWidth)
+    //         $(this).find('.bothway-slide-txt').css({'transform': 'translateX(-'+left +'px)','transition': 'transform 0.1s cubic-bezier(0.4, 0.2, 0.2, 1)'})
+    //         $(this).find('.bothway-slide-list').css({'transform': 'translateX(-'+left +'px)','transition': 'transform 0.1s cubic-bezier(0.4, 0.2, 0.2, 1)'})
+    //       }
+    //       if(top>(wHeight/2 - Aheight/2)){
+    //         $(this).find('.bothway-slide-txt').css({'transform': 'translateX(+'+wdh +'px)','transition': 'transform 0.1s cubic-bezier(0.4, 0.2, 0.2, 1)'})
+    //         $(this).find('.bothway-slide-list').css({'transform': 'translateX(+'+wdh +'px)','transition': 'transform 0.1s cubic-bezier(0.4, 0.2, 0.2, 1)'})
+    //       }
           
-        })
+    //     })
+    //   }
+    //   changeLeft()
+    //   window.addEventListener('scroll',changeLeft)
+    // }
+     function scrollSlide() {
+      let $p = $('.bothway-slide');
+      let $box = $p.find('.bothway-slide-img');
+      let $conts = $p.find('.bothway-slide-box'); // 所有 bothway-slide-box
+      let pWidth = $box[0].offsetWidth; // 父级宽度
+      let cWidth = ($p[0].offsetWidth - $conts[0].offsetWidth) / 2; // 内容区域外平分宽度
+      let Aheight = $p.find('.container')[0].offsetHeight;
+      let maxOffset = window.innerWidth*0.5; // 限制最大偏移量
+      let lastOffsets = new Map(); // 记录每个 box 的偏移量
+  
+      function changeLeft() {
+          let wHeight = window.innerHeight;
+          let updated = false;
+  
+          $conts.each(function (index) {
+              let $contBox = $(this).closest('.bothway-slide').find('.container'); // 找到对应 container
+              let react = $contBox[0].getBoundingClientRect();
+              let top = react.top;
+              let length = $(this).find('.bothway-slide-list .img').length;
+              let width = $(this).find('.bothway-slide-list .img')[0].offsetWidth + 26; // 单个图片宽度
+  
+              if (window.innerWidth < 991) {
+                  width -= 20;
+              }
+  
+              let left = width * length - pWidth - cWidth;
+              let percentum = 1;
+  
+              let offset = 0;
+              if (top < (wHeight / 2 - Aheight / 2) && top > -(wHeight - Aheight)) {
+                  percentum = 1 - ((top + (wHeight - Aheight)) / (wHeight + (wHeight - Aheight) - Aheight));
+                  offset = Math.min(left * percentum, maxOffset);
+              } else if (top < -(wHeight - Aheight)) {
+                  offset = left;
+              } else if (top > (wHeight / 2 - Aheight / 2)) {
+                  offset = 0;
+              }
+  
+              if (lastOffsets.get(index) !== offset) {
+                  $(this).find('.bothway-slide-list, .bothway-slide-txt').css({
+                      'transform': `translateX(-${offset}px)`,
+                      'transition': 'transform 0.3s ease-out'
+                  });
+                  lastOffsets.set(index, offset);
+                  updated = true;
+              }
+          });
+  
+          return updated;
       }
-      changeLeft()
-      window.addEventListener('scroll',changeLeft)
-    }
+  
+      function onScroll() {
+          requestAnimationFrame(changeLeft);
+      }
+  
+      changeLeft();
+      window.addEventListener('scroll', onScroll);
+  }
+
+
     scrollSlide()
   })
 </script>

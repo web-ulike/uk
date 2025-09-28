@@ -1,0 +1,1099 @@
+<style>
+.expenditures {
+  padding: 40px 0;
+  overflow: hidden;
+  position: relative;
+  z-index: 1;
+}
+
+.expenditures .expenditures-h3 {
+  color: #190a0a;
+  text-align: center;
+  font-size: 50px;
+  line-height: 1.1;
+  letter-spacing: -0.64px;
+  font-weight: normal;
+  margin: 0;
+  font-family: var(--heading-font-family);
+  margin-bottom: 80px;
+}
+
+.expenditures .expenditures-sub {
+  color: #190a0a;
+  text-align: center;
+  font-size: 32px;
+  line-height: 1.2;
+  font-family: var(--heading-font-family);
+  margin-bottom: 30px;
+}
+
+.expenditures .expenditures-tab-cont {
+  display: flex;
+  overflow-x: auto;
+  margin-bottom: 70px;
+}
+
+.expenditures .expenditures-tab {
+  display: inline-flex;
+  justify-content: center;
+  border-radius: 80px;
+  border: 1px solid #000;
+  margin: 0 auto;
+}
+
+.expenditures .expenditures-tab-item {
+  min-width: clamp(10px, 7.8125vw, 150px);
+  height: clamp(40px, 3.75vw, 72px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #000;
+  font-size: clamp(12px, 1.0417vw, 20px);
+  line-height: 1;
+  font-family: var(--heading-font-family);
+  border-radius: 80px;
+  padding: 0 15px;
+  cursor: pointer;
+}
+
+
+
+.expenditures .expenditures-tab-item.active {
+  background-color: #000;
+  color: #fff;
+}
+
+.expenditures .expenditures-h4 {
+  color: #190a0a;
+  text-align: center;
+  font-size: 32px;
+  line-height: 1.2;
+  font-family: var(--heading-font-family);
+  font-weight: normal;
+  margin: 0;
+  margin-bottom: 30px;
+}
+
+.expenditures .expenditures-num {
+  border-radius: 8px;
+  border: 2px solid #b3adad;
+  display: block;
+  width: 435px;
+  height: 165px;
+  margin: 0 auto;
+  color: #190a0a;
+  font-size: 96px;
+  text-align: center;
+}
+
+.expenditures .expenditures-num::placeholder {
+  color: #b3adad;
+}
+
+.expenditures .expenditures-num::-webkit-inner-spin-button,
+.expenditures .expenditures-num::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+.expenditures .expenditures-num {
+  -moz-appearance: textfield;
+}
+
+.expenditures .expenditures-num:focus {
+  border-color:#000;
+}
+
+.expenditures .expenditures-msg{
+  margin-top: 70px;
+}
+
+.expenditures .expenditures-btn {
+  display: flex;
+  width: 484px;
+  height: 56px;
+  max-width: 100%;
+  justify-content: center;
+  align-items: center;
+  border-radius: 4px;
+  background: #e0004d;
+  color: #fff;
+  font-size: 20px;
+  line-height: 1;
+  font-family: var(--heading-font-family);
+  margin: 0 auto;
+  cursor: pointer;
+}
+
+.expenditures .expenditures-tip{
+  width: 484px;
+  max-width: 100%;
+  border-radius: 2px;
+  border: 1px solid #F42A10;
+  background: #FEF0EB;
+  padding:0 5px;
+  margin:0 auto;
+  margin-bottom: 4px;
+  display: none;
+  position: relative;
+  color: #F42A10;
+  font-size: 14px;
+  line-height: 24px;
+}
+
+.expenditures .expenditures-dispatch {
+  max-width: 1125px;
+  margin: 0 auto;
+  display: none;
+}
+
+.expenditures .expenditures-dispatch .expenditures-h3 {
+  margin-bottom: 20px;
+}
+
+.expenditures .expenditures-dispatch-top {
+  color: #fff;
+  text-align: center;
+  font-size: 20px;
+  line-height: 1.2;
+  background: #000;
+  padding: 10px 10px 16px 10px;
+  border-radius: 4px 4px 0px 0px;
+}
+
+.expenditures .expenditures-dispatch-top span {
+  font-family: var(--heading-font-family);
+}
+
+.expenditures .expenditures-dispatch-cont {
+  border-radius: 4px;
+  background: #fbfaf4;
+  padding: 12px;
+  margin-top: -6px;
+}
+
+.expenditures .expenditures-dispatch-num {
+  color: #190a0a;
+  text-align: center;
+  font-size: 48px;
+  line-height: 1.1;
+  font-family: var(--heading-font-family);
+  margin-bottom: 24px;
+}
+
+.expenditures .expenditures-dispatch-num strong {
+  font-weight: normal;
+  color: #e0004d;
+}
+
+.expenditures .expenditures-dispatch-list {
+  /* max-width: 415px; */
+  margin: 0 auto;
+  margin-bottom: 24px;
+  display: flex;
+  justify-content: center;
+}
+
+.expenditures .expenditures-dispatch-item {
+  display: none;
+}
+
+.expenditures .expenditures-dispatch-item.active {
+  display: block;
+}
+
+.expenditures .expenditures-dispatch-l {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  color: #190a0a;
+  font-size: 20px;
+  line-height: 1.5;
+}
+
+.expenditures .expenditures-dispatch-l svg {
+  display: block;
+  width: 22px;
+  height: auto;
+  flex-shrink: 0;
+}
+
+.expenditures .expenditures-dispatch-product {
+  max-width: 686px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+.expenditures .expenditures-dispatch-arraws {
+  position: absolute;
+  width: calc(100% + 112px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+}
+
+.expenditures .expenditures-dispatch-arraw {
+  border-radius: 50%;
+  width: 56px;
+  cursor: pointer;
+  box-shadow: 0 0 25px rgba(0, 0, 0, 0.12);
+}
+
+.expenditures .expenditures-dispatch-arraw svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.expenditures .expenditures-dispatch-arraw:hover circle {
+  fill: #000;
+}
+
+.expenditures .expenditures-dispatch-arraw:hover path {
+  fill: #fff;
+}
+
+.expenditures .expenditures-dispatch-product-list {
+  position: relative;
+  z-index: 1;
+  display: flex;
+}
+
+.expenditures .expenditures-dispatch-product-item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  border-radius: 4px;
+  border: 1px solid #b3adad;
+  background: #fff;
+  overflow: hidden;
+}
+
+.expenditures .expenditures-dispatch-product-item.swiper-slide-active {
+  border: 1px solid #e0004d;
+}
+
+.expenditures .expenditures-dispatch-product-img {
+  width: 255px;
+  position: relative;
+  z-index: 1;
+}
+
+.expenditures .expenditures-dispatch-product-tag {
+  position: absolute;
+  top: 11px;
+  left: 11px;
+  z-index: 2;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  padding: 0 4px;
+  background: #e0004d;
+  color: #fff;
+  font-size: 14px;
+  line-height: 1;
+  letter-spacing: 0.697px;
+  font-family: var(--heading-font-family);
+}
+
+.expenditures .expenditures-dispatch-product-img img {
+  width: 100%;
+  position: relative;
+  z-index: 1;
+}
+
+.expenditures .expenditures-dispatch-product-info {
+  flex: 1;
+  padding: 20px;
+}
+
+.expenditures .expenditures-dispatch-product-h3 {
+  color: #190a0a;
+  font-size: 30px;
+  line-height: 1.1;
+  font-family: var(--heading-font-family);
+  font-weight: normal;
+  margin: 0;
+  margin-bottom: 12px;
+}
+
+.expenditures .expenditures-dispatch-product-price {
+  display: flex;
+  gap: 8px;
+  color: #190a0a;
+  font-size: 28px;
+  line-height: 1.5;
+}
+
+.expenditures .d-price {
+  color: #756b6e;
+  text-decoration: line-through;
+}
+
+.expenditures .expenditures-dispatch-product-btn {
+  display: inline-flex;
+  align-items: center;
+  color: #e0004d;
+  font-size: 28px;
+  line-height: 1.5;
+  gap: 16px;
+  background: linear-gradient(#e0004d, #e0004d) no-repeat;
+  background-size: 100% 1px;
+  background-position: left bottom;
+  margin-top: 16px;
+  cursor: pointer;
+}
+
+.expenditures .expenditures-dispatch-product-btn svg {
+  display: block;
+  width: 28px;
+}
+
+
+
+.expenditures .expenditures-dispatch-btn {
+  display: flex;
+  width: 484px;
+  height: 56px;
+  max-width: 100%;
+  justify-content: center;
+  align-items: center;
+  border-radius: 4px;
+  background: #e0004d;
+  color: #fff;
+  font-size: 20px;
+  line-height: 1;
+  font-family: var(--heading-font-family);
+  margin: 0 auto;
+  margin-top: 20px;
+  cursor: pointer;
+}
+
+
+@media (min-width: 992px) {
+  /* .expenditures .expenditures-tab-item:hover {
+    background-color: #eee;
+  } */
+  .expenditures .expenditures-btn:hover {
+    background: #bc0047;
+  }
+  .expenditures .expenditures-dispatch-product-btn:hover {
+    color: #bc0047;
+    background: linear-gradient(#bc0047, #bc0047) no-repeat;
+    background-size: 100% 1px;
+    background-position: left bottom;
+  }
+  .expenditures .expenditures-dispatch-btn:hover {
+    background: #bc0047;
+  }
+}  
+
+@media (max-width: 991px) {
+  .expenditures {
+    padding: 50px 0 40px 0;
+  }
+
+  .expenditures .expenditures-h3 {
+    font-size: 28px;
+    line-height: 1.5;
+    margin-bottom: 35px;
+  }
+
+  .expenditures .expenditures-sub {
+    font-size: 16px;
+    margin-bottom: 16px;
+  }
+
+  .expenditures .expenditures-tab-cont {
+    margin-bottom: 30px;
+  }
+
+  .expenditures .expenditures-h4 {
+    font-size: 16px;
+    margin-bottom: 16px;
+  }
+
+  .expenditures .expenditures-num {
+    width: 145px;
+    height: 55px;
+    border-radius: 3px;
+    border-width: 1px;
+    font-size: 32px;
+  }
+
+  .expenditures .expenditures-msg{
+    margin-top: 44px;
+  }
+
+  .expenditures .expenditures-btn {
+    width: 290px;
+    height: 48px;
+    font-size: 15px;
+  }
+
+  .expenditures .expenditures-tip{
+    width: 290px;
+    font-size: 12px;
+  }
+
+  .expenditures .expenditures-dispatch {
+    margin: 0 -24px;
+  }
+
+  .expenditures .expenditures-dispatch-top {
+    font-size: 14px;
+    border-radius: 20px 20px 0 0;
+    padding: 10px 24px 16px 24px;
+  }
+
+  .expenditures .expenditures-dispatch-cont {
+    padding: 12px 24px;
+  }
+
+  .expenditures .expenditures-dispatch .expenditures-h3 {
+    margin-bottom: 16px;
+    padding: 0 24px;
+  }
+
+  .expenditures .expenditures-dispatch-num {
+    font-size: 24px;
+    margin-bottom: 12px;
+  }
+
+  .expenditures .expenditures-dispatch-list {
+    padding: 0 8px;
+    margin-bottom: 12px;
+    justify-content:flex-start;
+  }
+
+  .expenditures .expenditures-dispatch-l {
+    gap: 12px;
+    font-size: 15px;
+    line-height: 2;
+  }
+
+  .expenditures .expenditures-dispatch-product-img {
+    width: 127px;
+  }
+
+  .expenditures .expenditures-dispatch-product-tag {
+    top: 6px;
+    left: 6px;
+    font-size: 12px;
+  }
+
+  .expenditures .expenditures-dispatch-product-info {
+    padding: 10px;
+  }
+
+  .expenditures .expenditures-dispatch-product-h3 {
+    font-size: 16px;
+    margin-bottom: 6px;
+  }
+
+  .expenditures .expenditures-dispatch-product-price {
+    font-size: 14px;
+    gap: 4px;
+  }
+
+  .expenditures .expenditures-dispatch-product-btn {
+    font-size: 14px;
+    margin-top: 8px;
+    gap: 8px;
+  }
+
+  .expenditures .expenditures-dispatch-product-btn svg {
+    width: 14px;
+  }
+
+  .expenditures .expenditures-dispatch-arraws {
+    width: 100%;
+  }
+  .expenditures .expenditures-dispatch-arraw {
+    width: 32px;
+    box-shadow: 0 0 15px rgba(224, 0, 77, 0.2);
+  }
+
+  .expenditures .expenditures-dispatch-btn {
+    width: 290px;
+    height: 48px;
+    font-size: 15px;
+    margin-top: 16px;
+  }
+}
+
+</style>
+<section class="section-box">
+  <div class="expenditures">
+    <div class="container">
+      <div class="expenditures-cont">
+        {%- if section.settings.title != blank -%}
+          <h3 class="expenditures-h3">{{ section.settings.title }}</h3>
+        {%- endif -%}
+        {%- if section.settings.text != blank -%}
+          <div class="expenditures-sub">{{ section.settings.text }}</div>
+        {%- endif -%}
+        <div class="expenditures-tab-cont">
+          <div class="expenditures-tab">
+            {%- for block in section.blocks -%}
+              {% if block.type == 'tab' %}
+                {%- if block.settings.text != blank -%}
+                  <div class="expenditures-tab-item {% if forloop.index == 1 %}active{% endif %}">{{ block.settings.text }}</div>
+                {%- endif -%}
+              {% endif %}
+            {%- endfor -%}
+          </div>
+        </div>
+        {%- if section.settings.text1 != blank -%}
+          <h4 class="expenditures-h4">{{ section.settings.text1 }}</h4>
+        {%- endif -%}
+        <input type="number" name="number" min="0" max="2000" placeholder="{{ section.settings.text2 }}" class="expenditures-num">
+        <div class="expenditures-msg">
+          {%- if section.settings.text9 != blank -%}
+            <div class="expenditures-tip" style="display: none;">
+              {{ section.settings.text9 }}
+            </div>
+          {%- endif -%}
+          {%- if section.settings.text3 != blank -%}
+            <div class="expenditures-btn">{{ section.settings.text3 }}</div>
+          {%- endif -%}
+        </div>
+      </div>
+      <div class="expenditures-dispatch">
+        {%- if section.settings.text4 != blank -%}
+          <h3 class="expenditures-h3"> {{ section.settings.text4 }}</h3>
+        {%- endif -%}
+        {%- if section.settings.text5 != blank -%}
+          <div class="expenditures-dispatch-top">
+            {{ section.settings.text5 }} <span>Cream (£15/month)</span>
+          </div>
+        {%- endif -%}
+        <div class="expenditures-dispatch-cont">
+          <div class="expenditures-dispatch-num">
+            {%- if section.settings.text6 != blank -%}
+              <div class="expenditures-dispatch-m">
+                {{ section.settings.text6 }} <strong>9.3 months</strong>,
+              </div>
+            {%- endif -%}
+            {%- if section.settings.text7 != blank -%}
+              <div class="expenditures-dispatch-y">
+                <strong>save up to £360/year</strong> {{ section.settings.text7 }}
+              </div>
+            {%- endif -%}
+          </div>
+          <div class="expenditures-dispatch-list">
+            <div>
+            {%- for block in section.blocks -%}
+              {% if block.type == 'tab' %}
+                <div class="expenditures-dispatch-item">
+                  {%- if block.settings.text1 != blank -%}
+                    <div class="expenditures-dispatch-l">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="23" height="22" viewBox="0 0 23 22" fill="none">
+                        <path fill-rule="evenodd" clip-rule="evenodd"
+                          d="M9.1839 1.10327C11.3181 0.621082 13.5509 0.841689 15.5494 1.73219L15.9028 1.88964L16.2177 1.1829C16.2177 1.1829 18.0153 1.98385 15.8644 1.02544C13.7134 0.0670405 11.3103 -0.170389 9.01339 0.348567C6.71648 0.867522 4.64887 2.11506 3.11891 3.90511C1.58894 5.69517 0.678609 7.93183 0.523671 10.2815C0.368733 12.6312 0.977492 14.9681 2.25916 16.9435C3.54082 18.919 5.42673 20.4272 7.6356 21.2433C9.84447 22.0593 12.258 22.1395 14.5161 21.4718C16.7743 20.8042 18.7561 19.4244 20.1661 17.5384C21.576 15.6524 22.3385 13.3611 22.3399 11.0063L22.3399 10.6506L22.3399 10.4239C22.3399 9.99655 21.9935 9.65014 21.5661 9.65014L21.5662 10.6506L21.5661 11.0058C21.5649 13.1938 20.8564 15.3227 19.5464 17.0751C18.2363 18.8275 16.3949 20.1095 14.2967 20.7299C12.1986 21.3502 9.9561 21.2757 7.90373 20.5175C5.85137 19.7592 4.09909 18.3579 2.90824 16.5224C1.71738 14.6869 1.15176 12.5157 1.29572 10.3324C1.43968 8.14923 2.28551 6.07104 3.70707 4.40782C5.12863 2.74459 7.04974 1.58545 9.1839 1.10327ZM22.2266 2.85317L22.5 2.57949L21.9526 2.03265L21.6792 2.30634L11.4197 12.5761L10.4123 11.5688L8.80701 9.96345C8.50485 9.66129 8.01496 9.66129 7.7128 9.96345L9.86524 12.1159L11.1463 13.3969C11.2188 13.4695 11.3173 13.5103 11.4199 13.5102C11.5226 13.5102 11.621 13.4694 11.6935 13.3968L22.2266 2.85317Z"
+                          fill="#E0004D" />
+                      </svg>
+                      {{ block.settings.text1 }}
+                    </div>
+                  {%- endif -%}
+                  {%- if block.settings.text2 != blank -%}
+                    <div class="expenditures-dispatch-l">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="23" height="22" viewBox="0 0 23 22" fill="none">
+                        <path fill-rule="evenodd" clip-rule="evenodd"
+                          d="M9.1839 1.10327C11.3181 0.621082 13.5509 0.841689 15.5494 1.73219L15.9028 1.88964L16.2177 1.1829C16.2177 1.1829 18.0153 1.98385 15.8644 1.02544C13.7134 0.0670405 11.3103 -0.170389 9.01339 0.348567C6.71648 0.867522 4.64887 2.11506 3.11891 3.90511C1.58894 5.69517 0.678609 7.93183 0.523671 10.2815C0.368733 12.6312 0.977492 14.9681 2.25916 16.9435C3.54082 18.919 5.42673 20.4272 7.6356 21.2433C9.84447 22.0593 12.258 22.1395 14.5161 21.4718C16.7743 20.8042 18.7561 19.4244 20.1661 17.5384C21.576 15.6524 22.3385 13.3611 22.3399 11.0063L22.3399 10.6506L22.3399 10.4239C22.3399 9.99655 21.9935 9.65014 21.5661 9.65014L21.5662 10.6506L21.5661 11.0058C21.5649 13.1938 20.8564 15.3227 19.5464 17.0751C18.2363 18.8275 16.3949 20.1095 14.2967 20.7299C12.1986 21.3502 9.9561 21.2757 7.90373 20.5175C5.85137 19.7592 4.09909 18.3579 2.90824 16.5224C1.71738 14.6869 1.15176 12.5157 1.29572 10.3324C1.43968 8.14923 2.28551 6.07104 3.70707 4.40782C5.12863 2.74459 7.04974 1.58545 9.1839 1.10327ZM22.2266 2.85317L22.5 2.57949L21.9526 2.03265L21.6792 2.30634L11.4197 12.5761L10.4123 11.5688L8.80701 9.96345C8.50485 9.66129 8.01496 9.66129 7.7128 9.96345L9.86524 12.1159L11.1463 13.3969C11.2188 13.4695 11.3173 13.5103 11.4199 13.5102C11.5226 13.5102 11.621 13.4694 11.6935 13.3968L22.2266 2.85317Z"
+                          fill="#E0004D" />
+                      </svg>
+                      {{ block.settings.text2 }}
+                    </div>
+                  {%- endif -%}
+                  {%- if block.settings.text3 != blank -%}
+                    <div class="expenditures-dispatch-l">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="23" height="22" viewBox="0 0 23 22" fill="none">
+                        <path fill-rule="evenodd" clip-rule="evenodd"
+                          d="M9.1839 1.10327C11.3181 0.621082 13.5509 0.841689 15.5494 1.73219L15.9028 1.88964L16.2177 1.1829C16.2177 1.1829 18.0153 1.98385 15.8644 1.02544C13.7134 0.0670405 11.3103 -0.170389 9.01339 0.348567C6.71648 0.867522 4.64887 2.11506 3.11891 3.90511C1.58894 5.69517 0.678609 7.93183 0.523671 10.2815C0.368733 12.6312 0.977492 14.9681 2.25916 16.9435C3.54082 18.919 5.42673 20.4272 7.6356 21.2433C9.84447 22.0593 12.258 22.1395 14.5161 21.4718C16.7743 20.8042 18.7561 19.4244 20.1661 17.5384C21.576 15.6524 22.3385 13.3611 22.3399 11.0063L22.3399 10.6506L22.3399 10.4239C22.3399 9.99655 21.9935 9.65014 21.5661 9.65014L21.5662 10.6506L21.5661 11.0058C21.5649 13.1938 20.8564 15.3227 19.5464 17.0751C18.2363 18.8275 16.3949 20.1095 14.2967 20.7299C12.1986 21.3502 9.9561 21.2757 7.90373 20.5175C5.85137 19.7592 4.09909 18.3579 2.90824 16.5224C1.71738 14.6869 1.15176 12.5157 1.29572 10.3324C1.43968 8.14923 2.28551 6.07104 3.70707 4.40782C5.12863 2.74459 7.04974 1.58545 9.1839 1.10327ZM22.2266 2.85317L22.5 2.57949L21.9526 2.03265L21.6792 2.30634L11.4197 12.5761L10.4123 11.5688L8.80701 9.96345C8.50485 9.66129 8.01496 9.66129 7.7128 9.96345L9.86524 12.1159L11.1463 13.3969C11.2188 13.4695 11.3173 13.5103 11.4199 13.5102C11.5226 13.5102 11.621 13.4694 11.6935 13.3968L22.2266 2.85317Z"
+                          fill="#E0004D" />
+                      </svg>
+                      {{ block.settings.text3 }}
+                    </div>
+                  {%- endif -%}
+                  {%- if block.settings.text4 != blank -%}
+                    <div class="expenditures-dispatch-l">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="23" height="22" viewBox="0 0 23 22" fill="none">
+                        <path fill-rule="evenodd" clip-rule="evenodd"
+                          d="M9.1839 1.10327C11.3181 0.621082 13.5509 0.841689 15.5494 1.73219L15.9028 1.88964L16.2177 1.1829C16.2177 1.1829 18.0153 1.98385 15.8644 1.02544C13.7134 0.0670405 11.3103 -0.170389 9.01339 0.348567C6.71648 0.867522 4.64887 2.11506 3.11891 3.90511C1.58894 5.69517 0.678609 7.93183 0.523671 10.2815C0.368733 12.6312 0.977492 14.9681 2.25916 16.9435C3.54082 18.919 5.42673 20.4272 7.6356 21.2433C9.84447 22.0593 12.258 22.1395 14.5161 21.4718C16.7743 20.8042 18.7561 19.4244 20.1661 17.5384C21.576 15.6524 22.3385 13.3611 22.3399 11.0063L22.3399 10.6506L22.3399 10.4239C22.3399 9.99655 21.9935 9.65014 21.5661 9.65014L21.5662 10.6506L21.5661 11.0058C21.5649 13.1938 20.8564 15.3227 19.5464 17.0751C18.2363 18.8275 16.3949 20.1095 14.2967 20.7299C12.1986 21.3502 9.9561 21.2757 7.90373 20.5175C5.85137 19.7592 4.09909 18.3579 2.90824 16.5224C1.71738 14.6869 1.15176 12.5157 1.29572 10.3324C1.43968 8.14923 2.28551 6.07104 3.70707 4.40782C5.12863 2.74459 7.04974 1.58545 9.1839 1.10327ZM22.2266 2.85317L22.5 2.57949L21.9526 2.03265L21.6792 2.30634L11.4197 12.5761L10.4123 11.5688L8.80701 9.96345C8.50485 9.66129 8.01496 9.66129 7.7128 9.96345L9.86524 12.1159L11.1463 13.3969C11.2188 13.4695 11.3173 13.5103 11.4199 13.5102C11.5226 13.5102 11.621 13.4694 11.6935 13.3968L22.2266 2.85317Z"
+                          fill="#E0004D" />
+                      </svg>
+                      {{ block.settings.text4 }}
+                    </div>
+                  {%- endif -%}
+                </div>
+              {% endif %}
+            {%- endfor -%}
+            </div>
+          </div>
+          <div class="expenditures-dispatch-product">
+            <div class="expenditures-dispatch-arraws">
+              <div class="expenditures-dispatch-arraw expenditures-dispatch-left">
+                <svg xmlns="http://www.w3.org/2000/svg" width="56" height="56" viewBox="0 0 56 56" fill="none">
+                  <circle cx="28" cy="28" r="28" transform="rotate(-180 28 28)" fill="#FBFAF4" />
+                  <path fill-rule="evenodd" clip-rule="evenodd"
+                    d="M33.0404 46.2929L33.7475 47L35.1617 45.5858L34.4546 44.8787L27.9989 38.423L21.9137 32.3377C21.1326 31.5567 19.8663 31.5567 19.0852 32.3377L26.5847 39.8372L33.0404 46.2929ZM15.5404 27.3787C15.1499 27.7692 15.1499 28.4024 15.5404 28.7929C15.6719 28.9244 15.8309 29.0116 15.9989 29.0546L15.9989 29.0858L16.2453 29.0858L16.2497 29.0858L16.9989 29.0858L27.2494 29.0858L37.5 29.0858L40.0001 29.0858C41.1046 29.0858 42.0001 28.1904 42.0001 27.0858L37.5 27.0858L18.6617 27.0858L34.4546 11.2929L35.1617 10.5858L33.7475 9.17158L33.0404 9.87868L15.5404 27.3787Z"
+                    fill="#190A0A" />
+                </svg>
+              </div>
+              <div class="expenditures-dispatch-arraw expenditures-dispatch-right">
+                <svg xmlns="http://www.w3.org/2000/svg" width="56" height="56" viewBox="0 0 56 56" fill="none">
+                  <circle cx="28" cy="28" r="28" transform="matrix(1 -8.74228e-08 -8.74228e-08 -1 0 56)"
+                    fill="#FBFAF4" />
+                  <path fill-rule="evenodd" clip-rule="evenodd"
+                    d="M22.9596 46.2929L22.2525 47L20.8383 45.5858L21.5454 44.8787L28.0011 38.423L34.0863 32.3377C34.8674 31.5567 36.1337 31.5567 36.9148 32.3377L29.4153 39.8372L22.9596 46.2929ZM40.4596 27.3787C40.8501 27.7692 40.8501 28.4024 40.4596 28.7929C40.3281 28.9244 40.1691 29.0116 40.0011 29.0546L40.0011 29.0858L39.7547 29.0858L39.7503 29.0858L39.0011 29.0858L28.7506 29.0858L18.5 29.0858L15.9999 29.0858C14.8954 29.0858 13.9999 28.1904 13.9999 27.0858L18.5 27.0858L37.3383 27.0858L21.5454 11.2929L20.8383 10.5858L22.2525 9.17158L22.9596 9.87868L40.4596 27.3787Z"
+                    fill="#190A0A" />
+                </svg>
+              </div>
+            </div>
+            <div class="expenditures-dispatch-product-list swiper-wrapper">
+              {%- for block in section.blocks -%}
+                {% if block.type == 'product' %}
+                  <div class="expenditures-dispatch-product-item swiper-slide">
+                    {%- if block.settings.image != blank -%}
+                      <div class="expenditures-dispatch-product-img">
+                        {%- if block.settings.text != blank -%}
+                          <div class="expenditures-dispatch-product-tag">{{ block.settings.text }}</div>
+                        {%- endif -%}
+                        <img src="{{ block.settings.image | image_url }}" width="" height=""  alt="">
+                      </div>
+                    {%- endif -%}
+                    <div class="expenditures-dispatch-product-info">
+                      {%- if block.settings.text1 != blank -%}
+                        <h3 class="expenditures-dispatch-product-h3">{{ block.settings.text1 }}</h3>
+                      {%- endif -%}
+                      {%- if block.settings.text2 != blank or block.settings.text3 != blank -%}
+                        <div class="expenditures-dispatch-product-price">
+                          {%- if block.settings.text2 != blank -%}
+                            <span class="n-price">{{ block.settings.text2 }}</span>
+                          {%- endif -%}
+                          {%- if block.settings.text3 != blank -%}
+                            <span class="d-price">{{ block.settings.text3 }}</span>
+                          {%- endif -%}
+                        </div>
+                      {%- endif -%}
+                      {%- if block.settings.text4 != blank -%}
+                        <a href="{{ block.settings.link }}" class="expenditures-dispatch-product-btn">
+                          {{ block.settings.text4 }}
+                          <svg xmlns="http://www.w3.org/2000/svg" width="30" height="24" viewBox="0 0 30 24" fill="none">
+                            <path d="M0.382812 12.1048L27.1818 12.1035" stroke="currentColor" stroke-width="1.24646" />
+                            <path d="M21.5723 6.49414L28.1361 12.1045L21.5723 17.5727" stroke="currentColor"
+                              stroke-width="1.24646" stroke-linejoin="round" />
+                          </svg>
+                        </a>
+                      {%- endif -%}
+                    </div>
+                  </div>
+                {% endif %}
+              {%- endfor -%}
+            </div>
+          </div>
+        </div>
+        {%- if section.settings.text8 != blank -%}
+          <div class="expenditures-dispatch-btn">{{ section.settings.text8 }}</div>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+  class ExpendituresController {
+    constructor(wrapperSelector) {
+      this.wrapper = document.querySelector(wrapperSelector);
+      if (!this.wrapper) return;
+  
+      this.clickedTabIndex = null;
+      this.clickedTabTxt = null;
+  
+      this.initInputControl();
+      this.initTabClick();
+      this.initBtnClick();
+      this.initResetBtn();
+    }
+  
+    initSwiper() {
+      const swiperEl = this.wrapper.querySelector(".expenditures-dispatch-product");
+      if (!swiperEl) return;
+      if (this.swiper) {
+        this.swiper.destroy(true, true); 
+        this.swiper = null;
+      }
+      this.swiper = new Swiper(swiperEl, {
+        slidesPerView: "auto",
+        spaceBetween: 70,
+        loop: true,
+        centeredSlides: true,
+        navigation: {
+          nextEl: this.wrapper.querySelector(".expenditures-dispatch-right"),
+          prevEl: this.wrapper.querySelector(".expenditures-dispatch-left"),
+        },
+        on: {
+          transitionEnd: () => {
+            this.handleSlideChange();
+          },
+        },
+      });
+    }
+  
+    handleSlideChange() {
+      const price = this.wrapper.querySelector(".swiper-slide-active .n-price").innerText;
+      this.recalculateWithNewPrice(parseFloat(price.replace(/[^0-9.]/g, '') || "0"))
+    }
+  
+    initInputControl() {
+      const input = this.wrapper.querySelector(".expenditures-num");
+      if (!input) return;
+  
+      input.addEventListener("keydown", (e) => {
+        const allowedKeys = [
+          "Backspace", "Delete", "ArrowLeft", "ArrowRight", "Tab", "Enter",
+        ];
+  
+        if (allowedKeys.includes(e.key)) return;
+        if (/^\d$/.test(e.key)) return;
+  
+        e.preventDefault();
+      });
+  
+      input.addEventListener("input", () => {
+        let value = input.value.replace(/[^\d]/g, "");
+        let num = parseInt(value, 10);
+  
+        if (isNaN(num)) {
+          input.value = "";
+        } else if (num < 0) {
+          input.value = "0";
+        } else if (num > 2000) {
+          input.value = "2000";
+        } else {
+          input.value = String(num);
+        }
+      });
+  
+      input.addEventListener("paste", (e) => {
+        const pasted = e.clipboardData.getData("text");
+        if (!/^\d+$/.test(pasted)) {
+          e.preventDefault();
+        }
+      });
+    }
+  
+    showToast(message) {
+      this.wrapper.querySelector(".expenditures-tip").style.display = 'block';
+      setTimeout(() => {
+        this.wrapper.querySelector(".expenditures-tip").style.display = 'none';
+      }, 3000);
+      return
+      // 如果已存在，先移除旧的
+      const oldToast = document.getElementById('custom-toast');
+      if (oldToast) oldToast.remove();
+  
+      // 创建新 DOM 元素
+      const toast = document.createElement('div');
+      toast.id = 'custom-toast';
+      toast.textContent = message;
+  
+      // 设置样式
+      Object.assign(toast.style, {
+        position: 'fixed',
+        top: '15%',
+        left: '50%',
+        transform: 'translate(-50%, 0%)',
+        backgroundColor: '#e0004d',
+        color: 'white',
+        padding: '12px 24px',
+        borderRadius: '6px',
+        fontSize: '16px',
+        zIndex: '9999',
+        pointerEvents: 'none',
+        transition: 'opacity 0.3s ease',
+        opacity: '1',
+      });
+  
+      // 添加到页面
+      document.body.appendChild(toast);
+  
+      // 延迟 3 秒自动移除
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        setTimeout(() => toast.remove(), 300); // 等过渡完成后移除
+      }, 3000);
+    }
+  
+    formatMinOneDecimal(num) {
+      const rounded = Math.round(num * 10) / 10; // 保留1位小数，四舍五入
+      return Math.max(rounded, 0.1);             // 最小值限制为 0.1
+    }
+  
+    initTabClick() {
+      const tabItems = this.wrapper.querySelectorAll('.expenditures-tab-item');
+      if (!tabItems.length) return;
+  
+      tabItems.forEach((item, index) => {
+        if (item.classList.contains('active')) {
+          this.clickedTabIndex = Array.from(tabItems).indexOf(item);
+          this.clickedTabTxt = item.innerText;
+        }
+        item.addEventListener('click', () => {
+          // 移除所有的 active
+          tabItems.forEach(tab => tab.classList.remove('active'));
+          // 当前项加上 active
+          item.classList.add('active');
+          // 记录下标
+          this.clickedTabIndex = index;
+          this.clickedTabTxt = item.innerText;
+
+          this.wrapper.querySelector(".expenditures-num").value = "";
+  
+        });
+      });
+    }
+  
+    initBtnClick() {
+      const btn = this.wrapper.querySelector('.expenditures-btn');
+      if (!btn) return;
+  
+      // 若已绑定过，先解绑
+      btn.removeEventListener('click', this._onBtnClick);
+      this._onBtnClick = () => {
+        const label = this.wrapper.querySelector('.expenditures-dispatch-top span');
+        const priceEl = this.wrapper.querySelector('.expenditures-dispatch-product-item .n-price');
+        const inputEl = this.wrapper.querySelector('.expenditures-num');
+        const price = parseFloat(priceEl?.innerText.replace(/[^0-9.]/g, '') || '0');
+        const expenditure = parseInt(inputEl?.value || '0', 10);
+
+        if (isNaN(expenditure) || expenditure <= 0) {
+          this.showToast("{{ section.settings.text9 }}");
+          return;
+        }
+
+        label.innerText = `${this.clickedTabTxt} (£${expenditure} / month)`;
+        this.wrapper.querySelector('.expenditures-cont').style.display = 'none';
+        this.wrapper.querySelector('.expenditures-dispatch').style.display = 'block';
+
+        this.calculateReturnInfo(price, expenditure);
+        this.initSwiper(); // 安全：见第 3 步
+
+        // 激活对应 dispatch-item
+        const items = this.wrapper.querySelectorAll('.expenditures-dispatch-item');
+        if (items.length && typeof this.clickedTabIndex === 'number') {
+          items.forEach((el, i) => el.classList.toggle('active', i === this.clickedTabIndex));
+        }
+      };
+      btn.addEventListener('click', this._onBtnClick);
+    }
+  
+    initResetBtn() {
+      const resetBtn = this.wrapper.querySelector('.expenditures-dispatch-btn');
+      const inputEl = this.wrapper.querySelector('.expenditures-num');
+      const tabItems = this.wrapper.querySelectorAll('.expenditures-tab-item');
+  
+      if (!resetBtn || !inputEl) return;
+  
+      resetBtn.addEventListener('click', () => {
+  
+        this.wrapper.querySelector('.expenditures-cont').style.display = 'block';
+        this.wrapper.querySelector('.expenditures-dispatch').style.display = 'none';
+          // 清空输入框
+          inputEl.value = '';
+          inputEl.focus();
+
+        // 重置 tab 选择到第一个
+        if (tabItems.length > 0) {
+          tabItems.forEach((tab, index) => {
+            if (index === 0) {
+              tab.classList.add('active');
+              this.clickedTabIndex = 0;
+              this.clickedTabTxt = tab.innerText;
+            } else {
+              tab.classList.remove('active');
+            }
+          });
+        }
+      });
+    }
+  
+    calculateReturnInfo(productPrice, monthlySpend) {
+      const resultMonthEl = this.wrapper.querySelector('.expenditures-dispatch-m');
+      const resultSaveEl = this.wrapper.querySelector('.expenditures-dispatch-y');
+  
+      if (!resultMonthEl || !resultSaveEl) return;
+  
+      const returnMonths = this.formatMinOneDecimal(productPrice / monthlySpend);
+      const yearlySavings = monthlySpend * 12;
+  
+      resultMonthEl.querySelector('strong').innerText = `${returnMonths} months`;
+      resultSaveEl.querySelector('strong').innerText = `save up to £${yearlySavings.toLocaleString()}/year`;
+    }
+  
+    recalculateWithNewPrice(newPrice) {
+      const input = this.wrapper.querySelector(".expenditures-num");
+      const expenditure = parseInt(input?.value || "0", 10);
+      if (!isNaN(newPrice) && expenditure > 0) {
+        this.calculateReturnInfo(newPrice, expenditure);
+      }
+    }
+  }
+  console.log('expenditures loaded-------');
+  // 初始化
+  new ExpendituresController('.expenditures');
+</script>
+{% schema %}
+{
+  "name": "expenditures",
+  "blocks": [
+    {
+      "name": "tab",
+      "type": "tab",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text"
+        },
+        {
+          "type": "text",
+          "id": "text1",
+          "label": "Text"
+        },
+        {
+          "type": "text",
+          "id": "text2",
+          "label": "Text"
+        },
+        {
+          "type": "text",
+          "id": "text3",
+          "label": "Text"
+        },
+        {
+          "type": "text",
+          "id": "text4",
+          "label": "Text"
+        }
+      ]
+    },
+    {
+      "name": "product",
+      "type": "product",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Tag"
+        },
+        {
+          "type": "text",
+          "id": "text1",
+          "label": "Text"
+        },
+        {
+          "type": "text",
+          "id": "text2",
+          "label": "Text"
+        },
+        {
+          "type": "text",
+          "id": "text3",
+          "label": "Text"
+        },
+        {
+          "type": "text",
+          "id": "text4",
+          "label": "Text"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        }
+      ]
+    }
+  ],
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title"
+    },
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "text1",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "text2",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "text3",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "text9",
+      "label": "Text",
+      "info": "输入价格提示"
+    },
+    {
+      "type": "header",
+      "content": "结果"
+    },
+    {
+      "type": "text",
+      "id": "text4",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "text5",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "text6",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "text7",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "text8",
+      "label": "Text"
+    }
+  ],
+  "presets": [
+    {
+      "name": "expenditures",
+      "blocks": []
+    }
+  ]
+}
+{% endschema %}

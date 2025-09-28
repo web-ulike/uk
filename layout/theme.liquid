@@ -1,11 +1,3 @@
-{%- comment -%}
-  ------------------------------------------------------------------------------------------------------------------------
-  NOTE TO DEVELOPERS: welcome to Focal theme! We hope that you will enjoy editing this theme as much as we did for
-    developing it. We have put a lot of work to make this theme as developer friendly as possible by offering you
-    hooks to integrate into critical parts of the theme. You will find the complete technical documentation (including
-    all events, dependencies...) in the "custom.js" file, located in the Assets folder.
-  ------------------------------------------------------------------------------------------------------------------------
-{%- endcomment -%}
 <!doctype html>
 {%- assign direction = 'ltr' -%}
 {%- case request.locale.iso_code -%}
@@ -14,21 +6,32 @@
 {%- endcase -%}
 <html class="no-js" lang="en-GB" dir="{{ direction }}">
   <head>
+    {%- comment -%}Few prefech to increase performance on commonly used third-parties{%- endcomment -%}
+    <link rel="preconnect" href="https://cdn.shopify.com">
+    <link rel="dns-prefetch" href="https://cdn.shopify.com">
+
+     {%- comment -%}Preload important resources{%- endcomment -%}
+     <script src="{{ 'jquery.min.js' | asset_url }}"></script>
+     <link rel="preload" as="style" href="{{ 'theme.css' | asset_url }}">
+     <link rel="preload" as="style" href="{{ 'swiper-bundle.min.css' | asset_url }}">
+     <link rel="preload" as="script" href="{{ 'swiper-bundle.min.aio.min.js' | asset_url }}">
+     <link rel="preload" as="font" href="{{ 'Saans-Regular.otf' | asset_url }}" type="font/otf" crossorigin="anonymous">
+     <link rel="preload" as="font" href="{{ "Saans-Medium.otf" | asset_url }}" type="font/otf" crossorigin="anonymous">
+
+    {% comment %}  Google Consent Mode V2 {% endcomment %}
     {% render 'gcm-integration-script' %}
-    <!-- Google Tag Manager -->
-    <script>
-      (function (w, d, s, l, i) {
-        w[l] = w[l] || [];
-        w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
-        var f = d.getElementsByTagName(s)[0],
-          j = d.createElement(s),
-          dl = l != 'dataLayer' ? '&l=' + l : '';
-        j.async = true;
-        j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
-        f.parentNode.insertBefore(j, f);
-      })(window, document, 'script', 'dataLayer', 'GTM-P7ZBDPLR');
-    </script>
-    <!-- End Google Tag Manager -->
+    {% render 'g-site-seo' %}
+
+    <noscript>
+      <img
+        height="1"
+        width="1"
+        style="display:none;"
+        alt=""
+        src="https://ct.pinterest.com/v3/?event=init&tid=2612495982378&pd[em]=<hashed_email_address>&noscript=1"
+      >
+    </noscript>
+    <!-- end Pinterest Tag -->
     <meta name="google-site-verification" content="7KQBy-K0xvi4A40MnKJwiMeOGqfli8b5ZhPqHHinHlE">
     <meta charset="utf-8">
     <meta
@@ -36,7 +39,6 @@
       content="width=device-width, initial-scale=1.0, height=device-height, minimum-scale=1.0, maximum-scale=1.0"
     >
     <meta name="theme-color" content="{{ settings.header_background }}">
-    {%- if dropinblog == 1 -%}{{ dropinblog_head_top }}{%- endif -%}
     <title>
       {% if page_title == blank -%}
         {{- shop.name -}}
@@ -50,37 +52,34 @@
     {%- endif -%}
 
     <link rel="canonical" href="{{ canonical_url }}">
-
+    {% if template == 'index' %}
+      <link rel="alternate" hreflang="es-US" href="https://www.ulike.com/es">
+      <link rel="alternate" hreflang="zh-HK" href="https://hk.ulike.com/">
+      <link rel="alternate" hreflang="zh-TW" href="https://tw.ulike.com/">
+      <link rel="alternate" hreflang="en-gb" href="https://uk.ulike.com/">
+      <link rel="alternate" hreflang="fr" href="https://fr.ulike.com/">
+      <link rel="alternate" hreflang="de" href="https://de.ulike.com/">
+      <link rel="alternate" hreflang="en-US" href="https://www.ulike.com/">
+      <link rel="alternate" hreflang="en" href="https://www.ulike.com/">
+      <link rel="alternate" hreflang="x-default" href="https://www.ulike.com/">
+    {% endif %}
+    {% if request.path == '/products/sapphire-air-10-ipl-hair-removal' %}
+      <link rel="alternate" hreflang="zh-TW" href="https://tw.ulike.com/products/ulike-air10">
+      <link rel="alternate" hreflang="en-gb" href="https://uk.ulike.com/products/sapphire-air-10-ipl-hair-removal">
+      <link
+        rel="alternate"
+        hreflang="fr"
+        href="https://fr.ulike.com/products/ulike-sapphire-air-10-epilateur-lumiere-pulsee"
+      >
+      <link rel="alternate" hreflang="en" href="https://www.ulike.com/products/sapphire-air-10-ipl-hair-removal">
+      <link rel="alternate" hreflang="de" href="https://de.ulike.com/products/saphir-air-10-ipl-haarentfernung">
+    {% endif %}
     {%- if settings.favicon -%}
       <link rel="shortcut icon" href="{{ settings.favicon | img_url: '96x96' }}" type="image/png">
     {%- endif -%}
 
-    {%- comment -%}Few prefech to increase performance on commonly used third-parties{%- endcomment -%}
-    <link rel="preconnect" href="https://cdn.shopify.com">
-    <link rel="dns-prefetch" href="https://productreviews.shopifycdn.com">
-    <link rel="dns-prefetch" href="https://www.google-analytics.com">
-
-    {%- unless settings.heading_font.system? and settings.text_font.system? -%}
-      <link rel="preconnect" href="https://fonts.shopifycdn.com" crossorigin>
-    {%- endunless -%}
-
-    {%- comment -%}Preload important resources{%- endcomment -%}
-    <link rel="preload" as="style" href="{{ 'theme.css' | asset_url }}">
-    <link rel="preload" as="script" href="{{ 'vendor.js' | asset_url }}">
-    <link rel="preload" as="script" href="{{ 'theme.js' | asset_url }}">
-    {%- comment -%}
-      IMPLEMENTATION NOTE: for improving performance, Focal tries to preload images on known pages (such as blog page,
-      product or collection pages). In order to keep a main JS file size minimal, the theme also lazyloads non-essential
-      libraries (such as PhotoSwipe or Flickity) and only loads them on demand.
-    {%- endcomment -%}
     {%- if request.page_type == 'product' -%}
-      {%- assign selected_media = product.selected_variant.featured_media | default: product.featured_media -%}
-
-      <link rel="preload" as="fetch" href="{{ product.url }}.js" crossorigin>
-
-      {%- if product.media.size > 1 -%}
-        <link rel="preload" as="script" href="{{ 'flickity.js' | asset_url }}">
-      {%- endif -%}
+      <link rel="preload" href="{{ product.selected_or_first_available_variant.featured_image | img_url: '1740x'  }}" as="image">
     {%- endif -%}
 
     {%- if dropinblog == 1 -%}
@@ -91,95 +90,26 @@
     {% render 'microdata-schema' %}
     {% render 'css-variables', direction: direction %}
     {% render 'js-variables', direction: direction %}
-    {% comment %} {% include 'omega_multi_pixel' %} {% endcomment %}
 
+      <link rel="stylesheet" href="{{ 'swiper-bundle.min.css' | asset_url }}">
+     
     <link rel="stylesheet" href="{{ 'theme.css' | asset_url }}">
-    {% comment %} <script type="text/javascript" src="https://apps.omegatheme.com/facebook-pixel/client/facebook-pixel.js"></script> {% endcomment %}
-    <script src="{{ 'jquery.min.js' | asset_url }}" rel="preload"></script>
+    
+    <link rel="stylesheet" href="{{ 'custom_css.css' | asset_url }}">
 
+    <script src="{{ 'swiper-bundle.min.aio.min.js' | asset_url }}" defer></script>
     <script src="{{ 'vendor.js' | asset_url }}" defer></script>
     <script src="{{ 'theme.js' | asset_url }}" defer></script>
     <script src="{{ 'custom.js' | asset_url }}" defer></script>
     <script src="{{ 'video-dialog.js' | asset_url}}" defer></script>
-    <script src="{{ 'scroll-animation.js' | asset_url}}" defer="defer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.3.2/lazysizes.min.js" async></script>
+
+
     {{ content_for_header }}
-    {{ shop.metafields.loox.global_html_head }}
-    {%- if dropinblog == 1 -%}{{ dropinblog_head_bottom }}{%- endif -%}
 
-    {{ shop.metafields.loox.global_html_head }}
     {% include 'rto_ads' %}
-    <script>
-      (() => {
-        const installerKey = 'docapp-discount-auto-install';
-        const urlParams = new URLSearchParams(window.location.search);
-        if (urlParams.get(installerKey)) {
-          window.sessionStorage.setItem(
-            installerKey,
-            JSON.stringify({
-              integrationId: urlParams.get('docapp-integration-id'),
-              divClass: urlParams.get('docapp-install-class'),
-              check: urlParams.get('docapp-check'),
-            })
-          );
-        }
-      })();
-    </script>
-
-    <script>
-      (() => {
-        const previewKey = 'docapp-discount-test';
-        const urlParams = new URLSearchParams(window.location.search);
-        if (urlParams.get(previewKey)) {
-          window.sessionStorage.setItem(
-            previewKey,
-            JSON.stringify({ active: true, integrationId: urlParams.get('docapp-discount-inst-test') })
-          );
-        }
-      })();
-    </script>
 
     {% render 'gsf-conversion-pixels' %}
-    <script src="https://www.dwin1.com/33267.js" type="text/javascript" defer="defer"></script>
-
-    <!-- Google tag (gtag.js) -->
-    <!--
-      <script async src="https://www.googletagmanager.com/gtag/js?id=AW-11232852355"></script>
-      {% comment %} <script async src="https://www.googleoptimize.com/optimize.js?id=OPT-MG5HX7G"></script> {% endcomment %}
-      <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag() {
-          dataLayer.push(arguments);
-        }
-        gtag('js', new Date());
-
-        gtag('config', 'AW-11232852355');
-      </script>
-    -->
-
-    <!-- Bing Pixel -->
-    <!--
-      <script>
-        (function (w, d, t, r, u) {
-          var f, n, i;
-          (w[u] = w[u] || []),
-            (f = function () {
-              var o = { ti: '187075310', tm: 'shpfy_ui', enableAutoSpaTracking: true };
-              (o.q = w[u]), (w[u] = new UET(o)), w[u].push('pageLoad');
-            }),
-            (n = d.createElement(t)),
-            (n.src = r),
-            (n.async = 1),
-            (n.onload = n.onreadystatechange =
-              function () {
-                var s = this.readyState;
-                (s && s !== 'loaded' && s !== 'complete') || (f(), (n.onload = n.onreadystatechange = null));
-              }),
-            (i = d.getElementsByTagName(t)[0]),
-            i.parentNode.insertBefore(n, i);
-        })(window, document, 'script', '//bat.bing.com/bat.js', 'uetq');
-      </script>
-    -->
-    <!-- End Bing Pixel -->
 
     <!-- Universal Event Tracking blocking script from GDPR/CCPA Compliance + Cookie Management App -->
     <script id="gdpr-uet-blocking-script">
@@ -333,7 +263,10 @@
 
       checkConsentForGADS(3);
     </script>
-  </head>
+
+   
+
+{% include 'pagefly-app-header' %}</head>
 
   {%- assign feature_classes = '' -%}
 
@@ -342,16 +275,6 @@
   {%- endif -%}
 
   <body class="no-focus-outline {{ feature_classes }}" data-instant-allow-query-string>
-    <!-- Google Tag Manager (noscript) -->
-    <noscript
-      ><iframe
-        src="https://www.googletagmanager.com/ns.html?id=GTM-P7ZBDPLR"
-        height="0"
-        width="0"
-        style="display:none;visibility:hidden"
-      ></iframe
-    ></noscript>
-    <!-- End Google Tag Manager (noscript) -->
 
     {%- comment -%}Common SVG definitions that we are re-using in several places{%- endcomment -%}
     <svg class="visually-hidden">
@@ -451,23 +374,29 @@
       {%- section 'footer' -%}
     {%- endif -%}
     <script src="{{ 'couponcode.js' | asset_url}}" defer="defer"></script>
-    {{ shop.metafields.loox.global_html_body }}
 
-    {{ shop.metafields.loox.global_html_body }}
     {% include 'smile-initializer' %}
 
-    <!-- CRITEO START -->
-    {% render 'criteo-tracking' %}
-    <!-- CRITEO END -->
-
-    {% comment %} {% include 'preciso_Script' %} {% endcomment %}
-    <!-- Start of ukulike Zendesk Widget script -->
-    <script
-      id="ze-snippet"
-      src="https://static.zdassets.com/ekr/snippet.js?key=2862660e-8eeb-41a9-8b76-0f00bbf34345"
-      defer
-    ></script>
     {%- section 'zesnippet' -%}
     <!-- End of ukulike Zendesk Widget script -->
+
+    {% comment %} {% section 'wheel' %} {% endcomment %}
+    {% if page.url != '/pages/meta-air-3-a' and template.name != 'blog' and template.name != 'article' %}
+      {% comment %} {% section 'uk-green-email-subscribe' %} {% endcomment %}
+      {% section 'wheel' %}
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+    {% endif %}
+     <script src="{{ 'scroll-animation.js' | asset_url}}" defer="defer"></script>
+    {% comment %} {% section 'u-user-new-popup' %} {% endcomment %}
+
   </body>
+  {% comment %}订阅插件 
+  {% section 'subscript-plug' %} {% endcomment %}
+  {% comment %} {% section 'u-user-new-popup' %} {% endcomment %}
+  {% comment %} 新的转盘订阅 {% endcomment %}
+
+   <!-- 风控代码 -->
+  {% render 'forter' %}
+  
 </html>

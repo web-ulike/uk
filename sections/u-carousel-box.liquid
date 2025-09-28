@@ -1,0 +1,353 @@
+<style>
+.u-carousel-box{
+  padding: 60px 0;
+  background: #f9f9f9;
+  overflow: hidden;
+}
+
+.u-blog-tag{
+  font-size: 14px;
+  color: #fff;
+  line-height: 1;
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  z-index: 3;
+  background: rgba(0, 0, 0, .6);
+  padding: 5px 7px;
+}
+
+.u-more{
+  font-size: 14px;
+  color: #000;
+  padding: 10px 0;
+  text-align: center;
+  backdrop-filter: blur(16px);
+  background: rgba(255, 255, 255, .6);
+  position: absolute;
+  z-index: 2;
+  width: 100%;
+  bottom: 0;
+  left: 0;
+  transform: translateY(50px);
+  transition: transform 0.8s cubic-bezier(0.645, 0.045, 0.355, 1);
+}
+
+.u-carousel-box .u-carousel-list{
+  display: flex;
+}
+
+.u-carousel-box .u-carousel-item{
+  width: 360px;
+  margin-right: 38px;
+  flex-shrink: 0;
+}
+
+.u-carousel-box .u-carousel-img{
+  position: relative;
+  padding-top: 62.5%;
+  overflow: hidden;
+}
+
+.u-carousel-box .img{
+  position: absolute;
+  z-index: 1;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  top: 0;
+  left: 0;
+}
+
+.u-carousel-box .u-carousel-img::after{
+  position: absolute;
+  content: '';
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, .15);
+  z-index: 2;
+  opacity: 0;
+  transition: opacity 0.4s cubic-bezier(0.645, 0.045, 0.355, 1);
+}
+.u-carousel-box .u-carousel-img:hover::after{
+  opacity: 1;
+}
+
+.u-carousel-box .u-carousel-img:hover .u-more{
+  transform: translateY(0);
+}
+
+.u-carousel-box .u-carousel-title{
+  font-size: 16px;
+  color: #000;
+  font-family: var(--heading-font-family);
+  line-height: 1.2;
+  margin-top: 15px;
+}
+
+.u-carousel-box .u-carousel-p{
+  font-size: 14px;
+  color: #b9b9b9;
+  margin-top: 15px;
+  line-height: 1.2;
+}
+
+.u-carousel-box .mark-bottom::before{
+  background: #f9f9f9;
+}
+
+@media (max-width:768px) {
+  .u-carousel-box .u-carousel-item{
+    width: 300px;
+    margin-right: 28px;
+  }
+}
+</style>
+{%- assign blog = section.settings.blog -%}
+<section class="section-box">
+  <div class="u-carousel-box">
+      <div class="container">
+        <div class="u-carousel-cont">
+          <div class="u-carousel-list">
+            {%- for article in blog.articles limit: section.settings.num_blog -%}
+              <a href="{{ article.url }}" class="u-carousel-item">
+                <div class="u-carousel-img mark-bottom">
+                  {% assign first_tag = article.tags | first %}
+                  {% if first_tag %}
+                    <div class="u-blog-tag">{{ first_tag }}</div>
+                  {% endif %}
+                  {%- if article.image -%}
+                    {{- article.image | image_url: width: article.image.width | image_tag: loading: 'lazy', sizes: '(max-width: 740px) 81vw, (max-width: 999px) 37vw, 425px', sizes: '600,700,800,1000,1200,1400,1600,1800,2000', class: 'img' -}}
+                  {%- endif -%}
+                  {%- if section.settings.rm_t != blank -%}
+                    <div class="u-more">{{ section.settings.rm_t }}</div>
+                  {%- endif -%}
+                </div>
+                <div class="u-carousel-title">
+                  {{ article.title }}
+                </div>
+                <div class="u-carousel-p">{{ article.created_at | date: "%b %d, %Y"  }}</div>
+              </a>
+            {%- endfor -%}
+          </div>
+        </div>
+      </div>
+    </div>
+</section>
+<script>
+  function mediaRealSlider{{ section.id | replace: "template--", "" | replace: "__", ""  }}($el) {
+    const list = $el.querySelector('.u-carousel-list')
+    let items = Array.from(list.querySelectorAll('.u-carousel-item'))
+    const length = items.length
+    let index = -length
+    let isLeftBtn = 1
+    let timer = null
+    const mrNum = window.innerWidth > 768 ? 38 : 28
+  
+    if (length < 5) return
+  
+    // 重复内容3倍，实现无缝滚动
+    list.innerHTML = list.innerHTML + list.innerHTML + list.innerHTML
+    items = Array.from(list.querySelectorAll('.u-carousel-item'))
+  
+    skewTransform(true)
+  
+    function skewTransform(auto, tIndex = index, skew = 0) {
+      const width = items[Math.abs(tIndex) - 1].offsetWidth
+      const translateX = (width + mrNum) * tIndex + (auto ? skew : 0)
+      list.style.transform = `translateX(${translateX}px)`
+      list.style.transition = auto ? 'all 0s ease' : 'all .6s ease'
+    }
+  
+    function changeLeft(skew = 0) {
+      if (isLeftBtn && index === -2 * length) {
+        skewTransform(true, -length + 1, skew)
+        index = -length
+      }
+      if (!isLeftBtn && index === -length + 1) {
+        skewTransform(true, -2 * length, skew)
+        index = -2 * length + 1
+      }
+      setTimeout(() => {
+        skewTransform(false)
+      }, 10)
+    }
+  
+    function getTranslateX() {
+      const style = window.getComputedStyle(list)
+      const matrix = new DOMMatrix(style.transform)
+      return matrix.m41
+    }
+  
+    function clearTimer() {
+      if (timer) {
+        clearInterval(timer)
+        timer = null
+      }
+    }
+  
+    function setAutoPlay() {
+      clearTimer()
+      timer = setInterval(() => {
+        isLeftBtn = 1
+        index--
+        changeLeft()
+      }, 5000)
+    }
+  
+    function initMobileCarousel() {
+      let startX = 0
+      let startY = 0
+      let listTar = 0
+      let isScrolling = false
+      let isDragging = false
+      let hasDragged = false
+  
+      const handleMove = (e) => {
+        if (!isDragging) return
+        const point = e.touches ? e.touches[0] : e
+        const diffX = point.clientX - startX
+        const diffY = point.clientY - startY
+  
+        if (!isScrolling && Math.abs(diffX) > Math.abs(diffY)) {
+          isScrolling = true
+        }
+  
+        if (isScrolling) {
+          e.preventDefault()
+          if (Math.abs(diffX) > 5) {
+            hasDragged = true
+          }
+          const translateX = listTar + diffX
+          list.style.transform = `translateX(${translateX}px)`
+          list.style.transition = 'all 0s ease'
+        }
+      }
+  
+      const handleEnd = (e) => {
+        if (!isDragging) return
+  
+        const point = e.changedTouches ? e.changedTouches[0] : e
+        const diffX = point.clientX - startX
+  
+        document.removeEventListener('touchmove', handleMove)
+        document.removeEventListener('touchend', handleEnd)
+        document.removeEventListener('mousemove', handleMove)
+        document.removeEventListener('mouseup', handleEnd)
+  
+        if (isScrolling) {
+          if (Math.abs(diffX) > window.innerWidth * 0.05) {
+            if (diffX > 0) {
+              index++
+              isLeftBtn = 0
+            } else {
+              index--
+              isLeftBtn = 1
+            }
+            changeLeft(diffX)
+          } else {
+            list.style.transform = `translateX(${listTar}px)`
+            list.style.transition = 'all .4s ease'
+          }
+        }
+  
+        // 防止拖动时 a 标签点击
+        if (isDragging && e.target.closest('a') && window.innerWidth > 640) {
+          e.preventDefault()
+          e.stopPropagation()
+        }
+  
+        isScrolling = false
+        isDragging = false
+  
+        setAutoPlay()
+        setTimeout(() => {
+          hasDragged = false
+        }, 100)
+      }
+  
+      list.addEventListener('touchstart', (e) => {
+        clearTimer()
+        const touch = e.touches[0]
+        startX = touch.clientX
+        startY = touch.clientY
+        listTar = getTranslateX()
+        isDragging = true
+        isScrolling = false
+  
+        document.addEventListener('touchmove', handleMove, { passive: false })
+        document.addEventListener('touchend', handleEnd)
+      })
+  
+      list.addEventListener('mousedown', (e) => {
+        e.preventDefault() // 防止选中文本
+        clearTimer()
+        startX = e.clientX
+        startY = e.clientY
+        listTar = getTranslateX()
+        isDragging = true
+        isScrolling = false
+  
+        document.addEventListener('mousemove', handleMove)
+        document.addEventListener('mouseup', handleEnd)
+      })
+  
+      // 防止拖拽时 <a> 标签误跳转
+      const anchors = $el.querySelectorAll('a')
+      anchors.forEach((a) => {
+        a.addEventListener('click', (e) => {
+          if (hasDragged) {
+            e.preventDefault()
+            e.stopPropagation()
+            return false
+          }
+        })
+      })
+    }
+  
+    initMobileCarousel()
+    setAutoPlay()
+  
+    list.addEventListener('mouseenter', clearTimer)
+    list.addEventListener('mouseleave', setAutoPlay)
+  }
+  
+  mediaRealSlider{{ section.id | replace: "template--", "" | replace: "__", ""  }}(document.querySelector('#shopify-section-{{ section.id }} .u-carousel-box'))
+</script>
+{% schema %}
+{
+  "name": "u-carousel-box",
+  "settings": [
+    {
+      "type": "blog",
+      "id": "blog",
+      "label": "Blog"
+    },
+    {
+      "type": "range",
+      "id": "num_blog",
+      "min": 1,
+      "max": 30,
+      "step": 1,
+      "unit": "条",
+      "label": "Blog数量",
+      "default": 5
+    },
+    {
+      "type": "text",
+      "id": "rm_t",
+      "label": "查看更多文案",
+      "default":"LEARN MORE >"
+    }
+  ],
+  "presets": [
+    {
+      "name": "u-carousel-box",
+      "blocks": []
+    }
+  ]
+}
+{% endschema %}

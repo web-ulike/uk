@@ -1,0 +1,128 @@
+<style>
+  {% comment %} banner {% endcomment %}
+
+
+  .about-banner-wrapper .about-banner {
+    position: relative;
+    color: #fff;
+  }
+
+  .about-banner-content {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  .about-banner-title {
+    margin-bottom: 14px;
+    font-size: 60px;
+    font-weight: 400;
+    line-height: 1.15;
+
+  }
+
+  .about-banner-desc {
+    width: 360px;
+    font-size: 22px;
+    line-height: 1.5;
+  }
+
+
+
+  @media (max-width: 1200px) {
+    {% comment %} banner {% endcomment %}
+    .about-banner-title {
+      font-size: 48px;
+      margin-bottom: 10px;
+    }
+
+    .about-banner-desc {
+      width: 300px;
+      font-size: 18px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    {% comment %} banner {% endcomment %}
+    .about-banner-content {
+      position: absolute;
+      top: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .about-banner-title {
+      margin-bottom: 5px;
+      font-size: 28px;
+      font-weight: 500;
+      line-height: 1.2;
+      text-align: center;
+    }
+
+    .about-banner-desc {
+      width: 262px;
+      font-size: 16px;
+      line-height: 1.5;
+      text-align: center;
+    }
+  }
+</style>
+
+<section class="about-banner-wrapper">
+  <div class="about-banner">
+    <picture>
+      <source
+        srcset="{{ section.settings.mobile_image | image_url }}"
+        media="(max-width: 768px)"
+      >
+      <img
+        class="img"
+        width="100%"
+        height="auto"
+        src="{{ section.settings.pc_image | image_url }}"
+      >
+    </picture>
+    <div class="container">
+      <div class="about-banner-content">
+        <div class="about-banner-title">{{ section.settings.title }}</div>
+        <div class="about-banner-desc">{{ section.settings.desc }}</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "u-about-banner",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "pc_image",
+      "label": "PC端图片"
+    },
+    {
+      "type": "image_picker",
+      "id": "mobile_image",
+      "label": "移动端图片"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "标题",
+      "default": "About us"
+    },
+    {
+      "type": "text",
+      "id": "desc",
+      "label": "描述",
+      "default": "Next-Generation Skincare, Professional-Grade Beauty at Home."
+    }
+  ],
+  "presets": [
+    {
+      "name": "u-about-banner",
+      "blocks": []
+    }
+  ]
+}
+{% endschema %}

@@ -2,6 +2,11 @@
 {%- assign color_white_label = 'general.label.white' | t | downcase -%}
 {%- assign size_label_list = 'general.label.size' | t | replace: ', ', ',' | downcase | split: ',' -%}
 {%- assign product_form_id = 'product-form-' | append: section.id | append: '-' | append: product.id -%}
+<script
+  src="https://www.paypal.com/sdk/js?client-id=AftujuxwA7Dh1XhsMvpuCuEIVnMK6N4iqRGezy_5oojdqjKwxQvRCNxkJVUsnn8IqDR5WDjn2ZOxx8C8&components=messages"
+  data-namespace="PayPalSDK"
+></script>
+
 <style>
     .color-shipping {
       display: none;
@@ -185,6 +190,19 @@
     .product-form .p-btn-hide {
       display: none;
     }
+  .diy-btn-link{
+    font-family: var(--heading-font-family);
+    font-size: calc(var(--base-font-size) - 2px);
+    height: 53px;
+    margin-top: 20px;
+    border: 2px solid #000;
+  }
+  .diy-btn-link .btn-txt:before{
+    color:#fff;
+  }
+  .diy-btn-link:after{
+    background:#000;
+  }
     @media (min-width: 768px) {
       .product-form-countdown-tip{
           margin-bottom:10px;
@@ -197,6 +215,9 @@
       }
       .product-popup-img-diy .pc-box {
         display: none;
+      }
+      .diy-btn-link{
+        height:49px;
       }
     }
 </style>
@@ -234,17 +255,42 @@
     // 页面加载时初始化倒计时
     updateCountdownbar();
   }
-  let ediftendDate = ('{{section.settings.end_date }}');
-  // 使用示例
-  let endDate = new Date(`${ediftendDate}`).getTime(); // 设置结束时间
-  let countdown = new Countdownbar(endDate);
+ 
 
   let variantId = "{{ product.selected_or_first_available_variant.id }}";
   window.addEventListener('load',function(){
-    if(variantId == 44752575922463 || variantId == 45212834005279 || variantId == 44770181415199 || variantId == 45212834070815) {
+     let ediftendDate = ('{{section.settings.end_date }}');
+    // 使用示例
+    let endDate = new Date(`${ediftendDate}`).getTime(); // 设置结束时间
+    let countdown = new Countdownbar(endDate);
+    
+    if(variantId == 48076053676319 ) {
       $('.color-shipping').show()
     } else {
       $('.color-shipping').hide()
+    }
+    document.addEventListener('variant:changed', function (event) {
+      const variant = event.detail.variant; // 假设事件传递了 variant 详细信息
+      if(variant.id == 48076053676319 ) {
+        $('.color-shipping').show()
+      } else {
+        $('.color-shipping').hide()
+      }
+    });
+
+    var pDiscount = getUrlParameter("add-discount");
+    if(pDiscount) {
+        addToCart(variantId);
+        setTimeout(function(){
+           // 应用优惠劵
+          var codeArr = window.discountOnCartProApp.codes;
+          if(codeArr.length > 0){
+            window.discountOnCartProApp.removeCode(codeArr[0]);
+          }
+          setTimeout(function(){
+             window.discountOnCartProApp.applyCode(pDiscount);
+          }, 1200)
+        }, 6000)
     }
   })
 </script>
@@ -416,8 +462,8 @@
                             </label>
                           </div>
                         {%- endfor -%}
-                        <div class="color-shipping {% if  option.selected_value == 'Pink' %} shipping_show {% endif %} ">
-                          Summer Limited Edition
+                        <div class="color-shipping">
+                          Ships in 5 business days.
                         </div>
                       </div>
   
@@ -829,7 +875,7 @@
           PRODUCT DESCRIPTION
           ----------------------------------------------------------------------------------------------------------------
         {%- endcomment -%}
-
+ 
       {%- when 'description' -%}
         <div class="description-cont-flex">
           <div>
@@ -1077,6 +1123,13 @@
                         <span>{{ block.settings.text }}</span>
                     </div> 
                   {%- endif -%}
+                  {% comment %} pp 快捷支付文案 {% endcomment %}
+                  <div data-pp-message style="margin-top: 10px" data-pp-placement="product"
+                    data-pp-amount="{{ product.selected_or_first_available_variant.price }}"
+                    data-pp-buyercountry="GB"
+                    {% comment %} data-pp-buyercountry="FRA" {% endcomment %}
+                    data-pp-currency="GBP"
+                    data-pp-style-layout="text" />
 
                 </product-payment-container>
                    {% comment %} 增加礼物选项 {% endcomment %}
@@ -1116,6 +1169,13 @@
           {{- quantity_selector_info -}}
         </div>
         {{- buy_buttons_info -}}
+        {%- if section.settings.diy_btn_text != blank -%}
+          <a href="{{ section.settings.diy_btn_link }}" class="diy-btn-link btn-diy">
+            <div class="btn-txt" text="{{ section.settings.diy_btn_text }}">
+              <span>{{ section.settings.diy_btn_text }}</span>
+            </div>
+          </a>
+        {%- endif -%}
     {%- endcase -%}
   {%- endfor -%}
 

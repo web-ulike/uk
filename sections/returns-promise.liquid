@@ -1,0 +1,216 @@
+<style>
+.returns-promise {
+  padding: 77px 0 125px 0;
+}
+
+.returns-promise .returns-promise-h3 {
+  color: #190a0a;
+  text-align: center;
+  font-size: 44px;
+  line-height: 1.25;
+  font-weight: normal;
+  font-family: var(--heading-font-family);
+  margin: 0;
+  margin-bottom: 60px;
+}
+
+.returns-promise .returns-promise-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+}
+
+.returns-promise .returns-promise-item {
+  width: calc(33.333% - 16px);
+  padding: 48px;
+  background: #f9f9f9;
+  text-align: center;
+  height: auto;
+}
+
+.returns-promise .returns-promise-item:nth-child(4) {
+  width: 100%;
+}
+
+.returns-promise .returns-promise-item-img {
+  margin-bottom: 18px;
+}
+
+.returns-promise .img {
+  width: 65px;
+  display: block;
+  margin: 0 auto;
+}
+
+.returns-promise .returns-promise-item-text {
+  width: 390px;
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+.returns-promise .returns-promise-item:nth-child(4) .returns-promise-item-text {
+  width: 850px;
+}
+
+.returns-promise .returns-promise-h4 {
+  color: #190a0a;
+  font-size: 22px;
+  line-height: 1.5;
+  font-weight: normal;
+  font-family: var(--heading-font-family);
+  margin: 0;
+  margin-bottom: 18px;
+}
+
+.returns-promise .returns-promise-p {
+  color: #3f3636;
+  font-size: 16px;
+  line-height: 1.36;
+}
+
+.returns-promise .returns-promise-p p {
+  margin: 0;
+}
+
+.returns-promise .returns-promise-p a {
+  color: #e0004d;
+  text-decoration: underline;
+  font-family: var(--heading-font-family);
+}
+
+@media (max-width: 991px) {
+  .returns-promise {
+    padding: 35px 0 47px 0;
+    overflow: hidden;
+  }
+
+  .returns-promise .returns-promise-h3 {
+    font-size: 24px;
+    margin-bottom: 26px;
+  }
+
+  .returns-promise .returns-promise-list {
+    gap: 0px;
+    flex-wrap: nowrap;
+  }
+
+  .returns-promise .returns-promise-item {
+    width: 325px;
+    flex-shrink: 0;
+    padding: 37px 18px 27px 18px;
+    text-align: left;
+    border-radius: 7px;
+    height: auto;
+  }
+
+  .returns-promise .returns-promise-item:nth-child(4) {
+    width: 325px;
+  }
+
+  .returns-promise .returns-promise-item-img {
+    margin-bottom: 12px;
+  }
+
+  .returns-promise .img {
+    width: 45px;
+    margin: 0;
+  }
+
+  .returns-promise .returns-promise-h4 {
+    font-size: 14px;
+    margin-bottom: 5px;
+  }
+
+  .returns-promise .returns-promise-p {
+    font-size: 12px;
+  }
+}
+</style>
+<section class="section-box">
+  <div class="returns-promise">
+    <div class="container">
+      {%- if section.settings.title != blank -%}
+        <h3 class="returns-promise-h3">{{ section.settings.title }}</h3>
+      {%- endif -%}
+      <div class="returns-promise-swiper">
+        <div class="returns-promise-list swiper-wrapper">
+          {%- for block in section.blocks -%}
+            <div class="returns-promise-item swiper-slide">
+              <div class="returns-promise-item-img">
+                {%- if block.settings.image != blank -%}
+                  <img
+                    loading="lazy"
+                    class="img"
+                    width=""
+                    height=""
+                    {% render 'image-attributes', image: block.settings.image %}
+                    alt="{{ block.settings.image.alt | escape }}"
+                  >
+                {%- endif -%}
+              </div>
+              <div class="returns-promise-item-text">
+                {%- if block.settings.text != blank -%}
+                  <h4 class="returns-promise-h4">{{ block.settings.text }}</h4>
+                {%- endif -%}
+                {%- if block.settings.text1 != blank -%}
+                  <div class="returns-promise-p">
+                    {{ block.settings.text1 }}
+                  </div>
+                {%- endif -%}
+              </div>
+            </div>
+          {%- endfor -%}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+  if (window.innerWidth < 991) {
+    let returnsPromiseSwiper = new Swiper('.returns-promise-swiper', {
+      slidesPerView: "auto",
+      spaceBetween: 10
+    });
+  }
+</script>
+{% schema %}
+{
+  "name": "returns-promise",
+  "blocks": [
+    {
+      "name": "item",
+      "type": "item",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text"
+        },
+        {
+          "type": "richtext",
+          "id": "text1",
+          "label": "Text"
+        }
+      ]
+    }
+  ],
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title"
+    }
+  ],
+  "presets": [
+    {
+      "name": "returns-promise",
+      "blocks": []
+    }
+  ]
+}
+{% endschema %}

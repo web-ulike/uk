@@ -1,0 +1,409 @@
+<style>
+.preheat-list-box{
+  padding: 65px 0;
+  background: linear-gradient(0deg, #F9F9F9 0%, #F9F9F9 100%);
+}
+
+.preheat-list-box .preheat-list-top{
+  display: flex;
+  justify-content: space-between;
+  color: #3F3636;
+  gap: 30px;
+}
+
+.preheat-list-box .preheat-list-title{
+  
+  font-size: 50px;
+  line-height: 1.2;
+  letter-spacing: -0.26px;
+  max-width: 572px;
+}
+
+.preheat-list-box .preheat-list-sub{
+  font-size: 18px;
+  line-height: 1.5;
+  max-width: 564px;
+}
+
+
+.preheat-list-box .preheat-list-arraw{
+  display: flex;
+  justify-content: flex-end;
+  gap: 22px;
+}
+
+.preheat-list-box .preheat-list-arraw-item{
+  width: 36px;
+  cursor: pointer;
+}
+
+.preheat-list-box .preheat-list-arraw-item svg{
+  display: block;
+  opacity: 1;
+  transition: all .4s ease;
+}
+
+.preheat-list-box .preheat-list-arraw-item:hover svg{
+  opacity: .3;
+}
+.preheat-list-box .preheat-list-cont{
+  margin-top: 44px;
+  overflow: hidden;
+}
+.preheat-list-box .preheat-list{
+  display: flex;
+  gap: 30px;
+  cursor: grabbing;
+}
+
+.preheat-list-box .preheat-list-item{
+  width: calc(33.333% - 20px);
+  flex-shrink: 0;
+  position: relative;
+  overflow: hidden;
+  padding-top: 16px;
+  border-top: 1px solid #3F3636;
+  user-select: none;
+}
+
+.preheat-list-box .preheat-list-item .img{
+  display: block;
+  width: 100%;
+  position: relative;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.preheat-list-box .preheat-list-item .mb-box{
+  display: none;
+}
+
+.preheat-list-box .preheat-list-text{
+  position: absolute;
+  z-index: 2;
+  color: #fff;
+  font-size: 40px;
+  line-height: 1.5;
+  top: 30px;
+  left: 24px;
+}
+
+.preheat-list-box .preheat-text-box{
+  position: absolute;
+  z-index: 2;
+  color: #fff;
+  bottom: 65px;
+  right: 30px;
+  width: 125px;
+}
+
+.preheat-list-box .preheat-list-icon{
+  width: 40px;
+}
+
+.preheat-list-box .preheat-list-p{
+  color: #fff;
+  font-size: 18px;
+  line-height: 1.2;
+  margin-top: 15px;
+  min-height: 44px;
+}
+
+@media (max-width:1537px) {
+  .preheat-list-box .preheat-list-item{
+    width: calc(25.333% - 20px);
+  }
+  .preheat-list-box .preheat-list-text{
+    font-size: 30px;
+    top: 20px;
+    left: 15px;
+  }
+  .preheat-list-box .preheat-text-box{
+    right:15px;
+    bottom:40px;
+  }
+}
+
+@media (max-width:1400px) {
+  .preheat-list-box .preheat-list-text{
+    font-size: 30px;
+  }
+  .preheat-list-box .preheat-list-icon{
+    width: 30px;
+  }
+  .preheat-list-box .preheat-list-p{
+    font-size: 14px;
+    min-height: 34px;
+    margin-top: 10px;
+  }
+}
+
+
+@media (max-width:991px) {
+  .preheat-list-box .preheat-text-box{
+    width: 115px;
+    right: 20px;
+    bottom: 20px;
+  }
+
+  .preheat-list-box .preheat-list-arraw{
+    display: none;
+  }
+
+  .preheat-list-box .preheat-list-top{
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .preheat-list-box .preheat-list-title{
+    font-size: 24px;
+  }
+
+  .preheat-list-box .preheat-list-sub{
+    font-size: 14px;
+  }
+
+  .preheat-list-box .preheat-list-icon{
+    width: 25px;
+  }
+
+  .preheat-list-box .preheat-list{
+    gap: 10px;
+  }
+
+  .preheat-list-box .preheat-list-item{
+    width: 300px;
+  }
+
+  .preheat-list-box .preheat-list-text{
+    font-size: 24px;
+  }
+
+}
+</style>
+
+<section class="section-box">
+  <div class="preheat-list-box">
+    <div class="container">
+      <div class="preheat-list-top">
+        <div class="preheat-list-title line-top">{{ section.settings.text }}</div>
+        <div class="preheat-list-sub line-top">
+          {{ section.settings.text1 }}
+        </div>
+      </div>
+      {%- if section.blocks.size > 0 -%}
+        <div class="preheat-list-arraw to-top">
+          <div class="preheat-list-arraw-item">
+            <svg xmlns="http://www.w3.org/2000/svg" width="36" height="27" viewBox="0 0 36 27" fill="none">
+              <g clip-path="url(#clip0_860_8661)">
+                <path d="M0 13.5094C0 13.7228 0.08078 13.9344 0.235317 14.0961L12.528 26.9983L13.8117 25.825L2.89756 14.3696H36C36 13.42 35.2133 12.6493 34.2439 12.6493H0.918438C0.586536 12.6493 0.263416 12.8127 0.105366 13.1C0.0333672 13.229 0 13.3701 0 13.5094Z" fill="#190A0A"/>
+                <path d="M1.83648 10.4938C2.52312 11.1647 3.63473 11.1647 4.3196 10.4938L13.792 1.21625L12.5504 0L1.83824 10.4938H1.83648Z" fill="#190A0A"/>
+              </g>
+              <defs>
+                <clipPath id="clip0_860_8661">
+                  <rect width="36" height="27" fill="white" transform="matrix(-1 0 0 1 36 0)"/>
+                </clipPath>
+              </defs>
+            </svg>
+          </div>
+          <div class="preheat-list-arraw-item">
+            <svg xmlns="http://www.w3.org/2000/svg" width="36" height="27" viewBox="0 0 36 27" fill="none">
+              <g clip-path="url(#clip0_860_8658)">
+                <path d="M36 13.5094C36 13.7228 35.9192 13.9344 35.7647 14.0961L23.472 26.9983L22.1883 25.825L33.1024 14.3696H0C0 13.42 0.786732 12.6493 1.7561 12.6493H35.0816C35.4135 12.6493 35.7366 12.8127 35.8946 13.1C35.9666 13.229 36 13.3701 36 13.5094Z" fill="#190A0A"/>
+                <path d="M34.1635 10.4938C33.4769 11.1647 32.3653 11.1647 31.6804 10.4938L22.208 1.21625L23.4496 0L34.1618 10.4938H34.1635Z" fill="#190A0A"/>
+              </g>
+              <defs>
+                <clipPath id="clip0_860_8658">
+                  <rect width="36" height="27" fill="white"/>
+                </clipPath>
+              </defs>
+            </svg>
+          </div>
+        </div>
+      {%- endif -%}             
+      <div class="preheat-list-cont">
+        <div class="preheat-list">
+          {%- for block in section.blocks -%}
+          <div class="preheat-list-item to-top" style="transition-delay: 0.{{ forloop.index }}s">
+            {%- if block.settings.image != blank -%}
+              <img
+                loading="lazy"
+                class="img pc-box"
+                data-index="{{ forloop.index }}"
+                width="{{ block.settings.image.width }}"
+                height="{{ block.settings.image.height }}"
+                {% render 'image-attributes', image: block.settings.image %}
+                alt="{{ block.settings.image.alt | escape }}"
+              >
+            {%- endif -%}
+            {%- if block.settings.image1 != blank -%}
+              <img
+                loading="lazy"
+                class="img mb-box"
+                width="{{ block.settings.image1.width }}"
+                height="{{ block.settings.image1.height }}"
+                {% render 'image-attributes', image: block.settings.image1 %}
+                alt="{{ block.settings.image1.alt | escape }}"
+              >
+            {%- endif -%}
+            <div class="preheat-list-text line-top">{{ block.settings.text }}</div>
+            <div class="preheat-text-box">
+              {%- if block.settings.image2 != blank -%}
+                  <img
+                    loading="lazy"
+                    class="preheat-list-icon"
+                    width="{{ block.settings.image2.width }}"
+                    height="{{ block.settings.image2.height }}"
+                    {% render 'image-attributes', image: block.settings.image2 %}
+                    alt="{{ block.settings.image2.alt | escape }}"
+                  >
+                {%- endif -%}
+              <div class="preheat-list-p line-top">{{ block.settings.text1 }}</div>
+            </div>
+            </div>
+          {%- endfor -%}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+  window.addEventListener('load', function() {
+    function preheatListSwiper(){
+      let time = +new Date()
+      let $p = $('.preheat-list-box')
+      let $list = $p.find('.preheat-list')
+      let $arrowItem = $p.find('.preheat-list-arraw-item')
+      const content = document.querySelector('.preheat-list-box .preheat-list');
+      let length = $list.find('.preheat-list-item').length
+      let width = $list.find('.preheat-list-item')[0].offsetWidth
+      let index = 0
+      let pWidth = $p[0].offsetWidth
+      let marginW = window.innerWidth > 991 ? 30:10
+      let lWidth = length * (width + marginW) + $list[0].offsetLeft
+      let translateX = 0
+
+      function changeTransform(num){
+        translateX += (width + marginW) * num
+        if(translateX > lWidth - pWidth) {
+          translateX = lWidth - pWidth
+        }
+        if(translateX<0) translateX = 0
+        $list.css({
+          transform: 'translateX(-' + translateX + 'px)',
+          transition: 'all 1s cubic-bezier(0.645, 0.045, 0.355, 1) 0s'
+        })
+      }
+
+      $arrowItem.click(function(){
+        let sindex = $(this).index()
+        if(+new Date() - time<1000) return
+        time = +new Date()
+        changeTransform(sindex?1:-1)
+      })
+
+      detectSwipe(content, () => {
+        changeTransform(1)
+      }, () => {
+        changeTransform(-1)
+      });
+    }
+
+    function detectSwipe(element, onSwipeLeft, onSwipeRight) {
+      let startX = 0;
+
+      const getEventX = (event) => {
+        return event.touches ? event.touches[0].clientX : event.clientX;
+      };
+
+      const handleTouchStart = (e) => {
+        startX = getEventX(e);
+      };
+
+      const handleTouchMove = (e) => {
+        const deltaX = getEventX(e) - startX;
+        if (Math.abs(deltaX) > 10 && e.cancelable) {
+          e.preventDefault();
+        }
+      };
+
+      const handleTouchEnd = (e) => {
+        const deltaX = getEventX(e.changedTouches ? e.changedTouches[0] : e) - startX;
+        if (deltaX > 10) {
+          onSwipeRight();
+        } else if (deltaX < -10) {
+          onSwipeLeft();
+        }
+      };
+
+      element.addEventListener('touchstart', handleTouchStart);
+      element.addEventListener('touchmove', handleTouchMove);
+      element.addEventListener('touchend', handleTouchEnd);
+
+      // Add mouse event listeners for PC compatibility
+      element.addEventListener('mousedown', handleTouchStart);
+      element.addEventListener('mousemove', handleTouchMove);
+      element.addEventListener('mouseup', handleTouchEnd);
+    }
+
+    preheatListSwiper()
+  })
+</script>
+{% schema %}
+{
+  "name": "preheat-list-box",
+  "settings": [
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Title"
+    },
+    {
+      "type": "text",
+      "id": "text1",
+      "label": "Text"
+    }
+  ],
+  "blocks": [
+    {
+        "type": "item",
+        "name": "item",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          },
+          {
+            "type": "image_picker",
+            "id": "image1",
+            "label": "M Image"
+          },
+          {
+            "type": "image_picker",
+            "id": "image2",
+            "label": "Icon"
+          },
+          {
+            "type": "text",
+            "id": "text",
+            "label": "Text"
+          },
+          {
+            "type": "text",
+            "id": "text1",
+            "label": "Text"
+          }
+        ]
+      }
+  ],
+  "presets": [
+    {
+      "name": "preheat-list-box",
+      "settings": {},
+      "blocks": [
+      ]
+    }
+  ]
+}
+{% endschema %}

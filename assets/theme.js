@@ -50,7 +50,7 @@
     return this;
   };
   Delegate.prototype.captureForType = function(eventType) {
-    return ["blur", "error", "focus", "load", "resize", "scroll"].indexOf(eventType) !== -1;
+    return ["blur", "error", "focus", "load", "resize", "scroll",'keydown'].indexOf(eventType) !== -1;
   };
   Delegate.prototype.on = function(eventType, selector, handler, useCapture) {
     let root;
@@ -152,10 +152,13 @@
     let phase;
     let listener;
     let returned;
-    let listenerList = [];
+    let listenerList = []; 
     let target;
     const eventIgnore = "ftLabsDelegateIgnore";
     if (event[eventIgnore] === true) {
+      return;
+    }
+    if (type === "keydown" && event.key !== "Enter") {
       return;
     }
     target = event.target;
@@ -1069,6 +1072,25 @@
       this.ignoreNextTransition = this.open;
       this.addEventListener("shopify:block:select", () => this.open = true);
       this.addEventListener("shopify:block:deselect", () => this.open = false);
+      // this.addEventListener("openable-element:open", () => {
+      //   // 仅当前元素带 exclusive 才触发互斥
+      //   if (!this.hasAttribute("exclusive")) return;
+      
+      //   const allOpenItems = document.querySelectorAll("collapsible-content[open]");
+      
+      //   allOpenItems.forEach(el => {
+      //     // 跳过自己
+      //     if (el === this) return;
+      
+      //     // 如果不是兄弟/平行关系（祖先或子孙），保留
+      //     if (el.contains(this) || this.contains(el)) return;
+      
+      //     // ✅ 只有被关闭的元素也有 exclusive 才执行关闭
+      //     if (el.hasAttribute("exclusive")) {
+      //       el.removeAttribute("open");
+      //     }
+      //   });
+      // });
     }
     get animateItems() {
       return this.hasAttribute("animate-items");
@@ -2147,11 +2169,11 @@
       src: window.themeVariables.libs.photoswipe,
       type: "script"
     },
-    qrCode: {
-      tagId: "qrCode",
-      src: window.themeVariables.libs.qrCode,
-      type: "script"
-    },
+    // qrCode: {
+    //   tagId: "qrCode",
+    //   src: window.themeVariables.libs.qrCode,
+    //   type: "script"
+    // },
     modelViewerUiStyles: {
       tagId: "shopify-model-viewer-ui-styles",
       src: "https://cdn.shopify.com/shopifycloud/model-viewer-ui/assets/v1.0/model-viewer-ui.css",
@@ -2160,17 +2182,17 @@
   });
 
   // js/custom-element/ui/qr-code.js
-  var QrCode = class extends HTMLElement {
-    async connectedCallback() {
-      await LibraryLoader.load("qrCode");
-      new window.QRCode(this, {
-        text: this.getAttribute("identifier"),
-        width: 200,
-        height: 200
-      });
-    }
-  };
-  window.customElements.define("qr-code", QrCode);
+  // var QrCode = class extends HTMLElement {
+  //   async connectedCallback() {
+  //     await LibraryLoader.load("qrCode");
+  //     new window.QRCode(this, {
+  //       text: this.getAttribute("identifier"),
+  //       width: 200,
+  //       height: 200
+  //     });
+  //   }
+  // };
+  // window.customElements.define("qr-code", QrCode);
 
   // js/custom-element/ui/country-selector.js
   var CountrySelector = class extends HTMLSelectElement {
@@ -3354,6 +3376,15 @@
       this._setupVisibility();
     }
     get selectedIndex() {
+      if(this.items.length>1){
+        setTimeout(() => {
+            if(document.querySelector('.slideshow__progress-bar[aria-current="true"]').getAttribute('data-color')=='true'){
+              document.querySelector('.shopify-section--header').classList.add('dark-diy')
+            }else{
+              document.querySelector('.shopify-section--header').classList.remove('dark-diy')
+            }
+        }, 50);
+      }
       return this.items.findIndex((item) => item.selected);
     }
     get transitionType() {
@@ -4242,7 +4273,9 @@
         this.loadingStateElement.hidden = true;
         this.resultsElement.hidden = true;
         this.menuListElement ? this.menuListElement.hidden = false : "";
+        $('.product-recommend-wrap').show()
       } else {
+        $('.product-recommend-wrap').hide()
         this.drawerContentElement.classList.add("drawer__content--center");
         this.loadingStateElement.hidden = false;
         this.resultsElement.hidden = true;
@@ -5259,7 +5292,6 @@
       return this.getAttribute("unit-price-class") || "";
     }
     _onVariantChanged(event) {
-      console.log("vid------: " + event.detail.variant.id);
       var vid = event.detail.variant.id;
       // $('.color-shipping').show()
       if(vid == 44752575922463 || vid == 45212834005279 || vid == 44770181415199 || vid == 45212834070815) {
@@ -5306,7 +5338,12 @@
           productPrices.innerHTML += `<span class="price price--highlight ${this.priceClass}"><span class="visually-hidden">${window.themeVariables.strings.productSalePrice}</span>${formatMoney(variant["price"], currencyFormat)}</span>`;
           productPrices.innerHTML += `<span class="price price--compare"><span class="visually-hidden">${window.themeVariables.strings.productRegularPrice}</span>${formatMoney(variant["compare_at_price"], currencyFormat)}</span>`;
         } else {
-          productPrices.innerHTML += `<span class="price ${this.priceClass}"><span class="visually-hidden">${window.themeVariables.strings.productSalePrice}</span>${formatMoney(variant["price"], currencyFormat)}</span>`;
+          if (variant.price > 15000 && variant.featured_image.product_id == 9034198876447) {
+            console.log(variant);
+            productPrices.innerHTML += `<span class="price ${this.priceClass}"><span class="visually-hidden">${window.themeVariables.strings.productSalePrice}</span>${formatMoney(variant["price"]- 12000, currencyFormat)}<span class="original-price">${formatMoney(variant["price"], currencyFormat)}</span></span>`;
+          } else {
+            productPrices.innerHTML += `<span class="price ${this.priceClass}"><span class="visually-hidden">${window.themeVariables.strings.productSalePrice}</span>${formatMoney(variant["price"], currencyFormat)}</span>`;
+          }
         }
         if (variant["unit_price_measurement"]) {
           let referenceValue = "";
@@ -5757,8 +5794,14 @@
   // js/custom-element/section/cart/cart-count.js
   var CartCount = class extends CustomHTMLElement {
     connectedCallback() {
-      this.rootDelegate.on("cart:updated", (event) => this.innerText = event.detail.cart["item_count"]);
-      this.rootDelegate.on("cart:refresh", (event) => this.innerText = event.detail.cart["item_count"]);
+      this.rootDelegate.on("cart:updated", (event) => {
+        this.innerText = event.detail.cart["item_count"]
+        this.setAttribute('cart', event.detail.cart["item_count"])
+      });
+      this.rootDelegate.on("cart:refresh", (event) => {
+        this.innerText = event.detail.cart["item_count"]
+        this.setAttribute('cart', event.detail.cart["item_count"])
+      });
     }
   };
   window.customElements.define("cart-count", CartCount);
@@ -5937,11 +5980,25 @@
     connectedCallback() {
       this.delegate.on("click", "a", this._onQuantityLinkClicked.bind(this));
       this.delegate.on("change", "input", this._onQuantityChanged.bind(this));
+      this.delegate.on("keydown", "input", this._onInputKeyDown.bind(this));
+
     }
-    _onQuantityLinkClicked(event, target) {
+    _onInputKeyDown(event, target) {
+      this._updateFromLink(`${window.themeVariables.routes.cartChangeUrl}?quantity=${target.value}&line=${target.getAttribute("data-line")}`);
+    }
+    _onQuantityLinkClicked(event, target) { 
       event.preventDefault();
-      this._updateFromLink(target.href);
+      const dataLine = target.getAttribute('data-line');
+      const firstClass = target.classList[0];
+      if(firstClass === 'line-item__remove-button'){
+        console.log('target.href',target.href)
+        target.href = this.removeIdParameter(target.href);
+      }
+      this._updateFromLink(`${target.href}&line=${dataLine}`);
     }
+    removeIdParameter(url) {
+      return url.replace(/id=[^&]+&?/, '');
+  } 
     _onQuantityChanged(event, target) {
       this._updateFromLink(`${window.themeVariables.routes.cartChangeUrl}?quantity=${target.value}&line=${target.getAttribute("data-line")}`);
     }
@@ -6359,3 +6416,94 @@
 * tabbable 5.2.1
 * @license MIT, https://github.com/focus-trap/tabbable/blob/master/LICENSE
 */
+
+class CustomSwiper extends HTMLElement {
+  constructor() {
+    super();
+  }
+
+  connectedCallback() {
+    this.initSwiper();
+  }
+
+  initSwiper() {
+    const swiperContainer = this.querySelector('.swiper-container');
+    if (!swiperContainer) {
+      console.error('Swiper container not found');
+      return;
+    }
+
+    // **设备判断：是否禁用 Swiper**
+    const disableOn = this.getAttribute('disable-on'); // 'mobile' 或 'desktop'
+    const isMobile = /Mobi|Android/i.test(navigator.userAgent);
+    if ((disableOn === 'mobile' && isMobile) || (disableOn === 'desktop' && !isMobile)) {
+      console.log(`Swiper disabled on ${disableOn}`);
+      return;
+    }
+
+    // **Swiper 组件参数**
+    const slidesPerView = parseFloat(this.getAttribute('slides-per-view')) || 1.3;
+    const spaceBetween = parseFloat(this.getAttribute('space-between')) || 10;
+    const loop = this.getAttribute('loop') !== 'false'; // 默认为 true
+    const centeredSlides = this.getAttribute('centered-slides') !== 'false'; // 默认为 true
+    const paginationEnabled = this.getAttribute('pagination') === 'true'; // 是否启用分页
+    const navigationEnabled = this.getAttribute('navigation') === 'true'; // 是否启用导航按钮
+    let breakpoints = {};
+    try {
+      breakpoints = JSON.parse(this.getAttribute('breakpoints') || '{}');
+    } catch (error) {
+      console.error('Invalid breakpoints format. Expected JSON.');
+    }
+
+    // **动态控制 navigation 和 pagination**
+    const prevButton = navigationEnabled ? this.querySelector('.swiper-prev') : null;
+    const nextButton = navigationEnabled ? this.querySelector('.swiper-next') : null;
+    const paginationEl = paginationEnabled ? { el: this.querySelector('.swiper-pagination'), clickable: true } : false;
+
+    this.swiper = new Swiper(swiperContainer, {
+      slidesPerView,
+      spaceBetween,
+      loop,
+      centeredSlides,
+      navigation: navigationEnabled ? { prevEl: prevButton, nextEl: nextButton } : false,
+      pagination: paginationEl,
+      breakpoints
+    });
+  }
+}
+
+window.customElements.define('custom-swiper', CustomSwiper);
+
+class ScrollButton extends HTMLElement {
+  connectedCallback() {
+    this.style.cursor = 'pointer';
+    this.addEventListener('click', () => {
+      const targetSelector = this.getAttribute('target');
+      const targetEl = document.querySelector(targetSelector);
+      if (targetEl) {
+        targetEl.scrollIntoView({ behavior: 'smooth' });
+      }
+    });
+  }
+}
+
+window.customElements.define('scroll-button', ScrollButton);
+
+
+function scrollToTargetFromURL(paramName = 'ulike-reviews', offset = 0) {
+  const params = new URLSearchParams(window.location.search);
+  const targetId = params.get(paramName);
+
+  if (targetId) {
+    const el = document.getElementById('judgeme_product_reviews');
+    if (el) {
+      const top = el.getBoundingClientRect().top + window.scrollY - offset;
+      window.scrollTo({ top, behavior: 'smooth' });
+      // window.scrollTo(0, top);
+    }
+  }
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+  scrollToTargetFromURL('ulike-reviews', 80); // 80为顶部偏移量
+});

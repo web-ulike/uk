@@ -1,0 +1,242 @@
+<style>
+  .hair-ads-sticky-box{
+    position: sticky;
+    z-index: 6;
+    top:calc(100vh - 99.5px);
+  }
+.hair-ads-sticky{
+  /* position: sticky;
+  top: 80px;
+  z-index: 6; */
+  background: #F9F9F9;
+  padding: 27px 0;
+  border-top: 1px solid #E4DDDD;
+  border-bottom: 1px solid #E4DDDD
+}
+
+.hair-ads-sticky .hair-ads-sticky-cont{
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 15px;
+}
+
+.hair-ads-sticky .hair-ads-sticky-left{
+  display: flex;
+  gap: 50px;
+  align-items: center;
+  color: #190A0A;
+  font-size: 28px;
+  line-height: 1.3;
+}
+
+.hair-ads-sticky .hair-ads-sticky-countdown{
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  font-size: 24px;
+  font-family: var(--heading-font-family);
+  line-height: 1;
+}
+
+.hair-ads-sticky .hair-ads-sticky-num{
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.hair-ads-sticky .hair-ads-sticky-num .time{
+  width: 36px;
+  height: 36px;
+  background: #190A0A;
+  color: #FFF;
+  font-size: 21px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hair-ads-sticky .hair-ads-sticky-price{
+  color: #190A0A;
+  font-size: 28px;
+  line-height: 1.25;
+  display: flex;
+  align-items: center;
+}
+
+.hair-ads-sticky .hair-ads-sticky-price .n{
+  font-family: var(--heading-font-family);
+}
+.hair-ads-sticky .hair-ads-sticky-price .d{
+  text-decoration: line-through;
+  color: #6A6A6A;
+}
+.hair-ads-sticky .hair-ads-sticky-btn{
+  width: 163px;
+  height: 44px;
+  color: #FFF;
+  font-size: 16px;
+  background: #000;
+  border-radius: 44px;
+  cursor: pointer;
+  border: 2px solid #000;
+  font-family: var(--heading-font-family);
+}
+
+.hair-ads-sticky .hair-ads-sticky-btn .btn-txt::before{
+  color: #000;
+}
+
+@media (max-width:768px) {
+  .hair-ads-sticky-box{
+    top:calc(100vh - 76.5px);
+  }
+  .hair-ads-sticky {
+    padding: 10px 0;
+  }
+  .hair-ads-sticky .hair-ads-sticky-btn{
+    width: 157px;
+    height: 41px;
+    font-size: 12px;
+  }
+  .hair-ads-sticky .hair-ads-sticky-cont{
+    justify-content: space-between;
+  }
+  .hair-ads-sticky .hair-ads-sticky-left{
+    flex-direction: column-reverse;
+    gap: 0;
+    align-items: flex-start;
+  }
+  .hair-ads-sticky .hair-ads-sticky-price{
+    gap: 5px;
+  }
+  .hair-ads-sticky .hair-ads-sticky-price .n{
+    font-size: 24px;
+    color: #E0004D;
+  }
+  .hair-ads-sticky .hair-ads-sticky-price .d{
+    color: #A1A1A1;
+    font-size: 14px;
+  }
+  .hair-ads-sticky .txt{
+    display: none;
+  }
+
+  .hair-ads-sticky .hair-ads-sticky-countdown{
+    font-family: var(--text-font-family);
+    gap: 10px;
+    font-size: 12px;
+  }
+
+  .hair-ads-sticky .hair-ads-sticky-num .time{
+    font-size: 12px;
+    width: 25px;
+    height: 25px;
+  }
+  .hair-ads-sticky .hair-ads-sticky-num{
+    gap: 3px;
+  }
+
+  .hair-ads-sticky .hair-ads-sticky-p{
+    width: 40px;
+  }
+}
+</style>
+
+<section class="section-box">
+  <div class="hair-ads-sticky to-top">
+    <div class="container">
+      <div class="hair-ads-sticky-cont">
+        <div class="hair-ads-sticky-left">
+          <div class="hair-ads-sticky-countdown">
+            <div class="hair-ads-sticky-p">
+              {{ section.settings.text }}
+            </div>
+            <div class="hair-ads-sticky-num">
+              <span class="h time">00</span>
+              <span class="txt">H</span>
+              : 
+              <span class="m time">00</span>
+              <span class="txt">M</span>
+              :
+              <span class="s time">00</span>
+              <span class="txt">S</span>
+            </div>
+          </div>
+          <div class="hair-ads-sticky-price">
+            <span class="n">{{ section.settings.text1 }}</span>
+            <span class="d">{{ section.settings.text2 }}</span>
+          </div>
+        </div>
+        {%- if section.settings.text3 != blank -%}
+        <a href="{{ section.settings.text4 }}" class="hair-ads-sticky-btn btn-diy">
+          <div class="btn-txt" text="{{ section.settings.text3 }}">
+            <span>{{ section.settings.text3 }}</span>
+          </div>
+        </a>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+  window.addEventListener('load', function() {
+    // Example usage
+    const countdown = new Countdown("{{ section.settings.text5 }}", ".hair-ads-sticky",'loop');
+  })
+  
+  document.querySelector('.hair-ads-sticky .hair-ads-sticky-btn').addEventListener('click', function(e){
+    e.preventDefault();
+    
+    let targetSectionId = this.getAttribute('href').substring(1);
+    scrollToSection(targetSectionId);
+  })
+</script>
+{% schema %}
+{
+  "name": "hair-ads-sticky",
+  "class": "hair-ads-sticky-box",
+  "settings": [
+    {
+      "type": "text",
+      "id": "text5",
+      "label": "倒计时结束时间",
+      "info":"格式-->> 2024-05-15 15:15:15"
+    },
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "text1",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "text2",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "text3",
+      "label": "Button Text"
+    },
+    {
+      "type": "text",
+      "id": "text4",
+      "label": "跳转ID"
+    }
+  ],
+  "presets": [
+    {
+      "name": "hair-ads-sticky",
+      "settings": {},
+      "blocks": [
+      ]
+    }
+  ]
+}
+{% endschema %}

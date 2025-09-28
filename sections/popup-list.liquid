@@ -1,0 +1,377 @@
+<style>
+.officially-features-popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  z-index: 999;
+  background: rgba(0, 0, 0, 0);
+  display: flex;
+  justify-content: flex-end;
+  pointer-events: none;
+  transition: all 0.4s ease;
+  overflow: hidden;
+}
+.officially-features-popup.active {
+  background: rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  pointer-events: all;
+}
+
+.officially-features-popup .officially-features-popup-cont {
+  width: 100%;
+  height: 100%;
+  max-width: 730px;
+  background: #fff;
+  padding: 90px 60px 60px;
+  position: relative;
+  transform: translateX(100%);
+  transition: all 0.4s ease;
+  z-index:2;
+}
+
+.officially-features-popup.active .officially-features-popup-cont {
+  transform: translateX(0);
+  transition: all 0.4s ease 0.1s;
+}
+
+.officially-features-popup .officially-features-popup-det {
+  height: 100%;
+  overflow-y: auto;
+  position: relative;
+}
+.officially-features-popup .officially-features-popup-det::-webkit-scrollbar {
+  width: 6px;
+}
+
+.officially-features-popup
+  .officially-features-popup-det::-webkit-scrollbar-track {
+  background-color: none;
+}
+
+.officially-features-popup
+  .officially-features-popup-det::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+}
+
+.officially-features-popup .officially-features-popup-det::-moz-scrollbar {
+  width: 6px;
+}
+
+.officially-features-popup
+  .officially-features-popup-det::-moz-scrollbar-track {
+  background: none;
+}
+
+.officially-features-popup
+  .officially-features-popup-det::-moz-scrollbar-thumb {
+  background: rgba(228, 221, 221, 0.3);
+  border-radius: 5px;
+}
+
+.officially-features-popup .officially-features-popup-close {
+  position: absolute;
+  top: 30px;
+  right: 30px;
+  cursor: pointer;
+  z-index: 3;
+}
+
+.officially-features-popup .officially-features-popup-title {
+  font-size: 30px;
+  line-height: 1;
+  color: #000;
+  font-family: var(--heading-font-family);
+}
+
+.officially-features-popup .officially-features-popup-p {
+  font-size: 16px;
+  line-height: 1.2;
+  margin-top: 20px;
+}
+
+.officially-features-popup .officially-features-popup-video {
+  position: relative;
+  margin-top: 40px;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.officially-features-popup .officially-features-popup-video .img {
+  display: block;
+  width: 100%;
+  position: relative;
+  z-index: 1;
+}
+
+.officially-features-popup .product-video {
+  border-radius: 10px;
+  overflow: hidden;
+  /* position: absolute; */
+  width: 100%;
+  /* height: 100%; */
+  /* object-fit: cover; */
+  /* top: 0;
+  left: 0; */
+  z-index: 2;
+  
+}
+
+  /* .officially-features-popup .product-video video{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  } */
+
+.officially-features-popup .officially-features-popup-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 80px;
+  margin-top: 40px;
+}
+
+.officially-features-popup .officially-features-popup-t {
+  color: #e0004d;
+  font-size: 60px;
+  line-height: 1.2;
+}
+
+.officially-features-popup .officially-features-popup-d {
+  color: #000;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+@media (max-width: 991px) {
+  .officially-features-popup {
+    display: flex;
+    align-items: flex-end;
+  }
+
+  .officially-features-popup .officially-features-popup-cont {
+    max-height: 100%;
+    height: auto;
+    transform: translateY(100%);
+    overflow-x: hidden;
+  }
+
+  .officially-features-popup.active .officially-features-popup-cont {
+    transform: translateY(0);
+  }
+  .officially-features-popup .officially-features-popup-close {
+    top: 18px;
+    right: 18px;
+  }
+  .officially-features-popup .officially-features-popup-left {
+    width: auto;
+  }
+  .officially-features-popup .officially-features-popup-sub {
+    font-size: 14px;
+  }
+  .officially-features-popup .officially-features-popup-title {
+    font-size: 24px;
+  }
+  .officially-features-popup .officially-features-popup-video {
+    margin-top: 35px;
+  }
+  .officially-features-popup.active .officially-features-popup-cont {
+    padding: 50px 20px;
+    padding-right: 0px;
+  }
+  .officially-features-popup .officially-features-popup-det {
+    max-height: 70vh;
+    padding-right: 20px;
+  }
+  .officially-features-popup .officially-features-popup-list {
+    margin-top: 45px;
+    gap: 50px;
+  }
+  .officially-features-popup .officially-features-popup-t {
+    font-size: 35px;
+  }
+  .officially-features-popup .officially-features-popup-d {
+    font-size: 12px;
+  }
+  .officially-features-popup .video-wrapper__play-button{
+    zoom:.6;
+  }
+}
+
+.officially-features-popup .result-new-popup-mark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+</style>
+<section class="section-box">
+  {%- for block in section.blocks -%}
+    <div class="officially-features-popup {{ block.settings.text6 }}">
+      <div class="result-new-popup-mark"></div>
+      <div class="officially-features-popup-cont">
+        <div class="officially-features-popup-close">
+          <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" viewBox="0 0 23 23" fill="none">
+            <line x1="2.02941" y1="0.848633" x2="22.182" y2="21.0012" stroke="#3F3636" stroke-width="1.5"
+              stroke-linecap="round"></line>
+            <line x1="22.1836" y1="1.06066" x2="2.03105" y2="21.2132" stroke="#3F3636" stroke-width="1.5"
+              stroke-linecap="round"></line>
+          </svg>
+        </div>
+        <div class="officially-features-popup-det">
+          <div class="officially-features-popup-right">
+            <div class="officially-features-popup-title">
+              {{ block.settings.text }}
+            </div>
+            <div class="officially-features-popup-p">
+              {{ block.settings.text1 }}
+            </div>
+            {%- if block.settings.text2 != blank or block.settings.text3 != blank or block.settings.text4 != blank or block.settings.text5 != blank -%}
+              <div class="officially-features-popup-list">
+                <div class="officially-features-popup-item">
+                  <div class="officially-features-popup-t">{{ block.settings.text2 }}</div>
+                  <div class="officially-features-popup-d">{{ block.settings.text3 }}</div>
+                </div>
+                <div class="officially-features-popup-item">
+                  <div class="officially-features-popup-t">{{ block.settings.text4 }}</div>
+                  <div class="officially-features-popup-d">{{ block.settings.text5 }}</div>
+                </div>
+              </div>
+            {%- endif -%}
+            <div class="officially-features-popup-video">
+              {%- if block.settings.img_2 != blank -%}
+                <img loading="lazy" class="img" width="{{ block.settings.img_2.width }}" height="{{ block.settings.img_2.height }}" {% render 'image-attributes', image: block.settings.img_2 %} alt="{{ block.settings.img_2.alt | escape }}" >
+              {%- endif -%}
+              {%- if block.settings.video != blank -%}
+                <native-video {% if section.settings.autoplay %} autoplay{% endif %} class="product-video">
+                  {%- unless section.settings.autoplay -%}
+                    <button type="button" class="video-wrapper__play-button video-wrapper__play-button--large video-wrapper__play-button--ripple" title="{{ 'general.accessibility.play_video' | t | escape }}">
+                      {%- if section.settings.v_icon != blank -%}
+                        <img
+                          loading="lazy"
+                          class="v_img"
+                          width="{{ section.settings.v_icon.width }}"
+                          height="{{ section.settings.v_icon.height }}"
+                          {% render 'image-attributes', image: section.settings.v_icon %}
+                          alt="{{ section.settings.v_icon.alt | escape }}"
+                        >
+                      {%- endif -%}
+                    </button>
+                  {%- endunless -%}
+                  <template>
+                    {{-
+                      block.settings.video
+                      | video_tag:
+                        controls: section.settings.show_video_controls,
+                        autoplay: section.settings.autoplay,
+                        muted: section.settings.autoplay,
+                        playsinline: section.settings.autoplay,
+                        loop: true
+                    -}}
+                  </template>
+                </native-video>
+              {%- endif -%}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  {%- endfor -%}
+</section>
+<script>
+  window.addEventListener('load', function () {
+    $('.officially-features-popup .officially-features-popup-close,.officially-features-popup .result-new-popup-mark').click(function () {
+      $(this).closest('.officially-features-popup').removeClass('active')
+    })
+  })
+</script>
+{% schema %}
+{
+"name": "popup-list",
+"blocks": [
+  {
+    "name": "item",
+    "type": "item",
+    "settings": [
+      {
+        "type": "text",
+        "id": "text",
+        "label": "Text"
+      },
+     {
+        "type": "text",
+        "id": "text1",
+        "label": "Text"
+      },
+     {
+        "type": "text",
+        "id": "text2",
+        "label": "Text"
+      },
+      {
+        "type": "text",
+        "id": "text3",
+        "label": "Text"
+      },
+      {
+        "type": "text",
+        "id": "text4",
+        "label": "Text"
+      },
+      {
+        "type": "text",
+        "id": "text5",
+        "label": "Text"
+      },
+      {
+        "type": "video",
+        "id": "video",
+        "label": "Video",
+        "info": "Replaces the external video if both are set."
+      },
+      {
+        "type": "image_picker",
+        "id": "img_2",
+        "label": "视频占位图片"
+      },
+      {
+        "type": "text",
+        "id": "text6",
+        "label": "弹窗名"
+      }       
+    ]
+  }
+],
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "autoplay",
+      "label": "Autoplay",
+      "info": "Video is muted automatically to allow autoplay.",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_video_controls",
+      "label": "Show video controls",
+      "info": "Only applicable with native video.",
+      "default": false
+    },
+    {
+      "type": "image_picker",
+      "id": "v_icon",
+      "label": "Video Icon"
+    }
+  ],
+  "presets": [
+  {
+    "name": "popup-list",
+    "blocks": []
+  }
+]
+}
+{% endschema %}

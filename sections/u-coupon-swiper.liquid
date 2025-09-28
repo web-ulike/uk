@@ -1,0 +1,524 @@
+<style>
+  .coupon-swiper-wrapper {
+    margin: 80px 0 0px;
+    font-family: Saans;
+    overflow: hidden;
+  }
+
+  .coupon-swiper-title {
+    color: #3f3636;
+    font-size: 44px;
+    font-weight: 500;
+    line-height: 1.2;
+    margin-bottom: 10px;
+    text-align: center;
+  }
+
+  .coupon-swiper-sub-title {
+    color: #190a0a;
+    font-size: 18px;
+    font-weight: 300;
+    line-height: 1.5;
+    margin-bottom: 37px;
+    text-align: center;
+  }
+
+  .coupon-swiper-wrapper .coupon {
+    display: flex;
+    height: 185px;
+    border-radius: 8px;
+    overflow: hidden;
+    background: linear-gradient(134deg, #ff7c9c 16.43%, #dc2060 74.37%);
+    position: relative;
+    color: white;
+    font-family: Saans;
+  }
+
+  .coupon-swiper-wrapper .coupon-left {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .coupon-swiper-wrapper .coupon-left-title {
+    font-size: 126px;
+    font-weight: 380;
+    line-height: 1;
+    color: #fffffc;
+  }
+
+  .coupon-swiper-wrapper .coupon-left-desc {
+    font-size: 16px;
+    font-weight: 380;
+    line-height: 1.2;
+    color: #fffffc;
+  }
+
+  .coupon-swiper-wrapper .coupon-right {
+    width: 160px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #fffffc;
+  }
+
+  .coupon-swiper-wrapper .coupon-right svg {
+    margin-bottom: 20px;
+  }
+
+  .coupon-swiper-wrapper .coupon-right-title {
+    font-size: 20px;
+    font-weight: 380;
+    line-height: 1.2;
+  }
+
+  .coupon-swiper-wrapper .coupon-right-desc {
+    margin-top: 5px;
+    font-size: 12px;
+    font-weight: 380;
+    line-height: 1.2;
+    letter-spacing: 0.36px;
+  }
+
+  .coupon-swiper-wrapper .coupon-copy-btn {
+    margin-top: 15px;
+    padding: 8px 14px;
+    font-weight: 500;
+    line-height: 1.5;
+    color: #e0004d;
+    background: #fffffc;
+  }
+
+  .coupon-swiper-wrapper .coupon::before {
+    content: '';
+    position: absolute;
+    top: 12px;
+    bottom: 12px;
+    left: calc(100% - 160px);
+    width: 4px;
+    background-image: radial-gradient(circle, white 2px, transparent 2px);
+    background-size: 4px 10px;
+    transform: translateX(-50%);
+  }
+
+  .coupon-swiper-wrapper .coupon::after {
+    content: '';
+    position: absolute;
+    left: calc(100% - 160px);
+    width: 20px;
+    height: 20px;
+    background: white;
+    border-radius: 50%;
+    transform: translateX(-50%);
+    top: -10px;
+    box-shadow: 0 calc(185px - 0px) 0 0 white;
+  }
+
+  .coupon-swiper-wrapper .coupon-time {
+    display: flex;
+    align-items: center;
+    margin-top: 15px;
+    padding: 0 15px;
+    height: 30px;
+    font-size: 12px;
+    font-weight: 380;
+    line-height: 1.2;
+    letter-spacing: 0.36px;
+    border-radius: 100px;
+    color: #3f3636;
+    background: linear-gradient(90deg, #d7e5ff 31.68%, #f3f6ff 100%);
+  }
+
+  .coupon-swiper-wrapper .modal-copysuccess {
+    display: none;
+    position: fixed;
+    width: 140px;
+    height: 44px;
+    background-color: #fff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    border-radius: 6px;
+    color: #000;
+    font-size: 12px;
+    line-height: 44px;
+    top: 12%;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 9999;
+    text-align: center;
+    pointer-events: none;
+  }
+
+  .coupon-swiper-wrapper .circle-check {
+    margin-right: 4px;
+    width: 18px;
+    height: 18px;
+    background-color: #28a745;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    color: white;
+    font-weight: bold;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  }
+
+  @media (max-width: 768px) {
+    .coupon-swiper-title {
+      font-size: 24px;
+      margin-bottom: 5px;
+    }
+
+    .coupon-swiper-sub-title {
+      font-size: 12px;
+      margin-bottom: 30px;
+    }
+
+    .coupon-swiper-wrapper .coupon {
+      height: 112px;
+    }
+
+    .coupon-swiper-wrapper .coupon-left-title {
+      font-size: 76px;
+    }
+
+    .coupon-swiper-wrapper .coupon-left-desc {
+      font-size: 10px;
+    }
+
+    .coupon-swiper-wrapper .coupon-right {
+      width: 130px;
+    }
+
+    .coupon-swiper-wrapper .coupon-right svg {
+      width: 37px;
+      margin-bottom: 6px;
+    }
+
+    .coupon-swiper-wrapper .coupon-right-title {
+      font-size: 12px;
+    }
+
+    .coupon-swiper-wrapper .coupon-right-desc {
+      font-size: 10px;
+    }
+
+    .coupon-swiper-wrapper .coupon-copy-btn {
+      margin-top: 6px;
+      padding: 5px 8px;
+      font-size: 12px;
+    }
+
+    .coupon-swiper-wrapper .coupon::after {
+      box-shadow: 0 calc(112px - 0px) 0 0 white;
+      left: calc(100% - 130px);
+      width: 16px;
+      height: 16px;
+      top: -8px;
+    }
+
+    .coupon-swiper-wrapper .coupon::before {
+      left: calc(100% - 130px);
+    }
+  }
+</style>
+<section class="coupon-swiper-wrapper" id="{{ section.id }}">
+  <div class="container">
+    <div class="coupon-swiper-title">{{ section.settings.title }}</div>
+    <div class="coupon-swiper-sub-title">{{ section.settings.sub_title }}</div>
+    <div class="swiper-container">
+      <div class="swiper-wrapper">
+        {% assign image_count = 0 %}
+        {% for block in section.blocks %}
+          {% assign image_count = image_count | plus: 1 %}
+          <div
+            class="swiper-slide"
+            data-startdate="{{ block.settings.start_date }}"
+            data-enddate="{{ block.settings.end_date }}"
+          >
+            <div class="coupon">
+              <div class="coupon-left">
+                <div class="coupon-left-title">{{ block.settings.disscount }}</div>
+                <div class="coupon-left-desc">{{ block.settings.text }}</div>
+              </div>
+              <div class="coupon-right">
+                {% if block.settings.logo != blank %}
+                  {{ block.settings.logo }}
+                {% endif %}
+                {% if block.settings.product_name != blank %}
+                  <div class="coupon-right-title">{{ block.settings.product_name }}</div>
+                {% endif %}
+                {% if block.settings.product_desc != blank %}
+                  <div class="coupon-right-desc">{{ block.settings.product_desc }}</div>
+                {% endif %}
+                {% if block.settings.btn_text != blank %}
+                  <button class="coupon-copy-btn" data-code="{{ block.settings.code }}">
+                    {{ block.settings.btn_text }}
+                  </button>
+                {% endif %}
+              </div>
+            </div>
+            {% if block.settings.show %}
+              <div class="coupon-time"></div>
+            {% endif %}
+          </div>
+        {% endfor %}
+      </div>
+      <!-- 导航箭头 -->
+      {% if image_count >= 2 %}
+        <div class="swiper-btn-wrapper">
+          <div class="swiper-btn-prev">
+            <svg xmlns="http://www.w3.org/2000/svg" width="37" height="37" viewBox="0 0 37 37" fill="none">
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M16.9908 6.5148L17.4505 6.05505L18.37 6.97454L17.9103 7.43428L13.7129 11.6316L9.75648 15.5881C9.24867 16.0959 8.42533 16.0959 7.91752 15.5881L12.7935 10.7121L16.9908 6.5148ZM5.61275 18.8123C5.35884 18.5584 5.35884 18.1467 5.61275 17.8928C5.69825 17.8073 5.80163 17.7506 5.91086 17.7227V17.7024H6.07107H6.07392H6.56103L25.4161 17.7024H29.9672C30.6854 17.7024 31.2676 18.2846 31.2676 19.0027H25.4161L7.64216 19.0027L17.9103 29.2709L18.37 29.7306L17.4505 30.6501L16.9908 30.1904L5.61275 18.8123Z" fill="#190A0A"/>
+            </svg>
+          </div>
+          <div class="swiper-btn-next">
+            <svg xmlns="http://www.w3.org/2000/svg" width="37" height="37" viewBox="0 0 37 37" fill="none">
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M20.1049 6.5148L19.6452 6.05505L18.7257 6.97454L19.1854 7.43428L23.3828 11.6316L27.3392 15.5881C27.847 16.0959 28.6704 16.0959 29.1782 15.5881L24.3022 10.7121L20.1049 6.5148ZM31.4829 18.8123C31.7369 18.5584 31.7369 18.1467 31.4829 17.8928C31.3975 17.8073 31.2941 17.7506 31.1848 17.7227V17.7024H31.0246H31.0218H30.5347L11.6796 17.7024H7.12847C6.41031 17.7024 5.82813 18.2846 5.82813 19.0027H11.6796L29.4535 19.0027L19.1854 29.2709L18.7257 29.7306L19.6452 30.6501L20.1049 30.1904L31.4829 18.8123Z" fill="#190A0A"/>
+            </svg>
+          </div>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="modal-copysuccess">
+    <span class="circle-check">✓</span>
+    <span>{{ section.settings.copy_notice_text }}</span>
+  </div>
+</section>
+
+<script>
+  $(document).ready(function () {
+    var swiper = new Swiper('#{{ section.id }} .swiper-container', {
+      slidesPerView: 3,
+      spaceBetween: 20,
+      breakpoints: {
+        // 当屏幕宽度小于768时，显示1张
+        0: {
+          slidesPerView: 1,
+          spaceBetween: 10,
+        },
+        // 当屏幕宽度大于768时，显示3张
+        768: {
+          slidesPerView: 3,
+          spaceBetween: 20,
+        },
+      },
+    });
+
+    const $prevBtn = $('#{{ section.id }}  .swiper-btn-prev');
+    const $nextBtn = $('#{{ section.id }}  .swiper-btn-next');
+
+    function updateButtons(swiper, $prevBtn, $nextBtn) {
+      if (swiper.isBeginning) {
+        $prevBtn.addClass('disabled').attr('disabled', true);
+      } else {
+        $prevBtn.removeClass('disabled').attr('disabled', false);
+      }
+
+      if (swiper.isEnd) {
+        $nextBtn.addClass('disabled').attr('disabled', true);
+      } else {
+        $nextBtn.removeClass('disabled').attr('disabled', false);
+      }
+    }
+
+    // 初始化按钮状态
+    updateButtons(swiper, $prevBtn, $nextBtn);
+
+    // 监听 Swiper 滑动
+    swiper.on('slideChange', function () {
+      updateButtons(swiper, $prevBtn, $nextBtn);
+    });
+
+    // 自定义按钮事件
+    $prevBtn.on('click', function () {
+      if (!$(this).hasClass('disabled')) {
+        swiper.slidePrev();
+      }
+    });
+
+    $nextBtn.on('click', function () {
+      if (!$(this).hasClass('disabled')) {
+        swiper.slideNext();
+      }
+    });
+
+    $(window).resize(function () {
+      updateButtons(swiper, $prevBtn, $nextBtn);
+    });
+
+    //倒计时
+    function updateCountdowns() {
+      const items = document.querySelectorAll('.coupon-swiper-wrapper .swiper-slide');
+     
+      items.forEach((item) => {
+     
+        const startStr = item.dataset.startdate;
+        const endStr = item.dataset.enddate;
+        const timeEl = item.querySelector('.coupon-time');
+        {% comment %} const progressEl = item.querySelector('.new-year-coupon-progress'); {% endcomment %}
+     
+        if (!startStr || !endStr || !timeEl) return;
+      
+        const start = new Date(startStr);
+        const end = new Date(endStr);
+        const now = new Date();
+
+        const total = end - start;
+        const remaining = end - now;
+
+        // 已结束
+        if (remaining <= 0) {
+          timeEl.textContent = 'Ends in 00 Days 00:00:00';
+          return;
+        }
+
+        // 未开始
+        if (now < start) {
+          timeEl.textContent = formatTime(end - now);
+          return;
+        }
+
+        // 正常进行中
+        const remainingPercent = ((remaining / total) * 100).toFixed(2);
+        timeEl.textContent = formatTime(remaining);
+       
+      });
+    }
+
+    function formatTime(diff) {
+      const totalSeconds = Math.floor(diff / 1000);
+      const days = Math.floor(totalSeconds / (60 * 60 * 24));
+      const hours = Math.floor((totalSeconds / 3600) % 24);
+      const minutes = Math.floor((totalSeconds / 60) % 60);
+      const seconds = totalSeconds % 60;
+
+      return `Ends in ${pad(days)} Days ${pad(hours)}:${pad(minutes)}:${pad(seconds)}`;
+    }
+
+    function pad(n) {
+      return n < 10 ? '0' + n : n;
+    }
+
+    let timer = null;
+    $('.coupon-copy-btn').click(function(e){
+      const code = e.target.dataset.code;
+      if(timer){
+        clearTimeout(timer)
+      }
+    
+      copyTextFallback(code)
+      $('.modal-copysuccess').fadeIn(300);
+      timer = setTimeout(function(){
+        $('.modal-copysuccess').fadeOut(300);
+      },2000)
+    
+    
+    })
+
+    setInterval(updateCountdowns, 1000);
+    updateCountdowns();
+  });
+</script>
+
+{% schema %}
+{
+  "name": "u-coupon-swiper",
+  "settings": [
+    {
+      "type": "textarea",
+      "id": "title",
+      "label": "标题",
+      "default": "Limited-Time Deals"
+    },
+    {
+      "type": "textarea",
+      "id": "sub_title",
+      "label": "副标题",
+      "default": "Get smooth skin for less before time and stock run out."
+    },
+    {
+      "type": "text",
+      "id": "copy_notice_text",
+      "label": "复制成功提示文本",
+      "default": "Copied Success"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "discount-item",
+      "name": "discount-item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "disscount",
+          "label": "优惠额度",
+          "default": "10%"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "文本"
+        },
+        {
+          "type": "html",
+          "id": "logo",
+          "label": "svg图标代码"
+        },
+        {
+          "type": "textarea",
+          "id": "product_name",
+          "label": "产品名称"
+        },
+        {
+          "type": "textarea",
+          "id": "product_desc",
+          "label": "文本"
+        },
+        {
+          "type": "text",
+          "id": "code",
+          "label": "code"
+        },
+        {
+          "type": "text",
+          "id": "btn_text",
+          "label": "复制按钮文本"
+        },
+
+        {
+          "type": "header",
+          "content": "倒计时"
+        },
+        {
+          "type": "checkbox",
+          "id": "show",
+          "label": "是否显示",
+          "default": false
+        },
+        {
+          "type": "text",
+          "id": "start_date",
+          "label": "开始时间"
+        },
+        {
+          "type": "text",
+          "id": "end_date",
+          "label": "结束时间"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "u-coupon-swiper",
+      "blocks": []
+    }
+  ]
+}
+{% endschema %}

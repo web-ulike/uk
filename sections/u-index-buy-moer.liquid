@@ -1,0 +1,121 @@
+<style>
+  .buy-moer-wrapper {
+    margin: 70px 0;
+    font-family: Saans;
+  }
+
+  .buy-moer-title {
+    margin-bottom: 50px;
+    text-align: center;
+    font-size: 44px;
+    font-weight: 570;
+    line-height: 1.2;
+    color: #3f3636;
+  }
+
+  .buy-moer-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+  }
+
+  .buy-more-text {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 20px;
+    font-weight: 380;
+    line-height: 1.5;
+    color: #190a0a;
+  }
+
+  @media (max-width: 768px) {
+    .buy-moer-wrapper {
+      margin: 50px 0;
+    }
+    .buy-moer-title {
+      font-size: 24px;
+      margin-bottom: 25px;
+    }
+    .buy-moer-list {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px 10px;
+    }
+    {% comment %} .buy-moer-item {
+      margin-bottom: 20px;
+    } {% endcomment %}
+    .buy-more-text {
+      margin-top: 10px;
+      font-size: 12px;
+      color: #e0004d;
+    }
+  }
+</style>
+
+<section class="buy-moer-wrapper" id="{{ section.id }}">
+  <div class="container">
+    <div class="buy-moer-title">{{ section.settings.title }}</div>
+    <div class="buy-moer-list">
+      {% for block in section.blocks %}
+        <div class="buy-more-item">
+          <picture>
+            <source
+              srcset="{{ block.settings.image_mobile | image_url }}"
+              media="(max-width: 768px)"
+            >
+            <img
+              class="buy-more-img"
+              width="100%"
+              height="auto"
+              src="{{ block.settings.image | image_url}}"
+            >
+          </picture>
+          <div class="buy-more-text">{{ block.settings.desc }}</div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "u-index-buy-moer",
+  "settings": [
+    {
+      "type": "textarea",
+      "id": "title",
+      "label": "标题",
+      "default": "Buy more, save more"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "buy-moer-item",
+      "name": "buy-moer-item",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "电脑端图片"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_mobile",
+          "label": "手机端图片"
+        },
+        {
+          "type": "textarea",
+          "id": "desc",
+          "label": "描述"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 4,
+  "presets": [
+    {
+      "name": "u-index-buy-moer",
+      "blocks": []
+    }
+  ]
+}
+{% endschema %}

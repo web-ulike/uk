@@ -1,0 +1,220 @@
+<style>
+.u-list-box{
+  padding: 80px 0 150px 0;
+}
+  .u-blog-tag {
+  font-size: 14px;
+  color: #fff;
+  line-height: 1;
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  z-index: 3;
+  background: rgba(0, 0, 0, 0.6);
+  padding: 5px 7px;
+}
+  .u-more {
+  font-size: 14px;
+  color: #000;
+  padding: 10px 0;
+  text-align: center;
+  backdrop-filter: blur(16px);
+  background: rgba(255, 255, 255, 0.6);
+  position: absolute;
+  z-index: 2;
+  width: 100%;
+  bottom: 0;
+  left: 0;
+  transform: translateY(50px);
+  transition: transform 0.8s cubic-bezier(0.645, 0.045, 0.355, 1);
+}
+.u-list-box .title-diy{
+  margin:0;
+  margin-bottom: 60px;
+}
+
+.u-list-box .u-list-cont{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 42px;
+}
+
+.u-list-box .u-list-item{
+  width: calc(33.333% - 28px);
+}
+
+/* .u-list-box .u-list-item:hover .u-list-img{
+  margin-top: -20px;
+} */
+
+.u-list-box .u-list-img{
+  position: relative;
+  /* transition: margin 0.7s cubic-bezier(0.4, 0.2, 0.2, 1); */
+  padding-top: 64.1%;
+  overflow: hidden;
+}
+
+.u-list-box .img{
+  position: absolute;
+  z-index: 1;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  top: 0;
+  left: 0;
+}
+
+.u-list-box .u-list-img::after{
+  position: absolute;
+  content: '';
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, .15);
+  z-index: 2;
+  opacity: 0;
+  transition: opacity 0.4s cubic-bezier(0.645, 0.045, 0.355, 1);
+}
+.u-list-box .u-list-img:hover::after{
+  opacity: 1;
+}
+
+.u-list-box .u-list-img:hover .u-more{
+  transform: translateY(0);
+}
+
+.u-list-box .u-list-title{
+  font-size: 25px;
+  color: #000;
+  font-family: var(--heading-font-family);
+  line-height: 1.1;
+  margin-top: 15px;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  -webkit-line-clamp: 2; 
+}
+
+.u-list-box .u-list-p{
+  font-size: 14px;
+  color: #b9b9b9;
+  line-height: 1;
+  margin-top: 15px;
+}
+
+.u-list-box.u-master-page .title-diy{
+  text-align: left;
+}
+
+.u-list-box .u-page-box{
+  margin-top: 90px;
+}
+
+.u-list-banner .u-image-title{
+  max-width: 545px;
+}
+
+.u-list-page{
+  background: #f9f9f9;
+}
+
+@media (max-width:1100px) {
+  .u-list-box .u-list-cont{
+    gap: 30px;
+  }
+
+  .u-list-box .u-list-item{
+    width: calc(33.333% - 20px);
+  }
+
+  .u-list-box .u-list-title{
+    font-size: 20px;
+  }
+}
+
+@media (max-width:768px) {
+  .u-list-box{
+    padding: 60px 0 120px 0;
+  }
+  .u-list-box .title-diy{
+    margin-bottom: 40px;
+  }
+  .u-list-box .u-list-item{
+    width: 100%;
+  }
+  .u-list-box .u-list-title{
+    font-size: 18px;
+  }
+}
+</style>
+{%- assign blog = section.settings.blog -%}
+<section class="section-box">
+  <div class="u-list-box">
+    <div class="container">
+      {%- if section.settings.text != blank -%}
+        <h3 class="title-diy">{{ section.settings.text }}</h3>
+      {%- endif -%}
+      <div class="u-list-cont">
+        {%- for article in blog.articles limit: section.settings.num_blog -%}
+          <a href="#" class="u-list-item">
+            <div class="u-list-img mark-bottom">
+              {% assign first_tag = article.tags | first %}
+              {% if first_tag %}
+                <div class="u-blog-tag">{{ first_tag }}</div>
+              {% endif %}
+              {%- if article.image -%}
+                {{- article.image | image_url: width: article.image.width | image_tag: loading: 'lazy', sizes: '(max-width: 740px) 81vw, (max-width: 999px) 37vw, 425px', sizes: '600,700,800,1000,1200,1400,1600,1800,2000', class: 'img' -}}
+              {%- endif -%}
+              {%- if section.settings.rm_t != blank -%}
+                <div class="u-more">{{ section.settings.rm_t }}</div>
+              {%- endif -%}
+            </div>
+            <div class="u-list-title">{{ article.title }}</div>
+            <div class="u-list-p">{{ article.created_at | date: "%b %d, %Y"  }}</div>
+          </a>
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</section>
+{% schema %}
+{
+  "name": "u-list-box",
+  "settings": [
+    {
+      "type": "blog",
+      "id": "blog",
+      "label": "Blog"
+    },
+    {
+      "type": "range",
+      "id": "num_blog",
+      "min": 3,
+      "max": 48,
+      "step": 3,
+      "unit": "条",
+      "label": "Blog数量",
+      "default": 6
+    },
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Title"
+    },
+    {
+      "type": "text",
+      "id": "rm_t",
+      "label": "查看更多文案",
+      "default":"LEARN MORE >"
+    }
+  ],
+  "presets": [
+    {
+      "name": "u-list-box",
+      "blocks": []
+    }
+  ]
+}
+{% endschema %}

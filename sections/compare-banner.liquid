@@ -73,25 +73,37 @@
 }
 </style>
 <section class="section-box">
-  <div class="compare-banner slide-to-left-white {{ section.settings.custom_class }}">
-      {%- if section.settings.image != blank -%}
-         <img loading="lazy" class="pc-box" width="{{ section.settings.image.width }}" height="{{ section.settings.image.height }}" {% render 'image-attributes', image: section.settings.image %} alt="{{ section.settings.image.alt | escape }}" >
-      {%- endif -%}
+  <div class="compare-banner  {{ section.settings.custom_class }}">
+    <picture class="img">
       {%- if section.settings.image1 != blank -%}
-         <img loading="lazy" class="mb-box" width="{{ section.settings.image1.width }}" height="{{ section.settings.image1.height }}" {% render 'image-attributes', image: section.settings.image1 %} alt="{{ section.settings.image1.alt | escape }}" >
+        <source
+          media="(max-width: 780px)"
+          srcset="{{ section.settings.image1 | image_url: width: '400x' }} 400w, {{ section.settings.image1 | image_url: width: '600x' }} 600w, {{ section.settings.image1 | image_url: width: '800x' }} 800w"
+          width="{{ section.settings.image1.width }}"
+          class="img"
+          height="{{ section.settings.image1.height }}"
+        >
       {%- endif -%}
-      <div class="compare-banner-text">
+      {{-
+        section.settings.image
+        | image_url: width: section.settings.image.width
+        | image_tag: widths: '1920,3200', class: 'img'
+      -}}
+    </picture>
+
+    <div class="compare-banner-text">
           <div class="container">
             {%- if section.settings.title != blank -%}
-              <h1 class="compare-banner-title to-top">{{ section.settings.title }}</h1>
+              <h1 class="compare-banner-title ">{{ section.settings.title }}</h1>
             {%- endif -%}
             {%- if section.settings.content != blank -%}
-              <div class="compare-banner-p to-top" style="transition-delay: 0.1s">{{ section.settings.content }}</div>
+              <div class="compare-banner-p " style="transition-delay: 0.1s">{{ section.settings.content }}</div>
             {%- endif -%}
           </div>
       </div>
   </div>
 </section>
+
 {% schema %}
 {
   "name": "compare-banner",

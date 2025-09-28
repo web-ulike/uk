@@ -1,0 +1,208 @@
+<style>
+   {% comment %} Ulike Global {% endcomment %}
+   .about-info {
+    display: flex;
+    align-items: center;
+    margin: 125px 0;
+  }
+
+  .about-info img {
+    margin-right: 258px;
+    width: 493px;
+  }
+
+  .about-article {
+    margin-bottom: 50px;
+    color: #3f3636;
+  }
+
+  .about-article-title {
+    margin-bottom: 20px;
+    color: #3f3636;
+    font-size: 48px;
+    font-weight: 380;
+    line-height: 1;
+  }
+
+  .about-article-desc {
+    font-size: 18px;
+    line-height: 1.5;
+    color: #3F3636;
+  }
+
+  .about-article-desc span {
+    color: #E0004D;
+  }
+
+  .about-article-sub .about-article-title {
+    font-size: 24px;
+    font-weight: 500;
+    color: #3f3636;
+  }
+
+  .about-article-sub .about-article-desc {
+    font-size: 20px;
+    color: #3f3636;
+  }
+
+  @media (max-width: 1200px) {
+    .about-info {
+      margin: 100px 0;
+    }
+
+    .about-info img {
+      margin-right: 206px;
+      width: 394px;
+    }
+
+    .about-article {
+      margin-bottom: 40px;
+    }
+
+    .about-article-title {
+      margin-bottom: 16px;
+      font-size: 38px;
+      font-weight: 400;
+      line-height: 1;
+    }
+
+    .about-article-desc {
+      font-size: 16px;
+      line-height: 1.5;
+    }
+
+    .about-article-sub .about-article-title {
+      font-size: 19px;
+      font-weight: 500;
+    }
+
+    .about-article-sub .about-article-desc {
+      font-size: 18px;
+    }
+  }
+
+  @media (max-width: 1024px) {
+    .about-info img {
+      width: 300px;
+      margin-right: 50px;
+    }
+
+    .about-brands-left {
+      width: 340px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .about-info {
+      flex-direction: column-reverse;
+
+      margin: 60px 0;
+      align-items: flex-start;
+    }
+
+    .about-info img {
+      margin-right: 0px;
+      width: 100%;
+    }
+
+    .about-article {
+      margin-bottom: 39px;
+    }
+
+    .about-article-title {
+      margin-bottom: 15px;
+      font-size: 24px;
+      font-weight: 400;
+      line-height: 1;
+    }
+
+    .about-article-desc {
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .about-article-sub .about-article-title {
+      margin-bottom: 15px;
+      font-size: 18px;
+      font-weight: 400;
+    }
+
+    .about-article-sub .about-article-desc {
+      font-size: 12px;
+      margin-bottom: 39px;
+    }
+  }
+</style>
+<section id="{{ section.id }}" class="container">
+  <div class="about-info">
+    {% if section.settings.brand_image != blank %}
+      <img
+        src="{{ section.settings.brand_image | image_url }}"
+        alt="ulike"
+        width="auto"
+        height="auto"
+      >
+    {% endif %}
+    <div>
+      <div class="about-article">
+        <div class="about-article-title">{{ section.settings.title }}</div>
+        <div class="about-article-desc">
+          {{ section.settings.desc }}
+        </div>
+      </div>
+
+      <div class="about-article-sub">
+        <div class="about-article-title">{{ section.settings.sub_title }}</div>
+        <div class="about-article-desc">
+          {{ section.settings.sub_desc }}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  $(document).ready(function () {
+    $('#{{ section.id }} *').addClass('to-top');
+  });
+</script>
+
+{% schema %}
+{
+  "name": "u-about-brand-info",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "brand_image",
+      "label": "图片"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "标题",
+      "default": "Ulike Global"
+    },
+    {
+      "type": "html",
+      "id": "desc",
+      "label": "描述"
+    },
+    {
+      "type": "text",
+      "id": "sub_title",
+      "label": "子标题"
+    },
+    {
+      "type": "text",
+      "id": "sub_desc",
+      "label": "子描述"
+    }
+  ],
+  "presets": [
+    {
+      "name": "u-about-brand-info",
+      "blocks": []
+    }
+  ]
+}
+{% endschema %}
