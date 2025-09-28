@@ -1,0 +1,562 @@
+{%- liquid
+  assign se_id = section.id
+  assign se_bks = section.blocks
+  assign se_stts = section.settings
+-%}
+<style>
+  .box-how-to-use {
+    padding: 40px 60px;
+    max-width: 1920px;
+    margin: 0 auto;
+  }
+  .box-how-to-use .txt-title {
+    text-align: center;
+    font-size: 50px;
+    font-weight: 500;
+    margin-bottom: 20px;
+    color: #333;
+  }
+  .box-how-to-use .steps {
+    margin-top: 20px;
+  }
+  .box-how-to-use .steps .step-navigation {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  .box-how-to-use .steps .step-navigation .step {
+    padding: 10px 20px 0px 20px;
+    font-size: 25px;
+    cursor: pointer;
+    border-bottom: 1px solid #dbdbdb;
+  }
+  .box-how-to-use .steps .step-navigation .step .tab-name {
+    padding: 10px 30px;
+  }
+  .box-how-to-use .steps .step-navigation .step .tab-name:active {
+    font-weight: bold;
+    color: #000;
+    border-bottom: 3px solid #000;
+  }
+  .box-how-to-use .steps .step-navigation .step:first-child {
+    padding-left: 0px;
+  }
+  .box-how-to-use .steps .step-navigation .step:last-child {
+    padding-right: 0px;
+  }
+  .box-how-to-use .steps .step-navigation .step.active .tab-name {
+    font-weight: 500;
+    border-bottom: 3px solid #000;
+  }
+  .box-how-to-use .steps .step-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 30px 0;
+  }
+  .box-how-to-use .steps .step-content .step-page {
+    width: 100%;
+    display: flex;
+    align-items: center;
+  }
+  .box-how-to-use .steps .step-content .step-page .text-content {
+    width: 50%;
+    text-align: left;
+    padding: 0% 15% 0px 0px;
+  }
+  .box-how-to-use .steps .step-content .step-page .text-content h3 {
+    font-size: 48px;
+    margin-bottom: 40px;
+    color: #333;
+    font-weight: 300;
+  }
+  .box-how-to-use .steps .step-content .step-page .text-content h3 span {
+    font-size: 48px;
+    color: #6c6ab4;
+    margin-right: 20px;
+  }
+  .box-how-to-use .steps .step-content .step-page .text-content .desc {
+    color: #190a0a;
+    font-size: 18px;
+    font-weight: 300;
+    line-height: 32px;
+  }
+  .box-how-to-use .steps .step-content .step-page .image-content {
+    width: 50%;
+    height: auto;
+    border-radius: 8px;
+  }
+  .box-how-to-use .steps .step-content #step-2 .text-content {
+    width: 50%;
+    padding: 20px 100px 20px 0px;
+  }
+  .box-how-to-use .steps .step-content #step-2 .text-content h3 {
+    font-size: 48px;
+    margin: 0px 0px 20px;
+  }
+  .box-how-to-use .steps .step-content .mode {
+    border-top: 1px solid #ddd;
+    padding: 20px 0;
+  }
+  .box-how-to-use .steps .step-content .mode:fisrt-child {
+    border-top: 0px;
+  }
+  #step-2 .first-mode {
+    border-top: 0px;
+  }
+  .box-how-to-use .steps .step-content .mode .mode-header {
+    display: flex;
+    align-items: center;
+    font-size: 18px;
+    cursor: pointer;
+    position: relative;
+    color: #190a0a;
+    font-size: 30px;
+    font-weight: 400;
+  }
+  .box-how-to-use .steps .step-content .mode .mode-header .mode-icon {
+    width: 32px;
+    height: 32px;
+    margin-right: 10px;
+    background-size: 100% 100%;
+  }
+  .box-how-to-use .steps .step-content .mode .mode-header .fast {
+    background-image: url('https://cdn.shopify.com/s/files/1/0656/9079/6273/files/Group_457394060.svg?v=1723428135');
+  }
+  .box-how-to-use .steps .step-content .mode .mode-header .normal {
+    background-color: #8a8ad6;
+  }
+  .box-how-to-use .steps .step-content .mode .mode-header .high {
+    background-color: #5a5ad6;
+  }
+  .box-how-to-use .steps .step-content .mode .mode-header .shr {
+    background-color: #4a4ad6;
+  }
+  .box-how-to-use .steps .step-content .mode .mode-header .mode-toggle {
+    font-size: 24px;
+    color: #333;
+    background-image: url('https://cdn.shopify.com/s/files/1/0656/9079/6273/files/18dddcc9cf53b547eaf0f76c308502f6.svg?v=1723428327');
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    right: 0px;
+    top: 6px;
+    margin: 10px;
+    display: block;
+  }
+  .box-how-to-use .steps .step-content .nav-active .mode-header .mode-toggle {
+    background-image: url(https://cdn.shopify.com/s/files/1/0656/9079/6273/files/Frame_457394186_1.svg?v=1723795373);
+    margin: 0px;
+    width: 40px;
+    height: 40px;
+    background-image: url('https://cdn.shopify.com/s/files/1/0656/9079/6273/files/Frame_457394186_1.svg?v=1723795373');
+  }
+
+  .box-how-to-use .steps .step-content .mode .mode-description {
+    padding: 20px 0px;
+    font-size: 18px;
+    line-height: 150%;
+    color: #190a0a;
+    display: none;
+  }
+  .box-how-to-use .steps .step-content .mode:first-child {
+    border-top: 0px;
+  }
+
+  @media screen and (max-width: 1440px) {
+    .box-how-to-use {
+      padding: 40px 40px;
+    }
+    .box-how-to-use .steps .step-content #step-2 .text-content h3 {
+      font-size: 36px;
+    }
+    .box-how-to-use .steps .step-content .mode .mode-header {
+      font-size: 28px;
+    }
+    .box-how-to-use .steps .step-content .step-page .text-content {
+      padding: 5% 10% 0px 0px;
+    }
+    .box-how-to-use .steps .step-content .step-page .text-content h3 {
+      font-size: 36px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .box-how-to-use {
+      display: block;
+      padding: 20px 15px;
+    }
+    .box-how-to-use .txt-title {
+      color: #000;
+      text-align: center;
+      font-family: Saans;
+      font-size: 28px;
+      font-style: normal;
+      font-weight: 300;
+      line-height: 125%;
+      /* 35px */
+    }
+    .box-how-to-use .steps .step-navigation {
+      display: grid;
+      justify-content: center;
+      margin-bottom: 0px;
+      grid-template-columns: repeat(3, 1fr);
+    }
+    .box-how-to-use .steps .step-navigation .step .tab-name {
+      color: #212121;
+      text-align: center;
+      font-family: Saans;
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 300;
+      line-height: 18.788px;
+      /* 134.197% */
+      letter-spacing: 0.723px;
+      text-transform: uppercase;
+      padding: 10px 10px;
+    }
+    .box-how-to-use .steps .step-navigation .step.active .tab-name {
+      border-bottom: 1px solid #000;
+      font-weight: 500;
+    }
+    .box-how-to-use .steps .step-content .step-page {
+      width: 100%;
+      display: block;
+    }
+    .box-how-to-use .steps .step-content .step-page .text-content {
+      width: 100%;
+      padding: 0px 0px 30px;
+    }
+    .box-how-to-use .steps .step-content .step-page .text-content h3 {
+      font-weight: 300;
+      font-size: 24px;
+      line-height: 125%;
+      margin-bottom: 30px;
+    }
+    .box-how-to-use .steps .step-content .step-page .text-content h3 span {
+      font-size: 24px;
+      font-weight: 500;
+    }
+    .box-how-to-use .steps .step-content .step-page .text-content .desc {
+      font-size: 14px;
+      line-height: 150%;
+    }
+    .box-how-to-use .steps .step-content .step-page .image-content {
+      width: 100%;
+    }
+    .box-how-to-use .steps .step-content .step-page .image-content img {
+      width: 100%;
+    }
+    .box-how-to-use .steps .step-content #step-2 .text-content {
+      width: 100%;
+      padding: 0px 0px;
+    }
+    .box-how-to-use .steps .step-content #step-2 .text-content h3 {
+      font-weight: 300;
+      font-size: 24px;
+      line-height: 125%;
+      margin-bottom: 20px;
+    }
+    .box-how-to-use .steps .step-content #step-2 .text-content h3 span {
+      font-size: 24px;
+      font-weight: 500;
+    }
+    .box-how-to-use .steps .step-content #step-2 .text-content .mode .mode-header {
+      font-size: 20px;
+      font-weight: 300;
+    }
+    .box-how-to-use .steps .step-content #step-2 .text-content .mode .mode-description {
+      font-family: Saans;
+      font-size: 14px;
+      font-weight: 300;
+      line-height: 150%;
+      /* 21px */
+      padding: 10px 0px;
+    }
+    .box-how-to-use .steps .step-content #step-2 .text-content .mode .mode-description img {
+      margin-top: 20px;
+    }
+    .box-how-to-use .steps .step-content .mode .mode-header .mode-toggle {
+      width: 13px;
+      height: 13px;
+      margin: 6px;
+    }
+    .box-how-to-use .steps .step-content .nav-active .mode-header .mode-toggle {
+      width: 28px;
+      height: 28px;
+      margin: 0px;
+    }
+  }
+</style>
+
+<section class="box-how-to-use">
+  <h2 class="txt-title">{{ se_stts.text }}</h2>
+  <div class="steps">
+    <div class="step-navigation">
+      <div class="step active" data-step="1">
+        <div class="tab-name active">STEP 1</div>
+      </div>
+      <div class="step" data-step="2">
+        <div class="tab-name">STEP 2</div>
+      </div>
+      <div class="step" data-step="3">
+        <div class="tab-name">STEP 3</div>
+      </div>
+    </div>
+    <div class="step-content">
+      <!-- Step 1 Content -->
+      <div class="step-page" id="step-1">
+        <div class="text-content">
+          <h3><span>01</span> {{ se_stts.text1 }}</h3>
+          <p class="desc">{{ se_stts.text2 }}</p>
+        </div>
+        <div class="image-content">
+          {% if se_stts.image != block %}
+            <picture>
+              {{-
+                se_stts.image
+                | image_url: width: se_stts.image.width
+                | image_tag: loading: 'lazy', class: 'step-img'
+              -}}
+            </picture>
+          {% endif %}
+          {% if se_stts.video != block %}
+            {{-
+              se_stts.video
+              | video_tag:
+                controls: false,
+                autoplay: true,
+                playsinline: true,
+                muted: true,
+                preload: none,
+                loop: true,
+                class: 'step-img'
+            -}}
+          {% endif %}
+        </div>
+      </div>
+
+      <!-- Step 2 Content -->
+      <div class="step-page" id="step-2" style="display: none;">
+        <div class="text-content">
+          <h3><span>02</span> Select Mode</h3>
+          {% for item in se_bks %}
+            {% if forloop.first %}
+              {% assign firstImage = item.settings.image1 %}
+            {% endif %}
+            <div
+              class="mode {% if forloop.first %}  first-mode {% endif %}"
+              data-image="{{ item.settings.image1 | image_url: width: item.settings.image1.width }}"
+              data-text="{{ item.settings.text }}"
+            >
+              <h4 class="mode-header">
+                <span class="mode-icon fast">
+                  {% if item.settings.image != blank %}
+                    {{-
+                      item.settings.image
+                      | image_url: width: item.settings.image.width
+                      | image_tag: loading: 'lazy', widths: '40'
+                    -}}
+                  {% endif %}
+                </span>
+                {{ item.settings.text }}
+                <span class="mode-toggle"></span>
+              </h4>
+              <div class="mode-description">
+                {{ item.settings.text1 }}
+                <div class="hidden-desk">
+                  {{-
+                    item.settings.image1
+                    | image_url: width: item.settings.image1.width
+                    | image_tag: loading: 'lazy'
+                  -}}
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+        <div class="image-content hidden-phone">
+          {{- firstImage | image_url: width: firstImage.width | image_tag: loading: 'lazy', class: 'step-img' -}}
+        </div>
+      </div>
+      <div class="step-page" id="step-3" style="display: none;">
+        <div class="text-content">
+          <h3><span>03</span> {{ se_stts.text3 }}</h3>
+          <p class="desc">{{ se_stts.text4 }}</p>
+        </div>
+        <div class="image-content">
+          {% if se_stts.image1 != block %}
+            <picture>
+              {{-
+                se_stts.image1
+                | image_url: width: se_stts.image1.width
+                | image_tag: loading: 'lazy', class: 'step-img'
+              -}}
+            </picture>
+          {% endif %}
+          {% if se_stts.video1 != block %}
+            {{-
+              se_stts.video1
+              | video_tag:
+                controls: false,
+                autoplay: true,
+                playsinline: true,
+                preload: 'none',
+                muted: true,
+                loop: true,
+                class: 'step-img'
+            -}}
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  $(document).ready(function () {
+    $('.step').click(function () {
+      var stepNumber = $(this).data('step');
+      // 更新导航栏激活状态
+      $('.step').removeClass('active');
+      $(this).addClass('active');
+
+      // 显示对应的步骤内容，隐藏其他内容
+      $('.step-page').removeClass('active').hide();
+      $('#step-' + stepNumber)
+        .addClass('active')
+        .fadeIn();
+      commonGtmEvent(`${g_product_name} Product-use-step${ stepNumber }`,'','Product');
+    });
+    // 默认展开第一个
+    $('.box-how-to-use .mode').eq(0).addClass('nav-active');
+    $('.box-how-to-use .mode').eq(0).find('.mode-description').show();
+
+    // 处理模式的展开/收起
+    $('.box-how-to-use .mode').click(function () {
+      if (isMobile()) {
+        if (!$(this).find('.mode-description').is(':visible')) {
+          $(this).toggleClass('nav-active');
+          $(this).find('.mode-description').slideToggle();
+          $('#step-2 .step-img').attr('srcset', $(this).attr('data-image'));
+        } else {
+          $(this).find('.mode-description').slideUp();
+          $(this).removeClass('nav-active');
+        }
+      } else {
+        if (!$(this).find('.mode-description').is(':visible')) {
+          $('.box-how-to-use .mode').removeClass('nav-active');
+          $('.box-how-to-use .mode').find('.mode-description').slideUp();
+          $(this).toggleClass('nav-active');
+          $(this).find('.mode-description').slideToggle();
+          $('#step-2 .step-img').attr('srcset', $(this).attr('data-image'));
+        } else {
+          $(this).toggleClass('nav-active');
+          $(this).find('.mode-description').slideToggle();
+        }
+      }
+      let text = $(this).attr('data-text');
+      commonGtmEvent(`${g_product_name} Product-use-step2-${text}`,'','Product');
+    });
+  });
+</script>
+
+{% schema %}
+{
+  "name": "p-how-to-use",
+  "blocks": [
+    {
+      "name": "step-item-2",
+      "type": "item2",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "icon image"
+        },
+        {
+          "type": "image_picker",
+          "id": "image1",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text"
+        },
+        {
+          "type": "text",
+          "id": "text1",
+          "label": "Text"
+        }
+      ]
+    }
+  ],
+  "settings": [
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#f9f9f9"
+    },
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "text1",
+      "label": "Text1"
+    },
+    {
+      "type": "text",
+      "id": "text2",
+      "label": "Text2"
+    },
+    {
+      "type": "text",
+      "id": "text3",
+      "label": "Text3"
+    },
+    {
+      "type": "text",
+      "id": "text4",
+      "label": "Text4"
+    },
+    {
+      "type": "text",
+      "id": "text5",
+      "label": "Text5"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "图片1"
+    },
+    {
+      "type": "image_picker",
+      "id": "image1",
+      "label": "图片3"
+    },
+    {
+      "type": "video",
+      "id": "video",
+      "label": "视频1"
+    },
+    {
+      "type": "video",
+      "id": "video1",
+      "label": "视频3"
+    }
+  ],
+  "presets": [
+    {
+      "name": "p-how-to-use",
+      "blocks": []
+    }
+  ]
+}
+{% endschema %}

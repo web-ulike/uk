@@ -1,0 +1,200 @@
+<style>
+
+.policy-regulation{
+  position: relative;
+}
+.policy-regulation .img{
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  display: block;
+}
+
+.policy-regulation .mb-box{
+  display: none;
+}
+
+.policy-regulation .policy-regulation-pos{
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 100%;
+  transform: translateY(-50%);
+  z-index: 2;
+}
+
+.policy-regulation .container{
+  display: flex;
+  justify-content: flex-end;
+}
+
+.policy-regulation .policy-regulation-cont{
+  width: 640px;
+  background: #fff;
+  padding: 45px 75px;
+}
+.policy-regulation .title-diy{
+  text-align: left;
+  font-size:40px;
+}
+.policy-regulation .policy-regulation-p{
+  font-size: 14px;
+  color: #5d5d5d;
+  margin-top: 40px;
+}
+
+.policy-regulation .policy-regulation-p strong{
+  font-weight: normal;
+  font-family: var(--heading-font-family);
+  color: #000;
+}
+
+.policy-regulation .policy-regulation-p p{
+  margin-bottom: 25px;
+  padding-bottom: 25px;
+  border-bottom: 1px solid #e2e2e2;
+}
+
+.policy-regulation .policy-regulation-p p:last-child{
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border: 0;
+}
+
+.warranty-box .container{
+  justify-content: flex-start;
+}
+
+.warranty-box .policy-regulation-cont{
+  width: 665px;
+  padding: 100px 75px;
+}
+
+.warranty-box .title-diy{
+  font-size: 40px;
+  text-align: left;
+}
+
+.warranty-box .policy-regulation-p{
+  margin-top: 35px;
+  color: #4d4d4d;
+}
+
+.warranty-box .policy-regulation-p a{
+  color: #000;
+  font-family: var(--heading-font-family);
+}
+
+
+@media (max-width:1400px) {
+  .policy-regulation .policy-regulation-cont{
+    padding: 25px 45px;
+  }
+  .policy-regulation .policy-regulation-p{
+    margin-top: 30px;
+  }
+  .policy-regulation .policy-regulation-p p{
+    padding-bottom: 15px;
+    margin-bottom: 15px;
+  }
+}
+
+@media (max-width:1200px) {
+  .policy-regulation .policy-regulation-cont{
+    padding: 25px 20px;
+    zoom: .9;
+  }
+  .policy-regulation .policy-regulation-p{
+    margin-top: 15px;
+  }
+}
+
+@media (max-width:991px) {
+  .policy-regulation .policy-regulation-pos{
+    position: relative;
+    top: 0;
+    transform: translateY(0);
+  }
+  .policy-regulation .policy-regulation-cont{
+    width: 100%;
+    zoom: 1;
+    margin-top: -50px;
+    padding-bottom: 50px;
+  }
+  .warranty-box .policy-regulation-cont{
+    padding-bottom: 100px;
+  }
+  .policy-regulation .mb-box{
+    display: block;
+  }
+  .policy-regulation .pc-box{
+    display: none;
+  }
+  .policy-regulation .title-diy{
+    font-size: 28px;
+  }
+  .warranty-box .policy-regulation-p{
+    margin-top: 25px;
+  }
+}
+</style>
+
+<section>
+  <div class="policy-regulation {{ section.settings.text2 }} to-top">
+    {%- if section.settings.image != blank -%}
+     <img loading="lazy" class="img pc-box" width="{{ section.settings.image.width }}" height="{{ section.settings.image.height }}" {% render 'image-attributes', image: section.settings.image %} alt="{{ section.settings.image.alt | escape }}" >
+    {%- endif -%}
+    {%- if section.settings.image1 != blank -%}
+     <img loading="lazy" class="img mb-box" width="{{ section.settings.image1.width }}" height="{{ section.settings.image1.height }}" {% render 'image-attributes', image: section.settings.image1 %} alt="{{ section.settings.image1.alt | escape }}" >
+    {%- endif -%}
+    <div class="policy-regulation-pos">
+      <div class="container">
+        <div class="policy-regulation-cont to-top">
+          <div class="title-diy to-top" style="transition-delay: 0.1s">{{ section.settings.text }}</div>
+          <div class="policy-regulation-p to-top" style="transition-delay: 0.2s">
+            {{ section.settings.text1 }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% schema %}
+{
+  "name": "policy-regulation",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image1",
+      "label": "Image Mobile"
+    },
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Title"
+    },
+    {
+      "type": "richtext",
+      "id": "text1",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "text2",
+      "label": "Class Name"
+    }
+  ],
+  "blocks": [
+  ],
+  "presets": [
+    {
+      "name": "policy-regulation"
+    }
+  ]
+}
+{% endschema %}

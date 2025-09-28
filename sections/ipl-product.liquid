@@ -1,0 +1,336 @@
+<style>
+.ipl-product{
+  padding: 80px 0;
+  background: #f9f9f9;
+}
+
+.ipl-product .ipl-product-list{
+  display: flex;
+  gap: 47px;
+  margin-top: 60px;
+}
+
+.ipl-product .ipl-product-item{
+  flex: 1;
+  display: flex;
+  align-items: center;
+  background: #fff;
+}
+
+.ipl-product .ipl-product-img,.ipl-product .ipl-product-text{
+  width: 50%;
+}
+
+.ipl-product .img{
+  display: block;
+  width: 100%;
+}
+
+.ipl-product .mb-box{
+  display:none;
+}
+
+.ipl-product .ipl-product-text{
+  padding: 20px 20px 20px 80px;
+  color: #000;
+}
+
+.ipl-product .ipl-product-h3{
+  font-size: 30px;
+  font-family: var(--heading-font-family);
+  line-height: 1;
+}
+
+.ipl-product .ipl-product-star{
+  font-size: 16px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.ipl-product .ipl-product-star span{
+  letter-spacing: 2px;
+  color: #e7004c;
+}
+
+.ipl-product .ipl-product-price{
+  font-size: 20px;
+  color: #bebebe;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.ipl-product .n-price{
+  color: #e7004c;
+  font-family: var(--heading-font-family);
+}
+
+.ipl-product .d-price{
+  text-decoration: line-through;
+}
+
+.ipl-product .ipl-product-tag{
+  position: relative;
+  background: #e7004c;
+  font-size: 14px;
+  font-family: var(--heading-font-family);
+  color: #fff;
+  padding: 1px 5px;
+  overflow: hidden;
+}
+
+.ipl-product .ipl-product-tag::before {
+  position: absolute;
+  content: '';
+  display: block;
+  width: 200%;
+  height: 200%;
+  z-index: 2;
+  background: linear-gradient( -45deg, rgba(255, 255, 255, 0) 40%, rgba(255, 255, 255, 0.5) 50%, rgba(255, 255, 255, 0) 60% );
+  animation: scanning 3s linear infinite;
+}
+
+@keyframes scanning {
+  0% {
+      transform: translate(-100%, -100%);
+  }
+
+  100% {
+      transform: translate(100%, 100%);
+  }
+}
+
+.ipl-product .ipl-product-p{
+  font-size: 16px;
+  line-height: 1.5;
+  margin-top: 20px;
+}
+
+.ipl-product .ipl-product-p p{
+  margin: 0;
+}
+.ipl-product .ipl-product-p ul{
+  padding-left:15px;
+}
+.ipl-product .ipl-product-btn{
+  width: 180px;
+  height: 48px;
+  font-size: 16px;
+  margin-top: 30px;
+  color: #fff;
+  background: #000;
+  border: 2px solid #000;
+}
+
+.ipl-product .ipl-product-btn .btn-txt::before{
+  color: #000;
+}
+
+@media (max-width:1400px) {
+  .ipl-product .ipl-product-list{
+    gap: 30px;
+  }
+  .ipl-product .ipl-product-h3{
+    font-size: 25px;
+  }
+  .ipl-product .ipl-product-price{
+    font-size: 18px;
+  }
+  .ipl-product .ipl-product-p{
+    margin-top: 10px;
+    line-height: 1.5;
+    font-size: 14px;
+  }
+  .ipl-product .ipl-product-text{
+    padding: 10px 10px 10px 30px;
+  }
+  .ipl-product .ipl-product-btn{
+    margin-top: 15px;
+  }
+  
+}
+
+@media (max-width:1200px) {
+  .ipl-product .ipl-product-text{
+    zoom: .8;
+  }
+}
+
+@media (max-width:991px) {
+  .ipl-product{
+    padding: 50px 0;
+  }
+  .ipl-product .ipl-product-list{
+    flex-direction: column;
+    margin-top: 30px;
+  }
+  .ipl-product .ipl-product-text{
+    zoom: 1;
+  }
+}
+
+@media (max-width:640px) {
+  .ipl-product .ipl-product-item{
+    flex-direction: column;
+  }
+  .ipl-product .ipl-product-img,
+  .ipl-product .ipl-product-text{
+    width: 100%;
+  }
+  .ipl-product .mb-box{
+    display:block;
+  }
+  .ipl-product .pc-box{
+    display:none;
+  }
+  .ipl-product .ipl-product-text{
+    padding: 20px;
+  }
+  .ipl-product .ipl-product-text-top{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .ipl-product .ipl-product-star{
+    margin-top: 0;
+  }
+  .ipl-product .ipl-product-btn{
+    width: 100%;
+  }
+}
+</style>
+<section class="section-box">
+  <div class="ipl-product" style="background:{{ section.settings.background_color }};">
+    <div class="container">
+      <div class="title-diy to-top">{{ section.settings.title }}</div>
+      <div class="ipl-product-list">
+        {%- for block in section.blocks -%}
+        <a href="{{ block.settings.link }}" class="ipl-product-item to-top" style="transition-delay: 0.{{ forloop.index }}s">
+          <div class="ipl-product-img">
+            {%- if block.settings.image != blank -%}
+               <img loading="lazy" class="img pc-box" width="{{ block.settings.image.width }}" height="{{ block.settings.image.height }}" {% render 'image-attributes', image: block.settings.image %} alt="{{ block.settings.image.alt | escape }}" >
+            {%- endif -%}
+          {%- if block.settings.image1 != blank -%}
+               <img loading="lazy" class="img mb-box" width="{{ block.settings.image1.width }}" height="{{ block.settings.image1.height }}" {% render 'image-attributes', image: block.settings.image1 %} alt="{{ block.settings.image1.alt | escape }}" >
+            {%- endif -%}
+          </div>
+          <div class="ipl-product-text">
+            <div class="ipl-product-text-top">
+              <div class="ipl-product-h3">{{ block.settings.text }}</div>
+              <div class="ipl-product-star"><span>{{ block.settings.text1 }}</span>{{ block.settings.text2 }}</div>
+            </div>
+            <div class="ipl-product-price">
+              <div class="n-price">{{ block.settings.text3 }}</div>
+              <div class="d-price">{{ block.settings.text4 }}</div>
+              {%- if block.settings.text5 != blank -%}
+                <div class="ipl-product-tag">{{ block.settings.text5 }}</div>
+              {%- endif -%}
+          
+            </div>
+            <div class="ipl-product-p">
+              {{ block.settings.text6 }}
+            </div>
+            {%- if block.settings.text7 != blank -%}
+              <div class="ipl-product-btn btn-diy">
+                <div class="btn-txt" text="{{ block.settings.text7 }}">
+                  <span>{{ block.settings.text7 }}</span>
+                </div>
+              </div>
+            {%- endif -%}
+          </div>
+        </a>
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</section>
+{% schema %}
+{
+"name": "ipl-product",
+"blocks": [
+    {
+    "name": "item",
+    "type": "item",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "image",
+        "label": "Image"
+      },
+      {
+        "type": "image_picker",
+        "id": "image1",
+        "label": "Image"
+      },
+      {
+        "type": "text",
+        "id": "text",
+        "label": "Text"
+      },
+      {
+        "type": "text",
+        "id": "text1",
+        "label": "Text"
+      },
+      {
+        "type": "text",
+        "id": "text2",
+        "label": "Text"
+      },
+      {
+        "type": "text",
+        "id": "text3",
+        "label": "Text"
+      },
+      {
+        "type": "text",
+        "id": "text4",
+        "label": "Text"
+      },
+      {
+        "type": "text",
+        "id": "text5",
+        "label": "Text"
+      },
+      {
+        "type": "richtext",
+        "id": "text6",
+        "label": "Text"
+      },
+      {
+        "type": "text",
+        "id": "text7",
+        "label": "Text"
+      },
+      {
+        "type": "url",
+        "id": "link",
+        "label": "Link"
+      }
+    ]
+    }
+  ],
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background",
+      "default": "#f9f9f9"
+    }
+  ],
+  "presets": [
+    {
+      "name": "ipl-product",
+      "blocks": []
+    }
+  ]
+}
+{% endschema %}

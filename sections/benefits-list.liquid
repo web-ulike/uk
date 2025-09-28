@@ -1,0 +1,411 @@
+<style>
+.benefits-list {
+  padding: 60px 0;
+}
+
+.benefits-list .benefits-title {
+  font-size: 60px;
+  font-family: var(--heading-font-family);
+  text-align: center;
+  line-height: 1;
+  color: #000;
+}
+
+.benefits-list .benefits-sub {
+  font-size: 20px;
+  color: #000;
+  text-align: center;
+  margin-top: 15px;
+  margin-bottom: 50px;
+}
+
+.benefits-list .benefits-cont {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  
+}
+
+.benefits-list .benefits-item {
+  width: calc(25% - 22.5px);
+  position: relative;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #F9EFE2;
+}
+
+.benefits-list .benefits-popup-icon {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  right: 11px;
+  top: 11px;
+  z-index: 3;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  background: #b7aade;
+  font-size: 16px;
+  color: #fff;
+  cursor: pointer;
+}
+
+.benefits-list .benefits-item-cont {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height:100%;
+}
+.benefits-list .img {
+  display: block;
+  margin: 0 auto;
+  width: 50%;
+}
+
+.benefits-list .benefits-text {
+  font-size: 20px;
+  color: #000;
+  text-align: center;
+  line-height: 1.2;
+  font-family: var(--heading-font-family);
+  display: flex;
+  justify-content: center;
+  /* gap: 20px; */
+  margin-top: 10px;
+  flex: 1;
+  align-items: center;
+  flex-direction: column;
+}
+
+  .benefits-list .benefits-a {
+    color: #e0004d;
+    font-size: 16px;
+    line-height: 1.2;
+    text-decoration: underline;
+    text-align: center;
+    margin-top:8px;
+  }
+
+@media (max-width: 1500px) {
+  .benefits-list .benefits-cont {
+    gap: 20px;
+  }
+  .benefits-list .benefits-item {
+    width: calc(25% - 15px);
+  }
+  .benefits-list .benefits-text {
+    /* gap: 10px; */
+    margin-top: 20px;
+    font-size: 16px;
+  }
+  /* .benefits-list .benefits-text img {
+    max-height: 25px;
+  } */
+}
+
+@media (max-width: 1200px) {
+  .benefits-list .benefits-text {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 991px) {
+  .benefits-list {
+    padding: 40px 0;
+  }
+  .benefits-list .benefits-title {
+    font-size: 28px;
+  }
+  .benefits-list .benefits-sub {
+    font-size: 14px;
+    margin-top: 10px;
+    margin-bottom: 30px;
+  }
+  .benefits-list .benefits-cont {
+    flex-wrap: wrap;
+  }
+  .benefits-list .benefits-item {
+    width: calc(50% - 10px);
+  }
+}
+
+@media (max-width: 640px) {
+  .benefits-list .benefits-item {
+    width: 100%;
+  }
+}
+  .benefits-popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 999;
+  display: none;
+}
+
+.benefits-popup .benefits-popup-cont {
+  width: 95%;
+  max-width: 340px;
+  background: #fff;
+  font-size: 18px;
+  color: #000;
+  line-height: 1.3;
+  text-align: center;
+  border-radius: 10px;
+  padding: 30px 20px;
+  font-family: var(--heading-font-family);
+  box-shadow: 0px 15px 30px rgba(0, 0, 0, 0.2);
+}
+
+.benefits-popup .benefits-popup-close {
+  display: none;
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+}
+
+.benefits-popup .benefits-popup-close::before,
+.benefits-popup .benefits-popup-close::after {
+  content: '';
+  display: block;
+  position: absolute;
+  width: 22px;
+  height: 2px;
+  background: #000;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.benefits-popup .benefits-popup-close::after {
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+@media (max-width: 991px) {
+  .benefits-popup {
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.4);
+  }
+  .benefits-popup .benefits-popup-cont {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    padding:40px 15px;
+  }
+  .benefits-popup .benefits-popup-close {
+    display: block;
+  }
+}
+</style>
+<section class="section-box">
+  <div class="benefits-list to-top">
+    <div class="container">
+      {%- if section.settings.text != blank -%}
+        <div class="benefits-title">{{ section.settings.text }}</div>
+      {%- endif -%}
+      {%- if section.settings.text1 != blank -%}
+        <div class="benefits-sub">{{ section.settings.text1 }}</div>
+      {%- endif -%}
+      <div class="benefits-cont">
+        {%- for block in section.blocks -%}
+        <div class="benefits-item to-top" style="transition-delay: 0.{{ forloop.index }}s">
+          {%- if block.settings.text1 != blank -%}
+            <div class="benefits-popup-icon" data-txt="{{ block.settings.text1 }}">?</div>
+          {%- endif -%}
+          <div class="benefits-item-cont">
+            {%- if block.settings.image != blank -%}
+              <img loading="lazy" class="img" width="{{ block.settings.image.width }}" height="{{ block.settings.image.height }}" {% render 'image-attributes', image: block.settings.image %} alt="{{ block.settings.image.alt | escape }}" >
+            {%- endif -%}
+            {%- if block.settings.text != blank or block.settings.text2 != blank -%}
+              <div class="benefits-text">
+                {{ block.settings.text }}
+                {%- if block.settings.text2 != blank -%}
+                  <a
+                    href="javascript:void(0)"
+                    {% if block.settings.text3 != '' %}
+                      id="woohoo-trigger-spinthewheel" class="benefits-a woohoo-{{ block.settings.text3 }}"
+                    {% else %}
+                      class="benefits-a"
+                    {% endif %}
+                  >
+                    {{- block.settings.text2 }}
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="19"
+                      height="12"
+                      viewBox="0 0 19 12"
+                      fill="none"
+                    >
+                      <g clip-path="url(#clip0_2979_3146)">
+                        <path
+                          d="M18.3029 6.37472C18.3029 6.46244 18.2635 6.54946 18.188 6.61596L12.1829 11.9218L11.5558 11.4393L16.8875 6.72844H0.716736C0.716736 6.33793 1.10106 6.021 1.5746 6.021H17.8543C18.0164 6.021 18.1743 6.0882 18.2515 6.20635C18.2866 6.25941 18.3029 6.31742 18.3029 6.37472Z"
+                          fill="#E0004D" />
+                        <path
+                          d="M17.4234 4.14213C17.1204 4.39928 16.6298 4.39928 16.3276 4.14213L12.1475 0.586276L12.6954 0.120117L17.4226 4.14213H17.4234Z"
+                          fill="#E0004D" />
+                      </g>
+                      <defs>
+                        <clipPath id="clip0_2979_3146">
+                          <rect width="19" height="12" fill="white" />
+                        </clipPath>
+                      </defs>
+                    </svg>
+                  </a>
+                {%- endif -%}
+              </div>
+            {%- endif -%}
+            {%- if block.settings.image1 != blank or block.settings.image2 != blank -%}
+              <div class="benefits-text">
+                {%- if block.settings.image1 != blank -%}
+                  <a href="{{ block.settings.link }}" target="_blank">
+                    <img loading="lazy" width="{{ block.settings.image1.width }}" height="{{ block.settings.image1.height }}" {% render 'image-attributes', image: block.settings.image1 %} alt="{{ block.settings.image1.alt | escape }}" >
+                  </a>
+                {%- endif -%}
+                {%- if block.settings.image2 != blank -%}
+                  <a href="{{ block.settings.link1 }}" target="_blank">
+                    <img loading="lazy" width="{{ block.settings.image2.width }}" height="{{ block.settings.image2.height }}" {% render 'image-attributes', image: block.settings.image2 %} alt="{{ block.settings.image2.alt | escape }}" >
+                  </a>
+                {%- endif -%}
+              </div>
+            {%- endif -%}
+            
+          </div>
+        </div>
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+  <div class="benefits-popup">
+    <div class="benefits-popup-cont">
+      <div class="benefits-popup-close"></div>
+      <div class="benefits-popup-p">
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+  window.addEventListener('load', function () {
+    function showPopup() {
+      let $p = $('.benefits-list')
+      let $item = $p.find('.benefits-popup-icon')
+      let $popup = $('.benefits-popup')
+      if (window.innerWidth > 991) {
+        $item.hover(function () {
+          let index = $(this).closest('.benefits-item').index()
+          let offSet = $(this).offset()
+          let scrollTop = $(window).scrollTop();
+          let text = $(this).attr('data-txt')
+          $popup.find('.benefits-popup-p').html(text)
+          let leftW = offSet.left
+          if (index == $p.find('.benefits-item').length - 1) {
+            leftW = offSet.left - $popup.width() + 20
+          }
+          $popup.css({ left: leftW + 'px', top: offSet.top - $popup.height()- scrollTop + 'px' })
+          $popup.fadeIn()
+        }, function () {
+          $('.benefits-popup').fadeOut()
+        })
+      } else {
+        $item.click(function () {
+          let text = $(this).attr('data-txt')
+          $popup.find('.benefits-popup-p').html(text)
+          $popup.fadeIn()
+        })
+
+        $popup.find('.benefits-popup-close').click(function () {
+          $popup.fadeOut()
+        })
+      }
+    }
+    showPopup()
+    $('.benefits-a').click(function(){
+      $('#subscript-plug').show()
+      // 订阅new弹出框
+      toggleApp();
+    })
+  })
+</script>
+{% schema %}
+{
+"name": "benefits-list",
+"blocks": [
+  {
+    "name": "item",
+    "type": "item",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "image",
+        "label": "Image"
+      },
+      {
+        "type": "text",
+        "id": "text",
+        "label": "Text"
+      },
+      {
+        "type": "text",
+        "id": "text2",
+        "label": "弹出转盘按钮文案"
+      },
+      {
+        "type": "text",
+        "id": "text3",
+        "label": "跳转ID"
+      },
+      {
+        "type": "text",
+        "id": "text1",
+        "label": "弹窗文字"
+      },
+      {
+        "type": "image_picker",
+        "id": "image1",
+        "label": "Image"
+      },
+      {
+        "type": "url",
+        "id": "link",
+        "label": "链接"
+      },
+      {
+        "type": "image_picker",
+        "id": "image2",
+        "label": "Image"
+      },
+      {
+        "type": "text",
+        "id": "link1",
+        "label": "链接"
+      }
+    ]
+  }
+],
+"settings": [
+  {
+    "type": "text",
+    "id": "text",
+    "label": "标题"
+  },
+  {
+    "type": "text",
+    "id": "text1",
+    "label": "Text"
+  }
+],
+  "presets": [
+  {
+    "name": "benefits-list",
+    "blocks": []
+  }
+]
+}
+{% endschema %}

@@ -1,0 +1,88 @@
+<script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.5.0/model-viewer.min.js" defer></script>
+<script>
+  $('html').on('click', '.product-media-new .product-slider-btn-model', function () {
+    $('.main-image-swiper .three-box').remove();
+    $('.three-load').css({
+      height: document.querySelector('.product-media-new .swiper_main').clientHeight + 'px',
+      display: 'flex',
+    });
+    let modelUlr = $('.product-slider-btn-model').attr('attr-model-url');
+    initModelViewer(modelUlr);
+  });
+
+  $('html').on('click', '.close-three-btn', function () {
+    $('.three-box').remove();
+    $('.shopify-section--main-product').css({ 'z-index': '1' });
+  });
+
+  function initModelViewer(modelUlr) {
+    let boxHeight = document.querySelector('.product-media-new .swiper_main').clientHeight;
+    let boxWidth = document.querySelector('.product-media-new .swiper_main').clientWidth;
+    let div = document.createElement('div');
+    div.className = 'three-box';
+    div.style.position = 'absolute';
+    div.style.zIndex = '3';
+    div.style.background = '#eee';
+    div.style.width = '100%';
+    div.style.height = '100%';
+    div.style.top = '0px';
+    div.style.left = '0px';
+
+    div.innerHTML = `
+      <model-viewer class="modelViewer" id="modelViewer" camera-controls="true" loading="eager"
+        camera-orbit="180deg 90deg 0"
+        exposure="1.45"
+        style="width:100%;height:100%;background:#f9f9f9;"
+        src="${modelUlr}" ar-status="not-presenting"></model-viewer>
+      `;
+    let sDiv = document.createElement('div');
+    sDiv.className = 'tips-icon';
+
+    let img = document.createElement('img');
+    img.src = 'https://cdn.shopify.com/s/files/1/0656/9079/6273/files/cu.svg';
+    img.className = 'tip-img';
+
+    let mDiv = document.createElement('div');
+    mDiv.className = 'models-btn';
+    let mImg = document.createElement('img');
+    mImg.src = 'https://cdn.shopify.com/s/files/1/0656/9079/6273/files/search.svg';
+
+    let cDiv = document.createElement('div');
+    cDiv.className = 'close-three-btn';
+    let cImg = document.createElement('img');
+    cImg.src = 'https://cdn.shopify.com/s/files/1/0656/9079/6273/files/close-s.svg';
+
+    cDiv.appendChild(cImg);
+    mDiv.appendChild(mImg);
+    sDiv.appendChild(img);
+    div.appendChild(sDiv);
+    div.appendChild(mDiv);
+    div.appendChild(cDiv);
+
+    document.querySelector('.product-media-new .main-image-swiper').appendChild(div);
+
+    mDiv.addEventListener('click', function () {
+      mDiv.style.display = 'none';
+      $('.shopify-section--main-product').css({ 'z-index': '9999999999' });
+      $('.product-media-new .three-box').css({ position: 'fixed', bottom: '0', right: '0', 'z-index': '20' });
+    });
+
+    const modelViewer = document.getElementById('modelViewer');
+    modelViewer.addEventListener('progress', (event) => {
+      const progressPercentage = event.detail.totalProgress * 100;
+      document.querySelector('.three-load').innerHTML =
+        'Loading, please wait… ' + parseFloat(progressPercentage.toFixed(2)) + '%';
+      if(parseFloat(progressPercentage.toFixed(2))==100){
+        document.querySelector('.three-load').style.display = 'none';
+      }
+    });
+    modelViewer.addEventListener('load', () => {
+      
+    });
+  }
+</script>
+<style>
+  model-viewer {
+    --progress-bar-height: 0px;
+  }
+</style>

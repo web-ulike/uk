@@ -1,0 +1,430 @@
+<style>
+.ipl-works {
+  padding: 90px 0;
+  background: #f9f9ff;
+}
+
+.ipl-works .ipl-works-title {
+  color: #190a0a;
+  text-align: center;
+  font-size: 50px;
+  line-height: 1.2;
+}
+
+.ipl-works .ipl-works-sub {
+  color: #190a0a;
+  text-align: center;
+  font-size: 16px;
+  line-height: 1.5;
+  max-width: 642px;
+  margin: 0 auto;
+  margin-top: 20px;
+}
+.ipl-works .ipl-works-cont {
+  overflow: hidden;
+}
+.ipl-works .ipl-works-flex {
+  display: flex;
+  gap: 20px;
+  margin-top: 60px;
+}
+
+.ipl-works .ipl-works-item {
+  width: calc(33.333% - 13px);
+  position: relative;
+}
+
+.ipl-works .ipl-works-img{
+  position: relative;
+}
+
+.ipl-works .ipl-works-item .img {
+  width: 100%;
+  position: relative;
+  z-index: 1;
+}
+.ipl-works .ipl-works-wrapper{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  z-index: 2;
+}
+
+.ipl-works .ipl-works-wrapper video{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.ipl-works .video-wrapper__play-button{
+  position: absolute;
+  margin-bottom:0;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+  
+.ipl-works .ipl-works-text {
+  padding: 38px 0;
+}
+
+.ipl-works .ipl-works-num {
+  color: #3f3636;
+  font-size: 32px;
+  line-height: 1.2;
+}
+
+.ipl-works .ipl-works-p {
+  color: #3f3636;
+  font-size: 20px;
+  line-height: 1.5;
+  margin-top: 18px;
+}
+
+.ipl-works .ipl-works-bottom {
+  display: none;
+  align-items: center;
+  gap: 30px;
+  margin-top: 30px;
+}
+
+.ipl-works .ipl-works-dot {
+  flex: 1;
+  height: 2px;
+  border-width: 2px;
+  background: rgba(25, 10, 10, 0.2);
+  position: relative;
+  --bf-width: 0;
+}
+
+.ipl-works .ipl-works-dot::before {
+  content: '';
+  position: absolute;
+  height: 100%;
+  width: var(--bf-width);
+  max-width: 100%;
+  left: 0;
+  top: 0;
+  background: #190a0a;
+  transition: all 0.4s ease;
+}
+
+.ipl-works .ipl-works-arraw {
+  display: flex;
+  gap: 20px;
+}
+
+.ipl-works .ipl-works-arraw-item {
+  width: 30px;
+  cursor: pointer;
+  transition: all 0.3s;
+  opacity: 0.2;
+}
+
+.ipl-works .ipl-works-arraw-item:hover {
+  opacity: 1;
+}
+
+.ipl-works svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+@media (max-width: 1500px) {
+  .ipl-works .ipl-works-text {
+    padding: 20px 0;
+  }
+  .ipl-works .ipl-works-num {
+    font-size: 24px;
+  }
+  .ipl-works .ipl-works-p {
+    font-size: 16px;
+    margin-top: 15px;
+  }
+}
+
+@media (max-width: 991px) {
+  .ipl-works {
+    padding: 50px 0;
+  }
+  .ipl-works .ipl-works-title {
+    font-size: 28px;
+  }
+  .ipl-works .ipl-works-sub {
+    font-size: 14px;
+  }
+  .ipl-works .ipl-works-flex {
+    margin-top: 37px;
+  }
+  .ipl-works .ipl-works-num {
+    font-size: 20px;
+  }
+  .ipl-works .ipl-works-p {
+    font-size: 14px;
+    margin-top: 8px;
+  }
+}
+
+@media (max-width: 768px) {
+  .ipl-works .ipl-works-bottom {
+    display: flex;
+  }
+  .ipl-works .ipl-works-item {
+    width: 335px;
+    flex-shrink: 0;
+  }
+  .ipl-works .ipl-works-text{
+    padding-bottom:0;
+  }
+  .ipl-works .video-wrapper__play-button{
+    zoom:.6;
+  }
+}
+
+@media (max-width: 540px) {
+  .ipl-works .ipl-works-item {
+    width: 100%;
+  }
+}
+</style>
+
+<section>
+  <div class="ipl-works to-top">
+    <div class="container">
+      <div class="ipl-works-title to-top">{{ section.settings.text }}</div>
+      <div class="ipl-works-sub to-top" style="transition-delay: .1s;">
+        {{ section.settings.text1 }}
+      </div>
+      <div class="ipl-works-cont">
+        <div class="ipl-works-flex">
+          {%- for block in section.blocks -%}
+            <div class="ipl-works-item to-top" style="transition-delay: .{{ forloop.index }}s;">
+              <div class="ipl-works-img">
+                {%- if block.settings.image != blank -%}
+                  <img loading="lazy"  class="img" width="" height="" {% render 'image-attributes', image: block.settings.image %}>
+                {%- endif -%}
+                {%- if block.settings.video != blank -%}
+                  <native-video {% if block.settings.autoplay %}autoplay{% endif %} class="ipl-works-wrapper">
+                    {%- unless block.settings.autoplay -%}
+                        <button type="button" class="video-wrapper__play-button video-wrapper__play-button--large video-wrapper__play-button--ripple" title="{{ 'general.accessibility.play_video' | t | escape }}">
+                          {%- if block.settings.v_icon != blank -%}
+                            <img
+                              loading="lazy"
+                              class="v_img"
+                              width="{{ block.settings.v_icon.width }}"
+                              height="{{ block.settings.v_icon.height }}"
+                              {% render 'image-attributes', image: block.settings.v_icon %}
+                              alt="{{ block.settings.v_icon.alt | escape }}"
+                            >
+                          {%- endif -%}
+                        </button>
+                      {%- endunless -%}
+                    <template>
+                      {{- block.settings.video | video_tag: controls: block.settings.show_video_controls, autoplay: block.settings.autoplay, muted: block.settings.autoplay, playsinline: block.settings.autoplay, loop: true -}}
+                    </template>
+                  </native-video>
+                {%- endif -%}
+              </div>
+              <div class="ipl-works-text">
+                <div class="ipl-works-num">{{ block.settings.text }}</div>
+                <div class="ipl-works-p">
+                  {{ block.settings.text1 }}
+                </div>
+              </div>
+            </div>
+          {%- endfor -%}
+        </div>
+        <div class="ipl-works-bottom">
+          <div class="ipl-works-dot"></div>
+          <div class="ipl-works-arraw">
+            <div class="ipl-works-arraw-item">
+              <svg xmlns="http://www.w3.org/2000/svg" width="37" height="37" viewBox="0 0 37 37" fill="none">
+                <path fill-rule="evenodd" clip-rule="evenodd"
+                  d="M17.1715 6.8273L17.6312 6.36755L18.5507 7.28704L18.0909 7.74678L13.8936 11.9441L9.93715 15.9006C9.42933 16.4084 8.606 16.4084 8.09818 15.9006L12.9741 11.0246L17.1715 6.8273ZM5.79342 19.1248C5.53951 18.8709 5.53951 18.4592 5.79342 18.2053C5.87891 18.1198 5.9823 18.0631 6.09152 18.0352V18.0149H6.25174H6.25459H6.7417L25.5967 18.0149H30.1479C30.8661 18.0149 31.4482 18.5971 31.4482 19.3152H25.5967L7.82282 19.3152L18.0909 29.5834L18.5507 30.0431L17.6312 30.9626L17.1715 30.5029L5.79342 19.1248Z"
+                  fill="#190A0A" />
+              </svg>
+            </div>
+            <div class="ipl-works-arraw-item">
+              <svg xmlns="http://www.w3.org/2000/svg" width="37" height="37" viewBox="0 0 37 37" fill="none">
+                <path fill-rule="evenodd" clip-rule="evenodd"
+                  d="M20.2862 6.8273L19.8264 6.36755L18.907 7.28704L19.3667 7.74678L23.564 11.9441L27.5205 15.9006C28.0283 16.4084 28.8516 16.4084 29.3595 15.9006L24.4835 11.0246L20.2862 6.8273ZM31.6642 19.1248C31.9181 18.8709 31.9181 18.4592 31.6642 18.2053C31.5787 18.1198 31.4753 18.0631 31.3661 18.0352V18.0149H31.2059H31.2031H30.7159L11.8609 18.0149H7.30975C6.59158 18.0149 6.0094 18.5971 6.0094 19.3152H11.8609L29.6348 19.3152L19.3667 29.5834L18.907 30.0431L19.8264 30.9626L20.2862 30.5029L31.6642 19.1248Z"
+                  fill="#190A0A" />
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+window.addEventListener('load', function () {
+  if (window.innerWidth < 991) {
+    function iplWorksSwiper() {
+      let $p = $('.ipl-works')
+      let $list = $p.find('.ipl-works-flex')
+      let $item = $list.find('.ipl-works-item')
+      let $dot = $p.find('.ipl-works-dot')
+      let $arraw = $p.find('.ipl-works-arraw-item')
+      let content = document.querySelector('.ipl-works .ipl-works-cont')
+      let rw = $p.find('.ipl-works-cont').width()
+      let length = $item.length
+      let index = 0
+      let width = $item.width() * 1
+      let pw = length * (width + 20) - 20
+      let leftMax = pw - rw + width
+      let bolR = false
+      $arraw.eq(1).css('opacity', '1')
+      function changeSwiper() {
+        let left = index * (width + 20)
+        if (left >= pw - rw) {
+          left = pw - rw
+          bolR = true
+        } else {
+          bolR = false
+        }
+        if (index != length - 1) {
+            $arraw.eq(1).css('opacity', '1')
+          } else {
+            $arraw.eq(1).css('opacity', '.3')
+          }
+          if (index != 0) {
+            $arraw.eq(0).css('opacity', '1')
+          } else {
+            $arraw.eq(0).css('opacity', '.3')
+          }
+        let bfb = (left + width) / leftMax
+        $dot.attr('style', `--bf-width:${bfb * 100}%`)
+        $list.css({ transform: `translateX(-${left}px)`, transition: 'all .5s cubic-bezier(0.645, 0.045, 0.355, 1)', })
+      }
+      changeSwiper()
+      $arraw.click(function () {
+        let sindex = $(this).index()
+        if (sindex && !bolR) index++
+        if (!sindex && index > 0) index--
+        changeSwiper()
+      })
+      detectSwipe(content, () => {
+        if (bolR) return
+        index++
+        changeSwiper()
+      }, () => {
+        isLast = false
+        index--
+        if (index < 0) index = 0
+        changeSwiper()
+      });
+
+      function detectSwipe(element, onSwipeLeft, onSwipeRight) {
+        let startX = 0;
+
+        const getEventX = (event) => {
+          return event.touches ? event.touches[0].clientX : event.clientX;
+        };
+
+        const handleTouchStart = (e) => {
+          startX = getEventX(e);
+        };
+
+        const handleTouchMove = (e) => {
+          const deltaX = getEventX(e) - startX;
+          if (Math.abs(deltaX) > 10 && e.cancelable) {
+            e.preventDefault();
+          }
+        };
+        const handleTouchEnd = (e) => {
+          const deltaX = getEventX(e.changedTouches ? e.changedTouches[0] : e) - startX;
+          if (deltaX > 10) {
+            onSwipeRight();
+          } else if (deltaX < -10) {
+            onSwipeLeft();
+          }
+        };
+
+        element.addEventListener('touchstart', handleTouchStart);
+        element.addEventListener('touchmove', handleTouchMove);
+        element.addEventListener('touchend', handleTouchEnd);
+
+        // Add mouse event listeners for PC compatibility
+        element.addEventListener('mousedown', handleTouchStart);
+        element.addEventListener('mousemove', handleTouchMove);
+        element.addEventListener('mouseup', handleTouchEnd);
+      }
+    }
+    iplWorksSwiper()
+  }
+})
+</script>
+{% schema %}
+{
+  "name": "ipl-works",
+  "settings": [
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "text1",
+      "label": "Text"
+    }
+  ],
+  "blocks": [
+    {
+    "name": "item",
+    "type": "item",
+    "settings": [
+      {
+        "type": "video",
+        "id": "video",
+        "label": "Video",
+        "info": "Replaces the external video if both are set."
+      },
+      {
+        "type": "image_picker",
+        "id": "image",
+        "label": "Image"
+      },
+      {
+        "type": "text",
+        "id": "text",
+        "label": "Text"
+      },
+      {
+        "type": "text",
+        "id": "text1",
+        "label": "Text"
+      },
+      {
+        "type": "checkbox",
+        "id": "autoplay",
+        "label": "Autoplay",
+        "info": "Video is muted automatically to allow autoplay.",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "show_video_controls",
+        "label": "Show video controls",
+        "info": "Only applicable with native video.",
+        "default": false
+      },
+      {
+        "type": "image_picker",
+        "id": "v_icon",
+        "label": "Video Icon"
+      }
+    ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "ipl-works"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,247 @@
+<style>
+.place-image {
+  padding: 100px 0;
+}
+
+.place-image .place-image-list {
+  display: grid;
+  grid-template-columns: 27.6% 27.6% 20.6% 20.6%;
+  grid-template-rows: auto auto;
+  gap: 15px;
+}
+
+.place-image .place-image-item {
+  border-radius: 12px;
+  overflow: hidden;
+  position: relative;
+}
+
+.place-image .place-image-item .img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: relative;
+  z-index: 1;
+}
+
+.place-image .place-image-text {
+  position: absolute;
+  width: 100%;
+  padding: 20px;
+  z-index: 2;
+  left: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  justify-content: space-between;
+}
+
+.place-image .place-image-h3 {
+  color: #fff;
+  font-size: 24px;
+  line-height: 1.2;
+  font-weight: normal;
+  font-family: var(--heading-font-family);
+  margin: 0;
+}
+
+.place-image .place-image-p {
+  color: #fff;
+  font-size: 16px;
+  line-height: 1.2;
+  margin: 0;
+}
+
+.place-image svg {
+  width: 40px;
+  flex-shrink: 0;
+  display: block;
+  cursor: pointer;
+}
+
+.place-image .place-image-item:nth-child(1) {
+  grid-column: 1;
+  grid-row: 1 / 3;
+}
+
+.place-image .place-image-item:nth-child(2) {
+  grid-column: 2;
+  grid-row: 1 / 3;
+}
+
+.place-image .place-image-item:nth-child(3) {
+  grid-column: 3 / 5;
+  grid-row: 1;
+}
+
+.place-image .place-image-item:nth-child(4) {
+  grid-column: 3;
+  grid-row: 2;
+}
+
+.place-image .place-image-item:nth-child(5) {
+  grid-column: 4;
+  grid-row: 2;
+}
+
+@media (max-width: 1300px) {
+  .place-image .place-image-text {
+    padding: 15px;
+  }
+  .place-image .place-image-h3 {
+    font-size: 18px;
+  }
+
+  .place-image .place-image-p {
+    font-size: 14px;
+  }
+
+  .place-image svg {
+    width: 35px;
+    height: 35px;
+  }
+}
+
+/* 移动端布局 */
+@media screen and (max-width: 991px) {
+  .place-image {
+    padding: 50px 0;
+  }
+  .place-image .place-image-list {
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: 5fr 3fr 4fr;
+    gap: 5px;
+  }
+
+  .place-image .place-image-item:nth-child(1) {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .place-image .place-image-item:nth-child(2) {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .place-image .place-image-item:nth-child(3) {
+    grid-column: 1 / 3;
+    grid-row: 2;
+  }
+
+  .place-image .place-image-item:nth-child(4) {
+    grid-column: 1;
+    grid-row: 3;
+  }
+
+  .place-image .place-image-item:nth-child(5) {
+    grid-column: 2;
+    grid-row: 3;
+  }
+  .place-image .place-image-text {
+    padding: 8px;
+    gap: 10px;
+  }
+  .place-image .place-image-h3 {
+    font-size: 15px;
+  }
+
+  .place-image .place-image-p {
+    font-size: 12px;
+  }
+
+  .place-image svg {
+    width: 25px;
+    height: 25px;
+  }
+}
+</style>
+<section class="section-box">
+  <div class="place-image">
+    <div class="container">
+      <div class="place-image-list">
+        {%- for block in section.blocks -%}
+          <div class="place-image-item" data-name="{{ block.settings.text2 }}">
+            {%- if block.settings.image != blank  -%}              
+              <picture>
+                <source srcset="{{ block.settings.image1 }}" media="(max-width: 991px)">
+                <img class="img" width="" height="" src="{{ block.settings.image | image_url }}" alt="{{ block.settings.image.alt }}">
+              </picture>
+            {%- endif -%}
+            {%- if block.settings.check_b  -%}   
+              <div class="place-image-text">
+                <div>
+                  {%- if block.settings.text != blank  -%}   
+                    <h3 class="place-image-h3">{{ block.settings.text }}</h3>
+                  {%- endif -%}
+                  {%- if block.settings.text1 != blank  -%}   
+                    <p class="place-image-p">{{ block.settings.text1 }}</p>
+                  {%- endif -%}
+                </div>
+                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40" fill="none">
+                  <path
+                    d="M19.9878 39.9756C31.0268 39.9756 39.9756 31.0268 39.9756 19.9878C39.9756 8.94885 31.0268 0 19.9878 0C8.94885 0 0 8.94885 0 19.9878C0 31.0268 8.94885 39.9756 19.9878 39.9756Z"
+                    fill="white" />
+                  <path
+                    d="M18.8659 28.7394V20.6482H10.7744V18.8569H18.8659V10.7754H20.6583V18.8569H28.7393V20.6482H20.6583V28.7394H18.8659Z"
+                    fill="#3F3636" />
+                </svg>
+              </div>
+            {%- endif -%}
+          </div>
+        {%- endfor -%}                
+      </div>
+    </div>
+  </div>
+</section>
+{% schema %}
+{
+  "name": "place-image",
+  "blocks": [
+    {
+      "name": "item",
+      "type": "item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text2",
+          "label": "弹窗Class名",
+          "info": "对应弹窗模块填写名字"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "image_picker",
+          "id": "image1",
+          "label": "Image M"
+        },
+        {
+          "type": "checkbox",
+          "id": "check_b",
+          "label": "是否显示文字",
+          "default":true
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text"
+        },
+        {
+          "type": "text",
+          "id": "text1",
+          "label": "Text"
+        },
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "place-image",
+      "blocks": []
+    }
+  ]
+}
+{% endschema %}

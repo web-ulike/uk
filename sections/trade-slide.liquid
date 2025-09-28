@@ -1,0 +1,196 @@
+<style>
+.bg_with_text-box{
+  position: relative;
+}
+.bg_with_text-box picture {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.bg_with_text-box picture img {
+  width: 100%;
+  object-fit: cover;
+}
+
+.bg_text-cnt {
+  position: absolute;
+  top: 100px;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+}
+.bg_text-cnt h3{
+  color:  #190A0A;
+font-size: 48px;
+font-style: normal;
+font-weight: 400;
+line-height: 125%;
+margin-bottom:10px
+}
+.bg_note{
+  color: #190A0A;
+text-align: center;
+font-size: 18px;
+font-style: normal;
+font-weight: 300;
+line-height: 150%;
+margin-bottom: 30px;
+margin: 5px auto 20px;
+max-width: 500px;
+}
+.trade_nav-right{
+  display: inline-flex;
+padding: 10px 25px;
+justify-content: center;
+align-items: center;
+gap: 10px;
+border-radius: 34px;
+background:  #190A0A;
+color:  #FBFAF4;
+font-size: 12px;
+font-style: normal;
+font-weight: 400;
+line-height: 110%;
+text-transform: uppercase;
+  border:1px solid #190A0A;
+}
+  .trade_nav-right.custom_bt {
+    padding: 13px 40px;
+  }
+.trade_nav-right:hover{
+  color:  #190A0A;
+  background:  #ffffff;
+}
+@media screen and (max-width: 1200px) {
+  .bg_text-cnt{
+    top: 60px;
+    width: 60%;
+  }
+  .bg_text-cnt h3{
+    font-size: 36px;
+  }
+}
+@media screen and (max-width: 767px) {
+    .bg_text-cnt{
+      width: 100%;
+     max-width: 300px;
+  }
+  .bg_text-cnt h3{
+    font-size: 24px;
+    max-width: 246px;
+    margin: 0 auto;
+  }
+  .bg_note{
+    font-size: 14px;
+  }
+}
+</style>
+ <section>
+    <div class="bg_with_text-wrapper">
+      <div class="bg_with_text-box">
+        <picture class="to-opacity">
+        {%- if section.settings.image_mobile -%}
+         <source
+            media="(max-width: 767px)"
+            srcset="{{ section.settings.image_mobile | image_url: width: '400x' }} 400w, {{ section.settings.image_mobile | image_url: width: '600x' }} 600w, {{ section.settings.image_mobile | image_url: width: '800x' }} 800w, {{ section.settings.image_mobile | image_url: width: '1000x' }} 1000w"
+            width="{{ section.settings.image_mobile.width }}"
+            height="{{ section.settings.image_mobile.height }}"
+          >
+        {%- endif -%}
+        {{- section.settings.image | image_url: width: section.settings.image.width | image_tag: loading: 'eager', sizes: '100vw', widths: '300,400,500,600,700,800,900,1000,1200,1400,1600,1800,2000,2200,2400,2600,2800,3000,3200', class: 'trade_banner__image' -}}
+        </picture>
+        <div class="bg_text-cnt">
+         {%- if section.settings.title != blank -%}
+            <h3 class="to-top" style="transition-delay: 0.1s">{{ section.settings.title | escape }}</h3>
+            {%- endif -%}
+           {%- if section.settings.des != blank -%}
+          <p class="bg_note to-top" style="transition-delay: 0.2s">{{ section.settings.des | escape }}</p>
+          {%- endif -%}
+       {%- if section.settings.link_txt != blank -%}
+            <a href="{{ section.settings.link_url }}" class="trade_nav-right custom_bt to-top" style="transition-delay: 0.3s">
+              {{ section.settings.link_txt | escape }}
+            </a>
+           {%- endif -%}
+        </div>
+      </div>
+    </div>
+</section>
+<script>
+</script>
+{% schema %}
+{
+  "name": "Trade Slide",
+  "class": "shopify-section--trade-slide", 
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title"
+    },
+     {
+      "type": "text",
+      "id": "des",
+      "label": "subTitle"
+    },
+     {
+      "type": "text",
+      "id": "link_txt",
+      "label": "Trade Nav Text"
+    },
+    {
+      "type": "url",
+      "id": "link_url",
+      "label": "Trade Nav Link"
+    },
+     {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Images"
+        },
+     {
+          "type": "image_picker",
+          "id": "image_mobile",
+          "label": "Mobile Images"
+        },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 40
+    }
+  ],
+  "blocks": [
+  ],
+  "presets": [
+    {
+      "name": "Trade Slide"
+    }
+  ]
+}
+{% endschema %}

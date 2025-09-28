@@ -1,0 +1,252 @@
+<style>
+.comparison-banner{
+  position: relative;
+  z-index:1;
+}
+.comparison-banner::before{
+  position: absolute;
+  content: '';
+  display: block;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.1);
+  z-index: 3;
+}
+.comparison-banner .img{
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  display: block;
+}
+
+.comparison-banner .mb-box{
+  display: none;
+}
+
+.comparison-banner .comparison-banner-text{
+  position: absolute;
+  width: 100%;
+  left: 0;
+  bottom: 65px;
+  z-index: 4;
+}
+
+.comparison-banner .container{
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 30px;
+}
+
+.comparison-banner .comparison-banner-text-left{
+  max-width: 770px;
+  color: #fff;
+}
+
+.comparison-banner .comparison-banner-tag{
+  color: #FBFAF4;
+  font-size: 16px;
+  font-family: var(--heading-font-family);
+  line-height: 1.5;
+  display: inline-block;
+  background: #E0004D;
+  padding: 3px 17px;
+  overflow: hidden;
+  position: relative;
+  border-radius: 30px;
+}
+
+.comparison-banner .comparison-banner-tag::before {
+  position: absolute;
+  content: "";
+  display: block;
+  width: 200%;
+  height: 200%;
+  z-index: 2;
+  background: linear-gradient(
+    -45deg,
+    rgba(255, 255, 255, 0) 40%,
+    rgba(255, 255, 255, 0.5) 50%,
+    rgba(255, 255, 255, 0) 60%
+  );
+  animation: scanning 3s linear infinite;
+}
+@keyframes scanning {
+  0% {
+    transform: translate(-100%, -100%);
+  }
+  100% {
+    transform: translate(100%, 100%);
+  }
+}
+
+.comparison-banner .comparison-banner-sub{
+  font-size: 24px;
+  line-height: 1.5;
+  letter-spacing: 0.24px;
+  margin-top: 18px;
+}
+
+.comparison-banner .comparison-banner-title{
+  font-size: 80px;
+  line-height: 1;
+  letter-spacing: 0.8px;
+  margin-top: 18px;
+}
+
+.comparison-banner .comparison-banner-p{
+  color: #190A0A;
+  font-size: 60px;
+  line-height: 1.2;
+  letter-spacing: 0.6px;
+}
+
+.comparison-banner .comparison-banner-btn{
+  width: 200px;
+  height: 42px;
+  font-size: 14px;
+  border-radius: 42px;
+  background: #fff;
+  cursor: pointer;
+  border:2px solid #fff;
+}
+.comparison-banner .comparison-banner-btn span{
+  color: #190A0A;
+}
+
+.comparison-banner .comparison-banner-btn .btn-txt::before{
+  color: #fff;
+}
+
+.comparison-banner .comparison-banner-btn::after{
+  background: #190A0A;
+}
+
+@media (max-width:991px) {
+  .comparison-banner .comparison-banner-sub{
+    font-size: 14px;
+    color: #fff;
+    line-height: 1.5;
+    margin-top: 5px;
+  }
+  .comparison-banner .comparison-banner-title{
+    font-size: 28px;
+    color: #fff;
+    line-height: 1.3;
+  }
+  .comparison-banner .mb-box{
+    display: block;
+  }
+  .comparison-banner .pc-box{
+    display: none;
+  }
+  .comparison-banner .container{
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+  }
+  .comparison-banner .comparison-banner-text-left{
+    text-align: center;
+  }
+  .comparison-banner .comparison-banner-text{
+    bottom: 0;
+    height: 100%;
+    padding: 38px 0 48px 0;
+  }
+  .comparison-banner .comparison-banner-btn{
+    width: 185px;
+    font-size: 12px;
+  }
+}
+  
+</style>
+
+<section class="section-box">
+  <div class="comparison-banner">
+    {%- if section.settings.image != blank -%}
+      <img loading="lazy" class="img pc-box" width="" height="" src="{{ section.settings.image | image_url }}">
+    {%- endif -%}
+    {%- if section.settings.image1 != blank -%}
+      <img loading="lazy" class="img mb-box" width="" height="" src="{{ section.settings.image1 | image_url }}">
+    {%- endif -%}
+    <div class="comparison-banner-text">
+      <div class="container">
+        <div class="comparison-banner-text-left">
+          {%- if section.settings.text != blank -%}
+            <div class="comparison-banner-tag to-top">
+              {{ section.settings.text }}
+            </div>
+          {%- endif -%}
+          <div class="comparison-banner-title line-top" style="transition-delay: 0.1s">{{ section.settings.text1 }}</div>
+          <div class="comparison-banner-sub line-top" style="transition-delay: 0.2s">{{ section.settings.text2 }}</div>
+        </div>
+        <div class="comparison-banner-text-right to-top" style="transition-delay: 0.3s">
+          {%- if section.settings.text3 != blank -%}
+            <div class="comparison-banner-btn btn-diy" onclick="btnScrollToTop('{{ section.settings.text4 }}')">
+              <div class="btn-txt" text="{{ section.settings.text3 }}">
+                <span>{{ section.settings.text3 }}</span>
+              </div>
+            </div>
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+  <script>
+      // 
+    function btnScrollToTop(name) {
+    let section = document.querySelector(name)
+      section.scrollIntoView({ behavior: 'smooth' });
+    }
+  </script>                   
+{% schema %}
+{
+  "name": "comparison-banner",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image1",
+      "label": "Image Mobile"
+    },
+    {
+      "type": "text",
+      "id": "text",
+      "label": "标签"
+    },
+    {
+      "type": "text",
+      "id": "text1",
+      "label": "标题"
+    },
+    {
+      "type": "text",
+      "id": "text2",
+      "label": "副标题"
+    },
+    {
+      "type": "text",
+      "id": "text3",
+      "label": "按钮文字"
+    },
+    {
+      "type": "text",
+      "id": "text4",
+      "label": "跳转ID"
+    }
+  ],
+  "presets": [
+    {
+      "name": "comparison-banner"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,219 @@
+<style>
+.preface-new {
+  padding: 33px 0;
+  background: #fff;
+  position: relative;
+  z-index: 3;
+}
+
+.preface-new .preface-cont {
+  display: flex;
+  gap: 30px;
+  align-items: center;
+}
+
+.preface-new .preface-left {
+  width: 19.74%;
+  overflow: hidden;
+  position: relative;
+}
+
+.preface-new .preface-left.changed::before {
+  position: absolute;
+  content: '';
+  display: block;
+  width: 200%;
+  height: 200%;
+  z-index: 2;
+  background: linear-gradient(
+    -45deg,
+    rgba(255, 255, 255, 0) 40%,
+    rgba(255, 255, 255, 0.5) 50%,
+    rgba(255, 255, 255, 0) 60%
+  );
+  animation: shark-txt 4.5s linear forwards;
+}
+@keyframes shark-txt {
+  0% {
+    transform: translate(-100%, -100%);
+  }
+  100% {
+    transform: translate(100%, 100%);
+  }
+}
+
+.preface-new .img {
+  width: 100%;
+  display: block;
+}
+
+.preface-new .preface-title {
+  font-size: 40px;
+  font-family: var(--heading-font-family);
+  color: #190A0A;
+  line-height: 1.25;
+}
+.preface-new p {
+  margin: 0;
+}
+.preface-new .preface-right {
+  flex: 1;
+  text-align: right;
+}
+
+.preface-new .preface-text {
+  color: #756b6e;
+  font-size: 22px;
+  line-height: 1.6;
+  margin-top: 8px;
+}
+
+@media (max-width: 1400px) {
+  .preface-new .preface-title {
+    font-size: 36px;
+  }
+  .preface-new .preface-text {
+    font-size: 20px;
+  }
+}
+
+@media (max-width: 1100px) {
+  .preface-new .preface-title {
+    font-size: 30px;
+  }
+  .preface-new .preface-text {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 991px) {
+  .preface-new {
+    padding: 30px 0;
+  }
+  .preface-new .preface-cont {
+    /* flex-direction: column; */
+    gap: 0px;
+    
+  }
+  .preface-new .preface-left {
+    /* width: 44.34%; */
+    width:88px;
+  }
+  .preface-new .preface-title {
+    font-size: 18px;
+    line-height: 1.5;
+  }
+  .preface-new .preface-right {
+    /* text-align: center; */
+  }
+  .preface-new .preface-text {
+    font-size: 12px;
+    line-height: 1.5;
+    margin-top: 0;
+    /* zoom:.53; */
+    position: relative;
+    height: 10px;
+  }
+  .preface-new .preface-text p{
+    transform: scale(0.53);
+    white-space: nowrap;
+    transform-origin: right top;
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+}
+</style>
+<section class="section-box">
+  <div class="preface-new {{ section.settings.custom_cls }}" style="background:{{ section.settings.background }};">
+    <div class="container">
+      <div class="preface-cont">
+        <div class="preface-left">
+          {%- if section.settings.image != blank -%}
+            <img loading="lazy" class="img" width="{{ section.settings.image.width }}" height="{{ section.settings.image.height }}" {%
+              render 'image-attributes' , image: section.settings.image %} alt="{{ section.settings.image.alt | escape }}">
+          {%- endif -%}
+        </div>
+        <div class="preface-right">
+          <div class="preface-title">{{ section.settings.title }}</div>
+          <div class="preface-text"> {{ section.settings.content }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+  window.addEventListener('load', function () {
+    // 监听滚动事件
+    let lastScrollTopNew = 0;
+    $(window).scroll(function () {
+      let scrollTopNew = $(this).scrollTop();
+      if (scrollTopNew > lastScrollTopNew) {
+        checkVisible($('.preface-left'));
+      }
+      lastScrollTopNew = scrollTopNew;
+    });
+
+    // 检查元素是否在屏幕中间区域可视内并改变颜色
+    function checkVisible($elements) {
+      let windowHeight = $(window).height();
+      let windowTop = $(window).scrollTop();
+      let windowBottom = windowTop + windowHeight;
+      let middleScreenTop = windowTop + windowHeight / 3; // 屏幕中间区域的顶部
+      let middleScreenBottom = windowBottom - windowHeight / 3; // 屏幕中间区域的底部
+
+      $elements.each(function () {
+        let $element = $(this);
+        let elementTop = $element.offset().top;
+        let elementBottom = elementTop + $element.outerHeight();
+
+        // 判断元素是否在屏幕中间区域可视内
+        if (elementTop <= middleScreenBottom && elementBottom >= middleScreenTop) {
+          $element.addClass('changed');
+        } else {
+          $element.removeClass('changed');
+        }
+      });
+    }
+  });
+</script>
+{% schema %}
+  {
+    "name": "preface-new",
+    "blocks": [],
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "image",
+        "label": "Logo"
+      },
+      {
+        "type": "richtext",
+        "id": "title",
+        "label": "Title"
+      },
+      {
+        "type": "richtext",
+        "id": "content",
+        "label": "Content"
+      },
+      {
+        "type": "text",
+        "id": "custom_cls",
+        "label": "Custom Class"
+      },
+      {
+        "type": "color",
+        "id": "background",
+        "label": "Background",
+        "default": "#fff"
+      }
+    ],
+    "presets": [
+      {
+        "name": "preface-new",
+        "blocks": []
+      }
+    ]
+  }
+{% endschema %}

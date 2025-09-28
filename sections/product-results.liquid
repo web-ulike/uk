@@ -432,7 +432,7 @@
 </section>
 <script>
   window.addEventListener('load',()=>{
-    $('html').on('click','.product__result-wrapper .product-results__heading',function(){
+    $('html').on('click','.media-{{ section.id }}-padding .product-results__heading',function(){
         let $this=$(this)
         let index = $this.parents('.product-results__accordions-list').index()
         $this.siblings('.product-results__content').slideToggle()
@@ -441,7 +441,7 @@
         $this.closest('.product__result-wrapper').find('.product-results__tab').removeClass('is-active').eq(index).addClass('is-active')
     })
     
-    $('html').on('click','.product__result-wrapper .product-results__tab',function(){
+    $('html').on('click','.media-{{ section.id }}-padding .product-results__tab',function(){
         let $this=$(this)
         let index = $this.index()
         $this.addClass('is-active').siblings('.product-results__tab').removeClass('is-active')
@@ -449,7 +449,6 @@
         $this.closest('.product__result-wrapper').find('.product-results__accordions-list').eq(index).addClass('is-active').find('.product-results__content').show()
         $this.closest('.product__result-wrapper').find('.product-results__sliders-list').hide().eq(index).show()
     })
-
 
    /**
     * 增加ga事件代码

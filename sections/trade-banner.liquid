@@ -1,0 +1,253 @@
+<style>
+.trade_banner-box{
+  position: relative;
+    display: flex;
+    align-items: flex-end;
+    width: 100%;
+    height: 100%;
+}
+
+.trade_banner-box::before {
+  content: '';
+  display: block;
+  padding-bottom: calc(100 /var(--image-aspect-ratio)* 1%);
+  width: 0;
+}
+.trade_banner-img{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -1;
+}
+.trade_banner-picture{
+position: absolute;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+display: block;
+overflow: hidden;
+}
+.trade_banner-picture img{
+    top: 0;
+    left: 0;
+    position: absolute;
+    max-width: 100%;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.centent{
+  width: 100%;
+}
+.centent-box{
+  display: flex;
+  justify-content: space-between;
+  padding: 60px;
+  align-items: flex-end;
+}
+.centent h2{
+  color:  #190A0A;
+font-size: 64px;
+font-style: normal;
+font-weight: 400;
+line-height: 1.2;
+margin: 0;
+max-width: 708px;
+}
+  .centent h2 p{
+    margin: 0;
+  }
+.trade_banner-right{
+max-width: 587px;
+text-align: right;
+}
+.trade_banner-p{
+  color:  #190A0A;
+font-size: 18px;
+font-style: normal;
+font-weight: 300;
+line-height: 150%;
+margin-bottom: 24px;
+}
+  .trade_nav-right{
+  display: inline-flex;
+padding: 10px 25px;
+justify-content: center;
+align-items: center;
+gap: 10px;
+border-radius: 34px;
+background:  #190A0A;
+color:  #FBFAF4;
+font-size: 12px;
+font-style: normal;
+font-weight: 400;
+line-height: 110%;
+text-transform: uppercase;
+  border:1px solid #190A0A;
+}
+  .trade_nav-right.custom_bt {
+    padding: 13px 40px;
+  }
+.trade_nav-right:hover{
+  color:  #190A0A;
+  background:  #ffffff;
+}
+@media screen and (max-width: 1200px) {
+  .centent h2{
+    font-size: 48px;
+  }
+}
+@media screen and (max-width: 767px) {
+  .trade_banner-box::before {
+    padding-bottom: calc(100 / var(--mobile-image-aspect-ratio)* 1%);
+}
+.centent h2{
+  font-size: 28px;
+  margin-bottom: 16px;
+}
+.trade_banner-p {
+  font-size: 14px;
+  margin-bottom: 16px;
+}
+.centent-box{
+  flex-direction: column;
+  padding: 40px 20px;
+  
+}
+.trade_banner-right{
+  text-align: left;
+          max-width: 100%;
+        width: 100%;
+}
+}
+</style>
+<section>
+    <div class="trade_banner-wrapper">
+       {%- assign image = section.settings.image -%}
+      {%- assign mobile_image = section.settings.image_mobile -%}
+      {%- assign image_aspect_ratio = image.aspect_ratio | default: 2.63 -%}
+      <div class="trade_banner-box" style="--image-aspect-ratio: {{ image_aspect_ratio }}; --mobile-image-aspect-ratio: {{ mobile_image.aspect_ratio | default: image_aspect_ratio | default: 1 }};">
+        <div class="trade_banner-img to-opacity">
+          <picture class="trade_banner-picture">
+            {%- if section.settings.image_mobile -%}
+           <source
+              media="(max-width: 767px)"
+              srcset="{{ section.settings.image_mobile | image_url: width: '400x' }} 400w, {{ section.settings.image_mobile | image_url: width: '600x' }} 600w, {{ section.settings.image_mobile | image_url: width: '800x' }} 800w, {{ section.settings.image_mobile | image_url: width: '1000x' }} 1000w"
+              width="{{ section.settings.image_mobile.width }}"
+              height="{{ section.settings.image_mobile.height }}"
+            >
+            {%- endif -%}
+            {%- if section.settings.image -%}
+             {{- section.settings.image | image_url: width: section.settings.image.width | image_tag: loading: 'eager', sizes: '100vw', widths: '300,400,500,600,700,800,900,1000,1200,1400,1600,1800,2000,2200,2400,2600,2800,3000,3200', class: 'trade_banner__image' -}}
+            {%- endif -%}
+          </picture>
+        </div>
+        <div class="centent">
+          <div class="centent-box">
+            {%- if section.settings.title != blank -%}
+            <h2 class="trade_banner-tle to-top">{{ section.settings.title | escape }}</h2>
+            {%- endif -%}
+             {%- if section.settings.rich_title != blank -%}
+            <h2 class="trade_banner-tle to-top">{{ section.settings.rich_title }}</h2>
+            {%- endif -%}
+            <div class="trade_banner-right">
+              {%- if section.settings.des != blank -%}
+              <p class="trade_banner-p to-top">{{ section.settings.des | escape }}</p>
+              {%- endif -%}
+               {%- if section.settings.link_txt != blank -%}
+                <a href="{{ section.settings.link_url }}" class="trade_nav-right custom_bt to-top">
+                  {{ section.settings.link_txt | escape }}
+                </a>
+               {%- endif -%}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</section>
+<script>
+</script>
+{% schema %}
+{
+  "name": "Trade Banner",
+  "class": "shopify-section--trade-banner", 
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title"
+    },
+     {
+      "type": "inline_richtext",
+      "id": "rich_title",
+      "label": "Rich Title"
+    },
+     {
+      "type": "text",
+      "id": "des",
+      "label": "subTitle"
+    },
+     {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Images"
+        },
+     {
+          "type": "image_picker",
+          "id": "image_mobile",
+          "label": "Mobile Images"
+        },
+     {
+      "type": "text",
+      "id": "link_txt",
+      "label": "Trade Nav Text"
+    },
+    {
+      "type": "url",
+      "id": "link_url",
+      "label": "Trade Nav Link"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 40
+    }
+  ],
+  "blocks": [
+  ],
+  "presets": [
+    {
+      "name": "Trade Banner"
+    }
+  ]
+}
+{% endschema %}

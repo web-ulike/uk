@@ -1,0 +1,272 @@
+<style>
+.banner-box{
+  position: relative;
+  z-index:1;
+}
+.banner-box::before{
+  position: absolute;
+  content: '';
+  display: none;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.1);
+  z-index: 3;
+}
+.banner-box .img{
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  display: block;
+}
+
+.banner-box .mb-box{
+  display: none;
+}
+
+.banner-box .banner-box-text{
+  position: absolute;
+  width: 100%;
+  left: 0;
+  top: 60px;
+  z-index: 4;
+  text-align: center;
+}
+
+.banner-box .container{
+  display:flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 20px;
+}
+
+.banner-box .banner-box-text-left{
+  /* max-width: 800px; */
+}
+
+.banner-box .banner-box-sub{
+  color: #000;
+  font-size: 22px;
+  line-height: 1.5;
+  letter-spacing: 0.22px;
+}
+
+.banner-box .banner-box-title{
+  color: #000;
+  font-size: 60px;
+  line-height: 1.2;
+  letter-spacing: 0.6px;
+}
+
+.banner-box .banner-box-p{
+  color: #000;
+  font-size: 60px;
+  line-height: 1.2;
+  letter-spacing: 0.6px;
+}
+
+.banner-box .banner-box-btn{
+  width: 200px;
+  height: 42px;
+  font-size: 14px;
+  border-radius: 42px;
+  background: #190A0A;
+  cursor: pointer;
+  border:2px solid #190A0A;
+}
+.banner-box .banner-box-btn span{
+  color: #fff;
+}
+/* .banner-box .banner-box-btn:after{
+  background: #190A0A;
+} */
+.banner-box .banner-box-btn .btn-txt:before{
+    /* color:#fff; */
+  }
+  .banner-box .banner-box-wrapper{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    z-index: 2;
+  }
+
+ .banner-box .banner-box-wrapper video{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+@media (max-width:991px) {
+  .banner-box .banner-box-sub{
+    font-size: 16px;
+  }
+  .banner-box .banner-box-title{
+    font-size: 34px;
+  }
+  .banner-box .banner-box-p{
+    font-size: 14px;
+  }
+  .banner-box .mb-box{
+    display: block;
+  }
+  .banner-box .pc-box{
+    display: none;
+  }
+  
+}
+
+@media (max-width:740px) {
+ .banner-box .banner-box-text{
+    bottom: auto;
+    top:50px;
+    text-align: center;
+  }
+  .banner-box .banner-box-btn{
+    width: 175px;
+  }
+}
+</style>
+
+<section class="section-box">
+  <div class="banner-box">
+    {%- if section.settings.background_image != blank -%}
+      <img
+        class="img pc-box"
+        width="{{ section.settings.background_image.width }}"
+        height="{{ section.settings.background_image.height }}"
+        {% render 'image-attributes', image: section.settings.background_image %}
+        alt="{{ section.settings.background_image.alt | escape }}"
+      >
+    {%- endif -%}
+    {%- if section.settings.background_image_mobile != blank -%}
+      <img
+        class="img mb-box"
+        width="{{ section.settings.background_image_mobile.width }}"
+        height="{{ section.settings.background_image_mobile.height }}"
+        {% render 'image-attributes', image: section.settings.background_image_mobile %}
+        alt="{{ section.settings.background_image_mobile.alt | escape }}"
+      >
+    {%- endif -%}
+    <div class="banner-box-text">
+      <div class="container">
+        <div class="banner-box-text-left">
+          <div class="banner-box-sub to-top">{{ section.settings.text }}</div>
+          <div class="banner-box-title to-top" style="transition-delay: 0.1s">{{ section.settings.text1 }}</div>
+          <div class="banner-box-p to-top" style="transition-delay: 0.2s">{{ section.settings.text2 }}</div>
+        </div>
+        <div class="banner-box-text-right to-top" style="transition-delay: 0.3s">
+          {%- if section.settings.text3 != blank -%}
+            <div class="banner-box-btn btn-diy"  onclick="btnScrollToTop()">
+              <div class="btn-txt" text="{{ section.settings.text3 }}">
+                <span>{{ section.settings.text3 }}</span>
+              </div>
+            </div>
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+     {%- if section.settings.video != blank -%}
+        <native-video {% if section.settings.autoplay %}autoplay{% endif %} class="banner-box-wrapper{% if section.settings.mobile_video != blank %} pc-box{% endif %}">
+          <template>
+            {{- section.settings.video | video_tag: controls: section.settings.show_video_controls, autoplay: section.settings.autoplay, muted: section.settings.autoplay, playsinline: section.settings.autoplay, loop: section.settings.autoplay -}}
+          </template>
+        </native-video>
+      {%- endif -%}
+      {%- if section.settings.mobile_video != blank -%}
+         <native-video {% if section.settings.autoplay %}autoplay{% endif %} class="banner-box-wrapper mb-box">
+          <template>
+            {{- section.settings.mobile_video | video_tag: controls: section.settings.show_video_controls, autoplay: section.settings.autoplay, muted: section.settings.autoplay, playsinline: section.settings.autoplay, loop: section.settings.autoplay -}}
+          </template>
+        </native-video>
+      {%- endif -%}
+  </div>
+</section>
+<script>
+  function btnScrollToTop() {
+    let rectD = document.querySelector('.banner-box').getBoundingClientRect()
+    window.scrollTo({
+        top: rectD.height+110,
+        behavior: 'smooth'
+    });
+  }
+  // document.querySelector('.banner-box .banner-box-btn').addEventListener('click', function() {
+  //   addToCart(this.getAttribute('data-pid'));
+  // })
+</script>
+{% schema %}
+{
+  "name": "preheat-banner",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image_mobile",
+      "label": "Image Mobile"
+    },
+    {
+      "type": "video",
+      "id": "video",
+      "label": "Video",
+      "info": "Replaces the external video if both are set."
+    },
+     {
+      "type": "video",
+      "id": "mobile_video",
+      "label": "Mobile Video",
+      "info": "Replaces the external video if both are set."
+    },
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "text1",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "text2",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "text3",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "text4",
+      "label": "Product ID"
+    },
+    {
+      "type": "checkbox",
+      "id": "autoplay",
+      "label": "Autoplay",
+      "info": "Video is muted automatically to allow autoplay.",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_video_controls",
+      "label": "Show video controls",
+      "info": "Only applicable with native video.",
+      "default": false
+    }
+  ],
+  "presets": [
+    {
+      "name": "preheat-banner"
+    }
+  ]
+}
+{% endschema %}

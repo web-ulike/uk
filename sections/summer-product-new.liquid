@@ -1,0 +1,955 @@
+<style>
+  .summer-product {
+    padding: 100px 0;
+    position: relative;
+    z-index: 1;
+    background: linear-gradient(
+      169deg,
+      rgba(255, 255, 255, 0.8) 11.84%,
+      rgba(232, 247, 255, 0.8) 49.31%,
+      rgba(255, 255, 255, 0.8) 79.04%
+    );
+  }
+
+  .summer-product .summer-product-top {
+    margin-bottom: 80px;
+    display: flex;
+    align-content: center;
+    justify-content: space-between;
+    gap: 30px;
+  }
+
+  .summer-product .summer-product-h3 {
+    color: #190a0a;
+    font-size: 48px;
+    line-height: 1.2;
+    font-weight: normal;
+    margin: 0;
+    font-family: var(--heading-font-family);
+  }
+
+  .summer-product .summer-product-p {
+    color: #190a0a;
+    font-size: 18px;
+    line-height: 1.5;
+    margin: 0;
+    max-width: 606px;
+  }
+
+  .summer-product .summer-product-cont {
+    display: flex;
+    align-items: flex-start;
+    gap: 22px;
+    margin-bottom: 100px;
+  }
+
+  .summer-product .summer-product-cont:last-child {
+    margin-bottom: 0;
+  }
+
+  .summer-product .summer-reverse {
+    flex-direction: row-reverse;
+  }
+
+  .summer-product .summer-product-cont-left {
+    width: 65.6%;
+    display: flex;
+    gap: 22px;
+  }
+
+  .summer-product .summer-reverse .summer-product-cont-left {
+    flex-direction: row-reverse;
+  }
+
+  .summer-product .summer-product-img {
+    width: 67.7%;
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+  }
+
+  .summer-product .summer-product-img .summer-product-save {
+    display: none;
+  }
+
+  .summer-product .summer-product-swiper {
+    display: flex;
+    position: relative;
+    z-index: 1;
+  }
+
+  .summer-product .summer-product-img-item {
+    width: 100%;
+    flex-shrink: 0;
+  }
+
+  .summer-product .img {
+    width: 100%;
+  }
+
+  .summer-product .summer-product-arraws {
+    position: absolute;
+    width: 100%;
+    z-index: 2;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    padding: 0 36px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    pointer-events: none;
+  }
+
+  .summer-product .summer-product-arraw {
+    width: 25px;
+    pointer-events: all;
+    cursor: pointer;
+  }
+
+  .summer-product .summer-product-arraw svg {
+    width: 100%;
+    display: block;
+    margin: 0;
+  }
+
+  .summer-product .summer-product-dots.swiper-pagination-bullets.swiper-pagination-horizontal {
+    position: absolute;
+    left: 50%;
+    bottom: 17px;
+    transform: translateX(-50%);
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    z-index: 3;
+    --swiper-pagination-bullet-horizontal-gap: 0;
+    --swiper-theme-color: #3f3636;
+    --swiper-pagination-bullet-inactive-opacity: 1;
+    --swiper-pagination-bullet-inactive-color: #fbfaf4;
+  }
+
+  .summer-product .swiper-pagination-bullet {
+    width: 14px;
+    height: 3px;
+    border-radius: 5px;
+    background: #fbfaf4;
+    opacity: 1;
+  }
+
+  .summer-product .swiper-pagination-bullet-active {
+    width: 35px;
+    background: #3f3636;
+  }
+
+  .summer-product .summer-product-sm-img {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+    opacity: 0;
+  }
+
+  .summer-product .summer-product-sm-img-item {
+    flex: 1;
+    position: relative;
+    z-index: 1;
+  }
+
+  .summer-product .summer-product-sm-img-item .img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: relative;
+    z-index: 1;
+  }
+
+  .summer-product .summer-product-save {
+    position: absolute;
+    height: 32px;
+    padding: 0 10px;
+    top: 8px;
+    left: 8px;
+    background: #e0004d;
+    color: #fff;
+    font-size: 14px;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    z-index: 2;
+  }
+
+  .summer-product .summer-product-save svg {
+    display: block;
+    margin: 0;
+  }
+
+  .summer-product .summer-product-cont-right {
+    flex: 1;
+  }
+
+  .summer-product .summer-product-tag {
+    height: 30px;
+    color: #e0004d;
+    font-size: 12px;
+    line-height: 1;
+    letter-spacing: 0.6px;
+    display: inline-flex;
+    align-items: center;
+    padding: 0 10px;
+    border-radius: 50px;
+    border: 0.5px solid #e0004d;
+    margin-bottom: 20px;
+  }
+
+  .summer-product .summer-product-h4 {
+    color: #190a0a;
+    font-size: 30px;
+    line-height: 1.2;
+    font-weight: normal;
+    margin: 0;
+    margin-bottom: 5px;
+    font-family: var(--heading-font-family);
+  }
+
+  .summer-product .summer-product-sub {
+    color: #190a0a;
+    font-size: 16px;
+    line-height: 1.5;
+    margin: 0;
+    margin-bottom: 10px;
+  }
+
+  .summer-product .summer-product-label {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+
+  .summer-product .summer-product-label-item {
+    height: 30px;
+    display: flex;
+    align-items: center;
+    color: #3f3636;
+    font-size: 12px;
+    line-height: 1;
+    letter-spacing: 0.6px;
+    background: #dceaf7;
+    padding: 0 10px;
+  }
+
+  .summer-product .summer-product-colors {
+    padding-top: 20px;
+    border-top: 1px solid rgba(63, 54, 54, 0.1);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .summer-product .summer-productcolor-title {
+    color: #333;
+    font-size: 16px;
+    line-height: 1.5;
+    margin-bottom: 14px;
+  }
+
+  .summer-product .summer-product-colors-flex {
+    display: flex;
+    gap: 22px;
+  }
+
+  .summer-product .summer-product-color-item {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    position: relative;
+    z-index: 1;
+    cursor: pointer;
+  }
+
+  .summer-product .summer-product-color-item::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: calc(100% + 10px);
+    height: calc(100% + 10px);
+    border-radius: 50%;
+    border: 1px solid #e4dddd;
+  }
+
+  .summer-product .summer-product-color-item.active::after {
+    border-color: #3f3636;
+  }
+
+  .summer-product .summer-product-zp {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 13px 11px;
+    border-radius: 5px;
+    border: 1px solid #e4dddd;
+    background: #fff;
+    flex: 1;
+  }
+
+  .summer-product .summer-product-zp-img {
+    width: 30px;
+    margin: 0;
+  }
+
+  .summer-product .summer-product-zp-txt {
+    flex: 1;
+  }
+
+  .summer-product .summer-product-zp-txt-p {
+    color: #e0004d;
+    font-size: 14px;
+    line-height: 1.5;
+    font-family: var(--heading-font-family);
+    margin: 0;
+  }
+
+  .summer-product .summer-product-zp-txt-p1 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    justify-content: space-between;
+  }
+
+  .summer-product .summer-product-zp-txt-p2 {
+    color: #190a0a;
+    font-size: 12px;
+    line-height: 1.5;
+    margin: 0;
+  }
+
+  .summer-product .summer-product-zp-txt-p3 {
+    color: #e0004d;
+    font-size: 12px;
+    line-height: 1.5;
+  }
+
+  .summer-product .summer-product-zp-txt-p3 p {
+    margin: 0;
+  }
+
+  .summer-product .summer-product-zp-txt-p3 strong {
+    font-weight: normal;
+    color: #767676;
+    text-decoration: line-through;
+  }
+
+  .summer-product .summer-product-price {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(63, 54, 54, 0.1);
+  }
+
+  .summer-product .n-price {
+    color: #e0004d;
+    font-size: 32px;
+    line-height: 1.3;
+    font-family: var(--heading-font-family);
+  }
+
+  .summer-product .d-price {
+    color: rgba(63, 54, 54, 0.5);
+    font-size: 24px;
+    line-height: 1.3;
+    text-decoration: line-through;
+  }
+
+  .summer-product .summer-product-klarna {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: #6c6c6c;
+    font-size: 14px;
+    line-height: 1.7;
+  }
+
+  .summer-product .summer-product-btns {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .summer-product .summer-product-btn {
+    width: 100%;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #190a0a;
+    font-size: 14px;
+    line-height: 1.5;
+    font-family: var(--heading-font-family);
+    border-radius: 3px;
+    border: 1px solid #190a0a;
+    transition: all 0.3s ease;
+    cursor: pointer;
+  }
+
+  .summer-product .summer-product-btn:last-child {
+    background: #190a0a;
+    color: #fff;
+  }
+
+  .summer-product .summer-product-btn:hover {
+    background: #190a0a;
+    color: #fff;
+  }
+
+  .summer-product .summer-product-btn:last-child:hover {
+    background: #fff;
+    color: #190a0a;
+  }
+
+  @media (max-width: 1100px) {
+    .summer-product .summer-product-cont {
+      flex-direction: column;
+      gap: 20px;
+    }
+    .summer-product .summer-product-cont-left {
+      width: 100%;
+    }
+    .summer-product .summer-product-cont-right {
+      width: 100%;
+    }
+  }
+
+  @media (max-width: 991px) {
+    .summer-product {
+      padding: 23px 0 57px 0;
+    }
+
+    .summer-product .summer-product-cont {
+      margin-bottom: 50px;
+    }
+
+    .summer-product .summer-product-top {
+      display: none;
+    }
+
+    .summer-product .summer-product-arraws {
+      padding: 0 20px;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .summer-product .summer-product-img {
+      width: 100%;
+    }
+    .summer-product .summer-product-img .summer-product-save {
+      display: flex;
+    }
+    .summer-product .summer-product-sm-img {
+      display: none;
+    }
+    .summer-product .summer-product-arraws {
+      display: none;
+    }
+    .summer-product .summer-product-tag {
+      height: 25px;
+      zoom: 0.9;
+      margin-bottom: 9px;
+    }
+    .summer-product .summer-product-h4 {
+      font-size: 28px;
+    }
+    .summer-product .summer-product-sub {
+      font-size: 14px;
+    }
+    .summer-product .summer-productcolor-title {
+      font-size: 14px;
+    }
+    .summer-product .n-price {
+      font-size: 24px;
+    }
+    .summer-product .d-price {
+      font-size: 21px;
+    }
+    .summer-product .summer-product-btns {
+      margin-top: 13px;
+      flex-direction: row;
+      gap: 10px;
+    }
+    .summer-product .summer-product-dots.swiper-pagination-bullets.swiper-pagination-horizontal {
+      gap: 5px;
+    }
+    .summer-product .swiper-pagination-bullet-active {
+      width: 7px;
+    }
+    .summer-product .swiper-pagination-bullet {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      --swiper-pagination-bullet-inactive-color: #e4dddd;
+    }
+  }
+</style>
+<section class="section-box">
+  <div class="summer-product">
+    <div class="container">
+      {%- if section.settings.title != blank or section.settings.text != blank -%}
+        <div class="summer-product-top">
+          {%- if section.settings.title != blank -%}
+            <h3 class="summer-product-h3">{{ section.settings.title }}</h3>
+          {%- endif -%}
+          {%- if section.settings.text != blank -%}
+            <p class="summer-product-p">{{ section.settings.text }}</p>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+      {%- assign color_swatch_config = settings.color_swatch_config | newline_to_br | split: '<br />' -%}
+      {%- for block in section.blocks -%}
+        {%- liquid
+          assign product = block.settings.product
+        -%}
+        <summer-product-item
+          class="summer-product-cont {% if block.settings.summer_reverse %}summer-reverse{% endif %}"
+          data-index="{{ forloop.index }}"
+        >
+          <div class="summer-product-cont-left">
+            <div class="summer-product-img">
+              <div class="summer-product-swiper swiper-wrapper"></div>
+              <div class="summer-product-arraws">
+                <div class="summer-product-arraw summer-product-arraw-left">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="25" height="19" viewBox="0 0 25 19" fill="none">
+                    <g clip-path="url(#clip0_2804_1558)">
+                      <path
+                        d="M-0.000478745 9.37655C-0.000478745 9.52461 0.0555878 9.67147 0.162849 9.78371L8.69493 18.7388L9.58592 17.9245L2.01065 9.97356H24.9863C24.9863 9.31446 24.4403 8.77954 23.7675 8.77954H0.63699C0.406622 8.77954 0.182352 8.89297 0.0726547 9.09237C0.0226803 9.18193 -0.000478745 9.27983 -0.000478745 9.37655Z"
+                        fill="#FFFFFC" />
+                      <path
+                        d="M1.27226 7.28351C1.74883 7.74917 2.52038 7.74917 2.99574 7.28351L9.57031 0.84417L8.70857 0L1.27347 7.28351H1.27226Z"
+                        fill="#FFFFFC" />
+                    </g>
+                    <defs>
+                      <clipPath id="clip0_2804_1558">
+                        <rect width="24.9868" height="18.7401" fill="white" transform="matrix(-1 0 0 1 24.9863 0)" />
+                      </clipPath>
+                    </defs>
+                  </svg>
+                </div>
+                <div class="summer-product-arraw summer-product-arraw-right">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="26" height="19" viewBox="0 0 26 19" fill="none">
+                    <g clip-path="url(#clip0_2804_1561)">
+                      <path
+                        d="M25.9731 9.37679C25.9731 9.52485 25.9171 9.67172 25.8098 9.78395L17.2777 18.7391L16.3867 17.9248L23.962 9.9738H0.986328C0.986328 9.31471 1.53238 8.77979 2.2052 8.77979H25.3357C25.566 8.77979 25.7903 8.89322 25.9 9.09262C25.95 9.18217 25.9731 9.28008 25.9731 9.37679Z"
+                        fill="#FFFFFC" />
+                      <path
+                        d="M24.6984 7.28351C24.2219 7.74917 23.4503 7.74917 22.975 7.28351L16.4004 0.84417L17.2621 0L24.6972 7.28351H24.6984Z"
+                        fill="#FFFFFC" />
+                    </g>
+                    <defs>
+                      <clipPath id="clip0_2804_1561">
+                        <rect width="24.9868" height="18.7401" fill="white" transform="translate(0.986328)" />
+                      </clipPath>
+                    </defs>
+                  </svg>
+                </div>
+              </div>
+              <div class="summer-product-dots"></div>
+              {%- if block.settings.tag != blank -%}
+                <div class="summer-product-save">
+                  {{ block.settings.tag }}
+                </div>
+              {%- endif -%}
+            </div>
+            <div class="summer-product-sm-img">
+              <div class="summer-product-sm-img-item">
+                <img src="" class="img" height="" width="" alt="">
+                {%- if block.settings.tag != blank -%}
+                  <div class="summer-product-save">
+                    {{ block.settings.tag }}
+                  </div>
+                {%- endif -%}
+              </div>
+              <div class="summer-product-sm-img-item">
+                <img src="" class="img" height="" width="" alt="">
+              </div>
+            </div>
+          </div>
+          <div class="summer-product-cont-right">
+            {%- if block.settings.text != blank -%}
+              <div class="summer-product-tag">{{ block.settings.text }}</div>
+            {%- endif -%}
+            {%- if block.settings.text1 != blank -%}
+              <h3 class="summer-product-h4">{{ block.settings.text1 }}</h3>
+            {%- endif -%}
+            {%- if block.settings.text2 != blank -%}
+              <p class="summer-product-sub">{{ block.settings.text2 }}</p>
+            {%- endif -%}
+            {%- if block.settings.text3 != blank -%}
+              {% assign sub_items_p = block.settings.text3 | split: ',' %}
+              {%- if sub_items_p.size > 0 -%}
+                <div class="summer-product-label">
+                  {% for item in sub_items_p %}
+                    <div class="summer-product-label-item">{{ item }}</div>
+                  {% endfor %}
+                </div>
+              {%- endif -%}
+            {%- endif -%}
+            {%- for option in product.options_with_values -%}
+              {%- assign option_name = option.name -%}
+              {% if option_name == 'Farbe' %}
+                <div class="summer-product-colors">
+                  <div>
+                    <div class="summer-productcolor-title">
+                      {{ option_name }}: <span>{{ option.values | first }} </span>
+                    </div>
+                    <div class="summer-product-colors-flex">
+                      {% for value in option.values %}
+                        {%- assign variant_for_value = product.variants | where: 'option1', value | first -%}
+                        <div
+                          class="summer-product-color-item {% if value == option.selected_value %} active {% endif%}"
+                          id="{{ variant_for_value.id }}"
+                          inventory_quantity="{{ variant_for_value.inventory_quantity }}"
+                          position="{{ variant_for_value.featured_media.position }}"
+                          data-p="{{ variant_for_value.featured_media.position }}"
+                          name="{{ value }}"
+                          style="{% render 'color-swatch-style', color_swatch_config: color_swatch_config, value: value %}"
+                        ></div>
+                      {% endfor %}
+                    </div>
+                  </div>
+                  {%- if block.settings.image != blank or block.settings.text_z -%}
+                    <div class="summer-product-zp">
+                      {%- if block.settings.image != blank -%}
+                        <img
+                          src="{{ block.settings.image | image_url }}"
+                          width=""
+                          height=""
+                          alt=""
+                          class="summer-product-zp-img"
+                        >
+                      {%- endif -%}
+                      {%- if block.settings.text_z != blank -%}
+                        <div class="summer-product-zp-txt">
+                          {%- if block.settings.text_z != blank -%}
+                            <p class="summer-product-zp-txt-p">{{ block.settings.text_z }}</p>
+                          {%- endif -%}
+                          {%- if block.settings.text_z1 != blank -%}
+                            <div class="summer-product-zp-txt-p1">
+                              <p class="summer-product-zp-txt-p2">{{ block.settings.text_z1 }}</p>
+                              <div class="summer-product-zp-txt-p3">{{ block.settings.text_z2 }}</div>
+                            </div>
+                          {%- endif -%}
+                        </div>
+                      {%- endif -%}
+                    </div>
+                  {%- endif -%}
+                </div>
+              {% endif %}
+            {% endfor %}
+            {%- if block.settings.text4 != blank or block.settings.text5 != blank -%}
+              <div class="summer-product-price">
+                {%- if block.settings.text4 != blank -%}
+                  <span class="n-price">{{ block.settings.text4 }}</span>
+                {%- endif -%}
+                {%- if block.settings.text5 != blank -%}
+                  <span class="d-price">{{ block.settings.text5 }}</span>
+                {%- endif -%}
+              </div>
+            {%- endif -%}
+            {%- if block.settings.text6 != blank -%}
+              <div class="summer-product-klarna">
+                {{ block.settings.text6 }}
+              </div>
+            {%- endif -%}
+            <div class="summer-product-btns">
+              {%- if block.settings.text7 != blank -%}
+                <div class="summer-product-btn summer-product-btn-add" data-code="{{ block.settings.text9 }}">
+                  {{ block.settings.text7 }}
+                </div>
+              {%- endif -%}
+              {%- if block.settings.text8 != blank -%}
+                <a href="{{ block.settings.link }}" class="summer-product-btn">{{ block.settings.text8 }}</a>
+              {%- endif -%}
+            </div>
+          </div>
+        </summer-product-item>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+<script>
+  let variantArr=[
+    {%- for block in section.blocks -%}
+      {%- liquid assign product = block.settings.product -%}
+      {
+        info:[
+          {% for variant in product.variants %}
+            {
+              vid: {{ variant.id }},
+              position: `{{ variant.featured_media.position }}`,
+              url: `{{ variant.metafields.custom["3d_url"] }}`,
+              price: `{{ variant.price | money }}`,
+              page_price: `{{ variant.metafields.custom["page_price"] | times: 100 | money }}`,
+              variantTitle: `{{ variant.metafields.custom["variant_title"] }}`,
+              title: `{{ product.title }}`,
+              selling_point: `{{ variant.metafields.custom["selling_point"] }}`,
+              describe: `{{ variant.metafields.custom["describe"] }}`,
+              discount_pictures: `{{ variant.metafields.custom["discount_pictures"] }}`,
+              productMediaSize:`{{ product.media  | size }}`
+            }{% if forloop.last == false %},{% endif %}
+          {% endfor %}
+        ]
+      }{% if forloop.last == false %},{% endif %}
+    {%- endfor -%} 
+  ];
+  function addMaxProperty(arr) {
+      for (let i = 0; i < arr.length; i++) {
+        if (i < arr.length - 1) {
+          arr[i].max = arr[i + 1].position - 1;
+        } else {
+          arr[i].max = Number(arr[i].productMediaSize); // 最后一个对象的 max 被设置为 最大值
+        }
+      }
+      return arr;
+    }
+  variantArr = variantArr.map(item=>{
+    return {
+      info:addMaxProperty(item.info)
+    }
+  })
+
+  let productMediaArr=[
+    {%- for block in section.blocks -%}
+      {%- liquid assign product = block.settings.product -%}
+      {
+        info:[
+          {% for media in product.media %}
+          {{ media | json }}{% if forloop.last == false %},{% endif %}
+        {% endfor %}
+        ]
+      }{% if forloop.last == false %},{% endif %}
+    {%- endfor -%} 
+    ];
+
+  function convertShopifyImageUrl(url, size) {
+      return url.replace(/(\.[^/.]+)$/, `_${size}$1`)
+    }
+
+  class SummerProductItem extends HTMLElement {
+    constructor() {
+      super();
+      this.index = Number(this.getAttribute('data-index')) - 1
+    }
+
+    connectedCallback() {
+      this.initEvents();
+    }
+    
+    initEvents() {
+      this.loadImages()
+      this.querySelectorAll('.summer-product-color-item').forEach((item,index)=>{
+        item.addEventListener('click', ()=>{
+          this.querySelectorAll('.summer-product-color-item').forEach(btn=>{
+            if (btn === item) {
+              btn.classList.add('active');
+            } else {
+              btn.classList.remove('active');
+            }
+          });
+          this.loadImages(index)
+          console.log(this.closest('.summer-product-colors'))
+          item.closest('.summer-product-colors').querySelector('.summer-productcolor-title span').innerHTML = item.getAttribute('name')
+        });
+      });
+      
+      this.querySelector('.summer-product-btn-add').addEventListener('click', (event)=>{
+        addToCartPromise(this.vid,'',{},event.currentTarget.dataset.code).then(()=>{
+        })
+      })
+      
+    }
+
+    loadImages(index=0) {
+      let currentVariant = variantArr[this.index].info[0]
+      console.log(variantArr[this.index].info[index])
+      currentVariant = variantArr[this.index].info[index]
+      const { position, max } = currentVariant
+      this.vid = currentVariant.vid
+      let _productHtml = ''
+      let swImg = []
+      let imgs = []
+      for (let i = position - 1; i < max; i++) {
+        const ths = productMediaArr[this.index].info[i]
+        imgs.push(ths.src)
+      }
+      if(window.innerWidth>640){
+        this.querySelectorAll('.summer-product-sm-img-item')[0].querySelector('.img').setAttribute('src',imgs.shift())
+        this.querySelectorAll('.summer-product-sm-img-item')[1].querySelector('.img').setAttribute('src',imgs.pop())
+        this.querySelector('.summer-product-sm-img').style.opacity = 1
+      }
+      
+      imgs.forEach(src => {
+        let itemMainHtml = ''
+        itemMainHtml = `
+            <img src="${convertShopifyImageUrl(src, '870x')}" loading="lazy" class="img"
+            data-src="${convertShopifyImageUrl(src, '870x')}">
+          `
+        _productHtml += `<div class="summer-product-img-item swiper-slide">${itemMainHtml}</div>`
+      })
+
+      this.querySelector('.summer-product-swiper').innerHTML = _productHtml
+      // 重建 Swiper
+      if (this.swiper) {
+        this.swiper.destroy(true, true);
+      }
+      let that = this
+      const container = this.querySelector('.summer-product-img');
+      this.swiper = new Swiper(container, {
+        loop: true,
+        autoplay: true,
+        navigation: {
+            nextEl: that.querySelector('.summer-product-arraw-right'),
+            prevEl: that.querySelector('.summer-product-arraw-left'),
+          },
+        pagination: {
+          el: that.querySelector(".summer-product-dots"),
+          clickable: true,
+        },
+      });
+    }
+  }
+  
+  // 注册自定义元素
+  window.addEventListener('load', () => {
+    customElements.define('summer-product-item', SummerProductItem);
+  });
+
+</script>
+{% schema %}
+{
+  "name": "summer-product-new",
+  "blocks": [
+    {
+      "name": "item",
+      "type": "item",
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "summer_reverse",
+          "label": "翻转",
+          "default": false
+        },
+        {
+          "type": "product",
+          "id": "product",
+          "label": "产品选择"
+        },
+        {
+          "type": "text",
+          "id": "text9",
+          "label": "Code"
+        },
+        {
+          "type": "html",
+          "id": "tag",
+          "label": "标签"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "标签"
+        },
+
+        {
+          "type": "text",
+          "id": "text1",
+          "label": "Text"
+        },
+        {
+          "type": "text",
+          "id": "text2",
+          "label": "Label"
+        },
+        {
+          "type": "text",
+          "id": "text3",
+          "label": "Text"
+        },
+        {
+          "type": "text",
+          "id": "text4",
+          "label": "Text"
+        },
+        {
+          "type": "text",
+          "id": "text5",
+          "label": "Text"
+        },
+        {
+          "type": "html",
+          "id": "text6",
+          "label": "Text"
+        },
+        {
+          "type": "text",
+          "id": "text7",
+          "label": "Text"
+        },
+        {
+          "type": "text",
+          "id": "text8",
+          "label": "Text"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        },
+        {
+          "type": "header",
+          "content": "赠品"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "text_z",
+          "label": "Text"
+        },
+        {
+          "type": "text",
+          "id": "text_z1",
+          "label": "Text"
+        },
+        {
+          "type": "richtext",
+          "id": "text_z2",
+          "label": "Text"
+        }
+      ]
+    }
+  ],
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title"
+    },
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Text"
+    }
+  ],
+  "presets": [
+    {
+      "name": "summer-product-new",
+      "blocks": []
+    }
+  ]
+}
+{% endschema %}

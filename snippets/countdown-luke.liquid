@@ -1,0 +1,152 @@
+<div class="countdown-container_{{ id_prefix }}">
+  <p class="countdown-title">{{ countdown_title }}</p>
+  <div class="countdown-timer">
+      <div class="time-box">
+          <span id="{{ id_prefix }}-days" class="time">00</span>
+          <span class="label">D</span>
+      </div>
+      <div class="separator">:</div>
+      <div class="time-box">
+          <span id="{{ id_prefix }}-hours" class="time">00</span>
+          <span class="label">H</span>
+      </div>
+      <div class="separator">:</div>
+      <div class="time-box">
+          <span id="{{ id_prefix }}-minutes"  class="time">00</span>
+          <span class="label">M</span>
+      </div>
+      <div class="separator">:</div>
+      <div class="time-box">
+          <span id="{{ id_prefix }}-seconds"  class="time">00</span>
+          <span class="label">S</span>
+      </div>
+  </div>
+</div>
+
+<style>
+ .countdown-container_{{ id_prefix }}{
+    font-family: Saans;
+    padding: 10px 0px;
+    color: #190A0A;
+    {% comment %} display: flex;
+    justify-content: {% if justify_content %} {{ justify_content }} {% else %} center {% endif %}; {% endcomment %}
+  }
+  
+  .countdown-container_{{ id_prefix }} .countdown-title {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    color: #f5e4d0;
+    font-weight: 500;
+  }
+
+  .countdown-container_{{ id_prefix }} .countdown-timer {
+    display: flex;
+    align-items: center;
+    justify-content: {% if justify_content %} {{ justify_content }} {% else %} center {% endif %};
+    gap: 6px;
+  }
+
+  .countdown-container_{{ id_prefix }} .time-box {
+    margin: 0 5px;
+    display: flex;
+    align-items: center;
+  }
+
+  .countdown-container_{{ id_prefix }} .time {
+    display: block;
+    font-size: 21px;
+    font-weight: 500;
+    background: #F4DABC;
+    width: 36px;
+    height: 36px;
+    padding: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .countdown-container_{{ id_prefix }} .label {
+    text-transform: uppercase;
+    margin-left: 6px;
+    color: #F4DABC;
+    font-size: 18px;
+    font-weight: bold;
+    line-height: 130%; 
+    padding: 0px;
+  }
+
+  .countdown-container_{{ id_prefix }} .separator {
+    font-size: 24px;
+    font-weight: bold;
+    height: 24px;
+    color: #F4DABC;
+    display: flex;
+    align-items: center;
+    margin: 2px 0px 8px;
+  }
+  @media screen and (max-width: 768px) {
+    .countdown-container_{{ id_prefix }} {
+      justify-content: center;
+      padding: 4px 0px;
+    }
+
+    .countdown-container_{{ id_prefix }} .countdown-timer {
+      justify-content: center;
+    }
+    
+    .countdown-container_{{ id_prefix }} .time {
+      width: 30px;
+      height: 30px;
+      font-size: 1rem;
+    }
+    .countdown-container_{{ id_prefix }} .label {
+      padding: 0px;
+    }
+    .countdown-container_{{ id_prefix }} .separator {
+      font-size: 1rem;
+      {% comment %} margin: 0 4px 30px; {% endcomment %}
+    }
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const endTimestamp = '{{ countdown_date }}';
+    const idPrefix = '{{ id_prefix }}';
+    const countdownContainer = $('.countdown-container_{{ id_prefix }}');
+
+
+    function updateCountdownSlide() {
+      const now = Date.now();
+      const timeRemaining = endTimestamp - now;
+      if (timeRemaining > 0) {
+        const days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
+
+        // 更新 DOM 元素的值
+        if (days > 0) {
+          document.getElementById(`${idPrefix}-days`).textContent = days;
+        } else {
+          document.getElementById(`${idPrefix}-days`).parentNode.style.display = 'none'; // 隐藏天数
+          countdownContainer.find('.separator').eq(0).hide();
+        }
+        document.getElementById(`${idPrefix}-hours`).textContent = hours.toString().padStart(2, '0');
+        document.getElementById(`${idPrefix}-minutes`).textContent = minutes.toString().padStart(2, '0');
+        document.getElementById(`${idPrefix}-seconds`).textContent = seconds.toString().padStart(2, '0');
+      } else {
+        // 时间到达后设置所有值为 00
+        document.getElementById(`${idPrefix}-days`).parentNode.style.display = 'none'; // 隐藏天数
+        document.getElementById(`${idPrefix}-hours`).textContent = '00';
+        document.getElementById(`${idPrefix}-minutes`).textContent = '00';
+        document.getElementById(`${idPrefix}-seconds`).textContent = '00';
+        countdownContainer.hide();
+        clearInterval(timer); // 停止计时器
+      }
+    }
+    const timer = setInterval(updateCountdownSlide, 1000);
+    updateCountdownSlide(); // 初始化调用
+  });
+</script>

@@ -39,7 +39,7 @@
 
 {%- if section.blocks.size > 0 -%}
   <section>
-    <announcement-bar {% if section.blocks.size > 1 and section.settings.autoplay %}auto-play cycle-speed="{{ section.settings.cycle_speed | escape }}"{% endif %} class="announcement-bar {% if section.blocks.size > 1 %}announcement-bar--multiple{% endif %}">
+    <announcement-bar {% if section.blocks.size > 1 and section.settings.autoplay %}auto-play cycle-speed="{{ section.settings.cycle_speed | escape }}"{% endif %} class="announcement-bar {% if section.blocks.size > 1 %}announcement-bar--multiple{% endif %} {% if section.settings.cd_time != blank %}announcement-bar-cd{% endif %}">
       {%- if section.blocks.size > 1 -%}
         <button data-action="prev" class="tap-area tap-area--large">
           <span class="visually-hidden">{{ 'general.accessibility.previous' | t }}</span>
@@ -68,12 +68,24 @@
             <div class="announcement-bar__message {{ text_size_class }}">
               {%- if block.settings.content != blank or block.settings.image != blank -%}
                 {%- if block.settings.learn_more_text != blank -%}
-                  <p>{{ block.settings.text | escape }} <button class="link" data-action="open-content">{{ block.settings.learn_more_text | escape }}</button></p>
+                  <p>
+                    {{ block.settings.text | escape }}
+                    <button class="link" data-action="open-content">
+                      {{ block.settings.learn_more_text | escape }}
+                    </button>
+                  </p>
                 {%- else -%}
                   <button class="link" data-action="open-content">{{ block.settings.text | escape }}</button>
                 {%- endif -%}
               {%- else -%}
-                <p>{{ block.settings.text | escape }}</p>
+                <p>
+                  {{ block.settings.text | escape }}
+                  {%- if block.settings.button_text != blank -%}
+                    <a href="{{ block.settings.button_link }}" alt="{{ block.settings.button_link }}" class="link">
+                      {{- block.settings.button_text | escape -}}
+                    </a>
+                  {%- endif -%}
+                </p>
               {%- endif -%}
             </div>
 
@@ -119,7 +131,9 @@
           </announcement-bar-item>
         {%- endfor -%}
       </div>
-
+      {%- if section.settings.cd_time != blank -%}
+        {%- render 'head-countdown' -%}
+      {%- endif -%}
       {%- if section.blocks.size > 1 -%}
         <button data-action="next" class="tap-area tap-area--large">
           <span class="visually-hidden">{{ 'general.accessibility.next' | t }}</span>
@@ -250,6 +264,36 @@
       "unit": "sec",
       "label": "Change message every",
       "default": 5
+    },
+    {
+      "type": "text",
+      "id": "cd_time",
+      "label": "倒计时结束时间",
+      "info": "2024-11-28 10:30:00"
+    },
+    {
+      "type": "text",
+      "id": "cd_time_t",
+      "label": "天",
+      "default":"Days"
+    },
+    {
+      "type": "text",
+      "id": "cd_time_t1",
+      "label": "时",
+      "default":"Hrs"
+    },
+    {
+      "type": "text",
+      "id": "cd_time_t2",
+      "label": "分",
+      "default":"Mins"
+    },
+    {
+      "type": "text",
+      "id": "cd_time_t3",
+      "label": "秒",
+      "default":"Secs"
     },
     {
       "type": "header",

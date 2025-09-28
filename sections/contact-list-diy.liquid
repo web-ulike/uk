@@ -1,0 +1,335 @@
+<style>
+  .breadcrumbs-box{
+    display:none;
+  }
+ .contact-list-diy{
+      background: #f9f9f9;
+      padding: 80px 0;
+    }
+    .contact-list-diy .container{
+      max-width: 1400px;
+    }
+    .contact-list-diy .contact-list{
+      display: flex;
+      flex-wrap: wrap;
+    }
+
+    .contact-list-diy .contact-item{
+      background: #fff;
+      width: calc(25% - 24px);
+      margin-right: 32px;
+      padding: 60px 45px;
+      text-align: center;
+      font-size: 18px;
+      transition: all .4s ease;
+    }
+  
+    .contact-list-diy .contact-item:hover{
+      transform: translateY(-10px);
+      box-shadow: 0 33px 90px rgba(0, 0, 0, 0.06);
+    }
+    .contact-list-diy .contact-item:last-child{
+      margin-right: 0;
+    }
+    .contact-list-diy .contact-item .img{
+      display: block;
+      margin: 0 auto;
+      margin-bottom: 45px;
+      width: 37.5%;
+    }
+    .contact-list-diy .contact-list-title{
+      font-size: 25px;
+      color: #000;
+      margin-bottom: 30px;
+      font-family: var(--heading-font-family);
+    }
+
+    .contact-list-diy .contact-list-btn{
+      width: 100%;
+      height: 46px;
+      max-width: 195px;
+      margin: 0 auto;
+      font-size: 18px;
+      background: #000;
+      color: #fff;
+      cursor: pointer;
+      border: 2px solid #000;
+    }
+
+    .contact-list-diy .contact-list-btn:hover .btn-txt::before{
+      color: #000;
+      font-family: var(--heading-font-family);
+      white-space: nowrap;
+    }
+
+    .contact-list-diy .contact-list-p{
+      color: #939393;
+      line-height: 1.2;
+    }
+
+    .contact-list-diy .p-m10{
+      margin-top: 10px;
+    }
+
+    .contact-list-diy a{
+      
+      color: #000;
+      text-decoration: underline;
+      line-height: 1.2;
+      display: inline-block;
+    }
+    @media (max-width:1400px) {
+      .contact-list-diy .contact-item{
+        padding: 50px 20px;
+        font-size: 16px;
+      }
+      .contact-list-diy .contact-list-title{
+        font-size: 20px;
+      }
+      .contact-list-diy .contact-item .img{
+        margin-bottom: 25px;
+      }
+    }
+
+    @media (max-width:991px) {
+      .contact-list-diy{
+        padding: 60px 0;
+      }
+      .contact-list-diy .contact-item{
+        width: calc(50% - 16px);
+        margin-bottom: 32px;
+      }
+      .contact-list-diy .contact-item:nth-child(2n){
+        margin-right: 0;
+      }
+    }
+
+    @media (max-width:640px) {
+      .contact-list-diy .contact-item{
+        width:100%;
+        margin-right: 0;
+        font-size: 18px;
+      }
+      .contact-list-diy .contact-item:last-child{
+        margin-bottom: 0;
+      }
+      .contact-list-diy .contact-list-title{
+        margin-bottom: 20px;
+        font-size: 25px;
+      }
+    }
+</style>
+<section class="section-box">
+<div class="contact-list-diy">
+  <div class="container">
+    <div class="contact-list">
+      {%- for block in section.blocks -%}
+        {%- case block.type -%}
+          {%- when 'item' -%}
+          <div class="contact-item to-top" style="transition-delay: 0.{{ forloop.index }}s">
+            {%- if block.settings.image != blank -%}
+              <img loading="lazy" class="img" width="{{ block.settings.image.width }}"
+                height="{{ block.settings.image.height }}" {% render 'image-attributes' , image: block.settings.image %}
+                alt="{{ block.settings.image.alt | escape }}">
+            {%- endif -%}
+            <div class="contact-text">
+              <div class="contact-list-title">{{ block.settings.text }}</div>
+              {%- if block.settings.text1 != blank -%}
+                <div class="contact-list-btn btn-diy" onclick="opensinppet()">
+                  <div class="btn-txt" text="{{ block.settings.text1 }}">
+                    <span>{{ block.settings.text1 }}</span>
+                  </div>
+                </div>
+              {%- endif -%}
+            </div>
+          </div>
+          {%- when 'item1' -%}
+          <div class="contact-item to-top" style="transition-delay: 0.{{ forloop.index }}s">
+            {%- if block.settings.image != blank -%}
+              <img loading="lazy" class="img" width="{{ block.settings.image.width }}"
+                height="{{ block.settings.image.height }}" {% render 'image-attributes' , image: block.settings.image %}
+                alt="{{ block.settings.image.alt | escape }}">
+            {%- endif -%}
+            <div class="contact-text">
+              <div class="contact-list-title">{{ block.settings.text }}</div>
+              <div class="contact-list-p">
+                <a href="{{ block.settings.text2 }}" target="_blank">{{ block.settings.text1 }}</a> {{ block.settings.text3 }}
+              </div>
+              <a href="{{ block.settings.text5 }}" class="p-m10">{{ block.settings.text4 }}</a>
+            </div>
+          </div>
+          {%- when 'item2' -%}
+          <div class="contact-item to-top" style="transition-delay: 0.{{ forloop.index }}s">
+            {%- if block.settings.image != blank -%}
+              <img loading="lazy" class="img" width="{{ block.settings.image.width }}"
+                height="{{ block.settings.image.height }}" {% render 'image-attributes' , image: block.settings.image %}
+                alt="{{ block.settings.image.alt | escape }}">
+            {%- endif -%}
+            <div class="contact-text">
+              <div class="contact-list-title">{{ block.settings.text }}</div>
+              <a href="{{ block.settings.text2 }}">{{ block.settings.text1 }}</a>
+              <div class="contact-list-p p-m10">
+                {{ block.settings.text3 }}
+              </div>
+            </div>
+          </div>
+        {%- endcase -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+</section>
+<script>
+  // window.addEventListener('load',function(){
+  //    zE('messenger:on', 'unreadMessages', (count) => {
+  //       populateUnreadIndicator(count);
+  //     });
+  //     zE('messenger', 'close');
+  //     zE('messenger:on', 'close', function () {
+  //       $('.ze-snippet-all').show();
+  //       $('#opensinppetclass').show();
+  //       zE('messenger', 'close');
+  //       $('#closesinppetliass').hide();
+  //     });
+    
+  //     function opensinppet() {
+  //       if ($(window).outerWidth() >= 1000) {
+  //         zE('messenger', 'open');
+    
+  //         $('#opensinppetclass').hide();
+  //         $('#closesinppetliass').show();
+  //         resetUnreadIndicator();
+  //       } else {
+  //         zE('messenger', 'open');
+  //         $('.ze-snippet-all').hide();
+  //         resetUnreadIndicator();
+  //       }
+  //     }
+  //     function closesinppet() {
+  //       $('#opensinppetclass').show();
+  //       zE('messenger', 'close');
+  //       $('#closesinppetliass').hide();
+  //     }
+  //     function resetUnreadIndicator() {
+  //       const zeiconnum = document.querySelector('#ze-icon-num');
+  //       zeiconnum.style.display = 'none';
+  //       zeiconnum.innerHTML = 0;
+  //     }
+  //     function populateUnreadIndicator(count) {
+  //       const zeiconnum = document.querySelector('#ze-icon-num');
+  //       if (count) {
+  //         zeiconnum.style.display = 'block';
+  //         zeiconnum.innerHTML = count;
+  //       }
+  //     }
+  // })
+  
+</script>
+{% schema %}
+{
+"name": "contact-list-diy",
+"blocks": [
+  {
+    "name": "item",
+    "type": "item",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "image",
+        "label": "Image"
+      },
+      {
+        "type": "text",
+        "id": "text",
+        "label": "Text"
+      },
+      {
+        "type": "text",
+        "id": "text1",
+        "label": "Button Text"
+      }
+    ]
+  },
+  {
+    "name": "item1",
+    "type": "item1",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "image",
+        "label": "Image"
+      },
+      {
+        "type": "text",
+        "id": "text",
+        "label": "Text"
+      },
+      {
+        "type": "text",
+        "id": "text1",
+        "label": "Text"
+      },
+      {
+        "type": "url",
+        "id": "text2",
+        "label": "Link"
+      },
+      {
+        "type": "text",
+        "id": "text3",
+        "label": "Text"
+      },
+      {
+        "type": "text",
+        "id": "text4",
+        "label": "Text"
+      },
+      {
+        "type": "url",
+        "id": "text5",
+        "label": "Link"
+      }
+    ]
+  },
+  {
+    "name": "item2",
+    "type": "item2",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "image",
+        "label": "Image"
+      },
+      {
+        "type": "text",
+        "id": "text",
+        "label": "Text"
+      },
+      {
+        "type": "text",
+        "id": "text1",
+        "label": "Text"
+      },
+      {
+        "type": "url",
+        "id": "text2",
+        "label": "Link"
+      },
+      {
+        "type": "text",
+        "id": "text3",
+        "label": "Text"
+      }
+    ]
+  }
+],
+"settings": [
+],
+  "presets": [
+  {
+    "name": "contact-list-diy",
+    "blocks": []
+  }
+]
+}
+{% endschema %}

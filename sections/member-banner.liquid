@@ -1,0 +1,700 @@
+<style>
+  :root {
+    --container-gutter: 40px;
+    --container-max-width: 1600px;
+  }
+
+  html,
+  body {
+    padding: 0;
+    margin: 0;
+  }
+  .container {
+    width: 100%;
+    max-width: var(--container-max-width);
+    padding-left: var(--container-gutter);
+    padding-right: var(--container-gutter);
+    --container-outer-margin: 0px;
+    margin-left: auto;
+    margin-right: auto;
+    box-sizing: border-box;
+  }
+  .member-banner {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .member-banner .img {
+    width: 100%;
+    position: relative;
+    z-index: 1;
+    display: block;
+  }
+
+  .member-banner .member-banner-cont {
+    position: absolute;
+    width: 100%;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    z-index: 2;
+  }
+
+  .member-banner .member-banner-title {
+    color: #190a0a;
+    font-size: 50px;
+    line-height: 1.2;
+    letter-spacing: 0.44px;
+    font-family: var(--heading-font-family);
+    margin: 0;
+    font-weight: normal;
+  }
+
+  .member-banner .member-banner-text-p {
+    color: #190a0a;
+    font-size: 20px;
+    line-height: 1.5;
+    letter-spacing: 0.2px;
+    margin-top: 15px;
+  }
+
+  .member-banner .member-banner-form {
+    margin-top: 30px;
+    max-width: 470px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .member-banner .member-banner-form-item {
+    position: relative;
+  }
+
+  .member-banner .member-banner-input {
+    height: 55px;
+    padding: 0 30px;
+    border: 1px solid #3f3636;
+    background: #fff;
+    color: #190a0a;
+    font-size: 16px;
+    width: 100%;
+    outline: none;
+  }
+
+  .member-banner .member-banner-input::placeholder {
+    color: #9c9c9c;
+  }
+
+  .member-banner .member-banner-Verify {
+    color: #2194ff;
+    font-size: 16px;
+    line-height: 1;
+    font-family: var(--heading-font-family);
+    position: absolute;
+    right: 30px;
+    height: 53px;
+    top: 1px;
+    padding: 0 5px;
+    background: #fff;
+    cursor: pointer;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    user-select: none;
+  }
+
+  .member-banner .member-banner-msg {
+    color: #e0004d;
+    font-size: 14px;
+    line-height: 1.5;
+    letter-spacing: 0.14px;
+    margin-top: 5px;
+    display: none;
+  }
+
+  .member-banner .member-banner-form-g {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .member-banner .member-banner-form-checkbox {
+    position: relative;
+    overflow: hidden;
+    width: 15px;
+    height: 15px;
+    cursor: pointer;
+    border-radius: 1.53px;
+    border: 0.612px solid #3f3636;
+    background: rgba(255, 255, 255, 0.2);
+    flex-shrink: 0;
+    margin-top: 3px;
+  }
+
+  .member-banner .member-banner-checkbox {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+  }
+
+  .member-banner .member-banner-form-checkbox .member-banner-checkbox:checked + span {
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 5px;
+    height: 9px;
+    margin-left: -3px;
+    margin-top: -1.5px;
+    border-bottom: 0.612px solid #3f3636;
+    border-right: 0.612px solid #3f3636;
+    transform: rotate(45deg) translate(-50%, -50%);
+    pointer-events: none;
+  }
+
+  .member-banner .member-banner-form-text {
+    color: #3f3636;
+    font-size: 14px;
+    line-height: 1.5;
+    letter-spacing: -0.196px;
+  }
+
+  .member-banner .member-banner-form-text p {
+    margin: 0;
+  }
+
+  .member-banner .member-banner-form-text a {
+    color: #3f3636;
+    text-decoration: underline;
+  }
+
+  .member-banner .member-banner-form-btn {
+    height: 47px;
+    width: 200px;
+    background: #e0004d;
+    color: #fff;
+    font-size: 16px;
+    line-height: 1;
+    font-family: var(--heading-font-family);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+  }
+
+  .member-banner .member-banner-form-btn:hover {
+    opacity: 0.7;
+  }
+
+  .member-banner .member-banner-success {
+    position: relative;
+    max-width: 500px;
+    display: none;
+  }
+
+  .member-banner .su-bg {
+    position: absolute;
+    top: 58%;
+    left: 53%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+    width: 160%;
+    max-width: none;
+    animation: gs 15s linear infinite;
+  }
+
+  @keyframes gs {
+    0% {
+      transform: translate(-50%, -50%) rotate(0);
+    }
+    100% {
+      transform: translate(-50%, -50%) rotate(360deg);
+    }
+  }
+
+  .member-banner .member-banner-success-text {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+  }
+
+  .member-banner .member-banner-success-text svg {
+    width: 46px;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+  }
+
+  .member-banner .member-banner-success-h3 {
+    color: #e0004d;
+    font-size: 44px;
+    line-height: 1.2;
+    letter-spacing: 0.44px;
+    font-family: var(--heading-font-family);
+    margin-top: 30px;
+  }
+
+  .member-banner .member-banner-success-p {
+    color: #190a0a;
+    font-size: 20px;
+    line-height: 1.5;
+    letter-spacing: 0.2px;
+    margin-top: 15px;
+  }
+
+  @media (max-width: 991px) {
+    :root {
+      --container-max-width: 100%;
+      --container-gutter: 20px;
+    }
+    .member-banner .member-banner-cont {
+      transform: translateY(0);
+      top: 55px;
+    }
+
+    .member-banner .member-banner-form {
+      margin: 0 auto;
+      margin-top: 20px;
+    }
+
+    .member-banner .member-banner-title {
+      font-size: 28px;
+      text-align: center;
+    }
+
+    .member-banner .member-banner-text-p {
+      text-align: center;
+      font-size: 14px;
+      margin: 0 auto;
+      margin-top: 10px;
+      max-width: 261px;
+    }
+
+    .member-banner .member-banner-input {
+      height: 42px;
+      font-size: 12px;
+      padding: 0 20px;
+    }
+
+    .member-banner .member-banner-Verify {
+      font-size: 12px;
+      height: 40px;
+      right: 20px;
+    }
+
+    .member-banner .member-banner-msg,
+    .member-banner .member-banner-form-text {
+      font-size: 12px;
+    }
+
+    .member-banner .member-banner-form-btn {
+      font-size: 14px;
+      height: 42px;
+      width: 100%;
+    }
+
+    .member-banner .member-banner-success {
+      margin: 0 auto;
+      margin-top: 22%;
+    }
+
+    .member-banner .member-banner-success-text svg {
+      width: 30px;
+    }
+
+    .member-banner .member-banner-success-h3 {
+      font-size: 26px;
+      margin-top: 20px;
+    }
+
+    .member-banner .member-banner-success-p {
+      font-size: 12px;
+      margin-top: 15px;
+    }
+    .member-banner .su-bg {
+      top: 50%;
+      width: 140%;
+    }
+  }
+</style>
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0, height=device-height, minimum-scale=1.0, maximum-scale=1.0"
+>
+<section class="section-box">
+  <div class="member-banner">
+    {%- if section.settings.image != blank or section.settings.image1 != blank -%}
+      <picture>
+        <source srcset="{{ section.settings.image1 | image_url }}" media="(max-width: 991px)">
+        <img class="img" width="" height="" src="{{ section.settings.image | image_url }}">
+      </picture>
+    {%- endif -%}
+    <div class="member-banner-cont">
+      <div class="container">
+        <div class="member-banner-text">
+          <h3 class="member-banner-title">{{ section.settings.text }}</h3>
+          <p class="member-banner-text-p">{{ section.settings.text1 }}</p>
+          <div class="member-banner-form">
+            <div class="member-banner-form-item member-email-box">
+              <input type="text" placeholder="{{ section.settings.text2 }}" class="member-banner-input">
+              <div class="member-banner-msg">{{ section.settings.text3 }}</div>
+            </div>
+            <div class="member-banner-form-item member-verify-box">
+              <input type="number" placeholder="{{ section.settings.text4 }}" class="member-banner-input">
+              <div class="member-banner-Verify" onclick="getVerifyCode()">{{ section.settings.text5 }}</div>
+              <div class="member-banner-msg">{{ section.settings.text6 }}</div>
+            </div>
+            <div class="member-banner-form-item" style="display: none;">
+              <div class="member-banner-form-g">
+                <div class="member-banner-form-checkbox">
+                  <input type="checkbox" class="member-banner-checkbox">
+                  <span></span>
+                </div>
+                <div class="member-banner-form-text">
+                  By clicking the box you agree to Ulike's Terms of Use and Privacy Policy.
+                </div>
+              </div>
+            </div>
+            <div class="member-banner-form-btn" onclick="handleRequest()">
+              {{ section.settings.text7 }}
+            </div>
+          </div>
+        </div>
+        <div class="member-banner-success">
+          {%- if section.settings.image2 != blank -%}
+            <img width="" height="" src="{{ section.settings.image2 | image_url }}" alt="" class="su-bg">
+          {%- endif -%}
+          <div class="member-banner-success-text">
+            <svg xmlns="http://www.w3.org/2000/svg" width="47" height="46" viewBox="0 0 47 46" fill="none">
+              <path
+                d="M45.345 22.8088C45.345 34.4456 35.6116 43.9627 23.5 43.9627C11.3884 43.9627 1.65493 34.4456 1.65493 22.8088C1.65493 11.1721 11.3884 1.65493 23.5 1.65493C35.6116 1.65493 45.345 11.1721 45.345 22.8088Z"
+                stroke="#E0004D" stroke-width="3.30986" />
+              <path d="M14.2778 23.5628L20.0462 28.7906L31.7975 16.5884" stroke="#E0004D" stroke-width="3.30986"
+                stroke-linecap="round" />
+            </svg>
+            <div class="member-banner-success-h3">{{ section.settings.text8 }}</div>
+            <div class="member-banner-success-p">{{ section.settings.text9 }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+  // 获取当前页面 URL 中的参数
+  const urlParams = new URLSearchParams(window.location.search);
+  
+  // 获取指定参数 winPrizeUserEmail 的值
+  document.querySelector('.member-email-box input').value = urlParams.get('winPrizeUserEmail');
+  
+  function request(url, method = 'GET', data = {}, headers = {}, timeout = 10000) {
+    const controller = new AbortController();
+    const signal = controller.signal;
+
+    const options = {
+      method,
+      headers: {
+        'Content-Type': 'application/json',
+        ...headers,
+      },
+      signal,
+      mode: 'cors',
+      credentials: 'include'
+    };
+
+    if (method.toUpperCase() === 'GET') {
+      const query = new URLSearchParams(data).toString();
+      url += query ? `?${query}` : '';
+    } else {
+      options.body = JSON.stringify(data);
+    }
+
+    // 设置超时
+    const timeoutId = setTimeout(() => controller.abort(), timeout);
+
+    return fetch(url, options)
+      .then(async (response) => {
+        clearTimeout(timeoutId);
+        if (!response.ok) {
+          throw new Error(`Request failed with status ${response.status}`);
+        }
+        const result = await response.json();
+        return result;
+      })
+      .catch((error) => {
+        if (error.name === 'AbortError') {
+          throw new Error('Request timeout');
+        }
+        throw error;
+      });
+  }
+
+  // 邮箱校验
+  function isValidEmail(email) {
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,63}$/;
+    return emailRegex.test(email);
+  }
+
+  // 倒计时函数
+  function startCountdown(button) {
+    countdown = 60;
+    button.disabled = true;
+    button.textContent = `${countdown}s`;
+    button.setAttribute('is-countdown', 'true');
+    timer = setInterval(() => {
+      countdown--;
+      button.textContent = `${countdown}`;
+
+      if (countdown <= 0) {
+        clearInterval(timer);
+        button.disabled = false;
+        button.textContent = '{{ section.settings.text5 }}';
+        countdown = 60; // 重置倒计时
+        button.removeAttribute('is-countdown');
+        document.querySelector('.member-verify-box .member-banner-msg').style.display = 'none'
+      }
+    }, 1000);
+  }
+
+  // 获取验证码
+  function getVerifyCode() {
+    commonGtmEvent('get code', 'member', '');
+    const emailInput = document.querySelector('.member-email-box input');
+    const resultElement = document.querySelector('.member-email-box .member-banner-msg');
+    const button = document.querySelector('.member-verify-box .member-banner-Verify');
+    const verifyElement = document.querySelector('.member-verify-box .member-banner-msg');
+    const email = emailInput.value.trim();
+
+    if (button.getAttribute('is-countdown') === 'true') return;
+    // 校验邮箱
+    if (!email) {
+      resultElement.textContent = '{{ section.settings.text3 }}';
+      resultElement.style.display = 'block';
+      return;
+    }
+
+    if (!isValidEmail(email)) {
+      resultElement.textContent = '{{ section.settings.text3 }}';
+      resultElement.style.display = 'block';
+      return;
+    }
+
+    resultElement.style.display = 'none';
+
+    // 验证码请求
+    request('https://api.ulike.com/user/sendCode', 'POST', {
+      "siteCode": "UK",
+      "since": "USER_LOGIN_WITH_EMAIL",
+      "userEmail": email
+    })
+    .then((res) => {
+      if (res.code === 0) {
+        verifyElement.textContent = '{{ section.settings.text10 }}'
+        verifyElement.style.display = 'block';
+        startCountdown(button);
+      }else{
+        verifyElement.textContent = res.message == 'user_sys_verify_code_send_limit' ? '{{ section.settings.text11 }}':'{{ 'general.page.system_err' | t }}';
+        verifyElement.style.display = 'block';
+      }
+    })
+    .catch(error => {
+      resultElement.textContent = error.message;
+      resultElement.style.display = 'block';
+      button.disabled = false;
+      button.textContent = '{{ section.settings.text5 }}';
+    });
+  }
+
+  // 提交
+  function handleRequest(event) {
+    const emailInput = document.querySelector('.member-email-box input');
+    const resultElement = document.querySelector('.member-email-box .member-banner-msg');
+    const verifyInput = document.querySelector('.member-verify-box input');
+    const verifyElement = document.querySelector('.member-verify-box .member-banner-msg');
+    const btn = document.querySelector('.member-banner-form-btn');
+    const email = emailInput.value.trim();
+    const verifyCode = verifyInput.value.trim();
+    if (btn.getAttribute('is-login') === 'true') return;
+
+    // 校验邮箱
+    if (!email) {
+      resultElement.textContent = '{{ section.settings.text3 }}';
+      resultElement.style.display = 'block';
+      return;
+    }
+
+    if (!isValidEmail(email)) {
+      resultElement.textContent = '{{ section.settings.text3 }}';
+      resultElement.style.display = 'block';
+      return;
+    }
+
+    if (!verifyCode) {
+      verifyElement.textContent = '{{ section.settings.text6 }}';
+      verifyElement.style.display = 'block';
+      return;
+    }
+
+    resultElement.style.display = 'none';
+    verifyElement.style.display = 'none';
+
+    btn.setAttribute('is-login', 'true');
+    // 发起请求
+    request('https://api.ulike.com/user/login', 'POST', {
+      "siteCode": "UK",
+      "userEmail": email,
+      "since": "VIP_USER_LOGIN_WITH_EMAIL",
+      "verifyCode": verifyCode,
+      "returnUrl": '{{ section.settings.link }}'
+    })
+      .then(data => {
+        btn.removeAttribute('is-login');
+        if (data.code === 0) {
+          commonGtmEvent('VIP Login', 'member', '');
+          document.querySelector('.member-banner-text').style.display = 'none';
+          document.querySelector('.member-banner-success').style.display = 'block';
+          setTimeout(() => {
+            window.location.href = data.data.loginUrl;
+          }, {{ section.settings.num_s}} * 1000)
+        } else {
+          verifyElement.textContent = data.message == 'user_sys_verify_code_invalid' ? '{{ section.settings.text6 }}':'{{ 'general.page.system_err' | t }}';
+          verifyElement.style.display = 'block';
+        }
+      })
+      .catch(error => {
+        btn.removeAttribute('is-login');
+      });
+  }
+
+  $(document).ready(function() {
+    // 当邮箱输入框获取焦点时
+    $(".member-banner-cont .member-email-box .member-banner-input").one("focus", function() {
+      commonGtmEvent('enter email', 'member', '');
+    });
+
+    $(".member-banner-cont .member-verify-box .member-banner-input").one("focus", function() {
+      commonGtmEvent('enter code', 'member', '');
+    });
+});
+</script>
+{% schema %}
+{
+  "name": "member-banner",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image1",
+      "label": "Image M"
+    },
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Text",
+      "default": "Join ULike Membership"
+    },
+    {
+      "type": "text",
+      "id": "text1",
+      "label": "Text",
+      "default": "Join ULike Membership and enjoy exclusive benefits"
+    },
+    {
+      "type": "text",
+      "id": "text2",
+      "label": "Text",
+      "default": "Enter your e-mail"
+    },
+    {
+      "type": "text",
+      "id": "text3",
+      "label": "Text",
+      "default": "Please enter a valid email address"
+    },
+    {
+      "type": "text",
+      "id": "text4",
+      "label": "Text",
+      "default": "Verification Code"
+    },
+    {
+      "type": "text",
+      "id": "text5",
+      "label": "Text",
+      "default": "Verify"
+    },
+    {
+      "type": "text",
+      "id": "text10",
+      "label": "已发送提示",
+      "default": "Your verification code has been sent – please check your inbox."
+    },
+    {
+      "type": "text",
+      "id": "text11",
+      "label": "发送验证码频繁提示",
+      "default": "Email verification code sent frequently,please try again later"
+    },
+    {
+      "type": "text",
+      "id": "text6",
+      "label": "验证码错误提示",
+      "default": "The code entered is invalid"
+    },
+    {
+      "type": "text",
+      "id": "text7",
+      "label": "Text",
+      "default": "Quick Login"
+    },
+    {
+      "type": "text",
+      "id": "text8",
+      "label": "Text",
+      "default": "Congratulations!"
+    },
+    {
+      "type": "text",
+      "id": "text9",
+      "label": "Text",
+      "default": "Congratulations! Your account has been successfully registered."
+    },
+    {
+      "type": "image_picker",
+      "id": "image2",
+      "label": "Image"
+    },
+    {
+      "type": "url",
+      "id": "link",
+      "label": "链接"
+    },
+    {
+      "type": "range",
+      "id": "num_s",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "秒",
+      "label": "等待跳转时间",
+      "default": 3
+    }
+  ],
+  "presets": [
+    {
+      "name": "member-banner",
+      "blocks": []
+    }
+  ]
+}
+{% endschema %}

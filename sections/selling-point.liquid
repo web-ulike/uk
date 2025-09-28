@@ -1,0 +1,626 @@
+<style>
+     #shopify-section-{{ section.id }} {
+  --text-color: {{  section.settings.text_color.red }}, {{  section.settings.text_color.green }}, {{  section.settings.text_color.blue }};
+      --section-background: {{ section.settings.background.red }}, {{ section.settings.background.green }}, {{ section.settings.background.blue }};
+      --background-image: url({{ section.settings.background_image | img_url: '3840x1176' }});
+      {% if section.settings.background_image != blank %}
+        background-image: var( --background-image);
+      {% else %}
+        background-color: var(--section-background)
+      {% endif %}
+    }
+    .section-{{ section.id }}-padding {
+      padding-top: calc({{ section.settings.padding_top }}px);
+      padding-bottom: calc({{ section.settings.padding_bottom }}px);
+    }
+    @media screen and (max-width: 768px){
+      #shopify-section-{{ section.id }} {
+      {% if section.settings.mobile_background_image != blank %}
+        --background-image: url({{ section.settings.mobile_background_image | img_url : '750x1230' }});
+      {% endif %}
+      }
+    .section-{{ section.id }}-padding {
+      padding-top: calc({{ section.settings.padding_top }}px * 0.6);
+      padding-bottom: calc({{ section.settings.padding_bottom }}px * 0.6);
+    }
+  }
+/* .selling-point {
+  padding-bottom: 80px;
+} */
+
+.selling-point .container {
+  max-width: 1680px;
+}
+
+.selling-point .selling-point-list {
+  display: flex;
+  gap: 19.5px;
+  flex-wrap: wrap;
+}
+
+.selling-point .selling-point-item {
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+  width: calc(28.94% - 13px);
+}
+
+.selling-point .popup-item {
+  cursor: pointer;
+}
+
+.selling-point .selling-point-item:nth-child(1),
+.selling-point .selling-point-item:nth-child(5) {
+  width: calc(42.062% - 13px);
+}
+
+.selling-point .selling-point-item .img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.selling-point .selling-point-text {
+  position: absolute;
+  width: 100%;
+  left: 0;
+  padding: 35px 30px;
+  bottom: 0;
+  color: #fff;
+}
+
+.selling-point .selling-point-item:nth-child(-n + 3) .selling-point-text {
+  bottom: auto;
+  top: 0;
+  color: #000;
+}
+
+.selling-point .selling-point-title {
+  font-size: 30px;
+  line-height: 1;
+  font-family: var(--heading-font-family);
+}
+
+.selling-point .selling-point-sub {
+  font-size: 18px;
+  line-height: 1.1;
+  margin-top: 15px;
+}
+
+.selling-point .selling-point-sub p {
+  margin: 0;
+}
+
+.selling-point .selling-point-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #b7aade;
+  font-size: 25px;
+  line-height: 1;
+  color: transparent;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  margin-top: 15px;
+  position: relative;
+  transition: background 0.3s ease-in;
+  animation: pulse-shadow 2s infinite;
+}
+
+.selling-point .selling-point-btn:before,
+  .selling-point .selling-point-btn:after{
+    content: '';
+    display: block;
+    width: 15px;
+    height: 2px;
+    background: #fff;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    position: absolute;
+    top: 50%;
+    z-index: 2;
+  }
+.selling-point .selling-point-btn:after{
+  transform: translate(-50%,-50%) rotate( 90deg);
+}
+.selling-point .selling-point-btn:hover {
+  background: #9a8bc5;
+}
+
+@keyframes pulse-shadow {
+  0% {
+    box-shadow: 0 0 0 0 rgba(183, 170, 222, 0.7);
+  }
+
+  70% {
+    box-shadow: 0 0 0 10px rgba(183, 170, 222, 0);
+  }
+
+  100% {
+    box-shadow: 0 0 0 0 rgba(183, 170, 222, 0);
+  }
+}
+  @keyframes white-pulse-shadow {
+      0% {
+          box-shadow: 0 0 0 0 rgba(224,0,77, 0.7);
+      }
+
+      70% {
+          box-shadow: 0 0 0 10px rgba(224,0,77, 0);
+      }
+
+      100% {
+          box-shadow: 0 0 0 0 rgba(224,0,77, 0);
+      }
+  }
+.selling-point .selling-point-ratio {
+  display: flex;
+  position: relative;
+}
+
+.selling-point .selling-point-ratio::before {
+  content: '';
+  display: block;
+  width: 2px;
+  height: 100%;
+  background: #c2c2c2;
+  left: 50%;
+  transform: translateX(-50%);
+  position: absolute;
+  top: 0;
+  z-index: 2;
+}
+
+.selling-point .selling-point-ratio-item {
+  flex: 1;
+  position: relative;
+}
+
+.selling-point .selling-point-ratio-tag {
+  font-size: 20px;
+  display: flex;
+  width: 120px;
+  height: 36px;
+  border-radius: 36px;
+  max-width: 100%;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  border: 1.5px solid #fff;
+}
+
+.equal-width .selling-point-item {
+  width: auto;
+  flex: 1;
+}
+
+.equal-width .selling-point-item:nth-child(odd) .selling-point-text {
+  top: 0;
+  bottom: auto;
+  color: #000;
+}
+
+.equal-width .selling-point-item:nth-child(even) .selling-point-text {
+  top: auto;
+  bottom: 0;
+  color: #fff;
+}
+#shopify-section-{{ section.id }} .sell_tle{
+  color:  #FBFAF4;
+  text-align: center;
+  font-size: 44px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 125%; 
+  margin-bottom:50px;
+}
+.sell_p{
+  color: #3F3636;
+  text-align: center;
+  font-size: 18px;
+  line-height: 1.58;
+  margin-top:16px;
+}
+.chr-2024 .sell_tle{
+  color:#190A0A;
+  margin-bottom:0px;
+  font-family: var(--heading-font-family);
+}
+.chr-2024 .selling-point-list{
+  margin-top:70px;
+}
+.chr-2024 .equal-width .selling-point-item:nth-child(odd) .selling-point-text{
+  color:#fff;
+}
+ .chr-2024 .equal-width .selling-point-item:nth-child(even) .selling-point-text{
+    bottom:auto;
+   top:0;
+  }
+.chr-2024 .selling-point .selling-point-item{
+  border-radius: 0px;
+}
+  .white-sell .selling-point .selling-point-item:nth-child(-n + 3) .selling-point-text {
+    color: #ffffff;
+}
+   .white-sell .selling-point .selling-point-btn{
+         background: #E0004D;
+   }
+   .white-sell .selling-point .selling-point-btn:hover {
+   background: #E0004D;
+}
+  .white-sell .selling-point .selling-point-text {
+     bottom:auto !important;
+   top:0 !important;
+}
+  .white-sell .selling-point .selling-point-btn {
+    animation: white-pulse-shadow 2s infinite;
+}
+@media (max-width: 1500px) {
+  .selling-point .selling-point-text {
+    padding: 25px 20px;
+  }
+  .selling-point .selling-point-title {
+    font-size: 25px;
+  }
+  .selling-point .selling-point-sub {
+    font-size: 14px;
+    margin-top: 10px;
+  }
+  .selling-point .selling-point-ratio-tag {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 1200px) {
+  .selling-point .selling-point-title {
+    font-size: 22px;
+  }
+  .selling-point .selling-point-sub {
+    font-size: 16px;
+    margin-top: 5px;
+  }
+  .selling-point .selling-point-ratio-tag {
+    font-size: 14px;
+    height: 30px;
+  }
+  .selling-point .selling-point-btn {
+    width: 30px;
+    height: 30px;
+  }
+}
+
+@media (max-width: 991px) {
+  .selling-point {
+    padding-bottom: 60px;
+  }
+  .selling-point .selling-point-list {
+    gap: 20px;
+  }
+  .selling-point .selling-point-item {
+    width: calc(50% - 10px) !important;
+    flex: none;
+  }
+  .chr-2024 .equal-width .selling-point-item:last-child .selling-point-text{
+    color:#fff;
+    top:auto;
+    bottom:0;
+  }
+}
+
+@media (max-width: 640px) {
+  .selling-point .selling-point-item {
+    width: 100% !important;
+  }
+  .selling-point .selling-point-item:nth-child(1),.selling-point .selling-point-item:nth-child(2),.selling-point .selling-point-item:nth-child(3),.selling-point .selling-point-item:nth-child(4){
+    width: calc(50% - 5px) !important;
+  }
+      .selling-point .selling-point-list {
+        gap: 10px;
+    }
+      .selling-point .selling-point-title {
+        font-size: 18px;
+    }
+      .selling-point .selling-point-sub {
+        font-size: 12px;
+    }
+   .chr-2024 .selling-point .selling-point-sub {
+        margin-top:12px;
+    }
+  .sell-point-cust .selling-point .selling-point-text{
+            padding: 12px;
+        height: 100%;
+  }
+     .sell-point-cust  .selling-point .selling-point-btn {
+        position: absolute;
+        bottom: 20px;
+    }
+  .sell-point-cust .equal-width .selling-point-item:nth-child(4) .selling-point-text .selling-point-title{
+    padding-top:60%;
+  }
+  .sell-point-cust1 .selling-point .selling-point-item:nth-child(4) .selling-point-text {
+        display: flex;
+        flex-direction: column-reverse;
+    }
+  #shopify-section-{{ section.id }} .sell_tle{
+    font-size: 28px; 
+    margin-bottom:20px;
+  }
+  .sell_p{
+    font-size: 12px; 
+  }
+  .chr-2024 .sell_tle{
+    margin-bottom:0px;
+  }
+  .chr-2024 .sell_p{
+    margin-top:10px;
+  }
+  .chr-2024 .selling-point-list{
+    margin-top:25px;
+  }
+
+     .white-sell .selling-point .selling-point-title {
+        font-size: 16px;
+    }
+      .white-sell .selling-point .selling-point-sub {
+        font-size: 12px;
+        font-weight: 300;
+        line-height: normal;
+    }
+  .val-2025 .selling-point .selling-point-text{
+    height: 100%;
+  }
+    .val-2025 .selling-point .selling-point-item:nth-child(1) .selling-point-btn, .val-2025 .selling-point .selling-point-item:nth-child(2) .selling-point-btn {
+    bottom: 20px;
+    top: auto;
+    position: absolute;
+}
+  .val-2025 .selling-point .selling-point-item:nth-child(4) .selling-point-btn {
+    margin-top: 30px;
+}
+  .valte-2025 .selling-point .selling-point-item:nth-child(3), .valte-2025 .selling-point .selling-point-item:nth-child(4), .valte-2025 .selling-point .selling-point-item:nth-child(5), .valte-2025 .selling-point .selling-point-item:nth-child(6){
+    width:100% !important
+  }
+  .valte-2025 .selling-point .selling-point-item:nth-child(4) .selling-point-text{
+        top: auto !important;
+    bottom: 0 !important;
+  }
+}
+}
+</style>
+<section class="section-box{% if section.settings.custom_class != blank %} {{section.settings.custom_class}}{% endif %}">
+  <div class="selling-point {% if section.settings.isMax %}equal-width{% endif %} to-top section-{{ section.id }}-padding">
+    <div class="container">
+      {% if section.settings.tle != blank %}
+        <div class="sell_tle">{{ section.settings.tle }}</div>
+      {%- endif -%}
+      {% if section.settings.tle != blank %}
+        <div class="sell_p">{{ section.settings.text }}</div>
+      {%- endif -%}
+      <div class="selling-point-list">
+        {%- for block in section.blocks -%}
+          {% if block.type == 'item' %}
+            <div class="selling-point-item popup-item to-top" data-popup="{{ block.settings.text2 }}" style="transition-delay: 0.{{ forloop.index }}s">
+              <picture>
+                <source srcset="{{ block.settings.image1 | image_url }}" media="(max-width: 991px)">
+                <img class="img" width="" height="" loading="lazy" src="{{ block.settings.image | image_url }}">
+              </picture>
+              <div class="selling-point-text">
+                <div class="selling-point-title">{{ block.settings.text }}</div>
+                {%- if block.settings.text1 != blank -%}
+                  <div class="selling-point-sub">
+                    {{ block.settings.text1 }}
+                  </div>
+                {%- endif -%}
+                {%- if block.settings.text2 != blank -%}
+                  <div class="selling-point-btn">
+                    +
+                  </div>
+                {%- endif -%}
+              </div>
+            </div>
+          {% endif %}
+          {% if block.type == 'ratio' %}
+            <div class="selling-point-item selling-point-ratio to-top" style="transition-delay: 0.{{ forloop.index }}s">
+              <div class="selling-point-ratio-item">
+                <picture>
+                  <source srcset="{{ block.settings.image1 | image_url }}" loading="lazy" media="(max-width: 991px)">
+                  <img class="img" width="" height="" loading="lazy" src="{{ block.settings.image | image_url }}">
+                </picture>
+                {%- if block.settings.text != blank -%}
+                  <div class="selling-point-ratio-tag">
+                    {{ block.settings.text }}
+                  </div>
+                {%- endif -%}
+              </div>
+              <div class="selling-point-ratio-item">
+                <picture>
+                  <source srcset="{{ block.settings.image3 | image_url }}" media="(max-width: 991px)">
+                  <img class="img" width="" height="" loading="lazy" src="{{ block.settings.image2 | image_url }}">
+                </picture>
+                {%- if block.settings.text1 != blank -%}
+                  <div class="selling-point-ratio-tag">
+                    {{ block.settings.text1 }}
+                  </div>
+                {%- endif -%}
+              </div>
+            </div>
+          {% endif %}
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+  window.addEventListener('load',function(){
+    $('.selling-point .popup-item').click(function(){
+      let name = $(this).attr('data-popup')
+      if(!name) return
+      // let videoEl = $('.'+name).find('.officially-features-popup-video video')
+      let videoEl = $('.'+name).find('.video-wrapper__play-button')
+      if(videoEl.length){
+        videoEl.click()
+        // if (!video.paused) {
+        //    video.pause();
+        // }
+      }
+      $('.'+name).addClass('active')
+      // if(videoEl.length){
+      //   if (video.paused) {
+      //     videoEl[0].play()
+      //   }
+      // }
+    })
+  })
+</script>
+{% schema %}
+{
+"name": "selling-point",
+"blocks": [
+  {
+    "name": "item",
+    "type": "item",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "image",
+        "label": "Image"
+      },
+      {
+        "type": "image_picker",
+        "id": "image1",
+        "label": "M Image"
+      },
+      {
+        "type": "text",
+        "id": "text",
+        "label": "Text"
+      },
+      {
+        "type": "richtext",
+        "id": "text1",
+        "label": "Text"
+      },
+      {
+        "type": "text",
+        "id": "text2",
+        "label": "弹窗名"
+      }
+    ]
+  },
+  {
+    "name": "ratio",
+    "type": "ratio",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "image",
+        "label": "Image 1"
+      },
+      {
+        "type": "image_picker",
+        "id": "image1",
+        "label": "M Image 1"
+      },
+      {
+        "type": "image_picker",
+        "id": "image2",
+        "label": "Image 2"
+      },
+      {
+        "type": "image_picker",
+        "id": "image3",
+        "label": "M Image 2"
+      },
+      {
+        "type": "text",
+        "id": "text",
+        "label": "Text"
+      },
+      {
+        "type": "text",
+        "id": "text1",
+        "label": "Text"
+      },
+      {
+        "type": "text",
+        "id": "text2",
+        "label": "弹窗名"
+      }
+    ]
+  }
+],
+"settings": [
+  {
+    "type": "checkbox",
+    "id": "isMax",
+    "label": "等宽",
+    "default":false
+  },
+     {
+      "type": "text",
+      "id": "tle",
+      "label": "Title"
+    },
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Text"
+    },
+   {
+      "type": "text",
+      "id": "custom_class",
+      "label": "Custom Class"
+    },
+   {
+    "type": "image_picker",
+    "id": "background_image",
+    "label": "Background Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "mobile_background_image",
+      "label": "Mobile Background Image"
+    },
+   {
+      "type": "color",
+      "id": "background",
+      "label": "Background"
+    },
+   {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 80
+    }
+],
+  "presets": [
+  {
+    "name": "selling-point",
+    "blocks": []
+  }
+]
+}
+{% endschema %}

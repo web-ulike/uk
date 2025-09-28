@@ -1,0 +1,265 @@
+<style>
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+  }
+  @media screen and (max-width: 768px){
+  .section-{{ section.id }}-padding {
+    padding-top: calc({{ section.settings.padding_top }}px * 0.6);
+    padding-bottom: calc({{ section.settings.padding_bottom }}px * 0.6);
+  }
+}
+.trade_step-top{
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 90px;
+}
+.trade_step-top h3{
+  color: #190A0A;
+font-size: 48px;
+font-style: normal;
+font-weight: 400;
+line-height: 125%;
+max-width: 750px;
+      margin-bottom: 0;
+}
+
+.trade_step-top .step_top-p{
+  color:  #190A0A;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: 150%;
+  margin-top: 120px;
+  max-width: 738px;
+}
+.trade_step-bottom{
+  display: flex;
+  gap: 20px;
+}
+.trade_step-item{
+  flex: 1;
+  position: relative;
+}
+.trade_step-item::before{
+  content: '';
+  width: 100%;
+  height: 1px;
+  background: #3F3636;
+  position: absolute;
+  top: -30px;
+}
+.trade_step-item .trade_step-img{
+  flex: 1;
+  background: #FBFAF4;
+  text-align: center;
+  min-height: 320px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.trade_step-img img{
+}
+.step_txt{
+  margin-top: 30px;
+  display: flex;
+  gap: 20px;
+}
+.step_txt{
+  margin-top: 30px;
+  display: flex;
+  gap: 20px;
+  color:  #190A0A;
+font-size: 20px;
+font-style: normal;
+font-weight: 380;
+line-height: 150%;
+}
+.step_txt .rd{
+  color: #E0004D;
+}
+
+@media screen and (max-width: 1200px) {
+  .trade_step-top h3{
+    font-size: 36px;
+  }
+  .step_txt{
+    font-size: 18px;
+    gap: 10px;
+  }
+}
+
+@media screen and (max-width: 992px) {
+  .trade_step-top{
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+    margin-bottom: 55px;
+  }
+  .trade_step-top .step_top-p{
+    margin-top: 16px;
+    
+  }
+  .trade_step-bottom{
+    flex-wrap: wrap;
+    gap: 4%;
+  }
+  .trade_step-item {
+   flex-basis: 48%;
+   margin-bottom: 70px;
+}
+.trade_step-item::before{
+  top: -15px;
+}
+}
+
+@media screen and (max-width: 650px) {
+.trade_step-top h3 {
+  font-size: 24px;
+}
+.trade_step-item::before{
+  top: -15px;
+}
+.trade_step-top .step_top-p {
+  margin-top: 14px;
+   font-size: 14px;
+}
+.trade_step-item .trade_step-img{
+  min-height: 130px;
+}
+.step_txt {
+  font-size: 14px;
+  gap: 5px;
+}
+  .trade_step-bottom .trade_step-item:nth-child(3),.trade_step-bottom .trade_step-item:nth-child(4){
+    margin-bottom:0
+  }
+}
+</style>
+ <section>
+    <div class="trade_step-wrapper section-{{ section.id }}-padding">
+      <div class="container">
+        <div class="trade_step-top to-top">
+          {%-  if section.settings.title != blank -%}
+          <h3>{{ section.settings.title | escape }}</h3>
+          {% endif %}
+          {%-  if section.settings.des != blank -%}
+          <p class="step_top-p">{{ section.settings.des | escape }}</p>
+          {% endif %}
+        </div>
+        <div class="trade_step-bottom">
+
+          {%- for block in section.blocks -%}
+          <div class="trade_step-item to-top" style="transition-delay: 0.{{ forloop.index }}s">
+            <div class="trade_step-img">
+              <picture>
+               {%- if block.settings.image_mobile -%}
+               <source
+                  media="(max-width: 767px)"
+                  srcset="{{ block.settings.image_mobile | image_url: width: '400x' }} 400w, {{ block.settings.image_mobile | image_url: width: '600x' }} 600w, {{ block.settings.image_mobile | image_url: width: '800x' }} 800w, {{ block.settings.image_mobile | image_url: width: '1000x' }} 1000w"
+                  width="{{ block.settings.image_mobile.width }}"
+                  height="{{ block.settings.image_mobile.height }}"
+                >
+                {%- endif -%}
+                {{- block.settings.image | image_url: width: block.settings.image.width | image_tag: loading: 'eager', sizes: '100vw', widths: '300,400,500,600,700,800,900,1000,1200,1400,1600,1800,2000,2200,2400,2600,2800,3000,3200', class: 'trade__step_image' -}}
+              </picture>
+            </div>
+            <div class="step_txt">
+              {%-  if block.settings.step_text != blank -%}
+              <span class="rd">{{ block.settings.step_text | escape }}</span>
+              {% endif %}
+              {%-  if block.settings.step_text1 != blank -%}
+              <span>{{ block.settings.step_text1 | escape }}</span>
+              {% endif %}
+            </div>
+          </div>
+          {%- endfor -%}
+        </div>
+      </div>
+    </div>
+  </section>
+<script>
+</script>
+{% schema %}
+{
+  "name": "Trade Step",
+  "class": "shopify-section--trade-step", 
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title"
+    },
+     {
+      "type": "text",
+      "id": "des",
+      "label": "subTitle"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 40
+    }
+  ],
+  "blocks": [
+         {
+        "type": "item",
+        "name": "item",
+        "settings": [
+           {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Images"
+        },
+     {
+          "type": "image_picker",
+          "id": "image_mobile",
+          "label": "Mobile Images"
+        },
+           {
+      "type": "text",
+      "id": "step_text",
+      "label": "Step Text"
+    },
+     {
+      "type": "text",
+      "id": "step_text1",
+      "label": "Step Text 1"
+    }
+        ]
+      }
+  ],
+  "presets": [
+    {
+      "name": "Trade Step"
+    }
+  ]
+}
+{% endschema %}

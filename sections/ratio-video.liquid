@@ -1,0 +1,208 @@
+<style>
+.title-diy{
+  font-size: 40px;
+}
+
+@media (max-width: 991px) {
+  .title-diy {
+    font-size: 28px;
+  }
+}
+
+.ratio-video{
+  padding: 70px 0;
+}
+
+.ratio-video .container{
+  max-width: 1400px;
+}
+
+.ratio-video .title-diy{
+  max-width: 435px;
+  margin: 0 auto;
+}
+
+.ratio-video .ratio-video-cont{
+  margin-top: 55px;
+  position: relative;
+}
+
+.ratio-video .ratio-video-cont .img{
+  display: block;
+  width: 100%;
+  position: relative;
+  z-index: 1;
+  opacity: 0;
+}
+
+.ratio-video .iframe{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 2;
+}
+.ratio-video .iframe video{
+  width: 100%;
+  height: 100%;
+}
+.ratio-video .ratio-video-text{
+  display: flex;
+  color: #000;
+  margin-top: 50px;
+}
+
+.ratio-video .ratio-video-item{
+  flex: 1;
+}
+
+.ratio-video .ratio-video-item:first-child{
+  padding-right: 120px;
+  border-right: 1px solid #e1e1e1;
+}
+.ratio-video .ratio-video-item:nth-child(2){
+  padding-left: 120px;
+}
+.ratio-video .ratio-video-h5{
+  font-size: 28px;
+  font-family: var(--heading-font-family);
+  line-height: 1.2;
+  margin-bottom: 30px;
+}
+
+.ratio-video .ratio-video-p{
+  font-size: 14px;
+  line-height: 1.2;
+}
+.ratio-video .ratio-video-p p{
+  margin:0;
+}
+.ratio-video .mb-box{
+  display: none;
+}
+
+@media (max-width:1300px) {
+  .ratio-video .ratio-video-item:first-child{
+    padding-right: 60px;
+  }
+  .ratio-video .ratio-video-item:nth-child(2){
+    padding-left: 60px;
+  }
+}
+
+@media (max-width:991px) {
+  .ratio-video{
+    padding: 50px 0;
+  }
+  .ratio-video .mb-box{
+    display: block;
+  }
+
+  .ratio-video .pc-box{
+    display: none;
+  }
+  .ratio-video .ratio-video-cont{
+    margin-top: 30px;
+  }
+  .ratio-video .ratio-video-text{
+    margin-top: 30px;
+  }
+  .ratio-video .ratio-video-p{
+    line-height: 1.5;
+  }
+}
+</style>
+<section class="section-box">
+  <div class="ratio-video">
+    <div class="container">
+      <div class="title-diy to-top">
+        {{ section.settings.title }}
+      </div>
+      <div class="ratio-video-cont to-top" style="transition-delay: 0.1s">
+        {%- if section.settings.image != blank -%}
+           <img loading="lazy" class="img" width="{{ section.settings.image.width }}" height="{{ section.settings.image.height }}" {% render 'image-attributes', image: section.settings.image %} alt="{{ section.settings.image.alt | escape }}" >
+        {%- endif -%}
+        {%- if section.settings.video_url != blank -%}
+          <native-video autoplay class="ratio-video-wrapper iframe">
+            {{- section.settings.video_url | video_tag: controls: false, autoplay: true, playsinline: true, muted: true, loop: true , image_size: '740x' -}}
+          </native-video>
+        {%- endif -%}
+      </div>
+      <div class="ratio-video-text pc-box">
+        <div class="ratio-video-item to-top" style="transition-delay: 0.2s">
+          <div class="ratio-video-h5">{{ section.settings.text }}</div>
+          <div class="ratio-video-p">
+            {{ section.settings.text1 }}
+          </div>
+        </div>
+        <div class="ratio-video-item to-top" style="transition-delay: 0.3s">
+          <div class="ratio-video-h5">{{ section.settings.text2 }}</div>
+          <div class="ratio-video-p">
+            {{ section.settings.text3 }}
+          </div>
+        </div>
+      </div>
+      <div class="ratio-video-text mb-box to-top" style="transition-delay: 0.2s">
+        <div class="ratio-video-p">
+          {{ section.settings.text4 }}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "ratio-video",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "video",
+      "id": "video_url",
+      "label": "Video",
+      "info": "Replaces the external video if both are set."
+    },
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Text"
+    },
+    {
+      "type": "richtext",
+      "id": "text1",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "text2",
+      "label": "Text"
+    },
+    {
+      "type": "richtext",
+      "id": "text3",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "text4",
+      "label": "Text"
+    }
+  ],
+  "presets": [
+    {
+      "name": "ratio-video",
+      "blocks": []
+    }
+  ]
+}
+{% endschema %}

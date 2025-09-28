@@ -1,0 +1,570 @@
+<style>
+.preheat-slide{
+  padding: 100px 0  80px 0;
+  background: #FBFAF4;
+  overflow: hidden;
+  color: #3F3636;
+}
+
+.preheat-slide .preheat-slide-cont{
+  display: flex;
+  align-items: center;
+  gap: 99px;
+}
+
+.preheat-slide .preheat-slide-left{
+  perspective: 1800px;
+  flex: 1;
+}
+
+.preheat-slide .preheat-slide-title{
+  /* color: #3F3636; */
+  font-size: 60px;
+  font-family: var(--heading-font-family);
+  line-height: 1.2;
+  letter-spacing: -0.26px;
+}
+
+.preheat-slide .preheat-slide-text{
+  /* color: #3F3636; */
+  font-size: 18px;
+  line-height: 1.4;
+  letter-spacing: 0.085px;
+  margin-top: 30px;
+}
+
+.preheat-slide .preheat-slide-msg{
+  font-size:14px;
+  color: #9A9A9A;
+  margin-top:40px;
+}
+
+.preheat-slide .preheat-slide-icons{
+  display: flex;
+  gap: 20px;
+  margin-top:50px;
+}
+.preheat-slide .preheat-slide-icon{
+  display:block;
+  width:120px;
+}
+
+.preheat-slide .preheat-slide-arraws{
+  position: absolute;
+  top: 35%;
+  left: 0;
+  transform: translateY(-50%);
+  z-index: 2;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.preheat-slide .preheat-slide-arrow{
+  width: 40px;
+  height: 40px;
+  position: relative;
+  background: #fff;
+  border-radius: 50%;
+  cursor: pointer;
+  transform: translateX(50%);
+}
+
+.preheat-slide .preheat-slide-arrow:first-child{
+  transform:translateX(-50%) scale(-1,-1);
+}
+
+.preheat-slide .preheat-slide-arrow::after{
+  content: '';
+  width: 10px;
+  height: 10px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(45deg);
+  border-top: 1px solid #000;
+  border-right: 1px solid #000;
+  margin-left: -3px;
+}
+
+.preheat-slide .preheat-slide-right{
+  width: calc(66.66% - 26px);
+  position: relative;
+  z-index: 1;
+}
+  
+.preheat-slide .preheat-slide-img-cont{
+  position: relative;
+  overflow: hidden;
+}
+
+.preheat-slide.active .preheat-slide-right{
+  overflow: visible;
+}
+
+.preheat-slide .preheat-slide-list{
+  display: flex;
+  gap: 26px;
+  transition: all .8s ease;
+  transition-delay:.4s;
+}
+
+.preheat-slide .preheat-slide-item{
+  width: calc(50% - 13px);
+  flex-shrink: 0;
+}
+.preheat-slide.active .preheat-slide-list{
+  transform: translateX(calc(-50% - 26px));
+}
+.preheat-slide .preheat-slide-img{
+  position: relative;
+  z-index: 1;
+  border-radius: 10px;
+  overflow: hidden;
+}
+.preheat-slide .img{
+  display: block;
+  width: 100%;
+  position: relative;
+  z-index: 1;
+}
+
+.preheat-slide .preheat-slide-wrapper{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  z-index: 2;
+}
+
+.preheat-slide .preheat-slide-wrapper video{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.preheat-slide .video-wrapper__play-button{
+    position: absolute;
+    margin-bottom:0;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+.preheat-slide .preheat-slide-item-title{
+  color: #272724;
+  font-size: 30px;
+  line-height: 1.4;
+  margin-top: 30px;
+}
+
+.preheat-slide .preheat-slide-item-text{
+  /* color: #3F3636; */
+  font-size: 16px;
+  line-height: 1.5;
+  margin-top: 11px;
+}
+.men-diy.preheat-slide{
+  color:#fff;
+}
+.men-diy .preheat-slide-item-title{
+  color:#fff;
+  font-size:20px;
+}
+.men-diy .preheat-slide-cont{
+  align-items: flex-start;
+}
+.men-diy .preheat-slide-text{
+  color:#929292;
+}
+.men-diy .preheat-slide-item-text{
+  color:#929292;
+  font-size:14px;
+}
+.men-diy .preheat-slide-img{
+  border-radius: 10px;
+  overflow: hidden;
+}
+.men-diy .preheat-slide-item{
+  padding-top:0;
+  border:0;
+}
+@media (max-width:1300px) {
+  .preheat-slide .preheat-slide-cont{
+    gap: 50px;
+  }
+}
+
+@media (max-width:991px) {
+  .preheat-slide{
+    padding: 40px 0;
+    background:#fff;
+  }
+
+  .preheat-slide .preheat-slide-icons{
+    margin-top:20px;
+  }
+
+  .preheat-slide .preheat-slide-icon{
+    width:90px;
+  }
+
+  .preheat-slide .preheat-slide-arraws{
+    display:none;
+  }
+
+  .preheat-slide .preheat-slide-msg{
+    margin-top:20px;
+  }
+ 
+  .men-diy .preheat-slide-left{
+    display: block;
+  }
+  .preheat-slide .preheat-slide-right{
+    width: 100%;
+  }
+  .preheat-slide .preheat-slide-item-title{
+    font-size: 14px;
+    margin-top: 20px;
+  }
+  .preheat-slide .preheat-slide-item-text{
+    font-size: 12px;
+    /* color: rgba(63, 54, 54, 1); */
+    margin-top: 10px;
+  }
+  .preheat-slide .preheat-slide-list{
+    gap: 10px;
+  }
+  .preheat-slide .preheat-slide-item{
+    min-width: 300px;
+  }
+  .preheat-slide .video-wrapper__play-button{
+    zoom:.6;
+  }
+  .preheat-slide .preheat-slide-cont{
+    flex-direction: column;
+    gap:30px;
+  }
+  .preheat-slide .preheat-slide-title{
+    font-size: 28px;
+  }
+  .preheat-slide .preheat-slide-text{
+    font-size: 14px;
+    margin-top:10px;
+  }
+  .hair-ads-slide .preheat-slide-left{
+    display:block;
+  }
+  .hair-ads-slide .preheat-slide-right{
+    overflow: visible;
+  }
+  .hair-ads-slide {
+    overflow:hidden;
+  }
+}
+</style>
+
+<section class="section-box">
+  <div class="preheat-slide {{ section.settings.text2 }}" style="background:{{ section.settings.bg_color }}">
+    <div class="container">
+      <div class="preheat-slide-cont to-top">
+        <div class="preheat-slide-left">
+          <div class="preheat-slide-title line-top"> {{ section.settings.text }} </div>
+          <div class="preheat-slide-text line-top">{{ section.settings.text1 }}</div>
+          <div class="preheat-slide-icons to-top">
+            {%- if section.settings.image != blank -%}
+              <img
+                loading="lazy"
+                class="preheat-slide-icon"
+                width="{{ section.settings.image.width }}"
+                height="{{ section.settings.image.height }}"
+                {% render 'image-attributes', image: section.settings.image %}
+                alt="{{ section.settings.image.alt | escape }}"
+              >
+            {%- endif -%}
+            {%- if section.settings.image1 != blank -%}
+              <img
+                loading="lazy"
+                class="preheat-slide-icon"
+                width="{{ section.settings.image1.width }}"
+                height="{{ section.settings.image1.height }}"
+                {% render 'image-attributes', image: section.settings.image1 %}
+                alt="{{ section.settings.image1.alt | escape }}"
+              >
+            {%- endif -%}
+          </div>
+          {%- if section.settings.text3 != blank -%}
+            <div class="preheat-slide-msg line-top">{{ section.settings.text3 }}</div>
+          {%- endif -%}
+        </div>
+        <div class="preheat-slide-right">
+          {%- if section.blocks.size > 2 -%}
+            <div class="preheat-slide-arraws">
+              <div class="preheat-slide-arrow preheat-slide-left-arrow"></div>
+              <div class="preheat-slide-arrow preheat-slide-right-arrow"></div>
+            </div>
+          {%- endif -%}
+          <div class="preheat-slide-img-cont">
+            <div class="preheat-slide-list">
+              {%- for block in section.blocks -%}
+                <div class="preheat-slide-item to-top">
+                  <div class="preheat-slide-img">
+                   {%- if block.settings.image != blank -%}
+                    <img
+                      loading="lazy"
+                      class="img"
+                      width="{{ block.settings.image.width }}"
+                      height="{{ block.settings.image.height }}"
+                      {% render 'image-attributes', image: block.settings.image %}
+                      alt="{{ block.settings.image.alt | escape }}"
+                    >
+                  {%- endif -%}
+                  {%- if block.settings.video != blank -%}
+                    <native-video {% if block.settings.autoplay %}autoplay{% endif %} class="preheat-slide-wrapper">
+                      {%- unless block.settings.autoplay -%}
+                        <button type="button" class="video-wrapper__play-button video-wrapper__play-button--large video-wrapper__play-button--ripple" title="{{ 'general.accessibility.play_video' | t | escape }}">
+                          {%- if block.settings.v_icon != blank -%}
+                            <img
+                              loading="lazy"
+                              class="v_img"
+                              width="{{ block.settings.v_icon.width }}"
+                              height="{{ block.settings.v_icon.height }}"
+                              {% render 'image-attributes', image: block.settings.v_icon %}
+                              alt="{{ block.settings.v_icon.alt | escape }}"
+                            >
+                          {%- endif -%}
+                        </button>
+                      {%- endunless -%}
+                      <template>
+                        {{- block.settings.video | video_tag: controls: block.settings.show_video_controls, autoplay: block.settings.autoplay, muted: block.settings.autoplay, playsinline: block.settings.autoplay, loop: true -}}
+                      </template>
+                    </native-video>
+                  {%- endif -%}
+                  </div>
+                  <div class="preheat-slide-item-title line-top">{{ block.settings.text }}</div>
+                  <div class="preheat-slide-item-text line-top">{{ block.settings.text1 }}</div>
+                </div>
+              {%- endfor -%}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+  // window.addEventListener('load', function() {
+    function preheatSlideSwiper() {
+      const container = document.querySelector('.preheat-slide');
+      const listWrapper = container.querySelector('.preheat-slide-right');
+      const list = container.querySelector('.preheat-slide-list');
+      const items = container.querySelectorAll('.preheat-slide-item');
+      const leftArrow = container.querySelector('.preheat-slide-left-arrow');
+      const rightArrow = container.querySelector('.preheat-slide-right-arrow');
+      
+      let itemWidth = 0;
+      let itemGap = 0;
+      let itemCount = items.length;
+      let translateX = 0;
+      
+      function updateLayout() {
+        // 动态获取间距
+        itemGap = window.innerWidth < 991 ? 10 : 26;
+      
+        // 设置 list 的 gap
+        list.style.gap = `${itemGap}px`;
+      
+        // 获取单项宽度 + gap
+        itemWidth = items[0].offsetWidth + itemGap;
+      
+        const wrapperWidth = listWrapper.offsetWidth;
+        const totalWidth = itemCount * itemWidth;
+      
+        // 是否超出
+        if (totalWidth <= wrapperWidth) {
+          leftArrow.style.display = 'none';
+          rightArrow.style.display = 'none';
+        } else {
+          leftArrow.style.display = 'block';
+          rightArrow.style.display = 'block';
+        }
+      
+        // 修正已滑动距离（如窗口缩小时超出范围）
+        if (translateX > totalWidth - wrapperWidth) {
+          translateX = Math.max(0, totalWidth - wrapperWidth);
+          applyTransform();
+        }
+      }
+      
+      function applyTransform() {
+        list.style.transform = `translateX(-${translateX}px)`;
+        list.style.transition = 'transform 0.5s cubic-bezier(0.645, 0.045, 0.355, 1)';
+      }
+      
+      function changeTransform(direction) {
+        translateX += itemWidth * direction;
+      
+        const wrapperWidth = listWrapper.offsetWidth;
+        const totalWidth = itemCount * itemWidth;
+      
+        if (translateX < 0) translateX = 0;
+        if (translateX > totalWidth - wrapperWidth) {
+          translateX = totalWidth - wrapperWidth;
+        }
+      
+        applyTransform();
+      }
+      
+      // 箭头
+      leftArrow.addEventListener('click', () => changeTransform(-1));
+      rightArrow.addEventListener('click', () => changeTransform(1));
+      
+      // 滑动
+      detectSwipe(listWrapper, () => changeTransform(1), () => changeTransform(-1));
+      
+      function detectSwipe(element, onSwipeLeft, onSwipeRight) {
+        let startX = 0;
+        let isTouching = false;
+      
+        const getEventX = (event) =>
+          event.touches ? event.touches[0].clientX : event.clientX;
+      
+        const handleStart = (e) => {
+          startX = getEventX(e);
+          isTouching = true;
+        };
+      
+        const handleMove = (e) => {
+          if (!isTouching) return;
+          const deltaX = getEventX(e) - startX;
+          if (Math.abs(deltaX) > 10 && e.cancelable) {
+            e.preventDefault();
+          }
+        };
+      
+        const handleEnd = (e) => {
+          if (!isTouching) return;
+          const endX = getEventX(e.changedTouches ? e.changedTouches[0] : e);
+          const deltaX = endX - startX;
+          if (deltaX > 30) onSwipeRight();
+          else if (deltaX < -30) onSwipeLeft();
+          isTouching = false;
+        };
+      
+        element.addEventListener('touchstart', handleStart, { passive: true });
+        element.addEventListener('touchmove', handleMove, { passive: false });
+        element.addEventListener('touchend', handleEnd);
+        element.addEventListener('mousedown', handleStart);
+        element.addEventListener('mousemove', handleMove);
+        element.addEventListener('mouseup', handleEnd);
+      }
+      
+      // 初始化并监听窗口缩放
+      updateLayout();
+      window.addEventListener('resize', updateLayout);
+      }
+
+
+    // if(window.innerWidth < 991) {
+      preheatSlideSwiper()
+    // }
+  // })
+</script>
+{% schema %}
+{
+  "name": "preheat-slide-reglow",
+  "settings": [
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Title"
+    },
+    {
+      "type": "text",
+      "id": "text1",
+      "label": "Text"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Icon"
+    },
+    {
+      "type": "image_picker",
+      "id": "image1",
+      "label": "Icon"
+    },
+    {
+      "type": "text",
+      "id": "text3",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "text2",
+      "label": "自定义Class"
+    },
+    {
+      "type": "color_background",
+      "id": "bg_color",
+      "label": "背景颜色",
+      "default": "#ffffff"
+    }
+  ],
+  "blocks": [
+    {
+        "type": "item",
+        "name": "item",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          },
+          {
+            "type": "video",
+            "id": "video",
+            "label": "Video",
+            "info": "Replaces the external video if both are set."
+          },
+          {
+            "type": "text",
+            "id": "text",
+            "label": "Text"
+          },
+          {
+            "type": "text",
+            "id": "text1",
+            "label": "Text"
+          },
+          {
+            "type": "checkbox",
+            "id": "autoplay",
+            "label": "Autoplay",
+            "info": "Video is muted automatically to allow autoplay.",
+            "default": true
+          },
+          {
+            "type": "checkbox",
+            "id": "show_video_controls",
+            "label": "Show video controls",
+            "info": "Only applicable with native video.",
+            "default": false
+          },
+          {
+            "type": "image_picker",
+            "id": "v_icon",
+            "label": "Video Icon"
+          }
+        ]
+      }
+  ],
+  "presets": [
+    {
+      "name": "preheat-slide-reglow",
+      "settings": {},
+      "blocks": [
+      ]
+    }
+  ]
+}
+{% endschema %}

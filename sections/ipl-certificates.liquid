@@ -4,6 +4,7 @@
   background: var(--bg-img);
   background-size: cover;
   background-repeat: no-repeat;
+  color: #fff;
 }
 
 .ipl-certificates .title-diy{
@@ -26,11 +27,15 @@
   text-align: center;
   font-size: 14px;
   line-height: 1.2;
-  color: #fff;
+  /* color: #fff; */
   border-radius: 10px;
   backdrop-filter: blur(2px);
   overflow: hidden;
   background: rgba(255, 255, 255, 0.08);
+}
+
+.ipl-certificates .ipl-certificates-item.img-box-padd0{
+  padding:0;
 }
 
 .ipl-certificates .ipl-certificates-item::before{
@@ -62,12 +67,36 @@
   width: 65%;
 }
 
+.diy-box.ipl-certificates{
+  background: #FBFAF4;
+  color: #190A0A;
+}
+  
+.diy-box.ipl-certificates .title-diy{
+  color:#190A0A;
+}
+
+.diy-box.ipl-certificates .ipl-certificates-item{
+  background: #FFF;
+}
+
+.diy-box.ipl-certificates .ipl-certificates-item::before{
+  display:none;
+}
+
+ .diy-box.ipl-certificates .ipl-certificates-item{
+    font-size:18px;
+  }
+  
 @media (max-width:1500px) {
   .ipl-certificates .ipl-certificates-list{
     gap: 40px;
   }
   .ipl-certificates .ipl-certificates-img{
     margin-bottom: 10px;
+  }
+  .diy-box.ipl-certificates .ipl-certificates-item{
+    font-size:14px;
   }
 }
 
@@ -108,6 +137,9 @@
     border-radius: 5px;
     font-size: 12px;
   }
+  .diy-box.ipl-certificates .ipl-certificates-item{
+    font-size:12px;
+  }
   .ipl-certificates .ipl-certificates-img{
     margin-bottom: 10px;
   }
@@ -117,20 +149,26 @@
 }
 </style>
 <section class="section-box">
-  <div class="ipl-certificates to-top" style="--bg-img: url({{ section.settings.image | img_url: 'original' }});--bg-img-m: url({{ section.settings.image1 | img_url: 'original' }});">
+  <div class="ipl-certificates to-top {{ section.settings.diy_class }}" style="--bg-img: url({{ section.settings.image | img_url: 'original' }});--bg-img-m: url({{ section.settings.image1 | img_url: 'original' }});">
     <div class="container">
       <h2 class="title-diy to-top">
         {{ section.settings.title }}
       </h2>
       <div class="ipl-certificates-list">
         {%- for block in section.blocks -%}
-          <div class="ipl-certificates-item to-top" style="transition-delay: 0.{{ forloop.index }}s">
-            <div class="ipl-certificates-img">
+          <div class="ipl-certificates-item to-top {% if section.settings.img_txt %}img-box-padd0{% endif %}" style="transition-delay: 0.{{ forloop.index }}s">
+            {%- if section.settings.img_txt -%}
               {%- if block.settings.image != blank -%}
                  <img loading="lazy" class="img" width="{{ block.settings.image.width }}" height="{{ block.settings.image.height }}" {% render 'image-attributes', image: block.settings.image %} alt="{{ block.settings.image.alt | escape }}" >
               {%- endif -%}
-            </div>
-            {{ block.settings.text }}
+            {%- else -%}
+              <div class="ipl-certificates-img">
+                {%- if block.settings.image != blank -%}
+                   <img loading="lazy" class="img" width="{{ block.settings.image.width }}" height="{{ block.settings.image.height }}" {% render 'image-attributes', image: block.settings.image %} alt="{{ block.settings.image.alt | escape }}" >
+                {%- endif -%}
+              </div>
+              {{ block.settings.text }}
+            {%- endif -%}
           </div>
         {%- endfor -%}
       </div>
@@ -174,6 +212,17 @@
       "type": "text",
       "id": "title",
       "label": "Title"
+    },
+    {
+      "type": "checkbox",
+      "id": "img_txt",
+      "label": "图片文字合并显示",
+      "default":false
+    },
+    {
+      "type": "text",
+      "id": "diy_class",
+      "label": "自定义class"
     }
   ],
   "presets": [

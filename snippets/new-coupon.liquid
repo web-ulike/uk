@@ -1,0 +1,85 @@
+<div class="coupon-box new-coupon">
+  <div class="coupon-cont">
+    <div class="coupon-cont-item coupon-left">
+      <div class="left-txt">
+        $100 OFF
+      </div>
+    </div>
+    <div class="coupon-cont-item">
+      <div class="code-txt">Code:ULIKEA3OT</div>
+      <div class="coupon-right copyButton" data-txt="Copied"
+      data-txt1="Copy">Copy</div>
+    </div>
+  </div>
+  <span class="cpnCode">ULIKEA3OT</span>
+</div>
+<style>
+  .new-coupon{
+    display: flex;
+    justify-content: flex-start;
+  }
+  .new-coupon .coupon-cont-item{
+    padding:12px 28px 12px 12px;
+  }
+
+  .new-coupon .coupon-cont{
+    background: url(https://cdn.shopify.com/s/files/1/0740/5882/6015/files/Vector.jpg) no-repeat;
+    background-size: cover;
+    border-radius: 10px;
+  }
+  .new-coupon .coupon-cont-item{
+    gap:13px;
+  }
+  .new-coupon .copyButton{
+    text-decoration: underline;
+  }
+  .coupon-box .coupon-left{
+    border-right: 1px dashed #fff;
+    position: relative;
+  }
+
+  .coupon-box .coupon-left::before,.coupon-box .coupon-left::after{
+    content: '';
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #fff;
+    right: 0;
+  }
+  .coupon-box .coupon-left::before{
+    top: 0;
+    transform: translate(50%, -50%);
+  }
+  
+  .coupon-box .coupon-left::after{
+    bottom: 0;
+    transform: translate(50%, 50%);
+  }
+
+  @media screen and (max-width: 640px){
+    .product-diy .coupon-box .coupon-left{
+      flex: none;
+      min-width: 42%;
+    }
+    .new-coupon .coupon-cont-item{
+      padding:12px;
+    }
+  }
+  
+</style>
+<script>
+  document.querySelector('.copyButton').addEventListener('click', function () {
+    let textToCopy = document.querySelector('.cpnCode');
+    let range = document.createRange();
+    range.selectNode(textToCopy);
+    window.getSelection().removeAllRanges(); // 清除之前的选区
+    window.getSelection().addRange(range);
+    document.execCommand('copy');
+    window.getSelection().removeAllRanges(); // 清除选区
+    this.innerHTML = this.getAttribute('data-txt');
+    setTimeout(() => {
+      this.innerHTML = this.getAttribute('data-txt1');
+    }, 2000);
+  });
+</script>

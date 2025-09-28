@@ -16,13 +16,24 @@
     align-items: center;
     font-size: 16px;
     color: #000;
-    font-weight: bold;
+    font-family: var(--heading-font-family);
+    /* font-weight: bold; */
   }
   .shop-adv .shop-adv-item img{
     display: block;
     margin: 0;
     margin-right: 20px;
   }
+  .shop-adv .shop-adv-item .shop-adv-txt{
+    font-size: 16px;
+    line-height: 1.5;
+    text-decoration: underline;
+  }
+
+  .shop-adv .shop-adv-item .shop-adv-txt:hover{
+    text-decoration: underline;
+  }
+
 @media (min-width:992px) {
   .product-sticky-form{
     display:none !important;
@@ -57,29 +68,120 @@
   }
 
   @media (max-width:991px) {
-    /* .shop-adv-dot{
-        display: flex;
-    } */
+    .shop-adv .shop-adv-list {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr); /* 每行2列，等宽 */
+      gap: 10px; /* 可选：设置行列间距 */
+    }
     .shop-adv .shop-adv-item{
-        width: 33.333%;
+        width: 100%;
         flex-shrink: 0;
-        padding: 0 10px;
+        padding: 0 0px;
         margin-right: 0px;
-        justify-content: center;
-        flex-direction: column;
-        text-align: center;
+        text-align: left;
         line-height: 1.2;
         font-size: 14px;
+        gap: 6px;
     }
-    .shop-adv .shop-adv-item:nth-child(4){
-      display: none;
+    .shop-adv .shop-adv-item .shop-adv-txt {
+      font-size: 14px;
+      line-height: 1.2;
     }
+
     .shop-adv .shop-adv-item img{
-      margin-right: 0;
-      margin-bottom: 8px;
-      width: 45px;
+      margin: 0;
+      width: 24px;
     }
   }
+
+   .safeguards-new-msg {
+      color: #fff;
+      font-size: 18px;
+      line-height: 1.33;
+      padding: 12px;
+      position: fixed;
+      z-index: 2;
+      background: rgba(25, 10, 10, 0.8);
+      display: none;
+      pointer-events: none;
+    }
+
+.safeguards-new-msg::before {
+  content: '';
+  position: absolute;
+  top: -31.5px;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border: 16px solid transparent;
+  border-color: transparent transparent rgba(25, 10, 10, 0.8) transparent;
+  transform: translateX(-50%);
+}
+
+.safeguards-new-msg .safeguards-new-msg-top {
+  height: 50px;
+  display: none;
+  align-items: center;
+  color: #161823;
+  font-size: 14px;
+  line-height: 1.42;
+  position: relative;
+  border-bottom: 1px solid rgba(22, 24, 35, 0.12);
+}
+
+.safeguards-new-msg .safeguards-new-msg-close {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 16px;
+  cursor: pointer;
+  width: 24px;
+}
+
+.safeguards-new-msg .safeguards-new-msg-close svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+@media (max-width: 640px) {
+  .safeguards-new-msg {
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 99;
+    background: rgba(0, 0, 0, 0.5);
+    pointer-events: inherit;
+  }
+  .safeguards-new-msg::before {
+    display: none;
+  }
+  .safeguards-new-msg .safeguards-new-msg-top {
+    display: flex;
+    color: #161823;
+    font-size: 14px;
+    line-height: 1.4;
+    justify-content: center;
+    padding: 0 15px;
+  }
+  .safeguards-new-msg .safeguards-new-msg-cont {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: #fff;
+    font-size: 14px;
+    color: #625959;
+    border-radius: 8px 8px 0px 0px;
+  }
+  .safeguards-new-msg .safeguards-new-msg-txt {
+    padding: 16px;
+    padding-bottom: 30px;
+    line-height: 1.4;
+  }
+}
+
 </style>
 <section class="section-box">
   <div class="shop-adv to-top {{ section.settings.class_text }}" style="background: {{ section.settings.background }};">
@@ -89,7 +191,7 @@
           <div class="shop-adv-item to-top" style="transition-delay: 0.{{forloop.index}}s">
             <img loading="lazy" width="{{ block.settings.image.width }}" height="{{ block.settings.image.height }}" {%
               render 'image-attributes' , image: block.settings.image %} alt="{{ block.settings.image.alt | escape }}">
-            <div class="shop-adv-txt">{{ block.settings.text }}</div>
+            <div class="shop-adv-txt"  {% if block.settings.text2 != blank %}data-txt="{{ block.settings.text2 }}"{% endif %} >{{ block.settings.text }}</div>
           </div>
         {%- endfor -%}
       </div>
@@ -100,144 +202,64 @@
       </div>
     </div>
   </div>
+
+  <div class="safeguards-new-msg">
+      <div class="safeguards-new-msg-cont">
+        <div class="safeguards-new-msg-top">
+          <span></span>
+          <div class="safeguards-new-msg-close">
+            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 25 25" fill="none">
+              <path fill-rule="evenodd" clip-rule="evenodd"
+                d="M16.8417 7.44357C16.6464 7.2483 16.3298 7.2483 16.1346 7.44357L12.4951 11.0831L8.85554 7.44357C8.66028 7.2483 8.3437 7.2483 8.14844 7.44357L7.79488 7.79712C7.59962 7.99238 7.59962 8.30896 7.79488 8.50423L11.4344 12.1437L7.79488 15.7833C7.59962 15.9785 7.59962 16.2951 7.79488 16.4904L8.14844 16.8439C8.3437 17.0392 8.66028 17.0392 8.85554 16.8439L12.4951 13.2044L16.1346 16.8439C16.3298 17.0392 16.6464 17.0392 16.8417 16.8439L17.1952 16.4904C17.3905 16.2951 17.3905 15.9785 17.1952 15.7833L13.5557 12.1437L17.1952 8.50423C17.3905 8.30896 17.3905 7.99238 17.1952 7.79712L16.8417 7.44357Z"
+                fill="#161823" />
+            </svg>
+          </div>
+        </div>
+        <div class="safeguards-new-msg-txt">
+        </div>
+      </div>
+  </div>
+
+
 </section>
 <script>
-  function mediaRealSliderShop(name){
-    let $p=$(name)
-    let $list = $p.find('.shop-adv-list')
-    let length = $list.find('.shop-adv-item').length
-    let index = -2 //[0,-length-2]
-    let isLeftBtn = 1 //0左 1右
-    let timer = null
-    let timers = null
-    let dateTb = 0
-    let dateTs = 0
-    if(length<2) return
+  window.addEventListener('load', function () {
+    if (window.innerWidth > 641) {
+      $('#shopify-section-{{ section.id }} .shop-adv-txt').hover(function (e) {
+        let txt = $(this).attr('data-txt');
+        if (!txt) return;
+        let pd = $(this)[0].getBoundingClientRect()
+        var left = pd.left - 100;
+        var top = pd.top + pd.height + 20;
+        var width = 300;
+        $(".safeguards-new-msg .safeguards-new-msg-txt").html(txt);
+        $(".safeguards-new-msg").css({
+          "left": left + 'px',
+          "top": top + 'px',
+          "width": width + 'px'
+        }).show()
+      }, function () {
+        $(".safeguards-new-msg").hide()
+      });
 
-    $list.html(
-        $list.find('.shop-adv-item')[length-2].outerHTML+
-        $list.find('.shop-adv-item')[length-1].outerHTML+
-        $list.html()+
-        $list.find('.shop-adv-item')[0].outerHTML+
-        $list.find('.shop-adv-item')[1].outerHTML)
-    skewTransform(true)
-    changeDot()
-    $p.find('.shop-adv-dot-item').click(function() {
-        let sIndex = $(this).index()
-        if(+new Date() - dateTb<600) return
-        dateTb = +new Date()
-        index = -sIndex-2
-        console.log(index);
-        changeLeft()
-    })
-    function skewTransform(auto,tIndex = index,skew=0){
-        let width = $list.find('.shop-adv-item').eq(Math.abs(tIndex)-1)[0].clientWidth
-        let translateX = (width + 60) * tIndex
-        if(auto){
-            translateX+=skew
-            $list.css({
-                'transform': 'translateX(' + translateX  + 'px)',
-                'transition': ' all 0s ease'
-            })
-        }else{
-            $list.css({
-                'transform': 'translateX(' + translateX + 'px)',
-                'transition': ' all .6s ease'
-            })
-        }
+      $(window).scroll(function () {
+        $(".safeguards-new-msg").hide()
+      })
+    } else {
+      $('#shopify-section-{{ section.id }} .shop-adv-txt').click(function () {
+        let txt = $(this).attr('data-txt');
+        let title = $(this).text();
+        if (!txt) return;
+        $(".safeguards-new-msg .safeguards-new-msg-top span").text(title);
+        $(".safeguards-new-msg .safeguards-new-msg-txt").html(txt);
+        $(".safeguards-new-msg").show()
+      })
+
+      $(".safeguards-new-msg,.safeguards-new-msg .safeguards-new-msg-close").click(function () {
+        $(".safeguards-new-msg").hide()
+      })
     }
-    function changeLeft(skew) {
-        if(isLeftBtn && index == (-length-2)){
-            skewTransform(true,-1,skew)
-            index = -2
-        }
-
-        if(!isLeftBtn && index == 0){
-            skewTransform(true,-length-1,skew)
-            index = -length
-        }
-        setTimeout(() => {
-            skewTransform()
-        }, 10);
-        changeDot()
-}
-    function changeDot(){
-        $p.find('.shop-adv-dot-item').removeClass('active')
-        setTimeout(() => {
-            $p.find('.shop-adv-dot-item').each(function(){
-            let sIndex = $(this).index()
-            if(sIndex==(Math.abs(index)-2)){
-                $(this).addClass('active')
-            }
-        })
-        if(index==-1){
-            $p.find('.shop-adv-dot-item').eq(length-1).addClass('active')
-        }
-        }, 20);
-    }
-    function getTranslateX($element) {
-        var matrix = $element.css('transform').replace(/[^0-9\-.,]/g, '').split(',');
-        var translateX = parseFloat(matrix[12] || matrix[4]);
-        return translateX;
-    }
-    function initMobileCarousel() {
-        let startX = 0;
-        let listTar = 0
-        let startY = 0;
-        let isScrolling = false;
-
-        $list.on('touchstart', function(e) {
-            var touch = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
-            startX = touch.clientX;
-            startY = touch.clientY;
-            isScrolling = false;
-            listTar = getTranslateX($list)
-            clearInterval(timer)
-            
-        });
-
-        $list.on('touchmove', function(e) {
-            var touch = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
-            var diffX = touch.clientX - startX;
-            var diffY = touch.clientY - startY;
-            var translateX = listTar + diffX;
-            if(!isScrolling){
-                if (Math.abs(diffX) > Math.abs(diffY)) {
-                    isScrolling = true;
-                }
-            }
-            
-            if(isScrolling&&e.cancelable){
-                e.preventDefault();
-                $list.css({'transform': 'translateX(' + translateX + 'px)',    'transition': 'all 0s ease'});
-            }
-        });
-
-        $list.on('touchend', function(e) {
-            if (isScrolling) {
-                var touch = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
-                var diffX = touch.clientX - startX;
-                if (Math.abs(diffX) > window.innerWidth * 0.05) {
-                    if (diffX > 0) {
-                        index = index+1;
-                        isLeftBtn = 0
-                    } else {
-                        index = index-1;
-                        isLeftBtn = 1
-                    }
-                }
-                changeLeft(diffX)
-            }
-            isScrolling = false;
-        });
-    }
-    initMobileCarousel()
-}
-// $(window).load(function(){
-  // if(window.innerWidth<991){
-  //   mediaRealSliderShop('#shopify-section-{{ section.id }}')
-  // }  
-// })
+  })
 </script>
 {% schema %}
 {
@@ -257,6 +279,11 @@
         "type": "text",
         "id": "text",
         "label": "Text"
+      },
+      {
+        "type": "text",
+        "id": "text2",
+        "label": "浮窗信息"
       }
     ]
   }

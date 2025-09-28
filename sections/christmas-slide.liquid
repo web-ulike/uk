@@ -1,0 +1,315 @@
+<style>
+.christmas-slide{
+  padding: 100px 0 40px 0;
+  overflow: hidden;
+}
+
+.christmas-slide .title-img{
+  display: block;
+  margin: 0 auto;
+  margin-bottom: 60px;
+}
+
+.christmas-slide .christmas-slide-box{
+  position: relative;
+}
+
+.christmas-slide .christmas-slide-list{
+  display: flex;
+}
+
+.christmas-slide .christmas-slide-item{
+  width: calc(33.333% - 26px);
+  margin-right: 39px;
+}
+
+.christmas-slide .christmas-slide-item:last-child{
+  margin-right: 0;
+}
+
+.christmas-slide .christmas-slide-item .img{
+  display: block;
+  width: 100%;
+}
+
+.christmas-slide .christmas-slide-text{
+  margin-top: 30px;
+  color: #000;
+}
+
+.christmas-slide .christmas-slide-title{
+  font-size: 28px;
+  font-family: var(--heading-font-family);
+  line-height: 1.5;
+}
+
+.christmas-slide .christmas-slide-sub{
+  font-size: 16px;
+  line-height: 1.5;
+  margin-top: 10px;
+}
+
+.christmas-slide .christmas-slide-arrow {
+  position: absolute;
+  display: none;
+  justify-content: space-between;
+  left: 50%;
+  top: 35%;
+  transform: translateX(-50%);
+  z-index: 3;
+  width: calc(100% + 40px);
+}
+
+.christmas-slide .christmas-slide-arrow-item {
+  cursor: pointer;
+  overflow: hidden;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  background: rgba(0, 0, 0, .25);
+  position: relative;
+  transition: all 0.4s ease;
+}
+
+.christmas-slide .christmas-slide-arrow-item::before {
+  position: absolute;
+  content: "";
+  display: block;
+  width: 12px;
+  height: 12px;
+  border-top: 2px solid #fff;
+  border-left: 2px solid #fff;
+  top: 50%;
+  left: 50%;
+  margin-left: 2px;
+  transform: translate(-50%, -50%) rotate(-45deg);
+  transition: all 0.4s ease;
+}
+
+.christmas-slide .christmas-slide-arrow-item:nth-child(2) {
+  transform: scale(-1, -1);
+}
+
+.christmas-slide .christmas-slide-arrow-item:hover {
+  background: rgba(0, 0, 0, .5);
+}
+
+.christmas-slide .christmas-slide-dot{
+  display: none;
+  align-items: center;
+  justify-content: center;
+  margin-top: 40px;
+}
+
+.christmas-slide .christmas-slide-dot-item{
+  width: 5px;
+  height: 5px;
+  background: #D9D9D9;
+  margin: 0 5px;
+}
+
+.christmas-slide .christmas-slide-dot-item.active{
+  background: #7A7A7A;
+}
+
+@media (max-width:1200px) {
+  .christmas-slide .christmas-slide-text{
+    margin-top: 20px;
+  }
+  .christmas-slide .christmas-slide-title{
+    font-size: 24px;
+    line-height: 1.3;
+  }
+  .christmas-slide .christmas-slide-sub{
+    font-size: 14px;
+    line-height: 1.3;
+  }
+}
+
+@media (max-width:991px) {
+  .christmas-slide{
+    padding: 80px 0;
+  }
+  .christmas-slide .christmas-slide-title{
+    font-size: 18px;
+  }
+}
+
+@media (max-width:768px) {
+  .christmas-slide .christmas-slide-item{
+    width: 100%;
+    flex-shrink: 0;
+  }
+  .christmas-slide .christmas-slide-text{
+    text-align: center;
+  }
+  .christmas-slide .christmas-slide-arrow,.christmas-slide .christmas-slide-dot{
+    display: flex;
+  }
+}
+</style>
+<section class="section-box">
+  <div class="christmas-slide">
+    <div class="container">
+      {%- if section.settings.image != blank -%}
+        <img loading="lazy" class="title-img to-top" width="{{ section.settings.image.width }}" height="{{ section.settings.image.height }}" {% render 'image-attributes', image: section.settings.image %} alt="{{ section.settings.image.alt | escape }}" >
+      {%- endif -%}
+      <div class="christmas-slide-box">
+        <div class="christmas-slide-arrow to-top">
+          <div class="christmas-slide-arrow-item"></div>
+          <div class="christmas-slide-arrow-item"></div>
+        </div>
+        <div class="christmas-slide-list">
+          {%- for block in section.blocks -%}              
+            <div class="christmas-slide-item to-top" style="transition-delay: 0.{{ forloop.index }}s">
+              {%- if block.settings.image != blank -%}
+                  <img loading="lazy" class="img" width="{{ block.settings.image.width }}" height="{{ block.settings.image.height }}" {% render 'image-attributes', image: block.settings.image %} alt="{{ block.settings.image.alt | escape }}" >
+                {%- endif -%}
+              <div class="christmas-slide-text">
+                <div class="christmas-slide-title">{{ block.settings.text }}</div>
+                <div class="christmas-slide-sub">{{ block.settings.text1 }}</div>
+              </div>
+            </div>
+          {%- endfor -%}
+        </div>
+        <div class="christmas-slide-dot to-top">
+          <div class="christmas-slide-dot-item active"></div>
+          <div class="christmas-slide-dot-item"></div>
+          <div class="christmas-slide-dot-item"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+  window.addEventListener('load',function(){
+    function christmasSlide(){
+      let $p=$('.christmas-slide')
+      let $box = $p.find('.christmas-slide-box')
+      let $list = $p.find('.christmas-slide-list')
+      let length = $list.find('.christmas-slide-item').length
+      let width = $box[0].offsetWidth
+      let index = 0
+      let timer = null
+      
+      function changeTransform(){
+        if(index<0) index = length-1
+        if(index == length) index = 0
+        $list.css({
+          transform: 'translateX(-' + (width + 39) * index + 'px)',
+          transition: 'all 1s cubic-bezier(0.645, 0.045, 0.355, 1) 0s',
+        })
+        $p.find('.christmas-slide-dot-item').removeClass('active').eq(index).addClass('active')
+      }
+
+      $p.find('.christmas-slide-arrow-item').click(function(e){
+        let sindex = $(this).index()
+
+        e.stopPropagation()
+        index += sindex?1:-1
+        clearInterval(timer)
+        changeTransform()
+        timer = setInterval(() => {
+          index +=1
+          changeTransform()
+        }, 5000);
+      })
+
+      $p.find('.christmas-slide-dot-item').click(function(){
+        index = $(this).index()
+        clearInterval(timer)
+        changeTransform()
+        timer = setInterval(() => {
+          index +=1
+          changeTransform()
+        }, 5000);
+      })
+
+      function detectSwipe(name, callback) {
+        let element = document.querySelector(name)
+          let startX;
+        
+          element.addEventListener('touchstart', function (e) {
+            clearInterval(timer)
+            startX = e.touches[0].clientX;
+          });
+        
+          element.addEventListener('touchend', function (e) {
+            const endX = e.changedTouches[0].clientX;
+            const direction = getSwipeDirection(startX, endX);
+            callback(direction);
+          });
+        
+          function getSwipeDirection(startX, endX) {
+            const threshold = 10;
+        
+            if (endX - startX > threshold) {
+              return 0;
+            } else if (startX - endX > threshold) {
+              return 1;
+            }
+        
+            return 'none';
+          }
+        }
+
+        detectSwipe('.christmas-slide .christmas-slide-list', function (direction) {
+          index += direction?1:-1
+          changeTransform()
+          timer = setInterval(() => {
+            index +=1
+            changeTransform()
+          }, 5000);
+        });
+
+      timer = setInterval(() => {
+        index +=1
+        changeTransform()
+      }, 5000);
+    }
+    if(window.innerWidth<768){
+      christmasSlide()
+    }
+  })
+</script>
+{% schema %}
+{
+"name": "christmas-slide",
+"blocks": [
+  {
+    "name": "item",
+    "type": "item",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "image",
+        "label": "Image"
+      },
+      {
+        "type": "text",
+        "id": "text",
+        "label": "Text"
+      },
+      {
+        "type": "text",
+        "id": "text1",
+        "label": "Text"
+      }
+    ]
+  }
+],
+"settings": [
+  {
+    "type": "image_picker",
+    "id": "image",
+    "label": "Image"
+  }
+],
+  "presets": [
+  {
+    "name": "christmas-slide",
+    "blocks": []
+  }
+]
+}
+{% endschema %}

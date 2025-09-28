@@ -1,0 +1,638 @@
+<style>
+.prime-compare {
+  padding: 90px 0;
+  background: linear-gradient(180deg, #f0efff 6.66%, #fff 96.76%);
+}
+
+.prime-compare .prime-compare-title {
+  color: #190a0a;
+  font-size: 48px;
+  line-height: 1.25;
+  text-align: center;
+}
+
+.prime-compare .prime-compare-cont {
+  margin: 0 auto;
+  margin-top: 70px;
+  max-width: 1042px;
+}
+
+.prime-compare .prime-compare-table {
+  width: 100%;
+  text-align: center;
+  table-layout: fixed;
+}
+.prime-compare .prime-compare-table tr {
+  border-bottom: 1px solid #d9d9d9;
+}
+.prime-compare .prime-compare-table td {
+  padding: 24px 15px;
+  position: relative;
+}
+.prime-compare .prime-compare-table .img {
+  display: none;
+  width: 113px;
+  margin: 0 auto;
+}
+
+.prime-compare .prime-compare-table .active {
+  display: block;
+}
+
+.prime-compare .prime-compare-top {
+  color: #190a0a;
+  font-size: 28px;
+  line-height: 1.25;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  margin-top: 17px;
+}
+
+.prime-compare .prime-compare-red {
+  color: #e0004d;
+}
+.prime-compare .popup-tap {
+  cursor: pointer;
+}
+.prime-compare .prime-compare-popup {
+  display: none;
+  padding: 26px 30px;
+  position: absolute;
+  background: #fff;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 3;
+  margin-top: 15px;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0px 3px 14.1px 0px #d1d2e3;
+}
+.prime-compare .prime-compare-popup-item {
+  color: #3f3636;
+  font-size: 28px;
+  line-height: 1;
+  cursor: pointer;
+}
+.prime-compare .prime-compare-popup-item:not(:last-child) {
+  margin-bottom: 25px;
+}
+.prime-compare .prime-compare-popup-item:hover {
+  color: #000;
+}
+.prime-compare .prime-compare-popup-item.active {
+  color: #000;
+  text-decoration: underline;
+}
+.prime-compare .prime-compare-txt {
+  color: #190a0a;
+  font-size: 18px;
+  line-height: 1.4;
+  font-family: var(--heading-font-family);
+}
+
+.prime-compare .prime-compare-list-item {
+  display: none;
+  color: #190a0a;
+  font-size: 20px;
+}
+
+.prime-compare .prime-compare-list-item.active {
+  display: block;
+}
+
+.prime-compare .prime-compare-msg {
+  color: #3f3636;
+  font-size: 12px;
+  line-height: 1.5;
+  opacity: 0.65;
+  margin-top: 30px;
+}
+
+.prime-compare .prime-compare-icon {
+  font-size: 22px;
+}
+
+.prime-compare .prime-compare-icon.prime-compare-red {
+  font-family: var(--heading-font-family);
+}
+
+@media (max-width: 991px) {
+  .prime-compare .prime-compare-title {
+    font-size: 24px;
+  }
+  .prime-compare .prime-compare-cont {
+    margin-top: 35px;
+  }
+  .prime-compare .prime-compare-table td {
+    padding: 18px 15px;
+  }
+  .prime-compare .prime-compare-table td svg {
+    width: 22px;
+  }
+  .prime-compare .prime-compare-table .img {
+    width: 70px;
+  }
+  .prime-compare .prime-compare-txt {
+    font-size: 14px;
+    line-height: 1.2;
+  }
+  .prime-compare .prime-compare-top {
+    font-size: 18px;
+    margin-top: 10px;
+  }
+  .prime-compare .prime-compare-list-item,
+  .prime-compare .prime-compare-icon {
+    font-size: 14px;
+    line-height: 1.2;
+  }
+  .prime-compare .prime-compare-msg {
+    margin-top: 16px;
+  }
+  .prime-compare .prime-compare-popup {
+    padding: 20px 18px;
+  }
+  .prime-compare .prime-compare-popup-item{
+    font-size: 19px;
+  }
+  .prime-compare .prime-compare-popup-item:not(:last-child) {
+    margin-bottom: 15px;
+  }
+  
+}
+
+@media (max-width: 640px) {
+  .prime-compare .prime-compare-table {
+    width: calc(100% + 48px);
+    margin-left: -24px;
+  }
+}
+</style>
+   <section>
+     <div class="prime-compare to-top" style="{{ section.settings.bg_color }}">
+      <div class="container">
+        <div class="prime-compare-title to-top">
+          {{ section.settings.title }}
+        </div>
+        <div class="prime-compare-cont to-top">
+          <table class="prime-compare-table">
+            <tbody>
+              <tr>
+                <td>
+                </td>
+                <td>
+                  <div class="prime-compare-img">
+                    {%- for block in section.blocks -%}
+                      {%- if forloop.index == 1 -%}
+                        {%- if block.settings.img != blank -%}
+                           <img class="img active" src="{{ block.settings.img | image_url }}" width="" height="" alt="{{ block.settings.img | escape }}"/>
+                        {%- endif -%}
+                        <div class="prime-compare-top prime-compare-red">{{ block.settings.text }}</div>
+                      {%- endif -%}
+                    {%- endfor -%}
+                  </div>
+                </td>
+                <td>
+                  <div class="prime-compare-img">
+                    <div class="img-list">
+                      {%- for block in section.blocks -%}
+                        {%- if forloop.index > 1 -%}
+                          {%- if block.settings.img != blank -%}
+                             <img class="img {% if forloop.index == 2 %}active{% endif %}" src="{{ block.settings.img | image_url }}" width="" height="" alt="{{ block.settings.img | escape }}"/>
+                          {%- endif -%}
+                        {%- endif -%}
+                      {%- endfor -%}
+                    </div>
+                    <div class="prime-compare-top popup-tap">
+                      <span></span>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="27" height="27" viewBox="0 0 27 27" fill="none">
+                        <path d="M21.9386 10.1278C18.618 13.4484 13.4959 18.56 13.4959 18.56L5.06366 10.1278"
+                          stroke="#272724" stroke-width="2.07218" stroke-linecap="round" stroke-linejoin="round" />
+                      </svg>
+                    </div>
+                    <div class="prime-compare-popup">
+                      {%- for block in section.blocks -%}
+                        {%- if forloop.index > 1 -%}
+                          <div class="prime-compare-popup-item {% if forloop.index == 2 %}active{% endif %}">{{ block.settings.text }}</div>
+                        {%- endif -%}
+                      {%- endfor -%}
+                    </div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="prime-compare-txt">{{ section.settings.text }}</div>
+                </td>
+                <td>
+                  <div class="prime-compare-icon">
+                    {%- for block in section.blocks -%}
+                        {%- if forloop.index == 1 -%}
+                          {% if block.settings.text1 %}
+                            <svg xmlns="http://www.w3.org/2000/svg" width="31" height="31" viewBox="0 0 31 31" fill="none">
+                              <path d="M3.00006 17.8571L9.66673 25L28.3334 5" stroke="#E0004D" stroke-width="2"
+                                stroke-linecap="round" />
+                            </svg>
+                          {% else %}
+                            <svg xmlns="http://www.w3.org/2000/svg" width="31" height="31" viewBox="0 0 31 31" fill="none">
+                              <g clip-path="url(#clip0_2979_3732)">
+                                <path
+                                  d="M22.2248 8.41227L15.704 14.9331L9.18587 8.41494C8.85836 8.08743 8.32317 8.0901 7.99833 8.41494C7.67083 8.74244 7.67349 9.27763 7.99833 9.60247L14.5165 16.1206L7.99833 22.6387C7.67083 22.9662 7.67349 23.5014 7.99833 23.8263C8.32584 24.1538 8.86103 24.1511 9.18587 23.8263L15.704 17.3081L22.2248 23.8289C22.5523 24.1564 23.0875 24.1538 23.4123 23.8289C23.7398 23.5014 23.7372 22.9662 23.4123 22.6414L16.8915 16.1206L23.4097 9.60247C23.7372 9.27497 23.7345 8.73978 23.4123 8.41227C23.0848 8.08477 22.5496 8.08743 22.2248 8.41227Z"
+                                  fill="#3F3636" />
+                              </g>
+                              <defs>
+                                <clipPath id="clip0_2979_3732">
+                                  <rect width="31" height="31" fill="white" />
+                                </clipPath>
+                              </defs>
+                            </svg>
+                          {% endif %}
+                        {%- endif -%}
+                      {%- endfor -%}
+                  </div>
+                </td>
+                <td>
+                  <div class="prime-compare-icon">
+                    <div class="prime-compare-list">
+                      {%- for block in section.blocks -%}
+                        {%- if forloop.index > 1 -%}
+                          <div class="prime-compare-list-item {% if forloop.index == 2 %}active{% endif %}">
+                          {% if block.settings.text1 %}
+                            <svg xmlns="http://www.w3.org/2000/svg" width="31" height="31" viewBox="0 0 31 31" fill="none">
+                              <path d="M3.00006 17.8571L9.66673 25L28.3334 5" stroke="#3F3636" stroke-width="2"
+                                stroke-linecap="round" />
+                            </svg>
+                          {% else %}
+                            <svg xmlns="http://www.w3.org/2000/svg" width="31" height="31" viewBox="0 0 31 31" fill="none">
+                              <g clip-path="url(#clip0_2979_3732)">
+                                <path
+                                  d="M22.2248 8.41227L15.704 14.9331L9.18587 8.41494C8.85836 8.08743 8.32317 8.0901 7.99833 8.41494C7.67083 8.74244 7.67349 9.27763 7.99833 9.60247L14.5165 16.1206L7.99833 22.6387C7.67083 22.9662 7.67349 23.5014 7.99833 23.8263C8.32584 24.1538 8.86103 24.1511 9.18587 23.8263L15.704 17.3081L22.2248 23.8289C22.5523 24.1564 23.0875 24.1538 23.4123 23.8289C23.7398 23.5014 23.7372 22.9662 23.4123 22.6414L16.8915 16.1206L23.4097 9.60247C23.7372 9.27497 23.7345 8.73978 23.4123 8.41227C23.0848 8.08477 22.5496 8.08743 22.2248 8.41227Z"
+                                  fill="#3F3636" />
+                              </g>
+                              <defs>
+                                <clipPath id="clip0_2979_3732">
+                                  <rect width="31" height="31" fill="white" />
+                                </clipPath>
+                              </defs>
+                            </svg>
+                          {% endif %}
+                          </div>
+                        {%- endif -%}
+                      {%- endfor -%}
+                    </div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="prime-compare-txt">
+                    {{ section.settings.text1 }}
+                  </div>
+                </td>
+                <td>
+                  <div class="prime-compare-icon">
+                    {%- for block in section.blocks -%}
+                        {%- if forloop.index == 1 -%}
+                          {% if block.settings.text2 %}
+                            <svg xmlns="http://www.w3.org/2000/svg" width="31" height="31" viewBox="0 0 31 31" fill="none">
+                              <path d="M3.00006 17.8571L9.66673 25L28.3334 5" stroke="#E0004D" stroke-width="2"
+                                stroke-linecap="round" />
+                            </svg>
+                          {% else %}
+                            <svg xmlns="http://www.w3.org/2000/svg" width="31" height="31" viewBox="0 0 31 31" fill="none">
+                              <g clip-path="url(#clip0_2979_3732)">
+                                <path
+                                  d="M22.2248 8.41227L15.704 14.9331L9.18587 8.41494C8.85836 8.08743 8.32317 8.0901 7.99833 8.41494C7.67083 8.74244 7.67349 9.27763 7.99833 9.60247L14.5165 16.1206L7.99833 22.6387C7.67083 22.9662 7.67349 23.5014 7.99833 23.8263C8.32584 24.1538 8.86103 24.1511 9.18587 23.8263L15.704 17.3081L22.2248 23.8289C22.5523 24.1564 23.0875 24.1538 23.4123 23.8289C23.7398 23.5014 23.7372 22.9662 23.4123 22.6414L16.8915 16.1206L23.4097 9.60247C23.7372 9.27497 23.7345 8.73978 23.4123 8.41227C23.0848 8.08477 22.5496 8.08743 22.2248 8.41227Z"
+                                  fill="#3F3636" />
+                              </g>
+                              <defs>
+                                <clipPath id="clip0_2979_3732">
+                                  <rect width="31" height="31" fill="white" />
+                                </clipPath>
+                              </defs>
+                            </svg>
+                          {% endif %}
+                        {%- endif -%}
+                      {%- endfor -%}
+                  </div>
+                </td>
+                <td>
+                  <div class="prime-compare-icon">
+                    <div class="prime-compare-list">
+                      {%- for block in section.blocks -%}
+                        {%- if forloop.index > 1 -%}
+                          <div class="prime-compare-list-item {% if forloop.index == 2 %}active{% endif %}">
+                          {% if block.settings.text2 %}
+                            <svg xmlns="http://www.w3.org/2000/svg" width="31" height="31" viewBox="0 0 31 31" fill="none">
+                              <path d="M3.00006 17.8571L9.66673 25L28.3334 5" stroke="#3F3636" stroke-width="2"
+                                stroke-linecap="round" />
+                            </svg>
+                          {% else %}
+                            <svg xmlns="http://www.w3.org/2000/svg" width="31" height="31" viewBox="0 0 31 31" fill="none">
+                              <g clip-path="url(#clip0_2979_3732)">
+                                <path
+                                  d="M22.2248 8.41227L15.704 14.9331L9.18587 8.41494C8.85836 8.08743 8.32317 8.0901 7.99833 8.41494C7.67083 8.74244 7.67349 9.27763 7.99833 9.60247L14.5165 16.1206L7.99833 22.6387C7.67083 22.9662 7.67349 23.5014 7.99833 23.8263C8.32584 24.1538 8.86103 24.1511 9.18587 23.8263L15.704 17.3081L22.2248 23.8289C22.5523 24.1564 23.0875 24.1538 23.4123 23.8289C23.7398 23.5014 23.7372 22.9662 23.4123 22.6414L16.8915 16.1206L23.4097 9.60247C23.7372 9.27497 23.7345 8.73978 23.4123 8.41227C23.0848 8.08477 22.5496 8.08743 22.2248 8.41227Z"
+                                  fill="#3F3636" />
+                              </g>
+                              <defs>
+                                <clipPath id="clip0_2979_3732">
+                                  <rect width="31" height="31" fill="white" />
+                                </clipPath>
+                              </defs>
+                            </svg>
+                          {% endif %}
+                          </div>
+                        {%- endif -%}
+                      {%- endfor -%}
+                    </div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="prime-compare-txt">
+                    {{ section.settings.text2 }}
+                  </div>
+                </td>
+                <td>
+                  <div class="prime-compare-icon">
+                    {%- for block in section.blocks -%}
+                        {%- if forloop.index == 1 -%}
+                          {% if block.settings.text3 %}
+                            <svg xmlns="http://www.w3.org/2000/svg" width="31" height="31" viewBox="0 0 31 31" fill="none">
+                              <path d="M3.00006 17.8571L9.66673 25L28.3334 5" stroke="#E0004D" stroke-width="2"
+                                stroke-linecap="round" />
+                            </svg>
+                          {% else %}
+                            <svg xmlns="http://www.w3.org/2000/svg" width="31" height="31" viewBox="0 0 31 31" fill="none">
+                              <g clip-path="url(#clip0_2979_3732)">
+                                <path
+                                  d="M22.2248 8.41227L15.704 14.9331L9.18587 8.41494C8.85836 8.08743 8.32317 8.0901 7.99833 8.41494C7.67083 8.74244 7.67349 9.27763 7.99833 9.60247L14.5165 16.1206L7.99833 22.6387C7.67083 22.9662 7.67349 23.5014 7.99833 23.8263C8.32584 24.1538 8.86103 24.1511 9.18587 23.8263L15.704 17.3081L22.2248 23.8289C22.5523 24.1564 23.0875 24.1538 23.4123 23.8289C23.7398 23.5014 23.7372 22.9662 23.4123 22.6414L16.8915 16.1206L23.4097 9.60247C23.7372 9.27497 23.7345 8.73978 23.4123 8.41227C23.0848 8.08477 22.5496 8.08743 22.2248 8.41227Z"
+                                  fill="#3F3636" />
+                              </g>
+                              <defs>
+                                <clipPath id="clip0_2979_3732">
+                                  <rect width="31" height="31" fill="white" />
+                                </clipPath>
+                              </defs>
+                            </svg>
+                          {% endif %}
+                        {%- endif -%}
+                      {%- endfor -%}
+                  </div>
+                </td>
+                <td>
+                  <div class="prime-compare-icon">
+                    <div class="prime-compare-list">
+                      {%- for block in section.blocks -%}
+                        {%- if forloop.index > 1 -%}
+                          <div class="prime-compare-list-item {% if forloop.index == 2 %}active{% endif %}">
+                          {% if block.settings.text3 %}
+                            <svg xmlns="http://www.w3.org/2000/svg" width="31" height="31" viewBox="0 0 31 31" fill="none">
+                              <path d="M3.00006 17.8571L9.66673 25L28.3334 5" stroke="#3F3636" stroke-width="2"
+                                stroke-linecap="round" />
+                            </svg>
+                          {% else %}
+                            <svg xmlns="http://www.w3.org/2000/svg" width="31" height="31" viewBox="0 0 31 31" fill="none">
+                              <g clip-path="url(#clip0_2979_3732)">
+                                <path
+                                  d="M22.2248 8.41227L15.704 14.9331L9.18587 8.41494C8.85836 8.08743 8.32317 8.0901 7.99833 8.41494C7.67083 8.74244 7.67349 9.27763 7.99833 9.60247L14.5165 16.1206L7.99833 22.6387C7.67083 22.9662 7.67349 23.5014 7.99833 23.8263C8.32584 24.1538 8.86103 24.1511 9.18587 23.8263L15.704 17.3081L22.2248 23.8289C22.5523 24.1564 23.0875 24.1538 23.4123 23.8289C23.7398 23.5014 23.7372 22.9662 23.4123 22.6414L16.8915 16.1206L23.4097 9.60247C23.7372 9.27497 23.7345 8.73978 23.4123 8.41227C23.0848 8.08477 22.5496 8.08743 22.2248 8.41227Z"
+                                  fill="#3F3636" />
+                              </g>
+                              <defs>
+                                <clipPath id="clip0_2979_3732">
+                                  <rect width="31" height="31" fill="white" />
+                                </clipPath>
+                              </defs>
+                            </svg>
+                          {% endif %}
+                          </div>
+                        {%- endif -%}
+                      {%- endfor -%}
+                    </div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="prime-compare-txt">
+                    {{ section.settings.text3 }}
+                  </div>
+                </td>
+                <td>
+                  <div class="prime-compare-icon">
+                    {%- for block in section.blocks -%}
+                        {%- if forloop.index == 1 -%}
+                          {% if block.settings.text4 %}
+                            <svg xmlns="http://www.w3.org/2000/svg" width="31" height="31" viewBox="0 0 31 31" fill="none">
+                              <path d="M3.00006 17.8571L9.66673 25L28.3334 5" stroke="#E0004D" stroke-width="2"
+                                stroke-linecap="round" />
+                            </svg>
+                          {% else %}
+                            <svg xmlns="http://www.w3.org/2000/svg" width="31" height="31" viewBox="0 0 31 31" fill="none">
+                              <g clip-path="url(#clip0_2979_3732)">
+                                <path
+                                  d="M22.2248 8.41227L15.704 14.9331L9.18587 8.41494C8.85836 8.08743 8.32317 8.0901 7.99833 8.41494C7.67083 8.74244 7.67349 9.27763 7.99833 9.60247L14.5165 16.1206L7.99833 22.6387C7.67083 22.9662 7.67349 23.5014 7.99833 23.8263C8.32584 24.1538 8.86103 24.1511 9.18587 23.8263L15.704 17.3081L22.2248 23.8289C22.5523 24.1564 23.0875 24.1538 23.4123 23.8289C23.7398 23.5014 23.7372 22.9662 23.4123 22.6414L16.8915 16.1206L23.4097 9.60247C23.7372 9.27497 23.7345 8.73978 23.4123 8.41227C23.0848 8.08477 22.5496 8.08743 22.2248 8.41227Z"
+                                  fill="#3F3636" />
+                              </g>
+                              <defs>
+                                <clipPath id="clip0_2979_3732">
+                                  <rect width="31" height="31" fill="white" />
+                                </clipPath>
+                              </defs>
+                            </svg>
+                          {% endif %}
+                        {%- endif -%}
+                      {%- endfor -%}
+                  </div>
+                </td>
+                <td>
+                  <div class="prime-compare-icon">
+                    <div class="prime-compare-list">
+                      {%- for block in section.blocks -%}
+                        {%- if forloop.index > 1 -%}
+                          <div class="prime-compare-list-item {% if forloop.index == 2 %}active{% endif %}">
+                          {% if block.settings.text4 %}
+                            <svg xmlns="http://www.w3.org/2000/svg" width="31" height="31" viewBox="0 0 31 31" fill="none">
+                              <path d="M3.00006 17.8571L9.66673 25L28.3334 5" stroke="#3F3636" stroke-width="2"
+                                stroke-linecap="round" />
+                            </svg>
+                          {% else %}
+                            <svg xmlns="http://www.w3.org/2000/svg" width="31" height="31" viewBox="0 0 31 31" fill="none">
+                              <g clip-path="url(#clip0_2979_3732)">
+                                <path
+                                  d="M22.2248 8.41227L15.704 14.9331L9.18587 8.41494C8.85836 8.08743 8.32317 8.0901 7.99833 8.41494C7.67083 8.74244 7.67349 9.27763 7.99833 9.60247L14.5165 16.1206L7.99833 22.6387C7.67083 22.9662 7.67349 23.5014 7.99833 23.8263C8.32584 24.1538 8.86103 24.1511 9.18587 23.8263L15.704 17.3081L22.2248 23.8289C22.5523 24.1564 23.0875 24.1538 23.4123 23.8289C23.7398 23.5014 23.7372 22.9662 23.4123 22.6414L16.8915 16.1206L23.4097 9.60247C23.7372 9.27497 23.7345 8.73978 23.4123 8.41227C23.0848 8.08477 22.5496 8.08743 22.2248 8.41227Z"
+                                  fill="#3F3636" />
+                              </g>
+                              <defs>
+                                <clipPath id="clip0_2979_3732">
+                                  <rect width="31" height="31" fill="white" />
+                                </clipPath>
+                              </defs>
+                            </svg>
+                          {% endif %}
+                          </div>
+                        {%- endif -%}
+                      {%- endfor -%}
+                    </div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="prime-compare-txt">
+                    {{ section.settings.text4 }}
+                  </div>
+                </td>
+                <td>
+                  <div class="prime-compare-icon prime-compare-red">
+                    {%- for block in section.blocks -%}
+                        {%- if forloop.index == 1 -%}
+                          {{ block.settings.text5 }}
+                        {%- endif -%}
+                      {%- endfor -%}
+                  </div>
+                </td>
+                <td>
+                  <div class="prime-compare-icon">
+                    <div class="prime-compare-list">
+                      {%- for block in section.blocks -%}
+                        {%- if forloop.index > 1 -%}
+                          <div class="prime-compare-list-item {% if forloop.index == 2 %}active{% endif %}">
+                            {{ block.settings.text5 }}
+                          </div>
+                        {%- endif -%}
+                      {%- endfor -%}
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="prime-compare-msg">
+            {{ section.settings.text5 }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <script>
+    window.addEventListener('load', function () {
+      function changeCompare() {
+        $p = $('.prime-compare')
+        $p.find('.popup-tap span').text($p.find('.prime-compare-popup-item:first').text())
+        $p.find('.popup-tap').click(function () {
+          $(this).siblings('.prime-compare-popup').slideToggle()
+        })
+        $p.find('.prime-compare-popup-item').click(function () {
+          let $this = $(this)
+          let index = $this.index()
+          $this.addClass('active').siblings().removeClass('active')
+          $p.find('.popup-tap span').text($this.text())
+          $p.find('.img-list img').removeClass('active').eq(index).addClass('active')
+          $p.find('.prime-compare-list').each(function () {
+            $(this).find('.prime-compare-list-item').removeClass('active').eq(index).addClass('active')
+          })
+          $this.parent().slideUp()
+        })
+      }
+      changeCompare()
+    })
+  </script>
+{% schema %}
+{
+"name": "prime-compare",
+"blocks": [
+  {
+    "name": "item",
+    "type": "item",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "img",
+        "label": "Image"
+      },
+      {
+        "type": "text",
+        "id": "text",
+        "label": "产品名"
+      },
+      {
+        "type": "checkbox",
+        "id": "text1",
+        "label": "1"
+      },
+      {
+        "type": "checkbox",
+        "id": "text2",
+        "label": "2"
+      },
+      {
+        "type": "checkbox",
+        "id": "text3",
+        "label": "3"
+      },
+      {
+        "type": "checkbox",
+        "id": "text4",
+        "label": "4"
+      },
+      {
+        "type": "text",
+        "id": "text5",
+        "label": "Text"
+      }
+    ]
+  }
+],
+  "settings": [
+     {
+      "type": "text",
+      "id": "title",
+      "label": "Title"
+    },
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "text1",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "text2",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "text3",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "text4",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "text5",
+      "label": "底部 Text"
+    },
+    {
+      "type": "text",
+      "id": "bg_color",
+      "label": "背景颜色"
+    }
+  ],
+  "presets": [
+    {
+      "name": "prime-compare",
+      "blocks": []
+    }
+  ]
+}
+{% endschema %}

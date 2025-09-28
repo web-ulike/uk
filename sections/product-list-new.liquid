@@ -1,0 +1,247 @@
+<link href="//cdn.shopify.com/s/files/1/0740/5882/6015/t/15/assets/swiper.min.css" rel="stylesheet" type="text/css" media="all" crossorigin="">
+<script src="//cdn.shopify.com/s/files/1/0740/5882/6015/t/15/assets/swiper.min.js"></script>
+<style>
+.product-list-new {
+  padding: 95px 0 120px 0;
+  overflow: hidden;
+}
+
+.product-list-new .container {
+  max-width: 1600px;
+}
+
+.product-list-new .product-list-new-h3 {
+  color: #190a0a;
+  text-align: center;
+  font-size: 44px;
+  line-height: 1.25;
+  font-family: var(--heading-font-family);
+}
+
+.product-list-new .product-list-new-sw {
+  margin-top: 40px;
+}
+
+.product-list-new .product-list-new-list {
+  display: flex;
+  gap: 20px;
+}
+
+.product-list-new .product-list-new-item {
+  width: calc(33.333% - 13.33px);
+}
+
+.product-list-new .product-list-new-tag{
+  color: #E0004D;
+  font-size: 12px;
+  line-height: 1;
+  letter-spacing: 0.6px;
+  font-family: var(--heading-font-family);
+  position: absolute;
+  top: 17px;
+  left: 17px;
+  padding:8px 10px;
+  border: 1px solid #E0004D;
+  z-index:2;
+}
+
+.product-list-new .img {
+  display: block;
+  width: 100%;
+}
+
+.product-list-new .product-list-new-text {
+  margin-top: 22px;
+}
+
+.product-list-new .product-list-new-h4 {
+  color: #190a0a;
+  font-size: 24px;
+  line-height: 1.25;
+  font-family: var(--heading-font-family);
+}
+
+.product-list-new .product-list-new-p {
+  color: #190a0a;
+  font-size: 16px;
+  line-height: 1.5;
+  margin-top: 7px;
+}
+
+.product-list-new .product-list-new-btn {
+  width: 236px;
+  height: 48px;
+  max-width: 100%;
+  background: #000;
+  color: #fff;
+  margin-top: 22px;
+  cursor: pointer;
+  border: 1.5px solid #000;
+}
+.product-list-new .product-list-new-price {
+  color: #e0004d;
+  font-size: 20px;
+  line-height: 1.3;
+  font-family: var(--heading-font-family);
+  margin-top: 10px;
+}
+.product-list-new .product-list-new-btn .btn-txt::before {
+  color: #000;
+}
+
+@media (max-width: 991px) {
+  .product-list-new {
+    padding: 47px 0;
+  }
+  .product-list-new .product-list-new-h3 {
+    font-size: 26px;
+  }
+  .product-list-new .product-list-new-sw {
+    margin-top: 25px;
+  }
+  .product-list-new .product-list-new-text {
+    margin-top: 20px;
+  }
+  .product-list-new .product-list-new-h4 {
+    font-size: 18px;
+  }
+  .product-list-new .product-list-new-p {
+    font-size: 12px;
+    margin-top: 10px;
+  }
+  .product-list-new .product-list-new-price {
+    font-size: 14px;
+    margin-top: 10px;
+  }
+  .product-list-new .product-list-new-btn {
+    font-size: 12px;
+    width: 137px;
+    height: 38px;
+    margin-top: 10px;
+  }
+}
+
+@media (max-width: 767px) {
+  .product-list-new .product-list-new-list {
+    gap: 0;
+  }
+  .product-list-new .product-list-new-item {
+    width: 250px;
+  }
+  .product-list-new .product-list-new-tag{
+    top:10px;
+    left:10px;
+  }
+}
+</style>
+<section class="section-box">
+  <div class="product-list-new">
+    <div class="container">
+      <div class="product-list-new-h3"> {{ section.settings.text }}</div>
+      <div class="product-list-new-sw">
+        <div class="product-list-new-list swiper-wrapper">
+          {%- for block in section.blocks -%}
+            <div class="product-list-new-item swiper-slide">
+              {%- if block.settings.text5 != blank -%}
+                <div class="product-list-new-tag">{{ block.settings.text5 }}</div>
+              {%- endif -%}
+              <picture>
+                {%- if block.settings.image1 != blank -%}
+                  <source srcset="{{ block.settings.image1 | image_url }}" media="(max-width: 991px)">
+                {%- endif -%}
+                <img src="{{ block.settings.image | image_url }}" width="" height="" alt="" class="img">
+              </picture>
+              <div class="product-list-new-text">
+                <div class="product-list-new-h4">{{ block.settings.text }}</div>
+                <div class="product-list-new-p">{{ block.settings.text1 }}</div>
+                <div class="product-list-new-price">{{ block.settings.text2 }}</div>
+                <div class="product-list-new-btn btn-diy" data-id="{{ block.settings.text4 }}">
+                  <div class="btn-txt" text="{{ block.settings.text3 }}">
+                    <span>{{ block.settings.text3 }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          {%- endfor -%}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+  if (window.innerWidth < 768) {
+    var productSwiper = new Swiper(".product-list-new-sw", {
+      slidesPerView: "auto",
+      spaceBetween: 10
+    });
+  }
+  $('.product-list-new .product-list-new-btn').click(function(){
+    addToCart($(this).attr('data-id'), null);
+  })
+</script>
+{% schema %}
+{
+"name": "product-list-new",
+"blocks": [
+  {
+    "name": "item",
+    "type": "item",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "image",
+        "label": "Image"
+      },
+      {
+        "type": "image_picker",
+        "id": "image1",
+        "label": "Image M"
+      },
+      {
+        "type": "text",
+        "id": "text5",
+        "label": "Tag"
+      },
+      {
+        "type": "text",
+        "id": "text",
+        "label": "Title Text"
+      },
+      {
+        "type": "text",
+        "id": "text1",
+        "label": "Text"
+      },
+      {
+        "type": "text",
+        "id": "text2",
+        "label": "Price"
+      },
+      {
+        "type": "text",
+        "id": "text3",
+        "label": "Btn Text"
+      },
+      {
+        "type": "text",
+        "id": "text4",
+        "label": "Product ID"
+      }
+    ]
+  }
+],
+"settings": [
+  {
+    "type": "text",
+    "id": "text",
+    "label": "Title"
+  }
+],
+  "presets": [
+  {
+    "name": "product-list-new",
+    "blocks": []
+  }
+]
+}
+{% endschema %}

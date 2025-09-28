@@ -7,21 +7,428 @@
     --text-color: {{ settings.footer_text_color.red }}, {{ settings.footer_text_color.green }}, {{ settings.footer_text_color.blue }};
     --border-color: {{ border_color.red }}, {{ border_color.green }}, {{ border_color.blue }};
   }
+   .match-box {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      background: rgba(0, 0, 0, .6);
+      z-index: 99;
+      overflow-y: auto;
+      display: none;
+  }
+
+  .match-box .match-cont {
+      position: absolute;
+      width: calc(100% - 40px);
+      max-width: 1000px;
+      background: #fff;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+  }
+  .match-box .move-box{
+      margin-top: 80px;
+  }
+  .match-box .match-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+  }
+
+  .match-box .match-top .match-top-item {
+      width: 45px;
+      height: 45px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+  }
+
+  .match-box .match-top .match-top-item img {
+      width: 22px;
+      display: block;
+  }
+
+  .match-box .match-top .match-back {
+      pointer-events: none;
+      opacity: 0;
+  }
+
+  .match-box .match-top.active .match-back {
+      opacity: 1;
+      pointer-events: auto;
+  }
+
+  .match-box .match-bottom {
+      padding: 0 60px;
+      margin-top: 10px;
+  }
+
+  .match-box .match-progressbar {
+      display: flex;
+      align-items: center;
+
+  }
+
+  .match-box .match-progressbar-item {
+      flex: 1;
+      height: 1px;
+      margin-right: 5px;
+      background: #efefef;
+      position: relative;
+  }
+
+  .match-box .match-progressbar-item:last-child {
+      margin-right: 0;
+  }
+
+  .match-box .match-progressbar-item::before {
+      position: absolute;
+      content: '';
+      display: block;
+      height: 100%;
+      width: 0;
+      left: 0;
+      top: 0;
+      background: #000;
+      transition: all .4s ease;
+  }
+
+  .match-box .match-progressbar-item.active::before {
+      width: 100%;
+  }
+
+  .match-box .match-step {
+      padding: 90px 0;
+      display: none;
+  }
+
+  .match-box .match-step.active {
+      display: block;
+  }
+
+  .match-box .match-step .match-step-box {
+      display: none;
+  }
+
+  .match-box .match-step .match-step-box.active {
+      display: block;
+  }
+
+  .match-box .match-step .match-step-title {
+      font-family: var(--heading-font-family);
+      font-size: 24px;
+      color: #000;
+      line-height: 1.2;
+  }
+
+  .match-box .match-step .match-bottom {
+      padding: 60px 0;
+  }
+
+  .match-box .match-step-list {
+      display: flex;
+      margin-top: 40px;
+  }
+
+  .match-box .match-step-item {
+      flex: 1;
+      margin-right: 15px;
+      cursor: pointer;
+      position: relative;
+  }
+
+  .match-box .match-step-item img {
+      display: block;
+      width: 100%;
+      border: 1px solid transparent;
+      position: relative;
+      z-index: 1;
+      transition: all .4s ease;
+  }
+
+  .match-box .match-step-item:hover img {
+      transform: scale(1.03);
+      border-color: #000;
+  }
+
+  .match-box .match-step-item.active img {
+      border-color: #000;
+  }
+
+  .match-box .match-step-item.active::before {
+      position: absolute;
+      content: '';
+      display: block;
+      width: 20px;
+      height: 20px;
+      background: url(https://cdn.shopify.com/s/files/1/0656/9079/6273/files/suc.svg) no-repeat;
+      background-size: 100% 100%;
+      z-index: 2;
+      left: 50%;
+      top: calc(50% - 8.5px);
+      transform: translate(-50%, -50%);
+  }
+
+  .match-box .match-step-txt {
+      font-size: 16px;
+      color: #000;
+      font-family: var(--heading-font-family);
+      line-height: 1.2;
+      margin-top: 10px;
+  }
+
+  .match-box .match-step-item:last-child {
+      margin-right: 0;
+  }
+
+  @media (max-width:991px) {
+      .match-box .match-bottom {
+          padding: 0 30px;
+      }
+
+      .match-box .match-step {
+          padding: 60px 0;
+      }
+
+      .match-box .match-step-list {
+          margin-top: 30px;
+      }
+
+      .match-box .match-step .match-step-title {
+          font-size: 21px;
+      }
+
+      .match-box .match-step-txt {
+          font-size: 14px;
+      }
+  }
+
+  @media (max-width:785px) {
+      .match-box {
+          padding-bottom: 40px;
+      }
+
+      .match-box .match-cont {
+          position: static;
+          width: calc(100% - 40px);
+          max-width: 1000px;
+          background: #fff;
+          top: 0;
+          left: 0;
+          transform: translate(0, 0);
+          margin: 0 auto;
+          margin-top: 40px;
+      }
+
+      .match-box .match-step-list {
+          flex-wrap: wrap;
+      }
+
+      .match-box .match-step-item {
+          width: calc(33.33% - 6.7px);
+          margin-right: 10px;
+          margin-bottom: 23px;
+          flex: none;
+      }
+
+      .match-box .match-step-item:nth-child(3n) {
+          margin-right: 0;
+      }
+
+      .match-box .match-step {
+          padding-bottom: 37px;
+      }
+
+      .match-box .match-step-item.active::before {
+          right: auto;
+          bottom: auto;
+          left: 50%;
+          top: calc(50% - 8.5px);
+          transform: translate(-50%, -50%);
+      }
+  }
+
+  .match-box .match-last {
+      display: none;
+  }
+
+  .match-box .match-last.active {
+      display: block;
+  }
+
+  .match-box .match-result-item {
+      display: none;
+  }
+
+  .match-box .match-result-item.active {
+      display: block;
+  }
+
+  .match-box .match-result-item .img {
+      display: block;
+      margin: 0 auto;
+      max-width: 190px;
+  }
+
+  .match-box .match-result-title {
+      font-size: 24px;
+      line-height: 1.2;
+      text-align: center;
+      color: #000;
+      font-family: var(--heading-font-family);
+      margin-top: 40px;
+      margin-bottom: 15px;
+  }
+
+  .match-box .match-result-p {
+      font-size: 16px;
+      color: #000;
+      line-height: 1.5;
+      text-align: center;
+  }
+
+  .match-box .match-result {
+      padding: 0 40px;
+      padding-top: 60px;
+  }
+
+
+  .match-box .match-result-flex {
+      display: flex;
+      margin-top: 40px;
+  }
+
+  .match-box .match-result-left {
+      width: 38.5%;
+      margin-right: 30px;
+  }
+
+  .match-box .match-result-left img {
+      width: 100%;
+      display: block;
+  }
+
+  .match-box .match-result-right {
+      flex: 1;
+  }
+
+  .match-box .match-result-right .match-result-p {
+      text-align: left;
+  }
+
+  .match-box .mt-40 {
+      margin-top: 40px;
+  }
+
+  .match-box .match-btn {
+      display: flex;
+      justify-content: center;
+      padding: 40px 0 60px 0;
+  }
+
+  .match-box .match-btn-item {
+      width: 240px;
+      height: 52px;
+      background: #000;
+      color: #fff;
+      font-size: 14px;
+      line-height: 16px;
+      font-family: var(--heading-font-family);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 10px;
+      text-decoration: none;
+      cursor: pointer;
+  }
+
+  .show-match-box{
+    cursor: pointer;
+  }
+
+  .match-box .match-btn-item:last-child {
+      margin-right: 0;
+      background: none;
+      border: 1px solid #000;
+      color: #000;
+  }
+
+  @media (max-width:991px) {
+      .match-box .match-result {
+          padding: 0;
+          padding-top: 50px;
+      }
+
+      .match-box .match-result-p {
+          font-size: 14px;
+      }
+  }
+
+  @media (max-width:785px) {
+
+      .match-box .match-result-item .img {
+          max-width: 152px;
+      }
+
+      .match-box .match-result-title {
+          margin-top: 30px;
+          font-size: 21px;
+      }
+
+      .match-box .match-result-flex {
+          display: block;
+          margin-top: 15px;
+      }
+
+      .match-box .match-result-left {
+          width: 100%;
+          margin-right: 0;
+          margin-bottom: 15px;
+      }
+
+      .match-box .match-result-right .match-result-p {
+          text-align: center;
+      }
+
+      .match-box .mt-40 {
+          margin-top: 20px;
+      }
+
+      .match-box .match-btn {
+          padding-top: 30px;
+      }
+  }
+
+  @media (max-width:640px) {
+      .match-box .match-btn {
+          display: block;
+      }
+
+      .match-box .match-btn-item {
+          width: 234px;
+          height: 38px;
+          margin: 0 auto;
+          margin-bottom: 10px;
+      }
+
+      .match-box .match-btn-item:last-child {
+          margin: 0 auto;
+      }
+  }
 </style>
 
 <footer class="footer {% if settings.footer_background == settings.background %}footer--bordered{% endif %}">
   <div class="container">
     <div class="footer__subscribe text--center">
-      <h3 class="" style="font-size:24px;margin-bottom: 3px;">Subscribe For FREE Device</h3>
-      <p>Subscribe for a chance to win FREE Air3 and extra discounts</p>
+      <h3 class="" style="font-size:24px;margin-bottom: 3px;">Subscribe to Win IPL Device!</h3>
+      <p>Drop your details for a sweet discount— plus, the FREE Air 3 could be yours!</p>
       {%- form 'customer', id: newsletter_id, class: 'form newsletter-modal__form' -%}
         {%- if form.posted_successfully? -%}
           <script>
             window.addEventListener('DOMContentLoaded', () => {
-              if (history.scrollRestoration) {
-                history.scrollRestoration = 'manual'; // Prevent the browser to scroll on captcha page
-              }
-
               document.getElementById('shopify-section-footer').scrollIntoView();
             });
           </script>
@@ -59,6 +466,15 @@
               <button type="submit" is="loader-button" class="button button--primary button--full">{{ 'general.newsletter.subscribe' | t }}</button>
             </div>
           {% endcomment %}
+          <div class="input">
+            <label style="color: rgba(255, 255, 255, .6);font-size: 12px;line-height: 16px;display: block;">
+              {% comment %} <input type="checkbox" id="policy-checkbox" required> {% endcomment %}
+              By entering your email, you agree to receive the latest product offers, promotions, and product information from Ulike. 
+              Click to read <a href="/pages/terms-of-service" target="_blank">Ulike's Terms & Conditions</a> and <a href="/pages/privacy-policy" target="_blank">Privacy Policy</a>.
+            </label>
+            <!-- 错误提示 -->
+            <p id="error-message" style="color: red; display: none;">Please agree to the terms and privacy policy before submitting.</p>
+          </div>
         {%- endif -%}
       {%- endform -%}
     </div>
@@ -297,11 +713,11 @@
           {%- endform -%}
         {%- endif -%}
 
-        <span class="footer__copyright text--xsmall text--subdued">
+        <!-- <span class="footer__copyright text--xsmall text--subdued">
           {{- shop.name }}
           <span class="square-separator square-separator--block square-separator--subdued"></span>
           {{ powered_by_link | replace: '<a', '<a class="link--faded"' -}}
-        </span>
+        </span> -->
 
         {%- if section.settings.show_payment_icons and shop.enabled_payment_types.size > 0 -%}
           <div class="footer__payment-methods">
@@ -352,19 +768,19 @@
               </svg>
 
               <svg xmlns="http://www.w3.org/2000/svg" width="40" height="24" fill="none" viewBox="0 0 40 24" class="design-iconfont">
-  <rect x=".35" y=".35" width="39.2975" height="23.3" rx=".899922" fill="#fff" stroke="#DFDFDF" stroke-width=".7"/>
-  <path d="M10.4861 7.59679C10.1543 8.02341 9.58547 8.35522 9.01665 8.30782C8.96925 7.739 9.20626 7.12278 9.53807 6.74356C9.86988 6.31695 10.5335 5.98514 11.0075 5.98514C11.0549 6.60136 10.8179 7.17018 10.4861 7.59679ZM11.0075 8.45002C10.2017 8.40262 9.49067 8.92404 9.11146 8.92404C8.68484 8.92404 8.06862 8.45002 7.4524 8.45002C6.59917 8.45002 5.84074 8.92404 5.36672 9.68247C4.46609 11.1993 5.12972 13.4746 5.98295 14.707C6.40956 15.3233 6.88358 15.9869 7.5472 15.9869C8.16342 15.9869 8.40043 15.5603 9.15886 15.5603C9.91728 15.5603 10.1543 15.9869 10.8179 15.9395C11.4815 15.9395 11.9556 15.3233 12.3348 14.707C12.8088 13.996 12.9984 13.3324 12.9984 13.285C12.9984 13.285 11.6711 12.7636 11.6711 11.2467C11.6711 9.96688 12.714 9.39806 12.7614 9.35066C12.24 8.54483 11.3393 8.45002 11.0075 8.45002ZM15.7477 6.69616V15.9395H17.1697V12.7636H19.1606C20.9619 12.7636 22.2417 11.5311 22.2417 9.72987C22.2417 7.92861 21.0093 6.69616 19.208 6.69616H15.7477ZM17.2171 7.92861H18.8762C20.1086 7.92861 20.8197 8.59223 20.8197 9.77727C20.8197 10.9623 20.1086 11.6259 18.8762 11.6259H17.2171V7.92861ZM24.8962 16.0343C25.7968 16.0343 26.6501 15.5603 27.0293 14.8492H27.0767V15.9395H28.4039V11.3415C28.4039 10.0143 27.3611 9.16105 25.702 9.16105C24.1852 9.16105 23.0475 10.0143 23.0001 11.2467H24.28C24.3748 10.6779 24.8962 10.2987 25.6546 10.2987C26.5079 10.2987 27.0293 10.7253 27.0293 11.4363V11.9577L25.228 12.0526C23.569 12.1474 22.6683 12.811 22.6683 13.996C22.6209 15.2285 23.569 16.0343 24.8962 16.0343ZM25.2754 14.9441C24.517 14.9441 24.043 14.5648 24.043 13.996C24.043 13.4272 24.517 13.0954 25.4176 13.048L27.0293 12.9532V13.4746C26.9819 14.3278 26.2234 14.9441 25.2754 14.9441ZM30.1104 18.4518C31.485 18.4518 32.1487 17.9304 32.7175 16.3187L35.2772 9.25585H33.8077L32.1013 14.707H32.0539L30.3474 9.25585H28.8305L31.248 15.9869L31.1058 16.4135C30.8688 17.1245 30.537 17.3615 29.9208 17.3615H29.4942V18.4518H30.1104Z" fill="#181818"/>
-</svg>
-          <svg xmlns="http://www.w3.org/2000/svg" width="40" height="24" fill="none" viewBox="0 0 40 24" class="design-iconfont">
-  <rect x=".35" y=".35" width="39.2975" height="23.3" rx=".899921" fill="#fff" stroke="#DFDFDF" stroke-width=".7"/>
-  <path d="M19.2553 12.0687V15.6423H18.1025V6.80429H21.0998C21.8299 6.80429 22.5216 7.07327 23.0595 7.57282C23.5975 8.03393 23.8665 8.7256 23.8665 9.4557C23.8665 10.1858 23.5975 10.839 23.0595 11.3386C22.5216 11.8381 21.8683 12.1071 21.0998 12.1071L19.2553 12.0687ZM19.2553 7.88023V10.9543H21.1766C21.5993 10.9543 22.022 10.8006 22.291 10.4932C22.9058 9.91682 22.9058 8.95616 22.3294 8.37977L22.291 8.34134C21.9836 8.03393 21.5993 7.8418 21.1766 7.88023H19.2553Z" fill="#5F6368"/>
-  <path d="M26.5166 9.41736C27.362 9.41736 28.0153 9.64792 28.5148 10.109C29.0143 10.5701 29.2449 11.185 29.2449 11.9535V15.6424H28.169V14.797H28.1305C27.6694 15.4887 27.0162 15.8345 26.2477 15.8345C25.5944 15.8345 25.018 15.6424 24.5569 15.2581C24.1342 14.8739 23.8652 14.3359 23.8652 13.7595C23.8652 13.1447 24.0958 12.6452 24.5569 12.2609C25.018 11.8766 25.6713 11.7229 26.4398 11.7229C27.1315 11.7229 27.6694 11.8382 28.0921 12.1072V11.8382C28.0921 11.4539 27.9384 11.0697 27.631 10.8391C27.3236 10.5701 26.9393 10.4164 26.5166 10.4164C25.8634 10.4164 25.3639 10.6854 25.018 11.2234L24.0189 10.6086C24.6338 9.80162 25.4407 9.41736 26.5166 9.41736ZM25.0564 13.7979C25.0564 14.1054 25.2102 14.3743 25.4407 14.528C25.7097 14.7202 26.0171 14.8355 26.3245 14.8355C26.7856 14.8355 27.2467 14.6433 27.5926 14.2975C27.9768 13.9517 28.169 13.529 28.169 13.0678C27.8231 12.7989 27.3236 12.6452 26.6703 12.6452C26.2092 12.6452 25.825 12.7604 25.5176 12.991C25.2102 13.1831 25.0564 13.4521 25.0564 13.7979Z" fill="#5F6368"/>
-  <path d="M35.4685 9.60928L31.6643 18.332H30.5115L31.9333 15.2964L29.4355 9.64771H30.6652L32.4712 13.9899H32.5096L34.2773 9.64771H35.4685V9.60928Z" fill="#5F6368"/>
-  <path d="M14.6809 11.3001C14.6809 10.9543 14.6425 10.6084 14.6041 10.2626H9.80078V12.2223H12.529C12.4138 12.8372 12.0679 13.4136 11.53 13.7594V15.0275H13.1823C14.1429 14.1437 14.6809 12.8372 14.6809 11.3001Z" fill="#4285F4"/>
-  <path d="M9.80187 16.2573C11.1852 16.2573 12.338 15.7962 13.1834 15.0277L11.5311 13.7596C11.0699 14.067 10.4935 14.2592 9.80187 14.2592C8.49538 14.2592 7.34259 13.3754 6.95833 12.1457H5.26758V13.4522C6.15138 15.1814 7.88056 16.2573 9.80187 16.2573Z" fill="#34A853"/>
-  <path d="M6.95805 12.1458C6.7275 11.531 6.7275 10.8393 6.95805 10.186V8.87955H5.2673C4.5372 10.3013 4.5372 11.9921 5.2673 13.4523L6.95805 12.1458Z" fill="#FBBC04"/>
-  <path d="M9.80153 8.11086C10.5316 8.11086 11.2233 8.37984 11.7613 8.87938L13.2215 7.41919C12.2992 6.57381 11.0696 6.07427 9.83996 6.11269C7.91865 6.11269 6.15104 7.18863 5.30566 8.91781L6.99642 10.2243C7.34225 8.99466 8.49504 8.11086 9.80153 8.11086Z" fill="#EA4335"/>
-</svg>
+                <rect x=".35" y=".35" width="39.2975" height="23.3" rx=".899922" fill="#fff" stroke="#DFDFDF" stroke-width=".7"/>
+                <path d="M10.4861 7.59679C10.1543 8.02341 9.58547 8.35522 9.01665 8.30782C8.96925 7.739 9.20626 7.12278 9.53807 6.74356C9.86988 6.31695 10.5335 5.98514 11.0075 5.98514C11.0549 6.60136 10.8179 7.17018 10.4861 7.59679ZM11.0075 8.45002C10.2017 8.40262 9.49067 8.92404 9.11146 8.92404C8.68484 8.92404 8.06862 8.45002 7.4524 8.45002C6.59917 8.45002 5.84074 8.92404 5.36672 9.68247C4.46609 11.1993 5.12972 13.4746 5.98295 14.707C6.40956 15.3233 6.88358 15.9869 7.5472 15.9869C8.16342 15.9869 8.40043 15.5603 9.15886 15.5603C9.91728 15.5603 10.1543 15.9869 10.8179 15.9395C11.4815 15.9395 11.9556 15.3233 12.3348 14.707C12.8088 13.996 12.9984 13.3324 12.9984 13.285C12.9984 13.285 11.6711 12.7636 11.6711 11.2467C11.6711 9.96688 12.714 9.39806 12.7614 9.35066C12.24 8.54483 11.3393 8.45002 11.0075 8.45002ZM15.7477 6.69616V15.9395H17.1697V12.7636H19.1606C20.9619 12.7636 22.2417 11.5311 22.2417 9.72987C22.2417 7.92861 21.0093 6.69616 19.208 6.69616H15.7477ZM17.2171 7.92861H18.8762C20.1086 7.92861 20.8197 8.59223 20.8197 9.77727C20.8197 10.9623 20.1086 11.6259 18.8762 11.6259H17.2171V7.92861ZM24.8962 16.0343C25.7968 16.0343 26.6501 15.5603 27.0293 14.8492H27.0767V15.9395H28.4039V11.3415C28.4039 10.0143 27.3611 9.16105 25.702 9.16105C24.1852 9.16105 23.0475 10.0143 23.0001 11.2467H24.28C24.3748 10.6779 24.8962 10.2987 25.6546 10.2987C26.5079 10.2987 27.0293 10.7253 27.0293 11.4363V11.9577L25.228 12.0526C23.569 12.1474 22.6683 12.811 22.6683 13.996C22.6209 15.2285 23.569 16.0343 24.8962 16.0343ZM25.2754 14.9441C24.517 14.9441 24.043 14.5648 24.043 13.996C24.043 13.4272 24.517 13.0954 25.4176 13.048L27.0293 12.9532V13.4746C26.9819 14.3278 26.2234 14.9441 25.2754 14.9441ZM30.1104 18.4518C31.485 18.4518 32.1487 17.9304 32.7175 16.3187L35.2772 9.25585H33.8077L32.1013 14.707H32.0539L30.3474 9.25585H28.8305L31.248 15.9869L31.1058 16.4135C30.8688 17.1245 30.537 17.3615 29.9208 17.3615H29.4942V18.4518H30.1104Z" fill="#181818"/>
+              </svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="24" fill="none" viewBox="0 0 40 24" class="design-iconfont">
+                <rect x=".35" y=".35" width="39.2975" height="23.3" rx=".899921" fill="#fff" stroke="#DFDFDF" stroke-width=".7"/>
+                <path d="M19.2553 12.0687V15.6423H18.1025V6.80429H21.0998C21.8299 6.80429 22.5216 7.07327 23.0595 7.57282C23.5975 8.03393 23.8665 8.7256 23.8665 9.4557C23.8665 10.1858 23.5975 10.839 23.0595 11.3386C22.5216 11.8381 21.8683 12.1071 21.0998 12.1071L19.2553 12.0687ZM19.2553 7.88023V10.9543H21.1766C21.5993 10.9543 22.022 10.8006 22.291 10.4932C22.9058 9.91682 22.9058 8.95616 22.3294 8.37977L22.291 8.34134C21.9836 8.03393 21.5993 7.8418 21.1766 7.88023H19.2553Z" fill="#5F6368"/>
+                <path d="M26.5166 9.41736C27.362 9.41736 28.0153 9.64792 28.5148 10.109C29.0143 10.5701 29.2449 11.185 29.2449 11.9535V15.6424H28.169V14.797H28.1305C27.6694 15.4887 27.0162 15.8345 26.2477 15.8345C25.5944 15.8345 25.018 15.6424 24.5569 15.2581C24.1342 14.8739 23.8652 14.3359 23.8652 13.7595C23.8652 13.1447 24.0958 12.6452 24.5569 12.2609C25.018 11.8766 25.6713 11.7229 26.4398 11.7229C27.1315 11.7229 27.6694 11.8382 28.0921 12.1072V11.8382C28.0921 11.4539 27.9384 11.0697 27.631 10.8391C27.3236 10.5701 26.9393 10.4164 26.5166 10.4164C25.8634 10.4164 25.3639 10.6854 25.018 11.2234L24.0189 10.6086C24.6338 9.80162 25.4407 9.41736 26.5166 9.41736ZM25.0564 13.7979C25.0564 14.1054 25.2102 14.3743 25.4407 14.528C25.7097 14.7202 26.0171 14.8355 26.3245 14.8355C26.7856 14.8355 27.2467 14.6433 27.5926 14.2975C27.9768 13.9517 28.169 13.529 28.169 13.0678C27.8231 12.7989 27.3236 12.6452 26.6703 12.6452C26.2092 12.6452 25.825 12.7604 25.5176 12.991C25.2102 13.1831 25.0564 13.4521 25.0564 13.7979Z" fill="#5F6368"/>
+                <path d="M35.4685 9.60928L31.6643 18.332H30.5115L31.9333 15.2964L29.4355 9.64771H30.6652L32.4712 13.9899H32.5096L34.2773 9.64771H35.4685V9.60928Z" fill="#5F6368"/>
+                <path d="M14.6809 11.3001C14.6809 10.9543 14.6425 10.6084 14.6041 10.2626H9.80078V12.2223H12.529C12.4138 12.8372 12.0679 13.4136 11.53 13.7594V15.0275H13.1823C14.1429 14.1437 14.6809 12.8372 14.6809 11.3001Z" fill="#4285F4"/>
+                <path d="M9.80187 16.2573C11.1852 16.2573 12.338 15.7962 13.1834 15.0277L11.5311 13.7596C11.0699 14.067 10.4935 14.2592 9.80187 14.2592C8.49538 14.2592 7.34259 13.3754 6.95833 12.1457H5.26758V13.4522C6.15138 15.1814 7.88056 16.2573 9.80187 16.2573Z" fill="#34A853"/>
+                <path d="M6.95805 12.1458C6.7275 11.531 6.7275 10.8393 6.95805 10.186V8.87955H5.2673C4.5372 10.3013 4.5372 11.9921 5.2673 13.4523L6.95805 12.1458Z" fill="#FBBC04"/>
+                <path d="M9.80153 8.11086C10.5316 8.11086 11.2233 8.37984 11.7613 8.87938L13.2215 7.41919C12.2992 6.57381 11.0696 6.07427 9.83996 6.11269C7.91865 6.11269 6.15104 7.18863 5.30566 8.91781L6.99642 10.2243C7.34225 8.99466 8.49504 8.11086 9.80153 8.11086Z" fill="#EA4335"/>
+              </svg>
           
               <svg width="41" height="25" viewBox="0 0 41 25" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <rect x="0.736719" y="0.906885" width="39.2975" height="23.3" rx="0.899922" fill="white" stroke="#DFDFDF" stroke-width="0.7"></rect>
@@ -443,11 +859,298 @@
   </cookie-bar>
 {%- endif -%}
 
+
+{% comment %} 优化速度首页不加载弹出框 {% endcomment %}
+{% if request.path != '/' and request.path != '/pages/bikini-air-10' %}
+  <div class="match-box">
+    <div class="match-cont">
+      <div class="match-top">
+        <div class="match-back match-top-item">
+          <img src="https://cdn.shopify.com/s/files/1/0656/9079/6273/files/back.png" alt="">
+        </div>
+        <div class="match-close match-top-item">
+          <img src="https://cdn.shopify.com/s/files/1/0656/9079/6273/files/close.png" alt="">
+        </div>
+      </div>
+      <div class="match-bottom">
+        <!-- 进度条 -->
+        <div class="match-progressbar">
+          <div class="match-progressbar-item active"></div>
+          <div class="match-progressbar-item"></div>
+          <div class="match-progressbar-item"></div>
+        </div>
+        <!-- 选择条件 -->
+        <div class="match-step active">
+          <div class="match-step-box active">
+            <div class="match-step-title">{{ 'footer.general.text1' | t }}</div>
+            <div class="match-step-list">
+              <div class="match-step-item" data-index="1">
+                <img loading="lazy" src="https://cdn.shopify.com/s/files/1/0656/9079/6273/files/0Skin.jpg" alt="Fair">
+                <div class="match-step-txt">{{ 'footer.general.text2' | t }}</div>
+              </div>
+              <div class="match-step-item" data-index="2">
+                <img loading="lazy" src="https://cdn.shopify.com/s/files/1/0656/9079/6273/files/1Skin.jpg" alt="Light">
+                <div class="match-step-txt">{{ 'footer.general.text3' | t }}</div>
+              </div>
+              <div class="match-step-item" data-index="3">
+                <img loading="lazy" src="https://cdn.shopify.com/s/files/1/0656/9079/6273/files/2Skin.jpg" alt="">
+                <div class="match-step-txt">{{ 'footer.general.text4' | t }}</div>
+              </div>
+              <div class="match-step-item" data-index="4">
+                <img loading="lazy" src="https://cdn.shopify.com/s/files/1/0656/9079/6273/files/3Skin.jpg" alt="Tan">
+                <div class="match-step-txt">{{ 'footer.general.text5' | t }}</div>
+              </div>
+              <div class="match-step-item" data-index="5">
+                <img
+                  loading="lazy"
+                  src="https://cdn.shopify.com/s/files/1/0656/9079/6273/files/4Skin.jpg"
+                  alt="Tan-Deep"
+                >
+                <div class="match-step-txt">{{ 'footer.general.text6' | t }}</div>
+              </div>
+              <div class="match-step-item" data-index="6">
+                <img loading="lazy" src="https://cdn.shopify.com/s/files/1/0656/9079/6273/files/5Skin.jpg" alt="Deep">
+                <div class="match-step-txt">{{ 'footer.general.text7' | t }}</div>
+              </div>
+            </div>
+          </div>
+          <div class="match-step-box">
+            <div class="match-step-title">{{ 'footer.general.page_text1' | t }}</div>
+            <div class="match-step-list">
+              <div class="match-step-item" data-index="1">
+                <img loading="lazy" src="https://cdn.shopify.com/s/files/1/0656/9079/6273/files/0Hair.jpg" alt="">
+                <div class="match-step-txt">{{ 'footer.general.page_text2' | t }}</div>
+              </div>
+              <div class="match-step-item" data-index="2">
+                <img src="https://cdn.shopify.com/s/files/1/0656/9079/6273/files/1Hair.jpg" alt="" loading="lazy">
+                <div class="match-step-txt">{{ 'footer.general.page_text3' | t }}</div>
+              </div>
+              <div class="match-step-item" data-index="3">
+                <img src="https://cdn.shopify.com/s/files/1/0656/9079/6273/files/2Hair.jpg" alt="" loading="lazy">
+                <div class="match-step-txt">{{ 'footer.general.page_text4' | t }}</div>
+              </div>
+              <div class="match-step-item" data-index="4">
+                <img src="https://cdn.shopify.com/s/files/1/0656/9079/6273/files/3Hair.jpg" alt="" loading="lazy">
+                <div class="match-step-txt">{{ 'footer.general.page_text5' | t }}</div>
+              </div>
+              <div class="match-step-item" data-index="5">
+                <img src="https://cdn.shopify.com/s/files/1/0656/9079/6273/files/4Hair.jpg" alt="" loading="lazy">
+                <div class="match-step-txt">{{ 'footer.general.page_text6' | t }}</div>
+              </div>
+              <div class="match-step-item" data-index="6">
+                <img src="https://cdn.shopify.com/s/files/1/0656/9079/6273/files/5Hair.jpg" alt="" loading="lazy">
+                <div class="match-step-txt">{{ 'footer.general.page_text7' | t }}</div>
+              </div>
+              <div class="match-step-item" data-index="7">
+                <img src="https://cdn.shopify.com/s/files/1/0656/9079/6273/files/6Hair.jpg" alt="" loading="lazy">
+                <div class="match-step-txt">{{ 'footer.general.page_text8' | t }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="match-last">
+          <!-- 结果 -->
+          <div class="match-result">
+            <div class="match-result-item">
+              <img
+                src="https://cdn.shopify.com/s/files/1/0656/9079/6273/files/Result1.png"
+                class="img"
+                alt=""
+                loading="lazy"
+              >
+              <div class="match-result-title">{{ 'footer.general.page2_text1' | t }}</div>
+              <div class="match-result-p">
+                {{ 'footer.general.page2_text2' | t }}
+              </div>
+            </div>
+            <div class="match-result-item">
+              <img
+                src="https://cdn.shopify.com/s/files/1/0656/9079/6273/files/Result2.png"
+                class="img"
+                alt=""
+                loading="lazy"
+              >
+              <div class="match-result-title">{{ 'footer.general.page2_text3' | t }}</div>
+              <div class="match-result-p">
+                {{ 'footer.general.page2_text4' | t }}
+              </div>
+              <div class="match-result-flex">
+                <div class="match-result-left">
+                  <img src="https://cdn.shopify.com/s/files/1/0656/9079/6273/files/Result2-1.jpg" alt="" loading="lazy">
+                </div>
+                <div class="match-result-right">
+                  <div class="match-result-p">
+                    {{ 'footer.general.page2_text5' | t }}
+                  </div>
+                  <br>
+                  <div class="match-result-p">
+                    {{ 'footer.general.page2_text6' | t }}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="match-result-item">
+              <img
+                src="https://cdn.shopify.com/s/files/1/0656/9079/6273/files/Result2.png"
+                class="img"
+                alt=""
+                loading="lazy"
+              >
+              <div class="match-result-title">{{ 'footer.general.page3_text1' | t }}</div>
+              <div class="match-result-p">
+                {{ 'footer.general.page3_text2' | t }}
+              </div>
+              <div class="match-result-flex">
+                <div class="match-result-left">
+                  <img src="https://cdn.shopify.com/s/files/1/0656/9079/6273/files/Result3-1.jpg" alt="" loading="lazy">
+                </div>
+                <div class="match-result-right">
+                  <div class="match-result-p">
+                    {{ 'footer.general.page3_text3' | t }}
+                  </div>
+                  <br>
+                  <div class="match-result-p">
+                    {{ 'footer.general.page3_text4' | t }}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="match-result-item">
+              <img
+                src="https://cdn.shopify.com/s/files/1/0656/9079/6273/files/Result2.png"
+                class="img"
+                alt="Not Recommended"
+                loading="lazy"
+              >
+              <div class="match-result-title">{{ 'footer.general.page3_text1' | t }}</div>
+              <div class="match-result-p">
+                {{ 'footer.general.page3_text5' | t }}
+              </div>
+              <div class="match-result-flex">
+                <div class="match-result-left">
+                  <img
+                    src="https://cdn.shopify.com/s/files/1/0656/9079/6273/files/Result3-1.jpg"
+                    alt="However"
+                    loading="lazy"
+                  >
+                </div>
+                <div class="match-result-right">
+                  <div class="match-result-p">
+                    {{ 'footer.general.page3_text6' | t }}
+                  </div>
+                </div>
+              </div>
+              <div class="match-result-p mt-40">
+                {{ 'footer.general.page3_text7' | t }}
+              </div>
+            </div>
+          </div>
+          <!-- 按钮 -->
+          <div class="match-btn">
+            <div class="match-btn-item">{{ 'footer.general.page4_text1' | t }}</div>
+            <a href="{{ section.settings.learn_url }}" class="match-btn-item">{{ 'footer.general.page4_text2' | t }}</a>
+            <div class="match-btn-item">{{ 'footer.general.page4_text3' | t }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    function matchInit() {
+      let $p = $('.match-box');
+      let num1 = 0;
+      let num2 = 0;
+      let lastNum = -1;
+      let currentNum = 0;
+      $p.find('.match-step-item').click(function () {
+        let pIndex = $(this).closest('.match-step-box').index();
+        let num = $(this).data('index');
+        $(this).addClass('active').siblings().removeClass('active');
+        if (pIndex === 0) {
+          num1 = num;
+          currentNum = 1;
+          setTimeout(() => {
+            $(this).closest('.match-step-box').removeClass('active').siblings().addClass('active');
+            $p.find('.match-progressbar-item').eq(1).addClass('active');
+            $p.find('.match-top').addClass('active');
+            $(this).closest('.match-step-box').siblings().find('.match-step-item').removeClass('active');
+          }, 500);
+        } else {
+          num2 = num;
+          currentNum = 2;
+          if ([1, 2, 3, 4].includes(num1)) {
+            if ([1, 2, 3, 4].includes(num2)) {
+              lastNum = 0;
+            } else {
+              lastNum = 1;
+            }
+          } else {
+            if ([1, 2, 3, 4].includes(num2)) {
+              lastNum = 2;
+            } else {
+              lastNum = 3;
+            }
+          }
+          setTimeout(() => {
+            if (lastNum != 0) {
+              $p.find('.match-cont').addClass('move-box');
+            }
+            $p.find('.match-progressbar-item').eq(2).addClass('active');
+            $(this).closest('.match-step').removeClass('active');
+            $p.find('.match-last').addClass('active');
+            $p.find('.match-last .match-result-item').removeClass('active').eq(lastNum).addClass('active');
+            if (lastNum === 0) {
+              $p.find('.match-btn-item').eq(0).css({ display: 'flex' });
+              $p.find('.match-btn-item').eq(1).css({ display: 'none' });
+            } else {
+              $p.find('.match-btn-item').eq(1).css({ display: 'flex' });
+              $p.find('.match-btn-item').eq(0).css({ display: 'none' });
+            }
+          }, 500);
+        }
+      });
+      $p.find('.match-back,.match-btn-item,.match-close').click(function () {
+        let index = $(this).index();
+        if ($(this).hasClass('match-btn-item') && index === 1) return;
+        $p.find('.match-step').addClass('active');
+        $p.find('.match-last').removeClass('active');
+        $p.find('.match-progressbar-item').eq(2).removeClass('active');
+        $p.find('.match-cont').removeClass('move-box');
+        if (currentNum === 2 && !$(this).hasClass('match-btn-item') && !$(this).hasClass('match-close')) {
+          console.log(1);
+          currentNum = 1;
+        } else {
+          currentNum = 0;
+          $p.find('.match-top').removeClass('active');
+          $p.find('.match-progressbar-item').eq(1).removeClass('active');
+          $p.find('.match-step-box').removeClass('active').eq(0).addClass('active');
+          if ($(this).hasClass('match-btn-item')) {
+            $p.find('.match-step-item').removeClass('active');
+            if (index === 0) {
+              $p.fadeOut(300);
+            }
+          }
+          if ($(this).hasClass('match-close')) {
+            $p.find('.match-step-item').removeClass('active');
+            $p.fadeOut(300);
+          }
+        }
+      });
+      $('html').on('click', '.show-match-box', function (e) {
+        e.preventDefault();
+        $('.match-box').fadeIn(300);
+      });
+    }
+    window.addEventListener('load', function () {
+      matchInit();
+    });
+  </script>
+{%- endif -%}
 {% schema %}
 {
   "name": "Footer",
   "class": "shopify-section--footer",
-  "max_blocks": 5,
+  "max_blocks": 15,
   "settings": [
     {
       "type": "checkbox",

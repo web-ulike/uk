@@ -1,0 +1,475 @@
+<style>
+.place-image-popup {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 9999;
+  display: none;
+}
+
+.place-image-popup .place-image-popup-cont {
+  width: 90%;
+  max-width: 1200px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #fff;
+  padding: 60px;
+}
+
+.place-image-popup .place-image-popup-close {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  top: 15px;
+  right: 15px;
+  cursor: pointer;
+}
+
+.place-image-popup .place-image-popup-close::before,
+.place-image-popup .place-image-popup-close::after {
+  content: '';
+  position: absolute;
+  display: block;
+  width: 1px;
+  height: 23px;
+  background: #000;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.place-image-popup .place-image-popup-close::after {
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+.place-image-popup .place-image-popup-h3 {
+  color: #3f3636;
+  text-align: center;
+  font-size: 36px;
+  line-height: 1.3;
+  font-weight: normal;
+  font-family: var(--heading-font-family);
+  margin: 0;
+}
+
+.place-image-popup .place-image-popup-p {
+  color: #3f3636;
+  text-align: center;
+  font-size: 18px;
+  line-height: 1.3;
+  max-width: 725px;
+  margin: 0 auto;
+  margin-top: 15px;
+}
+
+.place-image-popup .place-image-popup-list {
+  display: flex;
+  gap: 12px;
+  margin-top: 50px;
+}
+
+.place-image-popup .place-image-popup-item {
+  flex: 1;
+}
+
+.place-image-popup .place-image-popup-item .place-image-popup-img {
+  position: relative;
+}
+
+.place-image-popup .place-image-popup-item .img {
+  width: 100%;
+  display: block;
+}
+
+.svg-mini .place-image-popup-item .img {
+  max-width: 250px;
+  margin: 0 auto;
+}
+
+.place-image-popup .place-image-popup-text {
+  margin-top: 14px;
+  max-width: 290px;
+}
+
+.place-image-popup .place-image-popup-num {
+  color: #3f3636;
+  font-size: 19px;
+  line-height: 1.2;
+}
+
+.place-image-popup .place-image-popup-text-p {
+  color: #3f3636;
+  font-size: 12px;
+  line-height: 1.5;
+  margin: 0;
+  margin-top: 8px;
+}
+
+.place-image-popup .place-video-popup {
+  padding: 108px 60px;
+}
+
+.place-video-popup .place-image-popup-cont {
+  display: flex;
+  align-items: center;
+  gap: 7.87%;
+}
+
+.place-image-popup .place-image-popup-video-text {
+  flex: 1;
+}
+
+.place-video-popup .place-image-popup-h3 {
+  text-align: left;
+}
+
+.place-video-popup .place-image-popup-p {
+  text-align: left;
+}
+
+.place-image-popup .place-image-popup-video {
+  width: 58%;
+}
+
+.place-image-popup .place-image-wrapper{
+  width:100%;
+}
+
+.place-image-popup .place-image-wrapper video{
+  width:100%;
+}
+
+@media (max-width: 991px) {
+  .place-image-popup .place-image-popup-close {
+    top: 5px;
+    right: 5px;
+  }
+  .place-image-popup .place-image-popup-cont {
+    padding: 40px 20px;
+  }
+  .place-image-popup .place-image-popup-h3 {
+    font-size: 22px;
+  }
+
+  .place-image-popup .place-image-popup-p {
+    font-size: 14px;
+    margin-top: 10px;
+  }
+  .place-image-popup .place-image-popup-list {
+    margin-top: 30px;
+  }
+  .place-video-popup .place-image-popup-cont {
+    flex-direction: column;
+    gap: 30px;
+  }
+  .place-video-popup .place-image-popup-h3,
+  .place-video-popup .place-image-popup-p {
+    text-align: center;
+  }
+  .place-image-popup .place-image-popup-video {
+    width: 100%;
+  }
+}
+
+@media (max-width: 640px) {
+  .place-image-popup .place-image-popup-list {
+    flex-wrap: wrap;
+    max-height: 50vh;
+    overflow-y: auto;
+  }
+  .place-image-popup .place-image-popup-item {
+    flex: none;
+    width: 100%;
+  }
+  .svg-mini .place-image-popup-list {
+    flex-wrap: nowrap;
+  }
+  .svg-mini .place-image-popup-item {
+    flex: 1;
+  }
+}
+</style>
+<section class="section-box">
+
+  {%- for block in section.blocks -%}
+    {% if block.type == 'img_item'  %}
+      <div class="place-image-popup {{ block.settings.text2 }}">
+        <div class="place-image-popup-cont">
+          <div class="place-image-popup-close"></div>
+          {%- if block.settings.text != blank  -%}    
+            <h3 class="place-image-popup-h3">{{ block.settings.text }}</h3>
+          {%- endif -%}
+          {%- if block.settings.text1 != blank  -%}    
+            <p class="place-image-popup-p">{{ block.settings.text1 }}</p>
+          {%- endif -%}
+          <div class="place-image-popup-list">
+            {%- if block.settings.image != blank  -%}  
+              <div class="place-image-popup-item">
+                <div class="place-image-popup-img">
+                  <img class="img" width="" height="" src="{{ block.settings.image | image_url }}" alt="{{ block.settings.image.alt }}">
+                </div>
+                {%- if block.settings.text3 != blank or block.settings.text4 != blank  -%} 
+                  <div class="place-image-popup-text">
+                    {%- if block.settings.text3 != blank  -%}  
+                      <div class="place-image-popup-num">{{ block.settings.text3 }}</div>
+                    {%- endif -%}
+                    {%- if block.settings.text4 != blank  -%}  
+                      <p class="place-image-popup-text-p">{{ block.settings.text4 }}</p>
+                    {%- endif -%}
+                  </div>
+                {%- endif -%}
+              </div>
+            {%- endif -%}
+            {%- if block.settings.image1 != blank  -%}  
+              <div class="place-image-popup-item">
+                <div class="place-image-popup-img">
+                  <img class="img" width="" height="" src="{{ block.settings.image1 | image_url }}" alt="{{ block.settings.image1.alt }}">
+                </div>
+                {%- if block.settings.text5 != blank or block.settings.text6 != blank  -%} 
+                  <div class="place-image-popup-text">
+                    {%- if block.settings.text5 != blank  -%}  
+                      <div class="place-image-popup-num">{{ block.settings.text5 }}</div>
+                    {%- endif -%}
+                    {%- if block.settings.text6 != blank  -%}  
+                      <p class="place-image-popup-text-p">{{ block.settings.text6 }}</p>
+                    {%- endif -%}
+                  </div>
+                {%- endif -%}
+              </div>
+            {%- endif -%}
+            {%- if block.settings.image2 != blank  -%}  
+              <div class="place-image-popup-item">
+                <div class="place-image-popup-img">
+                  <img class="img" width="" height="" src="{{ block.settings.image2 | image_url }}" alt="{{ block.settings.image2.alt }}">
+                </div>
+                {%- if block.settings.text7 != blank or block.settings.text8 != blank  -%} 
+                  <div class="place-image-popup-text">
+                    {%- if block.settings.text7 != blank  -%}  
+                      <div class="place-image-popup-num">{{ block.settings.text7 }}</div>
+                    {%- endif -%}
+                    {%- if block.settings.text8 != blank  -%}  
+                      <p class="place-image-popup-text-p">{{ block.settings.text8 }}</p>
+                    {%- endif -%}
+                  </div>
+                {%- endif -%}
+              </div>
+            {%- endif -%}
+          </div>
+        </div>
+      </div>
+    {% endif %}
+    {% if block.type == 'vid_item'  %}
+      <div class="place-image-popup {{ block.settings.text2 }}">
+        <div class="place-image-popup-cont">
+          <div class="place-image-popup-close"></div>
+          <div class="place-image-popup-video-text">
+            {%- if block.settings.text != blank  -%}    
+              <h3 class="place-image-popup-h3">{{ block.settings.text }}</h3>
+            {%- endif -%}
+            {%- if block.settings.text1 != blank  -%}    
+              <p class="place-image-popup-p">{{ block.settings.text1 }}</p>
+            {%- endif -%}
+          </div>
+          <div class="place-image-popup-video">
+            {%- if block.settings.image != blank  -%}
+              <img class="img" width="" height="" src="{{ block.settings.image | image_url }}" alt="{{ block.settings.image.alt }}">
+            {%- endif -%}
+            {%- if block.settings.video != blank -%}
+              <native-video autoplay class="place-image-wrapper">
+                <template>
+                  {{- block.settings.video | video_tag: controls: false, autoplay: true, muted: true, playsinline: true, loop: true -}}
+                </template>
+              </native-video>
+            {%- endif -%}
+          </div>
+        </div>
+      </div>
+    {% endif %}
+  {%- endfor -%}
+</section>
+<script>
+    document.querySelectorAll(".place-image .place-image-item svg").forEach(function (el) {
+      el.addEventListener("click", () => {
+        let name = el.closest('.place-image-item').getAttribute("data-name");
+        if (name) {
+          fadeIn(document.querySelector(`.${name}`))
+        }
+      })
+    })
+
+    // document.querySelectorAll(".place-image-popup .place-image-popup-close").forEach(function (el) {
+    //   el.addEventListener("click", () => {
+    //     fadeOut(el.closest(".place-image-popup"))
+    //   })
+    // })
+
+    document.querySelectorAll(".place-image-popup").forEach(function (el) {
+      el.addEventListener("click", () => {
+        fadeOut(el)
+      })
+    })
+
+    // dom显示
+    function fadeIn(element, callback = null, duration = 400) {
+      if (window.getComputedStyle(element).display === 'none') {
+        element.style.display = 'block'; // 先显示元素
+        element.style.opacity = 0; // 设为透明
+      }
+
+      let startTime = performance.now();
+
+      function animate(currentTime) {
+        let elapsedTime = currentTime - startTime;
+        let progress = elapsedTime / duration;
+
+        if (progress >= 1) {
+          element.style.opacity = 1; // 透明度设为 1
+          if (callback) callback(); // 调用回调函数
+        } else {
+          element.style.opacity = progress;
+          requestAnimationFrame(animate);
+        }
+      }
+
+      requestAnimationFrame(animate);
+    }
+
+    // dom隐藏
+    function fadeOut(element, callback = null, duration = 400) {
+      let startTime = performance.now();
+
+      function animate(currentTime) {
+        let elapsedTime = currentTime - startTime;
+        let progress = elapsedTime / duration;
+
+        if (progress >= 1) {
+          element.style.opacity = 0;
+          element.style.display = 'none'; // 完全隐藏
+          if (callback) callback(); // 调用回调函数
+        } else {
+          element.style.opacity = 1 - progress;
+          requestAnimationFrame(animate);
+        }
+      }
+
+      requestAnimationFrame(animate);
+    }
+  </script>
+{% schema %}
+{
+  "name": "place-image-popup",
+  "blocks": [
+    {
+      "name": "image",
+      "type": "img_item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text2",
+          "label": "弹窗Class名"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text"
+        },
+        {
+          "type": "text",
+          "id": "text1",
+          "label": "Text"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "text3",
+          "label": "Text"
+        },
+        {
+          "type": "text",
+          "id": "text4",
+          "label": "Text"
+        },
+        {
+          "type": "image_picker",
+          "id": "image1",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "text5",
+          "label": "Text"
+        },
+        {
+          "type": "text",
+          "id": "text6",
+          "label": "Text"
+        },
+        {
+          "type": "image_picker",
+          "id": "image2",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "text7",
+          "label": "Text"
+        },
+        {
+          "type": "text",
+          "id": "text8",
+          "label": "Text"
+        },
+        
+      ]
+    },
+    {
+      "name": "video",
+      "type": "vid_item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text2",
+          "label": "弹窗Class名"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text"
+        },
+        {
+          "type": "text",
+          "id": "text1",
+          "label": "Text"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "video",
+          "id": "video",
+          "label": "Video",
+          "info": "Replaces the external video if both are set."
+        }
+        
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "place-image-popup",
+      "blocks": []
+    }
+  ]
+}
+{% endschema %}

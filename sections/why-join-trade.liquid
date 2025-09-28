@@ -1,0 +1,394 @@
+<style>
+.media-{{ section.id }}-padding {
+    padding-top: calc({{ section.settings.padding_top }}px);
+    padding-bottom: calc({{ section.settings.padding_bottom }}px);
+  }
+@media screen and (max-width: 768px){
+  .media-{{ section.id }}-padding {
+    padding-top: calc({{ section.settings.mobile_padding_top }}px);
+    padding-bottom: calc({{ section.settings.mobile_padding_bottom }}px);
+  }
+}
+.why-join-box{
+  display: flex;
+  gap: 198px;
+  align-items: center;
+  overflow: hidden;
+}
+.why-join-left h3{
+  font-family: var(--heading-font-family);
+  color:  #190A0A;
+font-size: 44px;
+font-style: normal;
+font-weight: 570;
+line-height: 125%;
+margin-bottom: 30px;
+}
+.why-join-right{
+  width: 92%;
+}
+.why-join-left a{
+  display: inline-flex;
+height: 52px;
+padding: 15px 50px;
+justify-content: center;
+align-items: center;
+gap: 10px;
+background: #E0004D;
+color:  #FFFFFC;
+text-align: center;
+font-size: 14px;
+font-style: normal;
+font-weight: 670;
+line-height: 150%; 
+}
+.why-join-right .why-item img{
+  display: block;
+  width: 100%;
+}
+.why-join-right-wrapper {
+  display: flex;
+  gap: 20px;
+}
+.why-join-right-wrapper .why-item {
+  flex-shrink: 1;
+}
+
+.swiper-container.swiper-initialized.swiper-horizontal  .why-item{
+flex-shrink: 0;
+}
+.why-join-right h4{
+      font-family: var(--heading-font-family);
+  color: #E0004D;
+font-size: 22px;
+font-style: normal;
+font-weight: 570;
+line-height: 150%;
+margin-top: 20px;
+margin-bottom: 10px;
+}
+.why-join-right .why-item-txt{
+color: #190A0A;
+font-size: 18px;
+font-style: normal;
+font-weight: 380;
+line-height: 150%; 
+}
+.why-join-right .why-item-ul{
+  display: flex;
+  flex-wrap: wrap;
+  row-gap: 18px;
+}
+.why-join-right .why-item-li{
+  display: flex;
+  width: 50%;
+  align-items: center;
+  gap: 5px;
+}
+.why-join-right .why-item-li img{
+  display: block;
+  flex: 1;
+  max-width: 20px;
+}
+.why-join-right .why-item-li span{
+  color:  #3F3636;
+font-size: 14px;
+font-style: normal;
+font-weight: 380;
+line-height: 110%; 
+letter-spacing: 0.28px;
+}
+@media (min-width: 992px) and (max-width: 1450px) {
+  .why-join-left h3 {
+    font-size: 35px;
+    margin-bottom: 24px;
+}
+.why-join-left a {
+    height: 41px;
+    padding: 12px 40px;
+    gap: 8px;
+    font-size: 11px;
+}
+  .why-join-box {
+    gap: 158px;
+}
+.why-join-right h4 {
+    font-size: 18px;
+    margin-top: 16px;
+    margin-bottom: 8px;
+}
+.why-join-right .why-item-txt {
+    font-size: 14px;
+}
+.why-join-right .why-item-li span {
+    font-size: 11px;
+}
+}
+@media (max-width: 992px) {
+.why-join-box {
+    gap: 52px;
+    flex-direction: column;
+    text-align: center;
+}
+.why-join-left h3 {
+    font-size: 24px;
+    margin-bottom: 16px;
+}
+.why-join-left a {
+    height: 40px;
+    padding: 10px 27px;
+    gap: 10px;
+    font-size: 12px;
+}
+.why-join-right {
+    width: 100%;
+}
+.why-join-right-wrapper {
+    gap: 0px;
+}
+.why-join-right h4 {
+    font-size: 14px;
+    margin-top: 15px;
+    margin-bottom: 6px;
+    text-align: left;
+}
+.why-join-right .why-item-txt {
+   font-size: 12px;
+   text-align: left;
+}
+.why-join-right .why-item-li span {
+    font-size: 12px;
+}
+.why-join-right .why-item-ul {
+    row-gap: 10px;
+    text-align: left;
+}
+}
+</style>
+<section class="section-box media-{{ section.id }}-padding">
+ <div class="why-join-module">
+         <div class="container">
+           <div class="why-join-box">
+            <div class="why-join-left">
+              <h3>{{ section.settings.text }}</h3>
+              {%- if section.settings.button_text != blank -%}
+              <scroll-button target="#{{ section.settings.button_link_id }}">
+              <a href="javascript:;">{{ section.settings.button_text }}</a>
+              </scroll-button>
+               {%- endif -%}
+            </div>
+            <div class="why-join-right">
+               <custom-swiper
+              slides-per-view="1.4" 
+              space-between="15" 
+              loop="false" 
+              centered-slides="false"
+              pagination="false"
+              navigation="false"
+              disable-on="desktop"
+              breakpoints='{"768":{"slidesPerView": 1,"spaceBetween": 20}}'
+            >
+            <div class="swiper-container why-join-swiper-container">
+              <div class="swiper-wrapper why-join-right-wrapper">
+
+                 {%- for block in section.blocks -%}
+                    {%- case block.type -%}
+                       {%- when 'word' -%}
+                <div class="why-item swiper-slide">
+                  {% if block.settings.image %}
+                  <img src="{{ block.settings.image | image_url  }}" alt="" width="{{ block.settings.image.width  }}" height="{{  block.settings.image.height }}" />
+                   {% endif %}
+                  <h4>{{ block.settings.tle }}</h4>
+                  <div class="why-item-txt">All hair removal device brands are eligible for our trade-in offer.</div>
+                </div>
+                 {%- when 'list' -%}
+                <div class="why-item swiper-slide">
+                   {% if block.settings.image %}
+                  <img src="{{ block.settings.image | image_url  }}" alt="" width="{{ block.settings.image.width  }}" height="{{  block.settings.image.height }}" />
+                   {% endif %}
+                   <h4>{{ block.settings.tle }}</h4>
+                  <div class="why-item-ul">
+                    <div class="why-item-li">
+                        {% if block.settings.custom_icon1 %}
+                       <img src="{{ block.settings.custom_icon1 | image_url  }}" alt="" width="{{ block.settings.custom_icon1.width  }}" height="{{  block.settings.custom_icon1.height }}" />
+                       {% endif %}
+                      <span>{{ block.settings.txt1 }}</span>
+                    </div>
+                     <div class="why-item-li">
+                         {% if block.settings.custom_icon2 %}
+                       <img src="{{ block.settings.custom_icon2 | image_url  }}" alt="" width="{{ block.settings.custom_icon2.width  }}" height="{{  block.settings.custom_icon2.height }}" />
+                        {% endif %}
+                      <span>{{ block.settings.txt2 }}</span>
+                    </div>
+                      <div class="why-item-li">
+                          {% if block.settings.custom_icon3 %}
+                       <img src="{{ block.settings.custom_icon3 | image_url  }}" alt="" width="{{ block.settings.custom_icon3.width  }}" height="{{  block.settings.custom_icon3.height }}" />
+                         {% endif %}
+                      <span>{{ block.settings.txt3 }}</span>
+                    </div>
+                      <div class="why-item-li">
+                          {% if block.settings.custom_icon4 %}
+                       <img src="{{ block.settings.custom_icon4 | image_url  }}" alt="" width="{{ block.settings.custom_icon4.width  }}" height="{{  block.settings.custom_icon4.height }}" />
+                         {% endif %}
+                      <span>{{ block.settings.txt4 }}</span>
+                    </div>
+                  </div>
+                </div>
+                  {%- endcase -%}
+                {%- endfor -%}
+                
+              </div>
+            </div>
+              </custom-swiper>
+            </div>
+          </div>
+         </div>
+        </div>
+</section>
+{% schema %}
+{
+"name": "why-join-trade",
+    "blocks": [
+    {
+      "name": "word",
+      "type": "word",
+      "settings": [
+         {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Images"
+        },
+        {
+          "type": "text",
+          "id": "tle",
+          "label": "Title"
+        },
+        {
+          "type": "text",
+          "id": "txt",
+          "label": "Text"
+        }
+      ]
+    },
+       {
+      "name": "list",
+      "type": "list",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Images"
+        },
+        {
+          "type": "text",
+          "id": "tle",
+          "label": "Title"
+        },
+         {
+          "type": "image_picker",
+          "id": "custom_icon1",
+          "label": "Custom icon1"
+        },
+         {
+          "type": "text",
+          "id": "txt1",
+          "label": "Text1"
+        },
+        {
+          "type": "image_picker",
+          "id": "custom_icon2",
+          "label": "Custom ico2"
+        },
+         {
+          "type": "text",
+          "id": "txt2",
+          "label": "Text2"
+        },
+        {
+          "type": "image_picker",
+          "id": "custom_icon3",
+          "label": "Custom ico3"
+        },
+         {
+          "type": "text",
+          "id": "txt3",
+          "label": "Text3"
+        },
+        {
+          "type": "image_picker",
+          "id": "custom_icon4",
+          "label": "Custom ico4"
+        },
+         {
+          "type": "text",
+          "id": "txt4",
+          "label": "Text4"
+        }
+      ]
+    }
+  ],
+  "settings": [
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Title"
+    },
+     {
+          "type": "text",
+          "id": "button_text",
+          "label": "Button text"
+        },
+        {
+          "type": "text",
+          "id": "button_link_id",
+          "label": "Button Link Id"
+        },
+     {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 300,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 300,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 0
+    },
+     {
+      "type": "range",
+      "id": "mobile_padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Mobile Padding Top",
+      "default": 10
+    },
+    {
+      "type": "range",
+      "id": "mobile_padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Mobile Padding Bottom",
+      "default": 10
+    }
+  ],
+  "presets": [
+  {
+    "name": "why-join-trade",
+    "blocks": []
+  }
+]
+}
+{% endschema %}

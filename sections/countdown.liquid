@@ -1,0 +1,143 @@
+<style>
+.countdown {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 0;
+}
+
+.countdown span.countdown-time {
+    font-size: 40px;
+    margin: 0 10px;
+    width: 70px;
+    height: 70px;
+    border-radius: 6px;
+    opacity: 1;
+    background: #a6d8cfff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.countdown__item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.countdown__bix {
+    display: flex;
+    align-items: center;
+}
+span.countdown__er {
+    font-size: 40px;
+}
+@media screen and (max-width: 768px){
+.countdown span.countdown-time {
+    font-size: 20px;
+    width: 40px;
+    height: 40px;
+}
+span.countdown__er {
+    font-size: 20px;
+}
+}
+</style>
+
+<section class="">
+<div id="countdown" class="countdown">
+  <div class="countdown__item">
+    <div class="countdown__bix">
+      <span class="countdown-time countdown-days"></span>
+      <span class="countdown__er"> : </span>
+    </div>
+    <span class="countdown_txt">days</span>
+  </div>
+  <div class="countdown__item">
+    <div class="countdown__bix">
+      <span class="countdown-time countdown-hours"></span>
+      <span class="countdown__er"> : </span>
+    </div>
+    <span class="countdown_txt">hrs</span>
+  </div>
+  <div class="countdown__item">
+    <div class="countdown__bix">
+      <span class="countdown-time countdown-minutes"></span>
+      <span class="countdown__er"> : </span>
+    </div>
+    <span class="countdown_txt">mins</span>
+  </div>
+  <div class="countdown__item">
+    <span class="countdown-time countdown-seconds"></span>
+    <span class="countdown_txt">secs</span>
+  </div>
+</div>
+
+</section>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  function Countdown(selector, endDate) {
+     countdownElement = document.querySelector(selector);
+    let daysElement = countdownElement.querySelector('.countdown-days');
+    let hoursElement = countdownElement.querySelector('.countdown-hours');
+    let minutesElement = countdownElement.querySelector('.countdown-minutes');
+    let secondsElement = countdownElement.querySelector('.countdown-seconds');
+  
+    // 获取当前时间和结束时间
+    let serverTimestamp = {{ 'now' | date: '%s' }};
+  
+    let currentServerTime = new Date(serverTimestamp * 1000); // 将秒转换为毫秒
+    let currentTime = currentServerTime.getTime();
+    
+    let distance = endDate - currentTime <=0 ? 0: endDate - currentTime;
+    console.log('nowtime', currentServerTime, currentTime);
+    function updateCountdown() {
+      // 计算天、时、分、秒
+      let days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      let hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      let seconds = Math.floor((distance % (1000 * 60)) / 1000);
+  
+      // 更新倒计时显示
+      daysElement.textContent = days < 10 ? '0' + days : days;
+      hoursElement.textContent = hours < 10 ? '0' + hours : hours;
+      minutesElement.textContent = minutes < 10 ? '0' + minutes : minutes;
+      secondsElement.textContent = seconds < 10 ? '0' + seconds : seconds;
+  
+      // 减去一秒，更新距离
+      distance -= 1000;
+  
+      // 当倒计时结束时，清除计时器
+      if (distance < 0) {
+        clearInterval(countdownInterval);
+        // 可以在倒计时结束后执行相应的操作
+      }
+    }
+  
+    // 每秒更新一次倒计时
+    let countdownInterval = setInterval(updateCountdown, 1000);
+  
+    // 页面加载时初始化倒计时
+    updateCountdown();
+  }
+  
+  // 使用示例
+  let endDate = new Date('2023-06-19T00:00:00').getTime(); // 设置结束时间
+  let countdown = new Countdown('#countdown', endDate); // 初始化倒计时插件
+});
+
+
+</script>
+{% schema %}
+{
+  "name": "countdown",
+  "class": "countdown",
+  "blocks": [
+  ],
+  "settings": [
+  ],
+  "presets": [
+    {
+      "name": "countdown"
+    }
+  ]
+}
+{% endschema %}

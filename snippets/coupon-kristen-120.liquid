@@ -1,0 +1,32 @@
+<div class="coupon-box">
+  <div class="coupon-cont">
+    <div class="coupon-cont-item coupon-left">
+      <div class="left-txt">
+        £120
+      </div>
+    </div>
+    <div
+      class="coupon-cont-item coupon-right copyButton"
+      data-txt="copied"
+      data-txt1="Copy Code"
+    >
+      Copy Code
+    </div>
+  </div>
+  <span class="cpnCode">Serena120</span>
+</div>
+<script>
+  document.querySelector('.copyButton').addEventListener('click', function () {
+    let textToCopy = document.querySelector('.cpnCode');
+    let range = document.createRange();
+    range.selectNode(textToCopy);
+    window.getSelection().removeAllRanges(); // 清除之前的选区
+    window.getSelection().addRange(range);
+    document.execCommand('copy');
+    window.getSelection().removeAllRanges(); // 清除选区
+    this.innerHTML = this.getAttribute('data-txt');
+    setTimeout(() => {
+      this.innerHTML = this.getAttribute('data-txt1');
+    }, 2000);
+  });
+</script>

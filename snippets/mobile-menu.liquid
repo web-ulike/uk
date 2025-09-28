@@ -3,7 +3,16 @@
   {%- when 'ar', 'arc', 'dv', 'fa', 'ha', 'he', 'kwh', 'ks', 'ku', 'ps', 'ur', 'yi' -%}
     {%- assign direction = 'rtl' -%}
 {%- endcase -%}
-
+{%- assign product_menu_block1 = '' -%}
+{%- assign product_tag_name = '' -%}
+{%- for block in section.blocks -%}
+  {% case block.type %}
+    {% when 'product_menu' %}
+      {%- assign product_menu_block1 = block -%}
+    {% when 'product_block' %}
+      {%- assign product_tag_name = block -%}
+  {% endcase %}
+{%- endfor -%}
 <mobile-navigation
   append-body
   id="mobile-menu-drawer"
@@ -21,27 +30,426 @@
       {%- render 'icon' with 'close' -%}
     </button>
   </div>
+  <div class="drawer__content {% if product_menu_block1 != '' %}hide-menu-item{% endif %} {% if section.settings.new_header %}header-new-popup{% endif %}">
+    {%- if section.settings.new_header -%}
+      <ul class="mobile-nav list--unstyled" role="list">
+        {%- for link in menu.links -%}
+          {%- assign link_title_downcase = link.title | strip | downcase -%}
+          {%- assign new_menu_block = '' -%}
+          {%- assign menu_tag_block = '' -%}
+          {%- assign market_item = '' -%}
 
-  <div class="drawer__content">
-    <ul class="mobile-nav list--unstyled" role="list">
-      {%- for link in menu.links -%}
-        {%- assign link_title_downcase = link.title | strip | downcase -%}
-        {%- assign mega_menu_block = '' -%}
-        {%- assign mega_menu_images = '' -%}
+          {%- for block in section.blocks -%}
+            {%- assign menu_tag_downcase = block.settings.menu_tag | strip | downcase -%}
+            {%- assign name_txt_downcase = block.settings.name_txt | strip | downcase -%}
+            {%- assign market_txt = block.settings.market_txt | strip | downcase -%}
 
-        {%- for block in section.blocks -%}
-          {%- assign menu_item_downcase = block.settings.menu_item | strip | downcase -%}
+            {% if name_txt_downcase == link_title_downcase %}
+              {%- assign new_menu_block = block -%}
+            {% endif %}
+            {% if menu_tag_downcase == link_title_downcase %}
+              {%- assign menu_tag_block = block -%}
+            {% endif %}
+            {%- if link_title_downcase == market_txt -%}
+              {%- assign market_item = block -%}
+            {% endif %}
+          {%- endfor -%}
 
-          {%- if menu_item_downcase == link_title_downcase -%}
-            {%- assign mega_menu_block = block -%}
-            {%- break -%}
-          {%- endif -%}
+          <li
+            class="mobile-nav__item {% if menu_tag_block != '' %}mobile-has__tag{% endif %}"
+            data-level="1"
+          >
+            {%- if link.links.size > 0 or new_menu_block != '' -%}
+              {%- assign ss_name = section.settings.hide_m_txt | strip | downcase -%}
+              {%- if ss_name != link_title_downcase -%}
+                <button
+                  is="toggle-button"
+                  class="mobile-nav__link heading {% if settings.heading_text_transform == 'uppercase' %}h6{% else %}h5{% endif %}"
+                  aria-controls="mobile-menu-{{ forloop.index }}"
+                  aria-expanded="{% if forloop.index == 1 %}true{%else%}false{% endif %}"
+                >
+                  {{- link.title -}} 
+                  {%- if menu_tag_block != '' -%}
+                    {%- if menu_tag_block.settings.image_link_tag != blank -%}
+                     {{ menu_tag_block.settings.image_link_tag  | image_url: width: menu_image.width | image_tag: loading: 'lazy', sizes: '240px', sizes: '240,480,720', class: 'mega-tage__image' }}
+                    {%- endif -%}
+                    {%- if menu_tag_block.settings.text_link_tag != blank -%}
+                       <span class="menu-tag">{{ menu_tag_block.settings.text_link_tag }}</span>
+                    {%- endif -%}
+                  {%- endif -%}
+                  <span class="animated-plus-jt" >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="8" viewBox="0 0 14 8" fill="none">
+                      <path d="M13 1L7 7L1 1" stroke="#190A0A" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </span>
+                </button>
+              {%- endif -%}
+              <collapsible-content id="mobile-menu-{{ forloop.index }}" class="collapsible" {% if ss_name != link_title_downcase %}exclusive{% endif %} {% if ss_name == link_title_downcase %}open{% endif %} {% if forloop.index == 1 and section.settings.default_one %}open{% endif %} >
+                {%- if new_menu_block != '' -%}
+                  <div class="header-new-item product-operate" role="list" {% if ss_name == link_title_downcase %}style="margin-top: 20px;"{% endif %}>
+                    {%- for item in section.blocks -%}
+                      {%- assign name_txt_s = item.settings.name_txt | strip | downcase -%}
+                      {%- if name_txt_s == link_title_downcase -%}
+                        <div class="header-new-item-sm">
+                          {%- if item.settings.text != blank -%}
+                            <div class="header-new-item-title" title="{{ item.settings.text }}" >{{ item.settings.text }}</div>
+                          {%- endif -%}
+                          <div class="header-new-item-sm-list">
+                            <!-- 二级菜单-产品 -->
+                            {% if item.type == 'product_range' and item.settings.collection != blank %}
+                              {% assign selected_collection = collections[item.settings.collection] %}
+                              {% for product in selected_collection.products limit: 3 %}
+                                <a href="{{ product.url }}" class="header-new-product-item">
+                                  <div class="header-new-product-img">
+                                    {%  if product.metafields.custom["head_img"] != blank -%}
+                                      <img src="{{ product.metafields.custom["head_img"] | image_url }}" width="" height="" alt="{{ product.title }}" loading="lazy">
+                                    {% else %}
+                                      <img src="{{ product.featured_image | image_url }}" width="" height="" alt="{{ product.title }}" loading="lazy">
+                                    {% endif %}
+                                  </div>
+                                  <div class="header-new-product-info">
+                                    <div class="header-new-product-title">{{ product.title }}
+                                    {%  if product.metafields.custom["tag"] != blank -%}
+                                      <span>{{ product.metafields.custom["tag"] }}</span>
+                                    {% endif %}
+                                    </div>
+                                    <div class="header-new-product-star">
+                                      <div class='jdgm-widget jdgm-preview-badge'>
+                                        {{ product.metafields.judgeme.badge }}
+                                      </div>
+                                    </div>
+                                    <div class="header-new-product-price">
+                                      {%  if product.metafields.custom["n_price"] != blank -%}
+                                        {{ product.metafields.custom["n_price"] }}
+                                      {% else %}
+                                        {{ product.price | money }}
+                                      {% endif %}
+                                      {%  if product.metafields.custom["o_price"] != blank -%}
+                                        <span class="head-o-price">{{ product.metafields.custom["o_price"] }}</span>
+                                      {% endif %}
+                                    </div>
+                                    {%- if item.settings.text1 != blank -%}
+                                      <div class="header-new-product-btn" data-id="{{ product.variants.first.id }}" data-code="{{ product.metafields.custom["discount_code"] }}">
+                                        {{ item.settings.text1 }}
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="11" viewBox="0 0 14 11" fill="none">
+                                          <path d="M0 5.50061L13.087 5.5" stroke="#E0004D" stroke-width="0.608696" />
+                                          <path d="M10.3477 2.76099L13.553 5.50073L10.3477 8.17107" stroke="#E0004D"
+                                            stroke-width="0.608696" stroke-linejoin="round" />
+                                        </svg>
+                                      </div>
+                                    {%- endif -%}
+                                  </div>
+                                </a>
+                              {%- endfor -%}
+                            {% endif %}
+                            
+                            {% if item.type == 'operate_block' %}
+                              <!-- 二级菜单-活动 -->
+                              <div class="header-new-operate-item">
+                                <img src="{{ item.settings.image | image_url }}" width="" height="" loading="lazy" alt="{{ item.settings.image.alt }}" class="img">
+                                <div class="header-new-operate-txt">
+                                  <div class="header-new-operate-title">
+                                    {{ item.settings.text1 }}
+                                  </div>
+                                  {%- if item.settings.text3 != blank -%}
+                                    <a href="{{ item.settings.link1 }}" class="header-new-operate-btn">{{ item.settings.text3 }}</a>
+                                  {%- endif -%}
+                                </div>
+                              </div>
+                            {% endif %}
+                          </div>
+                         {%- if item.type == 'product_range' and item.settings.rm_text !='' -%}
+                            <a href="{{ item.settings.rm_link }}" class="header-new-all">
+                              {{ item.settings.rm_text }}
+                              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="11" viewBox="0 0 14 11" fill="none">
+                                <path d="M0 5.50061L13.087 5.5" stroke="#E0004D" stroke-width="0.608696" />
+                                <path d="M10.3477 2.76099L13.553 5.50073L10.3477 8.17107" stroke="#E0004D" stroke-width="0.608696"
+                                  stroke-linejoin="round" />
+                              </svg>
+                            </a>
+                         {%- endif -%}
+                        </div>
+                      {% endif %}   
+                    {%- endfor -%}
+                  </div>
+                 {% if new_menu_block.type == 'operate_block' or new_menu_block.type == 'product_range' %}
+                   {%- assign rm_text = '' -%}
+                   {%- assign rm_link = '' -%}
+                     
+                    {% if new_menu_block.type == 'operate_block' and section.settings.rm_text != blank %}       
+                     {%- assign rm_text = section.settings.rm_text -%}
+                    {%- endif -%}
+                    {% if new_menu_block.type == 'operate_block' and section.settings.rm_link != blank %}
+                     {%- assign rm_link = section.settings.rm_link -%}
+                    {%- endif -%}
+                    {% if new_menu_block.type == 'product_range' and section.settings.rm_text1 != blank %}       
+                     {%- assign rm_text = section.settings.rm_text1 -%}
+                    {%- endif -%}
+                    {% if new_menu_block.type == 'product_range' and section.settings.rm_link1 != blank %}
+                     {%- assign rm_link = section.settings.rm_link1 -%}
+                    {%- endif -%}
+                  {%- if rm_text != '' -%}
+                    <a href="{{ rm_link }}" class="header-new-all" style="margin-left:24px;">
+                      {{ rm_text }}
+                      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="11" viewBox="0 0 14 11" fill="none">
+                        <path d="M0 5.50061L13.087 5.5" stroke="#E0004D" stroke-width="0.608696" />
+                        <path d="M10.3477 2.76099L13.553 5.50073L10.3477 8.17107" stroke="#E0004D" stroke-width="0.608696"
+                          stroke-linejoin="round" />
+                      </svg>
+                    </a>
+                 {%- endif -%}
+                {%- endif -%} 
+                {% endif %}
+                {%- if link.links.size > 0 -%}
+                  <div class="header-new-item {% if market_item != '' %}market-cont-menu{% endif %}" role="list">
+                    {%- for sub_link in link.links -%}
+                      <div class="header-new-item-sm" data-level="2">
+                        {%- if sub_link.links.size > 0 -%}
+                          <div class="header-new-item-title">
+                            <button
+                              is="toggle-button"
+                              class="mobile-nav__link"
+                              aria-controls="mobile-menu-{{ forloop.parentloop.index }}-{{ forloop.index }}"
+                              aria-expanded="true"
+                            >
+                              {{- sub_link.title -}}
+                              <span class="animated-plus-jt">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="8" viewBox="0 0 14 8" fill="none">
+                                  <path d="M13 1L7 7L1 1" stroke="#190A0A" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                              </span>
+                            </button>
+                          </div>
+                          <collapsible-content
+                            id="mobile-menu-{{ forloop.parentloop.index }}-{{ forloop.index }}"
+                            class="collapsible"
+                            a="{{ link_title_downcase }}"
+                            {% if link_title_downcase == 'learn more'  %}open {% else %}exclusive{% endif %}
+                          >
+                            <div class="header-new-item-sm-list" role="list">
+                              {%- for sub_sub_link in sub_link.links -%}
+                                {%- assign link_title_downcase = sub_sub_link.title | strip | downcase -%}
+                                  {%- assign menu_tag_block_img = '' -%}
+                                  {%- for sblock in section.blocks -%}
+              
+                                    {%- assign menu_tag_downcase = sblock.settings.menu_tag | strip | downcase -%}
+                            
+                                    {%- if menu_tag_downcase == link_title_downcase -%}
+                                      {%- if sblock.settings.image_link_tag != blank -%}
+                                        {%- assign menu_tag_block_img = sblock.settings.image_link_tag -%}
+                                      {%- endif -%}
+                                      {%- break -%}
+                                    {%- endif -%}
+                                  {%- endfor -%}
+                                <a href="{{ sub_sub_link.url }}" class="header-new-link-item {% if menu_tag_block_img != '' %}link-menu-icon-a{% endif %}" text="{{ sub_sub_link.title }}"  data-level="3">
+                                  {%- if menu_tag_block_img != '' -%}
+                                    <img class="link-menu-icon" src="{{ menu_tag_block_img | image_url }}" width="" height="" alt="{{ menu_tag_block_img.alt }}" />
+                                  {%- endif -%}
+                                  <span>
+                                    {{- sub_sub_link.title -}}
+                                  </span>
+                                </a>
+                              {%- endfor -%}
+                            </div>
+                          </collapsible-content>
+                        {%- else -%}
+                          <a href="{{ sub_link.url }}" class="header-new-item-title">{{ sub_link.title }}</a>
+                        {%- endif -%}
+                      </div>
+                    {%- endfor -%}
+                    {% if market_item != '' %}
+                      <div class="market-cont-menu-list">
+                        {%- if market_item.settings.image != blank or market_item.settings.text != blank or market_item.settings.text1 != blank -%}
+                          <a href="{{ market_item.settings.link }}" class="market-cont-menu-item">
+                            {%- if market_item.settings.image != blank -%}
+                              <img class="market-cont-menu-img" src="{{ market_item.settings.image | image_url  }}" width="" height="" alt="{{ market_item.settings.image.alt }}" />
+                            {%- endif -%}
+                            {%- if market_item.settings.text != blank -%}
+                              <h3 class="market-cont-menu-h3">{{ market_item.settings.text }}</h3>
+                            {%- endif -%}
+                            {%- if market_item.settings.text1 != blank -%}
+                              <p class="market-cont-menu-p">{{ market_item.settings.text1 }}</p>
+                            {%- endif -%}
+                          </a>
+                        {%- endif -%}
+                        {%- if market_item.settings.image1 != blank or market_item.settings.text2 != blank or market_item.settings.text3 != blank -%}
+                          <a href="{{ market_item.settings.link1 }}" class="market-cont-menu-item">
+                            {%- if market_item.settings.image1 != blank -%}
+                              <img class="market-cont-menu-img" src="{{ market_item.settings.image1 | image_url  }}" width="" height="" alt="{{ market_item.settings.image1.alt }}" />
+                            {%- endif -%}
+                            {%- if market_item.settings.text2 != blank -%}
+                              <h3 class="market-cont-menu-h3">{{ market_item.settings.text2 }}</h3>
+                            {%- endif -%}
+                            {%- if market_item.settings.text3 != blank -%}
+                              <p class="market-cont-menu-p">{{ market_item.settings.text3 }}</p>
+                            {%- endif -%}
+                          </a>
+                        {%- endif -%}
+                      </div>
+                    {%- endif -%}
+                    </div>
+                {%- endif -%}
+              </collapsible-content>
+            {%- else -%}
+              <a
+                href="{{ link.url }}"
+                text="{{ link.title}}"
+                class="mobile-nav__link heading {% if settings.heading_text_transform == 'uppercase' %}h6{% else %}h5{% endif %}"
+              >
+                {{- link.title -}}
+              </a>
+            {%- endif -%}
+          </li>
         {%- endfor -%}
+        <li class="mobile-nav__item" data-level="1">
+          <a
+            class="mobile-nav__link heading h5"
+            text="{{ 'customer.general.sign_in' | t }}"
+            href="{%- if customer %}https://account.ulike.com/account?site=uk
+               {%- else -%}https://account.ulike.com/login?site=uk{% endif -%}"
+          >
+            {%- if customer %}
+              {{ 'customer.general.account_center' | t }}
+            {% else %}
+              {{ 'customer.general.sign_in' | t }}
+            {% endif -%}
+          </a>
+        </li>
+      </ul>
+    {%- else -%}
+      {%- for block in section.blocks -%}
+        {% case block.type %}
+          {% when 'product_menu' %}
+            {%- assign product_menu_block = block -%}
 
-        {%- if mega_menu_block != '' -%}
-          {%- assign images_count = 0 -%}
+            {%- if product_menu_block != '' -%}
+              <div class="mobile-product-box">
+                <div class="mobile-product-title heading h5">
+                  {{ product_menu_block.settings.menu_text }}
+                </div>
+                <div class="mobile-product-list">
+                  {%- if product_menu_block.settings.image_1_text != blank -%}
+                    <a href="{{ product_menu_block.settings.image_1_link }}" class="mobile-product-item">
+                      {%- if product_menu_block.settings.image_1 != blank -%}
+                        <img
+                          loading="lazy"
+                          class="img"
+                          width="{{ product_menu_block.settings.image_1.width }}"
+                          height="{{ product_menu_block.settings.image_1.height }}"
+                          {% render 'image-attributes', image: product_menu_block.settings.image_1 %}
+                          alt="{{ product_menu_block.settings.image_1.alt | escape }}"
+                        >
+                      {%- endif -%}
+                      <div class="mobile-product-txt">
+                        <div class="mobile-product-item-title heading">
+                          {{ product_menu_block.settings.image_1_heading }}
+                          {%- if product_menu_block.settings.image_1_text != blank -%}
+                            <div class="mobile-product-tag">{{ product_menu_block.settings.image_1_text }}</div>
+                          {%- endif -%}
+                        </div>
 
-          {%- capture mega_menu_images -%}
+                        <div class="mobile-product-sub">{{ product_menu_block.settings.image_1_sub }}</div>
+                        <div class="mobile-product-star">{{ product_menu_block.settings.image_1_star }}</div>
+                      </div>
+                    </a>
+                  {%- endif -%}
+                  {%- if product_menu_block.settings.image_2_text != blank -%}
+                    <a href="{{ product_menu_block.settings.image_2_link }}" class="mobile-product-item">
+                      {%- if product_menu_block.settings.image_2 != blank -%}
+                        <img
+                          loading="lazy"
+                          class="img"
+                          width="{{ product_menu_block.settings.image_2.width }}"
+                          height="{{ product_menu_block.settings.image_2.height }}"
+                          {% render 'image-attributes', image: product_menu_block.settings.image_2 %}
+                          alt="{{ product_menu_block.settings.image_2.alt | escape }}"
+                        >
+                      {%- endif -%}
+                      <div class="mobile-product-txt">
+                        <div class="mobile-product-item-title heading">
+                          {{ product_menu_block.settings.image_2_heading }}
+                          {%- if product_menu_block.settings.image_2_text != blank -%}
+                            <div class="mobile-product-tag">{{ product_menu_block.settings.image_2_text }}</div>
+                          {%- endif -%}
+                        </div>
+                        <div class="mobile-product-sub">{{ product_menu_block.settings.image_2_sub }}</div>
+                        <div
+                          class="mobile-product-star"
+                          data-t="{{ product_tag_name.settings.name_tag }}"
+                          data-tt="{{ product_menu_block.settings.menu_text }}"
+                        >
+                          {{ product_menu_block.settings.image_2_star }}
+                        </div>
+                      </div>
+                    </a>
+                  {%- endif -%}
+                  {%- if product_menu_block.settings.menu_text == product_tag_name.settings.name_tag -%}
+                    {%- for block in section.blocks -%}
+                      {% case block.type %}
+                        {% when 'product_block' %}
+                          <a href="{{ block.settings.image_1_link }}" class="mobile-product-item">
+                            {%- if block.settings.image_1 != blank -%}
+                              <img
+                                loading="lazy"
+                                class="img"
+                                width="{{ block.settings.image_1.width }}"
+                                height="{{ block.settings.image_1.height }}"
+                                {% render 'image-attributes', image: block.settings.image_1 %}
+                                alt="{{ block.settings.image_1.alt | escape }}"
+                              >
+                            {%- endif -%}
+                            <div class="mobile-product-txt">
+                              <div class="mobile-product-item-title heading">
+                                {{ block.settings.image_1_heading }}
+                                {%- if block.settings.image_1_text != blank -%}
+                                  <div class="mobile-product-tag">{{ block.settings.image_1_text }}</div>
+                                {%- endif -%}
+                              </div>
+
+                              <div class="mobile-product-sub">{{ block.settings.image_1_sub }}</div>
+                              <div class="mobile-product-star">{{ block.settings.image_1_star }}</div>
+                            </div>
+                          </a>
+                      {% endcase %}
+                    {%- endfor -%}
+                  {%- endif -%}
+                </div>
+              </div>
+            {%- endif -%}
+        {% endcase %}
+      {%- endfor -%}
+      <ul class="mobile-nav list--unstyled" role="list">
+        {%- for link in menu.links -%}
+          {%- assign link_title_downcase = link.title | strip | downcase -%}
+          {%- assign mega_menu_block = '' -%}
+          {%- assign mega_menu_images = '' -%}
+          {%- assign menu_tag_block = '' -%}
+
+          {%- for block in section.blocks -%}
+            {% case block.type %}
+              {% when 'mega_menu' %}
+                {%- assign menu_item_downcase = block.settings.menu_item | strip | downcase -%}
+
+                {%- if menu_item_downcase == link_title_downcase -%}
+                  {%- assign mega_menu_block = block -%}
+                  {%- break -%}
+                {%- endif -%}
+            {% endcase %}
+          {%- endfor -%}
+
+          {%- for block in section.blocks -%}
+            {%- assign menu_tag_downcase = block.settings.menu_tag | strip | downcase -%}
+
+            {%- if menu_tag_downcase == link_title_downcase -%}
+              {%- assign menu_tag_block = block -%}
+              {%- break -%}
+            {%- endif -%}
+          {%- endfor -%}
+
+          {%- if mega_menu_block != '' -%}
+            {%- assign images_count = 0 -%}
+
+            {%- capture mega_menu_images -%}
             {%- for i in (1..6) -%}
               {%- capture image_setting -%}image_{{ i }}{%- endcapture -%}
 
@@ -77,256 +485,133 @@
               {%- endif -%}
             {%- endfor -%}
           {%- endcapture -%}
-        {%- endif -%}
-
-        <li class="mobile-nav__item" data-level="1">
-          {%- if link.links.size > 0 or mega_menu_images != blank -%}
-            <button
-              is="toggle-button"
-              class="mobile-nav__link heading {% if settings.heading_text_transform == 'uppercase' %}h6{% else %}h5{% endif %}"
-              aria-controls="mobile-menu-{{ forloop.index }}"
-              aria-expanded="false"
-            >
-              {{- link.title -}}
-              <span class="animated-plus"></span>
-            </button>
-
-            <collapsible-content id="mobile-menu-{{ forloop.index }}" class="collapsible">
-              {%- if link.links.size > 0 -%}
-                <ul class="mobile-nav list--unstyled" role="list">
-                  {%- for sub_link in link.links -%}
-                    <li class="mobile-nav__item" data-level="2">
-                      {%- if sub_link.links.size > 0 -%}
-                        <button
-                          is="toggle-button"
-                          class="mobile-nav__link"
-                          aria-controls="mobile-menu-{{ forloop.parentloop.index }}-{{ forloop.index }}"
-                          aria-expanded="false"
-                        >
-                          {{- sub_link.title -}}
-                          <span class="animated-plus"></span>
-                        </button>
-
-                        <collapsible-content
-                          id="mobile-menu-{{ forloop.parentloop.index }}-{{ forloop.index }}"
-                          class="collapsible"
-                        >
-                          <ul class="mobile-nav list--unstyled" role="list">
-                            {%- for sub_sub_link in sub_link.links -%}
-                              <li class="mobile-nav__item" data-level="3">
-                                <a href="{{ sub_sub_link.url }}" class="mobile-nav__link">{{ sub_sub_link.title }}</a>
-                              </li>
-                            {%- endfor -%}
-                          </ul>
-                        </collapsible-content>
-                      {%- else -%}
-                        <a href="{{ sub_link.url }}" class="mobile-nav__link">{{ sub_link.title }}</a>
-                      {%- endif -%}
-                    </li>
-                  {%- endfor -%}
-                </ul>
-              {%- endif -%}
-
-              {%- if mega_menu_images != blank -%}
-                <div class="mobile-nav__images-wrapper {% if images_count >= 3 %}mobile-nav__images-wrapper--tight{% endif %} hide-scrollbar">
-                  <div class="mobile-nav__images-scroller">
-                    {{- mega_menu_images -}}
-                  </div>
-                </div>
-              {%- endif -%}
-            </collapsible-content>
-          {%- else -%}
-            <a
-              href="{{ link.url }}"
-              class="mobile-nav__link heading {% if settings.heading_text_transform == 'uppercase' %}h6{% else %}h5{% endif %}"
-            >
-              {{- link.title -}}
-            </a>
           {%- endif -%}
-        </li>
-      {%- endfor -%}
-    </ul>
-    {%- if section.settings.mb_img != blank -%}
-      <a href="{{ section.settings.mb_link }}" class="header-img-link">
-        <img
-          loading="lazy"
-          class="img"
-          width="{{ section.settings.mb_img.width }}"
-          height="{{ section.settings.mb_img.height }}"
-          {% render 'image-attributes', image: section.settings.mb_img %}
-          alt="{{ section.settings.mb_img.alt | escape }}"
-        >
-        <div class="header-img-cont">
-          <div class="txt" style="color:{{ section.settings.mobile_text_color }}">{{ section.settings.text_link }}</div>
-          <img
-            loading="lazy"
-            class="icon"
-            width="{{ section.settings.mb_icon.width }}"
-            height="{{ section.settings.mb_icon.height }}"
-            {% render 'image-attributes', image: section.settings.mb_icon %}
-            alt="{{ section.settings.mb_icon.alt | escape }}"
-          >
-        </div>
-      </a>
-    {%- endif -%}
-  </div>
 
-  {%- if section.settings.show_locale_selector and shop.published_locales.size > 1 -%}
-    {%- assign locale_selector = true -%}
-  {%- endif -%}
+          <li class="mobile-nav__item {% if menu_tag_block != '' %}mobile-has__tag{% endif %}" data-level="1">
+            {%- if link.links.size > 0 or mega_menu_images != blank -%}
+              <button
+                is="toggle-button"
+                class="mobile-nav__link heading {% if settings.heading_text_transform == 'uppercase' %}h6{% else %}h5{% endif %}"
+                aria-controls="mobile-menu-{{ forloop.index }}"
+                aria-expanded="false"
+                text="{{ link.title }}"
+              >
+                {{- link.title -}}
+                <span class="animated-plus"></span>
+              </button>
 
-  {%- if section.settings.show_country_selector and localization.available_countries.size > 1 -%}
-    {%- assign country_selector = true -%}
-  {%- endif -%}
+              <collapsible-content id="mobile-menu-{{ forloop.index }}" class="collapsible">
+                {%- if link.links.size > 0 -%}
+                  <ul class="mobile-nav list--unstyled" role="list">
+                    {%- for sub_link in link.links -%}
+                      <li class="mobile-nav__item" data-level="2">
+                        {%- if sub_link.links.size > 0 -%}
+                          <button
+                            is="toggle-button"
+                            class="mobile-nav__link"
+                            aria-controls="mobile-menu-{{ forloop.parentloop.index }}-{{ forloop.index }}"
+                            aria-expanded="false"
+                            text="{{ sub_link.title }}"
+                          >
+                            {{- sub_link.title -}}
+                            <span class="animated-plus"></span>
+                          </button>
 
-  {%- if shop.customer_accounts_enabled or locale_selector or country_selector -%}
-    <div class="drawer__footer drawer__footer--tight drawer__footer--bordered">
-      <div class="mobile-nav__footer">
-        {%- if shop.customer_accounts_enabled -%}
+                          <collapsible-content
+                            id="mobile-menu-{{ forloop.parentloop.index }}-{{ forloop.index }}"
+                            class="collapsible"
+                          >
+                            <ul class="mobile-nav list--unstyled" role="list">
+                              {%- for sub_sub_link in sub_link.links -%}
+                                <li class="mobile-nav__item" data-level="3">
+                                  <a href="{{ sub_sub_link.url }}" class="mobile-nav__link" title="{{ sub_sub_link.title }}" >{{ sub_sub_link.title }}</a>
+                                </li>
+                              {%- endfor -%}
+                            </ul>
+                          </collapsible-content>
+                        {%- else -%}
+                          <a href="{{ sub_link.url }}" class="mobile-nav__link">{{ sub_link.title }}</a>
+                        {%- endif -%}
+                      </li>
+                    {%- endfor -%}
+                  </ul>
+                {%- endif -%}
+
+                {%- if mega_menu_images != blank -%}
+                  <div class="mobile-nav__images-wrapper {% if images_count >= 3 %}mobile-nav__images-wrapper--tight{% endif %} hide-scrollbar">
+                    <div class="mobile-nav__images-scroller">
+                      {{- mega_menu_images -}}
+                    </div>
+                  </div>
+                {%- endif -%}
+              </collapsible-content>
+            {%- else -%}
+              <a
+                href="{{ link.url }}"
+                {% if link.title == 'Blogs' %}
+                  target="_blank"
+                {% endif %}
+                class="mobile-nav__link heading {% if settings.heading_text_transform == 'uppercase' %}h6{% else %}h5{% endif %}"
+              >
+                {{- link.title -}}
+              </a>
+            {%- endif -%}
+          </li>
+        {%- endfor -%}
+        <li class="mobile-nav__item">
           <a
-            class="icon-text"
+            class="mobile-nav__link heading h5"
             href="
-               {% if customer %}
-                 https://account.ulike.com/account?site=uk
-                {% else %}
-                {% comment %} {{ routes.account_login_url }} {% endcomment %}
-                https://account.ulike.com/login?site=uk
-              {% endif %}
+                {%- if customer %}
+                   https://account.ulike.com/account?site=uk
+               {% else %}
+                  https://account.ulike.com/login?site=uk
+              {% endif -%}
             "
           >
-            {%- render 'icon' with 'header-customer' -%}
-            {{- 'header.general.account' | t -}}
+            {%- if customer %}
+              {{ 'customer.general.account_center' | t }}
+            {% else %}
+              {{ 'customer.general.sign_in' | t }}
+            {% endif -%}
           </a>
-        {%- endif -%}
-
-        {%- if locale_selector or country_selector -%}
-          {%- form 'localization', id: 'header-sidebar-localization-form', class: 'header__cross-border' -%}
-            {%- if country_selector -%}
-              <div class="popover-container">
-                <input type="hidden" name="country_code" value="{{ localization.country.iso_code }}">
-                <span class="visually-hidden">{{ 'header.general.country' | t }}</span>
-
-                <button
-                  type="button"
-                  is="toggle-button"
-                  class="popover-button text--xsmall tap-area"
-                  aria-expanded="false"
-                  aria-controls="header-sidebar-localization-form-currency"
-                >
-                  {{- localization.country.name }} ({{ localization.country.currency.iso_code }}
-                  {% if localization.country.currency.symbol %}{{ localization.country.currency.symbol }}{%- endif -%}
-                  )
-                  {%- render 'icon' with 'chevron', width: 9, height: 6, inline: true -%}
-                </button>
-
-                <popover-content
-                  id="header-sidebar-localization-form-currency"
-                  class="popover popover--top popover--small"
-                >
-                  <span class="popover__overlay"></span>
-
-                  <header class="popover__header">
-                    <span class="popover__title heading h6">{{- 'header.general.country' | t -}}</span>
-
-                    <button
-                      type="button"
-                      class="popover__close-button tap-area tap-area--large"
-                      data-action="close"
-                      title="{{ 'general.accessibility.close' | t | escape }}"
-                    >
-                      {%- render 'icon' with 'close' -%}
-                    </button>
-                  </header>
-
-                  <div class="popover__content">
-                    <div class="popover__choice-list">
-                      {%- for country in localization.available_countries -%}
-                        <button
-                          type="submit"
-                          name="country_code"
-                          value="{{ country.iso_code }}"
-                          class="popover__choice-item"
-                        >
-                          <span
-                            class="popover__choice-label"
-                            {% if country.iso_code == localization.country.iso_code %}
-                              aria-current="true"
-                            {% endif %}
-                          >
-                            {{- country.name }} ({{ country.currency.iso_code }}
-                            {% if country.currency.symbol %}{{ country.currency.symbol }}{%- endif -%}
-                            )
-                          </span>
-                        </button>
-                      {%- endfor -%}
-                    </div>
-                  </div>
-                </popover-content>
-              </div>
+        </li>
+      </ul>
+      {%- if section.settings.mb_img != blank -%}
+        <a href="{{ section.settings.mb_link }}" class="header-img-link">
+          <picture class="img">
+            {%- if section.settings.mb_img != blank -%}
+              <source
+                media="(max-width: 767px)"
+                srcset="{{ section.settings.mb_img | image_url: width: '400x' }} 400w, {{ section.settings.mb_img | image_url: width: '800x' }} 800w"
+                width="{{ section.settings.mb_img.width }}"
+                height="{{ section.settings.mb_img.height }}"
+                class="img"
+              >
+              {{-
+                section.settings.mb_img
+                | image_url: width: section.settings.mb_img.width
+                | image_tag: loading: 'lazy', widths: '300,800', class: 'img'
+              -}}
             {%- endif -%}
-
-            {%- if locale_selector -%}
-              <div class="popover-container">
-                <input type="hidden" name="locale_code" value="{{ form.current_locale.iso_code }}">
-                <span class="visually-hidden">{{ 'header.general.language' | t }}</span>
-
-                <button
-                  type="button"
-                  is="toggle-button"
-                  class="popover-button text--xsmall tap-area"
-                  aria-expanded="false"
-                  aria-controls="header-sidebar-localization-form-locale"
-                >
-                  {{- form.current_locale.endonym_name | capitalize -}}
-                  {%- render 'icon' with 'chevron', width: 9, height: 6, inline: true -%}
-                </button>
-
-                <popover-content
-                  id="header-sidebar-localization-form-locale"
-                  class="popover popover--top popover--small"
-                >
-                  <span class="popover__overlay"></span>
-
-                  <header class="popover__header">
-                    <span class="popover__title heading h6">{{- 'header.general.language' | t -}}</span>
-
-                    <button
-                      type="button"
-                      class="popover__close-button tap-area tap-area--large"
-                      data-action="close"
-                      title="{{ 'general.accessibility.close' | t | escape }}"
-                    >
-                      {%- render 'icon' with 'close' -%}
-                    </button>
-                  </header>
-
-                  <div class="popover__content">
-                    <div class="popover__choice-list">
-                      {%- for locale in form.available_locales -%}
-                        <button
-                          type="submit"
-                          name="locale_code"
-                          value="{{ locale.iso_code }}"
-                          class="popover__choice-item"
-                        >
-                          <span
-                            class="popover__choice-label"
-                            {% if locale.iso_code == form.current_locale.iso_code %}
-                              aria-current="true"
-                            {% endif %}
-                          >
-                            {{- locale.endonym_name | capitalize -}}
-                          </span>
-                        </button>
-                      {%- endfor -%}
-                    </div>
-                  </div>
-                </popover-content>
-              </div>
+          </picture>
+          <div class="header-img-cont">
+            <div class="txt" style="color:{{ section.settings.mobile_text_color }}">
+              {{ section.settings.text_link }}
+            </div>
+            {%- if section.settings.mb_icon != blank -%}
+              <img
+                loading="lazy"
+                class="icon"
+                width="{{ section.settings.mb_icon.width }}"
+                height="{{ section.settings.mb_icon.height }}"
+                {% render 'image-attributes', image: section.settings.mb_icon %}
+                alt="{{ section.settings.mb_icon.alt | escape }}"
+              >
             {%- endif -%}
-          {%- endform -%}
-        {%- endif -%}
-      </div>
-    </div>
-  {%- endif -%}
+          </div>
+        </a>
+      {%- endif -%}
+    {%- endif -%}
+  </div>
 </mobile-navigation>

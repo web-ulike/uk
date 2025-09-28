@@ -1,0 +1,379 @@
+{%- liquid
+  assign se_id = section.id
+  assign se_bks = section.blocks
+  assign se_stts = section.settings
+  assign product = all_products[se_stts.product]
+  assign variant = product.selected_or_first_available_variant
+  assign page_price = product.variants.first.metafields.custom.page_price | plus: 0
+  assign original_price = product.variants.first.price | plus: 0
+-%}
+{%- assign original_price_yuan = original_price | divided_by: 100 -%}
+{%- assign discount = original_price_yuan | minus: page_price -%}
+{%- assign discount_percent = discount | times: 100 | divided_by: original_price_yuan | round -%}
+
+<style>
+  #blog-product-plugin-one {
+    display: none;
+  }
+  .blogCommodityHtml {
+    width: 100%;
+    font-size: 62.5%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1em 0;
+  }
+  .blogCommodityHtml .product-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    border-radius: 0.8em;
+    gap: 4rem;
+    box-sizing: border-box;
+  }
+  .blogCommodityHtml .product-image {
+    width: 25rem;
+    position: relative;
+    margin: 0 auto;
+  }
+  .blogCommodityHtml .product-image img {
+    width: 100%;
+    height: auto;
+    border-radius: 0.8em;
+    margin: 0px;
+  }
+  .blogCommodityHtml .product-image .discount-tag {
+    position: absolute;
+    top: 1em;
+    right: 1em;
+    background-color: #e0004d;
+    color: white;
+    padding: 0.5em 1em;
+    font-weight: bold;
+    border-radius: 0.5em;
+  }
+  .blogCommodityHtml .product-details {
+    text-align: center;
+  }
+  .blogCommodityHtml .product-name {
+    font-size: 2.5rem;
+    font-weight: 500;
+    color: #333;
+    line-height: 1.1;
+  }
+  .blogCommodityHtml .product-rating {
+    font-size: 1.4em;
+    color: #e0004d;
+  }
+  .blogCommodityHtml .product-rating .recommend {
+    color: #333;
+    font-weight: 500;
+  }
+  .blogCommodityHtml .product-description {
+    font-size: 1.2rem;
+    color: #000000;
+    margin: 1.5rem 0;
+    line-height: 150%;
+  }
+
+  .blogCommodityHtml .price-now {
+    font-size: 1.8rem;
+    font-weight: 500;
+    color: #e0004d;
+  }
+  .blogCommodityHtml .price-old {
+    text-decoration: line-through;
+    color: rgba(63, 54, 54, 1);
+    margin-left: 10px;
+    font-size: 1.8rem;
+  }
+  .blogCommodityHtml .product-buttons {
+    margin-top: 0.5em;
+  }
+  .blogCommodityHtml .product-buttons button {
+    width: 100%;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    font-weight: 500;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  .blogCommodityHtml .shop-now-btn {
+    background-color: #ffffff;
+    color: #000000;
+    border: 1px solid #000;
+    box-sizing: border-box;
+  }
+  .blogCommodityHtml .add-to-cart-btn {
+    margin-top: 1em;
+    background-color: #000;
+    color: white;
+  }
+  .blogCommodityHtml .m-pay-buttom {
+    display: none;
+  }
+
+  /* 响应式适配 */
+  @media (max-width: 1200px) {
+    .blogCommodityHtml {
+      font-size: 56.25%;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .blogCommodityHtml {
+      display: block;
+    }
+    .blogCommodityHtml .product-container {
+      gap: 10px;
+      padding: 15px 0px 10px;
+    }
+    .blogCommodityHtml .product-image-container {
+      width: 40%;
+    }
+    .blogCommodityHtml .product-image {
+      width: 100%;
+    }
+    .blogCommodityHtml .product-details {
+      width: 55%;
+    }
+    .blogCommodityHtml .product-name {
+      font-size: 1.1rem;
+      font-weight: 500;
+      line-height: 1.2;
+    }
+    .blogCommodityHtml .product-description {
+      font-size: 0.8rem;
+      margin: 6px 0;
+    }
+    .blogCommodityHtml .price-now {
+      font-size: 1rem;
+    }
+    .blogCommodityHtml .price-old {
+      font-size: 1rem;
+      margin-left: 4px;
+    }
+    .blogCommodityHtml .product-details .product-buttons {
+      display: none;
+    }
+    .blogCommodityHtml .m-pay-buttom {
+      display: block;
+    }
+    .blogCommodityHtml .m-pay-buttom .product-buttons {
+      display: flex;
+      gap: 10px;
+      text-align: center;
+    }
+    .blogCommodityHtml .m-pay-buttom .add-to-cart-btn {
+      margin-top: 0;
+    }
+  }
+</style>
+<div id="blog-product-plugin-one">
+  <div class="blogCommodityHtml" data-sort="{{ se_stts.sort }}">
+    <div class="product-container">
+      <!-- 左侧图片和标签 -->
+
+      <div class="product-image-container">
+        <div class="product-image">
+          <img
+            src="{{ product.featured_image | img_url: 'master' | prepend: 'https:' }}"
+            alt="{{ product.title }}"
+            loading="lazy"
+          >
+          {% if discount_percent > 0 %}
+            <div class="discount-tag">{{ discount_percent }}% OFF</div>
+          {% endif %}
+        </div>
+      </div>
+
+      <!-- 右侧文字和按钮 -->
+
+      <div class="product-details">
+        <div class="product-name">{{ product.title }}</div>
+        <div class="product-rating">
+          <div class="jdgm-widget jdgm-preview-badge" data-id="{{ product.id }}">
+            {{ product.metafields.judgeme.badge }}
+          </div>
+        </div>
+        <p class="product-description">
+          {{ se_stts.descHtml }}
+        </p>
+        <div class="product-price">
+          <span class="price-now">{{ page_price | times: 100 | round | money }}</span>
+          {% if discount_percent > 0 %}
+            <span class="price-old">{{ original_price | money }}</span>
+          {% endif %}
+        </div>
+        <div class="product-buttons">
+          {% if se_stts.btn_text_1 != '' %}
+            <button
+              class="shop-now-btn"
+              onclick="buyProduct({{ product.variants.first.id }},'','{{se_stts.discountCode}}')"
+            >
+              {{ se_stts.btn_text_1 }}
+            </button>
+          {% endif %}
+          {% if se_stts.btn_text_2 != '' %}
+            <button
+              class="add-to-cart-btn"
+              onclick="addToCart({{product.variants.first.id}},'','','{{se_stts.discountCode}}' )"
+            >
+              {{ se_stts.btn_text_2 }}
+            </button>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    <div class="m-pay-buttom">
+      <div class="product-buttons">
+        {% if se_stts.btn_text_1 != '' %}
+          <button
+            class="shop-now-btn"
+            onclick="buyProduct({{ product.variants.first.id }},'','{{se_stts.discountCode}}')"
+          >
+            {{ se_stts.btn_text_1 }}
+          </button>
+        {% endif %}
+        {% if se_stts.btn_text_2 != '' %}
+          <button
+            class="add-to-cart-btn"
+            onclick="addToCart({{product.variants.first.id}},'','','{{se_stts.discountCode}}' )"
+          >
+            {{ se_stts.btn_text_2 }}
+          </button>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% comment %}
+  <script>
+    // 页面加载完成后再加载
+    window.addEventListener("load", function () {
+      var variantArr = [];
+      {% for variant in product.variants %}
+          variantArr.push({
+            vid: {{ variant.id }},
+            position: {{ variant.featured_media.position }},
+            url: '{{ variant.metafields.custom["3d_url"] }}',
+            isOriginalPrice: '{{ variant.metafields.custom["isOriginalPrice"] }}',
+            price: '{{ variant.price | money }}',
+            original_price: '{{ variant.compare_at_price | money }}',
+            page_price: '{{ variant.metafields.custom["page_price"] }}',
+            variantTitle: '{{ variant.metafields.custom["variant_title"] }}',
+            title: '{{ product.title }}',
+            selling_point: '{{ variant.metafields.custom["selling_point"] }}',
+            describe: `{{ variant.metafields.custom["describe"] }}`,
+            discount_pictures: `{{ variant.metafields.custom["discount_pictures"] }}`
+          });
+      {% endfor %}
+      console.log('variantArr',variantArr)
+    });
+  </script>
+{% endcomment %}
+<script>
+$(document).ready(function () {
+  // 获取 Shopify 后端传入的产品数据
+  const product = {{ all_products[section.settings.product] | json }};
+  console.log('product.selected_variant', product.selected_variant);
+
+  // 获取当前 section 的所有设置项
+  const settings = {{ section.settings | json }};
+  console.log('section.settings', settings);
+
+  // 遍历所有带有类名 .ipl-purchase 的 DOM 元素
+  $('.ipl-purchase').each(function () {
+    const $target = $(this); // 当前替换目标元素
+    console.log('当前替换目标元素:', $target);
+
+    const sort = $target.attr('data-sort'); // 获取 data-sort 属性作为匹配 key
+
+    if (!sort) return; // 如果没有 data-sort，跳过该元素
+
+    // 在指定模板区域中查找对应 sort 值的模板元素
+    const $template = $(`#blog-product-plugin-one .blogCommodityHtml[data-sort="${sort}"]`);
+    console.log('找到的模板元素:', $template);
+    if (!$template.length) return; // 如果找不到模板，跳过
+
+    // 克隆模板，去除 id 并显示
+    const $clone = $template.clone().removeAttr('id').show();
+
+    // 替换原始目标元素
+    $target.replaceWith($clone);
+  });
+});
+</script>
+{% schema %}
+{
+  "name": "b-blog-commodity",
+  "class": "b-blog-commodity",
+  "blocks": [
+    {
+      "name": "social-item",
+      "type": "social-item",
+      "settings": [
+        {
+          "type": "url",
+          "id": "link",
+          "label": "链接"
+        },
+        {
+          "type": "html",
+          "id": "svg",
+          "label": "svg文本"
+        }
+      ]
+    }
+  ],
+  "settings": [
+    {
+      "type": "text",
+      "id": "className",
+      "label": "class名称"
+    },
+    {
+      "type": "product",
+      "id": "product",
+      "label": "产品选择"
+    },
+    {
+      "type": "text",
+      "id": "sort",
+      "label": "排序"
+    },
+    {
+      "type": "html",
+      "id": "descHtml",
+      "label": "描述",
+      "default": "96% hair reduction in just 2 weeks¹ <br/> 10-minute full-body sessions²."
+    },
+    {
+      "type": "text",
+      "id": "discountCode",
+      "label": "折扣码"
+    },
+    {
+      "type": "text",
+      "id": "btn_text_1",
+      "label": "购买按钮按钮文案",
+      "default": "SHOP NOW"
+    },
+    {
+      "type": "text",
+      "id": "btn_text_2",
+      "label": "加入购物车按钮文案",
+      "default": "ADD TO CART"
+    }
+  ],
+  "presets": [
+    {
+      "name": "b-blog-commodity",
+      "blocks": []
+    }
+  ]
+}
+{% endschema %}

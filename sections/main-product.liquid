@@ -1,11 +1,11 @@
 {%- unless template.suffix contains 'quick-buy' -%}
   {{ 'main-product.css' | asset_url | stylesheet_tag }}
-    {%- liquid
+  {%- liquid
     assign se_id = section.id
     assign se_bks = section.blocks
     assign se_stts = section.settings
   -%}
-  
+
   <style>
         #shopify-section-{{ section.id }} {
           {%- assign buy_buttons_block = section.blocks | where: 'type', 'buy_buttons' | first -%}
@@ -203,12 +203,12 @@
         margin: 0;
         min-width: 195px;
       }
-    
+
     /* @media screen and (min-width: 640px){ */
       .product-diy .product-form__variants{
           display: flex;
         }
-      
+
        .product-diy .product-form__option-selector+.product-form__option-selector{
           margin-top:0;
         }
@@ -218,7 +218,7 @@
          border-right:2px solid #f9f9f9;
        }
     /* } */
-      .product-diy .product-form__variants .color-shipping,.product-diy .coupon-txt  {
+      .product-diy .coupon-txt  {
         display:none !important;
       }
 
@@ -302,21 +302,21 @@
 
       .product-diy .product-slider-btn-model{
         position: absolute;
-        width: 36px;
-        height: 36px;
-        background: #fff;
+        width: 70px;
+        /* height: 36px; */
+        /* background: #fff; */
         display: flex;
         align-items: center;
         justify-content: center;
         cursor: pointer;
-        border: 1px solid #eee;
+        /* border: 1px solid #eee; */
         right: 15px;
         bottom: 115px;
         z-index:1;
       }
 
       .product-diy .product-slider-btn-model img{
-        max-width: 45%;
+        /* max-width: 45%; */
       }
 
       .product-diy .close-three-btn{
@@ -585,6 +585,7 @@
       }
       .product-diy a[href="#looxReviews"]{
         top: -21px;
+        top: -50px;
         /* left: 0px; */
       }
       .description-cont-flex .coupon-img-box-diy{
@@ -610,6 +611,7 @@
         }
         .product-diy .product-slider-btn-model{
           bottom: 85px;
+          width:60px;
         }
         .product-diy .product-meta__price-list-container{
           margin-top:0;
@@ -660,7 +662,7 @@
       <div class="product product--thumbnails-{{ section.settings.desktop_thumbnails_position }} product-diy">
         {%- render 'product-media', product: product -%}
         {% if se_stts.is_levitate == true %}
-           {%- render 'product-tagg', se_bks: se_bks, se_stts: se_stts -%}
+          {%- render 'product-tagg', se_bks: se_bks, se_stts: se_stts -%}
         {%- endif -%}
         {%- render 'product-info', product: product, update_url: true -%}
       </div>
@@ -806,6 +808,90 @@
 {%- if section.settings.link_model != blank -%}
   {% render 'model-code' %}
 {%- endif -%}
+{%- if section.settings.click_btn_msg -%}
+  <script>
+    window.addEventListener('load', function () {
+      let colorSwatchTimer = null;
+      $('html').on('click', '.color-swatch', function () {
+        clearTimeout(colorSwatchTimer);
+        if ($(this).hasClass('color-swatch--white')) {
+          $('.product-tips-span').remove();
+          // if($('.product-tips-span').length) return
+          $(
+            '<div class="product-tips-span" style="color: #e0004d;font-size: 12px;margin-bottom: 6px;">{{section.settings.msg_text}}</div>'
+          ).insertAfter('.product-form-flex');
+        } else {
+          $('.product-tips-span').remove();
+          // if($('.product-tips-span').length) return
+          $(
+            '<div class="product-tips-span" style="color: #e0004d;font-size: 12px;margin-bottom: 6px;">{{section.settings.msg_text1}}</div>'
+          ).insertAfter('.product-form-flex');
+        }
+        colorSwatchTimer = setTimeout(() => {
+          if ($('.product-tips-span').length) {
+            $('.product-tips-span').remove();
+          }
+        }, 3000);
+      });
+    });
+  </script>
+{%- endif -%}
+{%- if section.settings.sold_out_bol -%}
+  <style>
+    #AddToCart.disabled-btn {
+      cursor: pointer;
+    }
+    #AddToCart.disabled-btn .loader-button__text {
+      color: transparent;
+    }
+    #AddToCart.disabled-btn:before {
+      cursor: pointer;
+      position: absolute;
+      content: '{{ section.settings.sold_out_text }}';
+      width: 100%;
+      height: 100%;
+      left: 0;
+      top: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      z-index: 2;
+    }
+    #AddToCart.disabled-btn:hover:before {
+      color: #000;
+    }
+  </style>
+
+  <script>
+    window.addEventListener('load', function () {
+      setTimeout(function () {
+        if ($('#AddToCart .loader-button__text').text().trim() != $('#AddToCart').attr('data-button-content').trim()) {
+          $('#AddToCart').addClass('disabled-btn');
+        }
+      }, 50);
+      $('html').on('click', '.color-swatch .color-swatch__item,.block-swatch .block-swatch__item', function () {
+        $('#AddToCart').removeClass('disabled-btn');
+        setTimeout(function () {
+          if ($('#AddToCart').attr('disabled') == 'disabled' || $('#AddToCart').hasClass('disabled-btn')) {
+            $('#AddToCart').removeAttr('disabled');
+            $('#AddToCart').addClass('disabled-btn');
+          } else {
+            $('#AddToCart').removeClass('disabled-btn');
+          }
+        }, 50);
+      });
+
+      $('html').on('click', '#AddToCart', function (e) {
+        if ($(this).hasClass('disabled-btn')) {
+          window.location.href = '{{ section.settings.sold_out_link }}';
+          return false;
+        }
+      });
+    });
+  </script>
+{%- endif -%}
+
 {% schema %}
 {
   "name": "Product page",
@@ -1358,7 +1444,8 @@
           "default": "No"
         }
       ]
-    }, {
+    },
+    {
       "name": "levitate-item",
       "type": "levitate-item",
       "settings": [
@@ -1536,6 +1623,65 @@
       "id": "is_levitate",
       "label": "是否文案悬浮",
       "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "click_btn_msg",
+      "label": "点击按钮添加提示",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "msg_text1",
+      "label": "紫色按钮提示内容"
+    },
+    {
+      "type": "text",
+      "id": "msg_text",
+      "label": "白色按钮提示内容"
+    },
+    {
+      "type": "checkbox",
+      "id": "sold_out_bol",
+      "label": "售罄跳转",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "sold_out_text",
+      "label": "按钮文字"
+    },
+    {
+      "type": "url",
+      "id": "sold_out_link",
+      "label": "跳转链接"
+    },
+    {
+      "type": "text",
+      "id": "diy_btn_text",
+      "label": "自定义按钮文字"
+    },
+    {
+      "type": "url",
+      "id": "diy_btn_link",
+      "label": "自定义按钮跳转链接"
+    },
+    {
+      "type": "text",
+      "id": "code_price",
+      "label": "Code Price",
+      "default": "£140"
+    },
+    {
+      "type": "text",
+      "id": "code",
+      "label": "Code",
+      "default": "ULIKEOFAT"
+    },
+    {
+      "type": "html",
+      "id": "subscribe_button_name",
+      "label": "订阅发券按钮名称"
     }
   ]
 }

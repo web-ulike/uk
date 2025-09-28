@@ -1,0 +1,117 @@
+<style>
+.a2-p-md1 {
+  overflow: hidden;
+  position: relative;
+  z-index: 1;
+}
+
+.a2-p-md1 .img {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+}
+
+.a2-p-md1 .a2-p-md1-text {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  padding-top: 100px;
+}
+
+.a2-p-md1 .a2-p-md1-h3 {
+  color: #190a0a;
+  font-size: 56px;
+  line-height: 1.2;
+  font-weight: normal;
+  margin: 0;
+  margin-bottom: 20px;
+}
+
+.a2-p-md1 .a2-p-md1-h3 p {
+  margin: 0;
+}
+
+.a2-p-md1 .a2-p-md1-p {
+  color: #190a0a;
+  font-size: 18px;
+  line-height: 1.5;
+}
+
+@media (max-width: 991px) {
+  .a2-p-md1 .a2-p-md1-text {
+    padding-top: 60px;
+    text-align: center;
+  }
+  .a2-p-md1 .a2-p-md1-h3 {
+    font-size: 26px;
+    margin-bottom: 10px;
+  }
+
+  .a2-p-md1 .a2-p-md1-p {
+    font-size: 14px;
+  }
+}
+</style>
+<section class="section-box">
+  <div class="a2-p-md1">
+    {%- if section.settings.image != blank or section.settings.image1 != blank -%}
+        <picture>
+        <source srcset="{{section.settings.image1 | image_url }}" media="(max-width: 991px)">
+        <img loading="lazy"
+            class="img"
+            width=""
+            height=""
+            {% render 'image-attributes', image: section.settings.image %}
+            alt="{{ section.settings.image.alt | escape }}">
+        </picture>
+    {%- endif -%}
+    <div class="a2-p-md1-text">
+      <div class="container">
+        {%- if section.settings.text != blank -%}
+            <h3 class="a2-p-md1-h3">
+            {{ section.settings.text }}
+            </h3>
+        {%- endif -%}
+        {%- if section.settings.text1 != blank -%}
+            <div class="a2-p-md1-p">{{ section.settings.text1 }}</div>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</section>
+{% schema %}
+{
+  "name": "a2-p-md1",
+  "settings": [
+    {
+        "type": "image_picker",
+        "id": "image",
+        "label": "Image"
+    },
+    {
+        "type": "image_picker",
+        "id": "image1",
+        "label": "M Image"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Title"
+    },
+    {
+      "type": "text",
+      "id": "text1",
+      "label": "Text"
+    },
+  ],
+  "presets": [
+    {
+      "name": "a2-p-md1",
+      "blocks": []
+    }
+  ]
+}
+{% endschema %}

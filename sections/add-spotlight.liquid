@@ -1,0 +1,182 @@
+<style>
+.add-spotlight {
+  padding: 100px 0;
+}
+
+.add-spotlight .add-spotlight-title {
+  color: #000;
+  font-size: 60px;
+  font-family: var(--heading-font-family);
+  line-height: 1.2;
+  font-weight: normal;
+  text-align: center;
+}
+
+.add-spotlight .add-spotlight-list {
+  display: flex;
+  gap: 21px;
+  margin-top: 60px;
+}
+
+.add-spotlight .add-spotlight-item {
+  width: calc(33.333% - 14px);
+}
+
+.add-spotlight .add-spotlight-item .img {
+  width: 100%;
+  display: block;
+  border-radius: 10px;
+}
+
+.add-spotlight .add-spotlight-text {
+  padding: 14px;
+  color: #000;
+}
+
+.add-spotlight .add-spotlight-p {
+  font-size: 16px;
+  line-height: 1.2;
+  margin: 0;
+}
+
+.add-spotlight .add-spotlight-text-title {
+  font-family: var(--heading-font-family);
+  font-size: 16px;
+  line-height: 1.2;
+  font-weight: normal;
+  margin: 0;
+  margin-top: 5px;
+}
+
+.add-spotlight .add-spotlight-btn {
+  width: 180px;
+  height: 46px;
+  font-size: 14px;
+  color: #fff;
+  background: #000;
+  border-radius: 46px;
+  border: 1.5px solid #000;
+  cursor: pointer;
+  margin-top: 25px;
+}
+
+.add-spotlight .add-spotlight-btn .btn-txt::before {
+  color: #000;
+}
+
+@media (max-width: 991px) {
+  .add-spotlight {
+    padding: 50px 0;
+  }
+
+  .add-spotlight .add-spotlight-title {
+    font-size: 28px;
+  }
+
+  .add-spotlight .add-spotlight-list {
+    margin-top: 30px;
+    flex-direction: column;
+  }
+
+  .add-spotlight .add-spotlight-item {
+    width: 100%;
+  }
+  .add-spotlight .add-spotlight-p {
+    font-size: 14px;
+  }
+  .add-spotlight .add-spotlight-text-title {
+    font-size: 14px;
+  }
+  .add-spotlight .add-spotlight-btn {
+    font-size: 12px;
+    width: 140px;
+    height: 40px;
+    margin-top: 15px;
+  }
+}
+</style>
+<section class="section-box">
+  <div class="add-spotlight">
+    <div class="container">
+      {%- if section.settings.text != blank -%}
+        <h3 class="add-spotlight-title">{{ section.settings.text }}</h3>
+      {%- endif -%}
+      <div class="add-spotlight-list">
+        {%- for block in section.blocks -%}
+          <div class="add-spotlight-item">
+            {%- if block.settings.image != blank  -%}
+              <img class="img" width="" height="" src="{{ block.settings.image | image_url }}">
+            {%- endif -%}
+            <div class="add-spotlight-text">
+              {%- if block.settings.text != blank -%}
+                <p class="add-spotlight-p">{{ block.settings.text }}</p>
+              {%- endif -%}
+              {%- if block.settings.text1 != blank -%}
+                <h3 class="add-spotlight-text-title">{{ block.settings.text1 }}</h3>
+              {%- endif -%}
+              {%- if block.settings.btn_txt != blank -%}
+                <a href="{{ block.settings.link }}" class="add-spotlight-btn btn-diy">
+                  <div class="btn-txt" text="{{ block.settings.btn_txt }}">
+                    <span>{{ block.settings.btn_txt }}</span>
+                  </div>
+                </a>
+              {%- endif -%}
+            </div>
+          </div>
+        {%- endfor -%} 
+      </div>
+    </div>
+  </div>
+</section>
+{% schema %}
+{
+  "name": "add-spotlight",
+  "blocks": [
+    {
+      "name": "item",
+      "type": "item",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text"
+        },
+        {
+          "type": "text",
+          "id": "text1",
+          "label": "Text"
+        },
+        {
+          "type": "text",
+          "id": "btn_txt",
+          "label": "Button text",
+          "default":"LEARN MORE"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        }
+      ]
+    }
+  ],
+  "settings": [
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Title"
+    }
+  ],
+  "presets": [
+    {
+      "name": "add-spotlight",
+      "blocks": []
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,316 @@
+<style>
+  .about-scroll-container {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .about-scroll-title {
+    line-height: 1;
+    font-size: 48px;
+    text-align: center;
+    color: #190a0a;
+  }
+
+  .about-scroll-content {
+    display: flex;
+    width: max-content;
+  }
+
+  #{{ section.id }} .about-scroll-content.running {
+    animation: scrollLeft 50s linear infinite;
+  }
+
+  .about-scroll-img {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 244px;
+    height: 130px;
+    cursor: pointer;
+    overflow: hidden;
+  }
+
+  .about-scroll-desc {
+    margin-top: 30px;
+    width: 220px;
+    line-height: 1.2;
+    font-weight: 380;
+    font-size: 18px;
+    color: #3f3636;
+    text-align: center;
+  }
+
+  #{{ section.id }} .about-scroll-content.paused {
+    animation-play-state: paused;
+  }
+
+  .about-scroll-mobile-1 {
+    display: none;
+  }
+
+  .about-progress-bar {
+    width: 100%;
+    height: 4px;
+    background: #e4dddd;
+    position: relative;
+  }
+
+  .about-progress-bar .about-progress-inner {
+    height: 100%;
+    width: 0%;
+    background: #3f3636;
+    transition: width 0.3s ease;
+  }
+
+  #about-scroll-1 .about-scroll-img:before {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0%;
+    height: 1px;
+    background: #e0004d;
+    transition: all 0.6s;
+    content: ' ';
+  }
+
+  #about-scroll-1 .about-scroll-img:after {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0%;
+    height: 1px;
+    background: #e0004d;
+    transition: all 0.6s;
+    content: ' ';
+  }
+
+  #about-scroll-1 .about-scroll-item {
+    margin-right: 50px;
+  }
+
+  #about-scroll-1 .about-scroll-desc {
+    opacity: 0;
+    transition: all 0.6s;
+  }
+
+  #about-scroll-1 .about-scroll-img:hover::before {
+    width: 100%;
+  }
+
+  #about-scroll-1 .about-scroll-img:hover::after {
+    width: 100%;
+  }
+
+  #about-scroll-1 .about-scroll-img:hover + .about-scroll-desc {
+    opacity: 1;
+  }
+
+
+
+
+
+  @keyframes scrollLeft {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+
+  @media (max-width: 768px) {
+    #about-scroll-1.about-scroll-container {
+      overflow-x: auto;
+      padding-left: 20px;
+    }
+    #about-scroll-1.about-scroll-container::-webkit-scrollbar {
+      display: none;
+    }
+
+    #about-scroll-1 .about-scroll-content {
+      width: 960px;
+      flex-wrap: wrap;
+      gap: 10px 25px;
+    }
+
+    #about-scroll-1 .about-scroll-item {
+      width: 122px;
+    }
+    #about-scroll-1 .about-scroll-desc {
+      margin-top: 0px;
+      width: 122px;
+      font-size: 12px;
+      opacity: 1;
+    }
+
+    #about-scroll-1 .about-scroll-img {
+      margin-right: 0;
+      width: 100%;
+      height: 65px;
+    }
+
+    #about-scroll-1 .about-scroll-img:hover {
+      border: none;
+    }
+
+    .about-scroll-mobile-1 {
+      display: block;
+      margin-top: 30px;
+    }
+
+    .about-scroll-mobile-1 {
+      display: block;
+      margin-top: 30px;
+    }
+
+    #about-scroll-1 .about-scroll-img:hover::before {
+      width: 0%;
+    }
+
+    #about-scroll-1 .about-scroll-img:hover::after {
+      width: 0%;
+    }
+  }
+</style>
+<section id="{{ section.id }}">
+  <div id="about-scroll-1" class="about-scroll-container">
+    <div class="about-scroll-content">
+      {% for block in section.blocks %}
+        {% if block.settings.image != blank %}
+          <div class="about-scroll-item">
+            <div class="about-scroll-img to-top">
+              <img
+                src="{{ block.settings.image | image_url }}"
+                width="100%"
+                height="auto"
+              >
+            </div>
+            <div class="about-scroll-desc top-top">{{ block.settings.desc }}</div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+  <div class="container about-scroll-mobile-1">
+    <div class="about-progress-bar to-top">
+      <div class="about-progress-inner"></div>
+    </div>
+  </div>
+</section>
+
+<script>
+  $(document).ready(function () {
+    const scrollContainers = [$('#{{ section.id }} .about-scroll-container')];
+    {% comment %} $('#{{ section.id }} *').addClass('to-top'); {% endcomment %}
+
+    function setupScroll() {
+      const windowWidth = $(window).width();
+
+      scrollContainers.forEach(($container) => {
+        const $content = $container.find('.about-scroll-content');
+        const isInitialized = $container.data('scroll-initialized');
+
+        if (windowWidth >= 768) {
+          if (!isInitialized) {
+            // 克隆一次内容
+            $content.append($content.html());
+
+            // 添加滚动类名
+            $content.addClass('running');
+
+            // 悬停暂停
+            $container.hover(
+              function () {
+                $content.addClass('paused');
+              },
+              function () {
+                $content.removeClass('paused');
+              }
+            );
+
+            $container.data('scroll-initialized', true);
+          } else {
+            // 已初始化但可能由于 resize 变大了，需要恢复滚动类名
+            $content.addClass('running');
+          }
+        } else {
+          // 小屏幕，关闭无缝滚动
+          if (isInitialized) {
+            const originalHtml = $content.html().slice(0, $content.html().length / 2);
+            $content.html(originalHtml);
+
+            $container.off('mouseenter mouseleave');
+            $container.data('scroll-initialized', false);
+          }
+          // 移除滚动类名，关闭动画
+          $content.removeClass('running paused');
+        }
+      });
+    }
+
+    function updateProgress($content, $progressBar) {
+      var visibleWidth = $content.width();
+      var totalWidth = $content[0].scrollWidth;
+      var scrollLeft = $content.scrollLeft() + 20;
+      var maxScroll = totalWidth - visibleWidth;
+
+      var percent;
+      if (maxScroll <= 0) {
+        percent = 100; // 内容宽度小于等于容器，进度为100%
+      } else {
+        percent = ((scrollLeft + visibleWidth) / totalWidth) * 100;
+      }
+
+      // 保证最大不超过100%
+      percent = Math.min(100, percent);
+
+      $progressBar.css('width', percent + '%');
+    }
+
+    setupScroll();
+
+    updateProgress($('#{{ section.id }} .about-scroll-container'), $('#{{ section.id }} .about-progress-inner'));
+
+    $('#{{ section.id }} .about-scroll-container').on('scroll', function () {
+      updateProgress($('#{{ section.id }} .about-scroll-container'), $('#{{ section.id }} .about-progress-inner'));
+    });
+
+    $(window).on('resize', function () {
+      setupScroll();
+      updateProgress($('#{{ section.id }} .about-scroll-container'), $('#{{ section.id }} .about-progress-inner'));
+    });
+  });
+</script>
+
+{% schema %}
+{
+  "name": "u-about-scroll-1",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "image_block",
+      "name": "图片",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "图片"
+        },
+        {
+          "type": "text",
+          "id": "desc",
+          "label": "文本"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "u-about-scroll-1",
+      "blocks": []
+    }
+  ]
+}
+{% endschema %}

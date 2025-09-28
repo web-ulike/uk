@@ -1,9 +1,15 @@
 <desktop-navigation>
-  <ul class="header__linklist list--unstyled {% unless bottom_navigation %}hidden-pocket hidden-lap{% endunless %}" role="list">
+  <ul
+    class="header__linklist list--unstyled {% unless bottom_navigation %}hidden-pocket hidden-lap{% endunless %}"
+    role="list"
+  >
     {%- for link in menu.links -%}
       {%- assign link_title_downcase = link.title | strip | downcase -%}
       {%- assign mega_menu_block = '' -%}
       {%- assign mega_menu_images = '' -%}
+      {%- assign menu_tag_block = '' -%}
+      {%- assign menu_tag_block_img = '' -%}
+      {%- assign popup_item = '' -%}
 
       {%- for block in section.blocks -%}
         {%- assign menu_item_downcase = block.settings.menu_item | strip | downcase -%}
@@ -14,12 +20,99 @@
         {%- endif -%}
       {%- endfor -%}
 
-      <li class="header__linklist-item {% if link.links.size > 0 or mega_menu_block != '' %}has-dropdown{% endif %}" data-item-title="{{ link.title | escape }}">
-        <a class="header__linklist-link link--animated" href="{{ link.url }}" {% if link.links.size > 0 or mega_menu_block != '' %}aria-controls="desktop-menu-{{ forloop.index }}" aria-expanded="false"{% endif %}>
-          {{- link.title -}}
-        </a>
+      {%- for block in section.blocks -%}
+        {%- assign name_txt = block.settings.name_txt | strip | downcase -%}
 
-        {%- if mega_menu_block != '' -%}
+        {%- if name_txt == link_title_downcase -%}
+          {%- assign popup_item = block -%}
+          {%- break -%}
+        {%- endif -%}
+      {%- endfor -%}
+      
+      {%- for block in section.blocks -%}
+      
+        {%- assign menu_tag_downcase = block.settings.menu_tag | strip | downcase -%}
+
+        {%- if menu_tag_downcase == link_title_downcase -%}
+          {%- assign menu_tag_block = block -%}
+          {%- assign menu_tag_block_img = block.settings.image_link_tag -%}
+          {%- break -%}
+        {%- endif -%}
+      {%- endfor -%}
+
+      <li
+        class="header__linklist-item {% if link.links.size > 0 and section.settings.new_header %}has-dropdown-new{%- elsif link.links.size > 0 or mega_menu_block != '' -%}has-dropdown{% endif %} {% if menu_tag_block != '' %} has-tag{% endif %}"
+        data-item-title="{{ link.title | escape }}"
+
+      >
+        {% if link.links.size > 0 and section.settings.new_header %}
+          <div
+            class="header__linklist-link link--animated"
+            {% if link.links.size > 0 or mega_menu_block != '' %}
+              aria-controls="desktop-menu-{{ forloop.index }}" aria-expanded="false"
+            {% endif %}
+            {% if section.settings.new_header %}
+              aria-id="desktop-menu-{{ forloop.index }}"
+            {% endif %}
+          >
+            {{- link.title -}}
+            {%- if menu_tag_block != '' -%}
+              {%- if menu_tag_block_img -%}
+               {{ menu_tag_block_img  | image_url: width: menu_image.width | image_tag: loading: 'lazy', sizes: '240px', sizes: '240,480,720', class: 'mega-tage__image' }}
+              {%- endif -%}
+              {%- if menu_tag_block.settings.text_link_tag != blank and section.settings.new_header -%}
+                 <span class="menu-tag">{{ menu_tag_block.settings.text_link_tag }}</span>
+              {%- endif -%}
+            {%- endif -%}
+          </div>
+        {% else %}
+          {% if popup_item != '' %}
+              <div
+              class="header__linklist-link link--animated"
+              {% if link.links.size > 0 or mega_menu_block != '' %}
+                aria-controls="desktop-menu-{{ forloop.index }}" aria-expanded="false"
+              {% endif %}
+              {% if section.settings.new_header %}
+                aria-id="desktop-menu-{{ forloop.index }}"
+              {% endif %}
+            >
+              {{- link.title -}}
+              {%- if menu_tag_block != '' -%}
+                {%- if menu_tag_block_img -%}
+                 {{ menu_tag_block_img  | image_url: width: menu_image.width | image_tag: loading: 'lazy', sizes: '240px', sizes: '240,480,720', class: 'mega-tage__image' }}
+                {%- endif -%}
+                {%- if menu_tag_block.settings.text_link_tag != blank and section.settings.new_header -%}
+                   <span class="menu-tag">{{ menu_tag_block.settings.text_link_tag }}</span>
+                {%- endif -%}
+              {%- endif -%}
+            </div>
+            {% else %}
+              <a
+              class="header__linklist-link link--animated"
+              href="{{ link.url }}"
+              text="{{ link.title }}"
+              {% if link.title == 'Support' %} rel="nofollow" {% endif -%}
+              {% if link.links.size > 0 or mega_menu_block != '' %}
+                aria-controls="desktop-menu-{{ forloop.index }}" aria-expanded="false"
+              {% endif %}
+              {% if section.settings.new_header %}
+                aria-id="desktop-menu-{{ forloop.index }}"
+              {% endif %}
+            >
+              {{- link.title -}}
+              {%- if menu_tag_block != '' -%}
+                {%- if menu_tag_block_img -%}
+                 {{ menu_tag_block_img  | image_url: width: menu_image.width | image_tag: loading: 'lazy', sizes: '240px', sizes: '240,480,720', class: 'mega-tage__image' }}
+                {%- endif -%}
+                {%- if menu_tag_block.settings.text_link_tag != blank and section.settings.new_header -%}
+                   <span class="menu-tag">{{ menu_tag_block.settings.text_link_tag }}</span>
+                {%- endif -%}
+              {%- endif -%}
+            </a>
+          {% endif %}
+        {% endif %}
+        
+        {%- if mega_menu_block != '' and section.settings.new_header != true -%}
           {%- assign images_count = 0 -%}
 
           {%- capture mega_menu_images -%}
@@ -62,7 +155,12 @@
           {%- endcapture -%}
 
           {%- if link.links.size > 0 or mega_menu_images != blank -%}
-            <div hidden id="desktop-menu-{{ forloop.index }}" class="mega-menu" {{ mega_menu_block.shopify_attributes }}>
+            <div
+              hidden
+              id="desktop-menu-{{ forloop.index }}"
+              class="mega-menu"
+              {{ mega_menu_block.shopify_attributes }}
+            >
               <div class="container">
                 <div class="mega-menu__inner">
                   {%- if mega_menu_block.settings.images_position == 'left' and mega_menu_images != blank -%}
@@ -78,7 +176,9 @@
                           {%- if sub_link.url == '#' -%}
                             <span class="mega-menu__title heading heading--small">{{ sub_link.title }}</span>
                           {%- else -%}
-                            <a href="{{ sub_link.url }}" class="mega-menu__title heading heading--small">{{ sub_link.title }}</a>
+                            <a href="{{ sub_link.url }}" class="mega-menu__title heading heading--small">
+                              {{- sub_link.title -}}
+                            </a>
                           {%- endif -%}
 
                           {%- if sub_link.links.size > 0 -%}
@@ -104,11 +204,24 @@
               </div>
             </div>
           {%- endif -%}
-        {%- elsif link.links.size > 0 -%}
-          <ul hidden id="desktop-menu-{{ forloop.index }}" class="nav-dropdown {% if link.levels == 1 %}nav-dropdown--restrict{% endif %} list--unstyled" role="list">
+        {%- elsif link.links.size > 0 and section.settings.new_header != true -%}
+          <ul
+            hidden
+            id="desktop-menu-{{ forloop.index }}"
+            class="nav-dropdown {% if link.levels == 1 %}nav-dropdown--restrict{% endif %} list--unstyled"
+            role="list"
+          >
             {%- for sub_link in link.links -%}
               <li class="nav-dropdown__item {% if sub_link.links.size > 0 %}has-dropdown{% endif %}">
-                <a class="nav-dropdown__link link--faded" href="{{ sub_link.url }}" {% if sub_link.links.size > 0 %}aria-controls="desktop-menu-{{ forloop.parentloop.index }}-{{ forloop.index }}" aria-expanded="false"{% endif %}>
+                <a
+                  class="nav-dropdown__link link--faded"
+                  href="{{ sub_link.url }}"
+                  target="_blank"
+                  {% if sub_link.links.size > 0 %}
+                    aria-controls="desktop-menu-{{ forloop.parentloop.index }}-{{ forloop.index }}"
+                    aria-expanded="false"
+                  {% endif %}
+                >
                   {{- sub_link.title -}}
 
                   {%- if sub_link.links.size > 0 -%}
@@ -117,10 +230,17 @@
                 </a>
 
                 {%- if sub_link.links.size > 0 -%}
-                  <ul hidden id="desktop-menu-{{ forloop.parentloop.index }}-{{ forloop.index }}" class="nav-dropdown list--unstyled" role="list">
+                  <ul
+                    hidden
+                    id="desktop-menu-{{ forloop.parentloop.index }}-{{ forloop.index }}"
+                    class="nav-dropdown list--unstyled"
+                    role="list"
+                  >
                     {%- for sub_sub_link in sub_link.links -%}
                       <li class="nav-dropdown__item">
-                        <a class="nav-dropdown__link link--faded" href="{{ sub_sub_link.url }}">{{ sub_sub_link.title }}</a>
+                        <a class="nav-dropdown__link link--faded" href="{{ sub_sub_link.url }}">
+                          {{- sub_sub_link.title -}}
+                        </a>
                       </li>
                     {%- endfor -%}
                   </ul>

@@ -1,0 +1,262 @@
+<style>
+  #shopify-section-{{ section.id }} {
+    --section-background: {{ section.settings.background }};
+    background-color: var(--section-background)
+  }
+    .section-{{ section.id }}-padding {
+      padding-top: calc({{ section.settings.padding_top }}px);
+      padding-bottom: calc({{ section.settings.padding_bottom }}px);
+    }
+    @media screen and (max-width: 768px){
+    .section-{{ section.id }}-padding {
+      padding-top: calc({{ section.settings.padding_top }}px * 0.6);
+      padding-bottom: calc({{ section.settings.padding_bottom }}px * 0.6);
+    }
+  }
+
+    #shopify-section-{{ section.id }} {
+    }
+  .sport_nav .container{
+    max-width: 1520px;
+  }
+  .sport_nav-box{
+    display: flex;
+    position: relative;
+  }
+  .sport_nav-box .sport_nav-li{
+    display: flex;
+    width: 50%;
+    padding: 20px;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    position: relative;
+    cursor: pointer;
+  }
+  .sport_nav-box .sport_nav-txt{
+    color:  #3F3636;
+  text-align: center;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 570;
+  line-height: normal;
+  text-transform: capitalize;
+  opacity: 0.5;
+  }
+  .sport_nav-box .sport_nav-tag{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color:  #3F3636;
+  text-align: center;
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.3;
+  text-transform: capitalize;
+  background:  #E4DDDD;
+  padding: 2px 5px;
+  opacity: 0.5;
+  }
+  .sport_nav-box:after{
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  background: #E4DDDD;
+  bottom: 0;
+  }
+  .sport_nav-box .sport_nav-li.active:after{
+    content: '';
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  background: #E0004D;
+  bottom: 0;
+  z-index: 1;
+  }
+  .sport_nav-box .sport_nav-li.active .sport_nav-txt {
+  opacity: 1;
+  color: #E0004D;
+  }
+  .sport_nav-box .sport_nav-li.active .sport_nav-tag{
+    opacity: 1;
+  }
+    .sport-nav {
+      position: sticky;
+      top: var(--header-height);
+      z-index: 3;
+      background: #FFF;
+  }
+   .chr-2024 .sport_nav-box .sport_nav-li{
+      gap:8px;
+    }
+  .chr-2024 .sport_nav-box .sport_nav-txt{
+    opacity:1;
+  }
+  .chr-2024 .sport_nav-box .sport_nav-tag{
+    background: #3F3636;
+    color:#fff;
+    opacity:1;
+  }
+    .chr-2024 .sport_nav-box .sport_nav-li.active .sport_nav-tag{
+      background: #E0004D;
+    }
+  @media (max-width: 768px) {
+    .sport_nav-box .sport_nav-li{
+      gap: 10px;
+      padding: 18px 0;
+    }
+    .sport_nav-box .sport_nav-txt{
+      font-size: 14px;
+    }
+    .sport_nav-box .sport_nav-tag{
+      font-size: 10px;
+    }
+     .sport-nav {
+      /* top: calc(100vh - 39.33px); */
+  }
+  }
+</style>
+
+<section class="{% if section.settings.custom_class != blank %}{{section.settings.custom_class}}{% endif %}">
+  <div class="sport_nav">
+    <div class="container">
+      <div class="sport_nav-box">
+        {%- for block in section.blocks -%}
+          <a
+            href="#{{ block.settings.target_id }}"
+            data-target="{{ block.settings.target_id }}"
+            class="sport_nav-li{% if forloop.index == 1 %} active{% endif %}"
+          >
+            <div class="sport_nav-txt">{{ block.settings.text1 }}</div>
+            {% if block.settings.text2 != blank %}
+              <div class="sport_nav-tag">{{ block.settings.text2 }}</div>
+            {% endif %}
+          </a>
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const navLinks = document.querySelectorAll('.sport_nav-box a');
+    const sections = document.querySelectorAll('section');
+    let isScrolling = false;
+    // Intersection Observer callback
+    const observerCallback = (entries) => {
+      if (isScrolling) return;
+      entries.forEach((entry) => {
+        const targetLink = document.querySelector(`.sport_nav-box a[data-target="${entry.target.id}"]`);
+        if (entry.isIntersecting) {
+          // targetLink.classList.add('active');
+
+          // 先移除所有链接的 active 类
+          navLinks.forEach((link) => link.classList.remove('active'));
+
+          // 为当前可见的模块链接添加 active 类
+          targetLink.classList.add('active');
+        }
+        // else {
+        //   targetLink.classList.remove('active');
+        // }
+      });
+    };
+
+    // Create Intersection Observer
+    const observer = new IntersectionObserver(observerCallback, {
+      threshold: 0.5,
+    });
+
+    // Observe each section
+    navLinks.forEach((section) => {
+      observer.observe(document.getElementById(section.getAttribute('href').substring(1)));
+    });
+
+    // Smooth scroll to section on nav link click
+    navLinks.forEach((link) => {
+      link.addEventListener('click', function (event) {
+        event.preventDefault();
+        const targetId = this.getAttribute('data-target');
+        const targetSection = document.getElementById(targetId);
+        // Remove active class from all links and add to the clicked link
+        navLinks.forEach((link) => link.classList.remove('active'));
+        this.classList.add('active');
+        isScrolling = true;
+        targetSection.scrollIntoView({
+          behavior: 'smooth',
+        });
+
+        setTimeout(() => {
+          isScrolling = false;
+        }, 1000);
+      });
+    });
+  });
+</script>
+{% schema %}
+{
+  "name": "Sport Nav",
+  "class": "sport-nav",
+  "settings": [
+    {
+      "type": "text",
+      "id": "custom_class",
+      "label": "Custom Class"
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Background Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "mobile_background_image",
+      "label": "Mobile Background Image"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text1",
+          "label": "Text1"
+        },
+        {
+          "type": "text",
+          "id": "text2",
+          "label": "Text2"
+        },
+        {
+          "type": "text",
+          "id": "target_id",
+          "label": "Target Id"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Sport Nav",
+      "settings": {},
+      "blocks": []
+    }
+  ]
+}
+{% endschema %}

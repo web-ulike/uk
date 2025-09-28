@@ -1,0 +1,222 @@
+<link rel="stylesheet" href="https://cdn.shopify.com/s/files/1/0740/5882/6015/files/swiper-bundle.min.css?v=1712905202">
+<script src="https://cdn.shopify.com/s/files/1/0740/5882/6015/files/swiper-bundle.min.js?v=1712905203"></script>
+<style>
+  .about-map {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .about-map-pc {
+    position: relative;
+    width: 100%;
+  }
+
+  .about-map-mobile {
+    display: none;
+  }
+
+  .about-map-content {
+    position: absolute;
+    top: 100px;
+    z-index: 2;
+  }
+
+  .about-map-title {
+    font-size: 48px;
+    line-height: 1;
+    color: #190a0a;
+  }
+
+  .about-map-desc {
+    margin-top: 20px;
+    font-size: 18px;
+    line-height: 1;
+    color: #3f3636;
+  }
+
+  .about-map-title span {
+    color: #e0004d;
+  }
+
+  .about-progress-bar {
+    width: 100%;
+    height: 4px;
+    background: #e4dddd;
+    position: relative;
+  }
+
+  .about-progress-bar .about-progress-inner {
+    height: 100%;
+    width: 0%;
+    background: #3f3636;
+    transition: width 0.3s ease;
+  }
+
+  @media (max-width: 1200px) {
+    .about-map-content {
+      position: absolute;
+      top: 80px;
+    }
+
+    .about-map-title {
+      font-size: 38px;
+    }
+
+    .about-map-desc {
+      margin-top: 16px;
+      font-size: 14px;
+    }
+  }
+
+  @media (max-width: 1024px) {
+    .about-map-content {
+      position: absolute;
+      top: 40px;
+    }
+
+    .about-map-title {
+      font-size: 32px;
+    }
+
+    .about-map-desc {
+      margin-top: 10px;
+      font-size: 14px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .about-map-pc {
+      display: none;
+    }
+
+    .about-map-mobile {
+      display: block;
+    }
+
+    .about-map-content {
+      position: absolute;
+      top: 60px;
+    }
+
+    .about-map-title {
+      width: 240px;
+      font-size: 24px;
+    }
+
+    .about-map-desc {
+      width: 240px;
+      margin-top: 20px;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+  }
+</style>
+
+<section id="about-map-{{ section.id }}">
+  <div class="about-map">
+    <div class="container">
+      <div class="about-map-content">
+        <div class="about-map-title to-top">{{ section.settings.title }}</div>
+        <div class="about-map-desc to-top">{{ section.settings.desc }}</div>
+      </div>
+    </div>
+    <div class="about-map-pc">
+      <img
+        src="https://cdn.shopify.com/s/files/1/0740/5882/6015/files/49_countries.jpg?v=1753870854"
+        width="100%"
+        height="auto"
+      >
+    </div>
+    <div class="about-map-mobile">
+      <div class="swiper-container">
+        <div class="swiper-wrapper">
+          <div class="swiper-slide">
+            <img
+              src="https://cdn.shopify.com/s/files/1/0740/5882/6015/files/Slice_1_1715f51e-a187-44e1-87d6-5e58e4545b1f.jpg?v=1753931984"
+              width="100%"
+              height="auto"
+              alt=""
+            >
+          </div>
+          <div class="swiper-slide">
+            <img
+              src="https://cdn.shopify.com/s/files/1/0740/5882/6015/files/Slice_3.jpg?v=1753931771"
+              width="100%"
+              height="auto"
+              alt=""
+            >
+          </div>
+          <div class="swiper-slide">
+            <img
+              src="https://cdn.shopify.com/s/files/1/0740/5882/6015/files/Slice_2.jpg?v=1753931771"
+              width="100%"
+              height="auto"
+              alt=""
+            >
+          </div>
+        </div>
+      </div>
+      <div class="container">
+        <div class="about-progress-bar">
+          <div class="about-progress-inner"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  $(document).ready(function () {
+    var swiper = new Swiper('#about-map-{{ section.id }} .about-map-mobile .swiper-container', {
+      slidesPerView: 1,
+      spaceBetween: 0,
+    });
+
+    const $progressInner = $('#about-map-{{ section.id }} .about-map-mobile .about-progress-inner');
+
+    function updateProgress() {
+      const total = swiper.slides.length - swiper.loopedSlides * 2 || swiper.slides.length;
+      const currentIndex = swiper.realIndex + 1;
+      const percent = (currentIndex / total) * 100;
+
+      $progressInner.css('width', percent + '%');
+    }
+
+    // 初始化
+    updateProgress();
+
+    swiper.on('slideChange', function () {
+      updateProgress();
+    });
+
+    $(window).resize(function () {
+      updateProgress();
+    });
+  });
+</script>
+
+{% schema %}
+{
+  "name": "u-about-map",
+  "settings": [
+    {
+      "type": "html",
+      "id": "title",
+      "label": "标题",
+      "default": "Sold in over <span>7+Million</span> | Stores in <span>49</span> countries"
+    },
+    {
+      "type": "text",
+      "id": "desc",
+      "label": "描述",
+      "default": "In-depth cooperation with SKP, CDF, Lotte Duty Free, and other luxury groups."
+    }
+  ],
+  "presets": [
+    {
+      "name": "u-about-map",
+      "blocks": []
+    }
+  ]
+}
+{% endschema %}

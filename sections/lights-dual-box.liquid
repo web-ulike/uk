@@ -1,0 +1,212 @@
+<style>
+ .lights-dual-box {
+  position: relative;
+  z-index: 0;
+  height: 80vh;
+  overflow: hidden;
+  clip-path: inset(0 0 0 0);
+}
+.lights-dual-box .lights-dual-bg {
+  position: fixed;
+  z-index: -1;
+  display: block;
+  margin: 0;
+  min-width: 100%;
+  height: 100vh;
+  object-fit: cover;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.lights-dual-box .container {
+  height: 100%;
+}
+.lights-dual-box .lights-dual-top {
+  color: #190a0a;
+  text-align: center;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  padding: 100px 0 35px 0;
+  left: 0;
+  top: 0;
+  z-index: 2;
+}
+
+.lights-dual-box .lights-dual-cont {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+}
+
+.lights-dual-box .lights-dual-text-title {
+  font-size: 64px;
+  line-height: 1.12;
+  max-width: 950px;
+  margin: 0 auto;
+}
+
+.lights-dual-box .lights-dual-text-sub {
+  font-size: 18px;
+  line-height: 1.58;
+  max-width: 800px;
+  margin: 0 auto;
+  margin-top: 20px;
+}
+
+.lights-dual-box .lights-dual-text-list {
+  display: flex;
+  justify-content: space-between;
+  max-width: 620px;
+  margin: 0 auto;
+}
+
+.lights-dual-box .lights-dual-text-p {
+  font-size: 28px;
+  line-height: 1.5;
+}
+
+.lights-dual-box .lights-dual-text-num {
+  font-size: 99px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+}
+
+.lights-dual-box .lights-dual-text-num span {
+  font-size: 42px;
+  line-height: 1.2;
+}
+
+.lights-dual-box .lights-dual-text-msg {
+  font-size: 14px;
+  line-height: 1.5;
+  opacity: 0.5;
+  margin-top: 60px;
+}
+
+@media (max-width: 768px) {
+  .lights-dual-box .lights-dual-top {
+    padding: 50px 0 27px 0;
+  }
+  .lights-dual-box .lights-dual-text-title {
+    font-size: 24px;
+  }
+  .lights-dual-box .lights-dual-text-sub {
+    font-size: 14px;
+  }
+  .lights-dual-box .lights-dual-text-list {
+    max-width: 250px;
+  }
+  .lights-dual-box .lights-dual-text-p {
+    font-size: 13px;
+  }
+  .lights-dual-box .lights-dual-text-num {
+    font-size: 46px;
+  }
+  .lights-dual-box .lights-dual-text-num span {
+    font-size: 19px;
+  }
+  .lights-dual-box .lights-dual-text-msg {
+    font-size: 12px;
+    margin-top: 18px;
+  }
+}
+</style>
+
+<section>
+  <div class="lights-dual-box">
+    {%- if section.settings.image != blank or section.settings.image1 != blank-%}
+    <picture class="lights-dual-bg">
+      <source srcset="{{ section.settings.image1 | image_url }}" media="(max-width: 991px)">
+      <img class="lights-dual-bg"  loading="lazy" width="" height="" {% render 'image-attributes', image: section.settings.image %}>
+    </picture>
+    {%- endif -%}
+    <div class="lights-dual-top">
+      <div class="container">
+        <div class="lights-dual-cont">
+          <div class="lights-dual-text-top to-top">
+            <div class="lights-dual-text-title">{{ section.settings.text }}</div>
+            <div class="lights-dual-text-sub">{{ section.settings.text1 }}</div>
+          </div>
+          <div class="lights-dual-text-bottom to-top" style="transition-delay: .1s;">
+            <div class="lights-dual-text-list">
+              <div class="lights-dual-text-item">
+                <div class="lights-dual-text-p">{{ section.settings.text2 }}</div>
+                <div class="lights-dual-text-num">
+                  {{ section.settings.text3 | replace: "%", "<span>%</span>" }}
+                </div>
+              </div>
+              <div class="lights-dual-text-item">
+                <div class="lights-dual-text-p">{{ section.settings.text4 }}</div>
+                <div class="lights-dual-text-num">
+                  {{ section.settings.text5 | replace: "%", "<span>%</span>" }}
+                </div>
+              </div>
+            </div>
+            <div class="lights-dual-text-msg">{{ section.settings.text6 }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% schema %}
+{
+  "name": "lights-dual-box",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image1",
+      "label": "Image M"
+    },
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "text1",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "text2",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "text3",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "text4",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "text5",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "text6",
+      "label": "Text"
+    }
+    
+  ],
+  "presets": [
+    {
+      "name": "lights-dual-box"
+    }
+  ]
+}
+{% endschema %}

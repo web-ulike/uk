@@ -1,0 +1,110 @@
+<style>
+ .images-text-diy{
+  padding: 100px 0;
+}
+
+.images-text-diy .images-text-cont{
+  display: flex;
+  align-items: center;
+}
+
+.images-text-diy .images-text-img,.images-text-diy .images-text-txt{
+  flex: 1;
+}
+
+.images-text-diy .images-text-txt{
+  padding-left: 75px;
+}
+
+.images-text-diy .img{
+  display: block;
+  width: 100%;
+}
+
+.images-text-diy .title-diy{
+  text-align: left;
+}
+
+.images-text-diy .images-text-p{
+  font-size: 14px;
+  color: #595959;
+  margin-top: 35px;
+}
+
+.images-text-diy .images-text-p strong{
+  font-weight: normal;
+  color: #000;
+  font-family: var(--heading-font-family);
+}
+
+@media (max-width:991px) {
+  .images-text-diy{
+    padding: 50px 0;
+  }
+  .images-text-diy .images-text-cont{
+    display: block;
+  }
+
+  .images-text-diy .images-text-txt{
+    padding-left: 0;
+    margin-top: 30px;
+  }
+
+  .images-text-diy .images-text-p{
+    margin-top: 25px;
+  }
+
+  /* .images-text-diy .images-text-p br{
+    display: none;
+  } */
+}
+</style>
+
+<section>
+  <div class="images-text-diy">
+    <div class="container">
+      <div class="images-text-cont">
+        <div class="images-text-img to-top">
+          {%- if section.settings.image != blank -%}
+               <img loading="lazy" class="img" width="{{ section.settings.image.width }}" height="{{ section.settings.image.height }}" {% render 'image-attributes', image: section.settings.image %} alt="{{ section.settings.image.alt | escape }}" >
+          {%- endif -%}
+        </div>
+        <div class="images-text-txt">
+          <div class="title-diy to-top" style="transition-delay: 0.1s">{{ section.settings.text }}</div>
+          <div class="images-text-p to-top" style="transition-delay: 0.2s">
+            {{ section.settings.text1 }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% schema %}
+{
+  "name": "images-text-diy",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Title"
+    },
+    {
+      "type": "richtext",
+      "id": "text1",
+      "label": "Text"
+    }
+  ],
+  "blocks": [
+  ],
+  "presets": [
+    {
+      "name": "images-text-diy"
+    }
+  ]
+}
+{% endschema %}

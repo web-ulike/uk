@@ -1,0 +1,333 @@
+<style>
+.guidelines {
+  padding: 100px 0;
+}
+
+.guidelines .guidelines-cont {
+  display: flex;
+  align-items: center;
+  gap: 50px;
+}
+
+.guidelines .guidelines-left {
+  flex: 1;
+}
+
+.guidelines .guidelines-img {
+  width: 39%;
+}
+
+.guidelines .guidelines-title {
+  color: #000;
+  font-size: 65px;
+  line-height: 1;
+  font-family: var(--heading-font-family);
+}
+
+.guidelines .guidelines-list {
+  margin-top: 20px;
+}
+
+.guidelines .guidelines-item {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  margin-bottom: 10px;
+}
+
+.guidelines .star {
+  color: #E0004D;
+  font-size: 22px;
+  line-height: 1.2;
+}
+
+.guidelines .guidelines-txt {
+  color: #000;
+  font-size: 20px;
+  line-height: 1.5;
+}
+
+.guidelines .guidelines-txt p {
+  margin: 0;
+}
+
+.guidelines .guidelines-txt strong {
+  font-weight: normal;
+  font-family: var(--heading-font-family);
+}
+
+.guidelines .guidelines-sub {
+  color: #E0004D;
+  font-size: 20px;
+  line-height: 1.5;
+  font-style: italic;
+}
+
+.guidelines .guidelines-p {
+  color: rgba(0, 0, 0, 0.40);
+  font-size: 14px;
+  line-height: 1.3;
+  padding: 10px;
+  background: linear-gradient(180deg, #F1F2F4 0%, #E3E7EA 100%);
+  margin-top: 48px;
+}
+
+@media (max-width:1500px) {
+  .guidelines .guidelines-title {
+    font-size: 50px;
+  }
+}
+
+@media (max-width:1200px) {
+  .guidelines .guidelines-title {
+    font-size: 40px;
+  }
+}
+
+@media (max-width:991px) {
+  .guidelines {
+    padding: 50px 0;
+  }
+
+  .guidelines .guidelines-cont {
+    flex-direction: column;
+    gap: 30px;
+  }
+
+  .guidelines .guidelines-img {
+    width: 100%;
+  }
+
+  .guidelines .guidelines-title {
+    font-size: 28px;
+    text-align: center;
+  }
+
+  .guidelines .guidelines-item {
+    gap: 5px;
+    margin-bottom: 8px;
+  }
+
+  .guidelines .guidelines-txt {
+    font-size: 12px;
+  }
+
+  .guidelines .star {
+    font-size: 14px;
+  }
+
+  .guidelines .guidelines-sub {
+    font-size: 15px;
+  }
+
+  .guidelines .guidelines-p {
+    padding: 9px 7px;
+    font-size: 12px;
+    margin-top: 25px;
+  }
+}
+
+.guidelines .popup-box {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  top: 0;
+  left: 0;
+  z-index: 99;
+  overflow-y: auto;
+  display: none;
+}
+.guidelines .popup-box-cont {
+  position: relative;
+  padding: 80px 40px;
+  background: #fff;
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  top: 50%;
+  transform: translateY(-50%);
+  height: calc(100vh - 80px);
+  overflow: hidden;
+}
+.guidelines .popup-box-text {
+  max-width: 800px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+.guidelines .popup-box-text-cont {
+  overflow-y: auto;
+  height: 100%;
+  width: calc(100% + 40px);
+  padding-right: 40px;
+}
+.guidelines .popup-box-close {
+  position: absolute;
+  right: 30px;
+  top: 30px;
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.guidelines .popup-box-close svg {
+  width: 20px;
+  transition: all 0.8s ease;
+}
+
+.guidelines .popup-box-close:hover svg {
+  transform: rotate(360deg);
+}
+
+.guidelines .popup-box-text-cont::-webkit-scrollbar {
+  width: 0px;
+}
+
+.guidelines .popup-box-text-cont::-webkit-scrollbar-track {
+  background-color: #f1f1f1;
+}
+
+.guidelines .popup-box-text-cont::-webkit-scrollbar-thumb {
+  background-color: #aaa;
+}
+
+.guidelines .popup-box-text-cont::-webkit-scrollbar-thumb:hover {
+  background-color: #555;
+}
+
+@media (max-width: 991px) {
+  .guidelines .popup-box-cont {
+    height: 100%;
+    padding: 50px 20px;
+  }
+  .guidelines .popup-box-close {
+    top: 10px;
+    right: 10px;
+    height: 30px;
+    width: 30px;
+  }
+
+  .guidelines .popup-box-p {
+    font-size: 14px;
+    margin-top: 10px;
+  }
+}
+
+</style>
+<section class="section-box">
+  <div class="guidelines">
+    <div class="container">
+      <div class="guidelines-cont to-top">
+        <div class="guidelines-left">
+          <div class="guidelines-title">{{ section.settings.text }}</div>
+          <div class="guidelines-list">
+            {%- for block in section.blocks -%}
+              <div class="guidelines-item">
+                <div class="star">{{ block.settings.text }}</div>
+                <div class="guidelines-txt">
+                  {{ block.settings.text1 }}
+                </div>
+              </div>
+            {%- endfor -%}
+          </div>
+          <div class="guidelines-sub">{{ section.settings.text1 }}</div>
+          <div class="guidelines-p">{{ section.settings.text2 }}</div>
+        </div>
+        <div class="guidelines-img">
+          {%- if section.settings.image != blank -%}
+            <img loading="lazy" width="{{ section.settings.image.width }}" height="{{ section.settings.image.height }}" {% render 'image-attributes', image: section.settings.image %} alt="{{ section.settings.image.alt | escape }}" >
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+    {%- if section.settings.text3 != blank -%}
+      <div class="popup-box">
+        <div class="popup-box-cont">
+          <div class="popup-box-close">
+            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 25 25" fill="none">
+              <path
+                d="M0.784745 21.3978C-0.239783 22.337 -0.261127 23.2974 0.720712 24.2793C1.70255 25.2611 2.66303 25.2398 3.60218 24.2153L12.5 15.4455L21.3978 24.2153C22.337 25.2398 23.2974 25.2611 24.2793 24.2793C25.2611 23.2974 25.2398 22.337 24.2152 21.3978L15.4455 12.5L24.2152 3.60217C25.2398 2.66303 25.2611 1.70256 24.2793 0.720701C23.2974 -0.261132 22.337 -0.239775 21.3978 0.784748L12.5 9.5545L3.60218 0.784748C2.66303 -0.239775 1.70255 -0.261132 0.720712 0.720701C-0.261127 1.70256 -0.239783 2.66303 0.784745 3.60217L9.5545 12.5L0.784745 21.3978Z"
+                fill="black"></path>
+            </svg>
+          </div>
+          <div class="popup-box-text-cont">
+            <div class="popup-box-text">
+              {{ section.settings.text3 }}
+            </div>
+          </div>
+        </div>
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+<script>
+  window.addEventListener('load', () => {
+    $('.guidelines .guidelines-p a').click((e) => {
+      e.preventDefault()
+      $('.guidelines .popup-box').fadeIn(400)
+    })
+    $('.guidelines .popup-box-close').click((e) => {
+      $('.guidelines .popup-box').fadeOut(400)
+    })
+  })
+</script>
+{% schema %}
+{
+"name": "guidelines",
+"blocks": [
+  {
+    "name": "item",
+    "type": "item",
+    "settings": [
+      {
+        "type": "text",
+        "id": "text",
+        "label": "Text"
+      },
+      {
+        "type": "richtext",
+        "id": "text1",
+        "label": "Text"
+      }
+    ]
+  }
+],
+"settings": [
+  {
+    "type": "image_picker",
+    "id": "image",
+    "label": "Image"
+  },
+  {
+    "type": "text",
+    "id": "text",
+    "label": "标题"
+  },
+  {
+    "type": "text",
+    "id": "text1",
+    "label": "Text"
+  },
+  {
+    "type": "richtext",
+    "id": "text2",
+    "label": "Text"
+  },
+  {
+    "type": "richtext",
+    "id": "text3",
+    "label": "弹窗文案"
+  }
+],
+  "presets": [
+  {
+    "name": "guidelines",
+    "blocks": []
+  }
+]
+}
+{% endschema %}

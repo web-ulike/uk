@@ -1,0 +1,1158 @@
+{%- assign product = section.settings.product -%}
+{%- assign product_form_id = 'product-form-' | append: section.id | append: '-' | append: product.id -%}
+<style>
+       #shopify-section-{{ section.id }} {
+      --text-color: {{  section.settings.text_color.red }}, {{  section.settings.text_color.green }}, {{  section.settings.text_color.blue }};
+      --section-background: {{ section.settings.background.red }}, {{ section.settings.background.green }}, {{ section.settings.background.blue }};
+      --background-image: url({{ section.settings.background_image | img_url: '3840x1176' }});
+      {% if section.settings.background_image != blank %}
+        background-image: var( --background-image);
+      {% else %}
+        background-color: var(--section-background)
+      {% endif %}
+    }
+    .section-{{ section.id }}-padding {
+      padding-top: calc({{ section.settings.padding_top }}px);
+      padding-bottom: calc({{ section.settings.padding_bottom }}px);
+    }
+    @media screen and (max-width: 768px){
+      #shopify-section-{{ section.id }} {
+      {% if section.settings.mobile_background_image != blank %}
+        --background-image: url({{ section.settings.mobile_background_image | img_url : '750x1230' }});
+      {% endif %}
+      }
+    .section-{{ section.id }}-padding {
+      padding-top: calc({{ section.settings.padding_top }}px * 0.6);
+      padding-bottom: calc({{ section.settings.padding_bottom }}px * 0.6);
+    }
+  }
+  /* scroll-img-pt__template start*/
+  .scroll-img-pt__box {
+    position: relative;
+    height: 200vh;
+}
+    .scroll-img-pt__stick{
+      position: sticky;
+    top: var(--header-height);
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    }
+    .stick_left-box__img .stick-img__item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: relative;
+    display: block;
+}
+.stick_left-box__img .stick-img__item.active {
+    opacity: 1;
+}
+.stick_right-box .module5_content{
+   padding: 60px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    height:100%;
+}
+  .stick_right-box .module5_content .cnt_bix{
+    flex: 1;
+  }
+
+  .stick_right-box .module5_content .cnt_bix .cnt_bgimg{
+    /* width:100%; */
+    width: auto;
+  }
+.cnt_bix .img_pt-tle{
+  color:  #FBFAF4;
+font-size: 44px;
+font-style: normal;
+font-weight: 400;
+line-height: 125%;
+margin-bottom: 20px;
+}
+.cnt_bix .img_pt-txt{
+  color:  #FBFAF4;
+font-size: 18px;
+font-style: normal;
+font-weight: 400;
+line-height: 150%; 
+margin-bottom: 20px;
+}
+  .cnt_bix .img_pt-txt p,.cnt_bix .img_pt-des p{
+    margin:0;
+  }
+  .cnt_bix .img_pt-des{
+color: #FFFFFC;
+font-size: 14px;
+line-height: 150%;
+margin-bottom:20px;
+  }
+   .cnt_bix .img_pt-des ul{
+     padding-left:20px;
+     list-style: disc;
+   }
+.img_pt-price-box{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+.img_pt-price-box .pt__price1{
+  color:  #E0004D;
+font-size: 26px;
+font-style: normal;
+font-weight: 500;
+line-height: 130%; /* 33.8px */
+}
+.img_pt-price-box .pt__price2{
+  color: #BFC0BA;
+font-size: 22px;
+font-style: normal;
+font-weight: 400;
+line-height: 130%; 
+  text-decoration: line-through;
+}
+.img_pt-price-box .pt__price-label{
+  display: flex;
+padding: 2px 10px;
+align-items: center;
+color:  #190A0A;
+font-size: 13px;
+font-style: normal;
+font-weight: 500;
+line-height: 18px;
+background: linear-gradient(113deg, #FFE4CB 11.88%, #F6EDE6 32.09%, #B29A84 44.83%, #D9C5B5 60.28%, #FFF6EE 89.12%), linear-gradient(90deg, #E5C29A 0%, #7F6C55 100%);
+}
+.after__box-ico{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+.after__box-ico .after__box-txt{
+  color:  #FBFAF4;
+font-size: 14px;
+font-style: normal;
+font-weight: 400;
+line-height: 24px;
+letter-spacing: -0.28px;
+}
+.gift-item .gift__tle{
+  color: #F4DABC;
+font-size: 16px;
+font-style: normal;
+font-weight: 500;
+line-height: 150%;
+margin-bottom: 15px;
+}
+.gift-item .gift__ul{
+  display: flex;
+  gap: 13px;
+  flex-wrap: wrap;
+  overflow: hidden;
+
+}
+.gift-item .gift__ul .gift__li-txt{
+  color: #FBFAF4;
+font-size: 12px;
+font-style: normal;
+font-weight: 400;
+line-height: 150%;
+margin-top: 10px;
+text-align: center;
+}
+  .gift__li {
+    width: calc(16% - 13px);
+}
+  .coupon-warp-width {
+    display: inline-flex;
+    position: relative;
+        margin-bottom: 30px;
+}
+.coupon-warp-cnt {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.coupon-warp-left {
+    width: 50%;
+    text-align: center;
+    color:  #FBFAF4;
+font-size: 24px;
+font-style: normal;
+font-weight: 500;
+line-height: normal;
+text-transform: uppercase;
+}
+.coupon-warp-right {
+    flex: 1;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color:  #FBFAF4;
+text-align: center;
+font-size: 14px;
+font-style: normal;
+font-weight: 400;
+line-height: normal;
+text-transform: capitalize;
+gap: 13px;
+}
+.coupon-warp-right .right_code-btn{
+  cursor: pointer;
+  text-decoration: underline;
+}
+  .cpnCode {
+  position: absolute;
+  top: 0;
+  right: 0;
+  visibility: hidden;
+}
+  .product-form__new .pay-block {
+    display: flex;
+}
+  .product-form__new .pay-block .quantity-selector {
+   border-radius: 60px 0px 0px 60px;
+border: 1px solid  #FBFAF4;
+    background: transparent;
+    color: #fff;
+}
+ .product-form__new .pay-block .product-form__add-button {
+    width: 100%;
+    border-radius: 0px 60px 60px 0px;
+    background:#FBFAF4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 150%;
+    text-transform: uppercase;
+    color: #190A0A;
+    transition: background-color .3s ease, transform .1s ease;
+    position: relative;
+}
+ .product-form__new .shopify-payment-button {
+    --button-border-radius: 60px 60px 60px 60px;
+}
+ .product-form__new .shopify-payment-button__button {
+    border: 1px solid #fff !important;
+}
+   .product-form__new .paypal-button.paypal-button-color-gold, .product-form__new .paypal-button-row.paypal-button-color-gold .menu-button {
+    background: transparent;
+    color: #ffff;
+}
+  .wa__box{
+  display: flex;
+  align-items: center;
+  gap: 37px;
+  margin-top: 25px;
+  padding-left: 12px;
+}
+.wa__box  .wa__li{
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.wa__box .wa__txt{
+  color:  #FBFAF4;
+font-size: 12px;
+font-style: normal;
+font-weight: 400;
+line-height: 110%;
+letter-spacing: 0.24px;
+}
+  .gift-item {
+    margin-bottom: 50px;
+}
+  .wa__svg {
+    display: inline-flex;
+}
+  .wa__box .wa__li{
+  position: relative;
+}
+.wa__box .wa__li:not(:last-child):after {
+    content: '';
+    width: 1px ;
+    height: 100%;
+    background: #FBFAF4;
+    position: absolute;
+    right: -15px;
+}
+ .shopify-payment-button shopify-paypal-button div.paypal-buttons>iframe {
+    border-radius: 60px !important;
+}
+  .officially-features-popup .product-video{
+    display: block;
+  }
+  #more-payment-options-link {
+  color: #fff;
+}
+  .stick_item-li {
+    width: 100%;
+    display: flex;
+    width: 100%;
+    height: 100vh;
+    position: absolute;
+    top: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+   .stick_item-li.active{
+     opacity: 1;
+   }
+  .stick_left-box, .stick_right-box {
+    width: 50%;
+        height: 100%;
+    position: relative;
+    z-index: 1;
+}
+  .product-form__new.product-form__buy-buttons,.gift-item{
+    max-width: 664px;
+  }
+    .stick_right-box .module5_content .cnt_bix.cnt__img{
+  text-align: center;
+}
+  @media screen and (max-width: 1520px) {
+    .scroll-img-pt__stick,.stick_item-li {
+    height: 140vh;
+}
+    .gift-item {
+    margin-bottom: 25px;
+}
+    .scroll-img-pt__box {
+    height: 250vh;
+}
+    .img_pt-price-box,.after__box-ico{
+          margin-bottom: 15px;
+    }
+  }
+@media screen and (max-width: 992px) {
+  .stick_right-box .module5_content:first-child{
+     
+}
+  .scroll-img-pt__stick {
+        position: static;
+    height: auto;
+        flex-direction: column;
+}
+  .scroll-img-pt__stick .stick_item-li:first-child{
+    flex-direction: column-reverse;
+  }
+   .scroll-img-pt__stick .stick_item-li:first-child  .stick_right-box  {
+        height: auto;
+  }
+   .scroll-img-pt__stick .stick_item-li:first-child  .stick_left-box  {
+        height: auto;
+  }
+  .stick_left-box__img .stick-img__item img {
+    height: auto;
+}
+  .stick_item-li {
+    flex-direction: column;
+    justify-content: flex-start;
+    height: auto;
+    position: relative;
+            opacity: 1 !important;
+}
+  .stick_left-box{
+     height: auto;
+  }
+ .stick_right-box {
+      height: auto;
+}
+.stick_left-box, .stick_right-box {
+    width: 100%;
+}
+.stick_right-box .module5_content {
+
+  padding: 30px 20px;
+
+}
+.stick_left-box{
+     
+  }
+  .stick_left-box__img {
+  
+}
+.cnt_bix .cnt_bgimg {
+    width: 100%;
+}
+.cnt_bix .img_pt-tle{
+  font-size: 28px;
+  margin-bottom: 12px;
+}
+.cnt_bix .img_pt-txt{
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+.img_pt-price-box .pt__price1{
+  font-size: 22px;
+}
+.img_pt-price-box .pt__price2{
+  font-size: 22px;
+}
+.after__box-ico .after__box-txt{
+  font-size: 12px;
+}
+.gift-item .gift__tle{
+  font-size: 16px;
+  margin-bottom: 15px;
+}
+.gift-item .gift__ul .gift__li {
+    width: 24%;
+    flex-shrink: 0;
+}
+.gift-item .gift__ul .gift__li img{
+    width: 100%;
+}
+  .gift-item .gift__ul {
+    flex-wrap: nowrap;
+      overflow-x: scroll;
+}
+   .wa__box {
+    flex-wrap: wrap;
+    gap: 20px;
+     padding-left:10px;
+}
+.wa__box .wa__li{
+  width: calc(50% - 20px);
+}
+  .gift-item {
+    margin-bottom: 20px;
+}
+  .wa__box .wa__li:not(:last-child):after{
+    display:none;
+  }
+    .cnt_bix .img_pt-des{
+font-size: 14px;
+margin-bottom:10px;
+  }
+  .scroll-img-pt__box {
+    height: auto;
+}
+  .scroll-img-pt__stick .stick_item-li:first-child  .module5_content{
+    padding: 80px 50px;
+  }
+   .scroll-img-pt__stick .stick_item-li:first-child .stick_left-box{
+     display:none;
+   }
+}
+@media screen and (max-width: 650px) {
+    .stick_left-box__img .stick-img__item img{
+            max-height: 335px;
+  }
+  .product-form__payment-container {
+    margin-top: 30px;
+}
+}
+
+  @media screen and (min-width: 991px) {
+    .cnt_bix .img_pt-des ul {
+    padding-left: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    max-width: 664px;
+}
+      .cnt_bix .img_pt-des ul li {
+    flex-basis: 50%;
+}
+}
+@media screen and (min-width: 767px) {
+  .stick_left-box__img,.stick-img__item{
+    height: 100%;
+    width: 100%;
+  }
+}
+
+/* scroll-img-pt__template end */
+</style>
+
+<section>
+<div class="scroll-img-pt__template">
+    <div class="scroll-img-pt__box">
+      <div class="scroll-img-pt__stick">
+
+        {%- for block in section.blocks -%}
+        <div class="stick_item-li{% if forloop.index == 1 %} active{% endif %}">
+        <div class="stick_left-box">
+          <div class="stick_left-box__img">
+
+            <div class="stick-img__item{% if forloop.index == 1 %} active{% endif %}">
+              <picture>
+                <img 
+                  src="{{ block.settings.left_image | image_url: width: 1000 }}" 
+                  srcset="
+                    {{ block.settings.left_image | image_url: width: 600 }} 600w,
+                    {{ block.settings.left_image | image_url: width: 1000 }} 1000w,
+                  "
+                  sizes="(max-width: 768px)600px, 1000px"
+                  loading="lazy"
+                  alt="{{ block.settings.product_tle }}"
+                >
+              </picture>
+            </div>
+
+          </div>
+        </div>
+
+        
+        <div class="stick_right-box">
+
+      
+
+        
+          <div class="module5_content">
+     
+            <div class="cnt_bix cnt__bg--box{% if block.settings.right_image != blank %} cnt__img{% endif %}">
+              {%- if block.settings.right_image != blank -%}
+                   <img src="{{ block.settings.right_image | image_url }}" alt="" width="{{ block.settings.right_image.width }}" height="{{ block.settings.right_image.height }}" loading="lazy"  class="cnt_bgimg">
+                {% else %}
+              <div class="img_pt-tle">{{ block.settings.product_tle }}</div>
+              <div class="img_pt-txt">{{ block.settings.product_text }}</div>
+              <div class="img_pt-des">{{ block.settings.product_des }}</div>
+              <div class="img_pt-price-box">
+                <div class="pt__price1">{{ block.settings.product_price }}</div>
+                <div class="pt__price2">{{ block.settings.product_ori_price }}</div>
+                <div class="pt__price-label">{{ block.settings.product_label }}</div>
+              </div>
+              <div class="after__box-ico">
+                <div class="after__box-txt">{{ block.settings.product_installment }}</div>
+                {%- if block.settings.product_installment_img1 != blank -%}
+               <img src="{{ block.settings.product_installment_img1 | image_url }}" alt="" width="{{ block.settings.product_installment_img1.width }}" height="{{ block.settings.product_installment_img1.height }}"  class="">
+                {%- endif -%}
+                 {%- if block.settings.product_installment_img2 != blank -%}
+                 <img src="{{ block.settings.product_installment_img2 | image_url }}" alt="" width="{{ block.settings.product_installment_img2.width }}" height="{{ block.settings.product_installment_img2.height }}"  class="">
+                  {%- endif -%}
+              </div>
+
+                <div class="coupon-warp-width">
+                  {%- if block.settings.coupon_img != blank -%}
+                <div class="coupon-warp-img">
+                  <img src="{{ block.settings.coupon_img | image_url }}" alt="" width="{{ block.settings.coupon_img.width }}" height="{{ block.settings.coupon_img.height }}"  class="">
+                </div>
+                    {%- endif -%}
+                <div class="coupon-warp-cnt">
+                  <div class="coupon-warp-left">{{ block.settings.coupon_label }}</div>
+                  <div class="coupon-warp-right">
+                    <div class="right_code">{{ block.settings.coupon_value }}</div>
+                    <div class="right_code-btn" data-txt="{{ block.settings.copy_sucess }}" data-txt1="{{ block.settings.copy_val }}">{{ block.settings.copy_val }}</div>
+                  </div>
+                  <span class="cpnCode"> {{ block.settings.coupon_code }} </span>
+                </div>
+              </div>
+                
+              <div class="gift-item">
+                <div class="gift__tle">{{ block.settings.gift_tle }}</div>
+                <div class="gift__ul">
+
+                 {%- if block.settings.gift_img1 != blank -%}
+                  <div class="gift__li">
+                    <img src="{{ block.settings.gift_img1 | image_url }}" loading="lazy" alt="{{  block.settings.gift_txt1 }}" width="{{ block.settings.gift_img1.width }}" height="{{ block.settings.gift_img1.height }}"  class="">
+                    <div class="gift__li-txt">{{  block.settings.gift_txt1 }}</div>
+                  </div>
+                 {%- endif -%}
+
+                  {%- if block.settings.gift_img2 != blank -%}
+                  <div class="gift__li">
+                    <img src="{{ block.settings.gift_img2 | image_url }}" loading="lazy" alt="{{  block.settings.gift_txt2 }}" width="{{ block.settings.gift_img2.width }}" height="{{ block.settings.gift_img2.height }}"  class="">
+                    <div class="gift__li-txt">{{  block.settings.gift_txt2 }}</div>
+                  </div>
+                    {%- endif -%}
+                     {%- if block.settings.gift_img3 != blank -%}
+                  <div class="gift__li">
+                    <img src="{{ block.settings.gift_img3 | image_url }}" loading="lazy" alt="{{  block.settings.gift_txt3 }}" width="{{ block.settings.gift_img3.width }}" height="{{ block.settings.gift_img3.height }}"  class="">
+                    <div class="gift__li-txt">{{  block.settings.gift_txt3 }}</div>
+                  </div>
+                    {%- endif -%}
+                     {%- if block.settings.gift_img4 != blank -%}
+                  <div class="gift__li">
+                    <img src="{{ block.settings.gift_img4 | image_url }}" loading="lazy" alt="{{  block.settings.gift_txt4 }}" width="{{ block.settings.gift_img4.width }}" height="{{ block.settings.gift_img4.height }}"  class="">
+                    <div class="gift__li-txt">{{  block.settings.gift_txt4 }}</div>
+                  </div>
+                    {%- endif -%}
+
+                   {%- if block.settings.gift_img5 != blank -%}
+                  <div class="gift__li">
+                    <img src="{{ block.settings.gift_img5 | image_url }}" alt="{{  block.settings.gift_txt5 }}" loading="lazy" width="{{ block.settings.gift_img5.width }}" height="{{ block.settings.gift_img5.height }}"  class="">
+                    <div class="gift__li-txt">{{  block.settings.gift_txt5 }}</div>
+                  </div>
+                    {%- endif -%}
+
+                   {%- if block.settings.gift_img6 != blank -%}
+                  <div class="gift__li">
+                    <img src="{{ block.settings.gift_img6 | image_url }}" alt="{{  block.settings.gift_txt6 }}" loading="lazy" width="{{ block.settings.gift_img6.width }}" height="{{ block.settings.gift_img6.height }}"  class="">
+                    <div class="gift__li-txt">{{  block.settings.gift_txt6 }}</div>
+                  </div>
+                    {%- endif -%}
+                  
+
+                </div>
+              </div>
+
+
+          {%- assign recipient_feature_active = false -%}
+
+          {%- if product.gift_card? and block.settings.show_gift_card_recipient -%}
+            {%- assign recipient_feature_active = true -%}
+          {%- endif -%}
+
+
+          <div data-block-type="buy-buttons" data-block-id="{{ block.id }}" class="product-form__new product-form__buy-buttons" {{ block.shopify_attributes }}>
+            {%- form 'product', product, is: 'product-form', id: product_form_id -%}
+              {%- if recipient_feature_active -%}
+                <gift-card-recipient class="gift-card-recipient">
+                  <div class="input input--checkbox">
+                    <div class="checkbox-container">
+                      <input type="checkbox" class="checkbox" name="properties[__shopify_send_gift_card_to_recipient]" id="product-{{ section.id }}-{{ product.id }}-send-gift-card-to-recipient">
+                      <label for="product-{{ section.id }}-{{ product.id }}-send-gift-card-to-recipient" class="text--subdued">{{ 'gift_card.recipient.checkbox' | t }}</label>
+                    </div>
+                  </div>
+
+                  <div class="gift-card-recipient__fields js:hidden">
+                    <div class="input">
+                      <input id="product-{{ section.id }}-{{ product.id }}-recipient-email" type="email" class="input__field input__field--text" name="properties[Recipient email]" required value="{{ form.email }}">
+                      <label for="product-{{ section.id }}-{{ product.id }}-recipient-email" class="input__label">{{ 'gift_card.recipient.email_label' | t }}</label>
+                    </div>
+
+                    <div class="input">
+                      <input id="product-{{ section.id }}-{{ product.id }}-recipient-name" type="text" class="input__field input__field--text" name="properties[Recipient name]" value="{{ form.name }}">
+                      <label for="product-{{ section.id }}-{{ product.id }}-recipient-name" class="input__label">{{ 'gift_card.recipient.name_label' | t }}</label>
+                    </div>
+
+                    <div class="input">
+                      <input type="hidden" name="properties[__shopify_offset]" value="" disabled>
+                      <input id="product-{{ section.id }}-{{ product.id }}-send-on" type="date" class="input__field input__field--text" pattern="\d{4}-\d{2}-\d{2}" name="properties[Send on]" value="{{ form.send_on }}">
+                      <label for="product-{{ section.id }}-{{ product.id }}-send-on" class="input__label">{{ 'gift_card.recipient.send_on_label' | t }}</label>
+                    </div>
+
+                    <div class="input">
+                      <textarea id="product-{{ section.id }}-{{ product.id }}-recipient-message" rows="4" class="input__field input__field--textarea" name="properties[Message]">{{ form.message }}</textarea>
+                      <label for="product-{{ section.id }}-{{ product.id }}-recipient-message" class="input__label">{{ 'gift_card.recipient.message_label' | t }}</label>
+                    </div>
+                  </div>
+                </gift-card-recipient>
+              {%- endif -%}
+
+              <input type="hidden" disabled name="id" value="{{ product.selected_or_first_available_variant.id }}">
+
+              <product-payment-container id="MainPaymentContainer" class="product-form__payment-container" {{ block.shopify_attributes }}>
+
+
+              <div class="pay-block">
+               <div class="product-form__quantity" {{ block.shopify_attributes }}>
+            <!-- <span class="product-form__quantity-label">{{ 'product.form.quantity' | t }}:</span> -->
+
+            <quantity-selector class="quantity-selector">
+              <button type="button" class="quantity-selector__button">
+                <span class="visually-hidden">{{ 'cart.general.decrease_quantity' | t }}</span>
+                {%- render 'icon' with 'minus-big' -%}
+              </button>
+
+              <input type="text" form="{{ product_form_id }}" is="input-number" class="quantity-selector__input" inputmode="numeric" name="quantity" autocomplete="off" min="1" value="1" size="2" aria-label="{{ 'product.form.quantity' | t | escape }}">
+
+              <button type="button" class="quantity-selector__button">
+                <span class="visually-hidden">{{ 'cart.general.increase_quantity' | t }}</span>
+                {%- render 'icon' with 'plus-big' -%}
+              </button>
+            </quantity-selector>
+          </div>
+              <button id="AddToCart" type="submit" is="loader-button" {% unless block.settings.show_payment_button and template.suffix != 'quick-buy-popover' %}data-use-primary{% endunless %} data-product-add-to-cart-button data-button-content="{% if product.template_suffix == 'pre-order' %}{{ 'product.form.pre_order' | t | escape }}{% else %}{{ 'product.form.add_to_cart' | t | escape }}{% endif %}" class="product-form__add-button button {% unless product.selected_or_first_available_variant.available %}button--ternary{% else %}{% if block.settings.show_payment_button and template.suffix != 'quick-buy-popover' %}button--secondary{% else %}button--primary{% endif %}{% endunless %} button--full" {% unless product.selected_or_first_available_variant.available %}disabled{% endunless %}>
+                  {%- if product.selected_or_first_available_variant == nil -%}
+                    {{- 'product.form.unavailable' | t -}}
+                  {%- elsif product.selected_or_first_available_variant.available -%}
+                    {%- if product.template_suffix == 'pre-order' -%}
+                      {{- 'product.form.pre_order' | t -}}
+                    {%- else -%}
+                      {{- 'product.form.add_to_cart' | t -}}
+                    {%- endif -%}
+                  {%- else -%}
+                    {{- 'product.form.sold_out' | t -}}
+                  {%- endif -%}
+                </button>
+              </div>
+
+              
+
+                {%- if block.settings.show_payment_button and recipient_feature_active == false and template.suffix != 'quick-buy-popover' -%}
+                  {{ form | payment_button }}
+
+                  {%- unless product.selected_or_first_available_variant.available -%}
+                    <style>
+                      #shopify-section-{{ section.id }} .shopify-payment-button {
+                        display: none;
+                      }
+                    </style>
+                  {%- endunless -%}
+                {%- endif -%}
+              </product-payment-container>
+            {%- endform -%}
+          </div>
+
+
+               <div class="wa__box">
+                <div class="wa__li">
+                  <div class="wa__svg">
+                  {%- if block.settings.sale_img1 != blank -%}
+                   <img src="{{ block.settings.sale_img1 | image_url }}" alt="" width="{{ block.settings.sale_img1.width }}" height="{{ block.settings.sale_img1.height }}"  class="">
+                 {% endif %}
+                  </div>
+                  <div class="wa__txt">{{ block.settings.sale_txt1 }}</div>
+                </div>
+                   <div class="wa__li">
+                  <div class="wa__svg">
+                  {%- if block.settings.sale_img2 != blank -%}
+                   <img src="{{ block.settings.sale_img2 | image_url }}" alt="" width="{{ block.settings.sale_img2.width }}" height="{{ block.settings.sale_img2.height }}"  class="">
+                 {% endif %}
+                  </div>
+                  <div class="wa__txt">{{ block.settings.sale_txt2 }}</div>
+                </div>
+                   <div class="wa__li">
+                  <div class="wa__svg">
+                  {%- if block.settings.sale_img3 != blank -%}
+                   <img src="{{ block.settings.sale_img3 | image_url }}" alt="" width="{{ block.settings.sale_img3.width }}" height="{{ block.settings.sale_img3.height }}"  class="">
+                 {% endif %}
+                  </div>
+                  <div class="wa__txt">{{ block.settings.sale_txt3 }}</div>
+                </div>
+                   <div class="wa__li">
+                  <div class="wa__svg">
+                  {%- if block.settings.sale_img4 != blank -%}
+                   <img src="{{ block.settings.sale_img4 | image_url }}" alt="" width="{{ block.settings.sale_img4.width }}" height="{{ block.settings.sale_img4.height }}"  class="">
+                 {% endif %}
+                  </div>
+                  <div class="wa__txt">{{ block.settings.sale_txt4 }}</div>
+                </div>
+
+              </div>
+                
+
+                
+              {%- endif -%}
+            </div>
+          </div>
+           
+        </div>
+
+         </div>
+
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+      init_scroll();
+    });
+  } else {
+    init_scroll();
+  }
+  function init_scroll() {
+    
+gsap.registerPlugin(ScrollTrigger);
+
+// // 使用 ScrollTrigger 逐个切换 section 的透明度
+// gsap.utils.toArray('.stick_item-li').forEach((section, i) => {
+//   ScrollTrigger.create({
+//     trigger: section,
+//     start: () => `top+=${i * 100}% center`, // 每个 section 开始显示的滚动点
+//     end: () => `top+=${(i + 1) * 100}% center`, // 每个 section 结束的滚动点
+//     toggleClass: { targets: section, className: "active" }, // 切换 'active' 类
+//     once: false, // 确保每次进入视口时都切换
+//   });
+// });
+
+// document.querySelectorAll('.scroll-img-pt__stick').forEach(stickyContainer => {
+//   const sections = stickyContainer.querySelectorAll('.stick_item-li');  // 获取每个 sticky-container 下的 section
+//   const numSections = sections.length;
+
+//   gsap.to(sections, {
+//     scrollTrigger: {
+//       trigger: stickyContainer,  // 每个 .sticky-container 作为 trigger
+//       start: "top top",
+//       end: "bottom bottom",
+//       scrub: true,
+//       onUpdate: self => {
+//         const progress = (self.progress * 100).toFixed(0);
+//         let currentSectionIndex = Math.floor(progress / (100 / numSections));
+
+//         // 确保不会超出范围
+//         currentSectionIndex = Math.min(currentSectionIndex, numSections - 1);
+//         console.log(`Currently in section ${currentSectionIndex + 1}`);
+
+//         // 移除所有 section 的 active 类
+//         sections.forEach(item => {
+//           item.classList.remove('active');
+//         });
+
+//         // 添加 active 类到当前的 section
+//         sections[currentSectionIndex].classList.add('active');
+//       },
+//     }
+//   });
+// });
+
+
+
+// 获取所有的 .sticky-container
+document.querySelectorAll('.scroll-img-pt__stick').forEach((stickyContainer, index) => {
+  const sections = stickyContainer.querySelectorAll('.stick_item-li');  // 获取每个 sticky-container 下的 section
+  const numSections = sections.length;
+
+  gsap.to(sections, {
+    scrollTrigger: {
+      trigger: stickyContainer,  // 每个 .sticky-container 作为 trigger
+      start: () => `top+=${index * 100}vh top`, // 根据索引设置开始位置，避免重叠
+      end: () => `bottom+=${index * 100}vh bottom`, // 根据索引设置结束位置，避免重叠
+      scrub: true,
+      onUpdate: self => {
+        // 确保每个 sticky-container 计算自己独立的 currentSectionIndex
+        const progress = (self.progress * 100).toFixed(0);
+        let currentSectionIndex = Math.floor(progress / (100 / numSections));
+
+        // 确保不会超出范围
+        currentSectionIndex = Math.min(currentSectionIndex, numSections - 1);
+        console.log(`Currently in section ${currentSectionIndex + 1}`);
+
+        // 移除所有 section 的 active 类
+        sections.forEach(item => {
+          item.classList.remove('active');
+        });
+
+        // 添加 active 类到当前的 section
+        sections[currentSectionIndex].classList.add('active');
+      },
+    }
+  });
+});
+
+
+    
+
+    // 添加购物车
+    $(document).on('click', '#AddToCart', function () {
+      let textToCopy = document.querySelector('#shopify-section-{{ section.id }} .cpnCode').textContent;
+      console.log(textToCopy);
+      autoDiscountCode(textToCopy);
+    });
+  }
+  document.querySelector('#shopify-section-{{ section.id }} .right_code-btn').addEventListener('click', async function () {
+    try {
+      let textToCopy = document.querySelector('#shopify-section-{{ section.id }} .cpnCode').textContent;
+      await navigator.clipboard.writeText(textToCopy);
+
+      this.innerHTML = this.getAttribute('data-txt'); // Success message
+      setTimeout(() => {
+        this.innerHTML = this.getAttribute('data-txt1'); // Revert to original text
+      }, 2000);
+    } catch (error) {
+      console.error("Failed to copy text:", error);
+    }
+  });
+</script>
+{% schema %}
+{
+  "name": "Scroll Product",
+  "class": "shopify-section--scroll-product",
+  "settings": [
+     {
+      "type": "product",
+      "id": "product",
+      "label": "Product"
+    },
+    {
+      "type": "text",
+      "id": "header",
+      "label": "Header"
+    },
+     {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "rgba(0,0,0,0)"
+    },
+     {
+          "type": "image_picker",
+          "id": "background_image",
+          "label": "Background Image"
+        },
+      {
+          "type": "image_picker",
+          "id": "mobile_background_image",
+          "label": "Mobile Background Image"
+        },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 0
+    }
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Item",
+      "limit": 5,
+      "settings": [
+          {
+          "type": "checkbox",
+          "id": "show_payment_button",
+          "label": "Show dynamic checkout button",
+          "info": "Each customer will see their preferred payment method from those available on your store, such as PayPal or Apple Pay. [Learn more](https://help.shopify.com/manual/using-themes/change-the-layout/dynamic-checkout)",
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "show_gift_card_recipient",
+          "label": "Show recipient information form for gift card products",
+          "info": "Gift card products can optionally be sent directly to a recipient along with a personal message. [Learn more](https://help.shopify.com/manual/online-store/themes/customizing-themes/add-gift-card-recipient-fields)",
+          "default": true
+        },
+         {
+          "type": "image_picker",
+          "id": "left_image",
+          "label": "Left Image"
+        },
+         {
+          "type": "image_picker",
+          "id": "right_image",
+          "label": "Right Image"
+        },
+         {
+          "type": "image_picker",
+          "id": "right_bgimage",
+          "label": "Right Background Image"
+        },
+        
+         {
+            "type": "text",
+            "id": "product_tle",
+            "label": "Product Title"
+          },
+        {
+            "type": "richtext",
+            "id": "product_text",
+            "label": "Product subHeader"
+          },
+        {
+            "type": "richtext",
+            "id": "product_des",
+            "label": "Product descripte"
+          },
+         {
+            "type": "text",
+            "id": "product_price",
+            "label": "Product Price"
+          },
+         {
+            "type": "text",
+            "id": "product_ori_price",
+            "label": "Product Origin Price"
+          },
+        {
+            "type": "text",
+            "id": "product_label",
+            "label": "Product Label"
+          },
+         {
+            "type": "text",
+            "id": "product_installment",
+            "label": "Product installment"
+          },
+        {
+          "type": "image_picker",
+          "id": "product_installment_img1",
+          "label": "product installment img1"
+        },
+         {
+          "type": "image_picker",
+          "id": "product_installment_img2",
+          "label": "product installment img2"
+        },
+ {
+          "type": "image_picker",
+          "id": "coupon_img",
+          "label": "Coupon Images"
+        },
+         {
+          "type": "text",
+          "id": "coupon_label",
+          "label": "coupon label"
+        },
+         {
+          "type": "text",
+          "id": "coupon_value",
+          "label": "coupon value"
+        },
+         {
+          "type": "text",
+          "id": "coupon_code",
+          "label": "coupon code"
+        },
+
+        {
+          "type": "text",
+          "id": "copy_val",
+          "label": "copy value"
+        },
+           {
+          "type": "text",
+          "id": "copy_sucess",
+          "label": "copy sucess"
+        },
+        
+        
+        {
+          "type": "text",
+          "id": "gift_tle",
+          "label": "product Gift Title"
+        },
+           {
+          "type": "image_picker",
+          "id": "gift_img1",
+          "label": "product Gift Images1"
+        },
+         {
+          "type": "text",
+          "id": "gift_txt1",
+          "label": "product Gift Text1"
+        },
+         {
+          "type": "image_picker",
+          "id": "gift_img2",
+          "label": "product Gift Images2"
+        },
+         {
+          "type": "text",
+          "id": "gift_txt2",
+          "label": "product Gift Text2"
+        },
+         {
+          "type": "image_picker",
+          "id": "gift_img3",
+          "label": "product Gift Images3"
+        },
+         {
+          "type": "text",
+          "id": "gift_txt3",
+          "label": "product Gift Text3"
+        },
+         {
+          "type": "image_picker",
+          "id": "gift_img4",
+          "label": "product Gift Images4"
+        },
+         {
+          "type": "text",
+          "id": "gift_txt4",
+          "label": "product Gift Text4"
+        },
+         {
+          "type": "image_picker",
+          "id": "gift_img5",
+          "label": "product Gift Images5"
+        },
+         {
+          "type": "text",
+          "id": "gift_txt5",
+          "label": "product Gift Text5"
+        },
+         {
+          "type": "image_picker",
+          "id": "gift_img6",
+          "label": "product Gift Images6"
+        },
+         {
+          "type": "text",
+          "id": "gift_txt6",
+          "label": "product Gift Text6"
+        },
+
+        {
+          "type": "image_picker",
+          "id": "sale_img1",
+          "label": "Sale Images1"
+        },
+        {
+          "type": "text",
+          "id": "sale_txt1",
+          "label": "Sale Text1"
+        },
+         {
+          "type": "image_picker",
+          "id": "sale_img2",
+          "label": "Sale Images2"
+        },
+        {
+          "type": "text",
+          "id": "sale_txt2",
+          "label": "Sale Text2"
+        },
+         {
+          "type": "image_picker",
+          "id": "sale_img3",
+          "label": "Sale Images3"
+        },
+        {
+          "type": "text",
+          "id": "sale_txt3",
+          "label": "Sale Text3"
+        },
+         {
+          "type": "image_picker",
+          "id": "sale_img4",
+          "label": "Sale Images4"
+        },
+        {
+          "type": "text",
+          "id": "sale_txt4",
+          "label": "Sale Text4"
+        }
+
+        
+      ]
+    }
+
+  ],
+  "presets": [
+    {
+      "name": "Scroll Product",
+      "settings": {}
+    }
+  ]
+}
+{% endschema %}

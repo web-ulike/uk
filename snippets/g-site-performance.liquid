@@ -1,0 +1,113 @@
+<script>
+  // 保存原始的 appendChild 和 insertBefore 方法
+  const originalAppendChild = Element.prototype.appendChild;
+  const originalInsertBefore = Element.prototype.insertBefore;
+  {% comment %} 配置允许的URL {% endcomment %}
+  const excludeUrl = [
+    'https://uk.ulike.com/cdn/shop/t',
+    'https://uk.ulike.com/checkouts/',
+    'shopifypreview.com',
+    'https://shop.app/',
+    "https://cdn.shopify.com/",
+    'https://www.googletagmanager.com/',
+    'https://shopify-widget.route.com/shopify.widget.js',
+    'https://analytics.tiktok.com',
+    'https://bat.bing.com',
+    'https://cdnjs.cloudflare.com',
+    'https://script.crazyegg.com',
+    'https://uk.ulike.com/',
+    'https://connect.facebook.net/en_US/fbevents.js',
+    'discount-on-cart-pro.min.js',
+    '/reelup-shoppable-videos-reels',
+    'consentmo_cookie_consent.js'
+  ];
+
+  var luke_urlArr = [];
+  const observer = new MutationObserver((mutations) => {
+    mutations.forEach((mutation) => {
+      mutation.addedNodes.forEach((node) => {
+        if (node.nodeType == 1 && node.tagName == 'SCRIPT' && !shouldIntercept(node.src)) {
+          interceptScript(node);
+        }
+      });
+    });
+  });
+
+  // 判断不需要拦截脚本
+  function shouldIntercept(src) {
+    return excludeUrl.some((script) => src.includes(script));
+  }
+  
+  // 拦截脚本的函数
+  function interceptScript(script) {
+    if (script.src != '') {
+      luke_urlArr.push(script.src);
+      script.setAttribute('data-src', script.src); // 移除 src 属性
+      script.removeAttribute('src');
+    }
+  }
+
+  // 指定要观察的目标节点和配置
+  const targetNode = document.querySelector('html head');
+  const config = { childList: true, subtree: true };
+
+  // 开始观察目标节点
+  observer.observe(targetNode, config);
+
+  // 劫持 appendChild 方法
+  const oBefore = Element.prototype.appendChild;
+  Element.prototype.appendChild = function (child) {
+    if (child.tagName && child.tagName.toLowerCase() == 'script' && !shouldIntercept(child.src)) {
+      interceptScript(child);
+    }
+    return oBefore.call(this, child);
+  };
+
+  // 劫持 insertBefore 方法
+  // const oalInsertBefore = Element.prototype.insertBefore;
+  // Element.prototype.insertBefore = function (newNode, referenceNode) {
+  //   if (newNode.tagName && newNode.tagName.toLowerCase() == 'script' && !shouldIntercept(newNode.src)) {
+  //     interceptScript(newNode);
+  //   }
+  //   return oalInsertBefore.call(this, newNode, referenceNode);
+  // };
+
+  // 监听 beforescriptexecute 事件以阻止内联脚本执行
+  document.addEventListener(
+    'beforescriptexecute',
+    (event) => {
+      const script = event.target;
+      if (script.tagName == 'SCRIPT' && script.src && !shouldIntercept(script.src)) {
+        interceptScript(script);
+      }
+    },
+    true
+  );
+
+  // 使用一个函数来异步加载并执行带有 data-src 属性的脚本
+  function loadScripts() {
+    // 处理完成后停止观察
+    observer.disconnect();
+    // 查找所有带有 data-src 属性的
+    const scripts = document.querySelectorAll('script[data-src]');
+    scripts.forEach((script) => {
+      // 获取 data-src 属性的值
+      const src = script.getAttribute('data-src');
+      // 重新设置 src 属性
+      script.src = src;
+      // 移除 data-src 属性
+      // script.removeAttribute('data-src');
+    });
+  }
+  // 使用 setTimeout 模拟异步加载
+  document.addEventListener('DOMContentLoaded', function () {
+    setTimeout(loadScripts, 1000);
+    restoreOriginalMethods();
+    // 例如在 10 秒后恢复原始方法
+  });
+  // 恢复原始方法
+  function restoreOriginalMethods() {
+    Element.prototype.appendChild = originalAppendChild;
+    Element.prototype.insertBefore = originalInsertBefore;
+  }
+</script>

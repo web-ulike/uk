@@ -1,312 +1,671 @@
+<script
+  src="https://www.paypal.com/sdk/js?client-id=AftujuxwA7Dh1XhsMvpuCuEIVnMK6N4iqRGezy_5oojdqjKwxQvRCNxkJVUsnn8IqDR5WDjn2ZOxx8C8&components=messages"
+  data-namespace="PayPalSDK"
+></script>
+
 <style>
-      .minicart-dialog-overlay {
-        display: none;
+            .minicart-dialog-overlay {
+              display: none;
+            }
+            .minicart-dialog-list {
+              content: '';
+              position: fixed;
+              top: 0;
+              height: 100vh;
+              width: calc(100vw - 500px);
+              right: 100%;
+              display: none;
+            }
+            .minicart-dialog-content {
+              position: absolute;
+              left: 50%;
+              top: 50%;
+              margin-left: -200px;
+              margin-top: -190px;
+              width: 400px;
+              height: 400px;
+              background: #fff;
+              padding: 50px 30px 30px;
+              border: 1px solid #f6ddd8;
+            }
+            .minicart-dialog-content .minicart-dialog-close {
+              width: 20px;
+              height: 20px;
+              position: absolute;
+              top: 10px;
+              right: 10px;
+            }
+            .minicart-dialog-content .minicart-dialog-title {
+              text-align: center;
+              margin-bottom: 20px;
+              font-size: 20px;
+              font-family: var(--heading-font-family);
+            }
+
+            .minicart-dialog-content .minicart-coupon .name {
+              font-size: 20px;
+              text-align: center;
+              padding: 20px 0px;
+            }
+            .minicart-dialog-content .minicart-coupon .name span {
+              font-size: 60px;
+              line-height: 64px;
+              margin: 0px 4px;
+            }
+            .minicart-dialog-content .shipping-code .btn-coupon {
+              border-top: 1px solid rgba(255, 255, 255, 0.37);
+              font-size: 20px;
+              text-align: center;
+              padding: 6px 0px;
+              cursor: pointer;
+            }
+            .minicart-dialog-content .j-countdown-name {
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              margin: 0px 6px;
+              .count_down_datatime {
+                margin-left: 4px;
+              }
+              .days_id {
+                margin-right: 4px;
+              }
+            }
+
+            .minicart-dialog-content .shipping-code {
+              background: #e0004d;
+              border-radius: 4px;
+              color: #fff;
+              width: 220px;
+              margin: 0 auto;
+            }
+            .minicart-dialog-content .minicart-countdown .minicart-left-title {
+              text-align: center;
+              margin: 20px 0px 5px;
+              justify-content: center;
+              background: initial;
+              padding: 0px;
+            }
+            .minicart-dialog-content .minicart-dialog-btn {
+              padding: 20px 10px;
+              display: flex;
+              text-align: center;
+            }
+
+            .minicart-dialog-content .minicart-dialog-btn .minicart-left-btn {
+              width: 240px;
+              border: 1px solid #000;
+              color: #000;
+              padding: 6px 0px;
+              cursor: pointer;
+            }
+
+            .minicart-dialog-content .minicart-dialog-btn .minicart-right-btn {
+              width: 240px;
+              padding: 6px 0px;
+              margin-left: 40px;
+              font-weight: 400;
+              background: #000;
+              color: #fff;
+              cursor: pointer;
+              font-family: var(--text-font-family);
+            }
+
+            .checkout-button__lock{
+              position: relative;
+            }
+            [dir=ltr] .checkout-button__lock{
+              left:0 !important;
+              margin-right: 6px;
+            }
+
+          {% comment %}
+            .minicart-dialog-content .minicart-dialog-title {
+              padding: 50px 20px 10px 20px;
+              font-size: 22px;
+              font-style: normal;
+              font-weight: 400;
+              text-align: center;
+              line-height: 1.5345;
+              font-family: var(--heading-font-family);
+            }
+            .minicart-dialog-content .minicart-dialog-shipping {
+              padding: 30px 40px;
+              display: flex;
+            }
+            .minicart-dialog-content .minicart-dialog-shipping .minicart-left-shipping {
+              width: 50%;
+              text-align: center;
+            }
+            .minicart-left-img {
+              height: 40px;
+              width: 40px;
+              margin: auto;
+            }
+            .minicart-left-tit {
+              font-size: 16px;
+              font-style: normal;
+              font-weight: 400;
+              text-align: center;
+              line-height: 1.2345;
+              padding-top: 5px;
+              font-family: var(--heading-font-family);
+            }
+            .minicart-dialog-btn {
+              padding: 20px 40px;
+              display: flex;
+              text-align: center;
+
+              .minicart-left-btn {
+                width: 200px;
+                border: 1px solid #ccc;
+                padding: 6px 0px;
+                border-radius: 20px;
+                margin-left: 20px;
+                cursor: pointer;
+              }
+              .minicart-left-btn:hover {
+                -webkit-transform: scale(1.02);
+                transform: scale(1.02);
+              }
+              .minicart-right-btn {
+                width: 200px;
+                border: 1px solid #f6ddd8;
+                padding: 6px 0px;
+                border-radius: 20px;
+                margin-left: 40px;
+                font-weight: 400;
+                background: #f6ddd8;
+                color: #e0004d;
+                cursor: pointer;
+                font-family: var(--text-font-family);
+              }
+              .minicart-right-btn:hover {
+                background: #f6ddd8;
+                -webkit-transform: scale(1.02);
+                transform: scale(1.02);
+              }
+            } {% endcomment %}
+
+            #mini-cart .announcement-bar__list .announcement-bar__item {
+              font-size: 15px;
+            }
+            #mini-cart .announcement-bar__list .announcement-bar__item .announcement-bar__message {
+              display: flex;
+              align-items: center;
+              justify-content: center;
+            }
+            #mini-cart .announcement-bar__list .announcement-bar__item span {
+              color: #e7004c;
+              font-family: var(--text-font-family);
+              font-weight: bold;
+            }
+
+            #mini-cart .announcement-bar__list .announcement-bar__item .icon-img {
+              width: 16px;
+              margin-right: 6px;
+            }
+
+            #mini-cart  .box-gift {
+              border-radius: 2px;
+              border: 1px solid #E8E8E8;
+              padding: 10px 10px 10px 0px;
+              margin: 20px 0px;
+              -webkit-border-radius: 2px;
+              -moz-border-radius: 2px;
+              -ms-border-radius: 2px;
+              -o-border-radius: 2px;
+            }
+            #mini-cart  .box-gift .list {
+              display: grid;
+              grid-template-columns: 1fr 6fr 2fr;
+              padding: 0px 0px 0px;
+            }
+           #mini-cart .box-gift .list .p-image {
+              display: flex;
+              justify-content: center;
+            }
+           #mini-cart .box-gift .list .detail {
+              font-size: 12px;
+              color: #190A0A;
+            }
+            #mini-cart  .box-gift .list .detail .name{
+              font-size: 12px;
+              color: #190A0A;
+              font-family: var(--heading-font-family);
+              font-weight: var(--heading-font-weight);
+              margin:0px;
+            }
+           #mini-cart  .box-gift .list .detail .desc {
+              color: #3F3636;
+            }
+           #mini-cart  .box-gift .list .detail .desc .num {
+              border: 1px solid #3F3636;
+              padding: 2px 4px;
+              margin-left: 6px;
+              font-size: 12px;
+              border-radius: 4px;
+            }
+           #mini-cart .box-gift .list .price {
+              font-size: 12px;
+              color: #E0004D;
+              display: flex;
+              justify-content: end;
+              align-items: flex-end;
+            }
+           #mini-cart .box-gift .list .price span {
+              color: #3F3636;
+              margin-left: 6px;
+              text-decoration: line-through;
+            }
+
+              /* 订阅弹窗 end*/
+            .shipping-banner {
+              display: flex;
+              align-items: center;
+              background-color: #f0f0f5;
+              padding: 10px 20px;
+              font-size: 16px;
+              color: #000;
+              border-radius: 5px;
+              justify-content: center;
+            }
+
+            .shipping-banner img {
+              width: 20px;
+              height: 20px;
+              margin-right: 10px;
+            }
+
+            .shipping-banner strong {
+              font-weight: bold;
+              margin-right: 4px;
+            }
+
+            .guarantee-banner {
+              text-align: center;
+              padding: 15px 40px 0px;
+              color: #555;
+              margin: 15px auto;
+              border-top: 1px solid #ccc;
+            }
+
+            .guarantee-banner .icon {
+              color: #000;
+              margin-bottom: 0px;
+            }
+
+            .guarantee-banner h2 {
+              font-size: 20px;
+              font-weight: 500;
+              color: #333;
+              margin: 0px;
+              line-height: 1.3;
+            }
+
+            .guarantee-banner p {
+              font-size: 14px;
+              line-height: 1.5;
+              color: #555;
+              margin: 4px 0;
+            }
+
+            .docapp-coupon-input .docapp-coupon-input--bean-container--bean {
+              background: #f28ead;
+              color: #fff;
+            }
+
+            .docapp-coupon-input .docapp-coupon-input--bean-container--bean svg{
+              fill:#fff !important;
+            }
+
+            .docapp-coupon-input .docapp-coupon-input--bean-container--bean-remove{
+              color:#fff;
+            }
+
+
+            @media screen and (max-width: 769px) {
+              .minicart-dialog-overlay {
+                height: 100vh;
+                background: #000;
+                opacity: 0.5;
+              }
+              .minicart-dialog-list {
+                position: fixed;
+                z-index: 2;
+                height: 100vh;
+                width: 100vw;
+                display: none;
+                left: -11vw;
+              }
+              {% comment %} .minicart-dialog-content {
+                position: fixed;
+                top: 20%;
+                width: 100%;
+                height: 380px;
+                background: #fff;
+                margin-left: 5.5vw;
+              } {% endcomment %}
+              .minicart-dialog-content {
+                position: fixed;
+                top: 20%;
+                width: 100%;
+                height: 380px;
+                background: #fff;
+                margin-top: 0px;
+                padding: 40px 20px;
+                margin-left: 0px;
+                left: -20px;
+              }
+              .minicart-dialog-content .minicart-dialog-close {
+                width: 20px;
+                height: 20px;
+                position: absolute;
+                top: 10px;
+                right: 10px;
+              }
+        {% comment %}
+              .minicart-dialog-content .minicart-dialog-close {
+                width: 20px;
+                height: 20px;
+                position: absolute;
+                top: 10px;
+                right: 10px;
+              }
+              .minicart-dialog-content .minicart-dialog-title {
+                padding: 50px 20px 10px 20px;
+                font-size: 22px;
+                font-style: normal;
+                font-weight: 400;
+                text-align: center;
+                line-height: 1.5345;
+                font-family: var(--heading-font-family);
+              }
+              .minicart-dialog-content .minicart-dialog-shipping {
+                padding: 30px 40px;
+                display: flex;
+              }
+              .minicart-dialog-content .minicart-dialog-shipping .minicart-left-shipping {
+                width: 50%;
+                text-align: center;
+              }
+              .minicart-left-img {
+                height: 40px;
+                width: 40px;
+                margin: auto;
+              }
+              .minicart-left-tit {
+                font-size: 16px;
+                font-style: normal;
+                font-weight: 400;
+                text-align: center;
+                line-height: 1.2345;
+                padding-top: 5px;
+                font-family: var(--heading-font-family);
+              }
+              .minicart-dialog-btn {
+                padding: 20px 10px;
+                display: flex;
+                text-align: center;
+
+                .minicart-left-btn {
+                  width: 250px;
+                  border: 1px solid #ccc;
+                  padding: 6px 0px;
+                  border-radius: 20px;
+                  margin-left: 20px;
+                  cursor: pointer;
+                }
+                .minicart-left-btn:hover {
+                  -webkit-transform: scale(1.02);
+                  transform: scale(1.02);
+                }
+                .minicart-right-btn {
+                  width: 250px;
+                  padding: 6px 0px;
+                  border-radius: 20px;
+                  margin-left: 40px;
+                  font-weight: 400;
+                  background: #f6ddd8;
+                  color: #e0004d;
+                  cursor: pointer;
+                  font-family: var(--text-font-family);
+                }
+                .minicart-right-btn:hover {
+                  background: #f6ddd8;
+                  -webkit-transform: scale(1.02);
+                  transform: scale(1.02);
+                }
+              } {% endcomment %}
+            }
+         /* 订阅弹窗 start*/
+          .email_dialog-box {
+          content: '';
+          position: fixed;
+          top: 0;
+          height: 100vh;
+             width: calc(100vw - 500px);
+          right: 100%;
+          display:none;
       }
-      .minicart-dialog-list {
-        content: '';
-        position: fixed;
-        top: 0;
-        height: 100vh;
-        width: calc(100vw - 500px);
-        right: 100%;
-        display: none;
-      }
-      .minicart-dialog-content {
+      .email_dialog-cnt {
         position: absolute;
         left: 50%;
         top: 50%;
-        margin-left: -200px;
-        margin-top: -190px;
-        width: 400px;
-        height: 400px;
+        max-width: 335px;
+        width: 100%;
         background: #fff;
-        padding: 50px 30px 30px;
-        border: 1px solid #f6ddd8;
-      }
-      .minicart-dialog-content .minicart-dialog-close {
-        width: 20px;
-        height: 20px;
-        position: absolute;
-        top: 10px;
-        right: 10px;
-      }
-      .minicart-dialog-content .minicart-dialog-title {
-        text-align: center;
-        margin-bottom: 20px;
-        font-size: 20px;
-        font-family: var(--heading-font-family);
-      }
-
-      .minicart-dialog-content .minicart-coupon .name {
-        font-size: 20px;
-        text-align: center;
-        padding: 20px 0px;
-      }
-      .minicart-dialog-content .minicart-coupon .name span {
-        font-size: 60px;
-        line-height: 64px;
-        margin: 0px 4px;
-      }
-      .minicart-dialog-content .shipping-code .btn-coupon {
-        border-top: 1px solid rgba(255, 255, 255, 0.37);
-        font-size: 20px;
-        text-align: center;
-        padding: 6px 0px;
-        cursor: pointer;
-      }
-      .minicart-dialog-content .j-countdown-name {
+        transform: translate(-50%,-50%);
         display: flex;
-        justify-content: center;
+        border-radius: 10px;
         align-items: center;
-        margin: 0px 6px;
-        .count_down_datatime {
-          margin-left: 4px;
-        }
-        .days_id {
-          margin-right: 4px;
-        }
+        border-radius: 20px;
+        border: 3px solid #E6BE9A;
+        background: linear-gradient(180deg, #FFFFFC 0%, #FFF9F3 100%);
       }
-
-      .minicart-dialog-content .shipping-code {
-        background: #e0004d;
-        border-radius: 4px;
-        color: #fff;
-        width: 220px;
-        margin: 0 auto;
+      .email_dialog-left {
+         max-width: 335px;
+         display: none;
       }
-      .minicart-dialog-content .minicart-countdown .minicart-left-title {
+      .email_dialog-left img{
+      width: 100%;
+      }
+      .email_dialog-right h3{
+        color: #3F3636;
         text-align: center;
-        margin: 20px 0px 5px;
-        justify-content: center;
-        background: initial;
-        padding: 0px;
-      }
-      .minicart-dialog-content .minicart-dialog-btn {
-        padding: 20px 10px;
-        display: flex;
-        text-align: center;
-      }
-
-      .minicart-dialog-content .minicart-dialog-btn .minicart-left-btn {
-        width: 240px;
-        border: 1px solid #000;
-        color: #000;
-        padding: 6px 0px;
-        cursor: pointer;
-      }
-
-      .minicart-dialog-content .minicart-dialog-btn .minicart-right-btn {
-        width: 240px;
-        padding: 6px 0px;
-        margin-left: 40px;
-        font-weight: 400;
-        background: #000;
-        color: #fff;
-        cursor: pointer;
-        font-family: var(--text-font-family);
-      }
-
-    {% comment %}
-      .minicart-dialog-content .minicart-dialog-title {
-        padding: 50px 20px 10px 20px;
+        text-shadow: 0px 0px 4px rgba(255, 255, 255, 0.30);
         font-size: 22px;
-        font-style: normal;
-        font-weight: 400;
-        text-align: center;
-        line-height: 1.5345;
+        font-weight: 380;
+        margin-bottom: 10px;
         font-family: var(--heading-font-family);
+        font-weight: var(--heading-font-weight);
       }
-      .minicart-dialog-content .minicart-dialog-shipping {
-        padding: 30px 40px;
-        display: flex;
-      }
-      .minicart-dialog-content .minicart-dialog-shipping .minicart-left-shipping {
-        width: 50%;
+      .email_dialog-right .email_p{
+        color: #3F3636;
         text-align: center;
+        font-size: 16px;
+        font-weight: 380;
+        line-height: 120%;
+        margin-bottom: 20px;
       }
-      .minicart-left-img {
-        height: 40px;
-        width: 40px;
-        margin: auto;
+      .close_sg{
+        position: absolute;
+        right: 10px;
+        top: 10px;
+        cursor: pointer;
       }
-      .minicart-left-tit {
+        .email_dialog-right{
+          padding: 40px 40px;
+        }
+        .email_bix input#email {
+          display: flex;
+          width: 100%;
+          padding: 10px 40px;
+          align-items: center;
+          gap: 7;
+          border-radius: 50px;
+          border: 1px solid  #3F3636;
+          background: #FFF;
+          color: #7B7B7B;
+      font-size: 12px;
+      font-style: normal;
+      font-weight: 380;
+      line-height: normal;
+      }
+      .email_dialog-right button{
+          display: flex;
+          width:100%;
+          padding: 12px 40px;
+          justify-content: center;
+          align-items: center;
+          gap: 7;
+          border-radius: 50px;
+          background: #E0004D;
+          color:  #FBFAF4;
+          text-align: center;
+          font-size: 12px;
+          font-style: normal;
+          font-weight: 500;
+          line-height: normal;
+        }
+        .email_bix{
+           margin: 20px 0px;
+        }
+        .responseMessage{
+          color:  #E0004D;
+          font-size: 12px;
+          font-style: normal;
+          font-weight: 300;
+          line-height: 130%;
+          margin-top: 3px;
+        }
+        .leave_btn{
+          color:  #3F3636;
+      text-align: center;
+      font-size: 12px;
+      font-style: normal;
+      font-weight: 500;
+      line-height: normal;
+      margin-top:12px;
+      cursor: pointer;
+        }
+        .email_dialog-left img {
+         border-radius: 10px 0px 0px 10px;
+      }
+        .email_dialog-right button.loading {
+          opacity: 0.5;
+      }
+      .sucess_tip{
+        display:none;
+        text-align: center;
+        margin-top: 30px;
+      }
+      .sucess_tip-txt{
+        color: #190A0A;
+        text-align: center;
         font-size: 16px;
         font-style: normal;
-        font-weight: 400;
-        text-align: center;
-        line-height: 1.2345;
-        padding-top: 5px;
+        font-weight: 380;
+        line-height: 110%;
+        margin-top:10px;
         font-family: var(--heading-font-family);
-      }
-      .minicart-dialog-btn {
-        padding: 20px 40px;
-        display: flex;
-        text-align: center;
-
-        .minicart-left-btn {
-          width: 200px;
-          border: 1px solid #ccc;
-          padding: 6px 0px;
-          border-radius: 20px;
-          margin-left: 20px;
-          cursor: pointer;
-        }
-        .minicart-left-btn:hover {
-          -webkit-transform: scale(1.02);
-          transform: scale(1.02);
-        }
-        .minicart-right-btn {
-          width: 200px;
-          border: 1px solid #f6ddd8;
-          padding: 6px 0px;
-          border-radius: 20px;
-          margin-left: 40px;
-          font-weight: 400;
-          background: #f6ddd8;
-          color: #e0004d;
-          cursor: pointer;
-          font-family: var(--text-font-family);
-        }
-        .minicart-right-btn:hover {
-          background: #f6ddd8;
-          -webkit-transform: scale(1.02);
-          transform: scale(1.02);
-        }
-      } {% endcomment %}
-
-      #mini-cart .announcement-bar__list .announcement-bar__item {
-        font-size: 15px;
-      }
-      #mini-cart .announcement-bar__list .announcement-bar__item .announcement-bar__message {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-      #mini-cart .announcement-bar__list .announcement-bar__item span {
-        color: #e7004c;
-        font-family: var(--text-font-family);
-        font-weight: bold;
+        font-weight: var(--heading-font-weight);
       }
 
-      #mini-cart .announcement-bar__list .announcement-bar__item .icon-img {
-        width: 16px;
-        margin-right: 6px;
+    .email-count-down .cart_count_down{
+      background: initial;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 12px;
+      padding: 4px 0px;
+      font-family: var(--heading-font-family);
+      font-weight: var(--heading-font-weight);
+      gap: 6px;
+    }
+    .email-count-down .mini-cart .count_down_datatime {
+      display: flex;
+      align-items: center;
+    }
+    .email_dialog-cnt .sucess_box {
+      color: #190A0A;
+      text-align: center;
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 120%;
+      margin-top: 10px;
+      display: none;
+      font-family: var(--heading-font-family);
+      font-weight: var(--heading-font-weight);
+    }
+        @media screen and (max-width: 992px) {
+          .email_dialog-box{
+                    z-index: 2;
+              width: 100vw;
+              left: auto;
+              right: 0;
+          }
+          .email_dialog-cnt {
+              width: calc(100% - 40px);
+              background: #fff;
+              right: 20px;
+        }
+        }
+        @media screen and (max-width: 650px) {
+          #mini-cart .announcement-bar__list .announcement-bar__item span{
+            font-size: 12px;
+          }
+          .email_dialog-overlay{
+            content: "";
+            position: fixed;
+            top: 0;
+            right: 0;
+            height: 100vh;
+            width: 100vw;
+            background: rgba(0, 0, 0, 0.6);
+            transition: visibility .6s ease-in-out, opacity .6s ease-in-out;
+          }
+          .email_dialog-cnt {
+              flex-direction: column;
+              border-radius: 0px 0px 10px 10px;
+          }
+          .email_dialog-right h3{
+            font-size: 24px;
+            margin-bottom: 10px;
+          }
+          .email_dialog-left {
+             max-width: 100%;
+             width:100%;
+          }
+          .email_dialog-right .email_p {
+            font-size: 16px;
+            width: 90%;
+            text-align: center;
+            margin: 0 auto 20px;
+          }
+          .email_dialog-left img {
+         border-radius: 0px;
       }
-
-      @media screen and (max-width: 769px) {
-        .minicart-dialog-overlay {
-          height: 100vh;
-          background: #000;
-          opacity: 0.5;
-        }
-        .minicart-dialog-list {
-          position: fixed;
-          z-index: 2;
-          height: 100vh;
-          width: 100vw;
-          display: none;
-          left: -11vw;
-        }
-        {% comment %} .minicart-dialog-content {
-          position: fixed;
-          top: 20%;
-          width: 100%;
-          height: 380px;
-          background: #fff;
-          margin-left: 5.5vw;
-        } {% endcomment %}
-        .minicart-dialog-content {
-          position: fixed;
-          top: 20%;
-          width: 100%;
-          height: 380px;
-          background: #fff;
-          margin-top: 0px;
+          .email_dialog-right {
           padding: 40px 20px;
-          margin-left: 0px;
-          left: -20px;
-        }
-        .minicart-dialog-content .minicart-dialog-close {
-          width: 20px;
-          height: 20px;
-          position: absolute;
-          top: 10px;
-          right: 10px;
-        }
-  {% comment %}
-        .minicart-dialog-content .minicart-dialog-close {
-          width: 20px;
-          height: 20px;
-          position: absolute;
-          top: 10px;
-          right: 10px;
-        }
-        .minicart-dialog-content .minicart-dialog-title {
-          padding: 50px 20px 10px 20px;
-          font-size: 22px;
-          font-style: normal;
-          font-weight: 400;
-          text-align: center;
-          line-height: 1.5345;
-          font-family: var(--heading-font-family);
-        }
-        .minicart-dialog-content .minicart-dialog-shipping {
-          padding: 30px 40px;
-          display: flex;
-        }
-        .minicart-dialog-content .minicart-dialog-shipping .minicart-left-shipping {
-          width: 50%;
-          text-align: center;
-        }
-        .minicart-left-img {
-          height: 40px;
-          width: 40px;
-          margin: auto;
-        }
-        .minicart-left-tit {
-          font-size: 16px;
-          font-style: normal;
-          font-weight: 400;
-          text-align: center;
-          line-height: 1.2345;
-          padding-top: 5px;
-          font-family: var(--heading-font-family);
-        }
-        .minicart-dialog-btn {
-          padding: 20px 10px;
-          display: flex;
-          text-align: center;
-
-          .minicart-left-btn {
-            width: 250px;
-            border: 1px solid #ccc;
-            padding: 6px 0px;
-            border-radius: 20px;
-            margin-left: 20px;
-            cursor: pointer;
-          }
-          .minicart-left-btn:hover {
-            -webkit-transform: scale(1.02);
-            transform: scale(1.02);
-          }
-          .minicart-right-btn {
-            width: 250px;
-            padding: 6px 0px;
-            border-radius: 20px;
-            margin-left: 40px;
-            font-weight: 400;
-            background: #f6ddd8;
-            color: #e0004d;
-            cursor: pointer;
-            font-family: var(--text-font-family);
-          }
-          .minicart-right-btn:hover {
-            background: #f6ddd8;
-            -webkit-transform: scale(1.02);
-            transform: scale(1.02);
-          }
-        } {% endcomment %}
       }
+          .email_dialog-right picture {
+      display: flex;
+  }
+           .email_dialog-right picture img{
+          max-height: 230px;
+      width: auto;
+      margin: 0 auto;
+  }
+          {% comment %} .close_sg {
+              bottom: auto;
+              top: calc(100% + 20px);
+              left: 50%;
+              right: auto;
+              transform: translateX(-50%);
+          } {% endcomment %}
+        }
+      /* 订阅弹窗 end*/
 </style>
 {%- liquid
   assign se_id = section.id
@@ -316,7 +675,129 @@
 
 <cart-drawer section="{{ se_id }}" id="mini-cart" class="mini-cart drawer drawer--large">
   <span class="drawer__overlay"></span>
-  {% comment %} 挽留弹出框 {% endcomment %}
+  <!-- {%- assign newsletter_id = 'abandoncart-' | append: section.id -%} -->
+  <!-- 订阅弹窗 start -->
+  <div class="email_dialog-box" id="email_dialog-box">
+    <div class="email_dialog-overlay"></div>
+    <div class="email_dialog-cnt">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="20"
+        height="20"
+        viewBox="0 0 20 20"
+        fill="none"
+        class="close_sg"
+        onclick="closesubscripte()"
+      >
+        <g opacity="0.5" clip-path="url(#clip0_1069_33)">
+          <path d="M15.4006 3.26916L9.52422 9.14554L3.65024 3.27155C3.3551 2.97642 2.8728 2.97882 2.58006 3.27155C2.28492 3.56669 2.28732 4.04899 2.58006 4.34173L8.45404 10.2157L2.58006 16.0897C2.28492 16.3848 2.28732 16.8671 2.58006 17.1599C2.8752 17.455 3.3575 17.4526 3.65024 17.1599L9.52422 11.2859L15.4006 17.1623C15.6957 17.4574 16.178 17.455 16.4708 17.1623C16.7659 16.8671 16.7635 16.3848 16.4708 16.0921L10.5944 10.2157L16.4684 4.34173C16.7635 4.04659 16.7611 3.56429 16.4708 3.26915C16.1756 2.97401 15.6933 2.97642 15.4006 3.26916Z" fill="#3F3636"/>
+        </g>
+        <defs>
+          <clipPath id="clip0_1069_33">
+            <rect width="19.6444" height="19.6444" fill="white"/>
+          </clipPath>
+        </defs>
+      </svg>
+      <div class="email_dialog-left">
+        <picture>
+          {%- if section.settings.email_img_mobile -%}
+            <source
+              media="(max-width: 650px)"
+              srcset="{{ section.settings.email_img_mobile | image_url: width: '400x' }} 400w, {{ section.settings.email_img_mobile | image_url: width: '600x' }} 600w, {{ section.settings.email_img_mobile | image_url: width: '800x' }} 800w, {{ section.settings.email_img_mobile | image_url: width: '1000x' }} 1000w"
+              width="{{ section.settings.email_img_mobile.width }}"
+              height="{{ section.settings.email_img_mobile.height }}"
+            >
+          {%- endif -%}
+          {%- if section.settings.email_img -%}
+            {{-
+              section.settings.email_img
+              | image_url: width: section.settings.email_img.width
+              | image_tag:
+                loading: 'lazy',
+                sizes: '100vw',
+                widths: '300,400,500,600,700,800,900,1000,1200,1400,1600,1800,2000,2200,2400,2600,2800,3000,3200',
+                class: ''
+            -}}
+          {%- endif -%}
+        </picture>
+      </div>
+      <div class="email_dialog-right">
+        <h3>{{ section.settings.subscripte_title }}</h3>
+        <p class="email_p">{{ section.settings.subscripte_text }}</p>
+        <picture>
+          {%- if section.settings.email_img_mobile -%}
+            <source
+              media="(max-width: 650px)"
+              srcset="{{ section.settings.email_img_mobile | image_url: width: '400x' }} 400w, {{ section.settings.email_img_mobile | image_url: width: '600x' }} 600w, {{ section.settings.email_img_mobile | image_url: width: '800x' }} 800w, {{ section.settings.email_img_mobile | image_url: width: '1000x' }} 1000w"
+              width="{{ section.settings.email_img_mobile.width }}"
+              height="{{ section.settings.email_img_mobile.height }}"
+            >
+          {%- endif -%}
+          {%- if section.settings.email_img -%}
+            {{-
+              section.settings.email_img
+              | image_url: width: section.settings.email_img.width
+              | image_tag:
+                loading: 'lazy',
+                sizes: '100vw',
+                widths: '300,400,500,600,700,800,900,1000,1200,1400,1600,1800,2000,2200,2400,2600,2800,3000,3200'
+            -}}
+          {%- endif -%}
+        </picture>
+        <form id="contactForm" accept-charset="UTF-8" data-cptcha="true" novalidate>
+          <input type="hidden" name="form_type" value="customer">
+          <input type="hidden" name="utf8" value="✓">
+          <input type="hidden" name="contact[tags]" value="abandoncart">
+          <input type="hidden" name="contact[context]" value="">
+          <input type="hidden" name="contact[status]" id="status" value="subscribed">
+          <div class="email_bix">
+            <input
+              type="email"
+              id="email"
+              name="contact[email]"
+              placeholder="{{ section.settings.email_text }}"
+              required
+            >
+            <div id="responseMessage" class="responseMessage"></div>
+          </div>
+          <button type="submit" id="submitButton">{{ section.settings.subscripte_button_text }}</button>
+          <!-- <div class="leave_btn" onclick="closesubscripte()">{{ section.settings.leave_text }}</div> -->
+        </form>
+        <div id="sucess_tip" class="sucess_tip">
+          <!--
+            <svg xmlns="http://www.w3.org/2000/svg" width="34" height="33" viewBox="0 0 34 33" fill="none">
+              <path d="M33.25 16.5C33.25 25.1775 25.9959 32.25 17 32.25C8.00411 32.25 0.75 25.1775 0.75 16.5C0.75 7.82246 8.00411 0.75 17 0.75C25.9959 0.75 33.25 7.82246 33.25 16.5Z" stroke="#E0004D" stroke-width="1.5"/>
+              <path d="M10.3281 17.0453L14.501 20.8272L23.0019 12" stroke="#E0004D" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          -->
+          <div class="sucess_tip-txt">{{ section.settings.subscripte_sucess_tip }}</div>
+        </div>
+        <div class="email-count-down">
+          <div class="minicart-left-title cart_count_down">
+            Ends in
+            <div class="countdown-list j-email-countdown">
+              {% comment %}
+                <span class="days_id" id="days_id"></span>
+                <span class="days_name">Days</span>
+              {% endcomment %}
+              <div class="count_down_datatime">
+                <span class="sptime hours_id"></span>
+                <span class="spcolon">:</span>
+                <span class="sptime minutes_id"></span>
+                <span class="spcolon">:</span>
+                <span class="sptime seconds_id"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="sucess_box">
+          {{ section.settings.subscripte_sucess_text }}
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- 订阅弹窗 end -->
+  {% comment %} 挽留弹出框 start{% endcomment %}
   <div class="minicart-dialog-list" id="minicart-dialog-list">
     <div class="minicart-dialog-overlay"></div>
     <div class="minicart-dialog-content">
@@ -377,7 +858,7 @@
       </div>
     </div>
   </div>
-
+  {% comment %} 挽留弹出框 end {% endcomment %}
   <header class="drawer__header">
     <p class="drawer__title heading h6">
       {%- case settings.cart_icon -%}
@@ -424,6 +905,18 @@
       </div>
     </div>
   {%- else -%}
+    {% for block in se_bks %}
+      {%- if block.type == 'cart-notice-item' -%}
+        <div class="shipping-banner">
+          <img
+            src="https://cdn.shopify.com/s/files/1/0656/9079/6273/files/Artwork_b891ebcc-548c-454f-bdf1-1526018c8f69.svg?v=1731399102"
+            loading="lazy"
+            alt="Shipping Icon"
+          >
+          {{ block.settings.notice_html }}
+        </div>
+      {% endif %}
+    {% endfor %}
     <div class="drawer__content">
       {%- if settings.cart_show_free_shipping_threshold
         and settings.cart_free_shipping_threshold != ''
@@ -458,104 +951,114 @@
               {%- assign calculated_total_price = calculated_total_price | plus: line_item.final_line_price -%}
             {%- endif -%}
           {%- endfor -%}
-
-          {% comment %}
-            <free-shipping-bar
-              threshold="{{ threshold_in_cents }}"
-              class="shipping-bar"
-              style="--progress: {{ calculated_total_price | times: 1.0 | divided_by: threshold_in_cents | at_most: 1 }}"
+          <free-shipping-bar
+            threshold="{{ threshold_in_cents }}"
+            class="shipping-bar"
+            style="--progress: {{ calculated_total_price | times: 1.0 | divided_by: threshold_in_cents | at_most: 1 }}"
+          >
+            {%- if calculated_total_price >= threshold_in_cents -%}
+              {% comment %} <span class="shipping-bar__text text--small">{{ 'cart.general.free_shipping' | t }}</span> {% endcomment %}
+            {%- else -%}
+              {%- capture remaining_amount -%}{{ calculated_total_price | minus: threshold_in_cents | abs | money }}{%- endcapture -%}
+              <span class="shipping-bar__text text--small">
+                {{- 'cart.general.free_shipping_remaining_html' | t: remaining_amount: remaining_amount -}}
+              </span>
+            {%- endif -%}
+            <announcement-bar
+              auto-play
+              cycle-speed="2"
+              class="announcement-bar "
             >
-              {%- if calculated_total_price >= threshold_in_cents -%}
-                {% comment %} <span class="shipping-bar__text text--small">{{ 'cart.general.free_shipping' | t }}</span> {% endcomment %}
-              {%- else -%}
-                {%- capture remaining_amount -%}{{ calculated_total_price | minus: threshold_in_cents | abs | money }}{%- endcapture -%}
-                <span class="shipping-bar__text text--small">
-                  {{- 'cart.general.free_shipping_remaining_html' | t: remaining_amount: remaining_amount -}}
-                </span>
-              {%- endif -%}
-              <announcement-bar
-                auto-play
-                cycle-speed="2"
-                class="announcement-bar "
-              >
-                <div class="announcement-bar__list">
-                  {% for block in se_bks %}
-                    {% assign item = block.settings %}
-                    {%- if block.type == 'cart-prompt-item' -%}
-                      <announcement-bar-item
-                        class="announcement-bar__item"
-                        {%- if forloop.first -%}
-                          first
-                        {%- else -%}
-                          hidden
-                        {%- endif -%}
-                      >
-                        <div class="announcement-bar__message {{ text_size_class }}">
-                          {{ item.text }}
-                        </div>
-                      </announcement-bar-item>
-                    {%- endif -%}
-                  {% endfor -%}
-                </div>
-              </announcement-bar>
+              <div class="announcement-bar__list">
+                {% for block in se_bks %}
+                  {% assign item = block.settings %}
+                  {%- if block.type == 'cart-prompt-item' -%}
+                    <announcement-bar-item
+                      class="announcement-bar__item"
+                      {%- if forloop.first -%}
+                        first
+                      {%- else -%}
+                        hidden
+                      {%- endif -%}
+                    >
+                      <div class="announcement-bar__message {{ text_size_class }}">
+                        {{ item.text }}
+                      </div>
+                    </announcement-bar-item>
+                  {%- endif -%}
+                {% endfor -%}
+              </div>
+            </announcement-bar>
 
-              {% comment %} <span class="shipping-bar__progress"></span> {% endcomment %}
-            </free-shipping-bar>
-          {% endcomment %}
+            {% comment %} <span class="shipping-bar__progress"></span> {% endcomment %}
+          </free-shipping-bar>
         {%- endif -%}
       {%- endif -%}
-      {% comment %}
-        {%- assign end_dates = se_stts.end_date | date: '%s' -%}
-        {%- assign now_data = 'now' | date: '%s' -%}
-        <div
-          class="cart_count_down {% if end_dates < now_data %} cart_count_down_hidden {% endif %}"
-          id="cart_count_down_{{ section.id }}"
-        >
-          <div class="cart_count_down_title cart_ce_title">{{ section.settings.down_title }}</div>
-          <div class="count_down_list">
-            <div class="count_down_txt">Ends in <span class="days_id" id="days_id"></span> Days</div>
-            <div class="count_down_datatime">
-              <span class="sptime hours_id"></span>
-              <span class="spcolon">:</span>
-              <span class="sptime minutes_id"></span>
-              <span class="spcolon">:</span>
-              <span class="sptime seconds_id"></span>
-            </div>
+
+      {%- assign end_dates = se_stts.end_date | date: '%s' -%}
+      {%- assign now_data = 'now' | date: '%s' -%}
+      <div
+        class="cart_count_down {% if end_dates < now_data %} cart_count_down_hidden {% endif %}"
+        id="cart_count_down_{{ section.id }}"
+      >
+        <div class="cart_count_down_title cart_ce_title">{{ section.settings.down_title }}</div>
+        <div class="count_down_list">
+          <div class="count_down_txt">Ends in <span class="days_id" id="days_id"></span> Days</div>
+          <div class="count_down_datatime">
+            <span class="sptime hours_id"></span>
+            <span class="spcolon">:</span>
+            <span class="sptime minutes_id"></span>
+            <span class="spcolon">:</span>
+            <span class="sptime seconds_id"></span>
           </div>
         </div>
-      {% endcomment %}
+      </div>
 
       <form id="mini-cart-form" action="{{ routes.cart_url }}" novalidate method="post">
         <input type="hidden" name="checkout">
         {% comment %} 新品预售购物车 {% endcomment %}
-        {% render 'a10-product-cart' %}
+        {% for block in se_bks %}
+          {%- if block.type == 'cart-group-item' -%}
+            {% render 'a10-product-cart', item: block.settings %}
+          {%- endif -%}
+        {% endfor %}
 
+        {% assign count = 0 %}
+        {% assign item_ids = '' %}
         {%- for line_item in cart.items -%}
-          {% if line_item.id != 47972761862431 %}
-            <line-item class="line-item">
-              <div class="line-item__content-wrapper">
-                <a href="{{ line_item.url }}" class="line-item__image-wrapper" tabindex="-1" aria-hidden="true">
-                  <span class="line-item__loader" hidden>
-                    <span class="line-item__loader-spinner spinner" hidden>
-                      {%- render 'icon' with 'spinner', width: 16, height: 16, stroke_width: 6 -%}
-                    </span>
-                    <span class="line-item__loader-mark" hidden>
-                      {%- render 'icon' with 'check', width: 20, height: 20 -%}
-                    </span>
+          <!-- {{ line_item.properties._aloevera  }} -->
+          {% if line_item.properties._aloevera %}
+            {% assign count = count | plus: line_item.quantity %}
+          {% endif %}
+          {% comment %}
+            {% if item_ids contains line_item.id %}
+            {% else %}
+          {% endcomment %}
+          {% comment %} 普通购物车 {% endcomment %}
+          <line-item class="line-item">
+            <div class="line-item__content-wrapper">
+              <a href="{{ line_item.url }}" class="line-item__image-wrapper" tabindex="-1" aria-hidden="true">
+                <span class="line-item__loader" hidden>
+                  <span class="line-item__loader-spinner spinner" hidden>
+                    {%- render 'icon' with 'spinner', width: 16, height: 16, stroke_width: 6 -%}
                   </span>
+                  <span class="line-item__loader-mark" hidden>
+                    {%- render 'icon' with 'check', width: 20, height: 20 -%}
+                  </span>
+                </span>
 
-                  {{-
-                    line_item.image
-                    | image_url: width: line_item.image.width
-                    | image_tag:
-                      loading: 'lazy',
-                      sizes: '(max-width: 740px) 80px, 92px',
-                      widths: '80,92,160,184,240,276',
-                      class: 'line-item__image'
-                  -}}
-                </a>
+                {{-
+                  line_item.image
+                  | image_url: width: line_item.image.width
+                  | image_tag:
+                    loading: 'lazy',
+                    sizes: '(max-width: 740px) 80px, 92px',
+                    widths: '80,92,160,184,240,276',
+                    class: 'line-item__image'
+                -}}
+              </a>
 
-                {%- capture unit_price -%}
+              {%- capture unit_price -%}
                   {%- if line_item.unit_price_measurement -%}
                     <div class="price text--subdued">
                       <div class="unit-price-measurement">
@@ -572,7 +1075,7 @@
                   {%- endif -%}
                 {%- endcapture -%}
 
-                {%- capture line_price -%}
+              {%- capture line_price -%}
                   {%- comment -%}
                   IMPLEMENTATION NOTE: The designer wanted to show the "compare at price" on cart. In case an automatic discount is applied
                     to a line item though, the "real" discount takes precedence over the compare at price
@@ -584,11 +1087,12 @@
                     {%- if line_item.final_line_price == 0 -%}
                       {{- 'cart.general.free' | t -}}
                     {%- else -%}
-                      {{- line_item.final_line_price | money -}}
+                      {% comment %} {{- line_item.final_line_price | money -}} {% endcomment %}
+                      {{- line_item.original_line_price | money -}}
                     {%- endif -%}
                   </span>
 
-                  {%- if line_item.original_line_price > line_item.final_line_price or line_item.variant.compare_at_price > line_item.variant.price -%}
+                  {% comment %} {%- if line_item.original_line_price > line_item.final_line_price or line_item.variant.compare_at_price > line_item.variant.price -%}
                     <span class="price price--compare">
                       <span class="visually-hidden">{{ 'product.general.regular_price' | t }}</span>
 
@@ -598,37 +1102,37 @@
                         {{- line_item.variant.compare_at_price | times: line_item.quantity | money -}}
                       {%- endif -%}
                     </span>
-                  {%- endif -%}
+                  {%- endif -%} {% endcomment %}
                 {%- endcapture -%}
 
-                <div class="line-item__info">
-                  <div class="product-item-meta">
-                    {%- if settings.show_vendor -%}
-                      {%- assign vendor_handle = line_item.vendor | handle -%}
-                      {%- assign collection_for_vendor = collections[vendor_handle] -%}
+              <div class="line-item__info">
+                <div class="product-item-meta">
+                  {%- if settings.show_vendor -%}
+                    {%- assign vendor_handle = line_item.vendor | handle -%}
+                    {%- assign collection_for_vendor = collections[vendor_handle] -%}
 
-                      {%- unless collection_for_vendor.empty? -%}
-                        <a
-                          class="product-item-meta__vendor heading heading--xxsmall"
-                          href="{{ collection_for_vendor.url }}"
-                        >
-                          {{- line_item.vendor -}}
-                        </a>
-                      {%- else -%}
-                        <a
-                          class="product-item-meta__vendor heading heading--xxsmall"
-                          href="{{ line_item.vendor | url_for_vendor }}"
-                        >
-                          {{- line_item.vendor -}}
-                        </a>
-                      {%- endunless -%}
-                    {%- endif -%}
+                    {%- unless collection_for_vendor.empty? -%}
+                      <a
+                        class="product-item-meta__vendor heading heading--xxsmall"
+                        href="{{ collection_for_vendor.url }}"
+                      >
+                        {{- line_item.vendor -}}
+                      </a>
+                    {%- else -%}
+                      <a
+                        class="product-item-meta__vendor heading heading--xxsmall"
+                        href="{{ line_item.vendor | url_for_vendor }}"
+                      >
+                        {{- line_item.vendor -}}
+                      </a>
+                    {%- endunless -%}
+                  {%- endif -%}
 
-                    <a href="{{ line_item.url }}" class="product-item-meta__title text--small">
-                      {{- line_item.product.title -}}
-                    </a>
+                  <a href="{{ line_item.url }}" class="product-item-meta__title text--small">
+                    {{- line_item.product.title -}}
+                  </a>
 
-                    {%- capture line_item_properties -%}
+                  {%- capture line_item_properties -%}
                       {%- unless line_item.product.has_only_default_variant -%}
                         <span class="product-item-meta__property text--subdued text--xsmall">{{ line_item.variant.title }}</span>
                       {%- endunless -%}
@@ -652,27 +1156,28 @@
                       {%- endunless -%}
                     {%- endcapture -%}
 
-                    {%- if line_item_properties != blank -%}
-                      <div class="product-item-meta__property-list">
-                        {{- line_item_properties -}}
-                      </div>
-                    {%- endif -%}
+                  {%- if line_item_properties != blank -%}
+                    <div class="product-item-meta__property-list">
+                      {{- line_item_properties -}}
+                    </div>
+                  {%- endif -%}
 
-                    <div class="product-item-meta__price-list-container text--small">
-                      <div class="price-list hidden-tablet-and-up">
-                        {{- line_price -}}
+                  <div class="product-item-meta__price-list-container text--small">
+                    <div class="price-list hidden-tablet-and-up">
+                      {{- line_price -}}
+                      {{- unit_price -}}
+                    </div>
+
+                    {%- if unit_price != blank -%}
+                      <div class="price-list hidden-phone">
                         {{- unit_price -}}
                       </div>
-
-                      {%- if unit_price != blank -%}
-                        <div class="price-list hidden-phone">
-                          {{- unit_price -}}
-                        </div>
-                      {%- endif -%}
-                    </div>
+                    {%- endif -%}
                   </div>
+                </div>
 
-                  {%- if line_item.line_level_discount_allocations != blank -%}
+                {%- if line_item.line_level_discount_allocations != blank -%}
+                  {% comment %}
                     <ul class="line-item__discount-list list--unstyled" role="list">
                       {%- for discount_allocation in line_item.line_level_discount_allocations -%}
                         <li class="line-item__discount-badge discount-badge">
@@ -683,93 +1188,133 @@
                         </li>
                       {%- endfor -%}
                     </ul>
-                  {%- endif -%}
+                  {% endcomment %}
+                {%- endif -%}
 
-                  {%- assign max_allowed_quantity = '' -%}
-                  {%- assign allow_more = true -%}
+                {%- assign max_allowed_quantity = '' -%}
+                {%- assign allow_more = true -%}
 
-                  {%- if line_item.variant.inventory_management == 'shopify'
-                    and line_item.variant.inventory_policy == 'deny'
-                    and line_item.variant.inventory_quantity <= line_item.quantity
-                  -%}
-                    {%- assign max_allowed_quantity = line_item.variant.inventory_quantity -%}
-                    {%- assign allow_more = false -%}
-                  {%- endif -%}
+                {%- if line_item.variant.inventory_management == 'shopify'
+                  and line_item.variant.inventory_policy == 'deny'
+                  and line_item.variant.inventory_quantity <= line_item.quantity
+                -%}
+                  {%- assign max_allowed_quantity = line_item.variant.inventory_quantity -%}
+                  {%- assign allow_more = false -%}
+                {%- endif -%}
 
-                  <line-item-quantity class="line-item__quantity">
-                    <div class="quantity-selector quantity-selector--small">
+                <line-item-quantity class="line-item__quantity">
+                  <div class="quantity-selector quantity-selector--small">
+                    <a
+                      href="{{ routes.cart_change_url }}?quantity={{ line_item.quantity | minus: 1 }}&line={{ forloop.index }}"
+                      class="quantity-selector__button"
+                      aria-label="{{ 'cart.general.decrease_quantity' | t | escape }}"
+                      data-no-instant
+                    >
+                      {%- render 'icon' with 'minus' -%}
+                    </a>
+
+                    <input
+                      is="input-number"
+                      class="quantity-selector__input text--xsmall"
+                      autocomplete="off"
+                      type="text"
+                      inputmode="numeric"
+                      name="updates[]"
+                      data-line="{{ forloop.index }}"
+                      value="{{ line_item.quantity }}"
+                      {% if max_allowed_quantity != '' %}
+                        max="{{ max_allowed_quantity }}"
+                      {% endif %}
+                      size="{{ line_item.quantity | append: '' | size | at_least: 2 }}"
+                      aria-label="{{ 'cart.general.change_quantity' | t | escape }}"
+                      onkeydown="preventEnter(event)"
+                    >
+
+                    {%- if allow_more -%}
                       <a
-                        href="{{ routes.cart_change_url }}?quantity={{ line_item.quantity | minus: 1 }}&line={{ forloop.index }}"
+                        href="{{ routes.cart_change_url }}?quantity={{ line_item.quantity | plus: 1 }}&line={{ forloop.index }}"
                         class="quantity-selector__button"
-                        aria-label="{{ 'cart.general.decrease_quantity' | t | escape }}"
+                        aria-label="{{ 'cart.general.increase_quantity' | t | escape }}"
                         data-no-instant
                       >
-                        {%- render 'icon' with 'minus' -%}
+                        {%- render 'icon' with 'plus' -%}
                       </a>
-
-                      <input
-                        is="input-number"
-                        class="quantity-selector__input text--xsmall"
-                        autocomplete="off"
-                        type="text"
-                        inputmode="numeric"
-                        name="updates[]"
-                        data-line="{{ forloop.index }}"
-                        value="{{ line_item.quantity }}"
-                        {% if max_allowed_quantity != '' %}
-                          max="{{ max_allowed_quantity }}"
-                        {% endif %}
-                        size="{{ line_item.quantity | append: '' | size | at_least: 2 }}"
-                        aria-label="{{ 'cart.general.change_quantity' | t | escape }}"
+                    {%- else -%}
+                      <span
+                        class="quantity-selector__button"
+                        aria-label="{{ 'cart.general.no_more_stock' | t | escape }}"
+                        data-tooltip="{{ 'cart.general.no_more_stock' | t | escape }}"
                       >
+                        {%- render 'icon' with 'plus' -%}
+                      </span>
+                    {%- endif -%}
+                  </div>
 
-                      {%- if allow_more -%}
-                        <a
-                          href="{{ routes.cart_change_url }}?quantity={{ line_item.quantity | plus: 1 }}&line={{ forloop.index }}"
-                          class="quantity-selector__button"
-                          aria-label="{{ 'cart.general.increase_quantity' | t | escape }}"
-                          data-no-instant
-                        >
-                          {%- render 'icon' with 'plus' -%}
-                        </a>
-                      {%- else -%}
-                        <span
-                          class="quantity-selector__button"
-                          aria-label="{{ 'cart.general.no_more_stock' | t | escape }}"
-                          data-tooltip="{{ 'cart.general.no_more_stock' | t | escape }}"
-                        >
-                          {%- render 'icon' with 'plus' -%}
-                        </span>
-                      {%- endif -%}
-                    </div>
-
+                  {% comment %}
                     <a
                       href="{{ line_item.url_to_remove }}"
+                      id="Remove-{{ line_item.index | plus: 1 }}"
+                      data-line="{{ line_item.index | plus: 1 }}"
                       class="line-item__remove-button link text--subdued text--xxsmall"
                       data-no-instant
                     >
                       {{- 'cart.general.remove' | t -}}
                     </a>
-                  </line-item-quantity>
+                  {% endcomment %}
+                </line-item-quantity>
+              </div>
+
+              <div class="line-item__price-list-container text--small hidden-phone">
+                {%- if settings.show_vendor -%}
+                  {%- comment -%}
+                    IMPLEMENTATION NOTE: in the design, the price is aligned in regards of the product title (not the brand). It was a
+                    bit hard to do as we cannot set a fixed margin, so I am actually adding an empty vendor to simulate the same height
+                  {%- endcomment -%}
+                  <span class="product-item-meta__vendor heading heading--xxsmall" style="visibility: hidden">x</span>
+                {%- endif -%}
+
+                <div class="price-list price-list--stack">
+                  {{- line_price -}}
                 </div>
+              </div>
+            </div>
+          </line-item>
+          {% comment %} {% endif %} {% endcomment %}
+        {%- endfor -%}
 
-                <div class="line-item__price-list-container text--small hidden-phone">
-                  {%- if settings.show_vendor -%}
-                    {%- comment -%}
-                      IMPLEMENTATION NOTE: in the design, the price is aligned in regards of the product title (not the brand). It was a
-                      bit hard to do as we cannot set a fixed margin, so I am actually adding an empty vendor to simulate the same height
-                    {%- endcomment -%}
-                    <span class="product-item-meta__vendor heading heading--xxsmall" style="visibility: hidden">x</span>
-                  {%- endif -%}
-
-                  <div class="price-list price-list--stack">
-                    {{- line_price -}}
+        {% comment %} 是否添加身体乳 {% endcomment %}
+        {% for block in se_bks %}
+          {% assign item = block.settings %}
+          {%- if block.type == 'cart-giveaway-item' -%}
+            {% comment %} 需要根据A10 商品才赠送  根据sku 来 {% endcomment %}
+            {% if count > 0 %}
+              <div class="box-gift">
+                <div class="list">
+                  <div class="p-image">
+                    <img src="https://cdn.shopify.com/s/files/1/0740/5882/6015/files/6.jpg?v=1711541942">
+                  </div>
+                  <div class="detail">
+                    <p class="name">{{ item.title }}</p>
+                    <div class="desc">
+                      {{ item.info }}
+                      <span class="num">× {{ count }}</span>
+                    </div>
+                  </div>
+                  <div class="price">
+                    {% assign totalGiftPrice = count | times: 49.0 %}
+                    <p>
+                      {{ item.free_text }}
+                      <span class="money" data-currency-gbp="{{ item.price_text }}{{ totalGiftPrice }}">
+                        {{ item.price_text -}}
+                        {{- totalGiftPrice -}}
+                      </span>
+                    </p>
                   </div>
                 </div>
               </div>
-            </line-item>
-          {% endif %}
-        {%- endfor -%}
+            {%- endif -%}
+          {%- endif -%}
+        {% endfor -%}
       </form>
 
       {%- if section.settings.show_recommendations -%}
@@ -837,47 +1382,70 @@
           {%- endif -%}
         </cart-drawer-recommendations>
       {%- endif -%}
-      <div class="custom-cart-reasons">
-        <line-item class="line-item">
-          <p class="custom-reasons-tle">Why Choose Ulike?</p>
-          <div class="custom-reasons-box">
-            <div class="reasons-list">
-              <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <mask id="mask0_2706_592" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="26" height="26">
-                <rect width="26" height="26" fill="#D9D9D9"/>
-                </mask>
-                <g mask="url(#mask0_2706_592)">
-                <path d="M18.5648 6.13326C20.0902 4.60794 21.7375 4.72998 22.3705 4.98168C22.6222 5.61471 22.7443 7.26206 21.219 8.78738L18.359 11.6473L19.3373 22.423L17.8206 23.9397L14.7873 14.8398L11.3749 18.2523L10.2374 23.1813L8.34163 19.0106L4.17088 17.1148L9.09995 15.9773L12.5124 12.5649L3.41256 9.53159L4.9292 8.01496L15.7049 8.99323L18.5648 6.13326Z" stroke="#181818" stroke-linecap="round" stroke-linejoin="round"/>
-                </g>
-              </svg>
-              <div class="reasons-list-txt">Fast & Free Shipping</div>
+      {% comment %}
+        <div class="custom-cart-reasons">
+          <line-item class="line-item">
+            <p class="custom-reasons-tle">Why Choose Ulike?</p>
+            <div class="custom-reasons-box">
+              <div class="reasons-list">
+                <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <mask id="mask0_2706_592" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="26" height="26">
+                  <rect width="26" height="26" fill="#D9D9D9"/>
+                  </mask>
+                  <g mask="url(#mask0_2706_592)">
+                  <path d="M18.5648 6.13326C20.0902 4.60794 21.7375 4.72998 22.3705 4.98168C22.6222 5.61471 22.7443 7.26206 21.219 8.78738L18.359 11.6473L19.3373 22.423L17.8206 23.9397L14.7873 14.8398L11.3749 18.2523L10.2374 23.1813L8.34163 19.0106L4.17088 17.1148L9.09995 15.9773L12.5124 12.5649L3.41256 9.53159L4.9292 8.01496L15.7049 8.99323L18.5648 6.13326Z" stroke="#181818" stroke-linecap="round" stroke-linejoin="round"/>
+                  </g>
+                </svg>
+                <div class="reasons-list-txt">Fast & Free Shipping</div>
+              </div>
+              <div class="reasons-list">
+                <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M3.09521 11.1429H22.9047" stroke="#181818"/>
+                  <path d="M11.1245 19.8095H11.3976H15.7673C16.974 19.8095 17.9522 18.8313 17.9522 17.6246V17.6246C17.9522 16.418 16.974 15.4398 15.7673 15.4398H8.6665" stroke="#181818"/>
+                  <path d="M9.92054 13.5724L8.04785 15.4451L9.92054 17.3178" stroke="#181818"/>
+                  <path d="M18.331 4.83334L23.0237 10.6992V22.4048H2.97607V10.6992L7.66877 4.83334H18.331Z" stroke="#181818"/>
+                  <path d="M13 4.64285V11.1429" stroke="#181818"/>
+                </svg>
+                <div class="reasons-list-txt">100-Day Risk-Free Trial</div>
+              </div>
+              <div class="reasons-list">
+                <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M13.4455 4.26971C15.502 6.73761 19.2773 6.75922 21.364 4.33453V13.1247C21.364 17.9677 17.9456 22.1374 13.1967 23.0872C13.0671 23.1131 12.9336 23.1131 12.804 23.0872C8.05506 22.1374 4.63672 17.9677 4.63672 13.1248V4.33453C6.7234 6.75922 10.4987 6.73761 12.5553 4.26971L12.9816 3.75812C12.985 3.75397 12.9877 3.75238 12.9897 3.75146C12.9923 3.75027 12.996 3.74933 13.0004 3.74933C13.0047 3.74933 13.0084 3.75027 13.011 3.75146C13.013 3.75238 13.0157 3.75397 13.0191 3.75812L13.4455 4.26971Z" stroke="#181818"/>
+                  <path d="M9.28564 13.5403L12.3034 16.3193L17.3333 11.1429" stroke="#181818" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <div class="reasons-list-txt">CE Certified</div>
+              </div>
+              <div class="reasons-list">
+                <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M4.3335 5.78466L13.314 3.16379L22.2859 5.78466V11.1594C22.2859 16.8087 18.6706 21.824 13.311 23.6098C7.94995 21.824 4.3335 16.8076 4.3335 11.1569V5.78466Z" stroke="#181818" stroke-linejoin="round"/>
+                  <path d="M15.9343 8.77221C17.1703 10.0083 17.1703 12.0156 15.9343 13.2569C15.5539 13.6372 15.1049 13.8961 14.6295 14.044V18.8657H12.1405V14.044C11.6598 13.8961 11.2108 13.632 10.8358 13.2569C9.59445 12.0156 9.59445 10.0136 10.8358 8.77221C11.2161 8.39188 11.6651 8.13304 12.1405 7.98514V10.827H14.6295V7.98514C15.1102 8.13304 15.5592 8.39716 15.9343 8.77221Z" stroke="#181818" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <div class="reasons-list-txt">2 Year Warranty</div>
+              </div>
             </div>
-            <div class="reasons-list">
-              <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M3.09521 11.1429H22.9047" stroke="#181818"/>
-                <path d="M11.1245 19.8095H11.3976H15.7673C16.974 19.8095 17.9522 18.8313 17.9522 17.6246V17.6246C17.9522 16.418 16.974 15.4398 15.7673 15.4398H8.6665" stroke="#181818"/>
-                <path d="M9.92054 13.5724L8.04785 15.4451L9.92054 17.3178" stroke="#181818"/>
-                <path d="M18.331 4.83334L23.0237 10.6992V22.4048H2.97607V10.6992L7.66877 4.83334H18.331Z" stroke="#181818"/>
-                <path d="M13 4.64285V11.1429" stroke="#181818"/>
-              </svg>
-              <div class="reasons-list-txt">90-Day Money-Back</div>
-            </div>
-            <div class="reasons-list">
-              <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M13.4455 4.26971C15.502 6.73761 19.2773 6.75922 21.364 4.33453V13.1247C21.364 17.9677 17.9456 22.1374 13.1967 23.0872C13.0671 23.1131 12.9336 23.1131 12.804 23.0872C8.05506 22.1374 4.63672 17.9677 4.63672 13.1248V4.33453C6.7234 6.75922 10.4987 6.73761 12.5553 4.26971L12.9816 3.75812C12.985 3.75397 12.9877 3.75238 12.9897 3.75146C12.9923 3.75027 12.996 3.74933 13.0004 3.74933C13.0047 3.74933 13.0084 3.75027 13.011 3.75146C13.013 3.75238 13.0157 3.75397 13.0191 3.75812L13.4455 4.26971Z" stroke="#181818"/>
-                <path d="M9.28564 13.5403L12.3034 16.3193L17.3333 11.1429" stroke="#181818" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-              <div class="reasons-list-txt">CE Certified</div>
-            </div>
-            <div class="reasons-list">
-              <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M4.3335 5.78466L13.314 3.16379L22.2859 5.78466V11.1594C22.2859 16.8087 18.6706 21.824 13.311 23.6098C7.94995 21.824 4.3335 16.8076 4.3335 11.1569V5.78466Z" stroke="#181818" stroke-linejoin="round"/>
-                <path d="M15.9343 8.77221C17.1703 10.0083 17.1703 12.0156 15.9343 13.2569C15.5539 13.6372 15.1049 13.8961 14.6295 14.044V18.8657H12.1405V14.044C11.6598 13.8961 11.2108 13.632 10.8358 13.2569C9.59445 12.0156 9.59445 10.0136 10.8358 8.77221C11.2161 8.39188 11.6651 8.13304 12.1405 7.98514V10.827H14.6295V7.98514C15.1102 8.13304 15.5592 8.39716 15.9343 8.77221Z" stroke="#181818" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-              <div class="reasons-list-txt">2 Year Warranty</div>
-            </div>
-          </div>
-        </line-item>
+          </line-item>
+        </div>
+      {% endcomment %}
+      <div class="guarantee-banner">
+        <div class="icon">
+          <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <mask id="path-1-inside-1_210_69" fill="white">
+            <path d="M40.8209 26.5669V8.32691L23.5409 2.08691L6.26086 8.32691V27.0469C6.26086 27.0469 8.75686 34.7269 14.4209 38.8069C19.9409 42.7669 22.1009 43.3669 23.5409 43.3669C24.9809 43.3669 27.9809 41.8549 32.1809 38.8069C32.5889 38.5189 32.9969 38.1829 33.4049 37.8469C33.5009 37.7749 33.6209 37.6549 33.6209 37.6549V36.4069C33.6209 36.4069 33.2609 36.7429 33.2129 36.7669C32.8769 37.0549 32.5409 37.3189 32.1809 37.5829C29.4929 39.5749 26.0129 42.3829 23.5409 42.3829C21.0689 42.3829 17.2769 39.6949 14.4209 37.5829C10.4849 34.6789 7.22086 27.5509 7.22086 26.5429V9.02291L23.5409 3.02291L39.8609 9.02291V26.5429H40.8209V26.5669Z"/>
+            </mask>
+            <path d="M40.8209 26.5669V8.32691L23.5409 2.08691L6.26086 8.32691V27.0469C6.26086 27.0469 8.75686 34.7269 14.4209 38.8069C19.9409 42.7669 22.1009 43.3669 23.5409 43.3669C24.9809 43.3669 27.9809 41.8549 32.1809 38.8069C32.5889 38.5189 32.9969 38.1829 33.4049 37.8469C33.5009 37.7749 33.6209 37.6549 33.6209 37.6549V36.4069C33.6209 36.4069 33.2609 36.7429 33.2129 36.7669C32.8769 37.0549 32.5409 37.3189 32.1809 37.5829C29.4929 39.5749 26.0129 42.3829 23.5409 42.3829C21.0689 42.3829 17.2769 39.6949 14.4209 37.5829C10.4849 34.6789 7.22086 27.5509 7.22086 26.5429V9.02291L23.5409 3.02291L39.8609 9.02291V26.5429H40.8209V26.5669Z" fill="black"/>
+            <path d="M40.8209 8.32691H42.3209V7.27378L41.3303 6.91608L40.8209 8.32691ZM23.5409 2.08691L24.0503 0.676083L23.5409 0.492109L23.0314 0.676083L23.5409 2.08691ZM6.26086 8.32691L5.7514 6.91608L4.76086 7.27378V8.32691H6.26086ZM6.26086 27.0469H4.76086V27.2845L4.83431 27.5105L6.26086 27.0469ZM14.4209 38.8069L13.5441 40.024L13.5465 40.0257L14.4209 38.8069ZM32.1809 38.8069L31.3158 37.5815L31.3078 37.5871L31.2998 37.5929L32.1809 38.8069ZM33.4049 37.8469L32.5049 36.6469L32.4776 36.6674L32.4513 36.689L33.4049 37.8469ZM33.6209 37.6549L34.6815 38.7156L35.1209 38.2762V37.6549H33.6209ZM33.6209 36.4069H35.1209V32.9551L32.5974 35.3103L33.6209 36.4069ZM33.2129 36.7669L32.542 35.4253L32.3769 35.5079L32.2367 35.628L33.2129 36.7669ZM32.1809 37.5829L31.2938 36.3733L31.2878 36.3778L32.1809 37.5829ZM14.4209 37.5829L15.3127 36.3769L15.3114 36.3759L14.4209 37.5829ZM7.22086 9.02291L6.70327 7.61505L5.72086 7.97622V9.02291H7.22086ZM23.5409 3.02291L24.0585 1.61505L23.5409 1.42475L23.0233 1.61505L23.5409 3.02291ZM39.8609 9.02291H41.3609V7.97622L40.3785 7.61505L39.8609 9.02291ZM39.8609 26.5429H38.3609V28.0429H39.8609V26.5429ZM40.8209 26.5429H42.3209V25.0429H40.8209V26.5429ZM42.3209 26.5669V8.32691H39.3209V26.5669H42.3209ZM41.3303 6.91608L24.0503 0.676083L23.0314 3.49774L40.3114 9.73775L41.3303 6.91608ZM23.0314 0.676083L5.7514 6.91608L6.77033 9.73775L24.0503 3.49774L23.0314 0.676083ZM4.76086 8.32691V27.0469H7.76086V8.32691H4.76086ZM6.26086 27.0469C4.83431 27.5105 4.83444 27.5109 4.83457 27.5113C4.83463 27.5115 4.83478 27.512 4.83489 27.5123C4.83512 27.513 4.83539 27.5139 4.8357 27.5148C4.83632 27.5167 4.8371 27.5191 4.83802 27.5219C4.83988 27.5275 4.84236 27.535 4.84547 27.5443C4.85168 27.5629 4.8604 27.5887 4.87164 27.6215C4.89412 27.6869 4.92671 27.7799 4.96959 27.8978C5.05533 28.1334 5.18239 28.4688 5.35221 28.8815C5.69137 29.7057 6.20371 30.8449 6.90151 32.1179C8.28458 34.6411 10.4551 37.7988 13.5441 40.024L15.2976 37.5898C12.7227 35.735 10.8131 33.0127 9.53221 30.6759C8.89802 29.5189 8.43235 28.4831 8.12652 27.7399C7.97384 27.3688 7.86165 27.0723 7.78876 26.872C7.75233 26.7719 7.72577 26.6959 7.70892 26.6469C7.70049 26.6223 7.6945 26.6045 7.69092 26.5938C7.68913 26.5885 7.68795 26.5849 7.68737 26.5831C7.68707 26.5822 7.68693 26.5818 7.68694 26.5818C7.68694 26.5818 7.68699 26.582 7.68707 26.5822C7.6871 26.5823 7.68719 26.5826 7.68721 26.5827C7.68731 26.583 7.68742 26.5833 6.26086 27.0469ZM13.5465 40.0257C19.0838 43.9981 21.5854 44.8669 23.5409 44.8669V41.8669C22.6163 41.8669 20.7979 41.5357 15.2952 37.5881L13.5465 40.0257ZM23.5409 44.8669C24.6555 44.8669 26.0485 44.3272 27.5196 43.5598C29.0615 42.7555 30.9261 41.5709 33.0619 40.0209L31.2998 37.5929C29.2356 39.091 27.5003 40.1863 26.1321 40.9C24.6932 41.6506 23.8662 41.8669 23.5409 41.8669V44.8669ZM33.0459 40.0324C33.5076 39.7064 33.9594 39.3334 34.3584 39.0048L32.4513 36.689C32.0343 37.0324 31.6701 37.3314 31.3158 37.5815L33.0459 40.0324ZM34.3049 39.0469C34.417 38.9628 34.517 38.8719 34.5695 38.8231C34.6003 38.7946 34.6264 38.7695 34.6453 38.7512C34.6549 38.7419 34.6629 38.7341 34.6689 38.7281C34.672 38.725 34.6746 38.7225 34.6767 38.7204C34.6778 38.7193 34.6787 38.7184 34.6795 38.7176C34.6799 38.7172 34.6803 38.7168 34.6806 38.7165C34.6808 38.7163 34.6809 38.7162 34.6811 38.716C34.6812 38.7159 34.6812 38.7159 34.6813 38.7158C34.6814 38.7157 34.6814 38.7157 34.6814 38.7157C34.6815 38.7156 34.6815 38.7156 33.6209 37.6549C32.5602 36.5943 32.5602 36.5942 32.5603 36.5942C32.5603 36.5941 32.5604 36.5941 32.5604 36.5941C32.5605 36.594 32.5605 36.5939 32.5606 36.5939C32.5607 36.5937 32.5608 36.5936 32.5609 36.5935C32.5612 36.5933 32.5614 36.5931 32.5615 36.5929C32.5619 36.5926 32.5621 36.5923 32.5623 36.5922C32.5626 36.5919 32.5625 36.592 32.5621 36.5924C32.5612 36.5932 32.5591 36.5953 32.5559 36.5984C32.5493 36.6048 32.5394 36.6143 32.5282 36.6247C32.4968 36.6539 32.4887 36.659 32.5049 36.6469L34.3049 39.0469ZM35.1209 37.6549V36.4069H32.1209V37.6549H35.1209ZM33.6209 36.4069C32.5974 35.3103 32.5974 35.3103 32.5974 35.3103C32.5974 35.3103 32.5974 35.3103 32.5974 35.3103C32.5974 35.3103 32.5974 35.3103 32.5974 35.3103C32.5974 35.3103 32.5974 35.3103 32.5974 35.3103C32.5973 35.3104 32.5971 35.3106 32.5969 35.3108C32.5964 35.3113 32.5956 35.312 32.5944 35.3131C32.5922 35.3152 32.5887 35.3184 32.5842 35.3226C32.5752 35.331 32.562 35.3432 32.5459 35.3581C32.5136 35.388 32.4708 35.4272 32.4276 35.4664C32.3827 35.5071 32.3442 35.5414 32.3181 35.5639C32.304 35.576 32.3028 35.5767 32.3104 35.5707C32.3138 35.5679 32.3289 35.556 32.3516 35.5397C32.358 35.5351 32.4335 35.4796 32.542 35.4253L33.8837 38.1086C33.9982 38.0513 34.0822 37.9903 34.0991 37.9781C34.1324 37.9543 34.1601 37.9327 34.178 37.9185C34.2145 37.8894 34.2492 37.86 34.2757 37.8372C34.3305 37.7899 34.391 37.7357 34.4421 37.6894C34.4949 37.6416 34.5452 37.5954 34.5818 37.5615C34.6002 37.5445 34.6155 37.5303 34.6264 37.5202C34.6318 37.5152 34.6361 37.5112 34.6392 37.5083C34.6407 37.5069 34.6419 37.5058 34.6428 37.505C34.6432 37.5046 34.6436 37.5042 34.6438 37.504C34.6439 37.5039 34.6441 37.5038 34.6441 37.5037C34.6442 37.5036 34.6442 37.5036 34.6443 37.5036C34.6443 37.5036 34.6443 37.5035 34.6443 37.5035C34.6443 37.5035 34.6443 37.5035 33.6209 36.4069ZM32.2367 35.628C31.933 35.8883 31.6272 36.1288 31.2938 36.3733L33.0679 38.7925C33.4545 38.509 33.8207 38.2215 34.1891 37.9058L32.2367 35.628ZM31.2878 36.3778C29.9009 37.4055 28.4328 38.549 26.9824 39.4595C25.4762 40.405 24.3101 40.8829 23.5409 40.8829V43.8829C25.2436 43.8829 27.0536 42.9569 28.5773 42.0004C30.1569 41.0088 31.7728 39.7523 33.074 38.7881L31.2878 36.3778ZM23.5409 40.8829C22.7392 40.8829 21.4783 40.4057 19.8774 39.4773C18.3429 38.5874 16.7402 37.4325 15.3127 36.3769L13.529 38.789C14.9575 39.8453 16.6788 41.0904 18.3724 42.0725C19.9995 43.0161 21.8705 43.8829 23.5409 43.8829V40.8829ZM15.3114 36.3759C13.597 35.111 11.9222 32.8213 10.6447 30.6033C10.0181 29.5153 9.51363 28.4912 9.17055 27.6927C8.99844 27.2921 8.87357 26.9636 8.79479 26.7222C8.69506 26.4166 8.72086 26.4027 8.72086 26.5429H5.72086C5.72086 26.9351 5.84867 27.3645 5.94281 27.6529C6.05791 28.0056 6.21879 28.4221 6.41418 28.8769C6.8061 29.7891 7.36368 30.9175 8.04504 32.1006C9.38356 34.4245 11.3087 37.1508 13.5303 38.7899L15.3114 36.3759ZM8.72086 26.5429V9.02291H5.72086V26.5429H8.72086ZM7.73846 10.4308L24.0585 4.43078L23.0233 1.61505L6.70327 7.61505L7.73846 10.4308ZM23.0233 4.43078L39.3433 10.4308L40.3785 7.61505L24.0585 1.61505L23.0233 4.43078ZM38.3609 9.02291V26.5429H41.3609V9.02291H38.3609ZM39.8609 28.0429H40.8209V25.0429H39.8609V28.0429ZM39.3209 26.5429V26.5669H42.3209V26.5429H39.3209Z" fill="black" mask="url(#path-1-inside-1_210_69)"/>
+            <mask id="path-3-inside-2_210_69" fill="white">
+            <path d="M23.76 13.4399C19.248 13.4399 15.6 17.0879 15.6 21.5999C15.6 26.1119 19.248 29.7599 23.76 29.7599C28.272 29.7599 31.92 26.1119 31.92 21.5999C31.92 17.0879 28.272 13.4399 23.76 13.4399ZM23.76 28.7999C19.776 28.7999 16.56 25.5839 16.56 21.5999C16.56 17.6159 19.776 14.3999 23.76 14.3999C27.744 14.3999 30.96 17.6159 30.96 21.5999C30.96 25.5839 27.744 28.7999 23.76 28.7999ZM42.72 31.9199H41.76C41.76 31.9199 41.712 29.5199 40.08 29.5199C38.16 29.5199 38.16 31.9199 38.16 31.9199V32.8799H36.48V37.6799H43.2V32.8799H38.16V31.9199H44.16V38.6399H35.52V31.9199H37.2C37.2 31.9199 37.176 28.5599 40.08 28.5599C42.696 28.5599 42.72 31.9199 42.72 31.9199Z"/>
+            </mask>
+            <path d="M23.76 13.4399C19.248 13.4399 15.6 17.0879 15.6 21.5999C15.6 26.1119 19.248 29.7599 23.76 29.7599C28.272 29.7599 31.92 26.1119 31.92 21.5999C31.92 17.0879 28.272 13.4399 23.76 13.4399ZM23.76 28.7999C19.776 28.7999 16.56 25.5839 16.56 21.5999C16.56 17.6159 19.776 14.3999 23.76 14.3999C27.744 14.3999 30.96 17.6159 30.96 21.5999C30.96 25.5839 27.744 28.7999 23.76 28.7999ZM42.72 31.9199H41.76C41.76 31.9199 41.712 29.5199 40.08 29.5199C38.16 29.5199 38.16 31.9199 38.16 31.9199V32.8799H36.48V37.6799H43.2V32.8799H38.16V31.9199H44.16V38.6399H35.52V31.9199H37.2C37.2 31.9199 37.176 28.5599 40.08 28.5599C42.696 28.5599 42.72 31.9199 42.72 31.9199Z" fill="black"/>
+            <path d="M37.41 31.9199V32.8799H38.91V31.9199H37.41ZM42.72 31.9199V33.4199H44.2307L44.2199 31.9092L42.72 31.9199ZM41.76 31.9199L40.2603 31.9499L40.2897 33.4199H41.76V31.9199ZM38.16 31.9199L36.66 31.9199L36.66 33.4199H38.16V31.9199ZM36.48 32.8799V31.3799H34.98V32.8799H36.48ZM36.48 37.6799H34.98V39.1799H36.48V37.6799ZM43.2 37.6799V39.1799H44.7V37.6799H43.2ZM43.2 32.8799H44.7V31.3799H43.2V32.8799ZM44.16 31.9199H45.66V30.4199H44.16V31.9199ZM44.16 38.6399V40.1399H45.66V38.6399H44.16ZM35.52 38.6399H34.02V40.1399H35.52V38.6399ZM35.52 31.9199V30.4199H34.02V31.9199H35.52ZM37.2 31.9199V33.4199H38.7107L38.6999 31.9092L37.2 31.9199ZM23.76 11.9399C18.4195 11.9399 14.1 16.2595 14.1 21.5999H17.1C17.1 17.9164 20.0764 14.9399 23.76 14.9399V11.9399ZM14.1 21.5999C14.1 26.9404 18.4195 31.2599 23.76 31.2599V28.2599C20.0764 28.2599 17.1 25.2835 17.1 21.5999H14.1ZM23.76 31.2599C29.1004 31.2599 33.42 26.9404 33.42 21.5999H30.42C30.42 25.2835 27.4435 28.2599 23.76 28.2599V31.2599ZM33.42 21.5999C33.42 16.2595 29.1004 11.9399 23.76 11.9399V14.9399C27.4436 14.9399 30.42 17.9164 30.42 21.5999H33.42ZM23.76 27.2999C20.6044 27.2999 18.06 24.7555 18.06 21.5999H15.06C15.06 26.4124 18.9475 30.2999 23.76 30.2999V27.2999ZM18.06 21.5999C18.06 18.4444 20.6044 15.8999 23.76 15.8999V12.8999C18.9476 12.8999 15.06 16.7875 15.06 21.5999H18.06ZM23.76 15.8999C26.9155 15.8999 29.46 18.4444 29.46 21.5999H32.46C32.46 16.7875 28.5724 12.8999 23.76 12.8999V15.8999ZM29.46 21.5999C29.46 24.7555 26.9155 27.2999 23.76 27.2999V30.2999C28.5724 30.2999 32.46 26.4124 32.46 21.5999H29.46ZM42.72 30.4199H41.76V33.4199H42.72V30.4199ZM41.76 31.9199C43.2597 31.8899 43.2597 31.8894 43.2597 31.8889C43.2597 31.8887 43.2596 31.8882 43.2596 31.8878C43.2596 31.8871 43.2596 31.8863 43.2596 31.8855C43.2595 31.8839 43.2595 31.8821 43.2595 31.8801C43.2594 31.8762 43.2592 31.8717 43.2591 31.8666C43.2588 31.8564 43.2583 31.8439 43.2577 31.829C43.2564 31.7995 43.2544 31.7607 43.2512 31.7142C43.2449 31.6215 43.2337 31.4955 43.2138 31.3467C43.1751 31.0565 43.099 30.6444 42.9433 30.2119C42.6532 29.406 41.8608 28.0199 40.08 28.0199V31.0199C40.0952 31.0199 40.0775 31.0217 40.0438 31.0077C40.0117 30.9943 39.9937 30.9785 39.9913 30.9762C39.991 30.9759 39.9952 30.9799 40.0031 30.9902C40.0111 31.0006 40.022 31.0163 40.0349 31.0383C40.0616 31.0838 40.0914 31.1467 40.1206 31.228C40.1809 31.3954 40.2188 31.5833 40.2401 31.7432C40.2503 31.8194 40.2556 31.8809 40.2582 31.9194C40.2595 31.9385 40.2602 31.9514 40.2604 31.9569C40.2605 31.9597 40.2605 31.9606 40.2605 31.9595C40.2605 31.9589 40.2605 31.9579 40.2604 31.9563C40.2604 31.9555 40.2604 31.9546 40.2604 31.9535C40.2603 31.953 40.2603 31.9524 40.2603 31.9518C40.2603 31.9515 40.2603 31.9511 40.2603 31.9509C40.2603 31.9504 40.2603 31.9499 41.76 31.9199ZM40.08 28.0199C39.2584 28.0199 38.5563 28.2871 38.0097 28.7426C37.4896 29.176 37.1864 29.7149 37.0073 30.1629C36.8268 30.6141 36.7435 31.0441 36.7031 31.3467C36.6824 31.5019 36.6717 31.6337 36.6662 31.7312C36.6634 31.7803 36.6618 31.8213 36.661 31.853C36.6606 31.8689 36.6603 31.8825 36.6602 31.8937C36.6601 31.8993 36.66 31.9043 36.66 31.9087C36.66 31.9109 36.66 31.9129 36.66 31.9148C36.66 31.9157 36.66 31.9166 36.66 31.9175C36.66 31.9179 36.66 31.9185 36.66 31.9187C36.66 31.9193 36.66 31.9199 38.16 31.9199C39.66 31.9199 39.66 31.9205 39.66 31.9211C39.66 31.9213 39.66 31.9218 39.66 31.9222C39.66 31.9229 39.66 31.9236 39.66 31.9242C39.66 31.9255 39.66 31.9267 39.66 31.9277C39.6599 31.9298 39.6599 31.9313 39.6599 31.9324C39.6599 31.9345 39.6599 31.9347 39.6599 31.933C39.66 31.9296 39.6603 31.919 39.6613 31.9024C39.6632 31.8687 39.6675 31.813 39.6768 31.7432C39.6965 31.5958 39.7332 31.4258 39.7927 31.277C39.8535 31.125 39.9103 31.0639 39.9303 31.0473C39.9368 31.0419 39.9413 31.039 39.9507 31.0357C39.9606 31.0321 39.9988 31.0199 40.08 31.0199V28.0199ZM38.16 31.3799H36.48V34.3799H38.16V31.3799ZM34.98 32.8799V37.6799H37.98V32.8799H34.98ZM36.48 39.1799H43.2V36.1799H36.48V39.1799ZM44.7 37.6799V32.8799H41.7V37.6799H44.7ZM43.2 31.3799H38.16V34.3799H43.2V31.3799ZM38.16 33.4199H44.16V30.4199H38.16V33.4199ZM42.66 31.9199V38.6399H45.66V31.9199H42.66ZM44.16 37.1399H35.52V40.1399H44.16V37.1399ZM37.02 38.6399V31.9199H34.02V38.6399H37.02ZM35.52 33.4199H37.2V30.4199H35.52V33.4199ZM37.2 31.9199C38.6999 31.9092 38.6999 31.9098 38.6999 31.9105C38.6999 31.9106 38.6999 31.9112 38.7 31.9116C38.7 31.9124 38.7 31.9131 38.7 31.9137C38.7 31.915 38.7 31.9161 38.7 31.9171C38.7 31.9189 38.7 31.9201 38.7 31.9205C38.7 31.9213 38.7 31.9193 38.7001 31.9147C38.7003 31.9054 38.7008 31.8858 38.7024 31.8573C38.7055 31.8 38.7125 31.7098 38.7277 31.5984C38.7593 31.3677 38.8209 31.0867 38.9315 30.8267C39.0419 30.5668 39.1765 30.3848 39.3242 30.2702C39.451 30.1718 39.6657 30.0599 40.08 30.0599V27.0599C39.0423 27.0599 38.1709 27.3681 37.4855 27.8997C36.821 28.4151 36.4171 29.073 36.1705 29.6532C35.924 30.2332 35.8101 30.7921 35.7555 31.1915C35.7276 31.3951 35.7137 31.5674 35.7068 31.6938C35.7034 31.7572 35.7016 31.8098 35.7008 31.8497C35.7003 31.8697 35.7001 31.8866 35.7 31.9001C35.7 31.9069 35.7 31.9128 35.7 31.9179C35.7 31.9205 35.7 31.9228 35.7 31.9249C35.7 31.926 35.7 31.927 35.7 31.928C35.7 31.9284 35.7 31.9291 35.7 31.9293C35.7 31.93 35.7 31.9307 37.2 31.9199ZM40.08 30.0599C40.3813 30.0599 40.5278 30.1455 40.6239 30.2272C40.7482 30.333 40.8768 30.5158 40.9865 30.7927C41.0946 31.0652 41.1564 31.3587 41.1892 31.5984C41.2051 31.7144 41.213 31.8087 41.2168 31.8695C41.2187 31.8997 41.2195 31.921 41.2199 31.9318C41.2201 31.9372 41.2201 31.94 41.2201 31.9398C41.2201 31.9398 41.2201 31.939 41.2201 31.9375C41.2201 31.9367 41.2201 31.9358 41.22 31.9346C41.22 31.9341 41.22 31.9335 41.22 31.9328C41.22 31.9325 41.22 31.9319 41.22 31.9318C41.22 31.9312 41.22 31.9307 42.72 31.9199C44.2199 31.9092 44.2199 31.9086 44.2199 31.908C44.2199 31.9078 44.2199 31.9072 44.2199 31.9068C44.2199 31.9059 44.2199 31.905 44.2199 31.904C44.2199 31.9021 44.2198 31.8999 44.2198 31.8975C44.2198 31.8928 44.2197 31.8872 44.2195 31.8808C44.2193 31.8679 44.2189 31.8518 44.2182 31.8326C44.217 31.7942 44.2148 31.7433 44.2109 31.6816C44.2032 31.5587 44.1887 31.3905 44.1615 31.1915C44.1081 30.8012 44.0004 30.2547 43.7754 29.6871C43.5522 29.1241 43.1843 28.4669 42.5683 27.9426C41.9241 27.3944 41.0866 27.0599 40.08 27.0599V30.0599Z" fill="black" mask="url(#path-3-inside-2_210_69)"/>
+            <path d="M23.7618 25.8535C22.9302 25.8535 21.8342 25.4032 21.0946 24.7587C20.8212 24.5211 20.7931 24.1085 21.0307 23.8358C21.267 23.5631 21.6809 23.5349 21.953 23.7726C22.4512 24.2062 23.2444 24.5454 23.7618 24.5454C24.4899 24.5454 25.0827 24.0644 25.0827 23.473C25.0827 23.2929 25.0827 22.8138 23.5779 22.3738C22.8383 22.1419 21.1329 21.6086 21.1329 20.0195C21.1329 18.7069 22.312 17.639 23.7619 17.639C24.6867 17.639 25.5528 18.0861 26.0241 18.8059C26.2209 19.1081 26.1365 19.5136 25.8338 19.711C25.5349 19.9077 25.1286 19.8247 24.9281 19.5213C24.6969 19.1674 24.2498 18.9471 23.7619 18.9471C23.0337 18.9471 22.441 19.428 22.441 20.0195C22.441 20.3452 22.625 20.7048 23.9573 21.1219C24.55 21.2949 26.3908 21.8334 26.3908 23.4729C26.3907 24.7855 25.2117 25.8535 23.7618 25.8535Z" fill="#231F20"/>
+            <path d="M23.7655 18.9471C23.404 18.9471 23.1115 18.6546 23.1115 18.2931V17.3497C23.1115 16.9882 23.404 16.6957 23.7655 16.6957C24.127 16.6957 24.4195 16.9882 24.4195 17.3497V18.2931C24.4195 18.6546 24.127 18.9471 23.7655 18.9471ZM23.7655 26.807C23.404 26.807 23.1115 26.5145 23.1115 26.153V25.1994C23.1115 24.8379 23.404 24.5454 23.7655 24.5454C24.127 24.5454 24.4195 24.8379 24.4195 25.1994V26.153C24.4195 26.5145 24.127 26.807 23.7655 26.807Z" fill="#231F20"/>
+          </svg>
+        </div>
+        <!-- Replace with actual icon if needed -->
+        <h2>100-Day Risk-Free Trial</h2>
+        <p>See results in 2 weeks — or get a full refund.</p>
       </div>
     </div>
 
@@ -902,30 +1470,37 @@
 
       {%- if section.settings.show_order_note or shipping_tax_note != '' -%}
         <div class="mini-cart__actions text--subdued text--xsmall">
-          {%- if section.settings.show_order_note -%}
-            <button
-              type="button"
-              is="toggle-button"
-              id="order-note-toggle"
-              class="link"
-              data-action="toggle-order-note"
-              aria-controls="mini-cart-note"
-              aria-expanded="false"
-            >
-              {%- if cart.note == blank -%}
-                {{- 'cart.general.add_order_note' | t -}}
-              {%- else -%}
-                {{- 'cart.general.edit_order_note' | t -}}
-              {%- endif -%}
-            </button>
-          {%- endif -%}
+          {% comment %}
+            {%- if section.settings.show_order_note -%}
+              <button
+                type="button"
+                is="toggle-button"
+                id="order-note-toggle"
+                class="link"
+                data-action="toggle-order-note"
+                aria-controls="mini-cart-note"
+                aria-expanded="false"
+              >
+                {%- if cart.note == blank -%}
+                  {{- 'cart.general.add_order_note' | t -}}
+                {%- else -%}
+                  {{- 'cart.general.edit_order_note' | t -}}
+                {%- endif -%}
+              </button>
+            {%- endif -%}
+          {% endcomment %}
 
-          {%- if shipping_tax_note != '' -%}
-            <span>{{ shipping_tax_note }}</span>
-          {%- endif -%}
+          {% comment %}
+            {%- if shipping_tax_note != '' -%}
+              <span>{{ shipping_tax_note }}</span>
+            {%- endif -%}
+          {% endcomment %}
         </div>
       {%- endif -%}
 
+      {%- if shipping_tax_note != '' -%}
+        <div style="line-height:1;margin-bottom: 15px;">{{ shipping_tax_note }}</div>
+      {%- endif -%}
       {%- if section.settings.show_checkout_button -%}
         <button
           form="mini-cart-form"
@@ -966,6 +1541,18 @@
           {{- 'cart.general.go_to_cart' | t -}}
         </a>
       {%- endif -%}
+      <div class="test666">
+        <div
+          style="margin-top: 10px"
+          class="cart-paypal"
+          data-pp-placement="product"
+          data-pp-message
+          data-pp-amount="{{ cart.total_price | divided_by: 100 }}"
+          data-pp-buyercountry="GB"
+          data-pp-currency="GBP"
+          data-pp-style-layout="text"
+        ></div>
+      </div>
     </footer>
   {%- endif -%}
 
@@ -991,109 +1578,181 @@
   {%- endif -%}
 </cart-drawer>
 <script>
+  function preventEnter(event) {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+    }
+  }
   // 倒计时执行一次
   let hasExecuted = false;
+
   $(function () {
-    cartInit();
-    {% comment %} document.addEventListener('cart:refresh', function () {
-      // 在这里添加你想要执行的代码
-      hasExecuted = true;
-      setTimeout(function () {
-        cartInit();
-      }, 1500);
-    }); {% endcomment %}
+    dialogEamil();
   });
 
-  // 初始化
-  function cartInit() {
-    let userName = getCookie('groupName');
-    let endTime = getCookie('groupTime');
-    // 倒计时
-    cartCountdown(endTime, userName, function () {
-      console.log('倒计时结束！');
-      hasExecuted = true;
+  // 订阅表单请求
+  function dialogEamil() {
+    // 调用函数并传入前缀
+    // dynamicCookie = getDynamicCookieWithCode('lkda_spinthewheel');
+    $(document).on('submit', '#contactForm', async (event) => {
+      event.preventDefault(); // 阻止默认表单提交行为
+      // 自定义验证逻辑
+      let errorMessage = '';
+      const form = event.target;
+      const emailInput = form.querySelector('#email');
+      const submitButton = form.querySelector('#submitButton');
+      const responseMessageDiv = document.getElementById('responseMessage');
+      const sucessMessageDiv = document.getElementById('sucess_tip');
+      const fm = document.getElementById('contactForm');
+      // 验证邮箱格式
+      const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+      if (!emailInput.value.trim()) {
+        errorMessage = 'Email is required.';
+        emailInput.focus();
+      } else if (!emailPattern.test(emailInput.value)) {
+        errorMessage = `{{ section.settings.subscripte_error_tip }}`;
+        emailInput.focus();
+      }
+      if (errorMessage) {
+        responseMessageDiv.innerText = errorMessage;
+        return;
+      }
+
+      // 设置按钮为加载状态
+      submitButton.disabled = true;
+      submitButton.innerText = 'Loading...';
+      submitButton.classList.add('loading');
+
+      const formData = new FormData(form);
+      try {
+        const response = await fetch('/contact', {
+          method: 'POST',
+          headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+          },
+          body: formData,
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error!}`);
+        }
+
+        const result = await response.text();
+        // responseMessageDiv.innerText = `{{ 'general.newsletter.success' | t }}`;
+        emailInput.value = '';
+        responseMessageDiv.innerText = '';
+        // closesubscripte();
+        // console.log('Contact form submitted:', result);
+        fm.style.display = 'none';
+        sucessMessageDiv.style.display = 'block';
+        $('.email_dialog-right .email-count-down').hide();
+        $('.email_dialog-right .sucess_box').show();
+        $('.email_dialog-right h3').text('{{ section.settings.subscript_sucess_text }}');
+
+       setCookie("subscript-isSubscribe", true, 30, true); // 设置cookie，有效期为30天 subscripte_sucess_code
+        window.discountOnCartProApp.applyCode('{{ section.settings.subscripte_sucess_code }}');
+        // 设置定时器
+        const timercus = setTimeout(() => {
+          // closesubscripte();
+          // fm.style.display = 'block';
+          // sucessMessageDiv.style.display = 'none';
+          clearTimeout(timercus); // 清除定时器
+        }, 3000); // 2秒的定时器
+      } catch (error) {
+        responseMessageDiv.innerText = `Error submitting form: ${error.message}`;
+        console.error('Error submitting form:', error);
+      } finally {
+        // 恢复按钮状态
+        submitButton.disabled = false;
+        submitButton.innerText = 'Submit';
+        submitButton.classList.remove('loading');
+      }
     });
   }
 
-  function cartCountdown(endTime, name, callback) {
-    let countdowInterval = setInterval(function () {
-      var $element = $('.a10-product-cart-group .group-countdown');
-      if (hasExecuted) {
-        clearInterval(countdowInterval);
-        $element.hide();
-        hasExecuted = false;
-        return;
-      } else {
-        $element.show();
-      }
-      // 获取当前时间
-      const now = new Date();
-      // 计算剩余时间（毫秒）
-      const difference = endTime - now;
-      // 如果时间到了，清除定时器并输出结束信息
-      if (difference <= 0) {
-        clearInterval(countdowInterval);
-        console.log('倒计时结束!');
-        if (typeof callback === 'function') {
-          callback();
-        }
-        return;
-      }
-
-      const days = Math.floor(difference / (1000 * 60 * 60 * 24));
-      const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
-      const seconds = Math.floor((difference % (1000 * 60)) / 1000);
-
-      var displayhours = hours < 10 ? '0' + hours : hours;
-      var displayMinutes = minutes < 10 ? '0' + minutes : minutes;
-      var displaySeconds = seconds < 10 ? '0' + seconds : seconds;
-
-      $($element).find('.countdown-hours').text(displayhours);
-      $($element).find('.countdown-minutes').text(displayMinutes);
-      $($element).find('.countdown-seconds').text(displaySeconds);
-      $('.a10-product-cart-group .name lable').text(name);
-    }, 1000);
-  }
-</script>
-
-<script
-  type="text/javascript"
->
-
-  var adUrlArr = {{ se_stts.ad_url_arr }};
+  var adUrlArr = {%- if se_stts.ad_url_arr != '' -%}{{ se_stts.ad_url_arr }};{% else %}[];{% endif %};
+  var specifyPageArr =  {%- if section.settings.specify_page != '' -%}{{ section.settings.specify_page }};{% else %}[];{% endif %}
+  
+  
   function cartcloseclick(){
     commonGtmEvent('弃购-pop up-open', 'cart', '');
-    $('#minicart-dialog-list').show()
-    if(adUrlArr.includes(location.pathname)){
-      $('#minicart-dialog-list .shipping-code .num').text("{{- 'cart.coupon.adnum' | t -}}")
-    }
+     let dynamicCookie = getCookie("subscript-isSubscribe");
+     // if(!dynamicCookie) {
+     if(!getDynamicCookieWithCode('lkda_spinthewheel') && !getCookie("subscript-isSubscribe")) {
+          $('#email_dialog-box').show();
+      }else if ($('.email_dialog-box').is(':visible')){
+        // 如果第一个弹出框显示，就隐藏；
+        $('.email_dialog-box').hide();
+      }
+      {% comment %} else if(!specifyPageArr.includes(location.pathname)){
+        $('#minicart-dialog-list').show()
+      }  {% endcomment %}
+      else {
+        $('#mini-cart').attr('open',false)
+      }
+      // 广告页面显示的折扣
+      if(adUrlArr.includes(location.pathname)){
+        $('#minicart-dialog-list .shipping-code .num').text("{{- 'cart.coupon.adnum' | t -}}")
+      }
   }
   
   // 关闭弹出框
   function opencartdialogclose(){
-    console.log(11111);
     $('#minicart-dialog-list').hide()
     $('#mini-cart').attr('open',false)
   }
 
+  // 订阅弹窗关闭按钮 弹出框
+  function closesubscripte(){
+    $('#email_dialog-box').hide()
+    $('#mini-cart').attr('open',false)
+  }
+  
+  /**
+   * 关闭优惠券弹窗
+   */
   function closecartdialoglist(){
-    console.log(22222);
     $('#minicart-dialog-list').hide();
     $('#mini-cart').attr('open',false)
   }
 
+  /**
+    * 根据前缀通过cookie名称 判断是否订阅
+    * @param prefix
+    */
+  function getDynamicCookieWithCode(prefix) {
+    const cookies = document.cookie.split('; ');
+    const targetRegex = new RegExp(`^${prefix}\\d+Code$`);
+
+    const targetCookie = cookies.find(cookie => targetRegex.test(cookie.split('=')[0]));
+
+    if (targetCookie) {
+        const cookieName = targetCookie.split('=')[0];
+        const cookieValue = targetCookie.split('=')[1];
+        return {
+            name: cookieName,
+            value: cookieValue
+        };
+    } else {
+        return null;
+    }
+  }
+  
+  /**
+   * 优惠券应用
+   */
   function opencartdialoglist(){
     {% comment %} 应用优惠劵 {% endcomment %}
     {%- if se_stts.is_cart_coupon == true -%}
       let code = $('#mini-cart .btn-coupon').attr('code');
+      // AD页面
       if(adUrlArr.includes(location.pathname)){
         code = $('#mini-cart .btn-coupon').attr('adcode');
       }
-      navigator.clipboard.writeText(code);
+      copyTextFallback(code);
+      autoDiscountCode(code);
     {% endif %}
     commonGtmEvent('弃购-pop copy', 'cart', '');
-    console.log(4444);
     $('#minicart-dialog-list').hide();
   }
 
@@ -1170,7 +1829,7 @@
     {% endif %}
 
     let endDate = new Date(`${ediftendDate}`).getTime(); // 设置结束时间
-    console.log(endDate);
+     let countdown1 = new Countdownbar('#email_dialog-box', endDate);
     {%- if se_stts.is_cart_coupon == true -%}
        var countdowN = new Countdownbar('#minicart-dialog-list .j-countdown-name', endDate);
     {%else%}
@@ -1262,9 +1921,100 @@
       "id": "ad_url_arr",
       "label": "广告活动页面",
       "default": "[]"
+    },
+    {
+      "type": "textarea",
+      "id": "specify_page",
+      "label": "指定页面不弹出",
+      "info": "例如：['/pages/meta-air3-product-detail-page', '/pages/xxxx']"
+    },
+    {
+      "type": "image_picker",
+      "id": "email_img",
+      "label": "Email Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "email_img_mobile",
+      "label": "Email Mobile Image"
+    },
+    {
+      "type": "text",
+      "id": "subscripte_title",
+      "label": "Subscripte title",
+      "default": "Exclusive offer for subscribers only"
+    },
+    {
+      "type": "text",
+      "id": "subscripte_text",
+      "label": "Subscripte Text",
+      "default": "Get a chance to win a free device."
+    },
+    {
+      "type": "text",
+      "id": "email_text",
+      "label": "Email Placeholder",
+      "default": "Enter your email"
+    },
+    {
+      "type": "text",
+      "id": "subscripte_button_text",
+      "label": "subscripte button text",
+      "default": "Subscribe"
+    },
+    {
+      "type": "text",
+      "id": "leave_text",
+      "label": "Leave Text",
+      "default": "Leave"
+    },
+    {
+      "type": "text",
+      "id": "subscript_sucess_text",
+      "label": "订阅成功页面-标题",
+      "default": "Congratulations!"
+    },
+    {
+      "type": "text",
+      "id": "subscripte_sucess_code",
+      "label": "Subscripte Sucess Code"
+    },
+    {
+      "type": "text",
+      "id": "subscripte_error_tip",
+      "label": "Subscripte Error Tip",
+      "default": "* Please enter a valid email address"
+    },
+    {
+      "type": "text",
+      "id": "subscripte_sucess_tip",
+      "label": "Subscripte Sucess Tip",
+      "default": "You have already subscribed"
+    },
+    {
+      "type": "text",
+      "id": "subscripte_sucess_text",
+      "label": "subscripte sucess text",
+      "default": "Please apply the code in the cart to enjoy the free gift."
+    },
+    {
+      "type": "textarea",
+      "id": "sku",
+      "label": "赠品sku显示"
     }
   ],
   "blocks": [
+    {
+      "name": "cart-notice-item",
+      "type": "cart-notice-item",
+      "settings": [
+        {
+          "type": "html",
+          "id": "notice_html",
+          "label": "标题"
+        }
+      ]
+    },
     {
       "name": "cart-prompt-item",
       "type": "cart-prompt-item",
@@ -1273,6 +2023,53 @@
           "type": "html",
           "id": "text",
           "label": "标题"
+        }
+      ]
+    },
+    {
+      "name": "cart-group-item",
+      "type": "cart-group-item",
+      "settings": [
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "标题"
+        },
+        {
+          "type": "html",
+          "id": "endin",
+          "label": "end文案"
+        },
+        {
+          "type": "textarea",
+          "id": "txt_extra",
+          "label": "Extra Service"
+        }
+      ]
+    },
+    {
+      "name": "cart-giveaway-item",
+      "type": "cart-giveaway-item",
+      "settings": [
+        {
+          "type": "textarea",
+          "id": "title",
+          "label": "标题"
+        },
+        {
+          "type": "textarea",
+          "id": "info",
+          "label": "描述"
+        },
+        {
+          "type": "textarea",
+          "id": "free_text",
+          "label": "Free文案"
+        },
+        {
+          "type": "textarea",
+          "id": "price_text",
+          "label": "价格文案"
         }
       ]
     }

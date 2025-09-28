@@ -1,0 +1,275 @@
+<style>
+.kol-banner {
+  position: relative;
+}
+.kol-banner .container {
+  max-width: 78%;
+}
+.kol-banner .img {
+  position: relative;
+  z-index: 0;
+  width: 100%;
+}
+
+.kol-banner .pop-img {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  z-index: 3;
+}
+
+.kol-banner .kol-banner-text {
+  position: absolute;
+  width: 100%;
+  left: 0;
+  top: 30%;
+}
+
+.kol-banner .kol-title {
+  color: #fff;
+  font-size: 9.5vw;
+  line-height: 1;
+  position: relative;
+}
+  .kol-banner .kol-title p {
+  margin: 0;
+  display: flex;
+  justify-content: space-between;
+}
+.kol-banner .kol-title strong {
+  font-weight: normal;
+}
+.kol-banner .kol-title em {
+  position: absolute;
+  font-style: normal;
+  font-size: 4vw;
+  line-height: 1;
+  top: -1.5vw;
+  right: -1.5vw;
+}
+
+.kol-banner .kol-p {
+  color: #fff;
+  font-size: 2.86vw;
+  line-height: 1.5;
+  margin-top: 2.3vw;
+  position: relative;
+  z-index: 5;
+}
+
+.kol-banner .kol-btn {
+  display: inline-block;
+  padding: 10px 35px;
+  border-radius: 50px;
+  background: #fff;
+  color: #190a0a;
+  font-size: 1.3vw;
+  line-height: 1.2;
+  margin-top: 1.56vw;
+  position: relative;
+  z-index: 5;
+}
+
+ .kol-banner .kol-btn p {
+  margin: 0;
+}
+
+.kol-banner .kol-btn strong {
+  font-weight: normal;
+  font-family: var(--heading-font-family);
+  color: #e7004c;
+}
+
+.kol-banner .kol-banner-msg {
+  position: absolute;
+  z-index: 4;
+  width: 100%;
+  left: 0;
+  bottom: 5%;
+  color: #e4dddd;
+  font-size: 12px;
+  line-height: 1.2;
+  opacity: 0.5;
+}
+.kol-banner .kol-banner-msg-txt {
+  max-width: 630px;
+}
+
+@media (max-width: 991px) {
+  .kol-banner .container {
+    max-width: none;
+  }
+  .kol-banner .pop-img {
+    display: none;
+  }
+  .kol-banner .kol-title {
+    font-size: 60px;
+  }
+  .kol-banner .kol-title em{
+    font-size: 40px;
+    top: -3vw;
+    right: -5vw;
+  }
+  .kol-banner .kol-p {
+    font-size: 26px;
+    margin-top: 10px;
+    line-height: 1;
+  }
+  .kol-banner .kol-btn {
+    font-size: 14px;
+    padding: 5px 25px;
+    border: 0.75px solid rgba(255, 255, 255, 0.5);
+    background: rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(2px);
+    color: #fff;
+    margin-top: 25px;
+  }
+  
+  .kol-banner .kol-btn strong {
+    color: #fff;
+  }
+
+  .kol-banner .kol-banner-text {
+    top: auto;
+    bottom: 28%;
+    text-align: center;
+  }
+  .kol-banner .kol-title {
+    display: inline-block;
+  }
+  .kol-banner .kol-banner-msg {
+    bottom: 40px;
+    text-align: center;
+    line-height: 1;
+  }
+}
+</style>
+
+<section class="section-box">
+  <div class="kol-banner">
+    {%- if section.settings.image != blank or section.settings.image1 != blank -%}
+      <picture>
+        <source srcset="{{ section.settings.image1 | image_url }}" media="(max-width: 991px)">
+        <img class="img" src="{{ section.settings.image | image_url }}">
+      </picture>
+    {%- endif -%}
+    {%- if section.settings.image != blank -%}
+      <img src="{{ section.settings.image2 | image_url }}" alt="" class="pop-img">
+    {%- endif -%}
+    <div class="kol-banner-text">
+      <div class="container">
+        <div class="kol-title">{{ section.settings.text }}</div>
+        {%- if section.settings.text1 != blank -%}
+          <div class="kol-p">{{ section.settings.text1 }}</div>
+        {%- endif -%}
+        {%- if section.settings.text2 != blank -%}
+          <div class="kol-btn">{{ section.settings.text2 }}</div>
+        {%- endif -%}
+      </div>
+    </div>
+    <div class="kol-banner-msg">
+      <div class="container">
+        <div class="kol-banner-msg-txt">
+         {{ section.settings.text3 }}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+  function kolAmd() {
+    let duration = 2000; // 滚动时间（毫秒）
+    let interval = 50; // 数字更新间隔（毫秒）
+    let steps = duration / interval; // 更新次数
+  
+    // 查找所有数字并用 span 包裹起来
+    $('.kol-title').html(function (_, html) {
+      return html.replace(/(\d{1,3}(?:,\d{3})*(?:\.\d+)?|\d+)/g, function (match) {
+        return '<span class="number" data-original="' + match + '">' + match + '</span>';
+      });
+    });
+  
+    // 定义更新数字的函数
+    function updateNumbers(step) {
+      $('.number').each(function () {
+        let originalNumStr = $(this).data('original').replace(/,/g, ''); // 移除逗号
+        let originalNum = parseFloat(originalNumStr);
+        if (originalNum === 0) {
+          let randomNum = Math.floor(Math.random() * 1000); // 生成0到999的随机数
+          $(this).text(randomNum);
+        } else {
+          let increment = originalNum / steps;
+          let currentNum = Math.min(originalNum, Math.floor(step * increment));
+          $(this).text(currentNum.toLocaleString());
+        }
+      });
+    }
+  
+    // 开始逐步增加或随机滚动
+    var step = 0;
+    var intervalId = setInterval(function () {
+      step++;
+      updateNumbers(step);
+      if (step >= steps) {
+        clearInterval(intervalId);
+        // 恢复原始数字
+        $('.number').each(function () {
+          var originalNum = $(this).data('original');
+          $(this).text(originalNum);
+        });
+      }
+    }, interval);
+  }
+  window.addEventListener('load', function () {
+   kolAmd()
+  })
+</script>
+{% schema %}
+{
+  "name": "kol-banner",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image2",
+      "label": "人物图"
+    },
+    {
+      "type": "image_picker",
+      "id": "image1",
+      "label": "Image Mobile"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "标题"
+    },
+    {
+      "type": "text",
+      "id": "text1",
+      "label": "副标题"
+    },
+    {
+      "type": "richtext",
+      "id": "text2",
+      "label": "按钮文字"
+    },
+    {
+      "type": "text",
+      "id": "text3",
+      "label": "文字"
+    }
+  ],
+  "presets": [
+    {
+      "name": "kol-banner"
+    }
+  ]
+}
+{% endschema %}

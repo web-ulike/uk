@@ -1,0 +1,165 @@
+<style>
+.add-banner {
+  position: relative;
+  
+}
+.add-banner .add-banner-img{
+  position: relative;
+  z-index: 1;
+  mask-image: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0) 0%,
+    rgb(0, 0, 0) 25%,
+    rgb(0, 0, 0) 75%,
+    rgb(0, 0, 0, 0) 95%,
+    rgba(0, 0, 0, 0) 100%
+  );
+}
+.add-banner .img {
+  display: block;
+  width: 100%;
+}
+
+.add-banner .add-banner-cont {
+  position: absolute;
+  width: 100%;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+  z-index: 2;
+}
+.add-banner .img-icon {
+    width: 460px;
+  }
+.add-banner .add-banner-h3 {
+  font-size: 70px;
+  font-weight: normal;
+  color: #000;
+  line-height: 1.2;
+  margin: 0;
+}
+
+.add-banner .add-banner-h3 p{
+  margin:0;
+}
+
+.add-banner .add-banner-p {
+  font-size: 20px;
+  line-height: 1.2;
+  color: #000;
+  margin: 0;
+}
+
+@media (max-width: 1400px) {
+  .add-banner .img-icon {
+    width: 340px;
+  }
+
+  .add-banner .add-banner-h3 {
+    font-size: 50px;
+  }
+
+  .add-banner .add-banner-p {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 991px) {
+  .add-banner .add-banner-img{
+    mask-image: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0) 0%,
+      rgb(0, 0, 0) 25%,
+      rgb(0, 0, 0) 75%,
+      rgb(0, 0, 0, 0) 95%,
+      rgba(0, 0, 0, 0) 100%
+    );
+  }
+  .add-banner .add-banner-cont {
+    top: 30px;
+    transform: translateY(0);
+  }
+
+  .add-banner .img-icon {
+    display: block;
+    margin: 0 auto;
+    width: 70%;
+    max-width: 460px;
+  }
+
+  .add-banner .add-banner-h3 {
+    font-size: 28px;
+    text-align: center;
+    margin-top: 10px;
+  }
+
+  .add-banner .add-banner-p {
+    font-size: 14px;
+    text-align: center;
+  }
+}
+</style>
+
+<section class="section-box">
+  <div class="add-banner">
+    <div class="add-banner-img">
+      {%- if section.settings.image != blank or section.settings.image1 != blank -%}
+      <picture>
+        <source srcset="{{ section.settings.image1 | image_url }}" media="(max-width: 991px)">
+        <img class="img" width="" height="" src="{{ section.settings.image | image_url }}">
+      </picture>
+    {%- endif -%}
+    </div>
+    <div class="add-banner-cont">
+      <div class="container">
+        {%- if section.settings.image2 != blank -%}
+          <img loading="lazy" class="img-icon" width="" height="" src="{{ section.settings.image2 | image_url }}">
+        {%- endif -%}
+        <h3 class="add-banner-h3">{{ section.settings.text }}</h3>
+        <p class="add-banner-p">{{ section.settings.text1 }}</p>
+      </div>
+    </div>
+  </div>
+</section>                
+{% schema %}
+{
+  "name": "add-banner",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image1",
+      "label": "Image Mobile"
+    },
+    {
+      "type": "image_picker",
+      "id": "image2",
+      "label": "Title Image"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "标题"
+    },
+    {
+      "type": "text",
+      "id": "text1",
+      "label": "副标题"
+    },
+    {
+      "type": "text",
+      "id": "text2",
+      "label": "自定义Class"
+    }
+  ],
+  "presets": [
+    {
+      "name": "add-banner"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,236 @@
+<style>
+  .section-{{ section.id }}-padding {
+    padding-top: calc({{ section.settings.padding_top }}px);
+    padding-bottom: calc({{ section.settings.padding_bottom }}px);
+  }
+  @media screen and (max-width: 768px){
+  .section-{{ section.id }}-padding {
+    padding-top: calc({{ section.settings.padding_top }}px * 0.6);
+    padding-bottom: calc({{ section.settings.padding_bottom }}px * 0.6);
+  }
+}
+#shopify-section-{{ section.id }} {
+    --text-color: {{  section.settings.text_color.red }}, {{  section.settings.text_color.green }}, {{  section.settings.text_color.blue }};
+    --section-background: {{ section.settings.background.red }}, {{ section.settings.background.green }}, {{ section.settings.background.blue }};
+    background: rgb(var(--section-background, var(--background)));
+}
+.section_model h2{
+      font-family: var(--text-font-family);
+color:  #190A0A;
+font-size: 48px;
+font-style: normal;
+font-weight: 380;
+line-height: 120%; 
+margin-bottom: 47px;
+}
+.scroll_mobile-model{
+  display: flex;
+  gap: 24px;
+}
+.model_item .model_list-tle{
+    display: flex;
+  gap: 8px;
+  align-items: center;
+font-size: 30px;
+font-weight: 380;
+line-height: 1.5;
+margin-top: 10px;
+}
+.model_item .model_list-txt{
+font-size: 16px;
+font-weight: 380;
+line-height: 1.5;
+margin-top: 10px;
+color: #3F3636;
+}
+  .model_list-p1{
+    color:  #E0004D;
+  }
+.scroll_mobile-model .model_item{
+    flex-basis: 33.333%;
+  }
+@media screen and (max-width: 767px){
+  .section_model h2{
+    font-size: 24px;
+    line-height: 130%;
+    margin-bottom: 30px;
+  }
+  .model_item .model_list-tle{
+    margin-top: 10px;
+    font-size: 24px;
+    line-height: 1.2;
+  }
+  .model_item .model_list-txt{
+    font-size: 14px;
+    line-height: 1.5;
+    margin-top: 10px;
+  }
+  .scroll_mobile-model{
+    overflow-x: scroll;
+    scrollbar-width: none;
+    scrollbar-color: transparent transparent;
+  }
+  .scroll_mobile-model .model_item{
+    flex-shrink: 0;
+    flex-basis: 80%;
+  }
+  .scroll_mobile-model::-webkit-scrollbar {
+        width: 0;
+        height: 0;
+      }
+      .scroll_mobile-model::-webkit-scrollbar-track {
+        display: none;
+      }
+
+      .scroll_mobile-model::-webkit-scrollbar-thumb {
+        display: none;
+      }
+
+      .scroll_mobile-model::-webkit-scrollbar-corner {
+        display: none;
+      }
+}
+</style>
+
+<section class="section_model{% if section.settings.custom_class != blank %} {{section.settings.custom_class}}{% endif %}">
+  <div class="section-{{ section.id }}-padding">
+    <div class="container">
+      {%- if section.settings.title != blank -%}
+        <h2 class="heading h2 to-top">
+          <split-lines>{{ section.settings.title | escape }}</split-lines>
+        </h2>
+      {%- endif -%}
+      <div class="scroll_mobile-model" >
+        {%- for block in section.blocks -%}
+          <div class="model_item to-top" style="transition-delay: 0.{{ forloop.index }}s">
+            <picture>
+            {%- if block.settings.image_mobile -%}
+              <source
+                media="(max-width: 767px)"
+                srcset="{{ block.settings.image_mobile | image_url: width: '400x' }} 400w, {{ block.settings.image_mobile | image_url: width: '600x' }} 600w, {{ block.settings.image_mobile | image_url: width: '800x' }} 800w, {{ block.settings.image_mobile | image_url: width: '1000x' }} 1000w"
+                width="{{ block.settings.image_mobile.width }}"
+                height="{{ block.settings.image_mobile.height }}"
+              >
+            {%- endif -%}
+            {%- if block.settings.image -%}
+              {{-
+                block.settings.image
+                | image_url: width: block.settings.image.width
+                | image_tag:
+                  loading: 'eager',
+                  sizes: '100vw',
+                  widths: '300,400,500,600,700,800,900,1000,1200,1400,1600,1800,2000,2200,2400,2600,2800,3000,3200',
+                  class: ''
+              -}}
+            {%- endif -%}
+          </picture>
+          {%- if block.settings.title != blank -%}
+            <div class="model_list-tle to-top" style="transition-delay: 0.3s">
+              <div class="model_list-p1">{{  block.settings.step_txt | escape }}</div>
+              <div>{{ block.settings.title | escape }}</div>
+            </div>
+          {%- endif -%}
+          {%- if block.settings.description != blank -%}
+            <div class="model_list-txt text-top" style="transition-delay: 0.4s">{{ block.settings.description | escape }}</div>
+          {%- endif -%}
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Meta Ad Made",
+  "class": "shopify-section--add-model",
+  "settings": [
+    {
+      "type": "text",
+      "id": "custom_class",
+      "label": "Custom Class"
+    },
+    {
+        "type": "text",
+        "id": "title",
+        "label": "Title",
+        "default": "Title"
+      },
+      {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 36
+    }
+  ],
+  "blocks": [
+    {
+      "name": "Column",
+      "type": "item",
+      "settings": [
+       {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Images"
+        },
+     {
+          "type": "image_picker",
+          "id": "image_mobile",
+          "label": "Mobile Images"
+        },
+         {
+        "type": "text",
+        "id": "step_txt",
+        "label": "Step Text",
+        "default": "Step 1"
+      },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "IPL vs. Salon"
+        },
+        {
+          "type": "text",
+          "id": "description",
+          "label": "Description"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Meta Ad Made",
+      "settings": {},
+      "blocks": [
+      ]
+    }
+  ]
+}
+{% endschema %}

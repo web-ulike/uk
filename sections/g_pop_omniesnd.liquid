@@ -1,0 +1,117 @@
+{%- liquid
+  assign se_id = section.id
+  assign se_bks = section.blocks
+  assign se_stts = section.settings
+-%}
+
+<div class="pop_omnisend_{{ se_id }} pop_omnisend">
+  <aside id="popu_subscripte" class="popu_subscripte" style="display: none;">
+    <div
+      class="popu-mask-header"
+      style=""
+    ></div>
+    <div class="popu-wrap text-center">
+      <svg width="32" height="32" viewBox="0 0 24 24" class="transition-linear close-btn-header">
+        <use xlink:href="#close-path"><path d="M11 11V6a1 1 0 0 1 2 0v5h5a1 1 0 0 1 0 2h-5v5a1 1 0 0 1-2 0v-5H6a1 1 0 0 1 0-2h5z"></path></use>
+      </svg>
+      {% comment %} pc {% endcomment %}
+      {% if se_stts.is_pc_checkbox == 'true' %}
+        {% comment %} pc {% endcomment %}
+        <div id="{{ se_stts.omscode }}" class="hidden-phone "></div>
+        {% comment %} m {% endcomment %}
+        <!-- 222222 -->
+        <div id="{{ se_stts.m_omscode }}" class="hidden-desk"></div>
+      {% else %}
+        {% comment %} pc {% endcomment %}
+        <div id="{{ se_stts.omscode }}"></div>
+      {% endif %}
+    </div>
+  </aside>
+</div>
+<script>
+  $(function () {
+    clickCloseAll('#popu_subscripte .close-btn-header');
+
+    function clickCloseAll(className) {
+      document.querySelector(className).addEventListener('click', function (e) {
+        document.body.style = '';
+        document.getElementById('popu_subscripte').style.display = 'none';
+        e.stopPropagation();
+      });
+    }
+    $(document).on('click', '{{ se_stts.btn_id }}', function () {
+      commonGtmEvent('Extra coupon', location.pathname, 'a10');
+      $('.pop_omnisend #popu_subscripte').show();
+    });
+  });
+</script>
+
+{% schema %}
+{
+  "name": "g-pop-omnisend",
+  "class": "shopify-section-g-pop-omnisend",
+  "settings": [
+    {
+      "type": "text",
+      "id": "omscode",
+      "label": "oms 代码",
+      "info": "omnisend-embedded-v2-641ac1db653128bbaea28172"
+    },
+    {
+      "type": "radio",
+      "id": "is_pc_checkbox",
+      "label": "PC、移动端单独分开",
+      "default": "false",
+      "options": [
+        {
+          "value": "true",
+          "label": "是"
+        },
+        {
+          "value": "false",
+          "label": "否"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "m_omscode",
+      "label": "移动端 oms 代码",
+      "info": "omnisend-embedded-v2-641ac1db653128bbaea28172"
+    },
+    {
+      "type": "text",
+      "id": "btn_id",
+      "label": "点击事件触发的ID(或者class)",
+      "info": ".class or #id"
+    }
+  ],
+  "blocks": [],
+  "presets": [
+    {
+      "name": "g-pop-omniesnd"
+    }
+  ]
+}
+{% endschema %}
+
+<style>
+  .pop_omnisend_{{ se_id}} .popu-mask-header {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    right: 0;
+    z-index: 10;
+  }
+  .pop_omnisend_{{ se_id}} #popu_subscripte .popu-wrap {
+    max-width: 1000px;
+    width: fit-content;
+  }
+  @media (max-width: 768px) {
+    .pop_omnisend_{{ se_id}} #popu_subscripte .popu-wrap {
+      max-width: 700px;
+      width: 90%;
+    }
+  }
+</style>

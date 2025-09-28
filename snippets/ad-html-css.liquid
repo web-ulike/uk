@@ -1,0 +1,80 @@
+<style>
+
+  @media (max-width: 767px) {
+    .product-info-new .product-form .description-cont-flex {
+      display: none;
+    }
+    .p-accordion-box {
+      margin-top: 20px;
+    }
+
+    .product-info-new .product-form .p-box-discount-code {
+      border-bottom: 0px;
+    }
+    .product-info-new .product-form .product-form__variants{
+      border-top: 1px solid #f2f2f2;
+      padding: 5px 0px 10px;
+      margin-top: 10px;
+    }
+    .product-info-new .product-form .p-collapsible-container {
+      margin-top: 0px;
+      display: block;
+    }
+    .product-info-new .product-form .product-form__payment-container {
+      margin-top: 20px;
+    }
+    .product-sticky-form .product-sticky-form__content-wrapper {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        margin-left: 20px;
+    }
+    .product-sticky-form .product-sticky-form__inner {
+       display: flex;
+       padding: 0px;
+    }
+    .product-sticky-form .product-sticky-form__form {
+       flex: 1;
+       justify-content: normal;
+       display: grid;
+    }
+  }
+</style>
+<script>
+  $(document).ready(function () {
+    if (isMobile()) {
+      var $parent = $('.product-form');
+      var $discount = $('.p-box-discount-code');
+      var $price = $('.p-box-price');
+      var $accordion = $('.p-accordion-box');
+
+      if ($parent.length && $discount.length && $price.length) {
+        $parent.prepend($discount); // 再插入 discount（在最前）
+        $parent.prepend($price);
+        $parent.append($accordion);
+      }
+      toggleTextOnScroll(); // 初始检测
+      $(window).on('scroll resize', toggleTextOnScroll); // 滚动/尺寸变化时检测
+    }
+  });
+
+  function isInViewport($el) {
+    const elementTop = $el.offset().top;
+    const elementBottom = elementTop + $el.outerHeight();
+    const viewportTop = $(window).scrollTop();
+    const viewportBottom = viewportTop + $(window).height();
+
+    return elementBottom > viewportTop && elementTop < viewportBottom;
+  }
+
+  function toggleTextOnScroll() {
+    const $target = $('.product-form__buy-buttons');
+    const $text = $('.product-sticky-form'); // 要隐藏的文本
+
+    if (isInViewport($target)) {
+      $text.hide(); // 元素进入视口 -> 隐藏文本
+    } else {
+      $text.show(); // 元素离开视口 -> 显示文本
+    }
+  }
+</script>

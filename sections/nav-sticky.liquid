@@ -1,0 +1,247 @@
+<style>
+#main::after{
+  content: '';
+  display: block;
+  padding-bottom:70px;
+}
+.nav-sticky-box {
+  position: sticky;
+  top: calc(100vh - 70px);
+  z-index: 9;
+  background: #fff;
+  border-top: 1px solid #e4dddd;
+  border-bottom: 1px solid #e4dddd;
+}
+
+.nav-sticky .nav-sticky-cont {
+  display: flex;
+  justify-content: space-between;
+}
+
+.nav-sticky .nav-sticky-list {
+  display: flex;
+  align-items: center;
+  color: #3f3636;
+  font-size: 16px;
+  line-height: 1;
+  letter-spacing: 0.32px;
+  gap: 30px;
+  height: 100%;
+}
+
+.nav-sticky .nav-sticky-item {
+  cursor: pointer;
+  transition: all 0.4s ease;
+  flex-shrink: 0;
+}
+
+.nav-sticky .nav-sticky-item:last-child {
+  padding-right: 10px;
+}
+
+.nav-sticky .nav-sticky-item::first-letter {
+  font-size: 12px;
+  vertical-align: top;
+}
+
+.nav-sticky .nav-sticky-item.active,
+.nav-sticky .nav-sticky-item:hover {
+  color: #e0004d;
+  font-family: var(--heading-font-family);
+}
+
+.nav-sticky .nav-sticky-btn {
+  display: flex;
+  width: 350px;
+  height: 70px;
+  justify-content: center;
+  align-items: center;
+  background: #190a0a;
+  color: #fbfaf4;
+  font-size: 16px;
+  line-height: 1.5;
+  gap: 10px;
+  cursor: pointer;
+}
+
+.nav-sticky .nav-sticky-btn span {
+  font-family: var(--heading-font-family);
+}
+
+@media (max-width: 991px) {
+  #main::after{
+    padding-bottom:49px;
+  }
+  .nav-sticky-box {
+    top: calc(100vh - 49px);
+  }
+  .nav-sticky .nav-sticky-left {
+    flex: 1;
+    overflow: hidden;
+    overflow-x: auto;
+    mask: linear-gradient(90deg, #0000, #fff 0%, #fff 80%, #0000);
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .nav-sticky .nav-sticky-left::-webkit-scrollbar {
+    display: none;
+  }
+  .nav-sticky .nav-sticky-list {
+    font-size: 12px;
+    flex-shrink: 0;
+    gap: 15px;
+  }
+  .nav-sticky .nav-sticky-btn {
+    width: 170px;
+    height: 48px;
+    font-size: 12px;
+    flex-shrink: 0;
+  }
+}
+</style>
+
+<section>
+  <div class="nav-sticky to-top">
+    <div class="container">
+      <div class="nav-sticky-cont">
+        <div class="nav-sticky-left">
+          <div class="nav-sticky-list">
+            {%- for block in section.blocks -%}
+              <div class="nav-sticky-item" data-target="{{ block.settings.text1 }}">
+                {{ block.settings.text }}
+              </div>
+            {%- endfor -%}
+          </div>
+        </div>
+        {%- if section.settings.text != blank or section.settings.text1 != blank -%}
+          <div class="nav-sticky-btn">
+            {%- if section.settings.text != blank -%}
+              <span>{{ section.settings.text }}</span>
+            {%- endif -%}
+            <s>{{ section.settings.text1 }}</s>
+          </div>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+      const navLinks = document.querySelectorAll('.nav-sticky .nav-sticky-item');
+      const sections = document.querySelectorAll('section');
+      let isScrolling = false;
+      // Intersection Observer callback
+      const observerCallback = (entries) => {
+        if (isScrolling) return;
+        entries.forEach(entry => {
+          const targetLink = document.querySelector(`.nav-sticky .nav-sticky-item[data-target="${entry.target.id}"]`);
+          if (targetLink){
+            if (entry.isIntersecting) {
+              targetLink.classList.add('active');
+            } else {
+              targetLink.classList.remove('active');
+            }
+          }
+        });
+      };
+    
+      // Create Intersection Observer
+      const observer = new IntersectionObserver(observerCallback, {
+        threshold: 0.5
+      });
+    
+      // Observe each section
+      navLinks.forEach(section => {
+        {% comment %} observer.observe(document.getElementById(section.getAttribute('data-target'))); {% endcomment %}
+        if (section) {  // Check if section is a valid element
+          observer.observe(section);
+        } else {
+          console.warn(`Section with ID ${section.id} not found.`);
+        }
+      });
+    
+      // Smooth scroll to section on nav link click
+      navLinks.forEach(link => {
+        link.addEventListener('click', function(event) {
+          event.preventDefault();
+          const targetId = this.getAttribute('data-target');
+          console.log(targetId);
+          const targetSection = document.getElementById(targetId);
+          // Remove active class from all links and add to the clicked link
+          navLinks.forEach(link => link.classList.remove('active'));
+          this.classList.add('active');
+           isScrolling = true;
+          targetSection.scrollIntoView({
+            behavior: 'smooth'
+          });
+    
+          setTimeout(() => {
+            isScrolling = false;
+          }, 1000); 
+        });
+      });
+
+      
+    });
+
+  window.addEventListener('load', function() {
+    $('.nav-sticky .nav-sticky-btn').click(function(event) {
+          // document.getElementById('{{ section.settings.text2 }}').scrollIntoView({
+          //   behavior: 'smooth'
+          // });
+         let section2Offset = $("#{{ section.settings.text2 }}").offset().top - 100;
+          // 滚动到指定模块
+          $('html, body').animate({
+              scrollTop: section2Offset
+          }, 1000); 
+      })
+    })
+  
+</script>
+{% schema %}
+{
+  "name": "nav-sticky",
+  "class": "nav-sticky-box",
+  "settings": [
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "text1",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "text2",
+      "label": "定位ID"
+    }
+  ],
+  "blocks": [
+    {
+    "name": "item",
+    "type": "item",
+    "settings": [
+      {
+        "type": "text",
+        "id": "text",
+        "label": "Text"
+      },
+      {
+        "type": "text",
+        "id": "text1",
+        "label": "定位ID"
+      }
+    ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "nav-sticky"
+    }
+  ]
+}
+{% endschema %}

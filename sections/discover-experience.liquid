@@ -1,0 +1,218 @@
+<style>
+.discover-experience {
+  padding: 100px 0 125px 0;
+  background: linear-gradient(180deg, #fff 21.08%, #f2f2f2 100%);
+}
+
+.discover-experience .discover-experience-h3 {
+  color: #190a0a;
+  font-size: 44px;
+  line-height: 1.2;
+  font-family: var(--heading-font-family);
+  font-weight: normal;
+  margin: 0;
+}
+
+.discover-experience .discover-experience-p {
+  color: #190a0a;
+  font-size: 18px;
+  line-height: 1.5;
+  margin: 0;
+  margin-top: 20px;
+  position: relative;
+  z-index: 1;
+}
+
+.discover-experience .img {
+  width: calc(100% + 80px);
+  max-width: none;
+  margin-left: -40px;
+  margin-top: -30px;
+}
+
+.discover-experience .discover-experience-text {
+  padding: 69px 40px 40px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.46);
+  box-shadow: 0 15px 30px 0 rgba(0, 0, 0, 0.08);
+  backdrop-filter: blur(22px);
+  position: relative;
+  z-index: 1;
+  margin-top: -15%;
+}
+
+.discover-experience .discover-experience-h4 {
+  color: #190a0a;
+  font-size: 36px;
+  line-height: 1.2;
+  font-family: var(--heading-font-family);
+  font-weight: normal;
+  margin: 0;
+  margin-bottom: 35px;
+}
+
+.discover-experience .discover-experience-table {
+  border-top: 1px solid #3f3636;
+}
+
+.discover-experience .discover-experience-tr {
+  display: flex;
+  gap: 20px;
+  border-bottom: 1px solid #3f3636;
+  padding: 24px 0;
+  color: #190a0a;
+  font-size: 18px;
+  line-height: 1.5;
+}
+
+.discover-experience .discover-experience-tr:first-child {
+  color: #e0004d;
+  font-family: var(--heading-font-family);
+}
+
+.discover-experience .discover-experience-td {
+  flex: 1;
+}
+
+@media (max-width: 991px) {
+  .discover-experience {
+    padding: 58px 0 45px 0;
+  }
+
+  .discover-experience .discover-experience-h3 {
+    font-size: 24px;
+  }
+
+  .discover-experience .discover-experience-p {
+    font-size: 12px;
+    margin-top: 10px;
+  }
+
+  .discover-experience .img {
+    width: calc(100% + 48px);
+    margin-left: -24px;
+    margin-top: 20px;
+  }
+
+  .discover-experience .discover-experience-text {
+    border-radius: 10px;
+    padding: 30px 14px 24px 14px;
+    margin-top: -13.5%;
+  }
+
+  .discover-experience .discover-experience-h4 {
+    font-size: 20px;
+    margin-bottom: 17px;
+  }
+
+  .discover-experience .discover-experience-tr {
+    gap: 15px;
+    font-size: 12px;
+    padding: 10px 0;
+  }
+
+  .discover-experience .discover-experience-tr:first-child {
+    font-size: 14px;
+  }
+}
+</style>
+<section class="section-box">
+    <div class="discover-experience">
+    <div class="container">
+      <div class="discover-experience-cont">
+        {%- if section.settings.text != blank -%}
+            <h3 class="discover-experience-h3">{{ section.settings.text }}</h3>
+        {%- endif -%}
+        {%- if section.settings.text1 != blank -%}
+            <div class="discover-experience-p">{{ section.settings.text1 }}</div>
+        {%- endif -%}
+        {%- if section.settings.image != blank -%}
+            <img loading="lazy"
+                class="img"
+                width=""
+                height=""
+                {% render 'image-attributes', image: section.settings.image %}
+                alt="{{ section.settings.image.alt | escape }}">
+        {%- endif -%}
+        <div class="discover-experience-text">
+          {%- if section.settings.text2 != blank -%}
+            <h4 class="discover-experience-h4">{{ section.settings.text2 }}</h4>
+          {%- endif -%}
+          <div class="discover-experience-table">
+            {%- for block in section.blocks -%}
+                <div class="discover-experience-tr">
+                    {%- if block.settings.text != blank -%}
+                        <div class="discover-experience-td">{{ block.settings.text }}</div>
+                    {%- endif -%}
+                    {%- if block.settings.text1 != blank -%}
+                        <div class="discover-experience-td">{{ block.settings.text1 }}</div>
+                    {%- endif -%}
+                    {%- if block.settings.text2 != blank -%}
+                        <div class="discover-experience-td">{{ block.settings.text2 }}</div>
+                    {%- endif -%}
+                </div>
+            {%- endfor -%}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "discover-experience",
+  "blocks": [
+    {
+      "name": "item",
+      "type": "item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text"
+        },
+        {
+          "type": "text",
+          "id": "text1",
+          "label": "Text"
+        },
+        
+        {
+          "type": "text",
+          "id": "text2",
+          "label": "Text"
+        }
+      ]
+    }
+  ],
+  "settings": [
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Title"
+    },
+    {
+      "type": "text",
+      "id": "text1",
+      "label": "Text"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "text2",
+      "label": "Text"
+    }
+  ],
+  "presets": [
+    {
+      "name": "discover-experience",
+      "blocks": []
+    }
+  ]
+}
+{% endschema %}

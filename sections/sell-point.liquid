@@ -1,19 +1,30 @@
 <style>
-    #shopify-section-{{ section.id }} {
-    --text-color: {{  section.settings.text_color.red }}, {{  section.settings.text_color.green }}, {{  section.settings.text_color.blue }};
-    --section-background: {{ section.settings.background.red }}, {{ section.settings.background.green }}, {{ section.settings.background.blue }};
-    background: rgb(var(--section-background, var(--background)));
+     #shopify-section-{{ section.id }} {
+  --text-color: {{  section.settings.text_color.red }}, {{  section.settings.text_color.green }}, {{  section.settings.text_color.blue }};
+      --section-background: {{ section.settings.background.red }}, {{ section.settings.background.green }}, {{ section.settings.background.blue }};
+      --background-image: url({{ section.settings.background_image | img_url: '3840x1176' }});
+      {% if section.settings.background_image != blank %}
+        background-image: var( --background-image);
+      {% else %}
+        background-color: var(--section-background)
+      {% endif %}
+    }
+    .section-{{ section.id }}-padding {
+      padding-top: calc({{ section.settings.padding_top }}px);
+      padding-bottom: calc({{ section.settings.padding_bottom }}px);
+    }
+    @media screen and (max-width: 768px){
+      #shopify-section-{{ section.id }} {
+      {% if section.settings.mobile_background_image != blank %}
+        --background-image: url({{ section.settings.mobile_background_image | img_url : '750x1230' }});
+      {% endif %}
+      }
+    .section-{{ section.id }}-padding {
+      padding-top: calc({{ section.settings.padding_top }}px * 0.6);
+      padding-bottom: calc({{ section.settings.padding_bottom }}px * 0.6);
+    }
   }
-  .section-{{ section.id }}-padding {
-    padding-top: calc({{ section.settings.padding_top }}px);
-    padding-bottom: calc({{ section.settings.padding_bottom }}px);
-  }
-  @media screen and (max-width: 768px){
-  .section-{{ section.id }}-padding {
-    padding-top: calc({{ section.settings.padding_top }}px * 0.6);
-    padding-bottom: calc({{ section.settings.padding_bottom }}px * 0.6);
-  }
-}
+  
 .sell_point{
   background: linear-gradient(180deg, #FFECF2 0%, rgba(255, 236, 242, 0.00) 100%);
 }
@@ -63,7 +74,7 @@ font-weight: 400;
 line-height: normal;
 text-transform: uppercase;
 }
-.sell_tle{
+#shopify-section-{{ section.id }} .sell_tle{
 color: #000;
 font-size: 40px;
 line-height: 125%;
@@ -164,7 +175,7 @@ line-height: 150%;
   }
   }
 @media screen and (max-width: 992px){
-  .sell_tle{
+  #shopify-section-{{ section.id }} .sell_tle{
     font-size: 24px;
     margin-top: 17px;
   }
@@ -255,7 +266,7 @@ line-height: 150%;
   }
   }
 </style>
-<section class="sell_point section-{{ section.id }}-padding">
+<section class="sell_point section-{{ section.id }}-padding" style="background:{{ section.settings.bg_color }}">
   <div class="container">
     <div class="sell_wrapper">
       {%- for block in section.blocks -%}
@@ -472,6 +483,21 @@ line-height: 150%;
   "name": "Sell Point",
   "class": "shopify-section--sell-point", 
   "settings": [
+      {
+        "type": "color_background",
+        "id": "bg_color",
+        "label": "背景颜色"
+      },
+     {
+          "type": "image_picker",
+          "id": "background_image",
+          "label": "Background Image"
+        },
+      {
+          "type": "image_picker",
+          "id": "mobile_background_image",
+          "label": "Mobile Background Image"
+        },
     {
       "type": "image_picker",
       "id": "scroll_img",

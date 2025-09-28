@@ -1,0 +1,311 @@
+<style>
+.smart-tracker {
+  position: relative;
+  padding: 80px 0;
+  overflow: hidden;
+}
+.smart-tracker-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  overflow: hidden;
+}
+.smart-tracker-bg .dot {
+  position: absolute;
+  content: '';
+  width: 56px;
+  height: 56px;
+  left: 55%;
+  top: 28.5%;
+  background: #C4C4E3;
+  border-radius: 50%;
+  filter: blur(3px);
+}
+.smart-tracker-bg .dot:nth-child(2) {
+  left: 59.5%;
+  top: 54%;
+}
+.smart-tracker-bg .dot:nth-child(3) {
+  left: 76.5%;
+  top: 78.5%;
+}
+
+.bg-img {
+  display: block;
+  width: 100%;
+  height: 103%;
+}
+.smart-tracker .container {
+  position: relative;
+  z-index: 2;
+}
+.smart-tracker-title {
+  color: #000;
+  text-align: center;
+  font-size: 65px;
+  font-family: var(--heading-font-family);
+  line-height: 1;
+}
+.smart-tracker-sub {
+  color: #000;
+  text-align: center;
+  font-size: 28px;
+  line-height: 1.5;
+  margin-top: 20px;
+}
+.smart-tracker-sub p {
+  margin: 0;
+}
+.smart-tracker-cont {
+  margin-top: 50px;
+}
+.smart-tracker-item {
+  color: #190A0A;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  margin: 30px 0px;
+}
+.smart-tracker-item::before {
+  position: absolute;
+  /* content: ''; */
+  width: 56px;
+  height: 56px;
+  left: 60%;
+  top: 58%;
+  background: #C4C4E3;
+  border-radius: 50%;
+  filter: blur(3px);
+}
+.smart-tracker-item:nth-child(2)::before {
+  left: 62.2%;
+  top: 50%;
+}
+.smart-tracker-item:nth-child(3)::before {
+  left: 86.2%;
+  top: 40%;
+}
+.smart-tracker-item:nth-child(2n) {
+  flex-direction: row-reverse;
+}
+
+.smart-tracker-item:first-child .smart-tracker-text {
+  max-width: 750px;
+}
+.smart-tracker-item:nth-child(2) .smart-tracker-text {
+  max-width: 744px;
+}
+
+.smart-tracker-item:nth-child(3) .smart-tracker-text {
+  max-width: 744px;
+}
+
+.smart-tracker-item .img {
+  width: 392px;
+}
+.smart-tracker-item:nth-child(2)  .img {
+  width: 600px;
+}
+
+
+.smart-tracker-t {
+  font-size: 48px;
+  line-height: 1.2;
+  font-family: var(--heading-font-family);
+}
+.smart-tracker-p {
+  font-size: 28px;
+  line-height: 1.5;
+  margin-top: 15px;
+}
+
+@media (max-width: 1500px) {
+  .smart-tracker-t {
+    font-size: 38px;
+  }
+  .smart-tracker-p {
+    font-size: 20px;
+  }
+  .smart-tracker-item:first-child .smart-tracker-text {
+    max-width: 430px;
+  }
+  .smart-tracker-item:nth-child(2) .smart-tracker-text {
+    max-width: 620px;
+  }
+  .smart-tracker-item:nth-child(3) .smart-tracker-text {
+    max-width: 450px;
+  }
+  .smart-tracker-item:nth-child(3) {
+    gap: 3%;
+  }
+  .smart-tracker-item .img {
+    width: 330px;
+  }
+}
+
+@media (max-width: 1300px) {
+  .smart-tracker-t {
+    font-size: 30px;
+  }
+  .smart-tracker-p {
+    font-size: 16px;
+  }
+  .smart-tracker-item:first-child .smart-tracker-text {
+    max-width: 330px;
+  }
+  .smart-tracker-item:nth-child(2) .smart-tracker-text {
+    max-width: 460px;
+  }
+  .smart-tracker-item:nth-child(3) .smart-tracker-text {
+    max-width: 400px;
+  }
+}
+
+@media (max-width: 991px) {
+  .smart-tracker {
+    padding: 60px 0;
+  }
+  .smart-tracker-bg {
+    display: none;
+  }
+  .smart-tracker-title {
+    font-size: 28px;
+  }
+  .smart-tracker-sub {
+    font-size: 14px;
+    margin-top: 6px;
+    width: 80%;
+    margin: 0px auto;
+  }
+  .smart-tracker-t {
+    font-size: 18px;
+    color: #000;
+  }
+  .smart-tracker-p {
+    font-size: 14px;
+    color: #828282;
+  }
+  .smart-tracker-item .img {
+    width: 85%;
+    position: relative;
+    z-index: 2;
+  }
+  .smart-tracker-item:first-child .smart-tracker-text {
+    max-width: 50%;
+  }
+  .smart-tracker-item:nth-child(2) {
+    flex-direction: column-reverse;
+    flex-wrap: wrap;
+  }
+  .smart-tracker-item:nth-child(2) .smart-tracker-text {
+    max-width: 100%;
+    padding: 0px 20px;
+  }
+  .smart-tracker-item:nth-child(2) .smart-tracker-text .smart-tracker-t {
+    text-align: center;
+  }
+  .smart-tracker-item:nth-child(3) .smart-tracker-text {
+    max-width: 50%;
+  }
+
+  .smart-tracker-img {
+    position: relative;
+  }
+  .smart-tracker-item:nth-child(2) .smart-tracker-img:before {
+    border-radius: 120px 0 0 120px;
+  }
+}
+</style>
+
+<section>
+  <div class="smart-tracker to-top {{ section.settings.text2 }}">
+    {%- if section.settings.image != blank -%}
+      <div class="smart-tracker-bg">
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <img loading="lazy"  class="bg-img" {% render 'image-attributes', image: section.settings.image %}>
+      </div>
+    {%- endif -%}
+    <div class="container">
+      <div class="smart-tracker-title">{{ section.settings.text }}</div>
+      <div class="smart-tracker-sub">
+        {{ section.settings.text1 }}
+      </div>
+      <div class="smart-tracker-cont">
+        {%- for block in section.blocks -%}
+          <div class="smart-tracker-item to-top">
+            <div class="smart-tracker-img">
+              {%- if block.settings.image != blank -%}
+                <img loading="lazy"  class="img" {% render 'image-attributes', image: block.settings.image %}>
+              {%- endif -%}
+            </div>
+            <div class="smart-tracker-text">
+              <div class="smart-tracker-t">{{ block.settings.text }}</div>
+              <div class="smart-tracker-p">{{ block.settings.text1 }}</div>
+            </div>
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</section>
+{% schema %}
+{
+  "name": "smart-tracker-tracker",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Text"
+    },
+    {
+      "type": "html",
+      "id": "text1",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "text2",
+      "label": "自定义Class"
+    }
+  ],
+  "blocks": [
+    {
+    "name": "item",
+    "type": "item",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "image",
+        "label": "Image"
+      },
+      {
+        "type": "text",
+        "id": "text",
+        "label": "Text"
+      },
+      {
+        "type": "text",
+        "id": "text1",
+        "label": "Text"
+      }
+    ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "smart-tracker-tracker"
+    }
+  ]
+}
+{% endschema %}

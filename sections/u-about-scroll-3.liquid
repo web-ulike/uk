@@ -1,0 +1,126 @@
+<style>
+  .about-scroll-container {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .about-scroll-title {
+    line-height: 1;
+    font-size: 48px;
+    text-align: center;
+    color: #190a0a;
+  }
+
+  .about-scroll-content {
+    display: flex;
+    width: max-content;
+  }
+
+  .about-scroll-content.running {
+    animation: scrollLeft 20s linear infinite;
+  }
+
+  .about-scroll-img {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 244px;
+    height: 130px;
+    cursor: pointer;
+    overflow: hidden;
+  }
+
+  .about-scroll-desc {
+    margin-top: 30px;
+    width: 220px;
+    line-height: 1.2;
+    font-weight: 380;
+    font-size: 18px;
+    color: #3f3636;
+    text-align: center;
+  }
+
+  .about-scroll-content.paused {
+    animation-play-state: paused;
+  }
+
+  #{{ section.id }} .about-scroll-item {
+    margin-right: 80px;
+  }
+
+  #{{ section.id }} .about-scroll-img {
+    width: 205px;
+    height: 80px;
+  }
+</style>
+
+<section id="{{ section.id }}">
+  <div class="about-scroll-container">
+    <div class="about-scroll-content">
+      {% for block in section.blocks %}
+        {% if block.settings.image != blank %}
+          <div class="about-scroll-item">
+            <div class="about-scroll-img">
+              <img
+                src="{{ block.settings.image | image_url }}"
+                width="100%"
+                height="auto"
+              >
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<script>
+  $(document).ready(function () {
+    $('#{{ section.id }} *').addClass('to-top');
+    function initScroll($container, $content) {
+      $content.addClass('running');
+      // 克隆内容实现无缝滚动
+      $content.append($content.html());
+
+      // 鼠标悬停暂停
+      $container.hover(
+        function () {
+          $content.addClass('paused');
+        },
+        function () {
+          $content.removeClass('paused');
+        }
+      );
+    }
+
+    initScroll($('#{{ section.id }} .about-scroll-container'), $('#{{ section.id }} .about-scroll-content'));
+  });
+</script>
+
+{% schema %}
+{
+  "name": "u-about-scroll-3",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "image_block",
+      "name": "图片",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "图片"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "u-about-scroll-3",
+      "blocks": []
+    }
+  ]
+}
+{% endschema %}

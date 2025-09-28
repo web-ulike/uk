@@ -1,0 +1,339 @@
+{% comment %} 情人节活动展示板块 {% endcomment %}
+{%- liquid
+  assign se_id = section.id
+  assign se_bks = section.blocks
+  assign se_stts = section.settings
+-%}
+<style>
+  .u-scroll-module {
+    font-family: 'Saans', sans-serif;
+    height: 180vh; /* 确保模块有足够的滚动范围 */
+    position: relative;
+    background: #F9F9F9;
+  }
+  .u-scroll-module .card-container {
+    width: 100%;
+    margin: 0 auto;
+    border-radius: 10px;
+    position: relative;
+    text-align: left;
+    padding: 100px 0px 0px;
+    position: sticky;
+    top: 0;
+    height: 170vh;
+  }
+  .u-scroll-module .card-container .card {
+    height: 100%;
+  }
+
+  .u-scroll-module .card-text {
+    line-height: 1.5;
+    font-size: 44px;
+    width: 1200px;
+    color: #000; /* 初始文字颜色 */
+    transition: color 0.3s ease;
+    margin: 40px auto 0px;
+    color: #000; /* 初始颜色 */
+    display: block; /* 为拆分文字做准备 */
+    position: sticky;
+    top: 20%;
+    text-align: center;
+    height: 450px;
+  }
+  .u-scroll-module .card-text .sentence {
+    text-align: center;
+    color: rgba(0, 0, 0, 0.20);
+    background-clip: text;
+    background-size: var(--num-backgroundSize) 100%;
+    background-repeat: no-repeat;
+    background-image: linear-gradient(90deg, #E0004D, #E0004D);
+  }
+  .u-scroll-module .card-text span {
+    color: #afafaf; /* 初始文字颜色 */
+  }
+
+  .u-scroll-module .image-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+    width: 100%;
+    position: relative;
+    padding: 15% 0px 0%;
+    height: 80%;
+    overflow: hidden;
+    background: rgba(249, 249, 249, 0.4)
+
+  }
+
+  .u-scroll-module .card-image {
+    width: 18%;
+    transform: translate3d(0, -0%, 0) rotate(0deg) scale(1); /* 初始位置 */
+    will-change: transform;
+    transition: transform 0.4s ease-out, opacity 0.1s ease-out; /* 添加平滑过渡 */
+    transition-delay: 0.1s; /* 动态延迟 */
+    background: #ac3a42;
+    padding: 10px;
+    color: #fff;
+    img {
+      width: 100%;
+    }
+  }
+  .u-scroll-module .card-image .name {
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 150%;
+    margin-top: 10px;
+  }
+
+
+  .u-scroll-module .card-image:nth-child(1) {
+    transform: translate3d(0, 0%, 0) rotate(8deg) scale(1);
+  }
+
+  .u-scroll-module .card-image:nth-child(2) {
+    transform: translate3d(0, 0%, 0) rotate(-3deg) scale(1);
+  }
+
+  .u-scroll-module .card-image:nth-child(3) {
+    transform: translate3d(0, 0%, 0) rotate(1deg) scale(1);
+  }
+
+  .u-scroll-module .card-image:nth-child(4) {
+    transform: translate3d(0, 0%, 0) rotate(-4deg) scale(1);
+  }
+
+  .u-scroll-module .card-image:nth-child(5) {
+    transform: translate3d(0, 0%, 0) rotate(9deg) scale(1);
+  }
+
+  /* 偶数 (2, 4, 6, ...) */
+  .u-scroll-module .card-image:nth-child(even) {
+    background-color: #ffe0e9;
+    color: #000;
+  }
+
+  @media (max-width: 768px) {
+    .u-scroll-module {
+      height: 130vh;
+    }
+    .u-scroll-module .card-container {
+        padding: 40px 0px 0px;
+        height: 130vh;
+    }
+    .u-scroll-module .card-container .card{
+      height: 100%;
+    }
+    .u-scroll-module .card-text {
+      width: 80%;
+      font-size: 22px;
+      text-align: center;
+      top: 120px;
+      margin: 10% auto 0px;
+    }
+    .u-scroll-module .image-wrapper {
+      overflow: initial;
+      display: block;
+      width: 100%;
+      overflow-x: hidden;
+    }
+    .u-scroll-module .card-image{
+        position: absolute;
+        width: 170px;
+        
+    }
+    .u-scroll-module .card-image:nth-child(1) {
+       transform: translate3d(-20%, -9%, 0) rotate(10deg) scale(1);
+    }
+    .u-scroll-module .card-image .name{
+      font-size: 10px;
+      line-height: 1.2;
+    }
+    
+    .u-scroll-module .card-image:nth-child(2) {
+      transform: translate3d(88%, -10%, 0px) rotate(-3deg) scale(1);
+    }
+    
+    .u-scroll-module .card-image:nth-child(3) {
+      transform: translate3d(186%, 0%, 0) rotate(4deg) scale(1);
+    }
+    
+    .u-scroll-module .card-image:nth-child(4) {
+      transform: translate3d(40%, 60%, 0) rotate(-4deg) scale(1);
+    }
+    
+    .u-scroll-module .card-image:nth-child(5) {
+      transform: translate3d(150%, 60%, 0) rotate(9deg) scale(1);
+    }
+  }
+
+</style>
+
+<div class="u-scroll-module">
+  <div class="card-container">
+    <div class="card">
+      <div class="card-text">
+        <span class="sentence">
+          {{se_stts.title }}
+          <br />
+          {{se_stts.desc }}
+         </span>
+      </div>
+
+      <div class="image-wrapper">
+        {% for block in se_bks %}
+            {% if block.type == 'item' %}
+                <div class="card-image">
+                      <picture>
+                        <source media="(max-width: 768px)" srcset="{{ block.settings.image | img_url: '400x' }}">
+                        <img loading="lazy" class="image" alt="{{ block.settings.alt_text | escape }}" src="{{ block.settings.image | img_url: '800x' }}">
+                      </picture>
+
+                    <div class="name">{{ block.settings.title }}</div>
+                </div>
+
+            {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+    // 初始化 GSAP 动画逻辑
+    document.addEventListener('DOMContentLoaded', () => {
+      // 监听滚动事件
+      window.addEventListener('scroll', handleScrollWord);
+
+
+      // 配置动画参数
+      const cardImages = document.querySelectorAll(".card-image");
+      let animationOptions = {
+        translateXFactors: [-0, -40, 30, 50, 80],
+        translateYFactors: [-0, 30, 10, 0, 10],
+        imageRotate: [10, -20, -15, -20, -10]
+      };
+      // 滚动事件监听
+      window.addEventListener("scroll", () => {
+        if (!isMobile()) {
+          updateScrollAnimation(cardImages, animationOptions);
+        } else {
+          let animationOptions = {
+            translateXFactors: [0, 70, 150, 30, 130],
+            translateYFactors: [80, 60, 90, 190, 200],
+            imageRotate: [-20, -10, -10, -15, 5],
+          };
+          updateScrollAnimation(cardImages, animationOptions);
+        }
+      });
+
+      // 页面加载完成时触发一次滚动事件，以确保初始状态正确
+      window.addEventListener('load', handleScrollWord);
+
+    });
+
+   
+
+    function updateScrollAnimation(elements, options) {
+      const element = document.querySelector(".u-scroll-module");
+      const elementRect = element.getBoundingClientRect();
+      const elementHeight = element.offsetHeight;
+      const viewportHeight = window.innerHeight;
+    
+      // 可见高度计算
+      const visibleHeight = Math.max(
+        0,
+        Math.min(elementHeight, viewportHeight - elementRect.top, elementRect.bottom)
+      );
+      const progress = Math.min(1, visibleHeight / elementHeight) * 100;
+      {% comment %} console.log(progress); {% endcomment %}
+      if (progress > 80) {
+        $('.u-scroll-module .card-text').css('opacity', progress/100);
+      } else {
+        $('.u-scroll-module .card-text').css('opacity', 1);
+      }
+
+      // 遍历更新每个元素
+      elements.forEach((cardImage, index) => {
+        const translateX = options.translateXFactors[index] - progress * 1;
+        const translateY = options.translateYFactors[index] - progress * 1;
+        const rotateValue = Number(options.imageRotate[index]) + progress * 0.2;
+        const scaleValue = 1 + 0.01 * progress;
+        // 更新样式
+        if (isMobile()){
+          const translateX = options.translateXFactors[index] - progress * 0.02;
+          cardImage.style.transform = `translate3d(${translateX}%, ${translateY}%, 0px) rotate(${rotateValue}deg)`;
+        } else {
+          cardImage.style.transform = `translate3d(${translateX}px, ${translateY}%, 0px) rotate(${rotateValue}deg)`;
+        }
+        
+      });
+    }
+
+
+    function handleScrollWord() {
+      let textElement = document.querySelector('.u-scroll-module .card-text');
+      let scrollPosition = window.scrollY;
+      let windowHeight = window.innerHeight;
+      let reat = textElement.getBoundingClientRect()
+      let scrollThresholdStart = windowHeight * 0.2; // 设置动画开始的滚动位置为页面高度的 20%
+      let scrollThresholdEnd = windowHeight * 0.8; // 设置动画结束的滚动位置为页面高度的 80%
+      // 根据滚动位置计算背景大小
+      let backgroundSize = (1 - (reat.top - windowHeight * 0.2) / (windowHeight * 0.6)) * 100;
+  
+      // 如果滚动位置在阈值范围内，则显示文本并设置背景大小
+      if (reat.top >= scrollThresholdStart && reat.top <= scrollThresholdEnd) {
+        textElement.style = '--num-backgroundSize:' + backgroundSize + '%'
+      }
+      if (reat.top < scrollThresholdStart) {
+        textElement.style = '--num-backgroundSize:100%'
+      }
+      if (reat.top > scrollThresholdEnd) {
+        textElement.style = '--num-backgroundSize:0%'
+      }
+    }
+  </script>
+
+
+{% schema %}
+{
+  "name": "u-scroll-module",
+  "settings": [
+    {
+      "type": "html",
+      "id": "title",
+      "label": "标题"
+    },
+    {
+        "type": "html",
+        "id": "desc",
+        "label": "标题2"
+    }
+  ],
+  "blocks": [
+    {
+        "type": "item",
+        "name": "item",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "图片"
+          },
+          {
+            "type": "textarea",
+            "id": "title",
+            "label": "标题",
+            "default": "1st Prize"
+          }
+        ]
+      }
+  ],
+  "presets": [
+    {
+      "name": "u-scroll-module",
+      "blocks": []
+    }
+  ]
+}
+{% endschema %}

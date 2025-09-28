@@ -1,0 +1,768 @@
+<style>
+.sport-popup-cust .officially-features-popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  z-index: 999;
+  background: rgba(0, 0, 0, 0);
+  display: flex;
+  justify-content: flex-end;
+  pointer-events: none;
+  transition: all 0.4s ease;
+  overflow: hidden;
+}
+.sport-popup-cust .officially-features-popup.active {
+  background: rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  pointer-events: all;
+}
+
+.sport-popup-cust .officially-features-popup .officially-features-popup-cont {
+  width: 100%;
+  height: 100%;
+  max-width: 730px;
+  background: #fff;
+  padding: 90px 60px 60px;
+  position: relative;
+  transform: translateX(100%);
+  transition: all 0.4s ease;
+  z-index:2;
+}
+
+.sport-popup-cust .officially-features-popup.active .officially-features-popup-cont {
+  transform: translateX(0);
+  transition: all 0.4s ease 0.1s;
+}
+
+.sport-popup-cust .officially-features-popup .officially-features-popup-det {
+  height: 100%;
+  overflow-y: auto;
+  position: relative;
+}
+.sport-popup-cust .officially-features-popup .officially-features-popup-det::-webkit-scrollbar {
+  width: 6px;
+}
+
+.sport-popup-cust .officially-features-popup
+  .officially-features-popup-det::-webkit-scrollbar-track {
+  background-color: none;
+}
+
+.sport-popup-cust .officially-features-popup
+  .officially-features-popup-det::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+}
+
+.sport-popup-cust .officially-features-popup .officially-features-popup-det::-moz-scrollbar {
+  width: 6px;
+}
+
+.sport-popup-cust .officially-features-popup
+  .officially-features-popup-det::-moz-scrollbar-track {
+  background: none;
+}
+
+.sport-popup-cust .officially-features-popup
+  .officially-features-popup-det::-moz-scrollbar-thumb {
+  background: rgba(228, 221, 221, 0.3);
+  border-radius: 5px;
+}
+
+.sport-popup-cust .officially-features-popup .officially-features-popup-close {
+  position: absolute;
+  top: 30px;
+  right: 30px;
+  cursor: pointer;
+  z-index: 3;
+}
+
+.sport-popup-cust .officially-features-popup .officially-features-popup-title {
+  font-size: 30px;
+  line-height: 1;
+  color: #000;
+  font-family: var(--heading-font-family);
+}
+
+@media (max-width: 991px) {
+  .sport-popup-cust .officially-features-popup {
+    display: flex;
+    align-items: flex-end;
+  }
+
+  .sport-popup-cust .officially-features-popup .officially-features-popup-cont {
+    max-height: 100%;
+    height: auto;
+    transform: translateY(100%);
+    overflow-x: hidden;
+  }
+
+  .sport-popup-cust .officially-features-popup.active .officially-features-popup-cont {
+    transform: translateY(0);
+  }
+  .sport-popup-cust .officially-features-popup .officially-features-popup-close {
+    top: 18px;
+    right: 18px;
+  }
+  .sport-popup-cust .officially-features-popup .officially-features-popup-sub {
+    font-size: 14px;
+  }
+  .sport-popup-cust .officially-features-popup .officially-features-popup-title {
+    font-size: 24px;
+  }
+  .sport-popup-cust .officially-features-popup.active .officially-features-popup-cont {
+    padding: 50px 20px;
+    padding-right: 0px;
+  }
+  .sport-popup-cust .officially-features-popup .officially-features-popup-det {
+    max-height: 70vh;
+    padding-right: 20px;
+  }
+}
+.sport-popup-cust .visible-results {
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+  display: block;
+  padding: 0;
+}
+
+.sport-popup-cust .visible-results .mb-box {
+  display: none;
+}
+
+.sport-popup-cust .visible-results .visible-results-left {
+  position: relative;
+  margin-top: 20px;
+      width: auto;
+}
+
+.sport-popup-cust .visible-results .visible-results-dot {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  bottom: 30px;
+  display: flex;
+  gap: 15px;
+  width: max-content;
+      border-radius: 0;
+    padding: 0;
+    background: none;
+    border: 0;
+    backdrop-filter: none;
+}
+
+.sport-popup-cust .visible-results .visible-results-dot-item {
+  border: 1.5px solid rgba(255, 255, 255, 1);
+  height: 35px;
+  display: flex;
+  align-items: center;
+  padding: 0 25px;
+  border-radius: 40px;
+  cursor: pointer;
+  color: #fff;
+  font-size: 14px;
+  line-height: 1.2;
+  flex-shrink: 0;
+}
+
+.sport-popup-cust .visible-results .visible-results-dot-item.active {
+  background: rgba(251, 250, 244, 1);
+  backdrop-filter: blur(0px);
+  -webkit-backdrop-filter: blur(0px);
+  color: #3f3636;
+}
+
+.sport-popup-cust .visible-results .visible-results-cont {
+  position: relative;
+  z-index: 1;
+}
+
+.sport-popup-cust .visible-results .visible-results-img {
+  position: relative;
+  z-index: 0;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.sport-popup-cust .visible-results .visible-results-img-item {
+  position: absolute;
+  z-index: 0;
+  width: 100%;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  transition: all 0.8s ease;
+}
+
+.sport-popup-cust .visible-results-img-item.active {
+  position: relative;
+  opacity: 1;
+}
+
+.sport-popup-cust .visible-results .visible-results-cont .img {
+  position: relative;
+  z-index: 0;
+  width: 100%;
+}
+.sport-popup-cust .visible-results .visible-results-flex {
+  display: flex;
+  gap: 40px;
+  margin-top: 30px;
+}
+
+ .sport-popup-cust  .visible-results .visible-results-top{
+    width:calc(20% + 40px);
+    padding-right:40px;
+    border-right:1px solid #e2e2e2;
+       position: static;
+    z-index: 0;
+  }
+
+.sport-popup-cust .visible-results .visible-results-title {
+  color: #000;
+  font-size: 30px;
+  line-height: 1.2;
+}
+
+.sport-popup-cust .visible-results .visible-results-sub {
+  color: #000;
+  font-size: 14px;
+  line-height: 1.5;
+  margin-top: 15px;
+      opacity: 1;
+}
+
+.sport-popup-cust .visible-results .visible-results-num {
+  display: none;
+  align-items: center;
+  flex-direction: column;
+  gap: 0;
+    margin-top: 0;
+}
+
+.sport-popup-cust .visible-results .visible-results-num.active {
+  display: flex;
+}
+
+.sport-popup-cust .visible-results .visible-results-n {
+  color: #e0004d;
+  font-size: 60px;
+  line-height: 1;
+}
+
+.sport-popup-cust .visible-results .visible-results-p {
+  color: #190a0a;
+  font-size: 16px;
+  line-height: 1;
+}
+
+.sport-popup-cust .visible-results .visible-results-db {
+  display: flex;
+  gap: 15px;
+  overflow: hidden;
+  margin-top: 15px;
+      border-radius: 0;
+}
+
+.sport-popup-cust .visible-results .visible-results-db-item {
+  position: relative;
+  flex: 1;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.sport-popup-cust .visible-results .visible-results-db-item:first-child {
+  border-right: 1px solid #fff;
+}
+.sport-popup-cust .visible-results .sm-box {
+  position: absolute;
+  z-index: 0;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: all 0.8s ease;
+}
+.sport-popup-cust .visible-results .sm-box.active {
+  opacity: 1;
+  position: relative;
+  z-index: 1;
+  width: auto;
+  height: auto;
+}
+.sport-popup-cust .visible-results .visible-results-db-item .sm-img {
+  width: 100%;
+  position: relative;
+  z-index: 0;
+}
+
+.sport-popup-cust .visible-results .visible-results-tag {
+  position: absolute;
+  z-index: 3;
+  width: 100px;
+  height: 35px;
+  border-radius: 35px;
+  background: rgba(0, 0, 0, 0.25);
+  color: #fbfaf4;
+  font-size: 14px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.sport-popup-cust .visible-results .visible-results-right {
+    padding: 0px;
+      border-radius: 0;
+    background: none;
+}
+  .sport-popup-cust .visible-results .visible-results-box {
+    max-width: 100%;
+}
+@media (max-width: 991px) {
+  .sport-popup-cust .visible-results .pc-box {
+    display: none;
+  }
+  .sport-popup-cust .visible-results .mb-box {
+    display: block;
+  }
+  .sport-popup-cust .visible-results .visible-results-flex {
+    margin-top: 20px;
+  }
+  .sport-popup-cust .visible-results .visible-results-top{
+    width:calc(24% + 40px);
+  }
+  .sport-popup-cust .visible-results .visible-results-dot {
+     position: relative;
+        background: none;
+        bottom: auto;
+        left: auto;
+        transform: translateX(0);
+        width: auto;
+        gap: 10px;
+        border-radius: 0;
+        overflow-x: auto;
+        padding: 0 24px;
+        margin: 0 -24px;
+        margin-top: 36px;
+  }
+
+  .sport-popup-cust .visible-results .visible-results-dot::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+  }
+
+  .sport-popup-cust .visible-results .visible-results-dot-item {
+    height: 34px;
+    border: 1px solid #000;
+    background: none;
+    font-size: 12px;
+    color: #333;
+  }
+  .sport-popup-cust .visible-results .visible-results-dot-item.active {
+    background: #000;
+    color: #fff;
+    font-family: var(--heading-font-family);
+  }
+
+  .sport-popup-cust .visible-results .visible-results-cont {
+    margin-top: 26px;
+    border-radius: 10px 10px 0 0;
+    overflow: hidden;
+  }
+
+  .sport-popup-cust .visible-results .visible-results-title {
+    font-size: 26px;
+  }
+ .sport-popup-cust  .visible-results .visible-results-sub {
+    margin-top: 15px;
+  }
+
+  .sport-popup-cust .visible-results .visible-results-box {
+    max-width: 100%;
+  }
+  .sport-popup-cust .visible-results .visible-results-det {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    align-items: center;
+  }
+  .sport-popup-cust .visible-results .visible-results-tag {
+    background: none;
+    border: 0;
+    backdrop-filter: blur(0px);
+    -webkit-backdrop-filter: blur(0px);
+    right: auto !important;
+    left: 50% !important;
+    transform: translateX(-50%);
+    height: auto;
+  }
+  .sport-popup-cust .visible-results .visible-results-p {
+    font-size: 12px;
+  }
+  .sport-popup-cust .visible-results .visible-results-n {
+    font-size: 40px;
+  }
+   .sport-popup-cust   .visible-results .visible-results-num-list {
+        width: auto;
+        flex-shrink: initial;
+    }
+}
+.sport-popup-cust .officially-features-popup .result-new-popup-mark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+</style>
+<section class="section-box">
+ <div class="officially-features-popup {{ section.settings.text3 }}">
+   <div class="result-new-popup-mark"></div>
+    <div class="officially-features-popup-cont">
+      <div class="officially-features-popup-close">
+        <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" viewBox="0 0 23 23" fill="none">
+          <line x1="2.02941" y1="0.848633" x2="22.182" y2="21.0012" stroke="#3F3636" stroke-width="1.5"
+            stroke-linecap="round"></line>
+          <line x1="22.1836" y1="1.06066" x2="2.03105" y2="21.2132" stroke="#3F3636" stroke-width="1.5"
+            stroke-linecap="round"></line>
+        </svg>
+      </div>
+      <div class="officially-features-popup-det">
+        <div class="visible-results">
+          <div class="visible-results-title">{{ section.settings.title }}</div>
+          <div class="visible-results-sub">
+            {{ section.settings.text }}
+          </div>
+          <div class="visible-results-flex">
+            <div class="visible-results-top">
+              {%- if section.settings.image != blank -%}
+                <img
+                  class="icon-img"
+                  width=""
+                  height=""
+                  src="{{ section.settings.image | image_url }}"
+                  alt="{{ section.settings.image | escape }}"
+                >
+              {%- endif -%}
+            </div>
+            <div class="visible-results-num-list">
+              {%- for block in section.blocks -%}
+                <div class="visible-results-num {% if forloop.index == 1 %}active{% endif %}">
+                  <div class="visible-results-n">{{ block.settings.text1 }}</div>
+                  <div class="visible-results-p">{{ block.settings.text2 }}</div>
+                </div>
+              {%- endfor -%}
+            </div>
+          </div>
+          <div class="visible-results-left">
+            <div class="visible-results-dot">
+              {%- for block in section.blocks -%}
+                <div class="visible-results-dot-item {% if forloop.index == 1 %}active{% endif %}">
+                  {{ block.settings.text }}
+                </div>
+              {%- endfor -%}
+            </div>
+            <div class="visible-results-cont">
+              <div class="visible-results-img">
+                {%- for block in section.blocks -%}
+                  <div class="visible-results-img-item {% if forloop.index == 1 %}active{% endif %}">
+                    {%- if block.settings.img != blank -%}
+                      <img
+                        class="img pc-box"
+                        width=""
+                        height=""
+                        src="{{ block.settings.img | image_url }}"
+                        alt="{{ block.settings.img | escape }}"
+                      >
+                    {%- endif -%}
+                    {%- if block.settings.img1 != blank -%}
+                      <img
+                        class="img mb-box"
+                        width=""
+                        height=""
+                        src="{{ block.settings.img1 | image_url }}"
+                        alt="{{ block.settings.img1 | escape }}"
+                      >
+                    {%- endif -%}
+                  </div>
+                {%- endfor -%}
+              </div>
+            </div>
+          </div>
+          <div class="visible-results-right">
+            <div class="visible-results-box">
+              <div class="visible-results-det">
+                <div class="visible-results-db">
+                  <div class="visible-results-db-item">
+                    <div class="visible-results-tag">{{ section.settings.text1 }}</div>
+                    {%- for block in section.blocks -%}
+                      <div class="sm-box {% if forloop.index == 1 %}active{% endif %}">
+                        {%- if block.settings.img2 != blank -%}
+                            <picture>
+                              {%- if block.settings.img3 != blank -%}
+                                <source media="(max-width: 768px)" srcset="{{ block.settings.img3 | img_url: '200x' }}">
+                              {%- endif -%}
+                              <img class="sm-img" loading="lazy" width=""
+                                height="" src="{{ block.settings.img2 | img_url: '500x' }}" alt="{{ block.settings.img4 | escape }}"/>
+                            </picture>
+                        {%- endif -%}
+                      </div>
+                    {%- endfor -%}
+                  </div>
+                  <div class="visible-results-db-item">
+                    <div class="visible-results-tag">{{ section.settings.text2 }}</div>
+                    {%- for block in section.blocks -%}
+                      <div class="sm-box {% if forloop.index == 1 %}active{% endif %}">
+                        {%- if block.settings.img4 != blank -%}
+                            <picture>
+                              <source media="(max-width: 768px)" srcset="{{ block.settings.img5 | img_url: '200x' }}">
+                              <img class="sm-img" loading="lazy" width=""
+                                height="" src="{{ block.settings.img4 | img_url: '500x' }}" alt="{{ block.settings.img4 | escape }}"/>
+                            </picture>
+                        {%- endif -%}
+                      </div>
+                    {%- endfor -%}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+  window.addEventListener('load', function () {
+    function visibleResultsSwiper() {
+      let $p = $('.sport-popup-cust .visible-results')
+      let $leftItem = $p.find('.visible-results-img-item')
+      let $rightItem = $p.find('.visible-results-db-item')
+      let $numItem = $p.find('.visible-results-num')
+      let $arraw = $p.find('.visible-results-arraw-item')
+      let $dotItem = $p.find('.visible-results-dot-item')
+      let index = 0
+      let len = $leftItem.length
+      let content = document.querySelector('.visible-results .visible-results-cont')
+      function changeItem() {
+        $leftItem.removeClass('active').eq(index).addClass('active')
+        $rightItem.each(function () {
+          $(this).find('.sm-box').removeClass('active').eq(index).addClass('active')
+        })
+        $dotItem.removeClass('active').eq(index).addClass('active')
+        $numItem.removeClass('active').eq(index).addClass('active')
+      }
+  
+      $p.find('.sm-box').click(function () {
+        if (window.innerWidth > 768) return
+        let $popup = $('.visible-results-popup')
+        let src = $(this).attr('data-src')
+        let src1 = $(this).attr('data-src1')
+        if (!src || !src1) return
+        $popup.find('.img-item').eq(0).find('img').attr('src', src)
+        $popup.find('.img-item').eq(1).find('img').attr('src', src1)
+        $popup.fadeIn(300)
+      })
+  
+      $('.visible-results-popup .visible-results-popup-close').click(function () {
+        $(this).closest('.visible-results-popup').fadeOut(300)
+      })
+      $arraw.click(function () {
+        let sindex = $(this).index()
+        index += sindex ? 1 : -1
+        if (index < 0) index = len - 1
+        if (index >= len) index = 0
+        changeItem()
+      })
+  
+      $dotItem.click(function () {
+        index = $(this).index()
+        changeItem()
+      })
+      detectSwipe(content, () => {
+        index += 1
+        if (index >= len) index = 0
+        changeItem()
+      }, () => {
+        index -= 1
+        if (index < 0) index = len - 1
+        changeItem()
+      });
+  
+      function detectSwipe(element, onSwipeLeft, onSwipeRight) {
+        let startX = 0;
+  
+        const getEventX = (event) => {
+          return event.touches ? event.touches[0].clientX : event.clientX;
+        };
+  
+        const handleTouchStart = (e) => {
+          startX = getEventX(e);
+        };
+  
+        const handleTouchMove = (e) => {
+          const deltaX = getEventX(e) - startX;
+          if (Math.abs(deltaX) > 10 && e.cancelable) {
+            e.preventDefault();
+          }
+        };
+  
+        const handleTouchEnd = (e) => {
+          const deltaX = getEventX(e.changedTouches ? e.changedTouches[0] : e) - startX;
+          if (deltaX > 10) {
+            onSwipeRight();
+          } else if (deltaX < -10) {
+            onSwipeLeft();
+          }
+        };
+  
+        element.addEventListener('touchstart', handleTouchStart);
+        element.addEventListener('touchmove', handleTouchMove);
+        element.addEventListener('touchend', handleTouchEnd);
+  
+        // Add mouse event listeners for PC compatibility
+        element.addEventListener('mousedown', handleTouchStart);
+        element.addEventListener('mousemove', handleTouchMove);
+        element.addEventListener('mouseup', handleTouchEnd);
+      }
+    }
+    visibleResultsSwiper()
+    $('.officially-features-popup .officially-features-popup-close,.officially-features-popup .result-new-popup-mark').click(function () {
+      $(this).closest('.officially-features-popup').removeClass('active')
+    })
+  })
+  document.querySelectorAll('.sport-popup-cust .visible-results-dot').forEach(ul => {
+  (function(ul) {
+    const liItems = ul.querySelectorAll('.visible-results-dot-item');
+    
+    liItems.forEach(li => {
+      li.addEventListener('click', function () {
+        // 获取li元素的相对位置
+        const liRect = li.getBoundingClientRect();
+        const ulRect = ul.getBoundingClientRect();
+        
+        // 获取li的中心位置相对于 ul 的左边距
+        const liCenterPosition = liRect.left + liRect.width / 2;
+        
+        // 计算要滚动的距离
+        const scrollAmount = liCenterPosition - ulRect.left - ulRect.width / 2;
+        
+        // 让ul横向滚动到合适位置
+        ul.scrollBy({
+          left: scrollAmount,
+          behavior: 'smooth' // 平滑滚动
+        });
+      });
+    });
+  })(ul);
+});
+</script>
+{% schema %}
+{
+"name": "product-selling-points",
+  "class": "sport-popup-cust",
+"blocks": [
+  {
+    "name": "item",
+    "type": "item",
+    "settings": [
+      {
+        "type": "text",
+        "id": "text",
+        "label": "Label"
+      },
+      {
+        "type": "image_picker",
+        "id": "img",
+        "label": "左大图"
+      },
+      {
+        "type": "image_picker",
+        "id": "img1",
+        "label": "左大图 M"
+      },
+      {
+        "type": "image_picker",
+        "id": "img2",
+        "label": "右小图1"
+      },
+      {
+        "type": "image_picker",
+        "id": "img3",
+        "label": "右小图1 M"
+      },
+      {
+        "type": "image_picker",
+        "id": "img4",
+        "label": "右小图2"
+      },
+      {
+        "type": "image_picker",
+        "id": "img5",
+        "label": "右小图2 M"
+      },
+      {
+        "type": "text",
+        "id": "text1",
+        "label": "百分比"
+      },
+      {
+        "type": "text",
+        "id": "text2",
+        "label": "部位名"
+      }
+    ]
+  }
+],
+"settings": [
+  {
+    "type": "image_picker",
+    "id": "image",
+    "label": "图标"
+    },
+   {
+    "type": "text",
+    "id": "title",
+    "label": "标题"
+  },
+  {
+    "type": "text",
+    "id": "text",
+    "label": "副标题"
+  },
+  {
+    "type": "text",
+    "id": "text1",
+    "label": "Before",
+    "default":"BEFORE"
+  },
+  {
+    "type": "text",
+    "id": "text2",
+    "label": "After",
+    "default":"AFTER"
+  },
+  {
+    "type": "text",
+    "id": "text3",
+    "label": "弹窗名"
+  }
+],
+  "presets": [
+  {
+    "name": "product-selling-points",
+    "blocks": []
+  }
+]
+}
+{% endschema %}

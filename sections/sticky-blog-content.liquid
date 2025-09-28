@@ -1,0 +1,338 @@
+<style>
+  .sticky-tab {
+    padding: 30px 0;
+    padding-right:15px;
+    width: 292px;
+    position: absolute;
+    transform: translateX(-150px);
+    opacity: 0;
+    left: 10%!important;
+    z-index:3;
+    max-height: calc(100vh - 85px);
+    overflow-y: auto;
+  }
+
+  .sticky-tab::-webkit-scrollbar-thumb {
+    background: #eee;
+    border-radius: 5px;
+  }
+
+  .sticky-tab::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  .sticky-tab.show-tab {
+    transform: translateX(0px);
+    opacity: 1;
+  }
+
+  .sticky-tab .sticky-tab-title {
+    color: #000;
+    font-family: var(--heading-font-family);
+    font-size: 22px;
+    line-height: 1.2;
+    font-weight: normal;
+    margin: 0 0 30px 0;
+  }
+
+  .sticky-tab .sticky-tab-item {
+    color: #756b6e;
+    font-size: 14px;
+    line-height: 1.28;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    padding: 13px 0;
+    border-top: 1px solid #86868b;
+    cursor: pointer;
+  }
+
+  .sticky-tab .sticky-tab-item.active {
+    color: #190a0a;
+  }
+
+  .sticky-tab .sticky-tab-item.active path {
+    stroke: #190a0a;
+  }
+
+  .sticky-tab .sticky-tab-product {
+    margin-top: 24px;
+    background: #f9f9f9;
+  }
+
+  .sticky-tab .sticky-tab-product-img {
+    position: relative;
+  }
+
+  .sticky-tab .sticky-tab-img {
+    position: relative;
+    z-index: 1;
+    display: block;
+    width: 100%;
+  }
+
+  .sticky-tab .sticky-tab-tag {
+    position: absolute;
+    color: #fff;
+    font-size: 12px;
+    line-height: 1;
+    letter-spacing: 0.366px;
+    font-family: var(--heading-font-family);
+    background: #e0004d;
+    padding: 5px 12px;
+    top: 10px;
+    left: 10px;
+    z-index: 2;
+  }
+
+  .sticky-tab .sticky-tab-product-info {
+    padding: 10px 8px 24px 8px;
+  }
+
+  .sticky-tab .sticky-tab-product-title {
+    color: #181a1d;
+    font-size: 20px;
+    line-height: 1.5;
+    letter-spacing: -0.185px;
+    font-family: var(--heading-font-family);
+    font-weight: normal;
+    margin: 0;
+  }
+
+  .sticky-tab .sticky-tab-product-btn {
+    color: #fbfaf4;
+    font-size: 14px;
+    line-height: 1;
+    font-family: var(--heading-font-family);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap:8px;
+    height: 48px;
+    background: #190a0a;
+    cursor: pointer;
+    margin-top: 10px;
+  }
+
+  .sticky-tab .sticky-tab-product-btn:hover {
+    background: #3f3636;
+  }
+
+  {% comment %} @media (max-width: 1600px) {
+    .sticky-tab {
+      display: none;
+    }
+  } {% endcomment %}
+</style>
+
+{%- liquid
+  assign se_stts = section.settings
+  if se_stts.product != blank
+    assign product = se_stts.product
+  endif
+-%}
+
+<section class="section-box">
+  <div class="sticky-tab">
+    {%- if section.settings.title != blank -%}
+      <h3 class="sticky-tab-title">{{ section.settings.title }}</h3>
+    {%- endif -%}
+
+    <div class="sticky-tab-list" id="dynamic-tab-list"></div>
+
+    <div class="sticky-tab-product">
+      {%- if section.settings.image != blank -%}
+        <div class="sticky-tab-product-img">
+          {%- if section.settings.tag != blank -%}
+            <div class="sticky-tab-tag">{{ section.settings.tag }}</div>
+          {%- endif -%}
+          <img
+            loading="lazy"
+            class="sticky-tab-img"
+            width="{{ section.settings.image.width }}"
+            height="{{ section.settings.image.height }}"
+            {% render 'image-attributes', image: section.settings.image %}
+            alt="{{ section.settings.image.alt | escape }}"
+          >
+        </div>
+      {%- endif -%}
+      <div class="sticky-tab-product-info">
+        {%- if section.settings.p_title != blank -%}
+          <h3 class="sticky-tab-product-title">{{ section.settings.p_title }}</h3>
+        {%- endif -%}
+        {%- if section.settings.btn_txt != blank -%}
+          <div class="sticky-tab-product-btn" data-link="{{ section.settings.link }}">
+            {{ section.settings.btn_txt }}
+            {{ product.selected_or_first_available_variant.metafields.custom.page_price | times: 100 | money }}
+          </div>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  if (window.innerWidth > 1500) {
+    document.addEventListener('DOMContentLoaded', () => {
+      const tabListContainer = document.getElementById('dynamic-tab-list');
+      const contentArea = document.querySelector('.article__content__extend');
+
+      if (!tabListContainer || !contentArea) return;
+
+      const headers = contentArea.querySelectorAll('h2');
+
+      headers.forEach((header, index) => {
+        const text = header.innerText.trim();
+        const id = `sticky-section-${index}`;
+        header.setAttribute('id', id);
+
+        const tabItem = document.createElement('div');
+        tabItem.className = `sticky-tab-item ${index === 0 ? 'active' : ''}`;
+        tabItem.setAttribute('data-id', id);
+        tabItem.innerHTML = `
+          ${text}
+          <svg xmlns="http://www.w3.org/2000/svg" width="15" height="12" viewBox="0 0 15 12" fill="none">
+            <path d="M0.589844 6.32385L13.6768 6.32324" stroke="#756B6E" stroke-width="0.608696" />
+            <path d="M10.9375 3.58398L14.1429 6.32372L10.9375 8.99407" stroke="#756B6E" stroke-width="0.608696" stroke-linejoin="round" />
+          </svg>
+        `;
+
+        tabItem.addEventListener('click', () => {
+          const target = document.getElementById(id);
+          if (target) {
+            requestAnimationFrame(() => {
+              const top = target.getBoundingClientRect().top + window.scrollY - 150;
+              window.scrollTo({ top, behavior: 'smooth' });
+            });
+          }
+        });
+
+        tabListContainer.appendChild(tabItem);
+      });
+
+      const stickyItems = document.querySelectorAll('.sticky-tab .sticky-tab-item');
+
+      window.addEventListener('scroll', () => {
+        let scrollY = window.scrollY;
+        let activeItem = null;
+        let minDistance = Infinity;
+
+        stickyItems.forEach((item) => {
+          const target = document.getElementById(item.getAttribute('data-id'));
+          if (target) {
+            const distance = Math.abs(scrollY - target.offsetTop + 120);
+            if (distance < minDistance) {
+              minDistance = distance;
+              activeItem = item;
+            }
+          }
+        });
+
+        stickyItems.forEach((item) => item.classList.remove('active'));
+        if (activeItem) activeItem.classList.add('active');
+      });
+    });
+
+    // 产品按钮点击跳转
+    document.querySelector('.sticky-tab .sticky-tab-product-btn')?.addEventListener('click', function () {
+      const link = this.getAttribute('data-link');
+      if (link) {
+        window.open(link, '_blank');
+      }
+    });
+
+    function handleStickyPosition(a, b, c) {
+      if (!a || !b || !c) return;
+      function updatePosition() {
+        const rectB = b.getBoundingClientRect();
+        const rectC = c.getBoundingClientRect();
+        const offsetTopB = window.scrollY + rectB.top;
+        const offsetLeftB = window.scrollX + rectB.left;
+        const offsetTopC = window.scrollY + rectC.top - a.offsetHeight;
+
+        if (window.scrollY >= offsetTopB && window.scrollY < offsetTopC) {
+          a.style.position = 'fixed';
+          a.style.top = '135px';
+          a.style.left = `${offsetLeftB}px`;
+        } else if (window.scrollY >= offsetTopC) {
+          a.style.position = 'absolute';
+          a.style.top = `${offsetTopC}px`;
+          a.style.left = `${offsetLeftB}px`;
+        } else {
+          a.style.position = 'absolute';
+          a.style.top = `${offsetTopB}px`;
+          a.style.left = `${offsetLeftB}px`;
+        }
+
+        a.classList.add('show-tab');
+      }
+
+      window.addEventListener('scroll', updatePosition);
+      window.addEventListener('resize', updatePosition);
+      updatePosition();
+    }
+
+    window.addEventListener('DOMContentLoaded', function () {
+      const a = document.querySelector('.sticky-tab');
+      const b = document.querySelector('.sticky-align-box .container');
+      const c = document.querySelector('footer');
+      handleStickyPosition(a, b, c);
+    });
+  }
+</script>
+
+{% schema %}
+{
+  "name": "sticky-tab",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "More than hair removal."
+    },
+    {
+      "type": "text",
+      "id": "tag",
+      "label": "Label",
+      "default": "NEW"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "p_title",
+      "label": "Product Title",
+      "default": "Air 10"
+    },
+    {
+      "type": "text",
+      "id": "btn_txt",
+      "label": "按钮文案",
+      "default": "SHOP NOW"
+    },
+    {
+      "type": "product",
+      "id": "product",
+      "label": "产品选择"
+    },
+    {
+      "type": "url",
+      "id": "link",
+      "label": "链接"
+    }
+  ],
+  "presets": [
+    {
+      "name": "sticky-blog-content",
+      "blocks": []
+    }
+  ]
+}
+{% endschema %}

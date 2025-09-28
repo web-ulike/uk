@@ -1,0 +1,502 @@
+<style>
+     #shopify-section-{{ section.id }} {
+    --text-color: {{  section.settings.text_color.red }}, {{  section.settings.text_color.green }}, {{  section.settings.text_color.blue }};
+      --section-background: {{ section.settings.background.red }}, {{ section.settings.background.green }}, {{ section.settings.background.blue }};
+      --background-image: url({{ section.settings.background_image | img_url: '3840x1176' }});
+      {% if section.settings.background_image != blank %}
+        background-image: var( --background-image);
+      {% else %}
+        background-color: var(--section-background)
+      {% endif %}
+    }
+    .section-{{ section.id }}-padding {
+      padding-top: calc({{ section.settings.padding_top }}px);
+      padding-bottom: calc({{ section.settings.padding_bottom }}px);
+    }
+    @media screen and (max-width: 768px){
+      #shopify-section-{{ section.id }} {
+      {% if section.settings.mobile_background_image != blank %}
+        --background-image: url({{ section.settings.mobile_background_image | img_url : '750x1230' }});
+      {% endif %}
+      }
+    .section-{{ section.id }}-padding {
+      padding-top: calc({{ section.settings.padding_top }}px * 0.6);
+      padding-bottom: calc({{ section.settings.padding_bottom }}px * 0.6);
+    }
+  }
+  /* review-template start */
+    .review-template {
+      /* padding: 100px 0; */
+    }
+
+    .review__box {
+      overflow: hidden;
+    }
+
+    .review_ul-box {
+      position: relative;
+      z-index:1;
+    }
+
+    .review-button {
+      transition: 0.5s;
+      outline: none;
+      position: absolute;
+      z-index: 10;
+      cursor: pointer;
+      right: 0;
+      top: 0;
+    }
+
+    .review-button-prev {
+      right: 56px;
+    }
+
+    .review__ul {
+      display: flex;
+      justify-content: center;
+      position: relative;
+    }
+
+    .review__li {
+      display: flex;
+      align-items: center;
+      gap: 142px;
+      justify-content: center;
+      flex-shrink: 0;
+      width: 100%;
+      transition: all 0.4s ease;
+     opacity: 0;
+    }
+   .review__li.active{
+     opacity: 1;
+   }
+
+    .review__li:not(:first-child) {
+      position: absolute;
+      width: 100%;
+      top: 0;
+      left: 0;
+    }
+
+    .review__li .left__avtor img {
+      width: 300px;
+      object-fit: cover;
+    }
+
+    .review__li .right__cnt .right-review_cnt {
+      color: #3F3636;
+      font-size: 30px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 1.3;
+      max-width: 890px;
+      margin-bottom: 30px;
+    }
+
+    .review__li .right__cnt .right-review-des {
+      display: inline-flex;
+      flex-direction: column;
+      padding-top: 30px;
+      border-top: 1px solid rgba(63, 54, 54, 0.2)
+    }
+
+    .review__li .right__cnt .right-review-des .top_re-des {
+      color: #3F3636;
+      font-size: 20px;
+      font-style: normal;
+      font-weight: 500;
+      line-height: 1.2;
+      margin-bottom: 10px;
+    }
+
+    .review__li .right__cnt .right-review-des .bt_re-des {
+      color: #3F3636;
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 1.2;
+      margin-bottom: 14px;
+    }
+
+    .review__li .right__cnt .right-review-des .bt_re-num {
+      color: #3F3636;
+      font-size: 18px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 1.2;
+      opacity: 0.5;
+    }
+
+
+    .swiper-box__new {
+      display: flex;
+      justify-content: center;
+      gap: 130px;
+      align-items: center;
+    }
+
+    .hold_images {
+      position: relative;
+      width: 300px;
+      height: 300px;
+      flex-shrink: 0;
+    }
+
+    .hold_images .images {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      z-index: var(--index);
+      transition: transform 0.4s linear;
+    }
+
+    .hold_images .images.move {
+      transform: translateX(calc(100% + 100px)) !important;
+      transition: transform 0.4s linear;
+    }
+
+    .hold_images .images.hysteresis {
+      transform: translateX(0) !important;
+      transition: transform 0.4s linear;
+    }
+
+    .hold_images .images img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    @media screen and (max-width: 768px){
+      .swiper-box__new{
+    flex-direction: column;
+    gap: 40px;
+    justify-content: flex-start;
+    align-items: flex-start;
+  }
+      .hold_images {
+    position: relative;
+    width: 150px;
+    height: 150px;
+    flex-shrink: 0;
+}
+      .review__li .right__cnt .right-review_cnt {
+   font-size: 16px;
+    margin-bottom: 15px;
+}
+      .review__li .right__cnt .right-review-des {
+    padding-top: 15px;
+}
+      .review__li .right__cnt .right-review-des .top_re-des {
+  font-size: 14px;
+    margin-bottom: 5px;
+}
+      .review__li .right__cnt .right-review-des .bt_re-des {
+  font-size: 12px;
+    margin-bottom: 28px;
+}
+      .review-button {
+    bottom: 0;
+    top: auto;
+}
+    }
+
+    /* review-template end */
+</style>
+
+<section>
+  <div class="review__box section-{{ section.id }}-padding">
+    <div class="container">
+      <div class="review_ul-box">
+        <div class="swiper-box__new">
+          <div class="hold_images">
+
+              {%- for block in section.blocks -%}
+              {%- if block.settings.image != blank -%}
+            <div class="images">
+                <img src="{{ block.settings.image | image_url }}" loading="lazy" alt="" width="{{ block.settings.image.width }}" height="{{ block.settings.image.height }}"  class="Ldd">
+            </div>
+            {%- endif -%}
+             {%- endfor -%}
+
+          </div>
+          <div class="wrapper_bix">
+            <div class="review__ul">
+
+               {%- for block in section.blocks -%}
+              <div class="review__li{% if forloop.index == 1 %} active{% endif %}">
+                <div class="right__cnt">
+                  <div class="right-review_cnt">
+                   {{ block.settings.review_text }}
+                  </div>
+                  <div class="right-review-des">
+                    <div class="top_re-des">
+                        {{ block.settings.review_name }}
+                    </div>
+                    <div class="bt_re-des">
+                      {{ block.settings.review_des }}
+                    </div>
+                    <div class="bt_re-num">
+                      {{ forloop.index }}/{{ section.blocks.size }}
+                    </div>
+                  </div>
+                </div>
+              </div>
+               {%- endfor -%}
+
+              
+
+            </div>
+          </div>
+        </div>
+        <div class="review-button-prev review-button">
+          <svg xmlns="http://www.w3.org/2000/svg" width="30" height="24" viewBox="0 0 30 24" fill="none">
+            <g clip-path="url(#clip0_5434_606)">
+              <path
+                d="M1.90735e-06 12.2517C1.90735e-06 12.4332 0.067318 12.6132 0.196098 12.7508L10.44 23.7264L11.5098 22.7283L2.41463 12.9834H30C30 12.1756 29.3444 11.52 28.5366 11.52H0.765366C0.488781 11.52 0.219515 11.659 0.0878067 11.9034C0.0278072 12.0132 1.90735e-06 12.1332 1.90735e-06 12.2517Z"
+                fill="#190A0A"></path>
+              <path
+                d="M1.53073 9.6866C2.10292 10.2573 3.02926 10.2573 3.59999 9.6866L11.4937 1.7944L10.459 0.759766L1.53219 9.6866H1.53073Z"
+                fill="#190A0A"></path>
+            </g>
+            <defs>
+              <clipPath id="clip0_5434_606">
+                <rect width="30" height="22.9683" fill="white" transform="matrix(-1 0 0 1 30 0.759766)"></rect>
+              </clipPath>
+            </defs>
+          </svg>
+        </div>
+        <div class="review-button-next review-button">
+          <svg xmlns="http://www.w3.org/2000/svg" width="30" height="24" viewBox="0 0 30 24" fill="none">
+            <g clip-path="url(#clip0_5434_602)">
+              <path
+                d="M30 12.2517C30 12.4332 29.9327 12.6132 29.8039 12.7508L19.56 23.7264L18.4902 22.7283L27.5854 12.9834H0C0 12.1756 0.65561 11.52 1.46341 11.52H29.2346C29.5112 11.52 29.7805 11.659 29.9122 11.9034C29.9722 12.0132 30 12.1332 30 12.2517Z"
+                fill="#190A0A"></path>
+              <path
+                d="M28.4693 9.6866C27.8971 10.2573 26.9707 10.2573 26.4 9.6866L18.5063 1.7944L19.541 0.759766L28.4678 9.6866H28.4693Z"
+                fill="#190A0A"></path>
+            </g>
+            <defs>
+              <clipPath id="clip0_5434_602">
+                <rect width="30" height="22.9683" fill="white" transform="translate(0 0.759766)"></rect>
+              </clipPath>
+            </defs>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<script>
+ window.addEventListener('load', function () {
+      function review_slider() {
+        let $p = $('.review__box')
+        let $images = $p.find('.images')
+        let $review = $p.find('.review__li')
+        let $arraw = $p.find('.review-button')
+        let length = $review.length
+        let offsetX = 25
+        let maxOffset = (length - 1) * offsetX
+        let minIndex = 1
+        let currentIndex = 0
+        let isChange = true
+
+        function initImages() {
+          $images.each(function (index) {
+            let $this = $(this)
+            $this.css({
+              'transform': `translateX(${maxOffset - offsetX * index}px)`
+            })
+            $this[0].style.setProperty('--index', length - index);
+          })
+        }
+
+        function changeItem(num) {
+          if (!isChange) return
+          isChange = false
+          let sCurrentIndex = num == 1 ? currentIndex : currentIndex - 1
+          if (sCurrentIndex < 0) {
+            sCurrentIndex = length - 1
+          }
+
+          $images.eq(sCurrentIndex).addClass('move')
+          setTimeout(function () {
+
+            // $images.on('transitionend', function (event) {
+            if (num == -1) {
+              $images.eq(sCurrentIndex)[0].style.setProperty('--index', length + 2)
+              $images.eq(sCurrentIndex).removeClass('move')
+            } else {
+              $images.eq(sCurrentIndex).addClass('hysteresis').removeClass('move')
+            }
+            $images.each(function (sindex) {
+              let $this = $(this)
+              if (sindex == sCurrentIndex) {
+                if (num == -1) {
+                  $this.css({
+                    'transform': `translateX(${maxOffset}px)`
+                  })
+                  $this[0].style.setProperty('--index', length);
+
+                } else {
+                  $this.css({
+                    'transform': `translateX(${0}px)`
+                  })
+                  $this[0].style.setProperty('--index', 1);
+                }
+              } else {
+                let Zindex = $this[0].style.getPropertyValue('--index') || window.getComputedStyle($this[0]).getPropertyValue('--index');
+                if (num == -1) {
+                  $this.css({
+                    'transform': `translateX(${offsetX * (Zindex * 1 - 2)}px)`
+                  })
+                  $this[0].style.setProperty('--index', Zindex * 1 - 1);
+                } else {
+                  $this.css({
+                    'transform': `translateX(${offsetX * Zindex}px)`
+                  })
+                  $this[0].style.setProperty('--index', Zindex * 1 + 1);
+                }
+
+
+
+              }
+            })
+            setTimeout(function () {
+              $('.hysteresis').removeClass('hysteresis')
+              if (num == 1) {
+                currentIndex++
+              } else {
+                currentIndex--
+              }
+              if (currentIndex >= length) {
+                currentIndex = 0
+              }
+              if (currentIndex < 0) {
+                currentIndex = length - 1
+              }
+              console.log(currentIndex);
+              isChange = true
+            }, 500)
+          }, 500);
+
+          $review.css({ 'opacity': 0 })
+          setTimeout(function () {
+            let index = currentIndex + 1
+            if (index >= length) {
+              index = 0
+            }
+            if (index < 0) {
+              index = length - 1
+            }
+
+            $review.eq(index).css({ 'opacity': 1 })
+          }, 500)
+        }
+
+        $arraw.click(function () {
+          if ($(this).hasClass('review-button-next')) {
+            changeItem(1)
+          } else {
+            changeItem(-1)
+          }
+        })
+
+        initImages()
+      }
+      review_slider()
+    })
+</script>
+{% schema %}
+{
+  "name": "Review Slide",
+  "class": "shopify-section--review-slide",
+  "settings": [
+    {
+      "type": "text",
+      "id": "header",
+      "label": "Header"
+    },
+      {
+          "type": "image_picker",
+          "id": "background_image",
+          "label": "Background Image"
+        },
+      {
+          "type": "image_picker",
+          "id": "mobile_background_image",
+          "label": "Mobile Background Image"
+        },
+     {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 40
+    }
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Item",
+      "limit": 20,
+      "settings": [
+         {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+         {
+            "type": "richtext",
+            "id": "review_text",
+            "label": "Review Text"
+          },
+        {
+            "type": "text",
+            "id": "review_name",
+            "label": "Review Name"
+          },
+         {
+            "type": "text",
+            "id": "review_des",
+            "label": "Review Desscript"
+          }
+      ]
+    }
+
+  ],
+  "presets": [
+    {
+      "name": "Review Slide",
+      "settings": {}
+    }
+  ]
+}
+{% endschema %}

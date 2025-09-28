@@ -1,0 +1,154 @@
+<style>
+.ipl-principle{
+  padding: 70px 0 120px 0;
+  color: #000;
+}
+
+.ipl-principle .ipl-principle-sub{
+  font-size: 16px;
+  line-height: 1.2;
+  text-align: center;
+  max-width: 515px;
+  margin: 0 auto;
+  margin-top: 28px;
+}
+
+.ipl-principle .ipl-principle-list{
+  display: flex;
+  gap: 20px;
+  margin-top: 60px;
+}
+
+.ipl-principle .ipl-principle-item{
+  flex: 1;
+  background: #f9f9f9;
+}
+
+.ipl-principle .img{
+  display: block;
+  width: 100%;
+}
+
+.ipl-principle .ipl-principle-txt{
+  display: flex;
+  align-items: center;
+  padding: 30px 25px;
+}
+
+.ipl-principle .ipl-principle-num{
+  font-size: 50px;
+  font-family: var(--heading-font-family);
+  line-height: 1;
+  margin-right: 15px;
+}
+
+.ipl-principle .ipl-principle-p{
+  font-size: 16px;
+  font-family: var(--heading-font-family);
+  line-height: 1.5;
+}
+
+@media (max-width:1200px) {
+  .ipl-principle .ipl-principle-txt{
+    padding: 20px 15px;
+  }
+  .ipl-principle .ipl-principle-num{
+    font-size: 40px;
+  }
+  .ipl-principle .ipl-principle-p{
+    font-size: 14px;
+  }
+}
+
+@media (max-width:991px) {
+  .ipl-principle{
+    padding: 50px 0;
+  }
+  .ipl-principle .ipl-principle-sub{
+    font-size: 14px;
+    margin-top: 20px;
+  }
+  .ipl-principle .ipl-principle-list{
+    margin-top: 30px;
+    flex-wrap: wrap;
+    gap: 30px;
+  }
+  .ipl-principle .ipl-principle-item{
+    flex: none;
+    width: 100%;
+  }
+  .ipl-principle .ipl-principle-num{
+    font-size: 30px;
+  }
+  .ipl-principle .ipl-principle-p{
+    font-size: 12px;
+    zoom: .9;
+  }
+}
+</style>
+<section class="section-box">
+  <div class="ipl-principle">
+    <div class="container">
+      <div class="title-diy to-top">{{ section.settings.title }}</div>
+      <div class="ipl-principle-sub to-top" style="transition-delay: 0.1s">
+        {{ section.settings.text }}
+      </div>
+      <div class="ipl-principle-list">
+        {%- for block in section.blocks -%}
+          <div class="ipl-principle-item to-top" style="transition-delay: 0.{{ forloop.index }}s">
+            {%- if block.settings.image != blank -%}
+               <img loading="lazy" class="img" width="{{ block.settings.image.width }}" height="{{ block.settings.image.height }}" {% render 'image-attributes', image: block.settings.image %} alt="{{ block.settings.image.alt | escape }}" >
+            {%- endif -%}
+            <div class="ipl-principle-txt">
+              <div class="ipl-principle-num">0{{ forloop.index }}</div>
+              <div class="ipl-principle-p">
+                {{ block.settings.text }}
+              </div>
+            </div>
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</section>
+{% schema %}
+{
+"name": "ipl-principle",
+"blocks": [
+    {
+    "name": "item",
+    "type": "item",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "image",
+        "label": "Image"
+      },
+      {
+        "type": "text",
+        "id": "text",
+        "label": "Text"
+      }
+    ]
+    }
+  ],
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title"
+    },
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Text"
+    }
+  ],
+  "presets": [
+    {
+      "name": "ipl-principle",
+      "blocks": []
+    }
+  ]
+}
+{% endschema %}

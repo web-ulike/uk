@@ -1,0 +1,2513 @@
+<style>
+  .take-quiz {
+    position: relative;
+    z-index: 1;
+  }
+
+  .take-quiz .take-quiz-img {
+    position: relative;
+    z-index: 1;
+    width: 50%;
+  }
+
+  .take-quiz .take-quiz-img .img {
+    width: 100%;
+    min-height: 800px;
+    object-fit: cover;
+    position: relative;
+    z-index: 1;
+  }
+
+  .take-quiz .take-quiz-img-text {
+    position: absolute;
+    width: 100%;
+    left: 0;
+    top: 0;
+    padding: 103px;
+    z-index: 2;
+  }
+
+  .take-quiz .take-quiz-img-title {
+    color: #000;
+    text-align: right;
+    font-size: 60px;
+    font-weight: normal;
+    line-height: 1.1;
+    max-width: 750px;
+    margin-left: auto;
+    margin-right: 0;
+  }
+
+  .take-quiz .take-quiz-tx {
+    width: 310px;
+    margin-top: 65px;
+    display: block;
+    margin-left: auto;
+    margin-right: 0;
+  }
+
+  .take-quiz .take-quiz-name {
+    width: 310px;
+    text-align: center;
+    margin-left: auto;
+    font-size: 20px;
+    margin-top: 10px;
+  }
+
+  .take-quiz-name1{
+    display: none;
+    text-align: center;
+  }
+
+  .take-quiz .take-quiz-img-text p {
+    color: #000;
+    font-family: Saans;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 30px; /* 150% */
+    margin-top: 20px;
+  }
+
+  .take-quiz .take-quiz-cont {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 0;
+    width: 100%;
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  .take-quiz .take-quiz-faq {
+    width: 50%;
+    margin-left: auto;
+    margin-right: 0;
+    max-width: 680px;
+    padding-left: 30px;
+    pointer-events: all;
+  }
+
+  .take-quiz .take-quiz-top {
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 18px;
+    margin-bottom: 30px;
+  }
+
+  .take-quiz .take-quiz-item-title {
+    color: #000;
+    font-size: 40px;
+    line-height: 1.2;
+    display: none;
+  }
+
+  .take-quiz .take-quiz-item-title.active {
+    display: block;
+  }
+
+  .take-quiz .take-quiz-msg {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .take-quiz .take-quiz-msg-left {
+    color: #656565;
+    font-size: 25px;
+    line-height: 1.2;
+  }
+
+  .take-quiz .take-quiz-msg-right {
+    color: #000;
+    font-size: 18px;
+    line-height: 1.2;
+  }
+
+  .take-quiz .take-quiz-item {
+    display: none;
+  }
+
+  .take-quiz .take-quiz-item.active {
+    display: block;
+  }
+
+  .take-quiz .take-quiz-faq-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .take-quiz .take-quiz-faq-item {
+    min-height: 54px;
+    border: 1px solid #c8c8c8;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    color: #000;
+    font-size: 20px;
+    line-height: 1;
+    font-family: var(--heading-font-family);
+    cursor: pointer;
+  }
+
+  {% comment %} .take-quiz .take-quiz-faq-item.minors {
+    display: none;
+  } {% endcomment %}
+
+  .take-quiz .take-quiz-faq-item p {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .take-quiz .take-quiz-faq-item strong {
+    font-weight: normal;
+    color: #545454;
+    font-size: 14px;
+    font-family: var(--text-font-family);
+  }
+
+  .take-quiz .take-quiz-faq-item.active {
+    border-color: #000;
+    background: #f9f9ff;
+  }
+
+  .take-quiz .take-quiz-btns {
+    display: flex;
+    gap: 30px;
+    margin-top: 60px;
+  }
+
+  .take-quiz .take-quiz-btn {
+    width: calc(50% - 15px);
+    height: 60px;
+    border-radius: 8px;
+    border: 1px solid #000;
+    color: #fff;
+    font-size: 20px;
+    line-height: 1;
+    font-family: var(--heading-font-family);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    background: #000;
+  }
+
+  .take-quiz .take-quiz-btn:hover {
+    background: none;
+    color: #000;
+  }
+
+  .take-quiz .take-quiz-btn:first-child {
+    background: none;
+    color: #000;
+  }
+
+  .take-quiz .take-quiz-btn:first-child:hover {
+    background: #000;
+    color: #fff;
+  }
+
+  .take-quiz .take-quiz-btn:first-child {
+    display: none;
+  }
+
+  .take-quiz .img-bottom .take-quiz-faq-list {
+    flex-direction: row;
+    gap: 25px;
+    flex-wrap: wrap;
+  }
+
+  .take-quiz .img-bottom .take-quiz-faq-item {
+    color: #000;
+    font-size: 16px;
+    font-weight: 400;
+    text-align: center;
+    line-height: 1;
+    height: auto;
+    flex-direction: column;
+    border: 0;
+    font-family: var(--text-font-family);
+    width: 103px;
+    padding: 0;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    z-index: 1;
+  }
+
+  .take-quiz .img-bottom .take-quiz-faq-item.active::after {
+    content: '';
+    position: absolute;
+    top: 60%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 15px;
+    height: 15px;
+    background: #e0004d;
+    border: 4px solid #fff;
+    z-index: 2;
+    border-radius: 50%;
+  }
+
+  .take-quiz .img-bottom .img {
+    width: 100%;
+    margin-bottom: 5px;
+    border-radius: 0 0 50% 50%;
+    border: 1px solid transparent;
+  }
+
+  .take-quiz .img-bottom .active .img {
+    border: 1px solid #000;
+    position: relative;
+    z-index: 1;
+  }
+
+  .take-quiz .img-bottom .take-quiz-faq-item.active {
+    background: none;
+  }
+
+  .take-quiz .img-right .take-quiz-faq-item {
+    /* height: 118px; */
+    gap: 20px;
+  }
+
+  .take-quiz .img-right .img {
+    width: 96px;
+    border-radius: 0 0 50% 50%;
+  }
+
+  .take-quiz .take-quiz-email {
+    width: 100%;
+    border: 1px solid #000;
+    background: #f9f9f9;
+    outline: 0;
+    height: 54px;
+    padding: 0 20px;
+    border-radius: 8px;
+    color: #000;
+    font-size: 20px;
+  }
+
+  .take-quiz .take-quiz-email::placeholder {
+    color: #717171;
+  }
+
+  .take-quiz .take-quiz-check {
+    margin-top: 15px;
+    font-size: 14px;
+    color: #000;
+    line-height: 1.2;
+    display: flex;
+    align-items: flex-start;
+    gap: 5px;
+  }
+
+  .take-quiz .take-quiz-check p {
+    display: inline-block;
+    margin: 0;
+  }
+
+  .take-quiz .take-quiz-check label {
+    display: inline-block;
+    position: relative;
+    cursor: pointer;
+  }
+
+  .take-quiz .take-quiz-check .take-quiz-checkbox {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    opacity: 0;
+    top: 0;
+    left: 0;
+  }
+
+  .take-quiz .take-quiz-check label span {
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    border-radius: 3px;
+    border: 1px solid #000;
+    position: relative;
+  }
+
+  .take-quiz .take-quiz-check label .take-quiz-checkbox:checked + span::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 5px;
+    height: 8px;
+    border-bottom: 1px solid #000;
+    border-right: 1px solid #000;
+    transform: rotate(45deg) translate(-50%, -50%);
+    margin-left: -3px;
+  }
+
+  .take-quiz-dispatch {
+    padding: 40px 0 130px 0;
+    background: linear-gradient(180deg, #eaf0f6 -1.5%, #fdfdfd 101.5%);
+  }
+
+  .take-quiz-dispatch .take-quiz-dispatch-h3 {
+    color: #000;
+    font-size: 60px;
+    line-height: 1.2;
+    font-family: var(--heading-font-family);
+    text-align: center;
+    font-weight: normal;
+    margin-bottom: 120px;
+  }
+
+  .take-quiz-dispatch .take-quiz-dispatch-cont {
+    max-width: 1200px;
+    margin: 0 auto;
+    background: #fff;
+    border-radius: 10px;
+    padding: 0 50px 90px 50px;
+    border: 1px solid #fff;
+  }
+
+  .take-quiz-dispatch .take-quiz-dispatch-rw {
+    margin-top: -85px;
+  }
+
+  .take-quiz-dispatch .take-quiz-dispatch-tx {
+    width: 170px;
+    display: block;
+    margin: 0 auto;
+  }
+
+  .take-quiz-dispatch .take-quiz-dispatch-rw-p {
+    color: #000;
+    font-size: 18px;
+    line-height: 1.2;
+    text-align: center;
+    margin-top: 27px;
+  }
+
+  .take-quiz-dispatch .take-quiz-dispatch-list {
+    margin-top: 20px;
+  }
+
+  .take-quiz-dispatch .take-quiz-dispatch-item {
+    display: none;
+  }
+
+  .take-quiz-dispatch .take-quiz-dispatch-item.active {
+    display: block;
+  }
+
+  .take-quiz-dispatch .take-quiz-dispatch-p1 {
+    color: #000;
+    text-align: center;
+    font-size: 30px;
+    line-height: 1.2;
+    max-width: 755px;
+    margin: 0 auto;
+  }
+
+  .take-quiz-dispatch .take-quiz-dispatch-p1 p {
+    margin: 0;
+  }
+
+  .take-quiz-dispatch .take-quiz-dispatch-p1 strong {
+    font-weight: normal;
+    font-family: var(--heading-font-family);
+  }
+
+  .take-quiz-dispatch .take-quiz-dispatch-jt {
+    display: block;
+    width: 40px;
+    height: auto;
+    margin: 30px auto;
+  }
+
+  .take-quiz-dispatch .take-quiz-dispatch-p2 {
+    color: #000;
+    font-size: 40px;
+    line-height: 1.2;
+    text-align: center;
+    margin-bottom: 38px;
+  }
+
+  .take-quiz-dispatch .take-quiz-dispatch-p2 p {
+    margin: 0;
+  }
+
+  .take-quiz-dispatch .take-quiz-dispatch-p2 strong {
+    font-weight: normal;
+    font-family: var(--heading-font-family);
+  }
+
+  .take-quiz-dispatch .take-quiz-dispatch-product {
+    display: flex;
+    align-items: center;
+    gap: 70px;
+    background: #f9f9f9;
+    border: 1px solid #000;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .take-quiz-dispatch .take-quiz-dispatch-product .take-quiz-dispatch-product-img {
+    width: 50%;
+    position: relative;
+    background: #fff;
+  }
+
+  .take-quiz-dispatch .take-quiz-dispatch-product .img {
+    width: 100%;
+    position: relative;
+    z-index: 1;
+  }
+
+  .take-quiz-dispatch .take-quiz-dispatch-product-tag {
+    position: absolute;
+    width: 100px;
+    top: 16px;
+    left: 16px;
+    z-index: 2;
+  }
+
+  .take-quiz-dispatch .take-quiz-dispatch-product-tag svg {
+    position: relative;
+    width: 100%;
+    height: auto;
+    z-index: 1;
+    display: block;
+  }
+
+  .take-quiz-dispatch .take-quiz-dispatch-product-tag-txt {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #fff;
+    font-size: 21px;
+    line-height: 1.2;
+    text-align: center;
+    font-family: var(--heading-font-family);
+    z-index: 2;
+  }
+
+  .take-quiz-dispatch .take-quiz-dispatch-product-tag-txt strong {
+    font-weight: normal;
+    display: block;
+    font-size: 30px;
+  }
+
+  .take-quiz-dispatch .take-quiz-dispatch-product-h3 {
+    color: #000;
+    font-size: 40px;
+    line-height: 1.2;
+    margin: 0;
+    font-weight: normal;
+    font-family: var(--heading-font-family);
+  }
+
+  .take-quiz-dispatch .take-quiz-dispatch-product-p {
+    color: #000;
+    font-size: 18px;
+    line-height: 1.2;
+    margin: 0;
+    margin-top: 15px;
+  }
+
+  .take-quiz-dispatch .take-quiz-dispatch-product-star {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    margin-top: 18px;
+  }
+
+  .take-quiz-dispatch .take-quiz-dispatch-product-star span {
+    color: #4b4b4b;
+    font-size: 14px;
+    line-height: 1.2;
+  }
+
+  .take-quiz-dispatch .take-quiz-dispatch-product-btn {
+    width: 240px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    background: #e0004d;
+    color: #fff;
+    font-size: 20px;
+    line-height: 1.2;
+    font-family: var(--heading-font-family);
+    margin-top: 40px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .take-quiz-dispatch .take-quiz-dispatch-product-btn:hover {
+    background: #bc0047;
+  }
+
+  .take-quiz-dispatch .take-quiz-dispatch-p3 {
+    color: #000;
+    font-size: 30px;
+    line-height: 1.2;
+    text-align: center;
+    margin-top: 40px;
+    font-family: var(--heading-font-family);
+  }
+
+  .take-quiz-dispatch .take-quiz-dispatch-p4 {
+    color: #000;
+    text-align: center;
+    font-size: 18px;
+    line-height: 1.2;
+    max-width: 880px;
+    margin: 0 auto;
+    margin-top: 13px;
+  }
+
+  .take-quiz-dispatch .take-quiz-dispatch-p4 p {
+    margin: 0;
+  }
+
+  .take-quiz-dispatch .take-quiz-dispatch-code {
+    border: 1px dashed #000;
+    background: #f5f7fa;
+    padding: 20px;
+    text-align: center;
+    max-width: 570px;
+    margin: 0 auto;
+    margin-top: 40px;
+    border-radius: 10px;
+  }
+
+  .take-quiz-dispatch .take-quiz-dispatch-p5 {
+    color: #000;
+    font-size: 25px;
+    line-height: 1.2;
+    font-family: var(--heading-font-family);
+  }
+
+  .take-quiz-dispatch .take-quiz-dispatch-p6 {
+    color: #000;
+    font-size: 25px;
+    line-height: 1.2;
+  }
+
+  .take-quiz-dispatch .take-quiz-dispatch-p6 p {
+    margin: 0;
+  }
+
+  .take-quiz-dispatch .take-quiz-dispatch-p6 strong {
+    font-weight: normal;
+    color: #e0004d;
+    font-family: var(--heading-font-family);
+  }
+
+  .take-quiz-dispatch .take-quiz-dispatch-p7 {
+    color: #000;
+    text-align: center;
+    font-size: 18px;
+    line-height: 1.2;
+    max-width: 795px;
+    margin: 0 auto;
+    margin-top: 13px;
+  }
+
+  .take-quiz-dispatch .take-quiz-dispatch-p7 p {
+    margin: 0;
+  }
+
+  .take-quiz-dispatch .take-quiz-dispatch-p7 a {
+    color: #3698da;
+    text-decoration: underline;
+  }
+
+  .take-quiz-dispatch .take-quiz-retry-btn {
+    display: inline-block;
+    font-size: 20px;
+    line-height: 1.5;
+    cursor: pointer;
+    /* padding-bottom: 3px; */
+    border-bottom: 1.5px solid #000;
+    /* text-decoration: underline; */
+    margin-top: 40px;
+  }
+
+  .take-quiz-dispatch .carry,
+  .take-quiz-dispatch .is-carry .no-carry {
+    display: none;
+  }
+
+  .take-quiz-dispatch .is-carry .carry {
+    display: block;
+  }
+
+  .take-quiz-msg-jy {
+    margin-top: 15px;
+    font-size: 14px;
+    line-height: 1;
+    color: #e0004d;
+    gap: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+  }
+
+  .take-quiz-msg-jy .span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    border-radius: 10px;
+    color: #fff;
+    background: #e0004d;
+    zoom: 0.8;
+  }
+
+  .jdgm-prev-badge__text {
+    margin-left: 10px;
+    color: #4b4b4b;
+    font-size: 14px;
+  }
+
+  @media (max-width: 1800px) {
+    .take-quiz .take-quiz-img-title {
+      font-size: 50px;
+    }
+    .take-quiz .take-quiz-tx {
+      width: 260px;
+    }
+    .take-quiz .take-quiz-name {
+      width: 260px;
+    }
+  }
+
+  @media (max-width: 1600px) {
+    .take-quiz .take-quiz-img-text {
+      padding: 100px 60px;
+    }
+    .take-quiz .take-quiz-img-title {
+      font-size: 40px;
+    }
+    .take-quiz .take-quiz-tx {
+      width: 220px;
+    }
+    .take-quiz .take-quiz-name {
+      width: 220px;
+    }
+    .take-quiz .take-quiz-item-title {
+      font-size: 30px;
+    }
+    .take-quiz .take-quiz-msg-left {
+      font-size: 20px;
+    }
+    .take-quiz .take-quiz-msg-right {
+      font-size: 16px;
+    }
+    .take-quiz .take-quiz-faq-item {
+      font-size: 16px;
+    }
+    .take-quiz .img-right .img {
+      width: 70px;
+    }
+    .take-quiz .take-quiz-btn {
+      font-size: 16px;
+    }
+  }
+
+  @media (max-width: 1400px) {
+    .take-quiz .take-quiz-faq-item,
+    .take-quiz .take-quiz-faq-item p {
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: center;
+      gap: 5px;
+    }
+    .take-quiz .img-right .take-quiz-faq-item {
+      flex-direction: row;
+      align-items: center;
+      justify-content: flex-start;
+    }
+    .take-quiz .take-quiz-faq-item {
+      min-height: 45px;
+    }
+    .take-quiz .take-quiz-tx {
+      margin-top: 30px;
+    }
+    .take-quiz .take-quiz-btns {
+      margin-top: 40px;
+    }
+  }
+
+  @media (max-width: 1200px) {
+    .take-quiz .take-quiz-img-text {
+      padding: 40px;
+    }
+    .take-quiz .take-quiz-img-title {
+      font-size: 35px;
+    }
+    .take-quiz .take-quiz-tx {
+      width: 180px;
+    }
+    .take-quiz .take-quiz-name {
+      width: 180px;
+    }
+    .take-quiz .take-quiz-item-title {
+      font-size: 25px;
+    }
+    .take-quiz .take-quiz-btn {
+      height: 50px;
+      font-size: 14px;
+    }
+  }
+
+  @media (max-width: 991px) {
+    .take-quiz {
+      background: linear-gradient(180deg, #eaf0f6 -25%, #fdfdfd 125%);
+      padding: 50px 0 70px 0;
+    }
+    .take-quiz .take-quiz-img {
+      width: 100%;
+      padding: 0 24px;
+    }
+    .take-quiz .take-quiz-img .img {
+      display: none;
+    }
+    .take-quiz .take-quiz-img-text {
+      position: relative;
+      padding: 0;
+    }
+    .take-quiz .take-quiz-img-title {
+      max-width: none;
+      text-align: center;
+      font-size: 28px;
+    }
+
+    .take-quiz .take-quiz-tx {
+      width: 80px;
+      margin: 0 auto;
+      margin-top: 20px;
+    }
+    .take-quiz .take-quiz-name {
+      display: none;
+    }
+    .take-quiz-name1 {
+      display: block;
+      margin-top: -8px;
+      margin-bottom: 7px;
+    }
+    .take-quiz .take-quiz-cont {
+      position: relative;
+      transform: translateY(0);
+      top: auto;
+      z-index: 0;
+    }
+    .take-quiz .take-quiz-faq {
+      width: 100%;
+      max-width: none;
+      padding: 40px 20px;
+      padding-top: 50px;
+      background: #fff;
+      border-radius: 8px;
+      margin-top: -40px;
+    }
+    .take-quiz .take-quiz-top {
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+    .take-quiz .take-quiz-item-title {
+      text-align: center;
+    }
+    .take-quiz .take-quiz-msg-left,
+    .take-quiz .take-quiz-msg-right {
+      font-size: 14px;
+    }
+    .take-quiz .take-quiz-faq-item {
+      padding: 8px 15px;
+      min-height: 42px;
+      font-size: 15px;
+      border-radius: 5px;
+    }
+
+    .take-quiz .img-bottom .take-quiz-faq-item.active::after {
+      top: 57%;
+    }
+
+    .take-quiz .take-quiz-email {
+      height: 42px;
+      font-size: 15px;
+      border-radius: 5px;
+      padding: 8px 15px;
+    }
+    .take-quiz .take-quiz-faq-list {
+      gap: 15px;
+    }
+    .take-quiz .take-quiz-btns {
+      margin-top: 30px;
+      gap: 15px;
+    }
+    .take-quiz .take-quiz-btn {
+      border-radius: 5px;
+      height: 42px;
+      flex: 1;
+    }
+    .take-quiz .img-bottom .take-quiz-faq-list {
+      gap: 30px;
+    }
+    .take-quiz .img-bottom .take-quiz-faq-item {
+      width: calc(33.333% - 20px);
+      font-size: 14px;
+    }
+    .take-quiz .img-right .take-quiz-faq-item {
+      gap: 15px;
+    }
+    .take-quiz .img-right .img {
+      width: 60px;
+    }
+    .take-quiz .take-quiz-faq-item strong {
+      font-size: 12px;
+    }
+    .take-quiz-dispatch {
+      padding: 40px 0;
+    }
+    .take-quiz-dispatch .take-quiz-dispatch-h3 {
+      font-size: 28px;
+      margin-bottom: 60px;
+    }
+    .take-quiz-dispatch .take-quiz-dispatch-rw {
+      margin-top: -40px;
+    }
+    .take-quiz-dispatch .take-quiz-dispatch-tx {
+      width: 80px;
+    }
+    .take-quiz-dispatch .take-quiz-dispatch-cont {
+      padding: 0 20px 40px 20px;
+    }
+    .take-quiz-dispatch .take-quiz-dispatch-rw-p {
+      font-size: 16px;
+      margin-top: 15px;
+    }
+    .take-quiz-dispatch .take-quiz-dispatch-p1 {
+      font-size: 18px;
+      text-align: center;
+    }
+    .take-quiz-dispatch .take-quiz-dispatch-p1 strong {
+      display: block;
+      margin-bottom: 5px;
+      font-size: 25px;
+    }
+    .take-quiz-dispatch .take-quiz-dispatch-p2 {
+      font-size: 20px;
+      margin-bottom: 25px;
+    }
+    .take-quiz-dispatch .take-quiz-dispatch-p4 {
+      font-size: 14px;
+    }
+    .take-quiz-dispatch .take-quiz-dispatch-p3 {
+      margin-top: 25px;
+      font-size: 20px;
+    }
+    .take-quiz-dispatch .take-quiz-dispatch-product {
+      gap: 30px;
+    }
+    .take-quiz-dispatch .take-quiz-dispatch-product-h3 {
+      font-size: 25px;
+    }
+    .take-quiz-dispatch .take-quiz-dispatch-product-tag {
+      width: 60px;
+      top: 10px;
+      left: 10px;
+    }
+    .take-quiz-dispatch .take-quiz-dispatch-product-tag-txt {
+      font-size: 14px;
+    }
+    .take-quiz-dispatch .take-quiz-dispatch-product-tag-txt strong {
+      font-size: 18px;
+      line-height: 1;
+    }
+    .take-quiz-dispatch .take-quiz-dispatch-product-p {
+      font-size: 14px;
+      margin-top: 10px;
+    }
+    .take-quiz-dispatch .take-quiz-dispatch-product-star {
+      margin-top: 10px;
+    }
+    .take-quiz-dispatch .take-quiz-dispatch-product-btn {
+      font-size: 16px;
+      height: 42px;
+    }
+    .take-quiz-dispatch .take-quiz-dispatch-p5 {
+      font-size: 18px;
+    }
+    .take-quiz-dispatch .take-quiz-dispatch-p6 {
+      font-size: 18px;
+    }
+    .take-quiz-dispatch .take-quiz-dispatch-p7 {
+      font-size: 14px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .take-quiz-dispatch .take-quiz-dispatch-product {
+      flex-direction: column;
+      gap: 0px;
+    }
+    .take-quiz-dispatch .take-quiz-dispatch-product .take-quiz-dispatch-product-img {
+      width: 100%;
+    }
+    .take-quiz-dispatch .take-quiz-dispatch-product-info {
+      width: 100%;
+      padding: 20px;
+      text-align: center;
+    }
+    .take-quiz-dispatch .take-quiz-dispatch-product-star {
+      justify-content: center;
+    }
+    .take-quiz-dispatch .take-quiz-dispatch-product-btn {
+      width: 100%;
+      border-radius: 5px;
+    }
+  }
+</style>
+
+<section class="section-box">
+  <div class="take-quiz">
+    <div class="take-quiz-img">
+      {%- if section.settings.image != blank -%}
+        <img
+          src="{{ section.settings.image | image_url }}"
+          width="{{ section.settings.image.width }}"
+          height="{{ section.settings.image.height }}"
+          class="img"
+          alt="{{ section.settings.image.alt | escape }}"
+        >
+      {%- endif -%}
+      <div class="take-quiz-img-text">
+        {%- if section.settings.title != blank -%}
+          <h3 class="take-quiz-img-title">{{ section.settings.title }}</h3>
+        {%- endif -%}
+        {%- if section.settings.image1 != blank -%}
+          <img
+            src="{{ section.settings.image1 | image_url }}"
+            width="{{ section.settings.image1.width }}"
+            height="{{ section.settings.image1.height }}"
+            class="take-quiz-tx"
+            alt="{{ section.settings.image1.alt | escape }}"
+          >
+          <div class="take-quiz-name">Dr. Davin Lim</div>
+        {%- endif -%}
+      </div>
+    </div>
+    <div class="take-quiz-cont">
+      <div class="container">
+        <div class="take-quiz-faq">
+          <div class="take-quiz-top">
+            {%- if section.settings.text != blank or section.settings.text1 != blank -%}
+              <div class="take-quiz-msg">
+                {%- if section.settings.text != blank -%}
+                  <div class="take-quiz-msg-left">{{ section.settings.text }}</div>
+                {%- endif -%}
+                <div class="take-quiz-msg-right">
+                  {{ section.settings.text1 }}
+                  <span class="current-num">1</span> /
+                  <span
+                    class="total-num"
+                    >7</span
+                  >
+                </div>
+              </div>
+            {%- endif -%}
+            <div class="take-quiz-step">
+              <div class="take-quiz-name1">Dr. Davin Lim</div>
+              {%- for block in section.blocks -%}
+                {%- if block.settings.title != blank -%}
+                  <div class="take-quiz-item-title">{{ block.settings.title }}</div>
+                {%- endif -%}
+              {%- endfor -%}
+            </div>
+          </div>
+          <div class="take-quiz-step">
+            {%- for block in section.blocks -%}
+              {% if block.type == 'text' %}
+                <div class="take-quiz-item">
+                  <div class="take-quiz-faq-list">
+                    {%- if block.settings.text != blank -%}
+                      <div class="take-quiz-faq-item">{{ block.settings.text }}</div>
+                    {%- endif -%}
+                    {%- if block.settings.text1 != blank -%}
+                      <div class="take-quiz-faq-item">{{ block.settings.text1 }}</div>
+                    {%- endif -%}
+                    {%- if block.settings.text2 != blank -%}
+                      <div class="take-quiz-faq-item">{{ block.settings.text2 }}</div>
+                    {%- endif -%}
+                    {%- if block.settings.text3 != blank -%}
+                      <div class="take-quiz-faq-item">{{ block.settings.text3 }}</div>
+                    {%- endif -%}
+                    {%- if block.settings.text4 != blank -%}
+                      <div class="take-quiz-faq-item">{{ block.settings.text4 }}</div>
+                    {%- endif -%}
+                    {%- if block.settings.text5 != blank -%}
+                      <div class="take-quiz-faq-item">{{ block.settings.text5 }}</div>
+                    {%- endif -%}
+                  </div>
+                </div>
+              {% endif %}
+              {% if block.type == 'image' %}
+                <div class="take-quiz-item {% if block.settings.is_bottom %}img-bottom{% endif %} {% if block.settings.is_right %}img-right{% endif %}">
+                  <div class="take-quiz-faq-list">
+                    {%- if block.settings.text != blank or block.settings.image != blank -%}
+                      <div class="take-quiz-faq-item">
+                        {%- if block.settings.image != blank -%}
+                          <img
+                            src="{{ block.settings.image | image_url }}"
+                            width="{{ block.settings.image.width }}"
+                            height="{{ block.settings.image.height }}"
+                            class="img"
+                            alt="{{ block.settings.image.alt | escape }}"
+                          >
+                        {%- endif -%}
+                        {{ block.settings.text }}
+                      </div>
+                    {%- endif -%}
+                    {%- if block.settings.text1 != blank or block.settings.image1 != blank -%}
+                      <div class="take-quiz-faq-item">
+                        {%- if block.settings.image1 != blank -%}
+                          <img
+                            src="{{ block.settings.image1 | image_url }}"
+                            width="{{ block.settings.image1.width }}"
+                            height="{{ block.settings.image1.height }}"
+                            class="img"
+                            alt="{{ block.settings.image1.alt | escape }}"
+                          >
+                        {%- endif -%}
+                        {{ block.settings.text1 }}
+                      </div>
+                    {%- endif -%}
+                    {%- if block.settings.text2 != blank or block.settings.image2 != blank -%}
+                      <div class="take-quiz-faq-item">
+                        {%- if block.settings.image2 != blank -%}
+                          <img
+                            src="{{ block.settings.image2 | image_url }}"
+                            width="{{ block.settings.image2.width }}"
+                            height="{{ block.settings.image2.height }}"
+                            class="img"
+                            alt="{{ block.settings.image2.alt | escape }}"
+                          >
+                        {%- endif -%}
+                        {{ block.settings.text2 }}
+                      </div>
+                    {%- endif -%}
+                    {%- if block.settings.text3 != blank or block.settings.image3 != blank -%}
+                      <div class="take-quiz-faq-item">
+                        {%- if block.settings.image3 != blank -%}
+                          <img
+                            src="{{ block.settings.image3 | image_url }}"
+                            width="{{ block.settings.image3.width }}"
+                            height="{{ block.settings.image3.height }}"
+                            class="img"
+                            alt="{{ block.settings.image3.alt | escape }}"
+                          >
+                        {%- endif -%}
+                        {{ block.settings.text3 }}
+                      </div>
+                    {%- endif -%}
+                    {%- if block.settings.text4 != blank or block.settings.image4 != blank -%}
+                      <div class="take-quiz-faq-item">
+                        {%- if block.settings.image4 != blank -%}
+                          <img
+                            src="{{ block.settings.image4 | image_url }}"
+                            width="{{ block.settings.image4.width }}"
+                            height="{{ block.settings.image4.height }}"
+                            class="img"
+                            alt="{{ block.settings.image4.alt | escape }}"
+                          >
+                        {%- endif -%}
+                        {{ block.settings.text4 }}
+                      </div>
+                    {%- endif -%}
+                    {%- if block.settings.text5 != blank or block.settings.image5 != blank -%}
+                      <div class="take-quiz-faq-item">
+                        {%- if block.settings.image5 != blank -%}
+                          <img
+                            src="{{ block.settings.image5 | image_url }}"
+                            width="{{ block.settings.image5.width }}"
+                            height="{{ block.settings.image5.height }}"
+                            class="img"
+                            alt="{{ block.settings.image5.alt | escape }}"
+                          >
+                        {%- endif -%}
+                        {{ block.settings.text5 }}
+                      </div>
+                    {%- endif -%}
+                    {%- if block.settings.text6 != blank or block.settings.image6 != blank -%}
+                      <div class="take-quiz-faq-item">
+                        {%- if block.settings.image6 != blank -%}
+                          <img
+                            src="{{ block.settings.image6 | image_url }}"
+                            width="{{ block.settings.image6.width }}"
+                            height="{{ block.settings.image6.height }}"
+                            class="img"
+                            alt="{{ block.settings.image6.alt | escape }}"
+                          >
+                        {%- endif -%}
+                        {{ block.settings.text6 }}
+                      </div>
+                    {%- endif -%}
+                  </div>
+                </div>
+              {% endif %}
+              {% if block.type == 'email' %}
+                {%- if block.settings.text != blank -%}
+                  <div class="take-quiz-item">
+                    <input
+                      class="take-quiz-email"
+                      name="email"
+                      type="email"
+                      required
+                      placeholder="{{ block.settings.text }}"
+                    >
+                    {%- if block.settings.text1 != blank -%}
+                      <div class="take-quiz-check">
+                        <label>
+                          <input type="checkbox" name="checkbox" class="take-quiz-checkbox" checked>
+                          <span></span>
+                        </label>
+                        {{ block.settings.text1 }}
+                      </div>
+                    {% endif %}
+                  </div>
+                {%- endif -%}
+              {% endif %}
+            {%- endfor -%}
+          </div>
+          <div class="take-quiz-btns">
+            {%- if section.settings.text2 != blank -%}
+              <div class="take-quiz-btn take-quiz-prev-btn">{{ section.settings.text2 }}</div>
+            {%- endif -%}
+            {%- if section.settings.text3 != blank -%}
+              <div class="take-quiz-btn take-quiz-next-btn">{{ section.settings.text3 }}</div>
+            {%- endif -%}
+            {%- if section.settings.text4 != blank -%}
+              <div class="take-quiz-btn take-quiz-submit-btn">{{ section.settings.text4 }}</div>
+            {%- endif -%}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="take-quiz-dispatch">
+    <div class="container">
+      {%- if section.settings.text5 != blank -%}
+        <h3 class="take-quiz-dispatch-h3">{{ section.settings.text5 }}</h3>
+      {%- endif -%}
+      <div class="take-quiz-dispatch-cont">
+        <div class="take-quiz-dispatch-rw">
+          {%- if section.settings.image1 != blank -%}
+            <img
+              src="{{ section.settings.image1 | image_url }}"
+              width="{{ section.settings.image1.width }}"
+              height="{{ section.settings.image1.height }}"
+              class="take-quiz-dispatch-tx"
+              alt="{{ section.settings.image1.alt | escape }}"
+            >
+          {%- endif -%}
+          {%- if section.settings.text6 != blank -%}
+            <p class="take-quiz-dispatch-rw-p">{{ section.settings.text6 }}</p>
+          {%- endif -%}
+        </div>
+        <div class="take-quiz-dispatch-list">
+          {% assign flag = false %}
+          {%- for block in section.blocks -%}
+            {% if block.type == 'product' %}
+              <div class="take-quiz-dispatch-item {{ block.settings.class_diy }}">
+                {%- if block.settings.text != blank -%}
+                  <div class="take-quiz-dispatch-p1">{{ block.settings.text }}</div>
+                {%- endif -%}
+                <svg
+                  class="take-quiz-dispatch-jt"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="41"
+                  height="41"
+                  viewBox="0 0 41 41"
+                  fill="none"
+                >
+                  <path
+                    d="M20.5 40C31.2696 40 40 31.2696 40 20.5C40 9.73045 31.2696 1 20.5 1C9.73045 1 1 9.73045 1 20.5C1 31.2696 9.73045 40 20.5 40Z"
+                    stroke="#E0004D" />
+                  <path
+                    d="M19.763 24.6831L12 16.9191L13.132 15.7871L20.896 23.5511L28.66 15.7871L29.792 16.9191L22.028 24.6831L20.895 25.8151L19.763 24.6831Z"
+                    fill="#E0004D" />
+                </svg>
+                {%- if block.settings.text1 != blank -%}
+                  <div class="take-quiz-dispatch-p2">
+                    {{ block.settings.text1 }}
+                  </div>
+                {%- endif -%}
+                <div class="take-quiz-dispatch-product">
+                  <div class="take-quiz-dispatch-product-img">
+                    {%- if block.settings.image != blank -%}
+                      <img
+                        src="{{ block.settings.image | image_url }}"
+                        width="{{ block.settings.image.width }}"
+                        height="{{ block.settings.image.height }}"
+                        class="img"
+                        alt="{{ block.settings.image.alt | escape }}"
+                      >
+                    {%- endif -%}
+                    {%- if block.settings.text2 != blank -%}
+                      <div class="take-quiz-dispatch-product-tag">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="99" height="99" viewBox="0 0 99 99" fill="none">
+                          <path
+                            d="M98.9991 49.4999L94.4851 52.5869L98.5411 56.2549L93.6511 58.6999L97.1721 62.8889L91.9941 64.6389L94.9091 69.2719L89.5411 70.2949L91.7961 75.2839L86.3381 75.5629L87.8951 80.8129L82.4501 80.3469L83.2831 85.7599L77.9511 84.5599L78.0451 90.0369L72.9251 88.1219L72.2751 93.5609L67.4641 90.9609L66.0781 96.2609L61.6671 93.0279L59.5671 98.0859L55.6401 94.2769L52.8721 98.9999L49.4951 94.6929L46.1181 98.9999L43.3501 94.2769L39.4221 98.0859L37.3221 93.0279L32.9111 96.2609L31.5251 90.9609L26.7131 93.5609L26.0631 88.1219L20.9431 90.0359L21.0371 84.5589L15.7051 85.7589L16.5411 80.3449L11.0961 80.8109L12.6531 75.5609L7.19514 75.2819L9.45014 70.2929L4.08114 69.2709L6.99614 64.6379L1.81814 62.8879L5.33914 58.6989L0.449142 56.2549L4.50814 52.5869L-0.00585938 49.4999L4.50814 46.4129L0.449142 42.7449L5.33914 40.2999L1.81814 36.1109L6.99614 34.3609L4.08614 29.7309L9.45514 28.7089L7.20014 23.7199L12.6581 23.4409L11.1011 18.1909L16.5461 18.6569L15.7131 13.2439L21.0451 14.4439L20.9511 8.96691L26.0711 10.8819L26.7211 5.44291L31.5321 8.04291L32.9181 2.7429L37.3291 5.97591L39.4291 0.917908L43.3561 4.72691L46.1241 0.00390625L49.5011 4.31091L52.8781 0.00390625L55.6461 4.72691L59.5741 0.917908L61.6741 5.97591L66.0851 2.7429L67.4711 8.04291L72.2831 5.44291L72.9331 10.8819L78.0531 8.96791L77.9591 14.4449L83.2911 13.2449L82.4571 18.6579L87.9021 18.1919L86.3451 23.4419L91.8031 23.7209L89.5411 28.7069L94.9111 29.7309L91.9961 34.3639L97.1741 36.1139L93.6531 40.3029L98.5431 42.7479L94.4841 46.4159L98.9991 49.4999Z"
+                            fill="#E7004C" />
+                          <path
+                            d="M49.5 94.693L46.123 99L43.356 94.277L39.428 98.086L37.328 93.028L32.916 96.262L31.53 90.962L26.719 93.562L26.069 88.123L20.948 90.037L21.043 84.56L15.711 85.76L16.544 80.347L11.099 80.813L12.656 75.562L7.198 75.283L9.453 70.294L4.08499 69.272L7 64.639L1.82101 62.889L5.34299 58.7L0.451996 56.256L4.51199 52.589L0 49.5L4.51401 46.413L0.45401 42.745L5.345 40.301L1.823 36.111L7.00201 34.361L4.08801 29.728L9.45599 28.706L7.20099 23.716L12.66 23.438L11.103 18.187L16.548 18.653L15.715 13.239L21.047 14.439L20.953 8.96198L26.072 10.877L26.723 5.43799L31.534 8.03802L32.92 2.73798L37.331 5.97198L39.431 0.914001L43.358 4.72302L46.124 0L49.501 4.30701L52.878 0L55.646 4.72302L59.574 0.914978L61.674 5.97198L66.086 2.73901L67.472 8.039L72.283 5.43903L72.933 10.878L78.054 8.96399L77.959 14.441L83.291 13.241L82.458 18.654L87.903 18.188L86.346 23.439L91.804 23.717L89.549 28.707L94.917 29.728L92 34.362L97.179 36.112L93.657 40.301L98.548 42.746L94.489 46.413L99 49.5L94.486 52.588L98.545 56.255L93.654 58.7L97.176 62.889L92 64.64L94.914 69.273L89.546 70.295L91.801 75.284L86.343 75.563L87.9 80.814L82.455 80.348L83.288 85.762L77.956 84.562L78.05 90.039L72.931 88.125L72.28 93.564L67.469 90.964L66.084 96.264L61.673 93.031L59.573 98.088L55.646 94.279L52.878 99L49.5 94.693Z"
+                            fill="url(#paint0_linear_309_2224)" />
+                          <defs>
+                            <linearGradient id="paint0_linear_309_2224" x1="30.195" y1="30.195" x2="68.805" y2="68.805"
+                              gradientUnits="userSpaceOnUse">
+                              <stop stop-color="#E0004D" />
+                              <stop offset="0.507" stop-color="#FF6186" />
+                              <stop offset="1" stop-color="#E0004D" />
+                            </linearGradient>
+                          </defs>
+                        </svg>
+                        <div class="take-quiz-dispatch-product-tag-txt">
+                          {{ block.settings.text2 }}
+                        </div>
+                      </div>
+                    {%- endif -%}
+                  </div>
+                  <div class="take-quiz-dispatch-product-info">
+                    {%- if block.settings.text3 != blank -%}
+                      <h3 class="take-quiz-dispatch-product-h3">{{ block.settings.text3 }}</h3>
+                    {%- endif -%}
+                    {%- if block.settings.text4 != blank -%}
+                      <p class="take-quiz-dispatch-product-p">{{ block.settings.text4 }}</p>
+                    {%- endif -%}
+
+                    <div class="header-new-product-star" style="margin-top:15px;">
+                      <div class="jdgm-widget jdgm-preview-badge jdgm-preview-badge--with-link jdgm--done-setup">
+                        <div
+                          class="jdgm-prev-badge"
+                          data-number-of-reviews="1707"
+                          data-number-of-questions="0"
+                        >
+                          {% assign rating = block.settings.product_rating | plus: 0 %}
+                          {% assign full_stars = rating | floor %}
+                          {% assign has_half_star = 0 %}
+                          {% if rating > full_stars %}
+                            {% assign has_half_star = 1 %}
+                          {% endif %}
+                          {% assign empty_stars = 5 | minus: full_stars | minus: has_half_star %}
+                          <span class="jdgm-prev-badge__stars">
+                            {%- for i in (1..full_stars) -%}
+                              <span class="jdgm-star jdgm--on"></span>
+                            {%- endfor -%}
+                            {%- if has_half_star == 1 -%}
+                              <span class="jdgm-star jdgm--half"></span>
+                            {%- endif -%}
+                            {%- for i in (1..empty_stars) -%}
+                              <span class="jdgm-star jdgm--off"></span>
+                            {%- endfor -%}
+                          </span>
+                          {% if block.settings.text5 != blank %}
+                            <span class="jdgm-prev-badge__text">({{ block.settings.text5 }})</span>
+                          {% endif %}
+                        </div>
+                      </div>
+                    </div>
+
+                    {% comment %}
+                      {%- if block.settings.text5 != blank -%}
+                        <div class="take-quiz-dispatch-product-star">
+                          <span>{{ block.settings.text5 }}</span>
+                        </div>
+                      {%- endif -%}
+                    {% endcomment %}
+
+                    {%- if block.settings.text6 != blank -%}
+                      <div
+                        class="take-quiz-dispatch-product-btn"
+                        data-id="{{ block.settings.text7 }}"
+                        data-code="{{ block.settings.text8 }}"
+                      >
+                        {{ block.settings.text6 }}
+                      </div>
+                    {%- endif -%}
+                  </div>
+                </div>
+                {%- if block.settings.text9 != blank -%}
+                  <div class="take-quiz-dispatch-p3">{{ block.settings.text9 }}</div>
+                {%- endif -%}
+                {%- if block.settings.text10 != blank -%}
+                  <div class="take-quiz-dispatch-p4">
+                    {{ block.settings.text10 }}
+                  </div>
+                {%- endif -%}
+                <div class="take-quiz-dispatch-code">
+                  {%- if block.settings.text11 != blank -%}
+                    <div class="take-quiz-dispatch-p5">{{ block.settings.text11 }}</div>
+                  {%- endif -%}
+                  {%- if block.settings.text12 != blank -%}
+                    <div class="take-quiz-dispatch-p6">{{ block.settings.text12 }}</div>
+                  {%- endif -%}
+                </div>
+                {%- if block.settings.text13 != blank -%}
+                  <div class="take-quiz-dispatch-p3">{{ block.settings.text13 }}</div>
+                {%- endif -%}
+                {%- if block.settings.text14 != blank -%}
+                  <div class="take-quiz-dispatch-p7">
+                    {{ block.settings.text14 }}
+                  </div>
+                {%- endif -%}
+              </div>
+            {% endif %}
+            {% if block.type == 'inapplicable' %}
+              <div class="take-quiz-dispatch-item {{ block.settings.class_diy }}">
+                {%- if block.settings.text != blank -%}
+                  <div class="take-quiz-dispatch-p1">
+                    {{ block.settings.text }}
+                  </div>
+                {%- endif -%}
+                <svg
+                  class="take-quiz-dispatch-jt"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="41"
+                  height="41"
+                  viewBox="0 0 41 41"
+                  fill="none"
+                >
+                  <path
+                    d="M20.5 40C31.2696 40 40 31.2696 40 20.5C40 9.73045 31.2696 1 20.5 1C9.73045 1 1 9.73045 1 20.5C1 31.2696 9.73045 40 20.5 40Z"
+                    stroke="#E0004D" />
+                  <path
+                    d="M19.763 24.6831L12 16.9191L13.132 15.7871L20.896 23.5511L28.66 15.7871L29.792 16.9191L22.028 24.6831L20.895 25.8151L19.763 24.6831Z"
+                    fill="#E0004D" />
+                </svg>
+                {%- if block.settings.text1 != blank -%}
+                  <div class="take-quiz-dispatch-p2">
+                    {{ block.settings.text1 }}
+                  </div>
+                {%- endif -%}
+                {%- if block.settings.text2 != blank -%}
+                  <div class="take-quiz-dispatch-p4">
+                    {{ block.settings.text2 }}
+                  </div>
+                {%- endif -%}
+                <br>
+                <hr>
+                {%- if block.settings.text3 != blank -%}
+                  <div class="take-quiz-dispatch-p3">{{ block.settings.text3 }}</div>
+                {%- endif -%}
+                {%- if block.settings.text4 != blank -%}
+                  <div class="take-quiz-dispatch-p4 no-carry">
+                    {{ block.settings.text4 }}
+                  </div>
+                {%- endif -%}
+                {%- if block.settings.text5 != blank -%}
+                  <div class="take-quiz-dispatch-p4 no-carry">
+                    {{ block.settings.text5 }}
+                  </div>
+                {%- endif -%}
+                {%- if block.settings.text7 != blank -%}
+                  <div class="take-quiz-dispatch-p4 carry">
+                    {{ block.settings.text7 }}
+                  </div>
+                {%- endif -%}
+                {%- if block.settings.text8 != blank -%}
+                  <div class="take-quiz-dispatch-p4 carry">
+                    {{ block.settings.text8 }}
+                  </div>
+                {%- endif -%}
+                {%- if block.settings.text6 != blank -%}
+                  <div style="text-align: center;">
+                    <div class="take-quiz-retry-btn">{{ block.settings.text6 }}</div>
+                  </div>
+                {%- endif -%}
+              </div>
+            {% endif %}
+            {% if block.type == 'minors' %}
+              <div class="take-quiz-dispatch-item {{ block.settings.class_diy }}">
+                {%- if block.settings.text != blank -%}
+                  <div class="take-quiz-dispatch-p1">
+                    {{ block.settings.text }}
+                  </div>
+                {%- endif -%}
+                <svg
+                  class="take-quiz-dispatch-jt"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="41"
+                  height="41"
+                  viewBox="0 0 41 41"
+                  fill="none"
+                >
+                  <path
+                    d="M20.5 40C31.2696 40 40 31.2696 40 20.5C40 9.73045 31.2696 1 20.5 1C9.73045 1 1 9.73045 1 20.5C1 31.2696 9.73045 40 20.5 40Z"
+                    stroke="#E0004D" />
+                  <path
+                    d="M19.763 24.6831L12 16.9191L13.132 15.7871L20.896 23.5511L28.66 15.7871L29.792 16.9191L22.028 24.6831L20.895 25.8151L19.763 24.6831Z"
+                    fill="#E0004D" />
+                </svg>
+                {%- if block.settings.text1 != blank -%}
+                  <div class="take-quiz-dispatch-p2">
+                    {{ block.settings.text1 }}
+                  </div>
+                {%- endif -%}
+                {%- if block.settings.text2 != blank -%}
+                  <div class="take-quiz-dispatch-p4">
+                    {{ block.settings.text2 }}
+                  </div>
+                {%- endif -%}
+                <br>
+                <hr>
+                {%- if block.settings.text3 != blank -%}
+                  <div class="take-quiz-dispatch-p3">{{ block.settings.text3 }}</div>
+                {%- endif -%}
+                {%- if block.settings.text4 != blank -%}
+                  <div class="take-quiz-dispatch-p4 no-carry">
+                    {{ block.settings.text4 }}
+                  </div>
+                {%- endif -%}
+                {%- if block.settings.text5 != blank -%}
+                  <div class="take-quiz-dispatch-p4 no-carry">
+                    {{ block.settings.text5 }}
+                  </div>
+                {%- endif -%}
+                {%- if block.settings.text7 != blank -%}
+                  <div class="take-quiz-dispatch-p4 carry">
+                    {{ block.settings.text7 }}
+                  </div>
+                {%- endif -%}
+                {%- if block.settings.text8 != blank -%}
+                  <div class="take-quiz-dispatch-p4 carry">
+                    {{ block.settings.text8 }}
+                  </div>
+                {%- endif -%}
+                {%- if block.settings.text6 != blank -%}
+                  <div style="text-align: center;">
+                    <div class="take-quiz-retry-btn">{{ block.settings.text6 }}</div>
+                  </div>
+                {%- endif -%}
+              </div>
+            {% endif %}
+            {% if block.type == 'inapplicable' or block.type == 'minors' %}
+              {% assign flag = true %}
+            {% endif %}
+          {%- endfor -%}
+
+          {% if flag == true %}
+            {% render 'experts-new', settings: section.settings, blocks: section.blocks %}
+            {% render 'faq-diy', settings: section.settings, blocks: section.blocks %}
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+class QuizApp {
+  constructor() {
+    const current = sessionStorage.getItem('current')
+    const answers = sessionStorage.getItem('answers')
+    this.takeQuiz = document.querySelector('.take-quiz');
+    this.questions = Array.from(this.takeQuiz.querySelectorAll('.take-quiz-item'));
+    this.titles = Array.from(this.takeQuiz.querySelectorAll('.take-quiz-item-title'));
+    this.answers = answers ? JSON.parse(answers) : {};
+    this.current = current ? Number(current) : 0;
+    this.ineligible = false;
+    this.timer = null
+   
+    this.prevBtn = this.takeQuiz.querySelector('.take-quiz-prev-btn');
+    this.nextBtn = this.takeQuiz.querySelector('.take-quiz-next-btn');
+    this.submitBtn = this.takeQuiz.querySelector('.take-quiz-submit-btn');
+    this.resultBox = document.querySelector('.take-quiz-dispatch');
+    this.recommendation = document.querySelector('.recommendation');
+    this.currentNumEl = this.takeQuiz.querySelector('.current-num');
+    this.totalNumEl = this.takeQuiz.querySelector('.total-num');
+    {% comment %} this.retryBtn = document.querySelector('.take-quiz-retry-btn'); {% endcomment %}
+    this.retryBtn = $('.take-quiz-retry-btn')
+
+    this.prevBtn?.addEventListener('click', () => this.prev());
+    this.nextBtn?.addEventListener('click', () => this.next());
+    this.submitBtn?.addEventListener('click', () => this.showResult());
+    {% comment %} this.retryBtn?.addEventListener('click', () => this.resetQuiz()); {% endcomment %}
+    this.retryBtn.on('click',() => this.resetQuiz())
+    this.initOptionListeners();
+    this.showQuestion();
+    this.initCartButtonListeners();
+    this.takeQuiz.querySelector('.take-quiz-email').addEventListener('focus', () => {
+      clearTimeout(this.timer)
+    });
+    this.takeQuiz.querySelector('.take-quiz-email').addEventListener('input', () => {
+      const msg = this.takeQuiz.querySelector('.take-quiz-email').nextElementSibling;
+      if (msg && msg.classList.contains('take-quiz-msg-jy')) {
+        msg.remove();
+      }
+    });
+    this.takeQuiz.querySelector('.take-quiz-checkbox').addEventListener('change', () => {
+      const msg = this.takeQuiz.querySelector('.take-quiz-check').nextElementSibling;
+      if (msg && msg.classList.contains('take-quiz-msg-jy')) {
+        msg.remove();
+      }
+    });
+
+
+    if(sessionStorage.getItem('showMinorsResult')){
+      this.ineligible = true;
+      this.showMinorsResult();
+    }
+
+    
+    if(sessionStorage.getItem('showIneligibleResult')){
+      this.ineligible = true;
+      this.showIneligibleResult();
+    }
+  
+  }
+
+  
+  initOptionListeners() {
+    this.questions.forEach((question, qIndex) => {
+      const options = question.querySelectorAll('.take-quiz-faq-item');
+      options.forEach((option, oIndex) => {
+        option.dataset.index = oIndex;
+        option.addEventListener('click', () => {
+          options.forEach(o => o.classList.remove('active'));
+          option.classList.add('active');
+          this.answers[`q${qIndex}`] = oIndex;
+          if (qIndex === 1) this.showQuestion();
+        });
+      });
+    });
+  }
+
+  getEffectiveQuestions() {
+    const skipPregnancy = this.answers.q1 === 1;
+    return this.questions.filter((q, i) => {
+      const isPregnancy = i === 5;
+      const isEmail = i === this.questions.length - 1;
+      return !(skipPregnancy && isPregnancy) && !isEmail;
+    });
+  }
+
+  getEffectiveTitles() {
+    const skipPregnancy = this.answers.q1 === 0;
+    return this.titles.filter((t, i) => !(skipPregnancy && i === 5));
+  }
+
+  showToast(message) {
+    // 如果已存在，先移除旧的
+    const oldToast = document.getElementById('custom-toast');
+    if (oldToast) oldToast.remove();
+
+    // 创建新 DOM 元素
+    const toast = document.createElement('div');
+    toast.id = 'custom-toast';
+    toast.textContent = message;
+
+    // 设置样式
+    Object.assign(toast.style, {
+      position: 'fixed',
+      top: '12%',
+      left: '50%',
+      transform: 'translate(-50%, 0%)',
+      backgroundColor: '#e0004d',
+      color: 'white',
+      padding: '12px 24px',
+      borderRadius: '6px',
+      fontSize: '16px',
+      zIndex: '9999',
+      pointerEvents: 'none',
+      transition: 'opacity 0.3s ease',
+      opacity: '1',
+    });
+
+    // 添加到页面
+    document.body.appendChild(toast);
+
+    // 延迟 3 秒自动移除
+    setTimeout(() => {
+      toast.style.opacity = '0';
+      setTimeout(() => toast.remove(), 300); // 等过渡完成后移除
+    }, 3000);
+  }
+
+  initCartButtonListeners() {
+    const buttons = document.querySelectorAll('.take-quiz-dispatch-product-btn');
+  
+    buttons.forEach(button => {
+      button.addEventListener('click', () => {
+        const id = button.getAttribute('data-id');
+        const code = button.getAttribute('data-code');
+        addToCart(id,null,{},code)
+      });
+    });
+  }
+
+  showQuestion() {
+    console.log('showQuestion');
+    const visibleQuestions = this.getEffectiveQuestions();
+    const visibleTitles = this.getEffectiveTitles();
+    const emailIndex = this.questions.length - 1;
+    const titleBoxList = this.titles;
+
+   
+    // 隐藏所有内容
+    this.questions.forEach(q => q.classList.remove('active'));
+    titleBoxList.forEach(t => t.classList.remove('active'));
+    this.resultBox.style.display = 'none';
+
+    if(sessionStorage.getItem('showResult')){
+      this.getResult()
+      return;
+    }  
+
+    const msgBox = document.querySelector('.take-quiz-msg');
+
+    if (this.current === emailIndex) {
+     
+      // 显示邮箱页
+      this.questions[this.current].classList.add('active');
+      titleBoxList[this.current].classList.add('active');
+
+      // 隐藏进度区域
+      if (msgBox) msgBox.style.display = 'none';
+
+      this.prevBtn.style.display = 'flex';
+      this.nextBtn.style.display = 'none';
+      this.submitBtn.style.display = 'flex';
+
+      this.countDownResult()
+      return;
+    }
+
+    // 普通题目
+    const visibleIndex = visibleQuestions.findIndex(q => this.questions.indexOf(q) === this.current);
+    if (visibleIndex !== -1) {
+      this.questions[this.current].classList.add('active');
+      // visibleTitles[visibleIndex].classList.add('active');
+      this.titles[this.current].classList.add('active')
+
+      this.currentNumEl.textContent = visibleIndex + 1;
+      this.totalNumEl.textContent = visibleQuestions.length;
+
+      this.prevBtn.style.display = visibleIndex === 0 ? 'none' : 'flex';
+      this.nextBtn.style.display = 'flex';
+      this.submitBtn.style.display = 'none';
+
+      // 显示进度
+      if (msgBox) msgBox.style.display = 'flex';
+    }
+  }
+
+
+  next() {
+    const currentAnswer = this.answers[`q${this.current}`];
+    if (currentAnswer === undefined) {
+      this.showToast('{{ section.settings.text7 }}');
+      return;
+    }
+   
+    // 未满18岁单独处理
+   if(this.current === 0 && currentAnswer === 0){
+      this.ineligible = true;
+      this.showMinorsResult();
+      sessionStorage.setItem('showMinorsResult',true)
+      return 
+    }  
+
+    // ✅ 判断跳转到不适用逻辑（例如 q0 == 0 表示未成年）
+    if ((this.current === 2 && currentAnswer === 5) || (this.current === 3 && currentAnswer >= 4) || (this.current === 5 && currentAnswer === 0)) {
+      this.ineligible = true;
+      this.showIneligibleResult(); // 跳转到不适用页面
+      sessionStorage.setItem('showIneligibleResult',true)
+      return;
+    }
+
+    const visibleQuestions = this.getEffectiveQuestions();
+    const currentVisibleIndex = visibleQuestions.findIndex(q => this.questions.indexOf(q) === this.current);
+
+    if (currentVisibleIndex + 1 >= visibleQuestions.length) {
+      this.current = this.questions.length - 1;
+    } else {
+      this.current = this.questions.indexOf(visibleQuestions[currentVisibleIndex + 1]);
+    }
+    
+    sessionStorage.setItem('current', this.current)
+    sessionStorage.setItem('answers', JSON.stringify(this.answers))
+    this.showQuestion();
+  }
+
+  prev() {
+    const visibleQuestions = this.getEffectiveQuestions();
+    const currentIndex = this.current;
+
+    // 清除当前题目的选中状态和答案
+    const currentQuestion = this.questions[currentIndex];
+    if (currentQuestion) {
+      const options = currentQuestion.querySelectorAll('.take-quiz-faq-item');
+      options.forEach(o => o.classList.remove('active'));
+      delete this.answers[`q${currentIndex}`];
+    }
+
+    // 邮箱页 → 回到最后一个题
+    if (this.current === this.questions.length - 1) {
+      this.current = this.questions.indexOf(visibleQuestions[visibleQuestions.length - 1]);
+      if(this.timer) clearTimeout(this.timer)
+    } else {
+      const currentVisibleIndex = visibleQuestions.findIndex(q => this.questions.indexOf(q) === this.current);
+      if (currentVisibleIndex > 0) {
+        this.current = this.questions.indexOf(visibleQuestions[currentVisibleIndex - 1]);
+      }
+    }
+
+    sessionStorage.setItem('current', this.current)
+    sessionStorage.setItem('answers', JSON.stringify(this.answers))
+
+    this.showQuestion();
+  }
+
+  resetQuiz() {
+    // 清除所有选项 active
+    this.questions.forEach(question => {
+      question.querySelectorAll('.take-quiz-faq-item').forEach(opt => opt.classList.remove('active'));
+    });
+
+    // 清空答案
+    this.answers = {};
+
+    // 重置状态
+    this.ineligible = false;
+    this.current = 0;
+
+    // 隐藏结果区域
+    this.resultBox.style.display = 'none';
+
+    // 恢复进度条、按钮
+    document.querySelector('.take-quiz-msg').style.display = 'flex';
+    this.prevBtn.style.display = 'none';
+    this.nextBtn.style.display = 'flex';
+    this.submitBtn.style.display = 'none';
+    this.takeQuiz.style.display = 'block';
+    sessionStorage.removeItem('current');
+    sessionStorage.removeItem('showMinorsResult');
+    sessionStorage.removeItem('showIneligibleResult')
+    // 显示第一题
+    this.showQuestion();
+  }
+
+  countDownResult(){
+    this.timer  = setTimeout(() => {
+      sessionStorage.setItem('showResult',true);
+      this.getResult()
+    }, {{ section.settings.range_num }}*1000)
+
+
+  }
+
+  insertMsgAfter(el, text) {
+    // 如果已存在提示，先删除
+    const nextEl = el.nextElementSibling;
+    if (nextEl && nextEl.classList.contains('take-quiz-msg-jy')) {
+      nextEl.remove();
+    }
+  
+    // 创建结构
+    const msgBox = document.createElement('div');
+    msgBox.className = 'take-quiz-msg-jy';
+  
+    const icon = document.createElement('span');
+    icon.className = 'span';
+    icon.textContent = '!';
+  
+    const msgText = document.createElement('span');
+    msgText.className = 'text';
+    msgText.textContent = text;
+  
+    msgBox.appendChild(icon);
+    msgBox.appendChild(msgText);
+  
+    // 插入到目标元素后
+    el.insertAdjacentElement('afterend', msgBox);
+  }
+
+
+  showResult() {
+    const emailInput = document.querySelector('.take-quiz-email');
+    const agree = document.querySelector('.take-quiz-checkbox').checked;
+    const email = emailInput.value.trim();
+    const quizCheck = document.querySelector('.take-quiz-check');
+
+    if (!email || !/^\S+@\S+\.\S+$/.test(email)) {
+      // this.showToast('{{ section.settings.text8 }}');
+      this.insertMsgAfter(emailInput,'{{ section.settings.text8 }}')
+      return;
+    }
+
+    if (!agree) {
+      this.insertMsgAfter(quizCheck,'{{ section.settings.text9 }}')
+      return;
+    }
+
+    btnShowLoading($('.take-quiz-submit-btn'))
+
+    const data = {
+      "siteCode":"US",
+      "since":"USER_ADD_TAG",
+      "userEmail":email,
+      email,
+      "tags": ['take quiz']
+    };
+
+    fetch('https://api.ulike.com/user/userSubscribe', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('请求失败');
+        }
+        return response.json();
+      })
+      .then(result => {
+        console.log(result, 'result--------');
+        btnShowLoading($('.take-quiz-submit-btn'),false)
+        if (result.code == 0) {
+          sessionStorage.setItem('showResult',true);
+          this.getResult()
+        }else{
+          if(result.message=='user_subscribe_email_repeat'){
+            this.showToast('{{ section.settings.text10 }}');
+          }
+        }
+      })
+      .catch(error => {
+        this.showToast(error);
+        btnShowLoading($('.take-quiz-submit-btn'),false)
+      });
+  }
+
+  getResult(){
+    $('.faq-box').hide()
+    document.querySelector('.take-quiz-email').value = ''
+    this.takeQuiz.style.display = 'none';
+    console.log(this.current, 'current------', this.questions[this.current], 'question');
+    this.questions[this.current].classList.remove('active');
+    this.prevBtn.style.display = 'none';
+    this.submitBtn.style.display = 'none';
+    const a = this.answers;
+    this.resultBox.querySelectorAll('.take-quiz-dispatch-item').forEach(item => item.classList.remove('active'))
+    if (a.q1 === 0 && a.q6 === 0) {
+      this.resultBox.querySelector('.take-quiz-dispatch-item.ulike-a3').classList.add('active')
+    } else if (a.q1 === 1 &&( a.q6 === 1 || a.q6 === 2)) {
+      this.resultBox.querySelector('.take-quiz-dispatch-item.ulike-x').classList.add('active')
+    }
+    else {
+      this.resultBox.querySelector('.take-quiz-dispatch-item.ulike-a10').classList.add('active')
+    }
+    this.resultBox.style.display = 'block';
+    console.log('getResult------');
+  }
+
+  showIneligibleResult() {
+    this.questions.forEach(q => q.classList.remove('active'));
+    this.titles.forEach(t => t.classList.remove('active'));
+    document.querySelector('.take-quiz-msg').style.display = 'none';
+    this.prevBtn.style.display = 'none';
+    this.nextBtn.style.display = 'none';
+    this.submitBtn.style.display = 'none';
+    this.takeQuiz.style.display = 'none';
+ 
+    this.resultBox.querySelector('.take-quiz-dispatch-item.inapplicable').classList.remove('is-carry')
+    this.resultBox.querySelectorAll('.take-quiz-dispatch-item').forEach(item => item.classList.remove('active'));
+    this.resultBox.querySelector('.take-quiz-dispatch-item.inapplicable').classList.add('active')
+    if(this.current === 5) this.resultBox.querySelector('.take-quiz-dispatch-item.inapplicable').classList.add('is-carry')
+    // 显示不适用的结果
+    this.resultBox.style.display = 'block';
+  }
+  showMinorsResult(){
+    this.questions.forEach(q => q.classList.remove('active'));
+    this.titles.forEach(t => t.classList.remove('active'));
+    document.querySelector('.take-quiz-msg').style.display = 'none';
+    this.prevBtn.style.display = 'none';
+    this.nextBtn.style.display = 'none';
+    this.submitBtn.style.display = 'none';
+    this.takeQuiz.style.display = 'none';
+    this.resultBox.querySelector('.take-quiz-dispatch-item.inapplicable').classList.remove('is-carry')
+    this.resultBox.querySelectorAll('.take-quiz-dispatch-item').forEach(item => item.classList.remove('active'));
+    this.resultBox.querySelector('.take-quiz-dispatch-item.minors').classList.add('active')
+    this.resultBox.style.display = 'block';
+  }
+}
+
+new QuizApp();
+</script>
+{% schema %}
+{
+  "name": "take-quiz",
+  "blocks": [
+    {
+      "name": "text",
+      "type": "text",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text"
+        },
+        {
+          "type": "richtext",
+          "id": "text1",
+          "label": "Text"
+        },
+        {
+          "type": "richtext",
+          "id": "text2",
+          "label": "Text"
+        },
+        {
+          "type": "richtext",
+          "id": "text3",
+          "label": "Text"
+        },
+        {
+          "type": "richtext",
+          "id": "text4",
+          "label": "Text"
+        },
+        {
+          "type": "richtext",
+          "id": "text5",
+          "label": "Text"
+        }
+      ]
+    },
+    {
+      "name": "image",
+      "type": "image",
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "is_bottom",
+          "label": "image bottom",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "is_right",
+          "label": "image right",
+          "default": false
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text"
+        },
+        {
+          "type": "image_picker",
+          "id": "image1",
+          "label": "Image"
+        },
+        {
+          "type": "richtext",
+          "id": "text1",
+          "label": "Text"
+        },
+        {
+          "type": "image_picker",
+          "id": "image2",
+          "label": "Image"
+        },
+        {
+          "type": "richtext",
+          "id": "text2",
+          "label": "Text"
+        },
+        {
+          "type": "image_picker",
+          "id": "image3",
+          "label": "Image"
+        },
+        {
+          "type": "richtext",
+          "id": "text3",
+          "label": "Text"
+        },
+        {
+          "type": "image_picker",
+          "id": "image4",
+          "label": "Image"
+        },
+        {
+          "type": "richtext",
+          "id": "text4",
+          "label": "Text"
+        },
+        {
+          "type": "image_picker",
+          "id": "image5",
+          "label": "Image"
+        },
+        {
+          "type": "richtext",
+          "id": "text5",
+          "label": "Text"
+        },
+        {
+          "type": "image_picker",
+          "id": "image6",
+          "label": "Image"
+        },
+        {
+          "type": "richtext",
+          "id": "text6",
+          "label": "Text"
+        }
+      ]
+    },
+    {
+      "name": "email",
+      "type": "email",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text"
+        },
+        {
+          "type": "richtext",
+          "id": "text1",
+          "label": "Text"
+        }
+      ]
+    },
+    {
+      "name": "product",
+      "type": "product",
+      "settings": [
+        {
+          "type": "text",
+          "id": "class_diy",
+          "label": "对应显示的产品",
+          "info": "a3=> ulike-a3 , a10=> ulike-a10 ,ulike X => ulike-x"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text"
+        },
+        {
+          "type": "richtext",
+          "id": "text1",
+          "label": "Text"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "richtext",
+          "id": "text2",
+          "label": "Text"
+        },
+        {
+          "type": "text",
+          "id": "text3",
+          "label": "Text"
+        },
+        {
+          "type": "text",
+          "id": "text4",
+          "label": "Text"
+        },
+        {
+          "type": "image_picker",
+          "id": "image1",
+          "label": "评分Icon"
+        },
+        {
+          "type": "range",
+          "id": "product_rating",
+          "label": "星级评分",
+          "min": 1,
+          "max": 5,
+          "step": 0.5,
+          "default": 5
+        },
+        {
+          "type": "text",
+          "id": "text5",
+          "label": "Text"
+        },
+        {
+          "type": "text",
+          "id": "text6",
+          "label": "Text"
+        },
+        {
+          "type": "text",
+          "id": "text7",
+          "label": "Product ID"
+        },
+        {
+          "type": "text",
+          "id": "text8",
+          "label": "Code"
+        },
+        {
+          "type": "text",
+          "id": "text9",
+          "label": "Text"
+        },
+        {
+          "type": "text",
+          "id": "text10",
+          "label": "Text"
+        },
+        {
+          "type": "text",
+          "id": "text11",
+          "label": "Text"
+        },
+        {
+          "type": "richtext",
+          "id": "text12",
+          "label": "Text"
+        },
+        {
+          "type": "text",
+          "id": "text13",
+          "label": "Text"
+        },
+        {
+          "type": "richtext",
+          "id": "text14",
+          "label": "Text"
+        }
+      ]
+    },
+    {
+      "name": "inapplicable",
+      "type": "inapplicable",
+      "settings": [
+        {
+          "type": "text",
+          "id": "class_diy",
+          "label": "对应显示的不适用结果",
+          "default": "inapplicable"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text"
+        },
+        {
+          "type": "richtext",
+          "id": "text1",
+          "label": "Text"
+        },
+        {
+          "type": "text",
+          "id": "text2",
+          "label": "Text"
+        },
+        {
+          "type": "text",
+          "id": "text3",
+          "label": "Text"
+        },
+        {
+          "type": "text",
+          "id": "text4",
+          "label": "Text"
+        },
+        {
+          "type": "text",
+          "id": "text5",
+          "label": "Text"
+        },
+        {
+          "type": "text",
+          "id": "text7",
+          "label": "Text",
+          "info": "怀孕提示文案"
+        },
+        {
+          "type": "text",
+          "id": "text8",
+          "label": "Text",
+          "info": "怀孕提示文案"
+        },
+        {
+          "type": "text",
+          "id": "text6",
+          "label": "再试一下文案"
+        }
+      ]
+    },
+    {
+      "name": "minors",
+      "type": "minors",
+      "settings": [
+        {
+          "type": "text",
+          "id": "class_diy",
+          "label": "对应显示的不适用结果",
+          "default": "minors"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text"
+        },
+        {
+          "type": "richtext",
+          "id": "text1",
+          "label": "Text"
+        },
+        {
+          "type": "text",
+          "id": "text2",
+          "label": "Text"
+        },
+        {
+          "type": "text",
+          "id": "text3",
+          "label": "Text"
+        },
+        {
+          "type": "text",
+          "id": "text4",
+          "label": "Text"
+        },
+        {
+          "type": "text",
+          "id": "text5",
+          "label": "Text"
+        },
+        {
+          "type": "text",
+          "id": "text6",
+          "label": "再试一下文案"
+        }
+      ]
+    },
+    {
+      "name": "item",
+      "type": "item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title"
+        },
+        {
+          "type": "richtext",
+          "id": "cont",
+          "label": "Content"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "image_picker",
+          "id": "image1",
+          "label": "Mobile Image"
+        }
+      ]
+    },
+    {
+      "name": "experts-item",
+      "type": "experts-item",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text"
+        },
+        {
+          "type": "text",
+          "id": "text1",
+          "label": "Text"
+        },
+        {
+          "type": "text",
+          "id": "text2",
+          "label": "Text"
+        }
+      ]
+    }
+  ],
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image1",
+      "label": "头像"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title"
+    },
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "text1",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "text2",
+      "label": "返回按钮文案"
+    },
+    {
+      "type": "text",
+      "id": "text3",
+      "label": "下一步按钮文案"
+    },
+    {
+      "type": "text",
+      "id": "text4",
+      "label": "提交邮件文案"
+    },
+    {
+      "type": "text",
+      "id": "text7",
+      "label": "提示选择选项",
+      "default": "Please select an answer before continuing."
+    },
+    {
+      "type": "text",
+      "id": "text8",
+      "label": "提示邮箱不正确",
+      "default": "Please enter a valid email address."
+    },
+    {
+      "type": "text",
+      "id": "text9",
+      "label": "未勾选提示",
+      "default": "Please agree to our privacy policy."
+    },
+    {
+      "type": "text",
+      "id": "text10",
+      "label": "重复提交邮箱提示",
+      "default": "Please do not enter the same email address repeatedly."
+    },
+    {
+      "type": "range",
+      "id": "range_num",
+      "min": 1,
+      "max": 30,
+      "step": 1,
+      "unit": "秒",
+      "label": "跳转等待时间",
+      "default": 6
+    },
+    {
+      "type": "header",
+      "content": "结果页信息"
+    },
+    {
+      "type": "text",
+      "id": "text5",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "text6",
+      "label": "Text"
+    },
+    {
+      "type": "header",
+      "content": "FQA"
+    },
+    {
+      "type": "text",
+      "id": "fqa_title",
+      "label": "Title"
+    },
+    {
+      "type": "text",
+      "id": "fqa_text",
+      "label": "Custom Class"
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background",
+      "default": "rgba(255,255,255,0)"
+    },
+    {
+      "type": "header",
+      "content": "Experts"
+    },
+    {
+      "type": "text",
+      "id": "experts_title",
+      "label": "Title"
+    }
+  ],
+  "presets": [
+    {
+      "name": "take-quiz",
+      "blocks": []
+    }
+  ]
+}
+{% endschema %}

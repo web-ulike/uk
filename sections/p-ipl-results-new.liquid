@@ -1,0 +1,789 @@
+<style>
+  .ipl-results {
+    background: linear-gradient(180deg, rgba(195, 203, 211, 1.00) 2.5%, #FFF 97.5%);
+    padding: 80px 0;
+  }
+  .ipl-results .title {
+    color: #190a0a;
+    text-align: center;
+    font-size: 60px;
+    font-weight: normal;
+    line-height: 1.2;
+    font-family: var(--heading-font-family);
+  }
+
+  .ipl-results .ipl-results-sub {
+    font-size: 16px;
+    color: #000;
+    margin-top: 25px;
+    text-align: center;
+  }
+
+  .ipl-results .ipl-results-cont {
+    margin-top: 60px;
+    display: flex;
+    gap: 70px;
+  }
+
+  .ipl-results .ipl-results-progress {
+    flex: 1;
+  }
+
+  .ipl-results .ipl-results-compare {
+    width: 55%;
+    display: flex;
+    gap: 16px;
+    height: 530px;
+    position: relative;
+    justify-content: flex-end;
+  }
+  .ipl-results .icon-sgs {
+    margin-top:40px;
+    width:106px;
+  }
+
+  .ipl-results .icon-sgs img{
+    width:100%;
+    display:block;
+  }
+
+  .ipl-results .ipl-progress-item {
+    margin-bottom: 35px;
+    --lin-width: 0;
+  }
+
+  .ipl-results .ipl-progress-item .ipl-results-title {
+    color: #000;
+    font-size: 32px;
+    font-weight: 300;
+    line-height: 1.25;
+  }
+
+  .ipl-results .ipl-progress-item:last-child {
+    margin-bottom: 0;
+  }
+
+  .ipl-results .ipl-progress-num {
+    color: #E0004D;
+    font-size: 130px;
+    line-height: 1;
+    font-weight: normal;
+  }
+
+  .ipl-results .ipl-results-p {
+    color: #190a0a;
+    font-size: 24px;
+    font-weight: normal;
+    line-height: 1.25;
+    width: fit-content;
+    text-decoration: underline;
+  }
+  .ipl-results .ipl-results-desc {
+    color: #625959;
+    font-size: 16px;
+    font-weight: 300;
+    line-height: 1.5;
+    margin-top: 16px;
+  }
+
+  .ipl-results .ipl-results-lin {
+    position: relative;
+    height: 6px;
+    background: #e3e3e3;
+    border-radius: 6px;
+    margin-top: 20px;
+  }
+
+  .ipl-results .ipl-results-lin::before {
+    position: absolute;
+    content: '';
+    display: block;
+    height: 100%;
+    left: 0;
+    top: 0;
+    width: 0;
+    background: #000;
+    border-radius: 6px;
+    transition: width 0.7s 0.5s cubic-bezier(0.4, 0.2, 0.2, 1);
+  }
+
+  .ipl-results .appear .ipl-results-lin::before {
+    width: var(--lin-width);
+  }
+
+  .ipl-results .before-after-img-wrapper {
+    position: relative;
+    --img-width: 0px;
+    --left-num: 100%;
+    --time-num: 1s;
+    overflow: hidden;
+    width: 738px;
+  }
+
+  .ipl-results .before-after-img-item {
+    {% comment %} position: relative; {% endcomment %}
+    {% comment %} z-index: 1; {% endcomment %}
+    pointer-events: none;
+    height: 100%;
+  }
+
+  .ipl-results .before-after-img-box {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    overflow: hidden;
+  }
+
+  .ipl-results .before-after-img-item .img {
+    /* display: none; */
+    width: 100%;
+    height: 100%;
+    user-select: none;
+    pointer-events: none;
+    user-drag: none;
+    -moz-user-drag: none;
+    -webkit-user-drag: none;
+  }
+
+  .ipl-results .before-after-img-item .img.active {
+    display: block;
+  }
+  .ipl-results .before-after-img-box.close {
+    z-index: 3;
+    width: 0;
+    {% comment %} transition: width 0.7s cubic-bezier(0.4, 0.2, 0.2, 1); {% endcomment %}
+  }
+  .ipl-results .before-after-img-box.close .img {
+    height: 100%;
+    width: var(--img-width);
+    max-width: none;
+  }
+  .ipl-results .before-after-img-box.active {
+    position: relative;
+    z-index: 2;
+  }
+
+  .ipl-results .before-after-img-right {
+    position: absolute;
+    width: calc(100% - var(--left-num));
+    height: 100%;
+    overflow: hidden;
+    z-index: 2;
+    right: 0;
+    top: 0;
+    {% comment %} transition: all var(--time-num) cubic-bezier(0.645, 0.045, 0.355, 1) 0s; {% endcomment %}
+  }
+
+  .ipl-results .before-after-img-right .img {
+    height: 100%;
+    width: var(--img-width);
+    max-width: none;
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+
+  .ipl-results .before-after-tag {
+    position: absolute;
+    padding: 10px 16px;
+    font-size: 16px;
+    color: #fff;
+    font-weight: 500;
+    top: 15px;
+    left: 15px;
+    z-index: 9;
+    border-radius: 80px;
+    background: #646E78;
+    backdrop-filter: blur(2px);
+  }
+  .ipl-results .before-after-tag-right {
+    right: 15px;
+    left: initial;
+    background: #E0004D;
+    color: #FFF;
+    text-align: center;
+    font-family: Saans;
+    font-size: 16px;
+  }
+
+  .ipl-results .before-after-img-right .before-after-tag {
+    left: auto;
+    right: 15px;
+    background: #e0004d;
+  }
+
+  .ipl-results .before-after-img-handle {
+    position: absolute;
+    z-index: 5;
+    top: 0;
+    height: 100%;
+    left: var(--left-num);
+    {% comment %} transition: all var(--time-num) cubic-bezier(0.645, 0.045, 0.355, 1) 0s; {% endcomment %}
+  }
+
+  .ipl-results .before-after-img-handle::before,
+  .ipl-results .before-after-img-handle::after {
+    position: absolute;
+    content: '';
+    display: block;
+    width: 2px;
+    height: calc(50% - 25px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: #fff;
+  }
+
+  .ipl-results .before-after-img-handle::before {
+    top: 0;
+  }
+
+  .ipl-results .before-after-img-handle::after {
+    bottom: 0;
+  }
+
+  .ipl-results .before-after-img-handle-btn {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    cursor: col-resize;
+    {% comment %} border-radius: 50%; {% endcomment %}
+    {% comment %} border: 2px solid #000000; {% endcomment %}
+    overflow: hidden;
+    width: 50px;
+    height: 50px;
+  }
+
+  .ipl-results .before-after-img-handle-btn span {
+    position: absolute;
+    width: 200%;
+    height: 200%;
+    background: rgba(255, 255, 255, 0.5);
+    filter: blur(10px);
+    z-index: 1;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  
+  .ipl-results .ipl-results-compare-sm {
+    display: flex;
+    gap: 10px;
+    /* flex-wrap: wrap; */
+    flex-direction: column;
+  }
+
+  .ipl-results .ipl-results-sm-item {
+    width: 132px;
+    position: relative;
+    cursor: pointer;
+    flex: 1;
+    overflow: hidden;
+  }
+
+  .ipl-results .ipl-results-sm-item::before {
+    position: absolute;
+    content: '';
+    display: block;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    background: rgba(255, 255, 255, 0.5);
+    opacity: 1;
+    transition: opacity 0.3s cubic-bezier(0.4, 0.2, 0.2, 1);
+  }
+
+  .ipl-results .ipl-results-sm-item.active::before {
+    opacity: 0;
+  }
+
+  .ipl-results .ipl-results-sm-item .img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    z-index: 1;
+    object-fit: cover;
+  }
+  .ipl-result_des {
+    color: #b3b3b3;
+    font-size: 12px;
+    line-height: 150%;
+    margin-top: 10px;
+  }
+  @media (max-width: 1440px) {
+    .ipl-results {
+      background: #f9f9f9;
+      padding: 80px 0;
+    }
+    .ipl-results .ipl-progress-num {
+      font-size: 80px;
+    }
+    .ipl-results .ipl-results-compare {
+      width: 60%;
+      gap: 10px;
+      height: 100%;
+    }
+    .ipl-results .ipl-results-sm-item {
+      width: 108px;
+    }
+    .ipl-results .before-after-img-wrapper {
+      width: 615px;
+    }
+    .ipl-results .ipl-results-p {
+      font-size: 16px;
+      margin-top: 10px;
+    }
+    .ipl-results .ipl-results-lin {
+      margin-top: 10px;
+    }
+  }
+
+  @media (max-width: 991px) {
+    .ipl-results {
+      padding: 50px 0;
+    }
+    .ipl-results .title {
+      font-size: 28px;
+      font-weight: 300;
+      line-height: 125%;
+    }
+    .ipl-results .ipl-results-sub {
+      font-size: 14px;
+      margin-top: 15px;
+    }
+    .ipl-results .ipl-results-cont {
+      flex-direction: column-reverse;
+      gap: 30px;
+      align-items: normal;
+      margin-top: 20px;
+    }
+    .ipl-results .before-after-img-wrapper {
+      width: 100%;
+    }
+    .ipl-results .ipl-results-compare {
+      margin-top: 20px;
+      width: 100%;
+      gap: 5px;
+      flex-direction: column-reverse;
+      flex-wrap: wrap;
+      height: auto;
+      
+    }
+    .ipl-results .before-after-img-handle-btn {
+      width: 40px;
+      height: 40px;
+    }
+    .ipl-results .before-after-img-handle::before,
+    .ipl-results .before-after-img-handle::after {
+      height: calc(50% - 20px);
+    }
+    .ipl-results .before-after-img-handle-btn::before,
+    .ipl-results .before-after-img-handle-btn::after {
+      zoom: 0.7;
+    }
+    .ipl-results .ipl-results-compare-sm {
+      gap: 5px;
+      flex-direction: row;
+      /* grid-template-columns: repeat(5, 1fr); */
+    }
+    .ipl-results .ipl-results-sm-item {
+      width: auto;
+      flex: 1;
+      height: auto;
+    }
+    .ipl-results .before-after-tag {
+      zoom: 0.8;
+      padding: 3px 10px;
+    }
+    .ipl-results .ipl-progress-txt {
+    }
+    .ipl-results .ipl-results-lin {
+      height: 4px;
+    }
+    .ipl-results .ipl-progress-item {
+      margin-bottom: 20px;
+    }
+    .ipl-results .ipl-results-progress {
+      flex: 1;
+    }
+    .ipl-results .icon-sgs {
+      margin-top:20px;
+    }
+    .ipl-results .ipl-progress-item .ipl-results-title {
+      display: none;
+    }
+    .ipl-results .ipl-progress-num {
+      font-size: 80px;
+    }
+    .ipl-results .ipl-results-p {
+      padding-bottom: 6px;
+    }
+    .ipl-results .ipl-results-desc {
+      font-size: 12px;
+      margin-top: 20px;
+    }
+  }
+</style>
+
+<section class="section-box">
+  <div class="ipl-results" style="background:{{ section.settings.bg_color }};">
+    <div class="container">
+      <h2 class="title to-top">{{ section.settings.title }}</h2>
+      <div class="ipl-results-cont">
+        <div class="ipl-results-progress">
+          <div
+            class="ipl-progress-item to-top"
+            style="--lin-width: {{ section.settings.text3 | replace : ',','.'  }}; transition-delay: 0.2s"
+          >
+            {%- if section.settings.text != blank -%}
+            <h3 class="ipl-results-title">{{ section.settings.text }}</h3>
+            {%- endif -%}
+            <div class="ipl-progress-txt">
+              {%- if section.settings.text3 != blank -%}
+              <h3 class="ipl-progress-num">{{ section.settings.text3 }}</h3>
+              {%- endif -%}
+              {%- if section.settings.text4 != blank -%}
+              <h3 class="ipl-results-p">{{ section.settings.text4 }}</h3>
+              {%- endif -%}
+            </div>
+            {%- if section.settings.image != blank -%}
+            <div class="icon-sgs">
+              <picture>
+                {{- section.settings.image | image_url: width: section.settings.image.width | image_tag: loading: 'lazy' -}}
+              </picture>
+            </div>
+            {%- endif -%}
+            {%- if section.settings.text5 != blank -%}
+            <div class="ipl-results-desc">{{ section.settings.text5 }}</div>
+            {%- endif -%}
+            {%- if section.settings.text6 != blank -%}
+            <h3 class="ipl-results-tips">{{ section.settings.text6 }}</h3>
+            {%- endif -%}
+          </div>
+        </div>
+        <div class="ipl-results-compare">
+          <div class="ipl-results-compare-sm to-top" style="transition-delay: 0.3s">
+            {%- for block in section.blocks -%}
+              <div
+                class="ipl-results-sm-item {% if forloop.index == 1 %}active{% endif %}"
+                data-text="{{ block.settings.text}}"
+                data-text1="{{ block.settings.text1}}"
+              >
+                {%- if block.settings.image != blank -%}
+                  <img
+                    loading="lazy"
+                    class="img"
+                    width="{{ block.settings.image.width }}"
+                    height="{{ block.settings.image.height }}"
+                    {% render 'image-attributes', image: block.settings.image %}
+                    alt="{{ block.settings.image.alt | escape }}"
+                  >
+                {%- endif -%}
+              </div>
+            {%- endfor -%}
+          </div>
+          <div class="before-after-img-wrapper to-top" style="transition-delay: 0.2s">
+            <div class="before-after-img-item">
+              {%- for block in section.blocks -%}
+                <div class="before-after-img-box {% if forloop.index == 1 %}active{% endif %}">
+                  {%- if block.settings.image1 != blank -%}
+                    <img
+                      loading="lazy"
+                      class="img"
+                      width="{{ block.settings.image1.width }}"
+                      height="{{ block.settings.image1.height }}"
+                      {% render 'image-attributes', image: block.settings.image1 %}
+                      alt="{{ block.settings.image1.alt | escape }}"
+                    >
+                  {%- endif -%}
+                </div>
+              {%- endfor -%}
+              {%- if section.settings.text1 != blank -%}
+                <div class="before-after-tag">{{ section.settings.text1 }}</div>
+              {%- endif -%}
+            </div>
+            <div class="before-after-img-item before-after-img-right">
+              {%- for block in section.blocks -%}
+                <div class="before-after-img-box {% if forloop.index == 1 %}active{% endif %}">
+                  {%- if block.settings.image2 != blank -%}
+                    <img
+                      loading="lazy"
+                      class="img"
+                      width="{{ block.settings.image2.width }}"
+                      height="{{ block.settings.image2.height }}"
+                      {% render 'image-attributes', image: block.settings.image2 %}
+                      alt="{{ block.settings.image2.alt | escape }}"
+                    >
+                  {%- endif -%}
+                </div>
+              {%- endfor -%}
+            </div>
+            {%- if section.settings.text2 != blank -%}
+              <div class="before-after-tag before-after-tag-right">{{ section.settings.text2 }}</div>
+            {%- endif -%}
+            <div class="before-after-img-handle">
+              <div class="before-after-img-handle-btn">
+                <img loading="lazy" width="" height="" src="https://cdn.shopify.com/s/files/1/0656/9079/6273/files/822aecad515e8c7e4552cf259dbcf2b7.svg?v=1724401957" alt="before-after-img-handle-btn" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {%- if section.settings.result_des != blank -%}
+        <div class="ipl-result_des to-top">{{ section.settings.result_des }}</div>
+      {%- endif -%}
+    </div>
+  </div>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      $('.ipl-results .ipl-results-sm-item').click(function () {
+        let index = $(this).index();
+        let $imgBox = $(this).parents('.ipl-results-compare-sm').siblings('.before-after-img-wrapper');
+        let width = $imgBox[0].offsetWidth;
+
+        $(this).addClass('active').siblings().removeClass('active');
+        $(this)
+          .parents('.ipl-results-compare-sm')
+          .siblings('.before-after-img-wrapper')
+          .find('.before-after-img-item')
+          .each(function () {
+            $(this).find('.before-after-img-box.active').addClass('close');
+            $(this).find('.before-after-img-box').removeClass('active').eq(index).addClass('active');
+            setTimeout(() => {
+              $(this).find('.close').removeClass('close');
+            }, 1000);
+          });
+        setTimeout(() => {
+          $imgBox.attr('style', `--img-width:${width}px;--left-num:50%;`);
+        }, 100);
+        // 更新文字
+        $('.ipl-progress-num').text($(this).attr('data-text'));
+        $('.ipl-results-p').text($(this).attr('data-text1'));
+        commonGtmEvent(`${g_product_name} Product-result-Image switching`,'','Product');
+      });
+
+      window.addEventListener('resize', function () {
+        initImg();
+      });
+      function initImg() {
+        let $p = document.querySelector('.ipl-results');
+        let $box = $p.querySelector('.before-after-img-wrapper');
+        let $hp = $p.querySelector('.before-after-img-handle');
+        let $hand = $hp.querySelector('.before-after-img-handle-btn');
+        let width = $box.offsetWidth;
+
+        $box.style = `--img-width:${width}px;--left-num:50%;`;
+        makeElementDraggable($hand);
+        function makeElementDraggable(draggableElement) {
+          var isDragging = false;
+          var offsetX = 0;
+
+          draggableElement.addEventListener('mousedown', function (e) {
+            isDragging = true;
+            offsetX = e.clientX - $hp.offsetLeft;
+            e.preventDefault(); // 阻止默认行为，避免文本选择
+          });
+
+          document.addEventListener('mouseup', function () {
+            isDragging = false;
+            {% comment %} commonGtmEvent(`${g_product_name} Product-result-Indicator sliding`,'','Product'); {% endcomment %}
+          });
+
+          document.addEventListener('mousemove', function (e) {
+            if (isDragging) {
+              var newX = e.clientX - offsetX;
+              if (newX <= 10) newX = 10;
+              if (newX >= width - 10) newX = width - 10;
+              $box.style = `--img-width:${width}px;--left-num:${(newX / width) * 100}%;--time-num:0s;`;
+              e.preventDefault(); // 阻止默认行为，避免文本选择
+            }
+          });
+
+          draggableElement.addEventListener(
+            'touchstart',
+            function (e) {
+              isDragging = true;
+              offsetX = e.touches[0].clientX - $hp.offsetLeft;
+              e.preventDefault(); // 阻止默认行为
+            },
+            { passive: false }
+          );
+
+          document.addEventListener('touchend', function () {
+            isDragging = false;
+          });
+
+          document.addEventListener(
+            'touchmove',
+            function (e) {
+              if (isDragging) {
+                e.preventDefault();
+                var newX = e.touches[0].clientX - offsetX;
+                if (newX <= 10) newX = 10;
+                if (newX >= width - 10) newX = width - 10;
+                $box.style = `--img-width:${width}px;--left-num:${(newX / width) * 100}%;--time-num:0s;`;
+              }
+            },
+            { passive: false }
+          );
+        }
+      }
+      initImg();
+    });
+    
+    function animateNumbersWhenVisible(elements) {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const element = entry.target;
+            const start = 0;
+            const end = parseInt(element.textContent.match(/\d+/)[0]);
+            const duration = Math.max(1000, Math.min(1000, Math.abs(end - start) * 4)); // 根据数字的大小调整动画时间，最小1000毫秒，最大4000毫秒
+            console.log(duration);
+            animateNumber(element, start, end, duration);
+            observer.unobserve(element); // 仅触发一次动画后停止观察
+          }
+        });
+      });
+
+      elements.forEach((element) => {
+        observer.observe(element);
+      });
+    }
+
+    function animateNumber(element, start, end, duration) {
+      let startTime = null;
+      const step = (timestamp) => {
+        if (!startTime) startTime = timestamp;
+        const progress = Math.min((timestamp - startTime) / duration, 1);
+        const value = Math.floor(progress * (end - start) + start);
+        element.textContent = element.textContent.replace(/\d+/, value);
+        if (progress < 1) {
+          requestAnimationFrame(step);
+        }
+      };
+      requestAnimationFrame(step);
+    }
+
+    const numberContainers = document.querySelectorAll('.ipl-progress-num');
+    animateNumbersWhenVisible(numberContainers); // 当元素进入可视区域时执行动画
+  </script>
+</section>
+{% schema %}
+{
+  "name": "p-ipl-results-new",
+  "blocks": [
+    {
+      "name": "item",
+      "type": "item",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "image_picker",
+          "id": "m_image",
+          "label": "移动端主图-Image"
+        },
+        {
+          "type": "image_picker",
+          "id": "image1",
+          "label": "Image"
+        },
+        {
+          "type": "image_picker",
+          "id": "image2",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text"
+        },
+        {
+          "type": "text",
+          "id": "text1",
+          "label": "Text1"
+        },
+        {
+          "type": "text",
+          "id": "text2",
+          "label": "Text2"
+        }
+      ]
+    }
+  ],
+  "settings": [
+    {
+      "type": "color_background",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#f9f9f9"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title"
+    },
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "text1",
+      "label": "Before Text"
+    },
+    {
+      "type": "text",
+      "id": "text2",
+      "label": "After Text"
+    },
+    {
+      "type": "text",
+      "id": "text3",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "text4",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "text5",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "result_des",
+      "label": "Result Txt"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "sgs图标"
+    }
+  ],
+  "presets": [
+    {
+      "name": "p-ipl-results-new",
+      "blocks": []
+    }
+  ]
+}
+{% endschema %}

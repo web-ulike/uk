@@ -154,6 +154,30 @@
     top: -2px;
     background: #fff;
 }
+.sell-point-box .sell-point-btn{
+  display: flex;
+  width: 120px;
+  height: 37px;
+  justify-content: center;
+  align-items: center;
+  background: #E0004D;
+  color: #FFF;
+  font-size: 16px;
+  line-height: 1.5;
+  cursor: pointer;
+  font-family: var(--heading-font-family);
+  margin-top:30px;
+}
+.seo-diy .sell-point-title{
+  font-size: 30px;
+}
+.seo-diy .sell-point-text{
+  padding:30px 45px;
+  justify-content: flex-start;
+}
+.seo-diy .sell-point-p{
+  line-height: 1.2;
+}
 
 @media (max-width:1300px) {
     .sell-point-box .sell-point-title{
@@ -233,8 +257,12 @@
                         height="{{ block.settings.image1.height }}" {% render 'image-attributes' , image: block.settings.image1 %}
                         alt="{{ block.settings.image1.alt | escape }}">
                     {%- endif -%}
+                    {%- if block.settings.text3 != blank -%}
+                      <div class="sell-point-btn to-top" style="transition-delay: .4s" data-link="{{ block.settings.link }}">{{ block.settings.text3 }}</div>
+                    {%- endif -%}
                   </div>
                 </div>
+
               </div>
               {% when 'multiple' %}
                 <div class="sell-point-item is-reversal to-top">
@@ -340,6 +368,17 @@
       $(this).attr('data-hover',0)
       changeellPointItem($(this))
     })
+
+    document.querySelectorAll(".sell-point-box .sell-point-btn").forEach(item => {
+      item.addEventListener("click", function() {
+          const link = this.getAttribute("data-link");
+          if (link) {
+              window.open(link, "_blank");
+          } else {
+          }
+      });
+    });
+    
   })
 </script>
 {% schema %}
@@ -381,6 +420,21 @@
         "type": "richtext",
         "id": "text2",
         "label": "Text"
+      },
+      {
+        "type": "text",
+        "id": "show_dialog",
+        "label": "Dialog Text"
+      },
+      {
+        "type": "text",
+        "id": "text3",
+        "label": "按钮文案"
+      },
+      {
+        "type": "url",
+        "id": "link",
+        "label": "按钮链接"
       }
     ]
   },

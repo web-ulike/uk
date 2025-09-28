@@ -1,0 +1,259 @@
+<style>
+.experts-new {
+  position: relative;
+  padding: 50px 0 40px 0;
+  background: #f6f6f6;
+  overflow: hidden;
+}
+
+.experts-new .experts-new-h3 {
+  color: #190a0a;
+  font-size: 50px;
+  line-height: 1.14;
+  font-family: var(--heading-font-family);
+  letter-spacing: -0.64px;
+  margin-bottom: 50px;
+  font-weight: normal;
+}
+
+.experts-new .experts-new-list {
+  display: flex;
+}
+
+.experts-new .experts-new-item {
+  width: calc(50% - 10px);
+  flex-shrink: 0;
+  background: #fff;
+  padding: 30px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  height: auto;
+}
+
+.experts-new .experts-new-img {
+  width: 38.37%;
+}
+
+.experts-new .experts-new-img .img {
+  width: 100%;
+}
+
+.experts-new .experts-new-text {
+  flex: 1;
+  padding: 0 20px;
+}
+
+.experts-new .experts-new-text-top {
+  max-width: 290px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #eeeded;
+}
+
+.experts-new .experts-new-msg {
+  color: #e0004d;
+  font-size: 16px;
+  line-height: 1.2;
+  margin-bottom: 8px;
+}
+
+.experts-new .experts-new-h4 {
+  color: #190a0a;
+  font-size: 24px;
+  line-height: 1.2;
+  font-family: var(--heading-font-family);
+}
+
+.experts-new .experts-new-p {
+  color: #756b6e;
+  font-size: 16px;
+  line-height: 1.5;
+  margin-top: 30px;
+}
+
+.experts-new .experts-new-dot {
+  display: none;
+}
+
+@media (max-width: 1300px) {
+  .experts-new .experts-new-item {
+    padding: 20px;
+    min-width: 590px;
+  }
+  .experts-new .experts-new-text {
+    padding: 0;
+  }
+  .experts-new .experts-new-msg {
+    font-size: 14px;
+  }
+  .experts-new .experts-new-h4 {
+    font-size: 20px;
+  }
+  .experts-new .experts-new-text-top {
+    padding-bottom: 10px;
+  }
+  .experts-new .experts-new-p {
+    font-size: 14px;
+    margin-top: 15px;
+  }
+}
+
+@media (max-width: 991px) {
+  .experts-new {
+    padding: 50px 0 40px 0;
+  }
+  .experts-new .experts-new-h3 {
+    font-size: 28px;
+    line-height: 1.25;
+    margin-bottom: 30px;
+  }
+}
+
+@media (max-width: 700px) {
+  .experts-new .experts-new-item {
+    min-width: auto;
+    flex-direction: column;
+    width: 320px;
+  }
+  .experts-new .experts-new-img {
+    width: 100%;
+  }
+  .experts-new .experts-new-msg {
+    font-size: 16px;
+  }
+  .experts-new .experts-new-h4 {
+    font-size: 24px;
+  }
+  .experts-new .experts-new-text-top {
+    padding-bottom: 16px;
+  }
+  .experts-new .experts-new-p {
+    font-size: 16px;
+    margin-top: 20px;
+  }
+  .experts-new .experts-new-dot {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    bottom: 16px;
+    left: 50% !important;
+    transform: translateX(-50%);
+    /* gap: 10px; */
+  }
+  .experts-new .swiper-pagination-bullet {
+    background: #cdc6c7;
+    opacity: 1;
+  }
+  .experts-new .swiper-pagination-bullet-active {
+    background: #190a0a;
+  }
+}
+</style>
+<section class="section-box">
+   <div class="experts-new" style="background:{{ section.settings.bg_color }}">
+    <div class="container">
+      {%- if section.settings.title != blank -%}
+        <h3 class="experts-new-h3">{{ section.settings.title }}</h3>
+      {%- endif -%}
+      <div class="experts-new-swiper">
+        <div class="experts-new-list swiper-wrapper">
+          {%- for block in section.blocks -%}
+            <div class="experts-new-item swiper-slide">
+              {%- if block.settings.image != blank -%}
+                <div class="experts-new-img">
+                  <img
+                    loading="lazy"
+                    class="img"
+                    width=""
+                    height=""
+                    {% render 'image-attributes', image: block.settings.image %}
+                    alt="{{ block.settings.image.alt | escape }}"
+                  >
+                </div>
+              {%- endif -%}
+              <div class="experts-new-text">
+                <div class="experts-new-text-top">
+                  <div class="experts-new-msg">{{ block.settings.text }}</div>
+                  <div class="experts-new-h4">{{ block.settings.text1 }}</div>
+                </div>
+                <div class="experts-new-p">
+                  {{ block.settings.text2 }}
+                </div>
+              </div>
+            </div>
+          {%- endfor -%}
+        </div>
+      </div>
+    </div>
+    <div class="experts-new-dot"></div>
+  </div>
+</section>
+<script>
+  // window.addEventListener('load', function () {
+    let swiper{{ section.id | replace: "template--", "" | replace: "__", ""  }} = new Swiper(".experts-new-swiper", {
+      slidesPerView: "auto",
+      spaceBetween: 16,
+      pagination: {
+        el: ".experts-new-dot",
+        clickable: true,
+      },
+      breakpoints: {
+        700: {
+          spaceBetween: 20
+        },
+      }
+    });
+  // });
+</script>
+{% schema %}
+{
+  "name": "experts-new",
+  "blocks": [
+    {
+      "name": "item",
+      "type": "item",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text"
+        },
+        {
+          "type": "text",
+          "id": "text1",
+          "label": "Text"
+        },
+        {
+          "type": "text",
+          "id": "text2",
+          "label": "Text"
+        }
+      ]
+    }
+  ],
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title"
+    },
+    {
+      "type": "color_background",
+      "id": "bg_color",
+      "label": "背景颜色"
+    }
+  ],
+  "presets": [
+    {
+      "name": "experts-new",
+      "blocks": []
+    }
+  ]
+}
+{% endschema %}

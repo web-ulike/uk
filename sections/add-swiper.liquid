@@ -1,0 +1,133 @@
+<link rel="stylesheet" href="//www.ulike.com/cdn/shop/t/116/assets/swiper-bundle.min.css">
+<script src="//www.ulike.com/cdn/shop/t/116/assets/swiper-bundle.min.aio.min.js"></script>
+<style>
+.add-swiper {
+  padding: 100px 0;
+  overflow: hidden;
+}
+
+.add-swiper .add-swiper-p {
+  font-size: 50px;
+  color: #000;
+  margin: 0;
+  text-align: center;
+  line-height: 1.2;
+}
+
+.add-swiper .add-swiper-cont {
+  margin-top: 150px;
+}
+
+.add-swiper .add-swiper-list {
+  display: flex;
+}
+
+.add-swiper .add-swiper-item {
+  flex-shrink: 0;
+  overflow: hidden;
+  width: auto;
+  max-width: max-content;
+}
+
+.add-swiper .add-swiper-item:nth-child(even) {
+  padding-top: 130px;
+}
+
+.add-swiper .img {
+  display: block;
+  border-radius: 10px;
+}
+
+@media (max-width: 991px) {
+  .add-swiper {
+    padding: 50px 0;
+  }
+  .add-swiper .add-swiper-p {
+    font-size: 28px;
+  }
+  .add-swiper .add-swiper-cont {
+    margin-top: 70px;
+  }
+  .add-swiper .img {
+    width: auto;
+    height: 200px;
+  }
+  .add-swiper .add-swiper-item:nth-child(even) {
+    padding-top: 30px;
+  }
+}
+</style>
+<section class="section-box">
+  <div class="add-swiper">
+    <div class="container">
+      {%- if section.settings.text != blank -%}
+       <div class="add-swiper-p">{{ section.settings.text }}</div>
+      {%- endif -%}
+      {%- if section.blocks.size > 0 -%}
+        <div class="add-swiper-cont">
+          <div class="add-swiper-list swiper-wrapper">
+            {%- for block in section.blocks -%}
+              {%- if block.settings.image != blank -%}
+                <div class="add-swiper-item swiper-slide">
+                  <img
+                    loading="lazy"
+                    class="img"
+                    width="{{ block.settings.image.width }}"
+                    height="{{ block.settings.image.height }}"
+                    {% render 'image-attributes', image: block.settings.image %}
+                    alt="{{ block.settings.image.alt | escape }}"
+                  >
+                </div>
+              {%- endif -%}
+            {%- endfor -%} 
+          </div>
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+{%- if section.blocks.size > 0 -%}
+  <script>
+    let addSwiper = new Swiper(".add-swiper-cont", {
+      slidesPerView: "auto",
+      spaceBetween: 20,
+      freeMode: true,
+      loop: true,
+      autoplay: {
+        delay: 5000,
+        disableOnInteraction: false,
+      },
+    });
+  </script>
+{%- endif -%}
+{% schema %}
+{
+  "name": "add-swiper",
+  "blocks": [
+    {
+      "name": "item",
+      "type": "item",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        }
+      ]
+    }
+  ],
+  "settings": [
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Text"
+    }
+  ],
+  "presets": [
+    {
+      "name": "add-swiper",
+      "blocks": []
+    }
+  ]
+}
+{% endschema %}

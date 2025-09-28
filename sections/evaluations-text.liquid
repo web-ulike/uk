@@ -1,0 +1,428 @@
+<style>
+.evaluations-text {
+  padding: 60px 0;
+  background: #f8f8f8;
+}
+.evaluations-text .container {
+  position: relative;
+}
+.evaluations-text .evaluations-text-cont {
+  display: flex;
+  background: #fff;
+}
+
+.evaluations-text .evaluations-text-left {
+  width: 480px;
+  border-right: 1px solid #e4dddd;
+  padding: 90px;
+  display: flex;
+  align-items: center;
+}
+
+.evaluations-text .evaluations-text-num {
+  color: #190a0a;
+  font-size: 116px;
+  line-height: 1.2;
+}
+
+.evaluations-text .evaluations-text-star .svg {
+  display: block;
+}
+.evaluations-text .evaluations-text-txt {
+  color: #3f3636;
+  font-size: 14px;
+  line-height: 1.5;
+  max-width: 255px;
+  margin-top: 45px;
+}
+.evaluations-text .evaluations-text-right {
+  flex: 1;
+  overflow: hidden;
+  cursor: move;
+}
+
+.evaluations-text .evaluations-text-swiper {
+  display: flex;
+}
+
+.evaluations-text .evaluations-text-item {
+  width: 480px;
+  flex-shrink: 0;
+  border-right: 1px solid #e4dddd;
+  padding: 55px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.evaluations-text .evaluations-text-item:last-child {
+  border-right: 0;
+}
+
+.evaluations-text .evaluations-text-p {
+  color: #3f3636;
+  font-size: 24px;
+  line-height: 1.5;
+}
+
+.evaluations-text .evaluations-text-p p {
+  margin: 0;
+}
+
+.evaluations-text .evaluations-text-p strong {
+  font-weight: normal;
+  font-family: var(--heading-font-family);
+}
+
+.evaluations-text .evaluations-text-name {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  color: #000;
+  font-size: 24px;
+  line-height: 1.6;
+  margin-top: 130px;
+}
+
+.evaluations-text .evaluations-text-name p {
+  margin: 0;
+   display: flex;
+  align-items: center;
+}
+
+.evaluations-text .evaluations-text-name strong {
+  font-weight: normal;
+  font-family: var(--heading-font-family);
+  text-decoration: underline;
+  display: block;
+  margin-right: 8px;
+}
+
+.evaluations-text .evaluations-text-dot {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 60px;
+}
+
+.evaluations-text .evaluations-dot-item {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #d9d9d9;
+  cursor: pointer;
+}
+
+.evaluations-text .evaluations-dot-item.active {
+  background: #190a0a;
+}
+.evaluations-text .evaluations-text-arraw {
+  display: flex;
+  gap: 30px;
+  position: absolute;
+  right: 40px;
+  bottom: 5px;
+  transform: translateY(50%);
+}
+
+.evaluations-text .evaluations-text-arraw-item svg {
+  display: block;
+  cursor: pointer;
+}
+
+@media (max-width: 991px) {
+  .evaluations-text {
+    padding: 50px 0 60px 0;
+  }
+  .evaluations-text .evaluations-text-cont {
+    flex-direction: column;
+    /* background: none; */
+  }
+  .evaluations-text .evaluations-text-left {
+    width: 100%;
+    border: 0;
+    padding: 20px;
+  }
+  .evaluations-text-left-cont {
+    display: flex;
+    gap: 50px;
+    width: 100%;
+  }
+  .evaluations-text .evaluations-text-txt {
+    margin-top: 20px;
+  }
+  .evaluations-text .evaluations-text-txt {
+    max-width: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .evaluations-text .evaluations-text-cont {
+    background: none;
+  }
+  .evaluations-text .evaluations-text-right {
+    margin-top: 30px;
+  }
+  .evaluations-text .evaluations-text-num {
+    font-size: 46px;
+  }
+  .evaluations-text .evaluations-text-star .svg {
+    width: 60px;
+    height: auto;
+  }
+  .evaluations-text .evaluations-text-txt {
+    margin-top: 0;
+  }
+  .evaluations-text .evaluations-text-item {
+    width: 100%;
+    border: 0;
+    background: #fff;
+    padding: 35px 20px;
+    border-radius: 10px;
+  }
+  .evaluations-text .evaluations-text-p {
+    font-size: 18px;
+  }
+  .evaluations-text .evaluations-text-name {
+    justify-content: flex-end;
+    font-size: 14px;
+    margin-top: 30px;
+  }
+  .evaluations-text .evaluations-text-name svg {
+    width: 16px;
+    height: 16px;
+  }
+  .evaluations-text .evaluations-text-dot{
+    margin-top:25px;
+  }
+  .evaluations-text .evaluations-text-arraw {
+    display: none;
+  }
+}
+</style>
+   <section>
+    <div class="evaluations-text">
+    <div class="container">
+      <div class="evaluations-text-cont">
+        <div class="evaluations-text-left">
+          <div class="evaluations-text-left-cont">
+            <div>
+              <div class="evaluations-text-num">{{ section.settings.title }}</div>
+              <div class="evaluations-text-star">
+                {%- if section.settings.image != blank -%}
+                  <img class="svg" src="{{ section.settings.image | image_url }}" alt="{{ section.settings.image | escape }}"/>
+                {%- endif -%}
+              </div>
+            </div>
+            <div class="evaluations-text-txt">
+              {{ section.settings.text }}
+            </div>
+          </div>
+        </div>
+        <div class="evaluations-text-right">
+          <div class="evaluations-text-swiper">
+            {%- for block in section.blocks -%}
+              <div class="evaluations-text-item">
+                <div class="evaluations-text-p">
+                 {{ block.settings.text }}
+                </div>
+                {%- if block.settings.text1 != blank -%}
+                  <div class="evaluations-text-name">
+                    {{ block.settings.text1 }}
+                    <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 26 26" fill="none">
+                      <rect x="0.708008" y="0.362061" width="25" height="25" rx="5" fill="#190A0A" />
+                      <path d="M5.70801 14.5539L9.65538 18.7833L20.708 6.94116" stroke="white" stroke-width="1.5" />
+                    </svg>
+                  </div>
+                {%- endif -%}
+              </div>
+            {%- endfor -%}
+          </div>
+        </div>
+      </div>
+      <div class="evaluations-text-dot">
+        {%- for block in section.blocks -%}
+          <div class="evaluations-dot-item {% if forloop.index == 1 %}active{% endif %}"></div>
+        {%- endfor -%}
+      </div>
+       <div class="evaluations-text-arraw">
+        <div class="evaluations-text-arraw-item">
+          <svg xmlns="http://www.w3.org/2000/svg" width="37" height="28" viewBox="0 0 37 28" fill="none">
+            <g clip-path="url(#clip0_3843_6254)">
+              <path
+                d="M0.938477 13.6691C0.938477 13.8825 1.01926 14.0941 1.17379 14.2558L13.4665 27.158L14.7502 25.9847L3.83604 14.5293H36.9385C36.9385 13.5797 36.1517 12.809 35.1824 12.809H1.85691C1.52501 12.809 1.20189 12.9724 1.04384 13.2597C0.971844 13.3887 0.938477 13.5298 0.938477 13.6691Z"
+                fill="#190A0A" />
+              <path
+                d="M2.77594 10.6535C3.46257 11.3244 4.57418 11.3244 5.25906 10.6535L14.7314 1.37592L13.4899 0.159668L2.77769 10.6535H2.77594Z"
+                fill="#190A0A" />
+            </g>
+            <defs>
+              <clipPath id="clip0_3843_6254">
+                <rect width="36" height="27" fill="white" transform="matrix(-1 0 0 1 36.9385 0.159668)" />
+              </clipPath>
+            </defs>
+          </svg>
+        </div>
+        <div class="evaluations-text-arraw-item">
+          <svg xmlns="http://www.w3.org/2000/svg" width="37" height="28" viewBox="0 0 37 28" fill="none">
+            <g clip-path="url(#clip0_3843_6257)">
+              <path
+                d="M36.9385 13.6691C36.9385 13.8825 36.8577 14.0941 36.7032 14.2558L24.4105 27.158L23.1268 25.9847L34.0409 14.5293H0.938477C0.938477 13.5797 1.72521 12.809 2.69457 12.809H36.02C36.3519 12.809 36.6751 12.9724 36.8331 13.2597C36.9051 13.3887 36.9385 13.5298 36.9385 13.6691Z"
+                fill="#190A0A" />
+              <path
+                d="M35.101 10.6535C34.4144 11.3244 33.3028 11.3244 32.6179 10.6535L23.1455 1.37592L24.3871 0.159668L35.0993 10.6535H35.101Z"
+                fill="#190A0A" />
+            </g>
+            <defs>
+              <clipPath id="clip0_3843_6257">
+                <rect width="36" height="27" fill="white" transform="translate(0.938477 0.159668)" />
+              </clipPath>
+            </defs>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+  </section>
+  <script>
+   window.addEventListener('load', function () {
+    function evaluationsTextSwiper() {
+      let $p = $('.evaluations-text')
+      let $right = $p.find(`.evaluations-text-right`)
+      let content = document.querySelector('.evaluations-text .evaluations-text-right')
+      let $swiper = $p.find(`.evaluations-text-swiper`)
+      let $dot = $p.find(`.evaluations-text-dot .evaluations-dot-item`)
+      let $arraw = $p.find(`.evaluations-text-arraw-item`)
+      let boxWidth = $right[0].offsetWidth
+      let itemWidth = $p.find('.evaluations-text-item')[0].offsetWidth
+      let itemLength = $p.find('.evaluations-text-item').length
+      let index = 0
+      let timer = null
+      let isLast = false
+
+      function changeLeft() {
+        let left = index * itemWidth
+        if (left < 0) {
+          left = 0
+        }
+        if (left > -boxWidth + itemWidth * itemLength) {
+          left = -boxWidth + itemWidth * itemLength
+          isLast = true
+        }
+        $dot.eq(index).addClass('active').siblings().removeClass('active')
+        $swiper.css({ transform: `translateX(-${left}px)`, transition: 'all .5s cubic-bezier(0.645, 0.045, 0.355, 1)', })
+      }
+      $dot.click(function () {
+        index = $(this).index()
+        // $(this).addClass('active').siblings().removeClass('active')
+        changeLeft()
+      })
+      $arraw.click(function () {
+        let sindex = $(this).index()
+        index += sindex ? 1 : -1
+        if (index < 0) index = 0
+        if (index > itemLength - 1) index = itemLength - 1
+        changeLeft()
+      })
+      detectSwipe(content, () => {
+        if (isLast) return
+        index++
+        if (index > itemLength - 1) index = itemLength - 1
+        changeLeft()
+      }, () => {
+        isLast = false
+        index--
+        if (index < 0) index = 0
+        changeLeft()
+      });
+
+      function detectSwipe(element, onSwipeLeft, onSwipeRight) {
+        let startX = 0;
+
+        const getEventX = (event) => {
+          return event.touches ? event.touches[0].clientX : event.clientX;
+        };
+
+        const handleTouchStart = (e) => {
+          startX = getEventX(e);
+        };
+
+        const handleTouchMove = (e) => {
+          const deltaX = getEventX(e) - startX;
+          if (Math.abs(deltaX) > 10 && e.cancelable) {
+            e.preventDefault();
+          }
+        };
+
+        const handleTouchEnd = (e) => {
+          const deltaX = getEventX(e.changedTouches ? e.changedTouches[0] : e) - startX;
+          if (deltaX > 10) {
+            onSwipeRight();
+          } else if (deltaX < -10) {
+            onSwipeLeft();
+          }
+        };
+
+        element.addEventListener('touchstart', handleTouchStart);
+        element.addEventListener('touchmove', handleTouchMove);
+        element.addEventListener('touchend', handleTouchEnd);
+
+        // Add mouse event listeners for PC compatibility
+        element.addEventListener('mousedown', handleTouchStart);
+        element.addEventListener('mousemove', handleTouchMove);
+        element.addEventListener('mouseup', handleTouchEnd);
+      }
+    }
+    evaluationsTextSwiper()
+  })
+</script>
+{% schema %}
+  {
+    "name": "evaluations-text",
+    "blocks": [
+      {
+        "name": "item",
+        "type": "item",
+        "settings": [
+          {
+            "type": "richtext",
+            "id": "text",
+            "label": "Text"
+          },
+          {
+            "type": "richtext",
+            "id": "text1",
+            "label": "Text"
+          }
+        ]
+      }
+    ],
+  "settings": [
+      {
+        "type": "image_picker",
+        "id": "image",
+        "label": "Image"
+      },
+     {
+      "type": "text",
+      "id": "title",
+      "label": "Title"
+    },
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Text"
+    }
+  ],
+  "presets": [
+    {
+      "name": "evaluations-text",
+      "blocks": []
+    }
+  ]
+}
+{% endschema %}

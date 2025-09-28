@@ -1,0 +1,1099 @@
+{%- liquid
+  assign se_id = section.id
+  assign se_bks = section.blocks
+  assign se_stts = section.settings
+-%}
+<style>
+       #shopify-section-{{ section.id }} {
+  --text-color: {{  section.settings.text_color.red }}, {{  section.settings.text_color.green }}, {{  section.settings.text_color.blue }};
+      --section-background: {{ section.settings.background.red }}, {{ section.settings.background.green }}, {{ section.settings.background.blue }};
+      --background-image: url({{ section.settings.background_image | img_url: '3840x1176' }});
+      {% if section.settings.background_image != blank %}
+        background-image: var( --background-image);
+      {% else %}
+        background-color: var(--section-background)
+      {% endif %}
+    }
+    .section-{{ section.id }}-padding {
+      padding-top: calc({{ section.settings.padding_top }}px);
+      padding-bottom: calc({{ section.settings.padding_bottom }}px);
+    }
+    @media screen and (max-width: 768px){
+      #shopify-section-{{ section.id }} {
+      {% if section.settings.mobile_background_image != blank %}
+        --background-image: url({{ section.settings.mobile_background_image | img_url : '750x1230' }});
+      {% endif %}
+      }
+    .section-{{ section.id }}-padding {
+      padding-top: calc({{ section.settings.padding_top }}px * 0.6);
+      padding-bottom: calc({{ section.settings.padding_bottom }}px * 0.6);
+    }
+  }
+    .p-box-skin {
+      padding: 110px 60px;
+      /* background: #fafafa; */
+      display: flex;
+      max-width: 1920px;
+      margin: 0 auto;
+    }
+    .p-box-skin-a3{
+      padding: 110px 40px;
+      max-width: 1600px;
+    }
+    .p-box-skin .slide-left {
+      width: 60%;
+      color: #484846;
+      font-family: Saans;
+      font-size: 24px;
+      font-style: normal;
+      font-weight: 300;
+      line-height: 120%;
+    }
+    .p-box-skin .slide-left .title {
+      margin-bottom: 40px;
+    }
+    .p-box-skin .slide-left .choose-list {
+      color: #190a0a;
+      font-size: 20px;
+    }
+    .p-box-skin .slide-left .choose-list .box-head {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-weight: 300;
+    }
+    .p-box-skin .slide-left .choose-list .box-head img {
+      width: 16px;
+      border-radius: 0 0 10px 10px;
+      border: 1px solid #000;
+      background-size: cover;
+      height: 16px;
+    }
+    .p-box-skin .slide-left .choose-list .list {
+      display: flex;
+      gap: 15px;
+      margin: 0px 0px 20px;
+      padding-top: 15px;
+    }
+    .p-box-skin .slide-left .choose-list .list .item {
+      position: relative;
+      width: 120px;
+      height: 140px;
+      cursor: pointer;
+      transition: width 0.6s ease;
+      -webkit-transition: width 0.6s ease;
+      -moz-transition: width 0.6s ease;
+      -ms-transition: width 0.6s ease;
+      -o-transition: width 0.6s ease;
+    }
+    .p-box-skin .slide-left .choose-list .list .item .choose-img {
+      overflow: hidden;
+      border-radius: 0px 0px 50% 50%;
+    }
+
+    .p-box-skin .slide-left .choose-list .list .item .choose-img img {
+      height: 112px;
+      width: 100%;
+      transition: transform 0.6s ease;
+      transform-origin: center center;
+      -webkit-transition: transform 0.6s ease;
+      -moz-transition: transform 0.6s ease;
+      -ms-transition: transform 0.6s ease;
+      -o-transition: transform 0.6s ease;
+    }
+    .p-box-skin .slide-left .choose-list .list .item .text {
+      /* color: #000; */
+      text-align: center;
+      font-size: 16px;
+      font-weight: 300;
+      line-height: 150%;
+      /* 24px */
+      margin-top: 5px;
+    }
+
+    .p-box-skin .slide-left .choose-list .list .item:hover .choose-img img {
+      transform: scale(1.3);
+      -webkit-transform: scale(1.3);
+      -moz-transform: scale(1.3);
+      -ms-transform: scale(1.3);
+      -o-transform: scale(1.3);
+    }
+    .p-box-skin .slide-left .choose-list .list .item.active .choose-img::after {
+      border-radius: 0px 0px 38.572px 38.572px;
+      position: absolute;
+      content: '';
+      width: 20px;
+      height: 20px;
+      background: #fafafa;
+      z-index: 1;
+      box-shadow: 0 0 0 4px #fafafa;
+      top: -10px;
+      right: 0px;
+      left: 0px;
+      margin: 0 auto;
+    }
+    .p-box-skin .slide-left .choose-list .list .item.active .choose-img::before {
+      position: absolute;
+      content: '';
+      width: 16px;
+      height: 16px;
+      display: block;
+      background: #fafafa;
+      border: 4px solid #e0004d;
+      border-radius: 50%;
+      right: 0px;
+      left: 0px;
+      margin: 0 auto;
+      top: -10px;
+      z-index: 2;
+      opacity: 1;
+      {% comment %} transition: all 0.4s ease; {% endcomment %}
+    }
+    .p-box-skin .slide-left .tips {
+      color: #625959;
+      font-size: 14px;
+      font-weight: 300;
+      line-height: 150%;
+      /* 21px */
+      margin-top: 40px;
+      opacity: 0.8;
+    }
+    .p-box-skin .slide-right {
+      flex: 1;
+      padding: 0px 60px 0px 40px;
+      position: relative;
+    }
+  .p-box-skin-a3 .slide-right{
+    padding: 0px 0px 0px 100px;
+  }
+    .p-box-skin .slide-right .title {
+      font-size: 50px;
+      line-height: 60px;
+      font-weight: 300;
+      /* 120% */
+    }
+    .p-box-skin .slide-right .desc {
+      color: #484846;
+      font-size: 20px;
+      line-height: 36px;
+      /* 180% */
+      margin-top: 20px;
+    }
+    .success-block,
+    .error-block {
+      display: none;
+    }
+    .p-box-skin .slide-right .info-block .title {
+      font-weight: 500;
+    }
+
+    .p-box-skin .slide-right .info-block .op {
+      display: flex;
+      gap: 25px;
+      align-items: center;
+      margin-top:30px;
+      position: absolute;
+      bottom: 0px;
+    }
+
+    .p-box-skin .slide-right .info-block .btn-try-again {
+      display: flex;
+      width: 200px;
+      height: 54px;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
+      background: #190a0a;
+      color: #fff;
+      cursor: pointer;
+      border-radius: 60px;
+    }
+    .p-box-skin .slide-right .info-block .btn-try-again:hover {
+      background: #2f2626;
+    }
+    .p-box-skin .slide-right .info-block .learn-more {
+      border-bottom: 1px solid #e0004d;
+      display: flex;
+      padding: 10px;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      color: #e0004d;
+      font-size: 20px;
+      line-height: 16px; /* 80% */
+      cursor: pointer;
+    }
+    .p-box-skin .slide-right .info-block .learn-more:hover {
+      color: #f399b8;
+      border-bottom: 1px solid #f399b8;
+    }
+
+    .skin-popup {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      justify-content: center;
+      align-items: center;
+      z-index: 20;
+    }
+    .skin-popup .popup-content {
+      background-color: #fff;
+      padding: 0px 0px 10px;
+      border-radius: 10px;
+      width: 100%;
+      position: absolute;
+      bottom: 0px;
+      text-align: left;
+      -webkit-border-radius: 10px;
+      -moz-border-radius: 10px;
+      -ms-border-radius: 10px;
+      -o-border-radius: 10px;
+      left: 0px;
+      right: 0px;
+      width: 100%;
+    }
+    .skin-popup .popup-content .popup-conn {
+      text-align: center;
+    }
+    .skin-popup .popup-content .popup-conn .popup-title {
+      display: none;
+    }
+
+    .skin-popup .popup-content .popup-conn .popup-detail {
+      color: #625959;
+      font-size: 16px;
+      line-height: 120%;
+      padding: 40px 65px 0px;
+      display: block;
+    }
+    .popup-slide-box .skin-popup .popup-content .popup-conn .popup-detail .text {
+      text-align: left;
+    }
+    .skin-popup .popup-content .popup-conn .popup-detail .popup-images {
+      width: 100%;
+      margin-bottom: 0px;
+    }
+    .skin-popup .popup-content .popup-conn .popup-detail .popup-images img {
+      width: 100%;
+    }
+    .skin-popup .popup-content .popup-conn .popup-detail .btn-again {
+      display: flex;
+      width: 178px;
+      height: 54px;
+      justify-content: center;
+      align-items: center;
+      margin: 30px auto;
+      border-radius: 40px;
+      border: 1px solid #190a0a;
+      cursor: pointer;
+    }
+    .skin-popup .popup-content .popup-conn .popup-detail .btn-again:hover {
+      color: #a39d9d;
+      border: 1px solid #a39d9d;
+    }
+
+    .skin-popup .close-btn {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      font-size: 24px;
+      cursor: pointer;
+    }
+    #skinMorePopup .popup-content {
+      width: 800px;
+      margin: 0 auto;
+      top: 25%;
+      bottom: initial;
+    }
+    #skinMorePopup .popup-content .popup-conn .popup-slide-box {
+      display: grid;
+      grid-template-columns: 50% 50%;
+      grid-template-rows: auto;
+    }
+    #skinMorePopup .popup-content .popup-conn .popup-slide-box .detail-box {
+      text-align: left;
+      padding: 20px;
+    }
+    #skinMorePopup .popup-content .popup-conn .popup-slide-box .detail-box .name {
+      color: #000;
+      font-size: 16px;
+      font-weight: 500;
+      line-height: 150%; /* 23.311px */
+    }
+    .skin-popup .popup-content .popup-conn .popup-detail .text {
+      color: #000;
+      font-size: 14px;
+      font-weight: 300;
+      line-height: 150%; /* 18.648px */
+      margin-top: 12px;
+    }
+    .p-men-diy{
+      align-items: center;
+      color: #fff;
+    }
+    .p-men-diy .slide-left,
+    .p-men-diy .slide-left .choose-list{
+      color:#fff;
+    }
+    .p-men-diy .slide-left .tips{
+      color:#929292;
+    }
+
+    .p-men-diy .slide-right .desc{
+      color:#929292;
+    }
+
+    .p-men-diy .slide-right .info-block .btn-try-again{
+      background:#fff;
+      color:#000;
+    }
+  .p-men-diy .slide-right .info-block .btn-try-again:hover{
+    color:#fff;
+  }
+     .p-men-diy .slide-right .info-block .title path{
+        fill:#fff;
+      }
+    .p-men-diy .slide-right .info-block .op{
+      position: relative;
+      margin-top: 30px;
+    }
+
+    @media screen and (min-width: 1441px) {
+      .p-men-diy{
+        max-width:1680px;
+        padding: 110px 40px;
+      }
+    }
+
+
+    @media screen and (max-width: 1440px) {
+      .p-box-skin {
+        padding: 80px 40px;
+      }
+      .p-box-skin .slide-left .choose-list .list .item {
+        width: 90px;
+        height: auto;
+      }
+      .p-box-skin .slide-left .choose-list .list .item .choose-img img {
+        height: 100%;
+      }
+      .p-box-skin .slide-left {
+        font-size: 18px;
+      }
+      .p-box-skin .slide-right .title {
+        font-size: 36px;
+        line-height: 48px;
+        /* 120% */
+      }
+      .p-box-skin .slide-right .desc {
+        font-size: 16px;
+        line-height: 32px;
+      }
+    }
+    .p-box-skin .m-title {
+      display: none;
+    }
+
+    @media (max-width: 768px) {
+      .p-box-skin {
+        padding: 20px 16px 40px;
+        display: block;
+      }
+      .p-box-skin .slide-left {
+        width: 100%;
+        padding: 30px 10px;
+        margin-top: 20px;
+        border-radius: 12px;
+      }
+      .p-box-skin .m-title {
+        color: #000;
+        text-align: center;
+        font-size: 28px;
+        font-weight: 300;
+        line-height: 125%; /* 35px */
+        display: block;
+      }
+      .p-men-diy .m-title{
+        color:#fff;
+      }
+      .skin-popup .close-btn {
+        top: 5px;
+        right: 10px;
+      }
+      .p-box-skin .slide-left .title {
+        font-size: 15px;
+        font-weight: 300;
+        line-height: 150%;
+        margin-bottom: 20px;
+        position: relative;
+      }
+      .p-box-skin .slide-left .title .model-settings {
+        position: absolute;
+        right: 0px;
+        top: 15px;
+        width: 20px;
+        cursor: pointer;
+      }
+      .p-box-skin .slide-left .choose-list .box-head {
+        padding: 3px 0px;
+      }
+      .p-box-skin .slide-left .choose-list .list {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+      }
+
+      .p-box-skin .slide-left .choose-list .hair-color .list {
+        /* border-bottom: 1px solid #86868b; */
+        margin-bottom: 0px;
+        padding-bottom: 20px;
+      }
+
+      .p-box-skin .slide-left .choose-list .list .item {
+        width: 68px;
+        height: 100px;
+      }
+      .p-box-skin .slide-left .choose-list .list .item .choose-img img {
+        height: 60px;
+      }
+      .p-box-skin .slide-left .choose-list .list .item .text {
+        font-size: 12px;
+      }
+      .p-box-skin .slide-left .choose-list .list .item:hover {
+        width: 68px;
+      }
+      .p-box-skin .slide-left .choose-list .hair-color {
+        margin-top: 25px;
+      }
+      .p-box-skin .slide-left .tips {
+        display: none;
+      }
+
+      .p-box-skin .slide-right {
+        padding: 0px 16px 20px;
+        border-radius: 12px;
+        /* background: #fbfaf4; */
+      }
+      .p-box-skin .slide-right .start-block {
+        display: none;
+      }
+      .p-box-skin .slide-right .info-block .title {
+        font-size: 28px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        line-height: 120%;
+      }
+      .p-box-skin .slide-right .info-block .title img,
+      .p-box-skin .slide-right .info-block .title svg{
+        width: 33px;
+      }
+
+      .p-box-skin .slide-right .desc {
+        font-size: 14px;
+        line-height: 150%;
+        margin-top: 12px;
+      }
+      .p-box-skin .slide-right .info-block .op {
+        margin-top: 32px;
+        position: initial;
+      }
+      .p-box-skin .slide-right .info-block .btn-try-again {
+        border-radius: 45px;
+        height: 40px;
+        width: 150px;
+        font-size: 15px;
+        font-weight: 300;
+        line-height: 12px; /* 80% */
+      }
+      .p-box-skin .slide-right .info-block .learn-more {
+        font-size: 16px;
+      }
+
+      .skin-popup .popup-content .popup-conn .popup-title {
+        color: #161823;
+        font-size: 15px;
+        font-weight: 300;
+        line-height: 120%;
+        padding: 20px 0px 15px;
+        {% comment %} border-bottom: 1px solid #1618231f; {% endcomment %}
+        display: block;
+      }
+      .skin-popup .popup-content .popup-conn .popup-detail {
+        color: #625959;
+        font-size: 14px;
+        line-height: 120%;
+        padding: 15px 20px 0px;
+      }
+      #skinMorePopup .popup-content {
+        width: 100%;
+        top: initial;
+        bottom: 0px;
+        border-radius: 10px 10px 0px 0px;
+      }
+      #skinMorePopup .popup-content .popup-conn .popup-slide-box {
+        display: block;
+      }
+      #skinMorePopup .popup-content .popup-conn .popup-slide-box .detail-box {
+        padding: 10px 0px;
+      }
+      .skin-popup .popup-content .popup-conn .popup-detail .text {
+        margin-top: 10px;
+      }
+      .skin-popup .popup-content .popup-conn .popup-detail .btn-again {
+        width: 162px;
+        height: 36px;
+        margin: 16px auto;
+        color: #190A0A;
+      }
+
+      .p-men-diy .slide-left,
+      .p-men-diy .slide-right{
+        background:none;
+      }
+      .p-men-diy .slide-left .choose-list .list .item.active .choose-img::before,
+      .p-men-diy .slide-left .choose-list .list .item.active .choose-img::after{
+        zoom:.7;
+        top:-7px;
+      }
+    }
+</style>
+
+<section class="p-box-skin {{ section.settings.text23 }} section-{{ section.id }}-padding">
+  <div class="hidden-lap hidden-desk m-title">
+    {{ se_stts.text4 }}
+  </div>
+  <div class="slide-left">
+    {% comment %} 移动端主标题 {% endcomment %}
+    <div class="title">
+      {{ se_stts.text }}
+      {% comment %}
+        <div class="model-settings hidden-desk">
+          <img
+            loading="lazy"
+            src="https://cdn.shopify.com/s/files/1/0656/9079/6273/files/6d166e51523d9faf0ec1af885f0a66c7.svg?v=1723622895"
+          >
+        </div>
+      {% endcomment %}
+    </div>
+    <div class="choose-list">
+      <!-- 图片 -->
+      <div class="skin-one">
+        <h3 class="box-head">
+          {{ se_stts.text1 }}
+          <img
+            src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/wcAAgAB/aw/aFEAAAAASUVORK5CYII="
+            loading="lazy"
+            alt=""
+          >
+        </h3>
+        <div class="list">
+          {% for block in se_bks %}
+            {% if block.type == 'skin-item' %}
+              {% assign item = block.settings %}
+              <div class="item">
+                <div class="choose-img">
+                  {%- if item.image != blank -%}
+                    <img
+                      loading="lazy"
+                      class="img"
+                      width="{{ item.image.width }}"
+                      height="{{ item.image.height }}"
+                      {% render 'image-attributes', image: item.image %}
+                      alt="{{ item.image.alt | escape }}"
+                    >
+                  {%- endif -%}
+                </div>
+                <p class="text">{{ item.text }}</p>
+              </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+      <div class="hair-color">
+        <h3 class="box-head">
+          {{ se_stts.text2 }}
+          <img
+            src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/wcAAgAB/aw/aFEAAAAASUVORK5CYII="
+            alt=""
+            loading="lazy"
+          >
+        </h3>
+        <div class="list">
+          {% for block in se_bks %}
+            {% if block.type == 'hair-item' %}
+              {% assign item = block.settings %}
+              <div class="item ">
+                <div class="choose-img">
+                  {%- if item.image != blank -%}
+                    <img
+                      loading="lazy"
+                      class="img"
+                      width="{{ item.image.width }}"
+                      height="{{ item.image.height }}"
+                      {% render 'image-attributes', image: item.image %}
+                      alt="{{ item.image.alt | escape }}"
+                    >
+                  {%- endif -%}
+                </div>
+                <p class="text">{{ item.text }}</p>
+              </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+      <p class="tips">
+        {{ se_stts.text3 }}
+      </p>
+    </div>
+  </div>
+  <div class="slide-right">
+    <div class="start-block">
+      <h2 class="title">{{ se_stts.text4 }}</h2>
+      <div class="desc">
+        {{ se_stts.text5 }}
+      </div>
+    </div>
+    <!-- 中奖信息 -->
+    <div class="info-block success-block">
+      <div class="title">
+        <!--
+          <img src="https://cdn.shopify.com/s/files/1/0656/9079/6273/files/Union_5.svg?v=1723713514" loading="lazy">
+        -->
+        <svg xmlns="http://www.w3.org/2000/svg" width="34" height="34" viewBox="0 0 34 34" fill="none">
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M13.1164 2.18693C16.3399 1.45863 19.7124 1.79183 22.7311 3.13686L23.2648 3.37468L23.7405 2.3072C23.7405 2.3072 26.4556 3.51698 23.2067 2.06938C19.9579 0.621787 16.3281 0.263168 12.8588 1.04701C9.38954 1.83085 6.26656 3.71516 3.95566 6.4189C1.64477 9.12265 0.269776 12.501 0.0357532 16.05C-0.198269 19.599 0.721216 23.1287 2.65708 26.1124C4.59294 29.0962 7.44146 31.3743 10.7778 32.6069C14.1141 33.8395 17.7595 33.9606 21.1703 32.9521C24.5811 31.9436 27.5745 29.8597 29.7042 27.0109C31.8338 24.1622 32.9855 20.7014 32.9875 17.1447L32.9876 16.6074L32.9876 16.265C32.9875 15.6196 32.4643 15.0963 31.8189 15.0963L31.8189 16.6074L31.8189 17.144C31.817 20.4487 30.7469 23.6643 28.7681 26.3112C26.7894 28.9581 24.0081 30.8944 20.839 31.8314C17.6699 32.7684 14.2827 32.6559 11.1828 31.5106C8.08285 30.3654 5.43617 28.2487 3.63747 25.4764C1.83877 22.704 0.984432 19.4245 1.20187 16.1269C1.41931 12.8293 2.69688 9.69037 4.84404 7.1782C6.9912 4.66603 9.89291 2.91523 13.1164 2.18693ZM32.8164 4.83003L33.2294 4.41665L32.4026 3.5907L31.9896 4.00408L16.4934 19.5158L14.9719 17.9943L12.5471 15.5696C12.0907 15.1132 11.3508 15.1132 10.8944 15.5696L14.1455 18.8207L16.0804 20.7556C16.19 20.8652 16.3387 20.9268 16.4937 20.9267C16.6488 20.9267 16.7974 20.865 16.907 20.7554L32.8164 4.83003Z" fill="#6C6AB4"/>
+        </svg>
+        {{ se_stts.text6 }}
+      </div>
+      <div class="desc">{{ se_stts.text7 }}</div>
+      <div class="op">
+        <div class="btn-try-again">{{ se_stts.text8 }}</div>
+      </div>
+    </div>
+    <!-- 错误有3种文案 -->
+    <div class="info-block error-block">
+      <div class="title">
+        <img
+          src="https://cdn.shopify.com/s/files/1/0656/9079/6273/files/51480f60eeb2fb68f4dbd1f5c8b43e84.svg?v=1723715285"
+          loading="lazy"
+        >
+        {{ se_stts.text9 }}
+      </div>
+      <div class="desc">{{ se_stts.text13 }}</div>
+      <div class="op">
+        <div class="btn-try-again">{{ se_stts.text8 }}</div>
+        <div class="learn-more">{{ se_stts.text11 }}</div>
+      </div>
+    </div>
+  </div>
+  <!-- 移动端弹出框 -->
+  <div id="mobilePopup" class="skin-popup">
+    <div class="popup-content">
+      <span id="closePopupBtn" class="close-btn">&times;</span>
+      <div class="popup-conn">
+        <div class="popup-title">{{ se_stts.text12 }}</div>
+        <div class="popup-detail">
+          <div class="text">
+            {{ se_stts.text10 }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 更多信息弹出框 -->
+  <div id="skinMorePopup" class="skin-popup">
+    <div class="popup-content">
+      <span id="closePopupBtn" class="close-btn">
+        <img
+          src="https://cdn.shopify.com/s/files/1/0656/9079/6273/files/Component_36.svg?v=1724661380"
+          loading="lazy"
+          class="hidden-phone"
+          alt="close"
+        >
+        <span class="hidden-desk">&times;</span>
+      </span>
+      <div class="popup-conn">
+        <div class="popup-title">
+          {% comment %} {{ se_stts.text19 }} {% endcomment %}
+        </div>
+        <div class="popup-detail">
+          <div class="popup-slide-box">
+            <div class="popup-images">
+              <picture class="img">
+                {%- if se_stts.text20 != blank -%}
+                  <source
+                    media="(max-width: 767px)"
+                    srcset="{{ se_stts.text20 | image_url: width: '400x' }} 400w,  {{ se_stts.text20 | image_url: width: '1000x' }} 1000w"
+                    width="{{  se_stts.text20.width }}"
+                    height="{{  se_stts.text20.height }}"
+                    loading="lazy"
+                  >
+                {%- endif -%}
+                {{-
+                  se_stts.text17
+                  | image_url: width: se_stts.text17.width
+                  | image_tag: loading: 'lazy', class: 'img'
+                -}}
+              </picture>
+            </div>
+            <div class="detail-box">
+              <div class="name">
+                {{ se_stts.text15 }}
+              </div>
+              <div class="text">
+                {{ se_stts.text16 }}
+              </div>
+            </div>
+          </div>
+          <div class="btn-again">{{ se_stts.text18 }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  $(document).ready(function () {
+    let isFlag = false;
+    let skinArr = [0, 1, 2, 3, 4];
+    let hairArr = [0, 1, 2, 3];
+    let skinIndex,
+      hairIndex = -1;
+
+    $(document).on('click', '.p-box-skin .skin-one .item', function () {
+      if (!isFlag) {
+        $('.skin-one .box-head img').attr('src', $(this).find('img').attr('src'));
+        $(this).addClass('active').siblings().removeClass('active');
+        skinIndex = $(this).index();
+        changeSkin();
+      }
+    });
+    $(document).on('click', '.p-box-skin .hair-color .item', function () {
+      if (!isFlag) {
+        $('.hair-color .box-head img').attr('src', $(this).find('img').attr('src'));
+        $(this).addClass('active').siblings().removeClass('active');
+        hairIndex = $(this).index();
+        changeSkin();
+      }
+    });
+
+    function changeSkin() {
+      if (hairIndex > -1 && skinIndex > -1) {
+        isFlag = true;
+        // 判断测试结果
+        if(skinArr.includes(skinIndex) && hairArr.includes(hairIndex)){
+          {% comment %} 第一种情况 {% endcomment %}
+          // 处理移动端
+          if(isMobile()){
+           // 移动端
+           $('.p-box-skin .choose-list .list').slideUp(1000).fadeOut(1000);
+          } else {
+            $('.p-box-skin .start-block').hide();
+          }
+          $('.p-box-skin .success-block').show();
+        }else if(hairArr.includes(hairIndex)){
+          // 第三种情况，肤色不对，头发颜色正确
+          $('.error-block .desc').text(`{{ se_stts.text14 }}`);
+
+          $('#skinMorePopup .detail-box .name').text(`{{ se_stts.text15 }}`);
+          $('#skinMorePopup .detail-box .text').text(`{{ se_stts.text16 }}`);
+
+          if(isMobile()){
+            // 移动端
+            $('.p-box-skin .choose-list .list').slideUp(1000).fadeOut(1000);
+           } else {
+             $('.p-box-skin .start-block').hide();
+           }
+          $('.p-box-skin .error-block').show();
+          // 修改描述文案  14
+        }else {
+          $('.error-block .desc').text(`{{ se_stts.text13 }}`);
+          $('#skinMorePopup .detail-box .name').text(`{{ se_stts.text21 }}`);
+          $('#skinMorePopup .detail-box .text').text(`{{ se_stts.text22 }}`);
+
+          if(isMobile()){
+            // 移动端
+            $('.p-box-skin .choose-list .list').slideUp(1000).fadeOut(1000);
+           } else {
+             $('.p-box-skin .start-block').hide();
+           }
+          $('.p-box-skin .error-block').show();
+        }
+      }
+    }
+
+    function resetAll() {
+      // 默认空白图片
+      var imgTemp = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/wcAAgAB/aw/aFEAAAAASUVORK5CYII='
+      isFlag = false;
+      skinIndex= -1;
+      hairIndex = -1;
+      $('.p-box-skin .skin-one .item').removeClass('active');
+      $('.p-box-skin .hair-color .item').removeClass('active');
+      // 处理PC 移动的情况
+      if(isMobile()){
+        $('.p-box-skin .choose-list .list').show();
+      } else {
+        $('.p-box-skin .start-block').show();
+      }
+      $('.p-box-skin .success-block').hide();
+      $('.p-box-skin .error-block').hide();
+      // 清空图片
+      $('.skin-one .box-head img').attr('src', imgTemp);
+      $('.hair-color .box-head img').attr('src', imgTemp);
+    }
+
+    //  重置抽奖
+    $(document).on('click', '.p-box-skin .btn-try-again', function () {
+      resetAll();
+    });
+
+    // 了解更多
+   $(document).on('click', '.p-box-skin .error-block .learn-more', function () {
+      $('#skinMorePopup').show();
+   });
+
+   //  关闭弹出框
+   $(document).on('click', '#skinMorePopup .close-btn', function () {
+     $('#skinMorePopup').hide();
+   });
+   $(document).on('click', '#skinMorePopup .btn-again', function () {
+    $('#skinMorePopup').hide();
+    resetAll();
+  });
+
+  {% comment %} 移动端提示信息 {% endcomment %}
+  $(document).on('click', '.p-box-skin .model-settings', function () {
+    $('#mobilePopup').show();
+  });
+  $(document).on('click', '#mobilePopup .close-btn', function () {
+    $('#mobilePopup').hide();
+  });
+
+  });
+</script>
+
+{% schema %}
+{
+  "name": "p-box-skin",
+  "blocks": [
+    {
+      "name": "skin-item",
+      "type": "skin-item",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text"
+        }
+      ]
+    },
+    {
+      "name": "hair-item",
+      "type": "hair-item",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text"
+        }
+      ]
+    }
+  ],
+  "settings": [
+  
+    {
+      "type": "checkbox",
+      "id": "reverse",
+      "label": "是否反转"
+    },
+    {
+      "type": "image_picker",
+      "id": "image1",
+      "label": "图片"
+    },
+    {
+      "type": "image_picker",
+      "id": "image2",
+      "label": "图片"
+    },
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Text"
+    },
+    {
+      "type": "html",
+      "id": "text1",
+      "label": "Text1"
+    },
+    {
+      "type": "text",
+      "id": "text2",
+      "label": "Text2"
+    },
+    {
+      "type": "text",
+      "id": "text3",
+      "label": "Text3"
+    },
+    {
+      "type": "text",
+      "id": "text4",
+      "label": "Text4"
+    },
+    {
+      "type": "text",
+      "id": "text5",
+      "label": "Text5"
+    },
+    {
+      "type": "text",
+      "id": "text6",
+      "label": "提示信息"
+    },
+    {
+      "type": "text",
+      "id": "text7",
+      "label": "提示信息"
+    },
+    {
+      "type": "text",
+      "id": "text8",
+      "label": "提示信息"
+    },
+    {
+      "type": "text",
+      "id": "text9",
+      "label": "提示信息"
+    },
+    {
+      "type": "text",
+      "id": "text10",
+      "label": "text10"
+    },
+    {
+      "type": "text",
+      "id": "text11",
+      "label": "text11"
+    },
+    {
+      "type": "text",
+      "id": "text12",
+      "label": "text12"
+    },
+    {
+      "type": "text",
+      "id": "text13",
+      "label": "text13"
+    },
+    {
+      "type": "text",
+      "id": "text14",
+      "label": "text14"
+    },
+    {
+      "type": "text",
+      "id": "text15",
+      "label": "肤色-弹出框文案"
+    },
+    {
+      "type": "text",
+      "id": "text16",
+      "label": "肤色-弹出框描述"
+    },
+    {
+      "type": "text",
+      "id": "text21",
+      "label": "头发-弹出框标题"
+    },
+    {
+      "type": "text",
+      "id": "text22",
+      "label": "头发-弹出框描述"
+    },
+    {
+      "type": "image_picker",
+      "id": "text17",
+      "label": "弹出框左侧图片"
+    },
+    {
+      "type": "image_picker",
+      "id": "text20",
+      "label": "弹出框移动端图片"
+    },
+    {
+      "type": "text",
+      "id": "text18",
+      "label": "弹出框按钮"
+    },
+    {
+      "type": "text",
+      "id": "text19",
+      "label": "setting",
+      "default": "Settings"
+    },
+    {
+      "type": "text",
+      "id": "text23",
+      "label": "自定义Class"
+    },
+     {
+      "type": "color",
+      "id": "background",
+      "label": "Background"
+    },
+     {
+          "type": "image_picker",
+          "id": "background_image",
+          "label": "Background Image"
+        },
+      {
+          "type": "image_picker",
+          "id": "mobile_background_image",
+          "label": "Mobile Background Image"
+        },
+   {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 0
+    }
+  ],
+  "presets": [
+    {
+      "name": "p-box-skin",
+      "blocks": []
+    }
+  ]
+}
+{% endschema %}

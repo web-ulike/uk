@@ -1,0 +1,1101 @@
+<style>
+.officially-features{
+  position: relative;
+  height: 260vh;
+}
+
+.officially-features .officially-features-cont{
+  position: sticky;
+  height: 100vh;
+  top: 0;
+  overflow: hidden;
+}
+
+.officially-features .text-mark{
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  padding-top: 80px;
+  top: 0;
+  z-index: 0;
+}
+
+.officially-features .text-mark-txt{
+  font-size: 161px;
+  color: transparent;
+  text-align: center;
+  line-height: 1.1;
+  background-clip: text;
+  -webkit-background-clip: text;
+  background-repeat: no-repeat;
+  background-image: url({{ section.settings.image | image_url }});
+  background-size:100% 200%;
+  background-position: 0% 0%;
+}
+.officially-features .text-mark-txt p{
+  margin: 0;
+}
+.officially-features .product-img{
+  position: absolute;
+  top: 100%;
+  right: 100%;
+  width: 65.42vw;
+  height: auto;
+  z-index: 1;
+}
+
+.officially-features .mb-box{
+  display: none;
+}
+
+.officially-features .officially-features-title{
+  color: #190A0A;
+  font-size: 50px;
+  line-height: 1.2;
+}
+
+.officially-features .officially-features-sub{
+  color: #190A0A;
+  font-size: 18px;
+  line-height: 1.5;
+  margin-top: 12px;
+}
+
+.officially-features .officially-features-sub p{
+  margin: 0;
+}
+
+.officially-features .officially-features-sub strong{
+  font-weight: normal;
+  font-family: var(--heading-font-family);
+}
+
+.officially-features .officially-features-two{
+  position: absolute;
+  left: 62%;
+  top: 42%;
+  max-width: 455px;
+  z-index: 4;
+  transform: translateY(30px);
+  opacity: 0;
+}
+
+.officially-features .officially-features-two .svg-icon-box{
+  position: absolute;
+  right: 108%;
+  top: 50%;
+}
+
+.officially-features .officially-features-three{
+  position: absolute;
+  left: 20%;
+  top: 40%;
+  max-width: 455px;
+  z-index: 4;
+  transform: translateY(30px);
+  opacity: 0;
+  display: none;
+}
+
+.officially-features .officially-features-three .svg-icon-box{
+  position: absolute;
+  left: 100%;
+  top: 103%;
+}
+
+.officially-features .officially-features-btn{
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 240px;
+  height: 48px;
+  border-radius: 48px;
+  border: 1px solid #3F3636;
+  margin-top: 30px;
+  color: #3F3636;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.officially-features .officially-features-three .officially-features-btn{
+  width: 217px;
+}
+
+.officially-features-popup{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  z-index: 999;
+  background: rgba(0, 0, 0, 0);
+  display: flex;
+  justify-content: flex-end;
+  /* opacity: 0; */
+  pointer-events: none;
+  transition: all .4s ease;
+  overflow: hidden;
+}
+.officially-features-popup.active{
+  background: rgba(0, 0, 0, .3);
+  pointer-events: all;
+}
+
+.officially-features-popup .officially-features-popup-mark{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height:100%;
+  z-index:1;
+}
+
+.officially-features-popup .officially-features-popup-cont{
+  width: 100%;
+  height: 100%;
+  max-width: 1280px;
+  background: #FBFAF4;
+  padding: 80px 15px 80px 60px;
+  position: relative;
+  z-index:2;
+  transform: translateX(100%);
+  transition: all .4s ease;
+}
+
+.officially-features-popup.active .officially-features-popup-cont{
+  transform: translateX(0);
+  transition: all .4s ease .1s;
+}
+
+.officially-features-popup .officially-features-popup-det{
+  height: 100%;
+  padding-right: 185px;
+  overflow-y: auto;
+  display: flex;
+  gap: 145px;
+  color: #3F3636;
+  position: relative;
+}
+.officially-features-popup .officially-features-popup-det::-webkit-scrollbar {
+    width: 10px;
+}
+
+.officially-features-popup .officially-features-popup-det::-webkit-scrollbar-track {
+    background-color: none;
+}
+
+.officially-features-popup .officially-features-popup-det::-webkit-scrollbar-thumb {
+    background-color: rgba(228, 221, 221, .3);
+    border-radius: 5px;
+}
+
+.officially-features-popup .officially-features-popup-det::-moz-scrollbar {
+  width: 10px;
+}
+
+.officially-features-popup .officially-features-popup-det::-moz-scrollbar-track {
+  background: none;
+}
+
+.officially-features-popup .officially-features-popup-det::-moz-scrollbar-thumb {
+  background: rgba(228, 221, 221, .3);
+  border-radius: 5px;
+}
+
+.officially-features-popup .officially-features-popup-close{
+  position: absolute;
+  top: 80px;
+  right: 70px;
+  cursor: pointer;
+  z-index: 3;
+}
+
+.officially-features-popup .officially-features-popup-left{
+  width: 115px;
+  flex-shrink: 0;
+}
+
+.officially-features-popup .officially-features-popup-sub{
+  font-size: 24px;
+  line-height: 1.2;
+}
+
+.officially-features-popup .officially-features-popup-title{
+  font-size: 40px;
+  line-height: 1.2;
+}
+
+.officially-features-popup .officially-features-popup-p{
+  font-size: 18px;
+  line-height: 1.2;
+  margin-top: 20px;
+}
+
+.officially-features-popup .officially-features-popup-video{
+  position: relative;
+  margin-top: 60px;
+}
+
+.officially-features-popup .officially-features-popup-video .img{
+  display: block;
+  width: 100%;
+  position: relative;
+  z-index: 1;
+}
+
+.officially-features-popup .product-video{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 2;
+}
+.officially-features-popup .product-video video{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.officially-features-popup .officially-features-popup-list{
+  display: flex;
+  flex-wrap: wrap;
+  max-width: 330px;
+  gap: 60px;
+  row-gap: 40px;
+  margin-top: 60px;
+}
+
+.officially-features-popup .officially-features-popup-item{
+  width: calc(50% - 30px);
+}
+
+.officially-features-popup .officially-features-popup-t{
+  color: #6C6AB4;
+  font-size: 48px;
+  line-height: 1.2;
+}
+
+.officially-features-popup .officially-features-popup-d{
+  color: #3F3636;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.officially-features-popup-two .officially-features-popup-cont{
+  background: linear-gradient(63deg, #30323E 12.03%, #30323E 27.24%, #14141E 78.01%);
+}
+
+.officially-features-popup-two .officially-features-popup-det{
+  color: #fff;
+}
+
+.officially-features-popup-two .officially-features-popup-left{
+  width: 130px;
+}
+
+.officially-features-popup-two .officially-features-popup-list{
+  max-width: none;
+  gap: 140px;
+  row-gap: 40px;
+  margin-top: 30px;
+}
+
+.officially-features-popup-two .officially-features-popup-item{
+  width: auto;
+}
+
+.officially-features-popup-two .officially-features-popup-t{
+  color: #D2FFFC;
+}
+
+.officially-features-popup-two .officially-features-popup-d{
+  color: #FBFAF4;
+}
+
+.officially-features-popup-two .product-img-two{
+  position: absolute;
+  width: 100%;
+  left: 0;
+  top: 0;
+  z-index: -1;
+}
+
+.officially-features-popup-two .officially-features-popup-det{
+  overflow: hidden;
+  height: auto;
+}
+
+.officially-features-popup-two .officially-features-popup-title{
+  margin-bottom: 63%;
+}
+
+.officially-features-popup-two .officially-features-popup-cont{
+  overflow-y: auto;
+}
+
+.officially-features-popup-two .officially-features-popup-cont::-webkit-scrollbar {
+    width: 10px;
+}
+
+.officially-features-popup-two .officially-features-popup-cont::-webkit-scrollbar-track {
+    background-color: none;
+}
+
+.officially-features-popup-two .officially-features-popup-cont::-webkit-scrollbar-thumb {
+    background-color: rgba(228, 221, 221, .3);
+    border-radius: 5px;
+}
+
+.officially-features-popup-two .officially-features-popup-cont::-moz-scrollbar {
+  width: 10px;
+}
+
+.officially-features-popup-two .officially-features-popup-cont::-moz-scrollbar-track {
+  background: none;
+}
+
+.officially-features-popup-two .officially-features-popup-cont::-moz-scrollbar-thumb {
+  background: rgba(228, 221, 221, .3);
+  border-radius: 5px;
+}
+
+.officially-features-popup-svg{
+  padding-left: 23%;
+}
+
+@media (max-width:1280px) {
+  .officially-features-popup .officially-features-popup-det{
+    gap: 60px;
+    padding-right: 100px;
+  }
+  .officially-features-popup .officially-features-popup-title{
+    font-size: 35px;
+  }
+  .officially-features-popup .officially-features-popup-t{
+    font-size: 38px;
+  }
+  .officially-features-popup-two .officially-features-popup-list{
+    gap: 60px;
+  }
+  .officially-features-popup-svg{
+    padding-left: 15%;
+  }
+  .officially-features-popup-two .officially-features-popup-title{
+    margin-bottom: 55%;
+  }
+}
+
+@media (max-width:991px) {
+  .officially-features-popup{
+    display: flex;
+    align-items: flex-end;
+  }
+  
+  .officially-features-popup .officially-features-popup-cont{
+    max-height: 100%;
+    height: auto;
+    transform: translateY(100%);
+    overflow-x: hidden;
+  }
+
+  .officially-features-popup.active .officially-features-popup-cont{
+    transform: translateY(0);
+  }
+  .officially-features-popup .officially-features-popup-close{
+    top: 18px;
+    right: 18px;
+  }
+  .officially-features-popup .officially-features-popup-det{
+    flex-direction: column;
+    gap: 10px;
+  }
+  .officially-features-popup .officially-features-popup-left{
+    width: auto;
+  }
+  .officially-features-popup .officially-features-popup-sub{
+    font-size: 14px;
+  }
+  .officially-features-popup .officially-features-popup-title{
+    font-size: 24px;
+  }
+  .officially-features-popup .officially-features-popup-video{
+    margin-top: 35px;
+  }
+  .officially-features-popup.active .officially-features-popup-cont{
+    padding: 50px 20px;
+  }
+  .officially-features-popup .officially-features-popup-det{
+    padding-right: 0;
+  }
+  .officially-features-popup .officially-features-popup-list{
+    margin-top: 45px;
+    gap: 50px;
+  }
+  .officially-features-popup .officially-features-popup-t{
+    font-size: 35px;
+  }
+  .officially-features-popup .officially-features-popup-d{
+    font-size: 12px;
+  }
+  .officially-features-popup-two .product-img-two{
+    max-width: none;
+    width: 220%;
+    left: 50%;
+    transform: translateX(-50%);
+    top: -10%;
+  }
+  .officially-features-popup-two .officially-features-popup-list{
+    row-gap: 20px;
+    gap: 0;
+    margin-top: 0;
+    justify-content: space-between;
+  }
+  .officially-features-popup-two .officially-features-popup-title{
+    margin-bottom: 60%;
+  }
+}
+
+@media (max-width:1920px) and (min-width:1600px) {
+  .officially-features .officially-features-three .svg-icon-box {
+    position: absolute;
+    left: 80%;
+    top: 75%;
+  }
+  .officially-features .officially-features-two .svg-icon-box {
+    position: absolute;
+    right: 105%;
+    top: 36%;
+  }
+}
+  
+@media (max-width:1600px) {
+  .officially-features .text-mark{
+    align-items: flex-start;
+  }
+  .officially-features .officially-features-three{
+    left: 10%;
+    top: 30%;
+  }
+  .officially-features .officially-features-three .svg-icon-box {
+    position: absolute;
+    left: 85%;
+    top: 80%;
+  }
+}
+
+@media (max-width:1540px) {
+  .officially-features .officially-features-two{
+    top: 30%;
+  }
+}
+
+@media (max-width:1400px) {
+  .officially-features .text-mark-txt{
+    font-size: 120px;
+  }
+}
+@media (max-width:1100px) {
+  .officially-features .officially-features-two,
+  .officially-features .officially-features-three{
+    max-width: 350px;
+  }
+  .officially-features .officially-features-title{
+    font-size: 32px;
+  }
+  .officially-features .officially-features-sub{
+    font-size: 14px;
+  }
+  .officially-features .officially-features-btn{
+    font-size: 14px;
+    height: 40px;
+  }
+  .officially-features .officially-features-two{
+    left: 52%;
+    top: 34%;
+  }
+  .officially-features .officially-features-two .svg-icon-box{
+    zoom: .6;
+  }
+}
+
+@media (max-width:991px) {
+  .officially-features .pc-box{
+    display: none;
+  }
+
+  .officially-features .mb-box{
+    display: block;
+  }
+
+  .officially-features .text-mark-txt{
+    font-size: 85px;
+  }
+
+  .officially-features .product-img{
+    max-width: none;
+    width: 200vw;
+  }
+
+  .officially-features .officially-features-two{
+    max-width: 238px;
+    left: 22%;
+    top: 56%;
+  }
+
+  .officially-features .officially-features-three{
+    max-width: 255px;
+    left: 38px;
+    top: 60%;
+  }
+
+  .officially-features .officially-features-title{
+    font-size: 24px;
+  }
+
+  .officially-features .officially-features-sub{
+    font-size: 12px;
+  }
+
+  .officially-features .officially-features-btn{
+    font-size: 12px;
+    width: 189px;
+    margin-top: 20px;
+  }
+
+  .officially-features .officially-features-three .officially-features-btn{
+    width: 171px;
+  }
+
+  .officially-features .officially-features-two .svg-icon-box{
+    zoom: 1;
+    right: 40%;
+    top: auto;
+    bottom: 115%;
+  }
+
+  .officially-features .officially-features-three .svg-icon-box{
+    left: 0;
+    top: auto;
+    bottom: 105%;
+  }
+
+}
+</style>
+
+<section>
+  <div class="officially-features">
+    <div class="officially-features-cont">
+      {%- if section.settings.image1 != blank -%}
+        <img loading="lazy" class="product-img" width="{{ section.settings.image1.width }}" height="{{ section.settings.image1.height }}" {% render 'image-attributes', image: section.settings.image1 %} alt="{{ section.settings.image1.alt | escape }}" >
+      {%- endif -%}
+      <div class="text-mark">
+        <div class="container">
+          <div class="text-mark-txt">
+            {{ section.settings.text }}
+          </div>
+        </div>
+      </div>
+      <div class="officially-features-two">
+        <div class="svg-icon-box">
+          <svg width="266" height="62" class="pc-box" viewBox="0 0 266 62" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M202 50.0002H-6.03124e-06" stroke="#3F3636"/>
+            <path d="M209.211 48.387L257.559 1.00008" stroke="#3F3636"/>
+            <path d="M191.008 42.0002L210.082 42.0002L210.082 50.2722C210.08 50.7469 210.075 51.2226 210.054 51.6963C209.947 54.1406 209.235 56.1567 207.951 57.7558C206.962 58.9891 205.803 59.771 204.557 60.2885C202.608 61.0974 200.619 61.2584 198.612 60.9037C197.33 60.6776 196.088 60.2177 194.921 59.4014C192.33 57.5892 190.977 54.6721 191.001 50.464C191.027 45.7653 191.007 42.0002 191.007 42.0002L191.008 42.0002Z" fill="#E0004D"/>
+          </svg>
+          <svg xmlns="http://www.w3.org/2000/svg" class="mb-box" width="92" height="73" viewBox="0 0 92 73" fill="none">
+            <path d="M81 6.34717H0.999999" stroke="#3F3636" stroke-linecap="round"/>
+            <path d="M85 72.3472L85 10.3472" stroke="#3F3636"/>
+            <path d="M78.0041 0.347167L91.2559 0.347168L91.2559 6.094C91.2546 6.4238 91.2507 6.75424 91.2364 7.08339C91.1619 8.78151 90.6671 10.1822 89.7752 11.2931C89.088 12.1499 88.283 12.6931 87.4176 13.0527C86.0633 13.6146 84.6818 13.7265 83.2873 13.4801C82.3967 13.323 81.534 13.0035 80.7231 12.4364C78.9232 11.1774 77.9827 9.15075 77.9996 6.22721C78.0177 2.96289 78.0034 0.347167 78.0034 0.347167L78.0041 0.347167Z" fill="#E0004D"/>
+          </svg>
+        </div>
+        <div class="officially-features-title">{{ section.settings.text1 }}</div>
+        <div class="officially-features-sub">{{ section.settings.text2 }}</div>
+        {%- if section.settings.text3 != blank -%}
+          <div class="officially-features-btn" data-popup="officially-features-popup-one">
+            {{ section.settings.text3 }}
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <g clip-path="url(#clip0_1505_2334)">
+              <path d="M12 0C5.38359 0 0 5.38359 0 12C0 18.6164 5.38359 24 12 24C18.6164 24 24 18.6164 24 12C24 5.38359 18.6164 0 12 0ZM12 22.957C5.95781 22.957 1.04297 18.0422 1.04297 12C1.04297 5.95781 5.95781 1.04297 12 1.04297C18.0422 1.04297 22.957 5.95781 22.957 12C22.957 18.0422 18.0422 22.957 12 22.957Z" fill="#190A0A"/>
+              <circle cx="12" cy="12" r="12" fill="#6C6AB4"/>
+              <path d="M18.2641 11.5954H12.5242V5.85786C12.5242 5.56958 12.2875 5.33521 12.0016 5.33521C11.7133 5.33521 11.4789 5.57192 11.4789 5.85786V11.5954H5.74141C5.45312 11.5954 5.21875 11.8321 5.21875 12.118C5.21875 12.4063 5.45547 12.6407 5.74141 12.6407H11.4789V18.3805C11.4789 18.6688 11.7156 18.9032 12.0016 18.9032C12.2898 18.9032 12.5242 18.6665 12.5242 18.3805V12.6407H18.2617C18.55 12.6407 18.7844 12.404 18.7867 12.118C18.7867 11.8297 18.55 11.5954 18.2641 11.5954Z" fill="#FBFAF4"/>
+              </g>
+              <defs>
+              <clipPath id="clip0_1505_2334">
+              <rect width="24" height="24" fill="white"/>
+              </clipPath>
+              </defs>
+            </svg>
+          </div>
+        {%- endif -%}
+      </div>
+      <div class="officially-features-three">
+        <div class="svg-icon-box">
+          <svg width="268" height="116" class="pc-box" viewBox="0 0 268 116" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M130 104.52H268" stroke="#3F3636"/>
+            <path d="M122.559 103.907L19 0.348025" stroke="#3F3636"/>
+            <path d="M140.762 96.5198L121.688 96.5198L121.688 104.792C121.689 105.266 121.695 105.742 121.715 106.216C121.823 108.66 122.535 110.676 123.819 112.275C124.808 113.509 125.967 114.291 127.212 114.808C129.162 115.617 131.15 115.778 133.157 115.423C134.439 115.197 135.681 114.737 136.848 113.921C139.439 112.109 140.793 109.192 140.769 104.983C140.742 100.285 140.763 96.5198 140.763 96.5198L140.762 96.5198Z" fill="#E0004D"/>
+            </svg>
+            <svg xmlns="http://www.w3.org/2000/svg" class="mb-box" width="72" height="88" viewBox="0 0 72 88" fill="none">
+              <path d="M7 86.6528L7 56.6528" stroke="#3F3636" stroke-linecap="round"/>
+              <path d="M71 1.26514L13 48.2651" stroke="#3F3636"/>
+              <path d="M0.00409698 44.2651L13.2559 44.2651L13.2559 50.012C13.2546 50.3418 13.2507 50.6722 13.2364 51.0014C13.1619 52.6995 12.6671 54.1001 11.7752 55.2111C11.088 56.0679 10.283 56.6111 9.41764 56.9706C8.06332 57.5326 6.68179 57.6445 5.28731 57.3981C4.39674 57.2409 3.53401 56.9215 2.7231 56.3544C0.923171 55.0953 -0.0172766 53.0687 -0.000436343 50.1452C0.017699 46.8809 0.00344944 44.2651 0.00344944 44.2651L0.00409698 44.2651Z" fill="#E0004D"/>
+            </svg>
+        </div>
+        <div class="officially-features-title">{{ section.settings.text15 }}</div>
+        <div class="officially-features-sub">{{ section.settings.text16 }}</div>
+        {%- if section.settings.text17 != blank -%}
+          <div class="officially-features-btn" data-popup="officially-features-popup-two">
+            {{ section.settings.text17 }}
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <g clip-path="url(#clip0_1505_2334)">
+              <path d="M12 0C5.38359 0 0 5.38359 0 12C0 18.6164 5.38359 24 12 24C18.6164 24 24 18.6164 24 12C24 5.38359 18.6164 0 12 0ZM12 22.957C5.95781 22.957 1.04297 18.0422 1.04297 12C1.04297 5.95781 5.95781 1.04297 12 1.04297C18.0422 1.04297 22.957 5.95781 22.957 12C22.957 18.0422 18.0422 22.957 12 22.957Z" fill="#190A0A"/>
+              <circle cx="12" cy="12" r="12" fill="#6C6AB4"/>
+              <path d="M18.2641 11.5954H12.5242V5.85786C12.5242 5.56958 12.2875 5.33521 12.0016 5.33521C11.7133 5.33521 11.4789 5.57192 11.4789 5.85786V11.5954H5.74141C5.45312 11.5954 5.21875 11.8321 5.21875 12.118C5.21875 12.4063 5.45547 12.6407 5.74141 12.6407H11.4789V18.3805C11.4789 18.6688 11.7156 18.9032 12.0016 18.9032C12.2898 18.9032 12.5242 18.6665 12.5242 18.3805V12.6407H18.2617C18.55 12.6407 18.7844 12.404 18.7867 12.118C18.7867 11.8297 18.55 11.5954 18.2641 11.5954Z" fill="#FBFAF4"/>
+              </g>
+              <defs>
+              <clipPath id="clip0_1505_2334">
+              <rect width="24" height="24" fill="white"/>
+              </clipPath>
+              </defs>
+            </svg>
+          </div>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+  <div class="officially-features-popup officially-features-popup-one">
+    <div class="officially-features-popup-mark"></div>
+    <div class="officially-features-popup-cont">
+      <div class="officially-features-popup-close">
+        <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" viewBox="0 0 23 23" fill="none">
+          <line x1="2.02941" y1="0.848633" x2="22.182" y2="21.0012" stroke="#3F3636" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="22.1836" y1="1.06066" x2="2.03105" y2="21.2132" stroke="#3F3636" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="officially-features-popup-det">
+        <div class="officially-features-popup-left">
+          <div class="officially-features-popup-sub">{{ section.settings.text4 }}</div>
+        </div>
+        <div class="officially-features-popup-right">
+          <div class="officially-features-popup-title">{{ section.settings.text5 }}</div>
+          <div class="officially-features-popup-video">
+            {%- if section.settings.image4 != blank -%}
+              <img loading="lazy" class="img" width="{{ section.settings.image4.width }}" height="{{ section.settings.image4.height }}" {% render 'image-attributes', image: section.settings.image4 %} alt="{{ section.settings.image4.alt | escape }}" >
+            {%- endif -%}
+            <!-- {%- if section.settings.text6 != blank -%}
+              <video class="product-video" src="{{ section.settings.text6 }}" loop muted></video>
+            {%- endif -%} -->
+            {%- if section.settings.video != blank -%}
+              <native-video
+                {% if section.settings.autoplay %}
+                  autoplay
+                {% endif %}
+                class="officially-features-popup-wrapper product-video"
+              >
+                {%- unless section.settings.autoplay -%}
+                  <button type="button" class="video-wrapper__play-button video-wrapper__play-button--large video-wrapper__play-button--ripple" title="{{ 'general.accessibility.play_video' | t | escape }}">
+                    {%- if section.settings.v_icon != blank -%}
+                      <img
+                        loading="lazy"
+                        class="v_img"
+                        width="{{ section.settings.v_icon.width }}"
+                        height="{{ section.settings.v_icon.height }}"
+                        {% render 'image-attributes', image: section.settings.v_icon %}
+                        alt="{{ section.settings.v_icon.alt | escape }}"
+                      >
+                    {%- endif -%}
+                  </button>
+                {%- endunless -%}
+                <template>
+                  {{-
+                    section.settings.video
+                    | video_tag:
+                      controls: section.settings.show_video_controls,
+                      autoplay: section.settings.autoplay,
+                      muted: section.settings.autoplay,
+                      playsinline: section.settings.autoplay,
+                      loop: true
+                  -}}
+                </template>
+              </native-video>
+            {%- endif -%}
+          </div>
+          <div class="officially-features-popup-list">
+            <div class="officially-features-popup-item">
+              <div class="officially-features-popup-t">>{{ section.settings.text7 }}</div>
+              <div class="officially-features-popup-d">{{ section.settings.text8 }}</div>
+            </div>
+            <div class="officially-features-popup-item">
+              <div class="officially-features-popup-t">{{ section.settings.text9 }}</div>
+              <div class="officially-features-popup-d">{{ section.settings.text10 }}</div>
+            </div>
+            <div class="officially-features-popup-item">
+              <div class="officially-features-popup-t">{{ section.settings.text11 }}</div>
+              <div class="officially-features-popup-d">{{ section.settings.text12 }}</div>
+            </div>
+            <div class="officially-features-popup-item">
+              <div class="officially-features-popup-t">{{ section.settings.text13 }}</div>
+              <div class="officially-features-popup-d">{{ section.settings.text14 }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="officially-features-popup officially-features-popup-two">
+    <div class="officially-features-popup-mark"></div>
+    <div class="officially-features-popup-cont">
+      <div class="officially-features-popup-close">
+        <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" viewBox="0 0 23 23" fill="none">
+          <line x1="2.02941" y1="0.848389" x2="22.182" y2="21.0009" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="22.1836" y1="1.06066" x2="2.03105" y2="21.2132" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      </div>
+        {%- if section.settings.image2 != blank -%}
+          <img loading="lazy" class="product-img-two" width="{{ section.settings.image2.width }}" height="{{ section.settings.image2.height }}" {% render 'image-attributes', image: section.settings.image2 %} alt="{{ section.settings.image2.alt | escape }}" >
+        {%- endif -%}
+      <div class="officially-features-popup-det">
+        <div class="officially-features-popup-left">
+          <div class="officially-features-popup-sub">{{ section.settings.text18 }}</div>
+        </div>
+        <div class="officially-features-popup-right">
+          <div class="officially-features-popup-title">{{ section.settings.text19 }}</div>
+          <div class="officially-features-popup-svg">
+            <svg xmlns="http://www.w3.org/2000/svg" class="pc-box" width="54" height="85" viewBox="0 0 54 85" fill="none">
+              <path d="M7.8125 84L7.8125 50.5269" stroke="#FBFAF4" stroke-width="1.11618" stroke-linecap="round"/>
+              <path d="M53.5742 1L14.5079 40.052" stroke="#FBFAF4" stroke-width="1.11618"/>
+              <path d="M12.7091 47.4526L12.7089 47.4528C12.0075 48.327 11.1889 48.8801 10.2987 49.2499C8.89352 49.8326 7.46034 49.9506 5.9996 49.6926L5.99947 49.6926C5.0748 49.5295 4.19025 49.2006 3.36022 48.6203C1.53955 47.3472 0.540482 45.2835 0.558523 42.1529L0.558524 42.1527C0.568654 40.3301 0.569738 38.6886 0.568291 37.5027C0.567601 36.9374 0.566337 36.4755 0.5652 36.147L14.2388 36.147L14.2388 41.9999C14.2373 42.3652 14.233 42.7247 14.2176 43.0805L12.7091 47.4526ZM12.7091 47.4526C13.6186 46.3201 14.1388 44.8768 14.2176 43.0808L12.7091 47.4526Z" stroke="#FBFAF4" stroke-width="1.11618"/>
+            </svg>
+          </div>
+          <div class="officially-features-popup-list">
+            <div class="officially-features-popup-item">
+              <div class="officially-features-popup-t">{{ section.settings.text20 }}</div>
+              <div class="officially-features-popup-d">{{ section.settings.text21 }}</div>
+            </div>
+            <div class="officially-features-popup-item">
+              <div class="officially-features-popup-t">{{ section.settings.text22 }}</div>
+              <div class="officially-features-popup-d">{{ section.settings.text23 }}</div>
+            </div>
+            <div class="officially-features-popup-item">
+              <div class="officially-features-popup-t">{{ section.settings.text24 }}</div>
+              <div class="officially-features-popup-d">{{ section.settings.text25 }}</div>
+            </div>
+          </div>
+          <div class="officially-features-popup-video">
+            {%- if section.settings.image3 != blank -%}
+              <img loading="lazy" class="img" width="{{ section.settings.image3.width }}" height="{{ section.settings.image3.height }}" {% render 'image-attributes', image: section.settings.image3 %} alt="{{ section.settings.image3.alt | escape }}" >
+            {%- endif -%}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>             -->
+<script>
+  function featuresScrollTo(){
+    let pam = {
+      right1:'93%',
+      right2:'168%',
+      top1:'-67%',
+      top2:'-113%'
+    }
+    if(window.innerWidth<1921){ //1920 * 1080
+      pam.right1 = '89%'
+      pam.right2 = '178%'
+      pam.top1 = '-64%'
+      pam.top2 = '-112%'
+    }
+    
+    if(window.innerWidth<1601){ //1600 * 900
+      pam.right1 = '83%'
+      pam.right2 = '167%'
+      pam.top1 = '-65%'
+      pam.top2 = '-120%'
+    }
+    if(window.innerWidth<1537){ //1536 * 695
+      pam.right1 = '82%'
+      pam.right2 = '170%'
+      pam.top1 = '-63%'
+      pam.top2 = '-108%'
+    }
+    if(window.innerWidth<1500){ //1440 * 900
+      pam.right1 = '80%'
+      pam.right2 = '175%'
+      pam.top1 = '-80%'
+      pam.top2 = '-123%'
+    }
+    if(window.innerWidth<1370){ //1366 * 768
+      pam.right1 = '77%'
+      pam.right2 = '180%'
+      pam.top1 = '-72%'
+      pam.top2 = '-115%'
+    }
+    if(window.innerWidth<1281){ // 1280 * 551
+      pam.right1 = '76%'
+      pam.right2 = '185%'
+      pam.top1 = '-78%'
+      pam.top2 = '-118%'
+    }
+    if(window.innerWidth<1025){ //1024 * 600
+      pam.right1 = '68%'
+      pam.right2 = '186%'
+      pam.top1 = '-71%'
+      pam.top2 = '-116%'
+    }
+    if(window.innerWidth<992){
+      pam.right1 = '36%'
+      pam.right2 = '108%'
+      pam.top1='-90%',
+      pam.top2='-145%'
+    }
+    ScrollTrigger.create({
+      trigger: ".officially-features",
+      start: "top top",
+      end: "+=160%",
+      scrub: true,
+      // pin: true,
+      animation:
+      gsap.timeline()
+      .to(".text-mark-txt",{'background-position': '0% 100%','opacity':0,ease:'power2.inOut'})
+      .to(".product-img",{'transform': 'translate('+pam.right1+','+pam.top1+')',ease:'power2.inOut'},'<')
+      .to(".officially-features-two",{'transform': 'translateY(0)','opacity':1,ease:'power2.inOut'})
+      .to(".officially-features-two",{'transform': 'translateY(-30px)','opacity':0,ease:'power2.inOut'})
+      .to(".product-img", {'transform': 'translate('+pam.right2+','+pam.top2+')'})
+      .to(".officially-features-three",{'display':'block','transform': 'translateY(0)','opacity':1,ease:'power2.inOut'})
+    })
+   }
+   
+  window.addEventListener('load', function(){
+    featuresScrollTo();
+    $('.officially-features-btn').click(function(){
+      let name = $(this).data('popup')
+      let $p =  $('.'+name)
+      $p.addClass('active')
+      if($p.find('.product-video .video-wrapper__play-button').length > 0){
+        // $p.find('.officially-features-popup-video video').get(0).play()
+        $p.find('.product-video .video-wrapper__play-button').click()
+        // $('.officially-features-popup-wrapper video').get(0).play()
+      }
+      $('body').css('overflow','hidden')
+    })
+    $('.officially-features-popup-close,.officially-features-popup-mark').click(function(){
+      let $p =  $('.officially-features-popup')
+      $p.removeClass('active')
+      // if($p.find('.officially-features-popup-video video').length > 0){
+      //   $p.find('.officially-features-popup-video video').get(0).pause()
+      //   $p.find('.officially-features-popup-video video').get(0).currentTime = 0
+      // }
+      $('body').css('overflow','')
+    })
+  })
+</script>
+{% schema %}
+{
+  "name": "officially-features",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Module 1"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Background Image"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Text"
+    },
+    {
+      "type": "header",
+      "content": "Module 2"
+    },
+    {
+      "type": "image_picker",
+      "id": "image1",
+      "label": "Product Image"
+    },
+    {
+      "type": "text",
+      "id": "text1",
+      "label": "Text"
+    },
+    {
+      "type": "richtext",
+      "id": "text2",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "text3",
+      "label": "Btn Text"
+    },
+    {
+      "type": "header",
+      "content": "Module 2 popup"
+    },
+    {
+      "type": "text",
+      "id": "text4",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "text5",
+      "label": "Text"
+    },
+    {
+      "type": "image_picker",
+      "id": "image4",
+      "label": "Image"
+    },
+    {
+      "type": "video",
+      "id": "video",
+      "label": "Video",
+      "info": "Replaces the external video if both are set."
+    },
+    {
+      "type": "text",
+      "id": "text7",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "text8",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "text9",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "text10",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "text11",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "text12",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "text13",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "text14",
+      "label": "Text"
+    },
+    {
+      "type": "checkbox",
+      "id": "autoplay",
+      "label": "Autoplay",
+      "info": "Video is muted automatically to allow autoplay.",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_video_controls",
+      "label": "Show video controls",
+      "info": "Only applicable with native video.",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Module 3"
+    },
+    {
+      "type": "text",
+      "id": "text15",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "text16",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "text17",
+      "label": "Btn Text"
+    },
+    {
+      "type": "header",
+      "content": "Module 3 popup"
+    },
+    {
+      "type": "text",
+      "id": "text18",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "text19",
+      "label": "Text"
+    },
+    {
+      "type": "image_picker",
+      "id": "image2",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "text20",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "text21",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "text22",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "text23",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "text24",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "text25",
+      "label": "Text"
+    },
+    {
+      "type": "image_picker",
+      "id": "image3",
+      "label": "Image"
+    }
+  ],
+  "blocks": [
+  ],
+  "presets": [
+    {
+      "name": "officially-features"
+    }
+  ]
+}
+{% endschema %}
