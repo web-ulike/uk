@@ -1,0 +1,16 @@
+<a href="{{ article.url }}" class="u-list-item">
+  <div class="u-list-img mark-bottom">
+    {% assign first_tag = article.tags | first %}
+    {% if first_tag %}
+      <div class="u-blog-tag">{{ first_tag }}</div>
+    {% endif %}
+    {%- if article.image -%}
+      {{- article.image | image_url: width: article.image.width | image_tag: loading: 'lazy', sizes: '(max-width: 740px) 81vw, (max-width: 999px) 37vw, 425px', sizes: '600,700,800,1000,1200,1400,1600,1800,2000', class: 'img' -}}
+    {%- endif -%}
+    {%- if section.settings.rm_t != blank -%}
+      <div class="u-more">{{ section.settings.rm_t }}</div>
+    {%- endif -%}
+  </div>
+  <div class="u-list-title">{{ article.title }}</div>
+  <div class="u-list-p">{{ article.created_at | date: "%b %d, %Y"  }}</div>
+</a>

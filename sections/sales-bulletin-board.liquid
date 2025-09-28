@@ -1,0 +1,611 @@
+<style>
+.officially-features-popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  z-index: 999;
+  background: rgba(0, 0, 0, 0);
+  display: flex;
+  justify-content: flex-end;
+  pointer-events: none;
+  transition: all 0.4s ease;
+  overflow: hidden;
+}
+.officially-features-popup.active {
+  background: rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  pointer-events: all;
+}
+
+.officially-features-popup .officially-features-popup-cont {
+  width: 100%;
+  height: 100%;
+  max-width: 730px;
+  background: #fff;
+  padding: 90px 60px 60px;
+  position: relative;
+  transform: translateX(100%);
+  transition: all 0.4s ease;
+  z-index:2;
+}
+
+.officially-features-popup.active .officially-features-popup-cont {
+  transform: translateX(0);
+  transition: all 0.4s ease 0.1s;
+}
+
+.officially-features-popup .officially-features-popup-det {
+  height: 100%;
+  overflow-y: auto;
+  position: relative;
+}
+.officially-features-popup .officially-features-popup-det::-webkit-scrollbar {
+  width: 6px;
+}
+
+.officially-features-popup
+  .officially-features-popup-det::-webkit-scrollbar-track {
+  background-color: none;
+}
+
+.officially-features-popup
+  .officially-features-popup-det::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+}
+
+.officially-features-popup .officially-features-popup-det::-moz-scrollbar {
+  width: 6px;
+}
+
+.officially-features-popup
+  .officially-features-popup-det::-moz-scrollbar-track {
+  background: none;
+}
+
+.officially-features-popup
+  .officially-features-popup-det::-moz-scrollbar-thumb {
+  background: rgba(228, 221, 221, 0.3);
+  border-radius: 5px;
+}
+
+.officially-features-popup .officially-features-popup-close {
+  position: absolute;
+  top: 30px;
+  right: 30px;
+  cursor: pointer;
+  z-index: 3;
+}
+
+.officially-features-popup .officially-features-popup-title {
+  font-size: 30px;
+  line-height: 1;
+  color: #000;
+  font-family: var(--heading-font-family);
+}
+
+@media (max-width: 991px) {
+  .officially-features-popup {
+    display: flex;
+    align-items: flex-end;
+  }
+
+  .officially-features-popup .officially-features-popup-cont {
+    max-height: 100%;
+    height: auto;
+    transform: translateY(100%);
+    overflow-x: hidden;
+  }
+
+  .officially-features-popup.active .officially-features-popup-cont {
+    transform: translateY(0);
+  }
+  .officially-features-popup .officially-features-popup-close {
+    top: 18px;
+    right: 18px;
+  }
+  .officially-features-popup .officially-features-popup-sub {
+    font-size: 14px;
+  }
+  .officially-features-popup .officially-features-popup-title {
+    font-size: 24px;
+  }
+  .officially-features-popup.active .officially-features-popup-cont {
+    padding: 50px 20px;
+    padding-right: 0px;
+  }
+  .officially-features-popup .officially-features-popup-det {
+    max-height: 70vh;
+    padding-right: 20px;
+  }
+}
+
+.before-after-box .officially-features-popup-title {
+  text-align: center;
+}
+.before-after-box .before-after-tab {
+  position: relative;
+  display: flex;
+  width: 380px;
+  height: 45px;
+  overflow: hidden;
+  border: 2px solid #000;
+  border-radius: 58px;
+  margin: 0 auto;
+  margin-top: 40px;
+}
+
+.before-after-box .before-after-tab-item {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 2;
+  font-size: 16px;
+  color: #000;
+  cursor: pointer;
+  transition: all 0.4s ease;
+}
+.before-after-box .before-after-tab:hover .before-after-tab-item.active {
+  color: #000;
+}
+.before-after-box .before-after-tab-item.active,
+.before-after-box .before-after-tab .before-after-tab-item.active:hover,
+.before-after-box .before-after-tab .before-after-tab-item:hover {
+  color: #fff;
+}
+
+.before-after-box .before-after-tab-span {
+  position: absolute;
+  width: calc(33.333% + 4px);
+  height: 100%;
+  border-radius: 60px;
+  top: 0;
+  background: #000;
+  z-index: 1;
+  margin-left: -2px;
+}
+.before-after-box .before-after-cont {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  margin-top: 30px;
+}
+.before-after-box .before-after-text,
+.before-after-box .before-after-img-wrapper {
+  width: 100%;
+}
+.before-after-box .before-after-text-item {
+  display: none;
+}
+
+.before-after-box .before-after-text-item.active {
+  display: block;
+}
+
+.before-after-box .before-after-text-p {
+  font-size: 16px;
+  color: #000;
+  line-height: 1.2;
+  text-align: center;
+}
+
+.before-after-box .before-after-text-btn:hover .btn-txt::before {
+  color: #000;
+}
+
+.before-after-box .before-after-text-btn::before {
+  transform: translateY(80px);
+}
+
+.before-after-box .before-after-img-wrapper {
+  position: relative;
+  --img-width: 0px;
+  --left-num: 100%;
+  --time-num: 1s;
+  overflow: hidden;
+}
+.before-after-box .before-after-img-item {
+  position: relative;
+  z-index: 1;
+  pointer-events: none;
+  border-radius: 10px;
+  overflow: hidden;
+}
+.before-after-box .before-after-img-item img {
+  display: none;
+  width: 100%;
+  user-select: none;
+  pointer-events: none;
+  user-drag: none;
+  -moz-user-drag: none;
+  -webkit-user-drag: none;
+}
+.before-after-box .before-after-img-item img.active {
+  display: block;
+}
+.before-after-box .before-after-img-right {
+  position: absolute;
+  width: calc(100% - var(--left-num));
+  height: 100%;
+  overflow: hidden;
+  z-index: 2;
+  right: 0;
+  top: 0;
+  transition: all var(--time-num) cubic-bezier(0.645, 0.045, 0.355, 1) 0s;
+}
+.before-after-box .before-after-img-right img {
+  height: 100%;
+  width: var(--img-width);
+  max-width: none;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+.before-after-box .before-after-tag {
+  position: absolute;
+  padding: 5px 15px;
+  font-size: 14px;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.4);
+  top: 15px;
+  left: 15px;
+  z-index: 2;
+  white-space: nowrap;
+  border-radius: 30px;
+}
+.before-after-box .before-after-tag span {
+  display: none;
+}
+.before-after-box .before-after-tag .active {
+  display: block;
+}
+.before-after-box .before-after-img-right .before-after-tag {
+  left: auto;
+  right: 15px;
+}
+
+.before-after-box .before-after-img-handle {
+  position: absolute;
+  z-index: 5;
+  top: 0;
+  height: 100%;
+  left: var(--left-num);
+  transition: all var(--time-num) cubic-bezier(0.645, 0.045, 0.355, 1) 0s;
+}
+.before-after-box .before-after-img-handle::before,
+.before-after-box .before-after-img-handle::after {
+  position: absolute;
+  content: '';
+  display: block;
+  width: 2px;
+  height: calc(50% - 25px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: #fff;
+}
+.before-after-box .before-after-img-handle::before {
+  top: 0;
+}
+.before-after-box .before-after-img-handle::after {
+  bottom: 0;
+}
+.before-after-box .before-after-img-handle-btn {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  cursor: col-resize;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  overflow: hidden;
+  width: 50px;
+  height: 50px;
+}
+
+.before-after-box .before-after-img-handle-btn span {
+  position: absolute;
+  width: 200%;
+  height: 200%;
+  background: rgba(255, 255, 255, 0.2);
+  z-index: 1;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+.before-after-box .before-after-img-handle-btn::before,
+.before-after-box .before-after-img-handle-btn::after {
+  position: absolute;
+  content: '';
+  display: block;
+  border: 12px solid transparent;
+  border-color: transparent #fff transparent transparent;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+}
+.before-after-box .before-after-img-handle-btn::before {
+  margin-left: -16px;
+}
+.before-after-box .before-after-img-handle-btn::after {
+  transform: translate(-50%, -50%) scale(-1, -1);
+  margin-left: 16px;
+}
+.before-after-box .before-after-img-text {
+  font-size: 12px;
+  color: #b3b3b3;
+  width: 100%;
+  max-width: 480px;
+  padding: 0 20px;
+  margin: 0 auto;
+  margin-top: 20px;
+  text-align: center;
+  line-height: 1.2;
+}
+
+@media (max-width: 991px) {
+  .before-after-box .before-after-tab {
+    width: 320px;
+    margin-top: 25px;
+  }
+  .before-after-box .before-after-tab-item {
+    font-size: 14px;
+  }
+  .before-after-box .before-after-text-title {
+    font-size: 28px;
+  }
+  .before-after-box .before-after-text-p {
+    font-size: 14px;
+  }
+}
+.officially-features-popup .result-new-popup-mark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+</style>
+<section class="section-box">
+<div class="officially-features-popup {{ section.settings.text2 }}">
+    <div class="result-new-popup-mark"></div>
+    <div class="officially-features-popup-cont">
+      <div class="officially-features-popup-close">
+        <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" viewBox="0 0 23 23" fill="none">
+          <line x1="2.02941" y1="0.848633" x2="22.182" y2="21.0012" stroke="#3F3636" stroke-width="1.5"
+            stroke-linecap="round"></line>
+          <line x1="22.1836" y1="1.06066" x2="2.03105" y2="21.2132" stroke="#3F3636" stroke-width="1.5"
+            stroke-linecap="round"></line>
+        </svg>
+      </div>
+      <div class="officially-features-popup-det">
+        <div class="before-after-box">
+          <div class="officially-features-popup-title">
+            {{ section.settings.text }}
+          </div>
+          <div class="before-after-tab">
+            {%- for block in section.blocks -%}
+              <div class="before-after-tab-item {% if forloop.index == 1 %}active{% endif %}">
+                {{ block.settings.text }}
+              </div>
+            {%- endfor -%}
+            <div class="before-after-tab-span"></div>
+          </div>
+          <div class="before-after-cont">
+            <div class="before-after-text">
+              {%- for block in section.blocks -%}
+                <div class="before-after-text-item {% if forloop.index == 1 %}active{% endif %}">
+                  <div class="before-after-text-p">
+                    {{ block.settings.text1 }}
+                  </div>
+                </div>
+              {%- endfor -%}
+            </div>
+            <div class="before-after-img-wrapper" style="--img-width:undefinedpx;--left-num:50%;--time-num:1s;">
+              <div class="before-after-img-item">
+                {%- for block in section.blocks -%}
+                  <img loading="lazy" class="img {% if forloop.index == 1 %}active{% endif %}"
+                     width="{{ block.settings.image.width }}" 
+                     height="{{ block.settings.image.height }}" {% render 'image-attributes' , image: block.settings.image, sizes: '400,600,800' %} alt="{{ block.settings.image.alt | escape }}">
+                {%- endfor -%}
+                <div class="before-after-tag">
+                  {%- for block in section.blocks -%}
+                     <span class="{% if forloop.index == 1 %}active{% endif %}">
+                       {{ block.settings.text2 }}
+                     </span>
+                  {%- endfor -%}
+                </div>
+              </div>
+              <div class="before-after-img-item before-after-img-right">
+                {%- for block in section.blocks -%}
+                  <img loading="lazy" class="img {% if forloop.index == 1 %}active{% endif %}" width="{{ block.settings.image1.width }}" height="{{ block.settings.image1.height }}" {%
+                  render 'image-attributes' , image: block.settings.image1, sizes: '400,600,800' %} alt="{{ block.settings.image1.alt | escape }}">
+                {%- endfor -%}
+                <div class="before-after-tag">
+                  {%- for block in section.blocks -%}
+                     <span class="{% if forloop.index == 1 %}active{% endif %}">
+                       {{ block.settings.text3 }}
+                     </span>
+                  {%- endfor -%}
+                </div>
+              </div>
+              <div class="before-after-img-handle">
+                <div class="before-after-img-handle-btn">
+                  <span></span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="before-after-img-text">
+            {{ section.settings.text1 }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+  window.addEventListener('load', function () {
+    $('.before-after-box .before-after-tab-item').hover(function () {
+      let left = $(this)[0].offsetLeft
+      $(this).siblings('.before-after-tab-span').css({ 'transform': 'translateX(' + left + 'px)', 'transition': 'transform .4s' })
+    }, function () {
+      let left = $('.before-after-box .before-after-tab-item.active')[0].offsetLeft
+      $(this).siblings('.before-after-tab-span').css({ 'transform': 'translateX(' + left + 'px)', 'transition': 'transform .4s' })
+    })
+    $('.before-after-box .before-after-tab-item').click(function () {
+      let index = $(this).index()
+      let $imgBox = $(this).parents('.before-after-tab').siblings('.before-after-cont').find('.before-after-img-wrapper')
+      let width = $imgBox.clientWidth
+      console.log($imgBox);
+      $imgBox.attr('style', `--img-width:${width}px;--left-num:100%;--time-num:0s;`)
+      $(this).addClass('active').siblings().removeClass('active')
+      $(this).parents('.before-after-tab').siblings('.before-after-cont').find('.before-after-text-item').removeClass('active').eq(index).addClass('active')
+      $(this).parents('.before-after-tab').siblings('.before-after-cont').find('.before-after-img-item').each(function () {
+        $(this).find('.img').removeClass('active').eq(index).addClass('active')
+      })
+      $(this).parents('.before-after-tab').siblings('.before-after-cont').find('.before-after-tag').each(function () {
+        $(this).find('span').removeClass('active').eq(index).addClass('active')
+      })
+      setTimeout(() => {
+        $imgBox.attr('style', `--img-width:${width}px;--left-num:50%;--time-num:1s;`)
+      }, 100);
+    })
+    window.addEventListener('resize', function () {
+      initImg()
+    })
+    function initImg() {
+      let $p = document.querySelector('.before-after-box')
+      let $box = $p.querySelector('.before-after-img-wrapper')
+      let $hp = $p.querySelector('.before-after-img-handle')
+      let $hand = $hp.querySelector('.before-after-img-handle-btn')
+      let width = $box.clientWidth
+
+      $box.style = `--img-width:${width}px;--left-num:50%;`
+      makeElementDraggable($hand)
+      function makeElementDraggable(draggableElement) {
+        var isDragging = false;
+        var offsetX = 0;
+
+        draggableElement.addEventListener('mousedown', function (e) {
+          isDragging = true;
+          offsetX = e.clientX - $hp.offsetLeft;
+          e.preventDefault(); // 阻止默认行为，避免文本选择
+        });
+
+        document.addEventListener('mouseup', function () {
+          isDragging = false;
+        });
+
+        document.addEventListener('mousemove', function (e) {
+          if (isDragging) {
+            var newX = e.clientX - offsetX;
+            if (newX <= 10) newX = 10;
+            if (newX >= width - 10) newX = width - 10;
+            $box.style = `--img-width:${width}px;--left-num:${newX / width * 100}%;--time-num:0s;`;
+            e.preventDefault(); // 阻止默认行为，避免文本选择
+          }
+        });
+
+        draggableElement.addEventListener('touchstart', function (e) {
+          isDragging = true;
+          offsetX = e.touches[0].clientX - $hp.offsetLeft;
+          e.preventDefault(); // 阻止默认行为
+        }, { passive: false });
+
+        document.addEventListener('touchend', function () {
+          isDragging = false;
+        });
+
+        document.addEventListener('touchmove', function (e) {
+          if (isDragging) {
+            e.preventDefault();
+            var newX = e.touches[0].clientX - offsetX;
+            if (newX <= 10) newX = 10;
+            if (newX >= width - 10) newX = width - 10;
+            $box.style = `--img-width:${width}px;--left-num:${newX / width * 100}%;--time-num:0s;`;
+          }
+        }, { passive: false });
+      }
+    }
+    initImg()
+    $('.officially-features-popup .officially-features-popup-close,.officially-features-popup .result-new-popup-mark').click(function () {
+      $(this).closest('.officially-features-popup').removeClass('active')
+    })
+  })
+</script>
+{% schema %}
+{
+"name": "sales-bulletin-board",
+"blocks": [
+  {
+    "name": "item",
+    "type": "item",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "image",
+        "label": "Before Image"
+      },
+      {
+        "type": "image_picker",
+        "id": "image1",
+        "label": "After Image"
+      },
+      {
+        "type": "text",
+        "id": "text",
+        "label": "Label Text"
+      },
+      {
+        "type": "text",
+        "id": "text1",
+        "label": "Text"
+      },
+      {
+        "type": "text",
+        "id": "text2",
+        "label": "Before Text"
+      },
+      {
+        "type": "text",
+        "id": "text3",
+        "label": "After Text"
+      }
+    ]
+  }
+],
+"settings": [
+  {
+    "type": "text",
+    "id": "text",
+    "label": "Title"
+  },
+  {
+    "type": "text",
+    "id": "text1",
+    "label": "Text"
+  },
+  {
+    "type": "text",
+    "id": "text2",
+    "label": "弹窗名"
+  }
+],
+  "presets": [
+  {
+    "name": "sales-bulletin-board",
+    "blocks": []
+  }
+]
+}
+{% endschema %}

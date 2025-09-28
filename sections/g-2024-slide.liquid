@@ -1,0 +1,1746 @@
+{%- liquid
+  assign se_id = section.id
+  assign se_bks = section.blocks
+  assign se_stts = section.settings
+-%}
+<style type="text/css">
+    html,
+    @charset "utf-8";
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    .white{
+      background:#fff !important;
+    }
+    li {
+      list-style-type: none;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+      scroll-behavior: smooth; /* 设置平滑滚动 */
+    }
+
+    p {
+      margin: 0 0 20px 0;
+    }
+
+    img {
+      border: 0;
+      display: block;
+      max-width: 100%;
+    }
+    .pc-show {
+      display: block;
+    }
+    .m-show {
+      display: none;
+    }
+    .nav {
+      overflow: hidden;
+    }
+    .nav h2 {
+      color: var(--Ulike, #190a0a);
+      text-align: center;
+
+      font-size: 66px;
+
+
+      line-height: 79.2px;
+      width: 800px;
+      margin: 0 auto 40px auto;
+    }
+
+    .nav p {
+      color: var(--Ulike, #190a0a);
+      text-align: center;
+
+      font-size: 30px;
+
+
+      line-height: 39px;
+      width: 800px;
+      margin: 0 auto 40px auto;
+    }
+
+    .nav .rtcon {
+      width: 184px;
+      margin: 60px auto 127px auto;
+    }
+
+    .nav video {
+      width: 100%;
+    }
+
+    .nav4foot {
+      padding: 50px 0;
+      display: flex;
+
+    }
+
+    .nav4foot h3 {
+      color: var(--Ulike---Off-Black, #190A0A);
+      leading-trim: both;
+      text-edge: cap;
+
+      font-size: 44px;
+
+
+      line-height: 57.2px;
+
+    }
+
+    .nav4foot p {
+      margin-top:30px;
+    color: var(--Ulike, #190A0A);
+
+    font-size: 18px;
+
+    font-weight: 300;
+    line-height: 27px;
+    text-align:left;
+    }
+
+    .nav4foot > div {
+      width: 70%;
+    }
+
+    .ul2 {
+      display: flex;
+      justify-content: flex-end;
+      margin-left: auto;
+      width: 40%;
+    }
+
+    .ul2 span {
+      font-size: 72px;
+      line-height: 1;
+      color: #e0004d;
+      display: block;
+    }
+
+    .ul2 i {
+      font-size: 16px;
+      font-style: normal;
+    }
+
+    .ul2 li {
+      padding-left: 50px;
+      text-align: center;
+    }
+    .ul3{
+      display: flex;
+      justify-content: flex-end;
+      margin-left: auto;
+      width: 23%;
+      flex-wrap:wrap;
+
+      text-align:center;
+    }
+    .ul3 i {
+      color: var(--Ulike, #190A0A);
+      text-align: center;
+      leading-trim: both;
+      text-edge: cap;
+      font-style: normal;
+      font-size: 14px;
+
+      font-weight: 400;
+      line-height: normal;
+    }
+    .ul3 li {
+      width:50%;
+      margin-bottom:56px;
+    }
+    .ul3 li img{
+      width: 46.296px;
+    height: 25px;
+    object-fit: contain;
+      margin:0 auto 16px auto;
+    }
+    .ftnav {
+      padding: 50px 0;
+      display: flex;
+      align-items: center;
+    }
+
+    .ftnav h3 {
+      color: var(--Ulike, #190a0a);
+
+      font-size: 44px;
+
+
+      line-height: 52.8px;
+      margin-bottom: 10px;
+    }
+
+    .ftnav p {
+      color: var(--Ulike, #190a0a);
+
+      font-size: 18px;
+
+      font-weight: 300;
+      line-height: 27px;
+    }
+
+    .ul1 {
+      display: flex;
+      justify-content: flex-end;
+      margin-left: auto;
+    }
+
+    .ul1 span {
+      color: var(--Ulike---Hero-Red, #e0004d);
+      leading-trim: both;
+      text-edge: cap;
+
+      font-size: 70px;
+
+      font-weight: 300;
+      line-height: 84px;
+      display: block;
+    }
+
+    .ul1 i {
+      color: var(--Ulike, #190a0a);
+      font-style: normal;
+      font-size: 18px;
+
+      font-weight: 300;
+      line-height: 27px;
+    }
+
+    .ul1 li {
+      padding-left: 50px;
+      text-align: center;
+    }
+
+    .navs {
+      padding: 50px 0;
+    }
+    .navs2{
+      padding:0
+    }
+
+    .nav1 {
+      background: linear-gradient(180deg, #FFF 5%, #FFFBE4 50%, #FFF 68%);
+      {% comment %} background-attachment: fixed; {% endcomment %}
+    }
+
+    .nav2 {
+      background: linear-gradient(180deg, #FFF 5%, #D6FDFF 50%, #FFF 68%);
+      {% comment %} background-attachment: fixed; {% endcomment %}
+       margin-bottom:100px;
+    }
+
+    .nav2img {
+      display: flex;
+      justify-content: center;
+      position: relative;
+      padding: 100px 0;
+    }
+
+    .numberScrolling {
+      display: flex;
+      position: absolute;
+      left: 55%;
+      top: 40%;
+      transform: translate(-55%, -40%);
+      z-index: 1;
+    }
+     .numberScrolling .numberScrolling-item:nth-child(1) {
+      margin-right: 184px;
+    }
+    .right{
+      margin-top:0
+    }
+    .numberScrolling .numberScrolling-item .numberScrolling-num {
+      color: var(--Ulike, #190a0a);
+      text-align: center;
+      leading-trim: both;
+      text-edge: cap;
+
+      font-size: 200px;
+
+      line-height: 240px;
+    }
+   .numberScrolling .numberScrolling-item .numberScrolling-label {
+      color: var(--Ulike, #190a0a);
+      text-align: center;
+
+      font-size: 24px;
+
+
+      line-height: 28.8px;
+    }
+    .nav2img img {
+      width:784px;
+      height:560px;
+    }
+    .fixed-button-container {
+      position: fixed;
+      bottom: 100px;
+      right: 20px;
+      display: none;
+    }
+    .fixed-button-container img {
+      width: 80px;
+      height: 80px;
+      flex-shrink: 0;
+      cursor: pointer;
+    }
+    .nav2img .label1 {
+      position: absolute;
+      left: 0;
+      font-weight: bold;
+      top: 0;
+      color: var(--Ulike, #190a0a);
+
+      font-size: 44px;
+
+
+      line-height: 66px;
+    }
+    .nav2img p {
+    margin:0
+    }
+    .nav2img ol {
+      position: absolute;
+      right: 0;
+      width: 40%;
+      bottom: 30px;
+      color: var(--Ulike, #3f3636);
+
+      font-size: 18px;
+
+      font-weight: 300;
+      line-height: 27px;
+    }
+    .nav3 {
+      background: linear-gradient(180deg, #FFF 0%, #EAE7FF 50%, #FFF 100%);
+      {% comment %} background-attachment: fixed; {% endcomment %}
+      padding-bottom: 0;
+    }
+
+    .nav3img {
+      height: 1700px;
+      background: url('https://cdn.shopify.com/s/files/1/0740/5882/6015/files/Rectangle_305_2.png?v=1720608175') #fff  no-repeat right top; position: relative;
+      position: relative;
+
+      background-size: 80% auto;
+
+      background-attachment: fixed;
+    }
+
+    .nav3_1 {
+      position: absolute;
+      left: 7%;
+      width: 35%;
+      top: 30%;
+    }
+
+    .nav3_1 h3 {
+      color: #190a0a;
+
+      font-size: 48px;
+      margin-bottom:20px;
+
+      line-height: 62.4px;
+    }
+    .nav3_1 p {
+      color: var(--Ulike, #190A0A);
+  font-size: 18px;
+  line-height:27px;
+  text-align:left;
+    }
+    .nav3_2 {
+      width: 30%;
+      right: 0;
+      position: absolute;
+      right: 7%;
+      top: 70%;
+      color: var(--Ulike, #190a0a);
+
+      font-size: 18px;
+
+      font-weight: 300;
+      line-height: 27px;
+    }
+
+    .nav4 { 
+      background: linear-gradient(180deg, #FFF 5%, #D6FDFF 50%, #FFF 68%);
+      {% comment %} background-attachment: fixed; {% endcomment %}
+    }
+    .nav4 .nav p{
+      width:auto;
+    }
+    .nav5 {
+      background: linear-gradient(180deg, #FFF 5%, #FFFBE4 50%, #FFF 68%);
+      {% comment %} background-attachment: fixed; {% endcomment %}
+    }
+    .nav5foot h3{
+      color: var(--Ulike, #190A0A);
+
+      font-size: 44px;
+
+
+      line-height: 57.2px;
+      margin-top:59.49px !important;
+    }
+    .nav5foot p{
+      color: var(--Ulike, #190A0A);
+
+    font-size: 18px;
+
+    font-weight: 300;
+    line-height: 27px;
+    margin:10px  0;
+    text-align:left;
+    }
+    .nav5foot a{
+      color: var(--Ulike, #E0004D);
+    text-align: center;
+    display:flex;
+    font-size: 20px;
+
+    font-weight: 400;
+    line-height: 30px;
+    text-decoration-line: underline;
+  }
+  .box {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .nav2Box{
+    max-width: 1600px;
+  }
+  @media screen and (max-width: 1900px) {
+
+  }
+  @media screen and (max-width: 1600px) {
+    .nav2Box {
+      max-width: 1200px;
+    }
+    .nav2img img {
+      width: 500px;
+      height: 350px;
+    }
+  }
+  @media screen and (max-width: 1300px) {
+    .box {
+      max-width: 1000px;
+    }
+    .nav2Box {
+      max-width: 1000px;
+    }
+    .nav2img ol{
+      font-size:14px;
+      width:300px;
+    }
+    .nav2img img {
+      width: 300px;
+      height: 200px;
+      object-fit: fill;
+    }
+  }
+  @media screen and (max-width: 768px) {
+    .fixed-button-container {
+      position: fixed;
+      bottom: 150px;
+      right: 20px;
+      display: none;
+    }
+    .pc-show {
+      display: none;
+    }
+    .m-show {
+      display: block;
+    }
+    .navs {
+      padding: 60px 0 0;
+    }
+    .nav1 {
+    background: linear-gradient(180deg, #FFF 0%, #FFFBE4 50%, #FFF 100%);
+    }
+    .nav2{
+      background: linear-gradient(180deg, #FFF 0%, #D6FDFF 50%, #FFF 100%);
+    }
+    .nav3{
+      background: linear-gradient(180deg, #FFF 0%, #EAE7FF 50%, #FFF 100%);
+      margin-top:150px;
+    }
+    .nav4{
+      background: linear-gradient(180deg, #FFF 0%, #D6FDFF 50%, #FFF 100%);
+    }
+    .nav5{
+      background: linear-gradient(180deg, #FFF 0%, #FFFBE4 50%, #FFF 100%);
+    }
+
+    .nav3_1 p {
+      color: var(--Ulike, #190A0A);
+  font-size: 14px;
+  line-height:21px
+    }
+    .nav .rtcon {
+      width: 120px;
+      margin: 40px auto 0px auto;
+    }
+
+    .nav2img-m p {
+      color: var(--Ulike, #190a0a);
+      font-size: 24px;
+      font-weight: 500;
+      line-height: 28.8px;
+      margin:0;
+    }
+    .nav2img-m h2 > p{
+      color: var(--Ulike, #190A0A);
+font-size: 24px !important;
+line-height:28.8px  !important;
+text-align:left;
+font-weight:bold;
+font-family: var(--text-font-family);
+    }
+    .nav2img-m img {
+      width: 100%;
+      height: 100%;
+    }
+    .nav2img-m ol {
+      margin-top: 25px;
+      color: var(--Ulike, #3f3636);
+      font-size: 14px;
+      font-weight: 300;
+      line-height: 21px;
+      width: 100%;
+      display: flex;
+      justify-content: flex-end;
+    }
+    .nav2img-m ol i {
+      display: block;
+      width: 80%;
+      font-style: normal;
+      margin-bottom:20px;
+    }
+    .box {
+      max-width: unset;
+      padding: 0 20px;
+    }
+    .box .nav h2 {
+      font-size: 36px;
+      width: auto;
+      line-height: 43.2px;
+    }
+    .box .nav p {
+      font-size: 14px;
+      width: auto;
+      line-height: 21px;
+    }
+
+    .box .ftnav {
+      padding: 40px 0;
+      display: block;
+    }
+    .box .ftnav h3 {
+      font-size: 25px;
+      line-height: 25px;
+      margin-bottom: 15px;
+    }
+    .box .ftnav p {
+      font-size: 14px;
+      line-height: 21px;
+      margin-bottom: 22px;
+    }
+    .box .ftnav .left {
+      width: auto;
+    }
+    .box .ftnav .right {
+      width: auto;
+      margin-top:22px;
+
+    }
+
+    .box .ftnav .ul1 {
+      justify-content: flex-start;
+    }
+    .box .ftnav .ul1 span {
+      font-size: 50px;
+      line-height: 60px;
+    }
+    .box .ftnav .ul1 i {
+      font-size: 14px;
+      line-height: 21px;
+    }
+    .box .ftnav .ul1 li:nth-child(1) {
+      padding-left: 0;
+    }
+    .m-main-container {
+      position: absolute;
+      left: 0;
+      top: -100px;
+    }
+    .numberScrolling {
+      transform: unset;
+      bottom: 100px;
+      left: 50%;
+      top: unset;
+      bottom: 50px;
+      transform: translateX(-50%);
+    }
+    .numberScrolling .numberScrolling-item:nth-child(1) {
+      margin-right: 52px;
+      min-width: 100px;
+    }
+    .numberScrolling .numberScrolling-item .numberScrolling-num {
+      font-size: 64px;
+      line-height: 76.8px;
+      font-weight: 300;
+    }
+    .numberScrolling .numberScrolling-item .numberScrolling-label {
+      font-size: 12px;
+      line-height: 14.4px;
+    }
+    .fixed-button-container img {
+      width: 50px;
+      height: 50px;
+      flex-shrink: 0;
+      cursor: pointer;
+    }
+    .nav3img-m {
+      position: relative;
+      /* background: url(../images/main3.png) ; */
+    }
+    .nav3img-m .nav3_1-m img {
+      width: 100%;
+
+    }
+    .nav3img-m .nav3_1-m .back{
+      padding-top:0px;
+    }
+    .nav3img-m .nav3img-m-main {
+      position: absolute;
+      top: 0;
+      left: 0;
+      padding: 0 20px;
+      margin-top:20px;
+    }
+    .nav3img-m h3 {
+      color: var(--Off-Black, #190a0a);
+      font-size: 20px;
+      line-height: 25px;
+      margin: 57px 0 15px 0;
+      width:70%;
+    }
+    .nav3img-m p {
+      color: var(--Off-Black, #190a0a);
+      font-size: 14px;
+      line-height: 21px;
+      width:100%;
+      text-align:left;
+    }
+    .nav3img-m .nav3_2-m {
+      padding: 0 20px;
+      background: #fff;
+    }
+    .nav4foot {
+      display: block;
+    }
+    .nav4foot h3 {
+      font-size: 20px;
+      line-height: 26px;
+      margin-bottom: 0;
+    }
+    .nav4foot p {
+      font-size: 14px !important;
+      line-height: 21px !important;
+      margin: 20px 0!important;
+    }
+    .nav4foot > div {
+      width: 100%;
+    }
+    .nav4foot .ul3 {
+      width: 100%;
+      justify-content: space-between;
+    }
+    .nav4foot .ul3 li {
+      width: auto;
+    }
+    .nav4foot .ul3 i {
+      font-size: 12px;
+    }
+    .nav4foot .ul3 li img {
+      margin: 0 auto 11.79px auto;
+    }
+    .nav5foot {
+      padding-bottom:50px;
+    }
+    .nav5foot h3 {
+      font-size: 20px;
+      line-height: 25px;
+      margin-top: 21px !important;
+    }
+    .nav5foot p {
+      font-size: 14px;
+      line-height: 21px;
+      margin: 15px 0;
+    }
+    .nav5foot a {
+      font-size: 14px;
+      line-height: 21px;
+    }
+    .nav2Box {
+      padding:0;
+      position: relative;
+    }
+    .nav2Main{
+      padding:0 20px;
+    }
+  }
+</style>
+
+  <div class="navs nav1 navp-1 pc-show">
+    <div class="box">
+      <div class="nav">
+        <h2 class="to-top">{{ section.settings['modle1-title'] }}</h2>
+        <p class="to-top">
+          {{ section.settings['modle1-desc'] }}
+        </p>
+
+        {{-
+          section.settings['modle1-icon']
+          | image_url: width: section.settings['modle1-icon'].width
+          | image_tag:
+            loading: 'lazy',
+            draggable: false,
+            alt: section.settings['modle1-icon'].name,
+            class: 'rtcon to-top'
+        -}}
+        <video
+          id="myVideo"
+          class="to-top"
+          src="{{section.settings.modle1-video }}"
+          preload="metadata"
+          autoplay
+          muted
+          loop
+          webkit-playsinline="true"
+          x5-playsinline="x5-playsinline"
+          playsinline="true"
+
+          x-webkit-airplay="true"
+        ></video>
+      </div>
+      <div class="ftnav to-top">
+        <div class="left">
+          <h3>{{ section.settings['modle1-label'] }}</h3>
+          <p>
+            {{ section.settings['modle1-describe'] }}
+          </p>
+        </div>
+        <ul class="ul1 right">
+          {% for item in se_bks %}
+            {% if item.type == 'model-right' %}
+          <li>
+            <span> {{ item.settings.describe }} </span>
+            <i>{{ item.settings.name }}</i>
+          </li>
+        {% endif %}
+        {% endfor %}
+        
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="navs nav1 navm-1 m-show">
+    <div class="box">
+      <div class="nav">
+        <h2 class="to-top">{{ section.settings['modle1-title'] }}</h2>
+        <p class="to-top">
+          {{ section.settings['modle1-desc'] }}
+        </p>
+
+        {{-
+          section.settings['modle1-icon']
+          | image_url: width: section.settings['modle1-icon'].width
+          | image_tag:
+            loading: 'lazy',
+            draggable: false,
+            alt: section.settings['modle1-icon'].name,
+            class: 'rtcon to-top'
+        -}}
+    </div>
+    </div>
+  </div>
+  <div class="navs nav1 m-show white">
+    <div class="box">
+      <div class="nav">
+ 
+        <video
+          id="myVideo"
+          class="to-top"
+          src="{{section.settings.modle1-video }}"
+          preload="metadata"
+          autoplay
+          muted
+          loop
+          webkit-playsinline="true"
+          x5-playsinline="x5-playsinline"
+          playsinline="true"
+
+          x-webkit-airplay="true"
+        ></video>
+      </div>
+      <div class="ftnav to-top">
+        <div class="left">
+          <h3>{{ section.settings['modle1-label'] }}</h3>
+          <p>
+            {{ section.settings['modle1-describe'] }}
+          </p>
+        </div>
+        <ul class="ul1 right">
+          {% for item in se_bks %}
+            {% if item.type == 'model-right' %}
+          <li>
+            <span> {{ item.settings.describe }} </span>
+            <i>{{ item.settings.name }}</i>
+          </li>
+        {% endif %}
+        {% endfor %}
+        
+        </ul>
+      </div>
+    </div>
+  </div>
+    <div class="navs nav2 navp-2 pc-show">
+    <div class="box nav2Box">
+      <div class="nav ">
+        <h2 class="to-top">{{ section.settings['modle2-title'] }}</h2>
+
+        <p class="to-top">
+          {{ section.settings['modle2-desc'] }}
+        </p>
+
+        {{-
+          section.settings['modle2-icon']
+          | image_url: width: section.settings['modle2-icon'].width
+          | image_tag:
+            loading: 'lazy',
+            draggable: false,
+            alt: section.settings['modle2-icon'].name,
+            class: 'rtcon to-top'
+        -}}
+      </div>
+
+      <div class="nav2img pc-show ">
+        <div class="label1">
+          <p>
+            {{ section.settings['modle2-label'] }}
+          </p>
+        </div>
+
+        {{-
+          section.settings['modle2-image']
+          | image_url: width: section.settings['modle2-image'].width
+          | image_tag: loading: 'lazy', draggable: false, alt: section.settings['modle2-image'].name, id: 'main2Img'
+        -}}
+        <div class="numberScrolling pc-show">
+          {% for item in se_bks %}
+            {% if item.type == 'model-digit' %}
+          <div class="numberScrolling-item">
+            <div class="numberScrolling-num">{{  item.settings.symbol1  }}<span data-count="{{  item.settings.num }}">0</span>{{  item.settings.symbol  }}</div>
+            <div class="numberScrolling-label">{{  item.settings.name }}</div>
+          </div>
+              {% endif %}
+            {% endfor %}
+        </div>
+        <ol>
+          {{ section.settings['modle2-describe'] }}
+        </ol>
+      </div>
+
+      <div class="m-show nav2img-m">
+        <h2 class="to-top">
+          {{ section.settings['modle2-label'] }}
+        </h2>
+        {{-
+          section.settings['modle2-image']
+          | image_url: width: section.settings['modle2-image'].width
+          | image_tag: loading: 'lazy', draggable: false, alt: section.settings['modle2-image'].name, id: 'main2Img'
+        -}}
+
+        <ol class="to-top">
+          <i>
+            {{ section.settings['modle2-describe'] }}
+          </i>
+        </ol>
+      </div>
+    </div>
+    <div class="m-main-container m-show">
+      {{-
+        section.settings['modle2-image-big']
+        | image_url: width: section.settings['modle2-image-big'].width
+        | image_tag: loading: 'lazy', draggable: false, alt: section.settings['modle2-image-big'].name, class: 'to-top'
+      -}}
+
+      <div class="numberScrolling">
+        {% for item in se_bks %}
+          {% if item.type == 'model-digit' %}
+        <div class="numberScrolling-item">
+          <div class="numberScrolling-num">{{  item.settings.symbol1  }}<span data-count="{{  item.settings.num }}">0</span>{{  item.settings.symbol  }}</div>
+          <div class="numberScrolling-label">{{  item.settings.name }}</div>
+        </div>
+            {% endif %}
+          {% endfor %}
+      </div>
+    </div>
+  </div>
+  <div class="navs nav2 navm-2 m-show">
+    <div class="box nav2Box">
+      <div class="nav nav2Main">
+        <h2 class="to-top">{{ section.settings['modle2-title'] }}</h2>
+
+        <p class="to-top">
+          {{ section.settings['modle2-desc'] }}
+        </p>
+
+        {{-
+          section.settings['modle2-icon']
+          | image_url: width: section.settings['modle2-icon'].width
+          | image_tag:
+            loading: 'lazy',
+            draggable: false,
+            alt: section.settings['modle2-icon'].name,
+            class: 'rtcon to-top'
+        -}}
+      </div>
+
+    </div>
+  </div>
+  <div class="navs nav2 m-show white">
+    <div class="box nav2Box">
+      <div class="nav">
+        <div class="m-show nav2img-m nav2Main">
+          <h2 class="to-top">
+            {{ section.settings['modle2-label'] }}
+          </h2>
+          {{-
+            section.settings['modle2-image']
+            | image_url: width: section.settings['modle2-image'].width
+            | image_tag: loading: 'lazy', draggable: false, alt: section.settings['modle2-image'].name, id: 'main2Img'
+          -}}
+        
+          <ol class="to-top">
+            <i>
+              {{ section.settings['modle2-describe'] }}
+            </i>
+          </ol>
+        </div>
+        <div class="m-main-container m-show">
+          {{-
+            section.settings['modle2-image-big']
+            | image_url: width: section.settings['modle2-image-big'].width
+            | image_tag: loading: 'lazy', draggable: false, alt: section.settings['modle2-image-big'].name, class: 'to-top'
+          -}}
+        
+          <div class="numberScrolling">
+            {% for item in se_bks %}
+              {% if item.type == 'model-digit' %}
+            <div class="numberScrolling-item">
+              <div class="numberScrolling-num">{{  item.settings.symbol1  }}<span data-count="{{  item.settings.num }}">0</span>{{  item.settings.symbol  }}</div>
+              <div class="numberScrolling-label">{{  item.settings.name }}</div>
+            </div>
+                {% endif %}
+              {% endfor %}
+          </div>
+        </div>
+        </div>
+      </div>
+      </div>
+</div>
+
+<div class="navs nav3 navp-3 navm-3">
+  <div class="box">
+    <div class="nav">
+      <h2 class="to-top" >{{ section.settings['modle3-title'] }}</h2>
+
+      <p class="to-top">
+        {{ section.settings['modle3-desc'] }}
+      </p>
+
+      {{-
+        section.settings['modle3-icon']
+        | image_url: width: section.settings['modle3-icon'].width
+        | image_tag: loading: 'lazy', draggable: false, alt: section.settings['modle3-icon'].name, class: 'rtcon'
+      -}}
+    </div>
+  </div>
+
+
+</div>
+ <div class="navs navs2">
+  <div >
+    <div class="nav">
+      <div class="nav3img pc-show">
+        <div class="nav3_1 to-top">
+          <h3>
+            {{ section.settings['modle3-label'] }}
+          </h3>
+    
+          <p>
+            {{ section.settings['modle3-describe'] }}
+          </p>
+        </div>
+    
+        <div class="nav3_2">
+          {{-
+            section.settings['modle3-image-data']
+            | image_url: width: section.settings['modle3-image-data'].width
+            | image_tag:
+              loading: 'lazy',
+              draggable: false,
+              alt: section.settings['modle3-image-data'].name,
+              class: 'slide-img to-top'
+          -}}
+        </div>
+      </div>
+    
+      <div class="nav3img-m m-show">
+        <div class="nav3_1-m">
+          
+          {{-
+            section.settings['modle3-image-m']
+            | image_url: width: section.settings['modle3-image-m'].width
+            | image_tag:
+              loading: 'lazy',
+              draggable: false,
+              alt: section.settings['modle3-image-m'].name,
+              class: 'back to-top'
+          -}}
+    
+          <div class="nav3img-m-main">
+            <h3 class="to-top">   {{ section.settings['modle3-label'] }}</h3>
+            <p class="to-top">
+              {{ section.settings['modle3-describe'] }}
+            </p>
+          </div>
+          <div class="nav3_2-m">
+            {{-
+              section.settings['modle3-image-data']
+              | image_url: width: section.settings['modle3-image-data'].width
+              | image_tag:
+                loading: 'lazy',
+                draggable: false,
+                alt: section.settings['modle3-image-data'].name,
+                class: 'slide-img to-top'
+            -}}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="navs nav4 navp-4 pc-show">
+  <div class="box">
+    <div class="nav" style="margin-top:40px">
+      <h2 class="to-top">{{ section.settings['modle4-title'] }}</h2>
+
+      <p class="to-top">
+        {{ section.settings['modle4-desc'] }}
+      </p>
+      {{-
+        section.settings['modle4-icon']
+        | image_url: width: section.settings['modle4-icon'].width
+        | image_tag: loading: 'lazy', draggable: false, alt: section.settings['modle4-icon'].name, class: 'rtcon to-top'
+      -}}
+      {{-
+        section.settings['modle4-image']
+        | image_url: width: section.settings['modle4-image'].width
+        | image_tag:
+          loading: 'lazy',
+          draggable: false,
+          alt: section.settings['modle4-image'].name,
+          class: 'pc-show to-top'
+      -}}
+      {{-
+        section.settings['modle4-image-m']
+        | image_url: width: section.settings['modle4-image-m'].width
+        | image_tag:
+          loading: 'lazy',
+          draggable: false,
+          alt: section.settings['modle4-image-m'].name,
+          class: 'm-show to-top'
+      -}}
+
+      <div class="nav4foot to-top">
+        <div>
+          <h3>{{ section.settings['modle4-label'] }}</h3>
+
+          <p>
+            {{ section.settings['modle4-describe'] }}
+          </p>
+        </div>
+
+        <ul class="ul3 to-top">
+          {% for block in se_bks %}
+            {% if block.type == 'item' %}
+            <li>
+              {{-
+                block.settings.image
+                | image_url: width: block.settings.image.width
+                | image_tag: loading: 'lazy', draggable: false, alt: block.settings.name
+              -}}
+              <i> {{ block.settings.name }}</i>
+            </li>
+          {% endif %}
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="navs nav4 navm-4 m-show">
+  <div class="box">
+    <div class="nav" style="margin-top:40px">
+      <h2 class="to-top">{{ section.settings['modle4-title'] }}</h2>
+
+      <p class="to-top">
+        {{ section.settings['modle4-desc'] }}
+      </p>
+      {{-
+        section.settings['modle4-icon']
+        | image_url: width: section.settings['modle4-icon'].width
+        | image_tag: loading: 'lazy', draggable: false, alt: section.settings['modle4-icon'].name, class: 'rtcon to-top'
+      -}}
+    </div>
+  </div>
+</div>
+<div class="navs nav4 m-show white">
+  <div class="box">
+    <div class="nav" style="margin-top:40px">
+      {{-
+        section.settings['modle4-image-m']
+        | image_url: width: section.settings['modle4-image-m'].width
+        | image_tag:
+          loading: 'lazy',
+          draggable: false,
+          alt: section.settings['modle4-image-m'].name,
+          class: 'm-show to-top'
+      -}}
+
+      <div class="nav4foot to-top">
+        <div>
+          <h3>{{ section.settings['modle4-label'] }}</h3>
+
+          <p>
+            {{ section.settings['modle4-describe'] }}
+          </p>
+        </div>
+
+        <ul class="ul3 to-top">
+          {% for block in se_bks %}
+            {% if block.type == 'item' %}
+            <li>
+              {{-
+                block.settings.image
+                | image_url: width: block.settings.image.width
+                | image_tag: loading: 'lazy', draggable: false, alt: block.settings.name
+              -}}
+              <i> {{ block.settings.name }}</i>
+            </li>
+          {% endif %}
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="navs nav5 navp-5 pc-show">
+  <div class="box">
+    <div class="nav">
+      <h2 class="to-top">{{ section.settings['modle5-title'] }}</h2>
+
+      <p class="to-top">
+        {{ section.settings['modle5-desc'] }}
+      </p>
+
+      {{-
+        section.settings['modle5-icon']
+        | image_url: width: section.settings['modle5-icon'].width
+        | image_tag: loading: 'lazy', draggable: false, alt: section.settings['modle5-icon'].name, class: 'rtcon to-top'
+      -}}
+      <video
+        id="video"
+        class="to-top"
+        src="{{section.settings.modle5-video }}"
+        preload="metadata"
+        autoplay
+        muted
+        loop
+        webkit-playsinline="true"
+        x5-playsinline="x5-playsinline"
+        playsinline="true"
+
+        x-webkit-airplay="true"
+      ></video>
+
+      <div class="nav5foot to-top">
+        <div>
+          <h3>{{ section.settings['modle5-label'] }}</h3>
+
+          <p>
+            {{ section.settings['modle5-describe'] }}
+          </p>
+
+          {% comment %} <a href="#"
+            >Try if Skin Sensor works for you
+            <img
+              src="https://cdn.shopify.com/s/files/1/0740/5882/6015/files/1_1f49d47e-04d5-4f85-9b07-bb2cd2c0359c.png?v=1720512907"
+              style="
+                width: 24.25px;
+                vertical-align: text-top;height:24.25px
+              "
+            >
+          </a> {% endcomment %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="navs nav5 navm-5 m-show">
+  <div class="box">
+    <div class="nav">
+      <h2 class="to-top">{{ section.settings['modle5-title'] }}</h2>
+
+      <p class="to-top">
+        {{ section.settings['modle5-desc'] }}
+      </p>
+
+      {{-
+        section.settings['modle5-icon']
+        | image_url: width: section.settings['modle5-icon'].width
+        | image_tag: loading: 'lazy', draggable: false, alt: section.settings['modle5-icon'].name, class: 'rtcon to-top'
+      -}}
+    
+    </div>
+  </div>
+</div>
+<div class="navs nav5 m-show white">
+  <div class="box">
+    <div class="nav">
+      <video
+        id="video"
+        class="to-top"
+        src="{{section.settings.modle5-video }}"
+        preload="metadata"
+        autoplay
+        muted
+        loop
+        webkit-playsinline="true"
+        x5-playsinline="x5-playsinline"
+        playsinline="true"
+
+        x-webkit-airplay="true"
+      ></video>
+
+      <div class="nav5foot to-top">
+        <div>
+          <h3>{{ section.settings['modle5-label'] }}</h3>
+
+          <p>
+            {{ section.settings['modle5-describe'] }}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="fixed-button-container" id="fixedButtonContainer">
+  <img id="fixedButton" src="https://cdn.shopify.com/s/files/1/0740/5882/6015/files/1_2.png?v=1720680503" alt="">
+</div>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    function onBridgeReady() {
+      //这个方法在ios能自动播放，在安卓机上还是不可以
+      WeixinJSBridge.invoke('getNetworkType', {}, function () {
+        $('video')[0].currentTime = 0; //这一句是解决安卓没有自动播放，但是可以加载视频封面出来，不至于显示空白
+        $('video')[0].play();
+      });
+    }
+    if (typeof WeixinJSBridge == 'undefined') {
+      if (document.addEventListener) {
+        setTimeout(function () {
+          document.addEventListener('WeixinJSBridgeReady', onBridgeReady(), true);
+        }, 1000);
+      }
+    } else {
+      onBridgeReady();
+    }
+
+    gsap.registerPlugin(ScrollTrigger);
+    gsap.set(".m-main-container", { autoAlpha: 0 });
+
+    ScrollTrigger.create({
+      trigger: ".nav2Main",
+      markers: false,
+      start: "top+=750 center",
+      onEnter: () => {
+        gsap.to(".m-main-container", { autoAlpha: 1, duration: 1 });
+        gsap.to(".nav2img-m ol", { autoAlpha: 0, duration: 1 }); // 隐藏 .nav2img-m ol
+      },
+      onLeaveBack: () => {
+        gsap.to(".m-main-container", { autoAlpha: 0, duration: 1 });
+        gsap.to(".nav2img-m ol", { autoAlpha: 1, duration: 1 }); // 显示 .nav2img-m ol
+      },
+      onUpdate: (self) => {
+        const numberScrollingItems = document.querySelectorAll('.numberScrolling-num span');
+        const numberScrolling = document.querySelector('.numberScrolling');
+    
+        const progress = self.progress;
+        if (window.innerWidth <= 768) {
+          gsap.set(numberScrolling, {
+            display: "flex",
+          });
+          gsap.to(numberScrolling, {
+            opacity: 1,
+            duration: 2,
+            ease: "power2.inOut",
+          });
+          numberScrollingItems.forEach((item) => {
+            const count = parseInt(item.getAttribute("data-count"), 10);
+            gsap.to(item, {
+              innerText: count,
+              snap: "innerText",
+              duration: 2,
+              ease: "power2.inOut",
+            });
+          });
+        }
+      }
+    });
+    
+    // 点击锚点到某个区域
+    const fixedButtonContainer = document.getElementById('fixedButtonContainer');
+    const anchorGroup = document.getElementById('anchor-group');
+    document.querySelectorAll('.anchor').forEach((anchor) => {
+      anchor.addEventListener('click', function (e) {
+        const targetSelector = this.getAttribute('data-target');
+        const targetElement = document.querySelector(targetSelector);
+        if (targetElement) {
+          window.scrollTo({
+            top: targetElement.offsetTop-50,
+            behavior: 'smooth',
+          });
+
+          // Show the fixed button container
+          fixedButtonContainer.style.display = 'block';
+        }
+      });
+    });
+
+    const main2Img = document.getElementById('main2Img');
+    const numberScrollingItems = document.querySelectorAll('.numberScrolling-num span');
+    const numberScrolling = document.querySelector('.numberScrolling');
+    const nav2ImgOl = document.querySelector('.nav2img ol');
+    // Initial state: scale the image to 1x
+    gsap.set(main2Img, { scale: 1 });
+    gsap.set(numberScrolling, { opacity: 0 }); // Set initial opacity to 0
+    // ScrollTrigger for scaling and pinning
+    let isNumberScrollingTriggered = false;
+    let ticking = false;
+    ScrollTrigger.create({
+      trigger: ".navs.nav2",
+      start: "top+=650 top",
+      endTrigger: "body",
+      end: "+=500",
+      scrub: true,
+      pin: ".nav2img",
+      markers: false,
+      toggleActions: "play none none none",
+    
+      onUpdate: (self) => {
+        if (!ticking) {
+          ticking = true;
+          const direction = self.direction; // 获取滚动方向（1为向下，-1为向上）
+          const progress = self.progress;
+          let scaleValue = 0
+          console.log('window.innerWidth',window.innerWidth)
+          if(window.innerWidth <1350 && window.innerWidth > 760){
+            scaleValue = direction === 1 ? 4.5 : 1;
+          }else {
+            scaleValue = direction === 1 ? 4 : 1;
+          }
+          console.log('scaleValue',scaleValue)
+          gsap.to(main2Img, {
+            scale: scaleValue,
+            duration: 0.3,
+            zIndex: 1,
+            overwrite: true,
+          });
+
+          // 如果是向上滚动，就隐藏 numberScrolling
+          if (direction === -1) {
+            gsap.set(numberScrolling, {
+              display: "none",
+            });
+            isNumberScrollingTriggered = false; // 重置触发状态
+          } else if (progress >= 0.5 && !isNumberScrollingTriggered) {
+            if(window.innerWidth >768){
+              isNumberScrollingTriggered = true;
+              gsap.set(numberScrolling, {
+                display: "flex",
+              });
+              gsap.to(numberScrolling, {
+                opacity: 1,
+                duration: 2,
+                ease: "power2.inOut",
+              });
+              numberScrollingItems.forEach((item) => {
+                const count = parseInt(item.getAttribute("data-count"), 10);
+                gsap.to(item, {
+                  innerText: count,
+                  snap: "innerText",
+                  duration: 2,
+                  ease: "power2.inOut",
+                });
+              });
+            }
+          }
+          console.log('scaleValue',scaleValue)
+          if (scaleValue >= 3.5) {
+            gsap.to(nav2ImgOl, {
+              display: "none",
+              duration: 0.3,
+            });
+         
+          } else {
+            gsap.to(nav2ImgOl, {
+              display: "block",
+              duration: 0.3,
+            });
+          
+          }
+    
+          if (progress >= 1) {
+             if(window.innerWidth <1400 && window.innerWidth > 768){
+              gsap.set(".nav2img img", { clipPath: "inset(0 0 50px 0)" });
+            }else if(window.innerWidth <1920 && window.innerWidth > 768){
+              gsap.set(".nav2img img", { clipPath: "inset(0 0 100px 0)" });
+            }else{
+              gsap.set(".nav2img img", { clipPath: "inset(0 0 150px 0)" });
+            }
+          
+          } else {
+            gsap.set(".nav2img img", { clipPath: "none" });
+          }
+    
+          ticking = false;
+        }
+      },
+    });
+    
+
+    $(window).scroll(function () {
+      var h = $('.nav3img').offset().top;
+      s = $(window).scrollTop();
+      if (s > h) {
+        $('.nav3img').css({ backgroundAttachment: 'fixed' });
+      } else {
+        $('.nav3img').css({ backgroundAttachment: 'unset' });
+      }
+      var s2 = s + 400;
+      if (s2 > h) {
+        let mtop = s2 - h;
+        $('.nav3_1,.nav3_2').css({ opacity: mtop / 100 });
+      }
+
+      document.getElementById('fixedButton').addEventListener('click', function () {
+        window.scrollTo({
+          top: anchorGroup.offsetTop,
+          behavior: 'smooth',
+        });
+        fixedButtonContainer.style.display = 'none';
+      });
+    });
+     // 监听滚动事件，当距离顶部100像素时逐渐隐藏按钮
+     window.addEventListener('scroll', function () {
+
+      if (window.scrollY <= 600) {
+        fixedButtonContainer.style.display = 'none';
+
+      } 
+    });  
+  });
+     
+</script>
+{% schema %}
+{
+  "name": "g-2024-act-slide",
+  "settings": [
+    {
+      "type": "text",
+      "id": "modle1-title",
+      "label": "模块1-标题",
+      "default": "Temporary Results and Endless Stubble"
+    },
+
+    {
+      "type": "textarea",
+      "id": "modle1-desc",
+      "label": "模块1-描述",
+      "default": " Many hair removal methods, like shaving and depilatory  creams, offer only temporary results, requiring frequent maintenance."
+    },
+    {
+      "type": "image_picker",
+      "id": "modle1-icon",
+      "label": "模块1-图标"
+    },
+    {
+      "type": "text",
+      "id": "modle1-video",
+      "label": "模块1-视频"
+    },
+    {
+      "type": "text",
+      "id": "modle1-label",
+      "label": "模块1-第二屏标题",
+      "default": "Farewell stubborn hair"
+    },
+    {
+      "type": "text",
+      "id": "modle1-describe",
+      "label": "模块1-第二屏描述",
+      "default": "Finely trimmed or completely smooth? Whether it's just for bikini season, visits to the pool,or part of your everyday routine, the Air 10 offers intimate hair removal that is safe and  effective for your bikini zone."
+    },
+
+    {
+      "type": "text",
+      "id": "modle2-title",
+      "label": "模块2-标题",
+      "default": "Bearing Irritation or Ingrowns"
+    },
+
+    {
+      "type": "textarea",
+      "id": "modle2-desc",
+      "label": "模块2-描述",
+      "default": "Shaving and waxing can lead to ingrown hairs, which can be painful and lead to infection or scarring, also it can be particularly uncomfortable in the bikini area."
+    },
+    {
+      "type": "image_picker",
+      "id": "modle2-icon",
+      "label": "模块2-图标"
+    },
+    {
+      "type": "image_picker",
+      "id": "modle2-image",
+      "label": "模块2-主图片"
+    },
+    {
+      "type": "image_picker",
+      "id": "modle2-image-big",
+      "label": "模块2-大图-移动端"
+    },
+    {
+      "type": "richtext",
+      "id": "modle2-label",
+      "label": "模块2-第二屏标题"
+    },
+    {
+      "type": "text",
+      "id": "modle2-describe",
+      "label": "模块2-第二屏描述",
+      "default": "Finely trimmed or completely smooth? Whether it's just for bikini season, visits to the pool, or part of your everyday routine, the Air 10 offers intimate hair removal that is safe and effective for your bikini zone."
+    },
+
+    {
+      "type": "text",
+      "id": "modle3-title",
+      "label": "模块3-标题",
+      "default": "Bearing Pain"
+    },
+
+    {
+      "type": "textarea",
+      "id": "modle3-desc",
+      "label": "模块3-描述",
+      "default": "Methods like waxing and epilation can be quite painful, particularly in the bikini area where the skin is more sensitive."
+    },
+    {
+      "type": "image_picker",
+      "id": "modle3-icon",
+      "label": "模块3-图标"
+    },
+    {
+      "type": "image_picker",
+      "id": "modle3-image",
+      "label": "模块3-主图片"
+    },
+    {
+      "type": "image_picker",
+      "id": "modle3-image-m",
+      "label": "模块3-主图片移动端"
+    },
+    {
+      "type": "image_picker",
+      "id": "modle3-image-data",
+      "label": "模块3-数据图"
+    },
+    {
+      "type": "textarea",
+      "id": "modle3-label",
+      "label": "模块3-第二屏标题"
+    },
+    {
+      "type": "text",
+      "id": "modle3-describe",
+      "label": "模块3-第二屏描述",
+      "default": "Finely trimmed or completely smooth? Whether it's just for bikini season, visits to the pool, or part of your everyday routine, the Air 10 offers intimate hair removal that is safe and effective for your bikini zone."
+    },
+
+    {
+      "type": "text",
+      "id": "modle4-title",
+      "label": "模块4-标题",
+      "default": "Bearing Pain"
+    },
+    {
+      "type": "textarea",
+      "id": "modle4-desc",
+      "label": "模块4-描述",
+      "default": "Methods like waxing and epilation can be quite painful, particularly in the bikini area where the skin is more sensitive."
+    },
+    {
+      "type": "image_picker",
+      "id": "modle4-icon",
+      "label": "模块4-图标"
+    },
+
+    {
+      "type": "image_picker",
+      "id": "modle4-image",
+      "label": "模块4-主图片"
+    },
+    {
+      "type": "image_picker",
+      "id": "modle4-image-m",
+      "label": "模块4-主图片-移动端"
+    },
+    {
+      "type": "richtext",
+      "id": "modle4-label",
+      "label": "模块4-第二屏标题"
+    },
+    {
+      "type": "text",
+      "id": "modle4-describe",
+      "label": "模块4-第二屏描述",
+      "default": "Finely trimmed or completely smooth? Whether it's just for bikini season, visits to the pool, or part of your everyday routine, the Air 10 offers intimate hair removal that is safe and effective for your bikini zone."
+    },
+
+    {
+      "type": "text",
+      "id": "modle5-title",
+      "label": "模块5-标题",
+      "default": "Bearing Pain"
+    },
+    {
+      "type": "textarea",
+      "id": "modle5-desc",
+      "label": "模块5-描述",
+      "default": "Methods like waxing and epilation can be quite painful, particularly in the bikini area where the skin is more sensitive."
+    },
+    {
+      "type": "image_picker",
+      "id": "modle5-icon",
+      "label": "模块5-图标"
+    },
+    {
+      "type": "textarea",
+      "id": "modle5-label",
+      "label": "模块5-第二屏标题"
+    },
+    {
+      "type": "text",
+      "id": "modle5-video",
+      "label": "模块5-视频"
+    },
+    {
+      "type": "text",
+      "id": "modle5-describe",
+      "label": "模块5-第二屏描述",
+      "default": "Finely trimmed or completely smooth? Whether it's just for bikini season, visits to the pool, or part of your everyday routine, the Air 10 offers intimate hair removal that is safe and effective for your bikini zone."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "item",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "图片"
+        },
+        {
+          "type": "textarea",
+          "id": "name",
+          "label": "名称"
+        }
+      ]
+    },
+    {
+      "type":"model-right",
+      "name":"model-right",
+      "settings": [
+        {
+          "type": "text",
+          "id": "describe",
+          "label": "信息"
+        },
+        {
+          "type": "text",
+          "id": "name",
+          "label": "名称"
+        }
+      ]
+    },
+    {
+      "type":"model-digit",
+      "name":"model-digit",
+      "settings": [
+        {
+          "type": "text",
+          "id": "symbol1",
+          "label": "符号1"
+        },
+        {
+          "type": "text",
+          "id": "num",
+          "label": "数字"
+        },
+        {
+          "type": "text",
+          "id": "symbol",
+          "label": "符号"
+        },
+        {
+          "type": "text",
+          "id": "name",
+          "label": "名称"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "g-2024-act-slide",
+      "category": "g-2024-act-slide",
+      "blocks": []
+    }
+  ]
+}
+{% endschema %}

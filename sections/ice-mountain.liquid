@@ -1,0 +1,608 @@
+<style>
+  .ice-mountain {
+      padding: 110px 0 130px 0;
+      overflow: hidden;
+      position: relative;
+      z-index: 1;
+  }
+
+  .ice-mountain .ice-mountain-top {
+      position: relative;
+      z-index: 2;
+      margin-bottom: 68px;
+  }
+
+  .ice-mountain .ice-mountain-h3 {
+      color: #3F3636;
+      font-size: 44px;
+      line-height: 1.25;
+      font-family: var(--heading-font-family);
+      font-weight: normal;
+      margin: 0;
+      margin-bottom: 16px;
+  }
+
+  .ice-mountain .ice-mountain-p {
+      color: #3F3636;
+      font-size: 22px;
+      line-height: 1.5;
+  }
+
+  .ice-mountain .ice-mountain-cont {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: flex-end;
+      height: 630px;
+      border-bottom: 1px solid #E4DDDD;
+      margin-top: -160px;
+
+  }
+
+  .ice-mountain .ice-mountain-icon {
+      margin-left: -40px;
+      width: 40px;
+      border-right: 1px solid #E4DDDD;
+      border-bottom: 1px solid #E4DDDD;
+      margin-bottom: -0.5px;
+      position: relative;
+      z-index: 3;
+  }
+
+  .ice-mountain .ice-mountain-icon::before {
+      content: '';
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      background: #E4DDDD;
+      border-radius: 50%;
+      bottom: -4px;
+      right: -4px;
+      z-index: 2;
+  }
+
+  .ice-mountain .ice-mountain-icon svg {
+      display: block;
+      width: 100%;
+      height: auto;
+  }
+
+  .ice-mountain .ice-mountain-icon .mb-svg {
+      display: none;
+  }
+
+  .ice-mountain .ice-mountain-tag {
+      position: absolute;
+      top: 0;
+      left: 100%;
+      color: #50BED9;
+      font-size: 12px;
+      line-height: 1.2;
+      transform: translateX(20px);
+  }
+
+  .ice-mountain .ice-mountain-right {
+      flex: 1;
+      position: relative;
+      z-index: 1;
+      height: 100%;
+      background: linear-gradient(173deg, #EAF6FF 67.25%, rgba(255, 255, 255, 0.00) 82.72%);
+  }
+
+  .ice-mountain .ice-mountain-bg {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      overflow: hidden;
+      z-index: 2;
+  }
+
+  .ice-mountain .ice-mountain-bg::before {
+      content: '';
+      position: absolute;
+      width: 300%;
+      height: 300%;
+      border-radius: 50%;
+      background: #fff;
+      border: 1px solid #50BED9;
+      right: -15%;
+      bottom: 10%;
+  }
+
+  .ice-mountain .ice-mountain-list {
+      display: flex;
+      height: 100%;
+  }
+
+  .ice-mountain .ice-mountain-gap {
+      flex-shrink: 0;
+      width: 7%;
+      position: relative;
+  }
+
+  .ice-mountain .ice-mountain-item {
+      width: 25%;
+      border-left: 1px dashed #E4DDDD;
+      position: relative;
+  }
+
+  .ice-mountain .ice-mountain-item::before {
+      content: '';
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      background: #E4DDDD;
+      border-radius: 50%;
+      bottom: -4px;
+      left: -4px;
+  }
+
+  .ice-mountain .img {
+      width: 230px;
+      max-width: 100%;
+      margin-bottom: 20px;
+      filter: drop-shadow(0 5px 15px rgba(0, 0, 0, 0.03));
+  }
+
+  .ice-mountain .ice-mountain-item-text {
+      position: absolute;
+      padding: 0 24px;
+      width: 100%;
+      left: 0;
+      z-index: 3;
+  }
+
+  .ice-mountain .ice-mountain-item-text::before {
+      content: '';
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      bottom: 85px;
+      left: 0px;
+      transform: translate(-50%, 50%);
+      border: 1px solid #50BED9;
+      border-radius: 50%;
+      background: radial-gradient(circle,
+          #50BED9 0%,
+          #50BED9 48%,
+          white 48.1%,
+          white 100%);
+      z-index: 1;
+  }
+
+  .ice-mountain .ice-mountain-item-h3 {
+      color: #190A0A;
+      font-size: 26px;
+      line-height: 1.2;
+      font-family: var(--heading-font-family);
+      font-weight: normal;
+      margin: 0;
+      margin-bottom: 3px;
+  }
+
+  .ice-mountain .ice-mountain-item-p {
+      color: #190A0A;
+      font-size: 18px;
+      line-height: 1.2;
+      width: 284px;
+      max-width: 100%;
+  }
+
+  .ice-mountain .ice-mountain-item-label {
+      color: #190A0A;
+      font-size: 16px;
+      line-height: 1.2;
+      position: absolute;
+      left: -5px;
+      top: 100%;
+      transform: translateY(20px);
+  }
+
+  .ice-mountain .ice-mountain-item-label p {
+      margin: 0;
+  }
+
+  .ice-mountain .ice-mountain-item-label strong {
+      font-weight: normal;
+      font-size: 20px;
+      font-family: var(--heading-font-family);
+  }
+
+  .ice-mountain .ice-mountain-item:nth-child(2) .ice-mountain-item-text {
+      bottom: 18px;
+  }
+
+  .ice-mountain .ice-mountain-item:nth-child(2) .ice-mountain-item-text::before {
+      bottom: 82px;
+  }
+
+  .ice-mountain .ice-mountain-item:nth-child(3) .ice-mountain-item-text {
+      bottom: 70px;
+  }
+
+  .ice-mountain .ice-mountain-item:nth-child(3) .ice-mountain-item-text::before {
+      bottom: 88px;
+  }
+
+  .ice-mountain .ice-mountain-item:nth-child(4) .ice-mountain-item-text {
+      bottom: 122px;
+  }
+
+  .ice-mountain .ice-mountain-item:nth-child(4) .ice-mountain-item-text::before {
+      bottom: 124px;
+  }
+
+  .ice-mountain .ice-mountain-item:nth-child(5) .ice-mountain-item-text {
+      bottom: 294px;
+  }
+
+  .ice-mountain .ice-mountain-item:nth-child(5) .ice-mountain-item-text::before {
+      bottom: 84px;
+  }
+
+  @media (max-width: 1300px) {
+      .ice-mountain .ice-mountain-item-h3 {
+      font-size: 22px;
+      }
+
+      .ice-mountain .ice-mountain-item-p {
+      font-size: 16px;
+      }
+  }
+
+  @media (max-width: 991px) {
+      .ice-mountain {
+      padding: 55px 0 72px 0;
+      }
+
+      .ice-mountain .ice-mountain-top {
+      margin-bottom: 0;
+      }
+
+      .ice-mountain .ice-mountain-h3 {
+      font-size: 24px;
+      margin-bottom: 10px;
+      }
+
+      .ice-mountain .ice-mountain-p {
+      font-size: 12px;
+      }
+
+      .ice-mountain .ice-mountain-cont {
+      height: 380px;
+      margin-top: 0;
+      }
+
+      .ice-mountain .ice-mountain-item-h3 {
+      font-size: 16px;
+      margin-bottom: 5px;
+      }
+
+      .ice-mountain .ice-mountain-item-p {
+      font-size: 12px;
+      max-width: 157px;
+      }
+
+      .ice-mountain .img {
+      width: 165px;
+      margin-bottom: 15px;
+      }
+
+      .ice-mountain .ice-mountain-icon {
+      width: 24px;
+      margin-left: -24px;
+      flex-shrink: 0;
+      margin-bottom: -1px;
+      }
+
+
+      .ice-mountain .ice-mountain-icon .pc-svg {
+      display: none;
+      }
+
+      .ice-mountain .ice-mountain-icon .mb-svg {
+      display: block;
+      width: 30px;
+      }
+
+      .ice-mountain .ice-mountain-gap {
+      width: 18px;
+      }
+
+      .ice-mountain .ice-mountain-item {
+      flex-shrink: 0;
+      width: 230px;
+      }
+
+      .ice-mountain .ice-mountain-item::before {
+      width: 6px;
+      height: 6px;
+      left: -3px;
+      bottom: -3px;
+      }
+
+      .ice-mountain .ice-mountain-icon::before {
+      width: 6px;
+      height: 6px;
+      right: -3px;
+      bottom: -3px;
+      }
+
+      .ice-mountain .ice-mountain-bg::before {
+      bottom: 14%;
+      }
+
+      .ice-mountain .ice-mountain-item-text::before {
+      width: 14px;
+      height: 14px;
+      }
+
+      .ice-mountain .ice-mountain-item:nth-child(2) .ice-mountain-item-text {
+      bottom: 16px;
+      }
+
+      .ice-mountain .ice-mountain-item:nth-child(2) .ice-mountain-item-text::before {
+      bottom: 56px;
+      }
+
+      .ice-mountain .ice-mountain-item:nth-child(3) .ice-mountain-item-text {
+      bottom: 32px;
+      }
+
+      .ice-mountain .ice-mountain-item:nth-child(3) .ice-mountain-item-text::before {
+      bottom: 72px;
+      }
+
+      .ice-mountain .ice-mountain-item:nth-child(4) .ice-mountain-item-text {
+      bottom: 91px;
+      }
+
+      .ice-mountain .ice-mountain-item:nth-child(4) .ice-mountain-item-text::before {
+      bottom: 65px;
+      }
+
+      .ice-mountain .ice-mountain-item:nth-child(5) .ice-mountain-item-text {
+      bottom: 150px;
+      }
+
+      .ice-mountain .ice-mountain-item:nth-child(5) .ice-mountain-item-text::before {
+      bottom: 88px;
+      }
+
+      .ice-mountain .ice-mountain-item-label {
+      font-size: 12px;
+      transform: translateY(8px);
+      }
+
+      .ice-mountain .ice-mountain-item-label strong {
+      font-size: 12px;
+      }
+  }
+</style>
+<section class="section-box">
+  <div class="ice-mountain">
+    <div class="container">
+      <div class="ice-mountain-top">
+        {%- if section.settings.text != blank -%}
+          <h3 class="ice-mountain-h3">{{ section.settings.text }}</h3>
+        {%- endif -%}
+        {%- if section.settings.text1 != blank -%}
+          <div class="ice-mountain-p">{{ section.settings.text1 }}</div>
+        {%- endif -%}
+      </div>
+      <div class="ice-mountain-cont">
+        <div class="ice-mountain-icon">
+          <svg
+            class="pc-svg"
+            width="41"
+            height="469"
+            viewBox="0 0 41 469"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <line x1="19" y1="1.5" y2="1.5" stroke="#E4DDDD" />
+            <line x1="19" y1="40.5" y2="40.5" stroke="#E4DDDD" />
+            <line x1="19" y1="79.5" y2="79.5" stroke="#E4DDDD" />
+            <line x1="19" y1="118.5" y2="118.5" stroke="#E4DDDD" />
+            <line x1="19" y1="157.5" y2="157.5" stroke="#E4DDDD" />
+            <line x1="19" y1="196.5" y2="196.5" stroke="#E4DDDD" />
+            <line x1="19" y1="235.5" y2="235.5" stroke="#E4DDDD" />
+            <line x1="19" y1="274.5" y2="274.5" stroke="#E4DDDD" />
+            <line x1="19" y1="313.5" y2="313.5" stroke="#E4DDDD" />
+            <line x1="19" y1="352.5" y2="352.5" stroke="#E4DDDD" />
+            <line x1="19" y1="391.5" y2="391.5" stroke="#E4DDDD" />
+            <line x1="19" y1="430.5" y2="430.5" stroke="#E4DDDD" />
+          </svg>
+          <svg
+            class="mb-svg"
+            width="30"
+            height="338"
+            viewBox="0 0 30 338"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <line x1="13.6809" y1="1.08" x2="-6.48499e-05" y2="1.08" stroke="#E4DDDD" stroke-width="0.720051" />
+            <line x1="13.6809" y1="29.162" x2="-6.48499e-05" y2="29.162" stroke="#E4DDDD" stroke-width="0.720051" />
+            <line x1="13.6809" y1="57.2441" x2="-6.48499e-05" y2="57.2441" stroke="#E4DDDD" stroke-width="0.720051" />
+            <line x1="13.6809" y1="85.3261" x2="-6.48499e-05" y2="85.3261" stroke="#E4DDDD" stroke-width="0.720051" />
+            <line x1="13.6809" y1="113.408" x2="-6.48499e-05" y2="113.408" stroke="#E4DDDD" stroke-width="0.720051" />
+            <line x1="13.6809" y1="141.49" x2="-6.48499e-05" y2="141.49" stroke="#E4DDDD" stroke-width="0.720051" />
+            <line x1="13.6809" y1="169.572" x2="-6.48499e-05" y2="169.572" stroke="#E4DDDD" stroke-width="0.720051" />
+            <line x1="13.6809" y1="197.654" x2="-6.48499e-05" y2="197.654" stroke="#E4DDDD" stroke-width="0.720051" />
+            <line x1="13.6809" y1="225.736" x2="-6.48499e-05" y2="225.736" stroke="#E4DDDD" stroke-width="0.720051" />
+            <line x1="13.6809" y1="253.818" x2="-6.48499e-05" y2="253.818" stroke="#E4DDDD" stroke-width="0.720051" />
+            <line x1="13.6809" y1="281.9" x2="-6.48499e-05" y2="281.9" stroke="#E4DDDD" stroke-width="0.720051" />
+            <line x1="13.6809" y1="309.982" x2="-6.48499e-05" y2="309.982" stroke="#E4DDDD" stroke-width="0.720051" />
+          </svg>
+          {%- if section.settings.text2 != blank -%}
+            <div class="ice-mountain-tag">{{ section.settings.text2 }}</div>
+          {%- endif -%}
+        </div>
+        <div class="ice-mountain-right">
+          <div class="ice-mountain-bg"></div>
+          <div class="ice-mountain-list">
+            <div class="ice-mountain-gap"></div>
+            {%- for block in section.blocks -%}
+              <div class="ice-mountain-item">
+                <div class="ice-mountain-item-text">
+                  {%- if block.settings.image != blank -%}
+                    <img
+                      loading="lazy"
+                      class="img"
+                      width=""
+                      height=""
+                      {% render 'image-attributes', image: block.settings.image %}
+                      alt="{{ block.settings.image.alt | escape }}"
+                    >
+                  {%- endif -%}
+                  {%- if block.settings.text != blank -%}
+                    <h3 class="ice-mountain-item-h3">{{ block.settings.text }}</h3>
+                  {%- endif -%}
+                  {%- if block.settings.text1 != blank -%}
+                    <div class="ice-mountain-item-p">{{ block.settings.text1 }}</div>
+                  {%- endif -%}
+                </div>
+                {%- if block.settings.text2 != blank -%}
+                  <div class="ice-mountain-item-label">
+                    {{ block.settings.text2 }}
+                  </div>
+                {%- endif -%}
+              </div>
+            {%- endfor -%}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+  function enableIceMountainSlider(containerSelector) {
+    const container =
+      typeof containerSelector === 'string' ? document.querySelector(containerSelector) : containerSelector;
+
+    if (!container) return;
+
+    const list = container.querySelector('.ice-mountain-right');
+    const items = container.querySelectorAll('.ice-mountain-item');
+
+    if (!list || items.length === 0) return;
+
+    const itemStyle = getComputedStyle(items[0]);
+    const itemWidth = items[0].offsetWidth + parseFloat(itemStyle.marginRight || 0);
+
+    let startX = 0;
+    let currentOffset = 0;
+    let isDragging = false;
+
+    function getMaxOffset() {
+      const containerWidth = container.offsetWidth;
+      const listWidth = list.scrollWidth;
+      return listWidth - containerWidth;
+    }
+
+    function setTransform(x) {
+      list.style.transform = `translateX(${x}px)`;
+    }
+
+    function clampOffset(offset) {
+      return Math.max(Math.min(offset, 0), -getMaxOffset());
+    }
+
+    function onStart(x) {
+      startX = x;
+      isDragging = true;
+      list.style.transition = 'none';
+    }
+
+    function onMove(x) {
+      if (!isDragging) return;
+      const delta = x - startX;
+      const newOffset = clampOffset(currentOffset + delta);
+      setTransform(newOffset);
+    }
+
+    function onEnd(x) {
+      if (!isDragging) return;
+      const delta = x - startX;
+      currentOffset = clampOffset(currentOffset + delta);
+      isDragging = false;
+
+      // 自动吸附到最近 item
+      const remainder = Math.abs(currentOffset) % itemWidth;
+      const snappedOffset = delta < 0 ? currentOffset - (itemWidth - remainder) : currentOffset + remainder;
+
+      currentOffset = clampOffset(snappedOffset);
+      list.style.transition = 'transform 0.3s ease';
+      setTransform(currentOffset);
+    }
+
+    list.addEventListener('mousedown', (e) => onStart(e.clientX));
+    window.addEventListener('mousemove', (e) => onMove(e.clientX));
+    window.addEventListener('mouseup', (e) => onEnd(e.clientX));
+
+    list.addEventListener('touchstart', (e) => onStart(e.touches[0].clientX), { passive: true });
+    window.addEventListener('touchmove', (e) => onMove(e.touches[0].clientX), { passive: false });
+    window.addEventListener('touchend', (e) => onEnd(e.changedTouches[0].clientX));
+  }
+
+  // 初始化
+  enableIceMountainSlider('.ice-mountain .ice-mountain-cont');
+</script>
+{% schema %}
+{
+  "name": "ice-mountain",
+  "blocks": [
+    {
+      "name": "item",
+      "type": "item",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text"
+        },
+        {
+          "type": "text",
+          "id": "text1",
+          "label": "Text"
+        },
+        {
+          "type": "richtext",
+          "id": "text2",
+          "label": "Text"
+        }
+      ]
+    }
+  ],
+  "settings": [
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Title"
+    },
+    {
+      "type": "text",
+      "id": "text1",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "text2",
+      "label": "Text"
+    }
+  ],
+  "presets": [
+    {
+      "name": "ice-mountain",
+      "blocks": []
+    }
+  ]
+}
+{% endschema %}

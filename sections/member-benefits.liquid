@@ -1,0 +1,270 @@
+<style>
+.member-benefits {
+  padding: 80px 0;
+}
+
+.member-benefits .member-benefits-title {
+  color: #190a0a;
+  text-align: center;
+  font-size: 50px;
+  line-height: 1.2;
+  font-family: var(--heading-font-family);
+  margin: 0;
+  margin-bottom: 48px;
+  font-weight: normal;
+}
+
+.member-benefits .member-benefits-cont {
+  display: flex;
+  gap: 24px;
+}
+
+.member-benefits .member-benefits-left,
+.member-benefits .member-benefits-right {
+  width: calc(50% - 12px);
+}
+
+.member-benefits .member-benefits-right {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+}
+.member-benefits .member-benefits-item {
+  width: calc(50% - 12px);
+  position: relative;
+}
+.member-benefits .member-benefits-right .member-benefits-item:first-child {
+  width: 100%;
+}
+
+.member-benefits .img {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 100%;
+  border-radius: 20px;
+}
+
+.member-benefits .member-benefits-text {
+  position: absolute;
+  z-index: 2;
+  width: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 8%;
+}
+
+.member-benefits .member-benefits-h4 {
+  color: #190a0a;
+  text-align: center;
+  font-size: 24px;
+  line-height: 1.5;
+  font-family: var(--heading-font-family);
+  font-weight: normal;
+  margin: 0;
+}
+
+.member-benefits .member-benefits-h4 p {
+  margin: 0;
+}
+
+.member-benefits .member-benefits-item:first-child .member-benefits-h4 {
+  font-size: 32px;
+}
+
+.member-benefits
+  .member-benefits-right
+  .member-benefits-item:first-child
+  .member-benefits-text {
+  top: 50%;
+  transform: translateY(-50%);
+  left: 10%;
+  width: auto;
+}
+
+.member-benefits .member-benefits-p {
+  color: #9c9c9c;
+  font-size: 24px;
+  line-height: 1.2;
+  margin: 0;
+  text-align: center;
+}
+.member-benefits .member-benefits-p p{
+  margin: 0;
+}
+.member-benefits .member-benefits-left .member-benefits-p {
+  color: #e0004d;
+  font-family: var(--heading-font-family);
+}
+
+@media (max-width: 1300px) {
+  .member-benefits .member-benefits-h4 {
+    font-size: 20px;
+  }
+  .member-benefits .member-benefits-item:first-child .member-benefits-h4 {
+    font-size: 28px;
+    line-height: 1.3;
+  }
+  .member-benefits .member-benefits-p {
+    font-size: 20px;
+  }
+}
+
+@media (max-width: 991px) {
+  .member-benefits {
+    padding: 50px 0;
+  }
+
+  .member-benefits .member-benefits-title {
+    font-size: 28px;
+    margin-bottom: 26px;
+  }
+
+  .member-benefits .member-benefits-cont {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .member-benefits .member-benefits-left,
+  .member-benefits .member-benefits-right {
+    width: 100%;
+  }
+
+  .member-benefits .member-benefits-h4 {
+    font-size: 12px;
+  }
+
+  .member-benefits .member-benefits-item:first-child .member-benefits-h4 {
+    font-size: 14px;
+    text-align: left;
+    line-height: 1.5;
+  }
+
+  .member-benefits .member-benefits-left .member-benefits-h4 {
+    max-width: 125px;
+  }
+
+  .member-benefits .member-benefits-p {
+    font-size: 12px;
+    line-height: 1.5;
+  }
+
+  .member-benefits .member-benefits-left .member-benefits-text {
+    top: 50%;
+    transform: translateY(-50%);
+    left: 26px;
+    width: auto;
+  }
+
+  .member-benefits
+    .member-benefits-right
+    .member-benefits-item:first-child
+    .member-benefits-text {
+    left: 26px;
+  }
+
+  .member-benefits .member-benefits-left .member-benefits-p {
+    text-align: left;
+  }
+}
+</style>
+<section class="section-box">
+  <div class="member-benefits">
+    <div class="container">
+      {%- if section.settings.title != blank -%}
+        <h3 class="member-benefits-title">{{ section.settings.title }}</h3>
+      {%- endif -%}
+      <div class="member-benefits-cont">
+        {%- for block in section.blocks -%}
+          {%- if forloop.index == 1 -%}
+            <div class="member-benefits-item member-benefits-left">
+              {%- if block.settings.image != blank or block.settings.image1 != blank -%}
+                <picture>
+                  <source srcset="{{ block.settings.image1 | image_url }}" media="(max-width: 991px)">
+                  <img class="img" width="" height="" src="{{ block.settings.image | image_url }}">
+                </picture>
+              {%- endif -%}
+              <div class="member-benefits-text">
+                {%- if block.settings.text != blank -%}
+                  <h4 class="member-benefits-h4">{{ block.settings.text }}</h4>
+                {%- endif -%}
+                {%- if block.settings.text1 != blank -%}
+                  <div class="member-benefits-p">{{ block.settings.text1 }}</div>
+                {%- endif -%}
+              </div>
+            </div>
+          {%- endif -%}
+        {% endfor %}
+        <div class="member-benefits-right">
+          {%- for block in section.blocks -%}
+            {%- if forloop.index != 1 -%}
+              <div class="member-benefits-item">
+                {%- if block.settings.image != blank or block.settings.image1 != blank -%}
+                  <picture>
+                    <source srcset="{{ block.settings.image1 | image_url }}" media="(max-width: 991px)">
+                    <img class="img" width="" height="" src="{{ block.settings.image | image_url }}">
+                  </picture>
+                {%- endif -%}
+                <div class="member-benefits-text">
+                  {%- if block.settings.text != blank -%}
+                    <h4 class="member-benefits-h4">{{ block.settings.text }}</h4>
+                  {%- endif -%}
+                  {%- if block.settings.text1 != blank -%}
+                    <div class="member-benefits-p">{{ block.settings.text1 }}</div>
+                  {%- endif -%}
+                </div>
+              </div>
+            {%- endif -%}
+          {% endfor %}
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+{% schema %}
+{
+"name": "member-benefits",
+"blocks": [
+    {
+    "name": "item",
+    "type": "item",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "image",
+        "label": "Image"
+      },
+      {
+        "type": "image_picker",
+        "id": "image1",
+        "label": "Image M"
+      },
+      {
+        "type": "richtext",
+        "id": "text",
+        "label": "Text"
+      },
+      {
+        "type": "richtext",
+        "id": "text1",
+        "label": "Text"
+      }
+    ]
+    }
+  ],
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title"
+    }
+  ],
+  "presets": [
+    {
+      "name": "member-benefits",
+      "blocks": []
+    }
+  ]
+}
+{% endschema %}

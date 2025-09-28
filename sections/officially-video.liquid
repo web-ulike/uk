@@ -1,0 +1,287 @@
+<style>
+.officially-video{
+  position: relative;
+  height: 230vh;
+}
+
+.officially-video .officially-video-cont{
+  position: sticky;
+  height: 100vh;
+  top: 0;
+  transform-origin: top;
+}
+
+.officially-video .officially-video-el{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 1;
+}
+  
+.officially-video .officially-video-el img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+  
+.officially-video .officially-video-bg{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 0;
+}
+.officially-video .mb-box{
+  display: none;
+}
+
+.officially-video .officially-video-text{
+  position: absolute;
+  width: 100%;
+  left: 0;
+  top: 120px;
+  z-index: 2;
+  text-align: center;
+  color: #fff;
+  transform: translateY(30px);
+  opacity: 0;
+}
+
+.officially-video .officially-video-title{
+  font-size: 50px;
+  line-height: 1; 
+}
+
+.officially-video .officially-video-sub{
+  font-size: 18px;
+  line-height: 1.5;
+  margin-top: 20px;
+}
+
+.officially-video .officially-video-sub p{
+  margin: 0;
+}
+
+.officially-video .officially-video-mark{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 2;
+  background: rgba(0, 0, 0, .4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+}
+
+.officially-video .officially-video-mark-cont{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 180px;
+  color: #FFF;
+  text-align: center;
+}
+
+.officially-video .officially-video-mark-t{
+  font-size: 200px;
+  line-height: 1.2;
+}
+
+.officially-video .officially-video-mark-p{
+  font-size: 24px;
+  line-height: 1.2;
+}
+
+@media (max-width:1300px) {
+  .officially-video .officially-video-text{
+    top: 60px;
+  }
+  .officially-video .officially-video-mark-t{
+    font-size: 150px;
+  }
+}
+
+@media (max-width:991px) {
+  .officially-video .officially-video-title{
+    font-size: 24px;
+  }
+  .officially-video .officially-video-sub{
+    font-size: 14px;
+    margin-top: 10px;
+  }
+  .officially-video .officially-video-mark-cont{
+    gap: 50px;
+  }
+  .officially-video .officially-video-mark-t{
+    font-size: 64px;
+    line-height: 1;
+  }
+  .officially-video .officially-video-mark-p{
+    font-size: 12px;
+    margin-top: 3px;
+  }
+  .officially-video .pc-box{
+    display: none;
+  }
+  .officially-video .mb-box{
+    display: block;
+  }
+}
+
+</style>
+
+<section class="section-box">
+  <div class="officially-video">
+    <div class="officially-video-cont">
+      <div class="officially-video-text">
+        <div class="container">
+          <div class="officially-video-title">{{ section.settings.text }}</div>
+          <div class="officially-video-sub">
+            {{ section.settings.text1 }}
+          </div>
+        </div>
+      </div>
+      <div class="officially-video-el"></div>
+      {%- if section.settings.image1 != blank -%}
+        <img loading="lazy" class="officially-video-bg pc-box" src="{{ section.settings.image1 | image_url }}">
+      {%- endif -%}
+      {%- if section.settings.image != blank -%}
+        <img loading="lazy" class="officially-video-bg mb-box" src="{{ section.settings.image | image_url }}">
+      {%- endif -%}
+      <div class="officially-video-mark">
+        <div class="officially-video-mark-cont">
+          <div class="officially-video-mark-item">
+            <div class="officially-video-mark-t">{{ section.settings.text4 }}</div>
+            <div class="officially-video-mark-p">{{ section.settings.text5 }}</div>
+          </div>
+          <div class="officially-video-mark-item">
+            <div class="officially-video-mark-t">{{ section.settings.text6 }}</div>
+            <div class="officially-video-mark-p">{{ section.settings.text7 }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+   function videoScrollTo(){
+     let url = 'pc'
+      if(window.innerWidth<991){
+        url = 'm'
+      }
+      let imgP = new ImgPlay('.officially-video-el',`https://cdn.shopify.com/s/files/1/0740/5882/6015/files/officially-video-${url}-ulike-`,20)
+      imgP.loadImg()
+    ScrollTrigger.create({
+      trigger: ".officially-video",
+      start: "top-=19% top",
+      end: "+=50%",
+      scrub: true,
+      // markers:true,
+      animation:
+      gsap.timeline()
+      .to(".officially-video-text",{'transform': 'translateY(0)','opacity':1,ease:'power2.inOut'})
+      .to(".officially-video-text",{'transform': 'translateY(-30px)','opacity':0,ease:'power2.inOut'})
+    })
+
+    ScrollTrigger.create({
+      trigger: ".officially-video",
+      start: "top top",
+      end: "+=130%",
+      scrub: true,
+      // pin: true,
+      onUpdate(self){
+        try {
+          imgP.playImg(Math.round(self.progress*19))
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    })
+    ScrollTrigger.create({
+      trigger: ".officially-video",
+      start: "top+=50% top",
+      end: "+=30%",
+      scrub: true,
+      animation:
+      gsap.timeline()
+      .to(".officially-video-mark",{'opacity':1,ease:'power2.inOut'})
+      .to(".officially-video-cont",{'opacity':.7,'scale':.9,ease:'power2.inOut'})
+    })
+  }
+  window.addEventListener('load', () => {
+    if(window.innerWidth<991){
+      $('.officially-video .officially-video-el.pc-box').remove()
+    }else{
+      $('.officially-video .officially-video-el.mb-box').remove()
+    }
+    videoScrollTo()
+  })
+</script>
+{% schema %}
+{
+  "name": "officially-video",
+  "settings": [
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Text"
+    },
+    {
+      "type": "richtext",
+      "id": "text1",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "text2",
+      "label": "Video Link"
+    },
+    {
+      "type": "text",
+      "id": "text3",
+      "label": "Video m Link"
+    },
+    {
+      "type": "image_picker",
+      "id": "image1",
+      "label": "Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "M Image"
+    },
+    {
+      "type": "text",
+      "id": "text4",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "text5",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "text6",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "text7",
+      "label": "Text"
+    }
+  ],
+  "presets": [
+    {
+      "name": "officially-video"
+    }
+  ]
+}
+{% endschema %}

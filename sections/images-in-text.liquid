@@ -1,0 +1,378 @@
+<style>
+     {%- assign text_position = section.settings.text_position | split: '_' | first -%}
+      {%- assign mobile_text_position = section.settings.mobile_text_position | split: '_' | first -%}
+
+      {%- case text_position -%}
+        {%- when 'top' -%}
+          {%- assign section_items_alignment = 'flex-start' -%}
+        {%- when 'middle' -%}
+          {%- assign section_items_alignment = 'center' -%}
+        {%- when 'bottom' -%}
+          {%- assign section_items_alignment = 'flex-end' -%}
+      {%- endcase -%}
+
+      {%- case mobile_text_position -%}
+        {%- when 'top' -%}
+          {%- assign mobile_section_items_alignment = 'flex-start' -%}
+        {%- when 'middle' -%}
+          {%- assign mobile_section_items_alignment = 'center' -%}
+        {%- when 'bottom' -%}
+          {%- assign mobile_section_items_alignment = 'flex-end' -%}
+      {%- endcase -%}
+      #shopify-section-{{ section.id }} {
+        --section-blocks-alignment: {{ section_items_alignment }};
+        --section-mobile-blocks-alignment: {{ mobile_section_items_alignment }};
+      }
+.media-{{ section.id }}-padding {
+    padding-top: calc({{ section.settings.padding_top }}px);
+    padding-bottom: calc({{ section.settings.padding_bottom }}px);
+  }
+@media screen and (max-width: 768px){
+  .media-{{ section.id }}-padding {
+    padding-top: calc({{ section.settings.mobile_padding_top }}px);
+    padding-bottom: calc({{ section.settings.mobile_padding_bottom }}px);
+  }
+}
+.images_txt-inner{
+    position: relative;
+    display: flex;
+    align-items: var(--section-blocks-alignment);
+    width: 100%;
+    height: 100%;
+    min-height: 600px;
+}
+.images_txt-inner .img-wrapper{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+}
+.images_txt-inner picture,.images_txt-inner picture img{
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.images_txt-inner .content-img-box{
+  position: relative;
+  z-index: 1;
+  text-
+}
+.images_txt-inner .content-img-wrapper{
+  padding: 55px 0;
+}
+.images_txt-inner .content-img-box{
+  width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.images_txt-inner .content-img-box.content-img--left{
+  margin-left: 100px;
+}
+  .images_txt-inner .content-img-box.content-img--right{
+  margin-right: 100px;
+}
+   .images_txt-inner .content-img-box.content-img--text-center{
+     text-align:center;
+   }
+     .images_txt-inner .content-img-box.content-img--text-right{
+      text-align:right;
+   }
+.images_txt-inner .content-img-box h3{
+  font-family: var(--heading-font-family);
+  color: #190A0A;
+font-size: 44px;
+font-style: normal;
+font-weight: 570;
+line-height: 1.1;
+margin-bottom: 17px;
+}
+
+.images_txt-inner .content-img-box  .content-img-text{
+  color: #190A0A;
+font-size: 18px;
+font-style: normal;
+font-weight: 400;
+line-height: 1.5;
+}
+@media screen and (max-width: 749px){
+  .images_txt-inner{
+    align-items: var(--section-mobile-blocks-alignment);
+}
+  .images_txt-inner .content-img-box h3{
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+  .images_txt-inner .content-img-box .content-img-text{
+    font-size: 12px;
+  }
+  .images_txt-inner .content-img-box {
+    width: auto;
+    margin-left: 24px;
+    margin-right: 24px;
+}
+.mobile-full-container{
+  padding: 0;
+}
+.images_txt-inner .img-container  {
+padding-left: 0;
+    padding-right: 0;
+}
+  .images_txt-inner .img-container.mobile-container  {
+padding-left: var(--container-gutter);
+    padding-right: var(--container-gutter);
+}
+.images_txt-inner .content-img-box.mobile-content-img--left{
+  margin-left: 20px;
+}
+  .images_txt-inner .content-img-box.mobile-content-img--center{
+  margin-left: auto;
+    margin-right: auto;
+}
+  .images_txt-inner .content-img-box.mobile-content-img--right{
+  margin-right: 20px;
+}
+   .images_txt-inner .content-img-box.mobile-content-img--text-left{
+     text-align:left;
+   }
+   .images_txt-inner .content-img-box.mobile-content-img--text-center{
+     text-align:center;
+   }
+     .images_txt-inner .content-img-box.mobile-content-img--text-right{
+      text-align:right;
+   }
+  
+}
+
+</style>
+<section class="section-box media-{{ section.id }}-padding">
+ <div class="images-in-text">
+           <div class="images_txt-inner to-top">
+              <div class="img-wrapper to-opacity">
+              <picture class="img-container {% if section.settings.background_type == 'boxed' %}container{% endif %} {% if section.settings.mobile_background_type == 'boxed' %}mobile-container{% endif %}">
+                <source media="(max-width: 767px)" srcset="{{ section.settings.mobile_image | image_url}}">
+                <img src="{{ section.settings.image | image_url}}" alt="" width="{{ section.settings.width }}" height="{{ section.settings.height }}">
+              </picture>
+              </div>
+              <div class="container">
+                {%- assign text_alignment = section.settings.text_position | split: '_' | first -%}
+                {%- assign text_position = section.settings.text_position | split: '_' | last -%}
+  
+                {%- assign mobile_text_alignment = section.settings.mobile_text_position | split: '_' | first -%}
+                {%- assign mobile_text_position = section.settings.mobile_text_position | split: '_' | last -%}
+                
+                <div class="content-img-wrapper  content-img__text-wrapper--{{ text_alignment }} mobile-content-img__text-wrapper--{{ mobile_text_alignment }}">
+                <div class="content-img-box content-img--{{ text_position }} mobile-content-img--{{ mobile_text_position }} content-img--text-{{ text_position }} mobile-content-img--text-{{ mobile_text_position }}">
+                  <h3>{{ section.settings.tle }}</h3>
+                  <div class="content-img-text">{{ section.settings.text }}</div>
+                </div>
+              </div>
+              </div>
+           </div>
+  </div>
+</section>
+{% schema %}
+{
+"name": "images-in-text",
+    "blocks": [
+  ],
+  "settings": [
+    {
+      "type": "text",
+      "id": "tle",
+      "label": "Title"
+    },
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Text"
+    },
+     {
+          "type": "text",
+          "id": "button_text",
+          "label": "Button text"
+        },
+        {
+          "type": "text",
+          "id": "button_link",
+          "label": "Button Link"
+        },
+      {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Images"
+        },
+     {
+          "type": "image_picker",
+          "id": "mobile_image",
+          "label": "Mobile Images"
+        },
+    {
+      "type": "select",
+      "id": "background_type",
+      "label": "Images mode",
+      "options": [
+        {
+          "value": "full_width",
+          "label": "Full width"
+        },
+        {
+          "value": "boxed",
+          "label": "Boxed"
+        }
+      ],
+      "default": "boxed"
+    },
+    {
+      "type": "select",
+      "id": "mobile_background_type",
+      "label": "Mobile Images mode",
+      "options": [
+        {
+          "value": "full_width",
+          "label": "Full width"
+        },
+        {
+          "value": "boxed",
+          "label": "Boxed"
+        }
+      ],
+      "default": "full_width"
+    },
+            {
+          "type": "select",
+          "id": "text_position",
+          "label": "Text position",
+          "options": [
+            {
+              "value": "top_left",
+              "label": "Top left"
+            },
+            {
+              "value": "top_center",
+              "label": "Top center"
+            },
+            {
+              "value": "top_right",
+              "label": "Top right"
+            },
+            {
+              "value": "middle_left",
+              "label": "Middle left"
+            },
+            {
+              "value": "middle_center",
+              "label": "Middle center"
+            },
+            {
+              "value": "middle_right",
+              "label": "Middle right"
+            },
+            {
+              "value": "bottom_left",
+              "label": "Bottom left"
+            },
+            {
+              "value": "bottom_center",
+              "label": "Bottom center"
+            },
+            {
+              "value": "bottom_right",
+              "label": "Bottom right"
+            }
+          ],
+          "default": "middle_center"
+        },
+         {
+          "type": "select",
+          "id": "mobile_text_position",
+          "label": "Mobile Text position",
+          "options": [
+            {
+              "value": "top_left",
+              "label": "Top left"
+            },
+            {
+              "value": "top_center",
+              "label": "Top center"
+            },
+            {
+              "value": "top_right",
+              "label": "Top right"
+            },
+            {
+              "value": "middle_left",
+              "label": "Middle left"
+            },
+            {
+              "value": "middle_center",
+              "label": "Middle center"
+            },
+            {
+              "value": "middle_right",
+              "label": "Middle right"
+            },
+            {
+              "value": "bottom_left",
+              "label": "Bottom left"
+            },
+            {
+              "value": "bottom_center",
+              "label": "Bottom center"
+            },
+            {
+              "value": "bottom_right",
+              "label": "Bottom right"
+            }
+          ],
+          "default": "middle_center"
+        },
+     {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 300,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 300,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 0
+    },
+     {
+      "type": "range",
+      "id": "mobile_padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Mobile Padding Top",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "mobile_padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Mobile Padding Bottom",
+      "default": 0
+    }
+  ],
+  "presets": [
+  {
+    "name": "images-in-text",
+    "blocks": []
+  }
+]
+}
+{% endschema %}

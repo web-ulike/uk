@@ -1,0 +1,682 @@
+<link rel="stylesheet" href="//www.ulike.com/cdn/shop/t/116/assets/swiper-bundle.min.css">
+<script src="//www.ulike.com/cdn/shop/t/116/assets/swiper-bundle.min.aio.min.js"></script>
+<style>
+.swiper-wrapper{height: auto;}
+.product-area-box {
+  position: relative;
+  z-index: 1;
+  padding: 50px 0;
+  background: #fff;
+}
+  
+.product-area-box .product-area-new-h3{
+  color: #000;
+  font-size: 30px;
+  font-weight: normal;
+  font-family: var(--heading-font-family);
+  line-height: 1.5;
+  margin:0;
+  margin-bottom:30px;
+}
+
+.product-area-box .product-area-swiper{
+  border-top: 1px solid #000;
+  border-bottom: 1px solid #000;
+  padding: 24px 0;
+}
+  
+.product-area-box .product-area-list {
+  display: flex;
+  gap: 20px;
+}
+
+.product-area-box .product-area-item {
+  position: relative;
+  overflow: hidden;
+  flex: 1;
+  z-index: 1;
+}
+
+.product-area-box .product-area-tag {
+  position: absolute;
+  background: #e7004c;
+  font-size: 12px;
+  font-family: var(--heading-font-family);
+  color: #fff;
+  top: 15px;
+  left: 15px;
+  z-index: 3;
+  padding: 8px 20px;
+  line-height: 1;
+  overflow: hidden;
+}
+
+.product-area-box .product-area-tag::before {
+  position: absolute;
+  content: '';
+  display: block;
+  width: 200%;
+  height: 200%;
+  z-index: 2;
+  background: linear-gradient(
+    -45deg,
+    rgba(255, 255, 255, 0) 40%,
+    rgba(255, 255, 255, 0.5) 50%,
+    rgba(255, 255, 255, 0) 60%
+  );
+  animation: scanning 3s linear infinite;
+}
+@keyframes scanning {
+  0% {
+    transform: translate(-100%, -100%);
+  }
+  100% {
+    transform: translate(100%, 100%);
+  }
+}
+
+.product-area-box .product-area-img-list {
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.product-area-box .product-area-img-item {
+  width: 100%;
+  overflow: hidden;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2;
+  display: none;
+}
+.product-area-box .product-area-img-item.active {
+  position: relative;
+  display: block;
+}
+.product-area-box .product-area-img-item.close {
+  z-index: 3;
+  transition: width 0.6s ease;
+  width: 0%;
+  height: 100%;
+  display: block;
+}
+.product-area-box .product-area-img-item.close .img {
+  width: auto;
+  max-width: none;
+  height: 100%;
+}
+.product-area-box .product-area-item .img {
+  display: block;
+  position: relative;
+  z-index: 1;
+  width: 100%;
+}
+
+.product-area-box .product-area-item .h-show {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.product-area-box .product-area-item .h-hide {
+  transition: opacity 0.4s ease;
+}
+
+@media (min-width: 991px) {
+  .product-area-box .product-area-img-item:hover .h-hide {
+    opacity: 0;
+  }
+  
+  .product-area-box .product-area-img-item:hover .h-show {
+    opacity: 1;
+  }
+  .product-area-box .product-area-btn-item:hover {
+    background: #3f3636;
+  }
+}
+
+.product-area-box .product-area-cont {
+  background: #f8f8f8;
+  padding: 32px 24px 24px;
+  position: relative;
+}
+
+.product-area-box .product-area-dot {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  z-index: 3;
+  display: flex;
+  gap: 12px;
+}
+
+.product-area-box .product-area-dot-item {
+  position: relative;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  cursor: pointer;
+  background: linear-gradient(to bottom, #fff 80%, rgba(0, 0, 0, 0.1) 100%);
+  box-shadow: inset 0px 0px 2px 1px rgba(0, 0, 0, 0.05),
+    inset 0px 0px 2px 1px rgba(255, 255, 255, 0.05);
+}
+
+.product-area-box .product-area-dot-item::after {
+  border-radius: inherit;
+  box-shadow: inset 0 1px 1px rgb(0 0 0 / 10%);
+  content: '';
+  display: block;
+  height: inherit;
+  position: absolute;
+  width: inherit;
+}
+
+.product-area-box .product-area-dot-item::before {
+  position: absolute;
+  content: '';
+  display: block;
+  width: 120%;
+  height: 120%;
+  border-radius: 50%;
+  border: 1px solid #d9d9d9;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.product-area-box .product-area-dot-item.active::before {
+  border-color: #000;
+}
+
+.product-area-box .product-area-cont-top {
+  position: relative;
+}
+
+.product-area-box .product-area-h3 {
+  font-size: 39px;
+  font-family: var(--heading-font-family);
+  color: #181a1d;
+  line-height: 1.2;
+  margin: 0;
+  letter-spacing: -0.5px;
+  font-weight: normal;
+}
+
+.product-area-box .product-area-p {
+  color: #181a1d;
+  font-size: 12px;
+  line-height: 1.7;
+  margin-top: 12px;
+}
+
+.product-area-box .product-area-star {
+  position: absolute;
+  right: 0;
+  top: 0px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: #190a0a;
+  font-size: 14px;
+  line-height: 1;
+  font-family: var(--heading-font-family);
+  cursor: pointer;
+}
+
+.product-area-box .product-area-star p {
+  margin: 0;
+}
+.product-area-box .product-area-star strong {
+  font-weight: normal;
+  text-decoration: underline;
+}
+
+.product-area-box .product-area-btn {
+  display: flex;
+  justify-content: center;
+  margin-top: 24px;
+  overflow: hidden;
+}
+
+.product-area-box .product-area-btn-item {
+  background: #000;
+  flex: 1;
+  color: #fff;
+  font-size: 16px;
+  height: 48px;
+  line-height: 1;
+  border-radius: 2px;
+  font-family: var(--heading-font-family);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap:10px;
+  transition: all 0.4s ease;
+}
+.product-area-box .product-area-btn-item p{
+  margin:0;
+}
+.product-area-box .product-area-btn-item p strong {
+  font-weight: normal;
+  margin-left: 20px;
+}
+
+
+.product-area-box .product-area-msg {
+  color: #65666a;
+  text-align: center;
+  font-size: 12px;
+  line-height: 1.6;
+  margin-top: 16px;
+}
+
+.product-area-box .product-area-pagination {
+  display: none;
+}
+
+@media (max-width: 1400px) {
+  .product-area-box .product-area-h3 {
+    font-size: 26px;
+  }
+  .product-area-box .product-area-p {
+    font-size: 16px;
+  }
+  .product-area-box .product-area-price {
+    font-size: 20px;
+  }
+  .product-area-box .product-area-btn-item {
+    height: 55px;
+  }
+}
+
+@media (max-width: 991px) {
+  .product-area-box {
+    padding-bottom: 60px;
+    overflow: hidden;
+  }
+ 
+  .product-area-box .product-area-list {
+    gap: 0;
+  }
+  .product-area-box .product-area-item {
+    flex: auto;
+    width: 100%;
+    min-width: 313px;
+  }
+  
+  .product-area-box .product-area-swiper{
+    padding-bottom:48px;
+  }
+  
+  .product-area-box .product-area-cont {
+    padding: 32px 12px 12px;
+  }
+
+  .product-area-box .product-area-h3 {
+    font-size: 25px;
+  }
+  .product-area-box .product-area-p {
+    font-size: 13px;
+    line-height: 1.5;
+    margin-top: 16px !important;
+  }
+
+  .product-area-box .product-area-star {
+    font-size: 12px;
+    gap: 8px;
+    top: 10px;
+  }
+
+  .product-area-box .product-area-star .star {
+    width: 63px;
+  }
+
+  .product-area-box .product-area-btn-item {
+    height: 44px;
+    font-size: 14px;
+  }
+
+  .product-area-box .product-area-dot {
+    gap: 13px;
+  }
+
+  .product-area-box .product-area-dot-item::before {
+    width: 130%;
+    height: 130%;
+  }
+
+  .product-area-box .product-area-dot-item {
+    width: 18px;
+    height: 18px;
+  }
+
+  .product-area-box .product-area-dot-item.active{
+    width: 20px;
+    height: 20px;
+  }
+
+  .product-area-box .product-area-tag {
+    font-size: 12px;
+    padding: 5px 12px;
+  }
+  .product-area-box .product-area-msg {
+    line-height: 1.5;
+    margin-top: 10px;
+  }
+
+  .product-area-box .product-area-pagination {
+    display: block;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 80px;
+    top: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .product-area-box .swiper-pagination-bullet {
+    background: #cdc6c7;
+    display: block;
+    opacity: 1;
+  }
+
+  .product-area-box .swiper-pagination-bullet-active {
+    background: #190a0a;
+  }
+  
+  .product-area-box .product-area-btn-item p strong {
+    margin-left: 8px;
+  }
+}
+</style>
+<section class="section-box">
+  <div class="product-area-box margin-left-diy">
+    {%- assign color_swatch_config = settings.color_swatch_config | newline_to_br | split: '<br />' -%}
+    <div class="container">
+      {%- if section.settings.title != blank -%}
+        <h3 class="product-area-new-h3">{{ section.settings.title }}</h3>
+      {%- endif -%}
+      <div class="product-area-swiper">
+        <div class="product-area-list swiper-wrapper">
+          {%- for block in section.blocks -%}
+              {%- liquid
+                assign se_stts = block.settings
+                if se_stts.product != blank
+                  assign product = se_stts.product
+                endif
+              -%}
+              <div class="product-area-item product-area-mp swiper-slide">
+                {%- if block.settings.tag != blank -%}
+                  <div class="product-area-tag">{{ block.settings.tag }}</div>
+                {%- endif -%}
+                <div class="product-area-img-list">
+                  {%- if block.settings.image != blank -%}
+                    <div class="product-area-img-item active">
+                      <img
+                        loading="lazy"
+                        class="img {% if block.settings.image_1 != blank %}h-hide{% endif %}"
+                        width="{{ block.settings.image.width }}"
+                        height="{{ block.settings.image.height }}"
+                        {% render 'image-attributes', image: block.settings.image %}
+                        alt="{{ block.settings.image.alt | escape }}"
+                      >                  
+                      {%- if block.settings.image_1 != blank -%}
+                        <img
+                          loading="lazy"
+                          class="img h-show"
+                          width="{{ block.settings.image_1.width }}"
+                          height="{{ block.settings.image_1.height }}"
+                          {% render 'image-attributes', image: block.settings.image_1 %}
+                          alt="{{ block.settings.image_1.alt | escape }}"
+                        >
+                      {%- endif -%}
+                    </div>
+                  {%- endif -%}
+                  {%- if block.settings.image1 != blank -%}
+                    <div class="product-area-img-item">
+                      <img
+                        loading="lazy"
+                        class="img {% if block.settings.image1_1 != blank %}h-hide{% endif %}"
+                        width="{{ block.settings.image1.width }}"
+                        height="{{ block.settings.image1.height }}"
+                        {% render 'image-attributes', image: block.settings.image1 %}
+                        alt="{{ block.settings.image1.alt | escape }}"
+                      >
+                      {%- if block.settings.image1_1 != blank -%}
+                        <img
+                          loading="lazy"
+                          class="img h-show"
+                          width="{{ block.settings.image1_1.width }}"
+                          height="{{ block.settings.image1_1.height }}"
+                          {% render 'image-attributes', image: block.settings.image1_1 %}
+                          alt="{{ block.settings.image1_1.alt | escape }}"
+                        >
+                      {%- endif -%}
+                    </div>
+                  {%- endif -%}
+                  {%- if block.settings.image2 != blank -%}
+                    <div class="product-area-img-item">
+                      <img
+                        loading="lazy"
+                        class="img {% if block.settings.image2_1 != blank %}h-hide{% endif %}"
+                        width="{{ block.settings.image2.width }}"
+                        height="{{ block.settings.image2.height }}"
+                        {% render 'image-attributes', image: block.settings.image2 %}
+                        alt="{{ block.settings.image2.alt | escape }}"
+                      >
+                      {%- if block.settings.image2_1 != blank -%}
+                        <img
+                          loading="lazy"
+                          class="img h-show"
+                          width="{{ block.settings.image2_1.width }}"
+                          height="{{ block.settings.image2_1.height }}"
+                          {% render 'image-attributes', image: block.settings.image2_1 %}
+                          alt="{{ block.settings.image2_1.alt | escape }}"
+                        >
+                      {%- endif -%}
+                    </div>
+                  {%- endif -%}
+                </div>
+                <div class="product-area-cont">
+                  <div class="product-area-cont-top">
+                    {%- if block.settings.title != blank -%}
+                      <h3 class="product-area-h3">
+                        {{ block.settings.title }}
+                      </h3>
+                    {%- endif -%}
+                    {%- if block.settings.content != blank -%}
+                      <div class="product-area-p">
+                        {{ block.settings.content }}
+                      </div>
+                    {%- endif -%}
+                    <div class="product-area-dot">
+                      {%- if block.settings.color != blank -%}
+                        <div class="product-area-dot-item active" style="{% render 'color-swatch-style', color_swatch_config: color_swatch_config, value: block.settings.color %};background-size: 100% 100%;"></div>
+                      {%- endif -%}
+                      {%- if block.settings.color1 != blank -%}
+                        <div class="product-area-dot-item" style="{% render 'color-swatch-style', color_swatch_config: color_swatch_config, value: block.settings.color1 %};background-size: 100% 100%;"></div>
+                      {%- endif -%}
+                      {%- if block.settings.color2 != blank -%}
+                        <div class="product-area-dot-item" style="{% render 'color-swatch-style', color_swatch_config: color_swatch_config, value: block.settings.color2 %};background-size: 100% 100%;"></div>
+                      {%- endif -%}
+                    </div>
+                  </div>
+                  {%- if block.settings.btn_txt != blank -%}
+                    <div class="product-area-btn-box">
+                      <div class="product-area-btn">
+                        <a href="{{ block.settings.link }}" title="{{ block.settings.title }}" aria-label="{{ block.settings.title }}" class="product-area-btn-item">
+                          {{ block.settings.btn_txt }}
+                            {% if product.selected_or_first_available_variant.metafields.custom.page_price != blank %}
+                              {{
+                                product.selected_or_first_available_variant.metafields.custom.page_price
+                                | times: 100
+                                | money
+                              }}
+                            {% endif %}
+                        </a>
+                      </div>
+                    </div>
+                  {%- endif -%}
+                  {%- if block.settings.msg_txt != blank -%}
+                    <div class="product-area-msg">{{ block.settings.msg_txt }}</div>
+                  {%- endif -%}
+                </div>
+              </div>
+          {%- endfor -%} 
+        </div>
+      </div>
+    </div>
+    <div class="product-area-pagination"></div>
+  </div>
+</section>
+<script>
+  if (window.innerWidth < 991) {
+    let swiper{{ section.id | replace: "template--", "" | replace: "__", ""  }} = new Swiper(".product-area-swiper", {
+      slidesPerView: "auto",
+      spaceBetween: 16,
+      pagination: {
+        el: ".product-area-pagination",
+        clickable: true,
+      },
+    });
+  }
+  window.addEventListener('load', function () {
+    $('html').on('click', '.product-area-box .product-area-dot-item', function () {
+      let $this = $(this)
+      let index = $this.index()
+      if ($this.hasClass('active')) return
+      $this.closest('.product-area-item').find('.product-area-img-item.close').removeClass('close')
+      $this.addClass('active').siblings().removeClass('active')
+      $this.closest('.product-area-item').find('.product-area-img-item.active').removeClass('active').addClass('close')
+      $this.closest('.product-area-item').find('.product-area-img-item').eq(index).addClass('active')
+      setTimeout(() => {
+        $this.closest('.product-area-item').find('.product-area-img-item.close').removeClass('close')
+      }, 600)
+    })
+  });
+  
+</script>
+{% schema %}
+{
+  "name": "product-area-new",
+  "blocks": [
+    {
+      "name": "item",
+      "type": "item",
+      "settings": [
+        {
+          "type": "product",
+          "id": "product",
+          "label": "产品选择"
+        },
+        {
+          "type": "text",
+          "id": "tag",
+          "label": "label"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_1",
+          "label": "Hover Image"
+        },
+        {
+          "type": "text",
+          "id": "color",
+          "label": "Color"
+        },
+        {
+          "type": "image_picker",
+          "id": "image1",
+          "label": "Image"
+        },
+        {
+          "type": "image_picker",
+          "id": "image1_1",
+          "label": "Hover Image"
+        },
+        {
+          "type": "text",
+          "id": "color1",
+          "label": "Color"
+        },
+        {
+          "type": "image_picker",
+          "id": "image2",
+          "label": "Image"
+        },
+        {
+          "type": "image_picker",
+          "id": "image2_1",
+          "label": "Hover Image"
+        },
+        {
+          "type": "text",
+          "id": "color2",
+          "label": "Color"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default":"Ulike Air 10"
+        },
+        {
+          "type": "richtext",
+          "id": "content",
+          "label": "Heading",
+          "default":"<p>Visible results in 3 weeks Full body treatments in 12 minutes</p>"
+        },
+        {
+          "type": "text",
+          "id": "btn_txt",
+          "label": "Button text",
+          "default":"SHOP NOW"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        },
+        {
+          "type": "text",
+          "id": "msg_txt",
+          "label": "Text"
+        }
+      ]
+    }
+  ],
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title"
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background",
+      "default": "rgba(0,0,0,0)"
+    }
+  ],
+  "presets": [
+    {
+      "name": "product-area-new",
+      "blocks": []
+    }
+  ]
+}
+{% endschema %}

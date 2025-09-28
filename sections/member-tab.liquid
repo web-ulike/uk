@@ -1,0 +1,161 @@
+<style>
+#shopify-section-{{ section.id }}{
+  position: sticky;
+  top: 80px;
+  z-index: 4;
+}
+  
+.member-tab {
+  border-top: 1px solid #e4dddd;
+  border-bottom: 1px solid #e4dddd;
+  background: #fbfaf4;
+}
+
+.member-tab .member-tab-cont {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.member-tab .member-tab-list {
+  display: flex;
+  gap: 30px;
+}
+
+.member-tab .member-tab-item {
+  color: #3f3636;
+  font-size: 16px;
+  line-height: 1.1;
+  letter-spacing: 0.32px;
+  opacity: 0.5;
+  height: 69px;
+  margin-bottom: -1px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.member-tab .member-tab-item.active {
+  opacity: 1;
+  color: #e0004d;
+  font-family: var(--heading-font-family);
+  border-bottom: 2px solid #e0004d;
+}
+
+.member-tab .member-tab-btn {
+  color: #fbfaf4;
+  font-size: 14px;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  height: 37px;
+  padding: 0 30px;
+  background: #e0004d;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+.member-tab .member-tab-btn:hover {
+  opacity: 0.7;
+}
+
+@media (max-width: 991px) {
+  #shopify-section-{{ section.id }}{
+    top: 60px;
+  }
+  
+  .member-tab .member-tab-list {
+    gap: 20px;
+  }
+
+  .member-tab .member-tab-item {
+    font-size: 12px;
+    height: 50px;
+  }
+
+  .member-tab .member-tab-btn {
+    height: 27px;
+    font-size: 12px;
+    padding: 0 20px;
+  }
+}
+</style>
+<section class="section-box">
+  <div class="member-tab">
+    <div class="container">
+      <div class="member-tab-cont">
+        <div class="member-tab-list">
+          {%- for block in section.blocks -%}
+            <a href="{{ block.settings.link }}" class="member-tab-item">{{ block.settings.text }}</a>
+          {% endfor %}
+        </div>
+        {%- if section.settings.text != blank -%}
+          <a href="{{ section.settings.link }}" class="member-tab-btn">{{ section.settings.text }}</a>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+  window.addEventListener('load',function(){
+    window.addEventListener('scroll',function(){
+      const scrollPosition = window.scrollY || window.pageYOffset;
+      $('.member-tab .member-tab-item').removeClass('active')
+      document.querySelectorAll('.member-tab .member-tab-item').forEach(item=>{
+        let classN = item.getAttribute('href')
+        if(!classN || !document.querySelector(classN)) return
+        const sectionTop = document.querySelector(classN).offsetTop;
+        const sectionHeight = document.querySelector(classN).offsetHeight;
+        if (scrollPosition >= sectionTop -120 && scrollPosition < (sectionTop + sectionHeight)-150) {
+            // 移除之前高亮的导航
+            $('.member-tab .member-tab-item').removeClass('active')
+            // 高亮对应导航
+            item.classList.add('active');
+        }
+      })
+    })
+  })
+</script>
+{% schema %}
+{
+"name": "member-tab",
+"blocks": [
+    {
+    "name": "item",
+    "type": "item",
+    "settings": [
+      {
+        "type": "text",
+        "id": "text",
+        "label": "Text",
+        "default":"Join Now"
+      },
+      {
+        "type": "text",
+        "id": "link",
+        "label": "Link"
+      }
+    ]
+    }
+  ],
+  "settings": [
+    {
+      "type": "text",
+      "id": "text",
+      "label": "按钮文案",
+      "default":"Quick Login"
+    },
+    {
+      "type": "url",
+      "id": "link",
+      "label": "链接"
+    }
+  ],
+  "presets": [
+    {
+      "name": "member-tab",
+      "blocks": []
+    }
+  ]
+}
+{% endschema %}

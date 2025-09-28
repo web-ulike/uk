@@ -1,0 +1,423 @@
+<style>
+      .section-{{ section.id }}-padding {
+        padding-top: calc({{ section.settings.padding_top }}px);
+        padding-bottom: calc({{ section.settings.padding_bottom }}px);
+      }
+      @media screen and (max-width: 768px){
+      .section-{{ section.id }}-padding {
+        padding-top: calc({{ section.settings.mobile_padding_top }}px);
+        padding-bottom: calc({{ section.settings.mobile_padding_bottom }}px);
+      }
+    }
+    .summer_slide-img-container {
+      width: 100%;
+      max-width: 1576px;
+      margin-left: auto;
+      margin-right: auto;
+      padding-left: var(--container-gutter);
+      padding-right: var(--container-gutter);
+      --container-outer-margin: 0px;
+    }
+    .summer_slide-box {
+      display: flex;
+      gap:108px;
+    }
+      .summer_slide-left {
+        flex:1;
+    }
+      .summer_slide-right {
+        flex:1;
+    }
+    .summer_slide-left h2{
+      color:  #190A0A;
+      font-size: 60px;
+      font-family: var(--heading-font-family);
+      font-style: normal;
+      font-weight: 380;
+      line-height: 120%;
+      margin-bottom: 25px;
+    }
+    .summer_slide-top{
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 18px 0px;
+      cursor: pointer;
+      position: relative;
+    }
+    .summer_slide-list {
+      border-bottom: 1px solid #CFCFCF;
+      margin-left:54px;
+     }
+    .summer_slide-top h3{
+      color:#190A0A;
+      font-size: 25px;
+      font-weight: normal;
+      line-height: 1.2;
+      font-family: var(--heading-font-family);
+    }
+    .summer_slide-bt{
+      color: #190A0A;
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 300;
+      line-height: 1.2;
+      padding-bottom: 24px;
+      display: none;
+    }
+    .summer_slide-list .summer_slide-top svg{
+      transition: all 0.3s;
+    }
+    .summer_slide-list.is-active .summer_slide-top svg{
+      transform: rotate(180deg);
+    }
+    .summer_slide-left .summer_slide-list:nth-of-type(1) .summer_slide-bt{
+      display: block;
+    }
+    .summer_slide-right .summer_slide-pic{
+      display: none;
+      border-radius: 8px;
+      overflow: hidden;
+      position: relative;
+      padding-top:70%;
+    }
+  .summer_slide-right .summer_slide-pic .img{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    object-fit: cover;
+    z-index: 1;
+  }
+  .summer_slide-right .summer_slide-pic .video-wrapper--native{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    object-fit: cover;
+    z-index: 2;
+  }
+
+  .summer_slide-right .summer_slide-pic .video-wrapper__play-button{
+      margin: 0;
+      width: 60px;
+      position: absolute;
+      right: 25px;
+      bottom: 25px;
+  }
+  .summer_slide-right .summer_slide-pic .video-wrapper__play-button svg{
+    width:100%;
+    height:auto;
+    display:block;
+  }
+  .summer_slide-right .summer_slide-pic .video-wrapper--native video {
+    width: 100%;
+    height: 101%;
+    object-fit: cover;
+  }
+    .summer_slide-right .summer_slide-pic:nth-of-type(1){
+      display: block;
+    }
+  .summer_slide-bt .summer_slide-img{
+    display: none;
+    margin-top: 30px;
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+    padding-top:70%;
+  }
+
+  .summer_slide-bt .summer_slide-img .img{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    object-fit: cover;
+    z-index: 1;
+  }
+  .summer_slide-bt .summer_slide-img .video-wrapper--native{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    object-fit: cover;
+    z-index: 2;
+  }
+
+  .summer_slide-bt .summer_slide-img .video-wrapper__play-button{
+      margin: 0;
+      width: 60px;
+      position: absolute;
+      right: 25px;
+      bottom: 25px;
+  }
+  .summer_slide-bt .summer_slide-img .video-wrapper__play-button svg{
+    width:100%;
+    height:auto;
+    display:block;
+  }
+  .summer_slide-bt .summer_slide-img .video-wrapper--native video {
+    width: 100%;
+    height: 101%;
+    object-fit: cover;
+  }
+
+  .summer_slide-bt-txt{
+    max-width:500px;
+    margin-top:12px;
+  }
+
+  .summer_slide-list.is-active{
+    border:0;
+  }
+
+  .is-active .summer_slide-top{
+    border-bottom: 1px solid #000;
+  }
+
+  .num-span{
+    color: #000;
+    font-size: 20px;
+    line-height: 1.2;
+    position: absolute;
+    top: 50%;
+    left: -54px;
+    transform: translateY(-50%);
+    font-feature-settings: "tnum";
+  }
+@media screen and (max-width: 767px) {
+  .summer_slide-box {
+    flex-direction: column;
+  }
+  .summer_slide-left {
+    flex-basis: 100%;
+    padding-right: 0px;
+  }
+  .summer_slide-right {
+    flex-basis: 100%;
+    display: none;
+  }
+    .summer_slide-left h2{
+      font-size: 28px;
+      margin-bottom:15px;
+    }
+    .summer_slide-top h3{
+       font-size: 18px;
+    }
+    .summer_slide-bt{
+      font-size: 14px;
+      padding-bottom: 0;
+    }
+  .summer_slide-bt .summer_slide-img{
+    display: block;
+    margin-top:15px;
+  }
+  .summer_slide-list{
+    margin-left: 25px;
+  }
+  .num-span{
+    left:-25px;
+    font-size:16px;
+  }
+  .summer_slide-bt .summer_slide-img .video-wrapper__play-button {
+    width: 40px;
+    right: 15px;
+    bottom: 15px;
+}
+}
+</style>
+<section>
+  <div class="section-{{ section.id }}-padding summer-slide-img">
+    <div class="container">
+      <div class="summer_slide-box">
+        <div class="summer_slide-left">
+          <h2 class="to-top" style="transition-delay: 0.1s;">{{ section.settings.tle }}</h2>
+          {%- for block in section.blocks -%}
+            <div
+              class="summer_slide-list to-top{% if forloop.index == 1 %} is-active{% endif %}"
+              data-index="{{  forloop.index }}"
+              style="transition-delay: 0.{{  forloop.index }}s;"
+            >
+              <div class="summer_slide-top">
+                <span class="num-span">({{ forloop.index }})</span>
+                <h3>{{ block.settings.tle }}</h3>
+                <svg xmlns="http://www.w3.org/2000/svg" width="21" height="12" viewBox="0 0 21 12" fill="none">
+                  <path d="M3.2168 3.29102L11.2168 10.291L18.2168 3.29102" stroke="#86868B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <div class="summer_slide-bt">
+                <div class="summer_slide-bt-txt">
+                  {{ block.settings.sub_tle }}
+                </div>
+
+                <div class="summer_slide-img">
+                  {%- if block.settings.image -%}
+                    <img width="" height="" src="{{ block.settings.image | image_url }}" class="img">
+                  {%- endif -%}
+                  {%- if block.settings.video != blank -%}
+                    <native-video class="video-wrapper video-wrapper--native">
+                      <button type="button" class="video-wrapper__play-button video-wrapper__play-button--large video-wrapper__play-button--ripple">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="61" height="61" viewBox="0 0 61 61" fill="none">
+                          <path d="M30.46 60.92C47.2826 60.92 60.92 47.2826 60.92 30.46C60.92 13.6374 47.2826 0 30.46 0C13.6374 0 0 13.6374 0 30.46C0 47.2826 13.6374 60.92 30.46 60.92Z" fill="white"/>
+                          <path d="M39.0999 30.5459L26.3809 40.0928V21L39.0999 30.5459Z" fill="black"/>
+                        </svg>
+                      </button>
+                        <template>
+                          {{- block.settings.video | video_tag: controls: false, autoplay: false, muted: true, playsinline: true, loop: true -}}
+                        </template>
+                      </native-video>
+                    {%- endif -%}
+                </div>
+              </div>
+            </div>
+          {%- endfor -%}
+        </div>
+        <div class="summer_slide-right to-top" style="transition-delay: 0.6s;">
+          {%- for block in section.blocks -%}
+            <div class="summer_slide-pic">
+              {%- if block.settings.image -%}
+                {{-
+                  block.settings.image
+                  | image_url: width: block.settings.image.width
+                  | image_tag:
+                    loading: 'eager',
+                    sizes: '100vw',
+                    widths: '300,400,500,600,700,800,900,1000,1200,1400,1600,1800,2000,2200,2400,2600,2800,3000,3200',
+                    class: 'img'
+                -}}
+              {%- endif -%}
+            {%- if block.settings.video != blank -%}
+              <native-video class="video-wrapper video-wrapper--native">
+                <button type="button" class="video-wrapper__play-button video-wrapper__play-button--large video-wrapper__play-button--ripple">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="61" height="61" viewBox="0 0 61 61" fill="none">
+                    <path d="M30.46 60.92C47.2826 60.92 60.92 47.2826 60.92 30.46C60.92 13.6374 47.2826 0 30.46 0C13.6374 0 0 13.6374 0 30.46C0 47.2826 13.6374 60.92 30.46 60.92Z" fill="white"/>
+                    <path d="M39.0999 30.5459L26.3809 40.0928V21L39.0999 30.5459Z" fill="black"/>
+                  </svg>
+                </button>
+                  <template>
+                    {{- block.settings.video | video_tag: controls: false, autoplay: false, muted: true, playsinline: true, loop: true -}}
+                  </template>
+                </native-video>
+              {%- endif -%}
+            </div>
+          {%- endfor -%}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+  $('html').on('click', '.summer_slide-box .summer_slide-top', function () {
+       let $this = $(this);
+       $this.siblings('.summer_slide-bt').slideToggle();
+       $this
+         .parents('.summer_slide-list')
+         .toggleClass('is-active')
+         .siblings('.summer_slide-list')
+         .removeClass('is-active')
+         .find('.summer_slide-bt')
+         .slideUp();
+
+    let index = $this.parents('.summer_slide-list').data('index');
+      console.log('Data Index:', index);
+      $this.parents('.summer_slide-list').parents('.summer_slide-left').siblings('.summer_slide-right').find('.summer_slide-pic').hide();
+      $this.parents('.summer_slide-list').parents('.summer_slide-left').siblings('.summer_slide-right').find('.summer_slide-pic').eq(index-1).show();
+     });
+</script>
+{% schema %}
+{
+  "name": "summer-slide-image-new",
+  "class": "shopify-section--summer-slide-img",
+  "settings": [
+    {
+      "type": "richtext",
+      "id": "tle",
+      "label": "Title"
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "上边距",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "下边距",
+      "default": 48
+    },
+      {
+      "type": "range",
+      "id": "mobile_padding_top",
+      "min": 0,
+      "max": 400,
+      "step": 4,
+      "unit": "px",
+      "label": "Mobile Padding Top",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "mobile_padding_bottom",
+      "min": 0,
+      "max": 300,
+      "step": 4,
+      "unit": "px",
+      "label": "Mobile Padding Bottom",
+      "default": 40
+    }
+  ],
+  "blocks": [
+     {
+        "type": "item",
+        "name": "item",
+        "settings": [
+           {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Images"
+        },
+        {
+          "type": "video",
+          "id": "video",
+          "label": "Video",
+          "info": "Replaces the external video if both are set."
+        },
+           {
+      "type": "text",
+      "id": "tle",
+      "label": "Title"
+    },
+           {
+      "type": "text",
+      "id": "sub_tle",
+      "label": "subTitle"
+    }
+        ]
+      }
+  ],
+  "presets": [
+    {
+      "name": "summer-slide-image-new"
+    }
+  ]
+}
+{% endschema %}

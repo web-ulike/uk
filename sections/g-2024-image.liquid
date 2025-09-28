@@ -1,0 +1,202 @@
+{%- liquid
+  assign se_id = section.id
+  assign se_bks = section.blocks
+  assign se_stts = section.settings
+-%}
+<style type="text/css">
+    .g-2024-act-image_{{ se_id }} {
+      padding: 80px 60px 60px;
+      width: 100%;
+      display: flex;
+    }
+    .g-2024-act-image_{{ se_id }} .slide-left {
+      width: 34%;
+      min-width: 500px;
+      padding: 5% 0px 5%;
+    }
+    .g-2024-act-image_{{ se_id }} .slide-left .title {
+      color: var(--Ulike, #190A0A);
+      font-size: 48px;
+      line-height: 130%;
+      font-family: var(--heading-font-family);
+    }
+    .g-2024-act-image_{{ se_id }} .slide-left .title span{
+      color: #E0004D;
+      font-size: 48px;
+      font-family: var(--heading-font-family);
+      line-height: 130%;
+    }
+    .g-2024-act-image_{{ se_id }} .slide-left .desc {
+      color: #190A0A;
+      font-size: 18px;
+      line-height: 150%;
+      margin-top: 30px;
+    }
+    .g-2024-act-image_{{ se_id }} .slide-right {
+      flex: 1;
+      padding: 0px 0px 0px 40px;
+      display: flex;
+      justify-content: flex-end;
+    }
+    .g-2024-act-image_{{ se_id }} .slide-right .swiper-slide {
+       max-width: 340px;
+       width: 30%;
+    }
+    .g-2024-act-image_{{ se_id }} .slide-right .swiper-slide h3{
+      color: #272724;
+      text-align: center;
+      font-size: 30px;
+      font-weight: 400;
+      line-height: 120%;
+      margin: 15px 0px 10px;
+   }
+   .g-2024-act-image_{{ se_id }} .slide-right .swiper-slide p{
+     color: #3F3636;
+     text-align: center;
+     font-size: 18px;
+     line-height: 150%;
+     margin: 0px;
+  }
+  @media (max-width: 991px) {
+    .g-2024-act-image_{{ se_id }} {
+      padding: 40px 15px 40px;
+      width: 100%;
+      display: block;
+    }
+    .g-2024-act-image_{{ se_id }} .slide-left {
+      width: 100%;
+      min-width: initial;
+      {% comment %} padding: 5% 0px 5%; {% endcomment %}
+    }
+
+    .g-2024-act-image_{{ se_id }} .slide-left .title ,
+    .g-2024-act-image_{{ se_id }} .slide-left .title span{
+      font-size: 26px;
+    }
+    .g-2024-act-image_{{ se_id }} .slide-left .desc {
+      font-size: 14px;
+      margin-top: 15px;
+    }
+    .g-2024-act-image_{{ se_id }} .slide-right {
+      padding: 10px 0px 50px 0px;
+      display: block;
+      overflow: auto;
+    }
+
+    .g-2024-act-image_{{ se_id }} .slide-right .swiper-slide {
+      width: 84%;
+    }
+    .g-2024-act-image_{{ se_id }} .slide-right .swiper-slide h3 {
+      font-size: 22px;
+      margin: 10px 0px 4px;
+    }
+    .g-2024-act-image_{{ se_id }} .slide-right .swiper-slide p {
+      font-size: 14px;
+    }
+  }
+</style>
+<div class="g-2024-act-image_{{ se_id }}">
+  <div class="slide-left to-top">
+    <div class="title">{{ se_stts.title }}</div>
+    <div class="desc">{{ se_stts.desc }}</div>
+  </div>
+  <div class="slide-right to-top">
+    <div class="mySwiper_{{- se_id }}  swiper-container">
+      <div class="swiper-wrapper">
+        {% for block in se_bks %}
+          <div class="swiper-slide">
+            {{-
+              block.settings.image
+              | image_url: width: block.settings.image.width
+              | image_tag: loading: 'lazy', draggable: false, alt: block.settings.name
+            -}}
+            <h3>{{ block.settings.name }}</h3>
+            <p>{{ block.settings.desc }}</p>
+          </div>
+        {% endfor -%}
+      </div>
+    </div>
+  </div>
+</div>
+<link rel="stylesheet" href="https://cdn.shopify.com/s/files/1/0740/5882/6015/files/swiper-bundle.min.css?v=1712905202">
+<script src="https://cdn.shopify.com/s/files/1/0740/5882/6015/files/swiper-bundle.min.js?v=1712905203"></script>
+
+<script>
+  $(function () {
+    var swiper = new Swiper('.mySwiper_{{- se_id -}}', {
+      spaceBetween: isMobileW() ? 15 : 15,
+      slidesPerView: 'auto',
+      lazy: {
+        loadPrevNext: true, // 预加载前后两张图片
+      },
+    });
+  });
+</script>
+
+{% schema %}
+{
+  "name": "g-2024-act-image",
+  "settings": [
+    {
+      "type": "html",
+      "id": "title",
+      "label": "标题"
+    },
+    {
+      "type": "textarea",
+      "id": "desc",
+      "label": "标题"
+    },
+    {
+      "type": "image_picker",
+      "id": "m_image",
+      "label": "移动端图片"
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "options": [
+        {
+          "value": "nt_full",
+          "label": "Full Width"
+        },
+        {
+          "value": "container",
+          "label": "Container"
+        }
+      ],
+      "label": "Layout"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "item",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "图片"
+        },
+        {
+          "type": "textarea",
+          "id": "name",
+          "label": "名称"
+        },
+        {
+          "type": "textarea",
+          "id": "desc",
+          "label": "介绍"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "g-2024-act-image",
+      "category": "g-2024-act-image",
+      "blocks": []
+    }
+  ]
+}
+{% endschema %}

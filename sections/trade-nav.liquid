@@ -1,0 +1,211 @@
+<style>
+  .shopify-section--trade-nav{
+      border-top: 1px solid rgb(217, 217, 217);
+  border-bottom: 1px solid rgb(217, 217, 217);
+        position: sticky;
+    width: 100%;
+    top: calc(var(--header-height));
+    background: #fff;
+    z-index:10;
+  }
+.trade_nav-wrapper{
+  /* position: sticky;
+  width: 100%;
+  top: 0; */
+  background: #fff;
+}
+.trade_nav-box{
+  display: flex;
+  justify-content: space-between;
+  padding: 20px 0px;
+  align-items: center;
+}
+.trade_nav-left{
+  color: #190A0A;
+  font-size: 21px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  margin-bottom:0
+}
+.trade_nav-right{
+  display: inline-flex;
+padding: 10px 25px;
+justify-content: center;
+align-items: center;
+gap: 10px;
+border-radius: 34px;
+background:  #190A0A;
+color:  #FBFAF4;
+font-size: 12px;
+font-style: normal;
+font-weight: 400;
+line-height: 110%;
+text-transform: uppercase;
+  border:1px solid #190A0A;
+}
+  .trade_nav-right.custom_bt {
+    padding: 13px 40px;
+  }
+.trade_nav-right:hover{
+  color:  #190A0A;
+  background:  #ffffff;
+}
+.Button_root__animate{
+  position: relative;
+    display: block;
+    width: 100%;
+    overflow: hidden;
+    border-radius: 9999px;
+    text-align: center;
+    max-width: 310px;
+    font-size: 16px;
+    height: 46px;
+    line-height: 46px;
+    font-weight: 600;
+      color: #fff;
+    background: #190A0A;
+}
+  button:hover  {
+  color:#190A0A;
+}
+button:hover .Button_mask__animate {
+    left: 0;
+}
+.Button_mask__animate {
+    position: absolute;
+    top: 0;
+    z-index: 1;
+    height: 100%;
+    width: 101%;
+    border-radius: 9999px;
+    left: -101%;
+    pointer-events: none;
+    background: #fff;
+    transition: all .4s ease-out;
+}
+
+.Button_shadowBox__animate {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    height: 100%;
+    width: 100%;
+    border-radius: 9999px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .3s ease-in-out;
+    animation: Button_shadowShow__DGrSw .8s ease-in-out infinite reverse;
+}
+  .Button_content__animate {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 3;
+    height: 100%;
+    width: 100%;
+}
+@media screen and (max-width: 767px) {
+  .trade_nav-box{
+    padding: 15px 0px;
+  }
+  .trade_nav-left {
+    font-size: 18px;
+}
+.trade_nav-right{
+  font-size: 11px;
+  padding: 7px 20px;
+}
+.container{
+  padding: 0 20px;
+}
+}
+</style>
+ <section>
+    <div class="trade_nav-wrapper container">
+      <div class="trade_nav-box">
+        {%- if section.settings.title != blank -%}
+          <h3 class="trade_nav-left">{{ section.settings.title | escape }}</h3>
+        {%- endif -%}
+       {%- if section.settings.link_url != blank -%}
+        <a href="{{ section.settings.link_url }}" class="trade_nav-right">
+          {{ section.settings.link_txt | escape }}
+        </a>
+
+       <!-- <button class="Button_root__animate">
+      <span class="Button_mask__animate"></span>
+      <span class="Button_shadowBox__animate"></span>
+      <div class="Button_content__animate">
+        <a class="link_animate" href="{{ section.settings.link_url }}">{{ section.settings.link_txt | escape }}</a>
+      </div>
+    </button> -->
+         
+        {%- endif -%}
+      </div>
+    </div>
+  </section>
+<script>
+</script>
+{% schema %}
+{
+  "name": "Trade Nav",
+  "class": "shopify-section--trade-nav", 
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title"
+    },
+     {
+      "type": "text",
+      "id": "link_txt",
+      "label": "Trade Nav Text"
+    },
+    {
+      "type": "url",
+      "id": "link_url",
+      "label": "Trade Nav Link"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 40
+    }
+  ],
+  "blocks": [
+  ],
+  "presets": [
+    {
+      "name": "Trade Nav"
+    }
+  ]
+}
+{% endschema %}

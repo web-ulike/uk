@@ -1,0 +1,260 @@
+<style>
+.technology-skin {
+  padding: 50px 0;
+}
+
+.technology-skin .technology-skin-h3 {
+  color: #190a0a;
+  text-align: center;
+  font-size: 32px;
+  line-height: 1.25;
+  font-weight: normal;
+  font-family: var(--heading-font-family);
+  margin: 0;
+}
+
+.technology-skin .technology-skin-p {
+  color: #190a0a;
+  text-align: center;
+  font-size: 24px;
+  line-height: 1.5;
+  font-family: var(--heading-font-family);
+  margin: 0;
+  margin-top: 16px;
+}
+
+.technology-skin .technology-skin-silde {
+  margin-top: 40px;
+}
+
+.technology-skin .technology-skin-list {
+  display: flex;
+  gap: 20px;
+}
+
+.technology-skin .technology-skin-item {
+  width: calc(33.333% - 13px);
+}
+
+.technology-skin .img {
+  width: 100%;
+}
+
+.technology-skin .technology-skin-txt {
+  margin-top: 24px;
+}
+
+.technology-skin .technology-skin-h4 {
+  color: #190a0a;
+  font-size: 24px;
+  line-height: 1.8;
+  font-weight: normal;
+  font-family: var(--heading-font-family);
+  margin: 0;
+}
+
+.technology-skin .technology-skin-text-p {
+  color: #190a0a;
+  font-size: 16px;
+  line-height: 1.6;
+  margin: 0;
+  margin-top: 16px;
+}
+
+.technology-skin .technology-skin-arraws {
+  display: none;
+}
+
+.border-skin .technology-skin-cont {
+  padding-bottom: 24px;
+  border-bottom: 1px solid #190a0a;
+}
+
+@media (max-width: 991px) {
+  .technology-skin {
+    overflow: hidden;
+  }
+
+  .border-skin {
+    padding-bottom: 24px;
+  }
+
+  .technology-skin .technology-skin-h3 {
+    font-size: 20px;
+  }
+
+  .technology-skin .technology-skin-p {
+    font-size: 16px;
+    margin-top: 32px;
+  }
+
+  .technology-skin .technology-skin-silde {
+    margin-top: 16px;
+  }
+  .technology-skin .technology-skin-list {
+    gap: 0;
+  }
+  .technology-skin .technology-skin-item {
+    min-width: 320px;
+    flex-shrink: 0;
+  }
+
+  .technology-skin .technology-skin-arraws {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 40px;
+    gap: 40px;
+  }
+
+  .technology-skin .technology-skin-arraw {
+    width: 40px;
+    cursor: pointer;
+  }
+
+  .technology-skin .technology-skin-arraw svg {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .technology-skin .swiper-button-disabled {
+    opacity: 0.25;
+    cursor: default;
+  }
+
+  .technology-skin .technology-skin-txt {
+    margin-top: 18px;
+  }
+
+  .technology-skin .technology-skin-h4 {
+    font-size: 20px;
+  }
+
+  .technology-skin .technology-skin-text-p {
+    font-size: 14px;
+    margin-top: 12px;
+  }
+}
+</style>
+<section class="section-box">
+  <div class="technology-skin mini-cont {{ section.settings.diy_class }}">
+    <div class="container">
+      <div class="technology-skin-cont">
+        {%- if section.settings.text != blank -%}
+          <h3 class="technology-skin-h3">{{ section.settings.text }}</h3>
+        {%- endif -%}
+        {%- if section.settings.text != blank -%}
+          <p class="technology-skin-p">{{ section.settings.text1 }}</p>
+        {%- endif -%}
+        <div class="technology-skin-silde">
+          <div class="technology-skin-list swiper-wrapper">
+            {%- for block in section.blocks -%}
+              <div class="technology-skin-item swiper-slide">
+                {%- if block.settings.image != blank -%}
+                  <div class="technology-skin-img">
+                    <img
+                        loading="lazy"
+                        width="{{ block.settings.image.width }}"
+                        height="{{ block.settings.image.height }}"
+                        class="img"
+                        {% render 'image-attributes', image: block.settings.image %}
+                        alt="{{ block.settings.image.alt | escape }}"
+                      >
+                  </div>
+                {%- endif -%}
+                <div class="technology-skin-txt">
+                  {%- if block.settings.text != blank -%}
+                    <h4 class="technology-skin-h4">{{ block.settings.text }}</h4>
+                  {%- endif -%}
+                  {%- if block.settings.text1 != blank -%}
+                    <p class="technology-skin-text-p">
+                      {{ block.settings.text1 }}
+                    </p>
+                  {%- endif -%}
+                </div>
+              </div>
+            {%- endfor -%}
+          </div>
+        </div>
+        {%- if section.blocks.size > 1 -%}
+          <div class="technology-skin-arraws">
+            <div class="technology-skin-arraw technology-skin-arraw-prev">
+              <svg xmlns="http://www.w3.org/2000/svg" width="37" height="37" viewBox="0 0 37 37" fill="none">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M16.9908 6.5148L17.4505 6.05505L18.37 6.97454L17.9103 7.43428L13.7129 11.6316L9.75648 15.5881C9.24867 16.0959 8.42533 16.0959 7.91752 15.5881L12.7935 10.7121L16.9908 6.5148ZM5.61275 18.8123C5.35884 18.5584 5.35884 18.1467 5.61275 17.8928C5.69825 17.8073 5.80163 17.7506 5.91086 17.7227V17.7024H6.07107H6.07392H6.56103L25.4161 17.7024H29.9672C30.6854 17.7024 31.2676 18.2846 31.2676 19.0027H25.4161L7.64216 19.0027L17.9103 29.2709L18.37 29.7306L17.4505 30.6501L16.9908 30.1904L5.61275 18.8123Z" fill="#190A0A"></path>
+              </svg>
+            </div>
+            <div class="technology-skin-arraw technology-skin-arraw-next">
+              <svg xmlns="http://www.w3.org/2000/svg" width="37" height="37" viewBox="0 0 37 37" fill="none">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M20.1049 6.5148L19.6452 6.05505L18.7257 6.97454L19.1854 7.43428L23.3828 11.6316L27.3392 15.5881C27.847 16.0959 28.6704 16.0959 29.1782 15.5881L24.3022 10.7121L20.1049 6.5148ZM31.4829 18.8123C31.7369 18.5584 31.7369 18.1467 31.4829 17.8928C31.3975 17.8073 31.2941 17.7506 31.1848 17.7227V17.7024H31.0246H31.0218H30.5347L11.6796 17.7024H7.12847C6.41031 17.7024 5.82813 18.2846 5.82813 19.0027H11.6796L29.4535 19.0027L19.1854 29.2709L18.7257 29.7306L19.6452 30.6501L20.1049 30.1904L31.4829 18.8123Z" fill="#190A0A"></path>
+              </svg>
+            </div>
+          </div>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+  if (window.innerWidth < 991) {
+    new Swiper(".technology-skin-silde", {
+      slidesPerView: "auto",
+      spaceBetween: 16,
+      navigation: {
+        nextEl: ".technology-skin-arraw-next",
+        prevEl: ".technology-skin-arraw-prev",
+      },
+    })
+  }
+</script>
+{% schema %}
+{
+  "name": "technology-skin",
+  "blocks": [
+    {
+      "name": "item",
+      "type": "item",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text"
+        },
+        {
+          "type": "text",
+          "id": "text1",
+          "label": "Text"
+        }
+      ]
+    }
+  ],
+  "settings": [
+    {
+      "type": "text",
+      "id": "diy_class",
+      "label": "自定义Class"
+    },
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Title"
+    },
+    {
+      "type": "text",
+      "id": "text1",
+      "label": "Text"
+    },
+  ],
+  "presets": [
+    {
+      "name": "technology-skin",
+      "blocks": []
+    }
+  ]
+}
+{% endschema %}

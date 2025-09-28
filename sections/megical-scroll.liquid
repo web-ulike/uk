@@ -1,0 +1,324 @@
+<style>
+/* magical-scroll-wrapper start*/
+.magical-scroll-wrapper{
+  background: #fff;
+    position: relative;
+    z-index: 5;
+}
+.frontmost.magical_center{
+  text-align: center;
+  max-width: 680px;
+  margin: 0 auto 0px;
+  position: absolute;
+  top: 100px;
+}
+.magical-scroll-wrapper .frontmost-h2{
+  color:  #190A0A;
+  font-family: var(--heading-font-family);
+font-size: 44px;
+font-style: normal;
+font-weight: 570;
+line-height: 120%;
+margin-bottom: 20px;
+}
+.magical-scroll-wrapper .frontmost-p{
+  color:  #3F3636;
+font-size: 18px;
+font-style: normal;
+font-weight: 380;
+line-height: 150%;
+}
+.magical-lockup-wrap .magical-hardware-wrap picture{
+  display: block;
+  max-width: 394px;
+}
+.magical-lockup-wrap .magical-hardware-wrap img{
+  width: 100%;
+}
+.magical-lockup-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  width: 100%;
+}
+.magical-lockup-wrap .frontmost{
+  width: 100%;
+  max-width: 495px;
+  transform: translateY(50%);
+  opacity: 0;
+}
+/* .magical-scroll-conten{
+  height: 100vh;
+    top: 0;
+    position: sticky;
+} */
+.magical-scroll-wrapper .container{
+  height: 300vh;
+}
+.flex-column-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.magical-scroll-conten.flex-column-center{
+  position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow: hidden;
+    z-index:5
+}
+.magical-lockup_box {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: absolute;
+    width: 100%;
+    transform: translateY(15%);
+}
+.magical-lockup_box.active{
+  top: auto;
+  opacity: 1;
+}
+.magical-lockup_box1 .magical-hardware-wrap{
+  transform: translateX(-151%);
+  opacity: 1;
+}
+.magical-hardware-wrap {
+  opacity: 0;
+  transition: opacity .5s ease-in;
+}
+@media (max-width: 1550px) {
+  .magical-lockup_box1 .magical-hardware-wrap{
+    transform: translateX(-110%);
+}
+}
+@media (max-width: 1250px) {
+  .magical-lockup_box1 .magical-hardware-wrap{
+    transform: translateX(-76%);
+}
+}
+@media (max-width: 767px) {
+  .magical-lockup-wrap {
+    flex-direction: column;
+    gap: 40px;
+}
+.magical-lockup_box1 .magical-hardware-wrap,.magical-lockup_box .magical-hardware-wrap{
+  transform: translateX(0%);
+}
+.magical-lockup-wrap .frontmost{
+  text-align: center;
+}
+.magical-scroll-wrapper .frontmost-h2{
+  font-size: 26px;
+  margin-bottom: 15px;
+}
+.magical-scroll-wrapper .frontmost-p{
+  font-size: 14px;
+}
+.magical-lockup_box{
+  transform: translateY(0);
+}
+.frontmost.magical_center {
+  top: 50px;
+}
+.magical-lockup-wrap .magical-hardware-wrap picture {
+    width: 100%;
+    max-width: 200px;
+}
+}
+/* magical-scroll-wrapper end */
+</style>
+
+<section class="{% if section.settings.custom_class != blank %}{{section.settings.custom_class}}{% endif %}">
+      <div class="magical-scroll-wrapper to-top">
+        <div class="container">
+          <div class="magical-scroll-conten flex-column-center">
+           
+            <div class="frontmost magical_center frontmost_cnt">
+              <div class="frontmost-h2 to-top">{{ section.settings.header }}</div>
+              <div class="frontmost-p to-top">{{ section.settings.subHeader }}</div>
+            </div>
+
+             {%- for block in section.blocks -%}
+            <div class="magical-lockup_box to-opacity magical-lockup_box{{ forloop.index }}{% if forloop.index == 1 %} active{% endif %}">   
+              <div class="magical-lockup-wrap">
+                  <div class="frontmost frontmost_left{{ forloop.index }}">
+                    <div class="frontmost-h2">{{ block.settings.header }}</div>
+                    <div class="frontmost-p">{{ block.settings.subHeader }}</div>
+                  </div>
+                  <div class="magical-hardware-wrap">
+                   
+                      <picture class="">
+                          {%- if block.settings.image_mobile -%}
+                            <source
+                              media="(max-width: 767px)"
+                              srcset="{{ block.settings.image_mobile | image_url: width: '400x' }} 400w, {{ block.settings.image_mobile | image_url: width: '600x' }} 600w, {{ block.settings.image_mobile | image_url: width: '800x' }} 800w, {{ block.settings.image_mobile | image_url: width: '1000x' }} 1000w"
+                              width="{{ block.settings.image_mobile.width }}"
+                              height="{{ block.settings.image_mobile.height }}"
+                            >
+                          {%- endif -%}
+                          {%- if block.settings.image -%}
+                            {{-
+                              block.settings.image
+                              | image_url: width: block.settings.image.width
+                              | image_tag:
+                                loading: 'eager',
+                                sizes: '100vw',
+                                widths: '300,400,500,600,700,800,900,1000,1200,1400,1600,1800,2000,2200,2400,2600,2800,3000,3200',
+                                class: ''
+                            -}}
+                          {%- endif -%}
+                        </picture>
+
+                    
+                  </div>
+              </div>
+            </div>
+             {%- endfor -%}
+          </div>
+        </div>
+      </div>
+</section>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script>
+function setupScrollTrigger() {
+  if (window.matchMedia("(max-width: 768px)").matches) {
+    mobile_init_scroll()
+  }else{
+    init_scroll()
+  }
+}
+function init_scroll() {
+      ScrollTrigger.create({
+        trigger: '.magical-scroll-wrapper',
+        start: 'top top',
+        end: '+=150%',
+        scrub: true,
+        animation:
+          gsap.timeline().to('.frontmost_cnt', { opacity: 0, yPercent: -50,immediateRender: false })
+          .to('.magical-lockup_box', { y: 0,immediateRender: false }, "<")
+          .to('.magical-lockup_box1 .magical-hardware-wrap', { x: 0,immediateRender: false }, "<")
+          .to('.magical-lockup_box1 .frontmost', { y: 0 ,opacity: 1,immediateRender: false})
+          .to('.magical-lockup_box1 .frontmost', { y: -50 ,opacity: 0,immediateRender: false})
+          .to('.magical-lockup_box2 .frontmost', { y: 0 ,opacity: 1,immediateRender: false})
+          .set('.magical-lockup_box2 .magical-hardware-wrap', { opacity: 1,immediateRender: false},"<")
+          .to('.magical-lockup_box2 .frontmost', { y: -50 ,opacity: 0,immediateRender: false})
+          .to('.magical-lockup_box3 .frontmost', { y: 0 ,opacity: 1,immediateRender: false})
+          .set('.magical-lockup_box3 .magical-hardware-wrap', { opacity: 1,immediateRender: false},"<")
+      });
+    }
+    function mobile_init_scroll() {
+      ScrollTrigger.create({
+        trigger: '.magical-scroll-wrapper',
+        start: 'top top',
+        end: '+=210%',
+        scrub: true,
+        animation:
+          gsap.timeline().to('.frontmost_cnt', { opacity: 0, yPercent: -50,immediateRender: false })
+          .to('.frontmost_left1', { y: 0 ,opacity: 1,immediateRender: false}, "0.5")
+          .to('.magical-lockup_box1 .frontmost', { y: 0 ,opacity: 1,immediateRender: false})
+          .to('.magical-lockup_box1 .frontmost', { y: -50 ,opacity: 0,immediateRender: false})
+          .to('.magical-lockup_box2 .frontmost', { y: 0 ,opacity: 1,immediateRender: false})
+            // 先将 box1 的透明度设为 0
+        .set('.magical-lockup_box1 .magical-hardware-wrap', { opacity: 0,immediateRender: false }, "<")
+          .set('.magical-lockup_box2 .magical-hardware-wrap', { opacity: 1,immediateRender: false},"<")
+          .to('.magical-lockup_box2 .frontmost', { y: -50 ,opacity: 0,immediateRender: false})
+          .to('.magical-lockup_box3 .frontmost', { y: 0 ,opacity: 1,immediateRender: false})
+            // 先将 box1 的透明度设为 0
+        .set('.magical-lockup_box2 .magical-hardware-wrap', { opacity: 0,immediateRender: false }, "<")
+          .set('.magical-lockup_box3 .magical-hardware-wrap', { opacity: 1,immediateRender: false},"<")
+      });
+    }
+// 初始化时调用一次
+setupScrollTrigger();
+
+</script>
+{% schema %}
+{
+  "name": "Megical Scroll",
+  "class": "megical-scroll",
+  "settings": [
+    {
+      "type": "text",
+      "id": "custom_class",
+      "label": "Custom Class"
+    },
+     {
+      "type": "text",
+      "id": "header",
+      "label": "Header"
+    },
+      {
+      "type": "text",
+      "id": "subHeader",
+      "label": "subHeader"
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 36
+    }
+  ],
+  "blocks": [
+          {
+      "name": "item",
+      "type": "item",
+      "settings": [
+           {
+            "type": "text",
+            "id": "header",
+            "label": "Header"
+          },
+            {
+            "type": "richtext",
+            "id": "subHeader",
+            "label": "subHeader"
+          },
+         {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+         {
+          "type": "image_picker",
+          "id": "image_mobile",
+          "label": "Mobile Image"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Megical Scroll",
+      "settings": {},
+      "blocks": [
+      ]
+    }
+  ]
+}
+{% endschema %}

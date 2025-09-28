@@ -5,7 +5,7 @@
   position: relative;
   z-index: 1;
 }
-.media-evaluation-box .title-diy{
+.media-evaluation-box .container{
   margin-bottom: 70px;
 }
 .media-evaluation-box .media-evaluation-marquee {
@@ -70,17 +70,51 @@
   margin-top: 50px;
   position: relative;
   right: 0;
+  max-height:70px;
+  width:auto;
 }
 
+  .media-evaluation-box .sub-text{
+    color: #3F3636;
+    font-size: 20px;
+    line-height: 1.2;
+    text-align: center;
+    margin-top:20px;
+  }
+
+  .kol-diy .media-evaluation-box{
+    background: #FFF;
+  }
+
+  .kol-diy .media-evaluation-box .media-evaluation-item{
+    border-radius: 20px;
+    background: #F8F8F8;
+  }
+
+  .kol-diy .media-evaluation-box .media-evaluation-item{
+    padding-bottom:30px;
+  }
+
+  .kol-diy .media-evaluation-box .media-evaluation-txt-top{
+    justify-content: flex-start;
+  }
+  
 @media (max-width: 991px) {
   .media-evaluation-box {
     padding: 50px 0;
   }
-  .media-evaluation-box .title-diy{
+  .media-evaluation-box .container{
     margin-bottom: 30px;
   }
   .media-evaluation-box .media-evaluation-item {
     width: 350px;
+  }
+   .media-evaluation-box .sub-text{
+    font-size: 12px;
+    margin-top:10px;
+  }
+   .kol-diy .media-evaluation-box .media-evaluation-item{
+    border-radius: 10px;
   }
 }
 </style>
@@ -88,7 +122,10 @@
   <div class="media-evaluation-box">
     {%- if section.settings.title != blank -%}
       <div class="container">
-        <div class="title-diy to-top appear">{{ section.settings.title }}</div>
+        <div class="title-diy to-top">{{ section.settings.title }}</div>
+        {%- if section.settings.text != blank -%}
+          <div class="sub-text to-top">{{ section.settings.text }}</div>
+        {%- endif -%}
       </div>
     {%- endif -%}
     <div class="media-evaluation-marquee marquee-box">
@@ -303,6 +340,11 @@
       "type": "text",
       "id": "title",
       "label": "Title"
+    },
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Text"
     }
   ],
   "presets": [

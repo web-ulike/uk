@@ -1,0 +1,169 @@
+<style>
+.add-logo {
+  padding: 80px 0;
+  overflow: hidden;
+  border-bottom: 1px solid #000;
+}
+
+.add-logo .add-logo-title {
+  color: #000;
+  font-size: 60px;
+  line-height: 1.2;
+  font-family: var(--heading-font-family);
+  text-align: center;
+  font-weight: normal;
+  margin: 0;
+}
+
+.add-logo .add-logo-cont {
+  margin-top: 50px;
+}
+
+.add-logo .add-logo-list {
+  display: flex;
+  gap: 30px;
+}
+
+.add-logo .add-logo-item {
+  width: 186px;
+  flex-shrink: 0;
+}
+
+.add-logo .add-logo-item img {
+  display: block;
+  width: 100%;
+}
+
+.add-logo .add-logo-p {
+  color: #000;
+  font-size: 14px;
+  line-height: 1.2;
+  margin: 0;
+  margin-top: 10px;
+  text-align: center;
+}
+
+@media (max-width: 991px) {
+  .add-logo {
+    padding: 50px 0;
+  }
+  .add-logo .add-logo-title {
+    font-size: 28px;
+  }
+  .add-logo .add-logo-cont {
+    margin-top: 30px;
+  }
+  .add-logo .add-logo-list {
+    gap: 20px;
+  }
+  .add-logo .add-logo-item {
+    width: 170px;
+  }
+  .add-logo .add-logo-p {
+    font-size: 12px;
+  }
+}
+</style>
+<section class="section-box">
+  <div class="add-logo">
+    <div class="container">
+      {%- if section.settings.text != blank -%}
+         <h3 class="add-logo-title">{{ section.settings.text }}</h3>
+      {%- endif -%}
+      <div class="add-logo-cont">
+        <div class="add-logo-list swiper-wrapper">
+          {%- for block in section.blocks -%}
+            <div class="add-logo-item swiper-slide">
+              {%- if block.settings.image != blank -%}
+                <img
+                  loading="lazy"
+                  width="{{ block.settings.image.width }}"
+                  height="{{ block.settings.image.height }}"
+                  {% render 'image-attributes', image: block.settings.image %}
+                  alt="{{ block.settings.image.alt | escape }}"
+                >
+              {%- endif -%}
+              {%- if block.settings.text != blank -%}
+                <p class="add-logo-p">{{ block.settings.text }}</p>
+              {%- endif -%}
+            </div>
+          {%- endfor -%} 
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+  function addLogo(){
+    const marqueeContainer = document.querySelector('.add-logo-cont');
+    const marqueeContent = document.querySelector('.add-logo-list');
+  
+    // 复制两次内容，实现无缝滚动
+    marqueeContent.innerHTML += marqueeContent.innerHTML + marqueeContent.innerHTML;
+  
+    let scrollSpeed = 1; // 滚动速度
+    let contentWidth = marqueeContent.scrollWidth / 3; // 原始内容宽度
+    let offset = contentWidth; // 从中间开始滚动
+    let isPaused = false; // 是否暂停
+  
+    // 初始位置调整
+    marqueeContent.style.transform = `translateX(-${offset}px)`;
+  
+    function scrollMarquee() {
+      if (!isPaused) {
+        offset += scrollSpeed;
+        if (offset >= contentWidth * 2) {
+          offset = contentWidth; // 重置到中间
+        }
+        marqueeContent.style.transform = `translateX(-${offset}px)`;
+      }
+      requestAnimationFrame(scrollMarquee);
+    }
+  
+    // 鼠标悬停时暂停滚动
+    marqueeContainer.addEventListener('mouseenter', () => isPaused = true);
+    marqueeContainer.addEventListener('mouseleave', () => isPaused = false);
+  
+    // 开始滚动
+    scrollMarquee();
+  }
+  
+  addLogo();
+  
+</script>
+{% schema %}
+{
+  "name": "add-logo",
+  "blocks": [
+    {
+      "name": "item",
+      "type": "item",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text"
+        }
+      ]
+    }
+  ],
+  "settings": [
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Text"
+    }
+  ],
+  "presets": [
+    {
+      "name": "add-logo",
+      "blocks": []
+    }
+  ]
+}
+{% endschema %}

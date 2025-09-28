@@ -1,0 +1,149 @@
+<style>
+.icon_box-direct{
+  padding: 100px 0;
+}
+.icon-box-wrapper {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 20px;
+}
+.icon-box-wrapper h3{
+  font-family: var(--heading-font-family);
+    font-weight: var(--heading-font-weight);
+    font-style: var(--heading-font-style);
+  color: #000;
+font-size: 48px;
+grid-column: span 5;
+}
+.right_box-direct{
+  display: grid;
+  grid-column: span 7;
+  padding-top: 70px;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 20px;
+  
+}
+.direct-list {
+  grid-column: span 2;
+}
+.direct-list:last-child {
+  grid-column: span 1;
+}
+.direct-list p{
+  color: #000;
+font-size: 18px;
+line-height: 1.3; 
+margin-top: 15px;
+margin-bottom: 0;
+}
+.min_img{
+  min-height: 60px;
+}
+.summer-icon-direct{
+  padding-bottom:169px;
+}
+@media screen and (max-width: 992px) {
+  .icon_box-direct{
+    padding: 65px 0;
+  }
+  .icon-box-wrapper {
+    grid-template-columns: repeat(1, 1fr);
+    grid-auto-flow: row;
+}
+.icon-box-wrapper h3 {
+  font-size: 24px;
+}
+.right_box-direct {
+  padding-top: 50px;
+  grid-template-columns: repeat(4, 1fr);
+  grid-column: span 12;
+  padding-left: 20%;
+  row-gap:31px;
+}
+.direct-list p {
+  font-size: 12px;
+  margin-top: 10px;
+}
+.direct-list:last-child {
+  grid-column: span 2;
+}
+.min_img{
+  min-height: 40px;
+}
+.min_img img{
+}
+  .summer-icon-direct{
+    padding-bottom:115px;
+  }
+}
+</style>
+   <section>
+      <div class="icon_box-direct {{ section.settings.text }}">
+        <div class="container">
+          <div class="icon-box-wrapper">
+           {%- if section.settings.title != blank -%}
+            <h3 class="to-top">{{ section.settings.title | escape }}</h3>
+            {%- endif -%}
+            <div class="right_box-direct">
+              
+              {%- for block in section.blocks -%}
+              <div class="direct-list to-top" style="transition-delay: 0.{{ forloop.index }}s">
+                {%- if block.settings.img != blank -%}
+                <div class="min_img">
+                   <img src="{{ block.settings.img | image_url }}" alt="{{ block.settings.img | escape }}"/>
+                </div>
+                {%- endif -%}
+                {%- if block.settings.cnt != blank -%}
+                  <p class="direct_p">{{ block.settings.cnt | escape }}</p>
+                {%- endif -%}
+              </div>
+              {%- endfor -%}
+              
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+{% schema %}
+{
+"name": "icon-box-direct",
+"class": "icon-box-direct",
+"blocks": [
+  {
+    "name": "item",
+    "type": "item",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "img",
+        "label": "Image"
+      },
+      {
+        "type": "text",
+        "id": "cnt",
+        "label": "Content"
+      }
+    ]
+  }
+],
+  "settings": [
+     {
+      "type": "text",
+      "id": "title",
+      "label": "Title"
+    },
+    {
+      "type": "text",
+      "id": "text",
+      "label": "自定义class"
+    }
+    
+  ],
+  "presets": [
+    {
+      "name": "icon-box-direct",
+      "blocks": []
+    }
+  ]
+}
+{% endschema %}

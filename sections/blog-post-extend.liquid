@@ -1,0 +1,390 @@
+<style>
+        #shopify-section-{{ section.id }} {
+          {%- if section.settings.blog_header_text_color == 'rgba(0,0,0,0)' -%}
+            {%- assign header_text_color = settings.heading_color -%}
+          {%- else -%}
+            {%- assign header_text_color = section.settings.blog_header_text_color -%}
+          {%- endif -%}
+
+          {%- if section.settings.blog_header_text_color == 'rgba(0,0,0,0)' -%}
+            {%- assign header_background = settings.secondary_background -%}
+          {%- else -%}
+            {%- assign header_background = section.settings.blog_header_background -%}
+          {%- endif -%}
+
+          --heading-color: {{ header_text_color.red }}, {{ header_text_color.green }}, {{ header_text_color.blue }};
+          --text-color: {{ header_text_color.red }}, {{ header_text_color.green }}, {{ header_text_color.blue }};
+
+          --section-header-background: {{ header_background.red }}, {{ header_background.green }}, {{ header_background.blue }};
+        }
+
+  .article__box.container {
+    position: relative;
+    max-width: 800px;
+    margin: 0 auto;
+    display: block;
+  }
+
+  .article__box.container .left {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .article__box.container .right {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 320px;
+    transform: translateX(100%);
+  }
+
+  @media (max-width: 1650px) {
+    .article__box.container .right {
+      display: none;
+    }
+    .article__box.container{
+      margin-left:450px;
+      width: calc(100% - 415px);
+      max-width: calc(100% - 415px);
+    }
+  }
+
+  @media (max-width: 1300px) {
+
+    .article__box.container{
+      margin-left:400px;
+    }
+  }
+
+
+
+
+  @media (max-width: 1024px) {
+    .article__box.container{
+      {% comment %} margin:0 auto; {% endcomment %}
+      {% comment %} max-width: 100%; {% endcomment %}
+      margin-left: auto;
+      max-width: 100%;
+      width: 100%;
+    }
+    .sticky-tab {
+      display: none;
+    }
+  }
+</style>
+{% assign share_url = shop.url | append: request.path %}
+<div class="sticky-align-box margin-left-diy">
+  <div class="article__box container">
+    <div class="left">
+      <blog-post-header class="article__header article__header__extend">
+        <div class="article__header-content text-container">
+          {%- if false -%}
+            {%- assign tag = article.tags.first -%}
+            {%- if section.settings.show_category and tag != blank -%}
+              <a href="{{ blog.url }}/tagged/{{ tag | handle }}" class="article__category heading heading--small">
+                {{ tag | escape }}
+              </a>
+            {%- endif -%}
+          {%- endif -%}
+          <time class="article__meta-item article__date">
+            Last Updated: {{ article.updated_at | date: format: 'abbreviated_date' }}
+          </time>
+          {%- if article.excerpt != blank -%}
+            <div class="article__excerpt text--large">
+              {{- article.excerpt -}}
+            </div>
+          {%- endif -%}
+        </div>
+
+        <div class="article__share article__share__float">
+          <ul class="social-media social-media--no-radius list--unstyled social-media__float" role="list">
+            <li class="social-media__item social-media__item--facebook">
+              <a
+                class="social-media__link article__share-list article__share-button-item--facebook"
+                href="https://www.facebook.com/sharer.php?u={{ share_url }}"
+                target="_blank"
+                rel="noopener"
+                role="listitem"
+                aria-label="{{ 'general.social.facebook_share' | t }}"
+              >
+                {%- render 'icon' with 'facebook' -%}
+              </a>
+            </li>
+            <li class="social-media__item social-media__item--pinterest">
+              <a
+                class="social-media__link article__share-list article__share-button-item--pinterest"
+                href="https://pinterest.com/pin/create/button/?url={{ share_url }}{% if pinterest_image != blank %}&media={{ pinterest_image }}{% endif %}&description={{ pinterest_description }}"
+                target="_blank"
+                rel="noopener"
+                role="listitem"
+                aria-label="{{ 'general.social.pinterest_pin' | t }}"
+              >
+                {%- render 'icon' with 'pinterest' -%}
+              </a>
+            </li>
+            <li class="social-media__item social-media__item--twitter">
+              <a
+                class="social-media__link article__share-list article__share-button-item--twitter"
+                href="https://twitter.com/share?{% if twitter_text != blank %}text={{twitter_text}}&{% endif %}url={{ share_url }}"
+                target="_blank"
+                rel="noopener"
+                role="listitem"
+                aria-label="{{ 'general.social.twitter_tweet' | t }}"
+              >
+                {%- render 'icon' with 'twitter' -%}
+              </a>
+            </li>
+
+            <li class="social-media__item social-media__item--share">
+              <a
+                class="social-media__link article__share-list article__share-button-item--mail"
+                href="mailto:?&subject={{ article.title | escape }}&body={{ share_url }}"
+                role="listitem"
+                aria-label="{{ 'general.social.email_share' | t }}"
+              >
+                {%- render 'icon' with 'share' -%}
+              </a>
+            </li>
+          </ul>
+        </div>
+      </blog-post-header>
+      <div class="article__content__extend">
+        {%- if article.image -%}
+          <div
+            class="ipl-tools"
+            data-cta-title=""
+            data-cta-subtitle=""
+            data-cta-button-text=""
+            data-cta-button-link=""
+            data-sort="1"
+          ></div>
+        {%- endif -%}
+        <div class="rte" {{ block.shopify_attributes }}>
+          {{ article.content }}
+        </div>
+      </div>
+      <div
+        class="u-blog-arraw to-top appear"
+        {% if blog.next_article %}
+          has-next-article
+        {% endif %}
+      >
+        {%- if blog.previous_article -%}
+          <a class="u-blog-arraw-item" href="{{ blog.previous_article.url }}">
+            <div class="u-arr-left">
+              <div class="u-arr"><br></div>
+              <div class="u-arr"><br></div>
+            </div>
+            <div class="u-blog-arraw-text">
+              <div class="u-blog-arraw-t">{{ 'article.general.previous' | t }}</div>
+              <div class="u-blog-arraw-p">{{ blog.previous_article.title }}</div>
+            </div>
+          </a>
+        {%- endif -%}
+
+        {%- if blog.next_article -%}
+          <a class="u-blog-arraw-item" href="{{ blog.next_article.url }}">
+            <div class="u-arr-left">
+              <div class="u-arr"><br></div>
+              <div class="u-arr"><br></div>
+            </div>
+            <div class="u-blog-arraw-text">
+              <div class="u-blog-arraw-t">{{ 'article.general.next' | t }}</div>
+              <div class="u-blog-arraw-p">{{ blog.next_article.title }}</div>
+            </div>
+          </a>
+        {%- endif -%}
+      </div>
+
+      <div class="article__share">
+        <span class="article__share-label">{{ 'article.general.share' | t }}</span>
+        <ul class="social-media social-media--no-radius list--unstyled" role="list">
+          <li class="social-media__item social-media__item--facebook">
+            <a
+              class="social-media__link article__share-list article__share-button-item--facebook"
+              href="https://www.facebook.com/sharer.php?u={{ share_url }}"
+              target="_blank"
+              rel="noopener"
+              role="listitem"
+              aria-label="{{ 'general.social.facebook_share' | t }}"
+            >
+              {%- render 'icon' with 'facebook' -%}
+            </a>
+          </li>
+          <li class="social-media__item social-media__item--pinterest">
+            <a
+              class="social-media__link article__share-list article__share-button-item--pinterest"
+              href="https://pinterest.com/pin/create/button/?url={{ share_url }}{% if pinterest_image != blank %}&media={{ pinterest_image }}{% endif %}&description={{ pinterest_description }}"
+              target="_blank"
+              rel="noopener"
+              role="listitem"
+              aria-label="{{ 'general.social.pinterest_pin' | t }}"
+            >
+              {%- render 'icon' with 'pinterest' -%}
+            </a>
+          </li>
+          <li class="social-media__item social-media__item--twitter">
+            <a
+              class="social-media__link article__share-list article__share-button-item--twitter"
+              href="https://twitter.com/share?{% if twitter_text != blank %}text={{twitter_text}}&{% endif %}url={{ share_url }}"
+              target="_blank"
+              rel="noopener"
+              role="listitem"
+              aria-label="{{ 'general.social.twitter_tweet' | t }}"
+            >
+              {%- render 'icon' with 'twitter' -%}
+            </a>
+          </li>
+
+          <li class="social-media__item social-media__item--share">
+            <a
+              class="social-media__link article__share-list article__share-button-item--mail"
+              href="mailto:?&subject={{ article.title | escape }}&body={{ share_url }}"
+              role="listitem"
+              aria-label="{{ 'general.social.email_share' | t }}"
+            >
+              {%- render 'icon' with 'share' -%}
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div class="article__next__box">
+        <h3>Related Articles</h3>
+        <div class="scroller">
+          <div class="scroller__inner">
+            {% if template.name == 'article' %}
+              {%- assign current_tags = article.tags -%}
+              {%- assign related_articles = '' | split: '' -%}
+
+              {%- for tag in current_tags -%}
+                {%- assign articles_with_same_tag = blog.articles
+                  | where_exp: 'article', 'article.tags contains tag'
+                -%}
+                {%- assign related_articles = related_articles | concat: articles_with_same_tag -%}
+              {%- endfor -%}
+
+              {%- assign unique_related_articles = related_articles | uniq -%}
+              {%- assign unique_related_articles_reversed = unique_related_articles | reverse -%}
+              {%- assign limited_related_articles = unique_related_articles_reversed | slice: 0, 3 -%}
+
+              <article-list
+                {% if settings.stagger_blog_posts_apparition %}
+                  stagger-apparition
+                {% endif %}
+                class="article-list article-list--scrollable"
+              >
+                {%- for related_article in limited_related_articles -%}
+                  {%- if related_article.id != article.id -%}
+                    {%- render 'article-item', article: related_article, heading_size: 'h6' -%}
+                  {%- endif -%}
+                {%- endfor -%}
+                <article-list>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="right">
+      <div class="latest__news">
+        <h3>Latest news</h3>
+        <div class="latest__news__ul">
+          <div class="scroller">
+            <scrollable-content class="blog-list__extend__box">
+              {%- for article in blog.articles offset: 1 limit: 4 -%}
+                <div class="latest__news__list">
+                  <div class="latest__news__img">
+                    <a href="{{ article.url }}" class="article-item__extend__image-container">
+                      {%- if article.image -%}
+                        {{
+                          article.image
+                          | image_url: width: article.image.width
+                          | image_tag:
+                            loading: 'lazy',
+                            sizes: '(max-width: 740px) 81vw, (max-width: 999px) 37vw, 425px',
+                            widths: '600,700,800,1000,1200,1400,1600,1800,2000',
+                            class: 'article-item__image'
+                        }}
+                      {%- else -%}
+                        <img
+                          src="https://cdn.shopify.com/s/files/1/0656/9079/6273/files/6fb53c51539b47559cf0d122a832cf63.png?v=1743672707"
+                          loading="lazy"
+                          class="article-item__image"
+                          alt="Default blog image"
+                        >
+                      {%- endif -%}
+                    </a>
+                  </div>
+                  {%- if article.excerpt_or_content != blank -%}
+                    <div class="latest__news__txt">
+                      {{- article.excerpt_or_content | strip_html | truncate: 100 -}}
+                    </div>
+                  {%- endif -%}
+                </div>
+              {%- endfor -%}
+            </scrollable-content>
+          </div>
+        </div>
+        {%- if section.settings.ad_link_url != blank -%}
+          <div class="advertise__box">
+            <a href="{{ section.settings.ad_link_url }}" class="article-item__extend__image-container">
+              {{-
+                section.settings.image
+                | image_url: width: section.settings.image.width
+                | image_tag:
+                  loading: 'lazy',
+                  sizes: sizes_attribute,
+                  widths: '200,300,400,500,600,700,800,900,1000,1100,1200',
+                  class: 'product-item__primary-image'
+              -}}
+            </a>
+          </div>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</div>
+{%- schema %}
+{
+  "name": "Blog post Extend",
+  "class": "shopify-section--blog-post-extend",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_category",
+      "label": "Show category",
+      "info": "The first article's tag will be shown as category.",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "blog_header_background",
+      "label": "Background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "blog_header_text_color",
+      "label": "Text color",
+      "default": "#040000"
+    },
+    {
+      "type": "url",
+      "id": "ad_link_url",
+      "label": "Advertise Link"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Advertise Image",
+      "info": "324 x 220px .jpg recommended"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Blog post Extend",
+      "settings": {},
+      "blocks": []
+    }
+  ]
+}
+{%- endschema %}

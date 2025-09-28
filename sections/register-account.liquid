@@ -1,0 +1,200 @@
+<link rel="stylesheet" href="//www.ulike.com/cdn/shop/t/116/assets/swiper-bundle.min.css">
+<script src="//www.ulike.com/cdn/shop/t/116/assets/swiper-bundle.min.aio.min.js"></script>
+<style>
+.register-account {
+  padding: 80px 0;
+  overflow: hidden;
+}
+
+.register-account .register-account-title {
+  color: #190a0a;
+  text-align: center;
+  font-size: 50px;
+  line-height: 1.2;
+  font-family: var(--heading-font-family);
+  margin: 0;
+  margin-bottom: 48px;
+  font-weight: normal;
+}
+
+.register-account .register-account-list {
+  display: flex;
+}
+
+.register-account .register-account-item {
+  width: calc(33.333% - 16.67px);
+}
+
+.register-account .register-account .img {
+  display: block;
+  width: 100%;
+}
+
+.register-account .register-account-text {
+  margin-top: 24px;
+  display: flex;
+  gap: 20px;
+}
+
+.register-account .register-account-left {
+  color: #e0004d;
+  font-size: 20px;
+  line-height: 1.5;
+  flex-shrink: 0;
+}
+
+.register-account .register-account-h4 {
+  color: #190a0a;
+  font-size: 20px;
+  line-height: 1.5;
+  font-weight: normal;
+  font-family: var(--heading-font-family);
+  margin: 0;
+}
+
+.register-account .register-account-p {
+  color: #190a0a;
+  font-size: 18px;
+  line-height: 1.5;
+  margin: 0;
+  margin-top: 10px;
+}
+
+@media (max-width: 1300px) {
+  .register-account .register-account-text {
+    margin-top: 15px;
+  }
+  .register-account .register-account-h4,
+  .register-account .register-account-left {
+    font-size: 16px;
+  }
+  .register-account .register-account-p {
+    font-size: 14px;
+    line-height: 1.3;
+    margin-top: 8px;
+  }
+}
+
+@media (max-width: 991px) {
+  .register-account {
+    padding: 50px 0;
+  }
+
+  .register-account .register-account-title {
+    font-size: 28px;
+    margin-bottom: 26px;
+  }
+
+  .register-account .register-account-item {
+    width: calc(33.333% - 10px);
+    min-width: 265px;
+    flex-shrink: 0;
+  }
+
+  .register-account .register-account-h4,
+  .register-account .register-account-left {
+    font-size: 12px;
+  }
+
+  .register-account .register-account-p {
+    font-size: 12px;
+    line-height: 1.5;
+    margin-top: 6px;
+  }
+}
+</style>
+<section class="section-box">
+  <div class="register-account">
+    <div class="container">
+      {%- if section.settings.title != blank -%}
+        <h3 class="register-account-title">{{ section.settings.title }}</h3>
+      {%- endif -%}
+      <div class="register-account-cont">
+        <div class="register-account-list swiper-wrapper">
+          {%- for block in section.blocks -%}
+            <div class="register-account-item swiper-slide">
+              {%- if block.settings.image != blank -%}
+                <img width="" height="" src="{{ block.settings.image | image_url }}" alt="" class="img">
+              {%- endif -%}
+              <div class="register-account-text">
+                {%- if block.settings.text != blank -%}
+                  <div class="register-account-left">{{ block.settings.text }}</div>
+                {%- endif -%}
+                <div class="register-account-right">
+                  {%- if block.settings.text1 != blank -%}
+                    <h4 class="register-account-h4">{{ block.settings.text1 }}</h4>
+                  {%- endif -%}
+                  {%- if block.settings.text2 != blank -%}
+                    <p class="register-account-p">{{ block.settings.text2 }}</p>
+                  {%- endif -%}
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+<script>
+  let registerAccountSwiper = new Swiper(".register-account .register-account-cont", {
+    slidesPerView: "auto",
+    spaceBetween: 15,
+    // pagination: {
+    //   el: ".experts-new-dot",
+    //   clickable: true,
+    // },
+    breakpoints: {
+      991: {
+        spaceBetween: 25
+      },
+    }
+  });
+</script>
+{% schema %}
+{
+"name": "register-account",
+"blocks": [
+    {
+    "name": "item",
+    "type": "item",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "image",
+        "label": "Image"
+      },
+      {
+        "type": "text",
+        "id": "text",
+        "label": "Text"
+      },
+      {
+        "type": "text",
+        "id": "text1",
+        "label": "Text"
+      },
+      {
+        "type": "text",
+        "id": "text2",
+        "label": "Text"
+      }
+    ]
+    }
+  ],
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title"
+    }
+  ],
+  "presets": [
+    {
+      "name": "register-account",
+      "blocks": []
+    }
+  ]
+}
+{% endschema %}

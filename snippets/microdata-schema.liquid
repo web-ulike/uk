@@ -3,10 +3,8 @@
   the schema often changes. We try to output as much info as possible, but Google may add new requirements over time,
   or change the format of some info
 {%- endcomment -%}
-
+{%- assign days_product_price_valid_until = 10 | times: 86400 -%}
 {%- if request.page_type == 'product' -%}
-  {%- assign days_product_price_valid_until = 10 | times: 86400 -%}
-
   {%- capture main_entity_microdata -%}
     "@type": "Product",
     "productID": {{ product.id | json }},
@@ -27,9 +25,17 @@
           "@type": "Offer",
           "name": {{ variant.title | json }},
           "availability": {%- if variant.available -%}"https://schema.org/InStock"{%- else -%}"https://schema.org/OutOfStock"{%- endif -%},
-          "price": {{ variant.price | divided_by: 100.0 | json }},
+          "price": {%- if variant.metafields.custom["page_price"] and variant.metafields.custom["page_price"] != '' -%}{{ variant.metafields.custom["page_price"] }}{%- else -%}{{ variant.price }}{% endif %},
           "priceCurrency": {{ cart.currency.iso_code | json }},
           "priceValidUntil": "{{ 'now' | date: '%s' | plus: days_product_price_valid_until | date: '%Y-%m-%d' }}",
+          "hasMerchantReturnPolicy": {
+              "@type": "MerchantReturnPolicy",
+              "applicableCountry": "UK",
+              "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow",
+              "merchantReturnDays": 100,
+              "returnMethod": "https://schema.org/ReturnByMail",
+              "returnFees": "https://schema.org/FreeReturn"
+          },
           {%- if variant.sku != blank -%}
             "sku": {{ variant.sku | json }},
           {%- endif -%}
@@ -42,11 +48,11 @@
         }{% unless forloop.last %},{% endunless %}
       {%- endfor -%}
     ],
-    {%- if product.metafields.loox.num_reviews -%}
+    {%- if product.metafields.reviews.rating.value -%}
       "aggregateRating": {
-        "@type": "AggregateRating",      
-        "ratingValue": "{{ product.metafields.loox.avg_rating }}",      
-        "reviewCount": "{{ product.metafields.loox.num_reviews }}"  
+        "@type": "AggregateRating",
+        "ratingValue": "{{ product.metafields.reviews.rating.value }}",
+        "reviewCount": "{{ product.metafields.reviews.rating_count }}"
        },
     {%- endif -%}
     "brand": {
@@ -186,26 +192,95 @@
   </script>
 {% endif %}
 
-{% if breadcrumb_entity_microdata != blank %}
-  <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      {{ breadcrumb_entity_microdata }}
-    }
-  </script>
-{% endif %}
+{% comment %}
+  {% if breadcrumb_entity_microdata != blank %}
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        {{ breadcrumb_entity_microdata }}
+      }
+    </script>
+  {% endif %}
+{% endcomment %}
 
 {%- if request.page_type == 'index' -%}
   {%- assign potential_action_target = request.origin
     | append: routes.search_url
     | append: '?q={search_term_string}'
   -%}
-
+    <script type="application/ld+json">
+     {
+    	"@context": "http://schema.org",
+    	"@id": "https://www.ulike.com/",
+    	"@type": "Organization",
+    	"name": "Ulike",
+         "url":"https://www.ulike.com/" ,
+    	"logo": "https://www.ulike.com/cdn/shop/files/logo-hei_300x.svg?v=1678017435",
+    	"email": "support@ulikeglobal.com",
+    	"description":"Founded in 2013, Ulike is one of the leading providers of home beauty devices, selling over 4 million units in 17 countries worldwide.Ulike Hair Removal provides safe and nearly painless body hair removal for women and men",
+    	"subOrganization": [{
+    		"@type": "Organization",
+    		"name": "Ulike ES",
+    		"url": "https://www.ulike.com/es",
+        "@id": "https://www.ulike.com/es"
+    	},{
+    		"@type": "Organization",
+    		"name": "Ulike FR",
+    		"url": "https://fr.ulike.com/",
+        "@id": "https://fr.ulike.com/"
+    	},{
+    		"@type": "Organization",
+    		"name": "Ulike UK",
+    		"url": "https://uk.ulike.com/",
+        "@id": "https://uk.ulike.com/"
+    	},{
+    		"@type": "Organization",
+    		"name": "Ulike AU",
+    		"url": "https://au.ulike.com/",
+        "@id": "https://au.ulike.com/"
+    	},{
+    		"@type": "Organization",
+    		"name": "Ulike MY",
+    		"url": "https://au.ulike.com/",
+        "@id": "https://my.ulike.com/"
+    	},{
+    		"@type": "Organization",
+    		"name": "Ulike DE",
+    		"url": "https://de.ulike.com/",
+        "@id": "https://de.ulike.com/"
+    	}],
+    	"contactPoint": [
+    		{
+    			"@type": "ContactPoint",
+    			"telephone": "+1-833-206-6933",
+    			"contactType": "sales",
+    			"areaServed": "US",
+    			"availableLanguage": ["EN", "ES"]
+    		},
+    		{
+    			"@type": "ContactPoint",
+    			"telephone": "+1-833-206-6933",
+    			"contactType": "customer support",
+    			"areaServed": "US",
+    			"availableLanguage": ["EN", "ES"]
+    		}
+    	],
+    	"sameAs": [
+    		"https://www.ulike.com/pages/contact-us",
+    		"https://www.youtube.com/@UlikeGlobal",
+    		"https://cn.linkedin.com/company/ulike-global",
+    		"https://www.facebook.com/ulikeglobal",
+    		"https://www.instagram.com/ulikeglobal/",
+    		"https://www.tiktok.com/@ulikeglobal",
+    		"https://x.com/ulikeglobal"
+    	]
+    }
+  </script>
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "WebSite",
-      "name": {{ shop.name | json }},
+      "name": "Ulike UK",
       "url": {{ shop.url | append: page.url | json }},
       "potentialAction": {
         "@type": "SearchAction",
@@ -285,90 +360,17 @@
     }
   </script>
 {%- endif -%}
-<!-- {{ page.url }} -->
 
-{%- if page.url == '/pages/meta-air-plus-product-detail' -%}
+{% comment %} A3 {% endcomment %}
+{%- if page.url == '/pages/meta-air-3-a' or page.url == '/pages/meta-air-3-b' or page.url == '/pages/meta-air-3-c' or page.url == '/pages/meta-air-3-d' or page.url == '/pages/meta-air-3-e' or page.url == '/pages/meta-air-3-f' or page.url == '/pages/meta-air-3-g' or page.url == 'pages/meta-air-3-product-detail' -%}
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "Product",
       "aggregateRating": {
         "@type": "AggregateRating",
-        "ratingValue": "4.4",
-        "reviewCount": "152"
-      },
-      "url": "https://uk.ulike.com{{page.url }}",
-      "sku": "11U0628B32",
-      "name": "Ulike Sapphire Air+ IPL Hair Removal Handset",
-      "offers": [
-        {
-          "@type": "Offer",
-          "name": "Dark Green \/ UK Plug",
-          "availability": "https://schema.org/InStock",
-          "price": 199.0,
-          "priceCurrency": "GBP",
-          "priceValidUntil": "{{ 'now' | date: '%s' | plus: days_product_price_valid_until | date: '%Y-%m-%d' }}",
-          "sku": "11UI04MD01",
-          "gtin13": "6971526220835",
-          "url": "/products/meta-air-plus-product-detail"
-        },
-        {
-          "@type": "Offer",
-          "name": "Dark Green \/ EU Plug",
-          "availability": "https://schema.org/InStock",
-          "price": 199.0,
-          "priceCurrency": "GBP",
-          "priceValidUntil": "{{ 'now' | date: '%s' | plus: days_product_price_valid_until | date: '%Y-%m-%d' }}",
-          "sku": "11UI04MC01",
-          "gtin13": "6971526220835",
-          "url": "/products/meta-air-plus-product-detail"
-        },
-        {
-          "@type": "Offer",
-          "name": "White \/ UK Plug",
-          "availability": "https://schema.org/InStock",
-          "price": 199.0,
-          "priceCurrency": "GBP",
-          "priceValidUntil": "{{ 'now' | date: '%s' | plus: days_product_price_valid_until | date: '%Y-%m-%d' }}",
-          "sku": "11UI04WD01",
-          "gtin13": "6971526220835",
-          "url": "/products/meta-air-plus-product-detail"
-        },
-        {
-          "@type": "Offer",
-          "name": "White \/ EU Plug",
-          "availability": "https://schema.org/InStock",
-          "price": 199.0,
-          "priceCurrency": "GBP",
-          "priceValidUntil": "{{ 'now' | date: '%s' | plus: days_product_price_valid_until | date: '%Y-%m-%d' }}",
-          "sku": "110A211E32",
-          "gtin13": "6971526220835",
-          "url": "/products/meta-air-plus-product-detail"
-        }
-      ],
-      "image": {
-        "@type": "ImageObject",
-        "url": "https://uk.ulike.com/cdn/shop/files/air3_-_1.jpg?v=1706584691&width=1024",
-        "image": "https://uk.ulike.com/cdn/shop/files/air3_-_1.jpg?v=1706584691&width=1024",
-        "width": "1024",
-        "height": "1024"
-      }
-    }
-  </script>
-{%- endif -%}
-
-{%- if page.url == '/pages/meta-air-3-a'
-  or page.url == '/pages/meta-air-3-product-detail'
-  or page.url == '/pages/meta-air-3-b'
--%}
-  <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "Product",
-      "aggregateRating": {
-        "@type": "AggregateRating",
-        "ratingValue": "4.2",
-        "reviewCount": "459"
+        "ratingValue": "4.5",
+        "reviewCount": "500"
       },
       "url": "https://uk.ulike.com{{page.url }}",
       "sku": "11U0628B32",
@@ -376,56 +378,144 @@
       "offers": [
         {
           "@type": "Offer",
-          "name": "Purple \/ UK Plug",
+          "name": "Purple",
           "availability": "https://schema.org/InStock",
-          "price": 219.0,
+          "price": "{{ page.metafields.custom.seo_price }}",
           "priceCurrency": "GBP",
           "priceValidUntil": "{{ 'now' | date: '%s' | plus: days_product_price_valid_until | date: '%Y-%m-%d' }}",
           "sku": "11U0628B32",
-          "gtin13": "6971526222037",
-          "url": "{{page.url }}"
+          "gtin13": "6971526222037"
         },
         {
           "@type": "Offer",
-          "name": "Purple \/ EU Plug",
+          "name": "White",
           "availability": "https://schema.org/InStock",
-          "price": 219.0,
-          "priceCurrency": "GBP",
-          "priceValidUntil": "{{ 'now' | date: '%s' | plus: days_product_price_valid_until | date: '%Y-%m-%d' }}",
-          "sku": "11U0628E32",
-          "gtin13": "6971526222037",
-          "url": "{{page.url }}"
-        },
-        {
-          "@type": "Offer",
-          "name": "White \/ UK Plug",
-          "availability": "https://schema.org/InStock",
-          "price": 219.0,
+          "price": "{{ page.metafields.custom.seo_price }}",
           "priceCurrency": "GBP",
           "priceValidUntil": "{{ 'now' | date: '%s' | plus: days_product_price_valid_until | date: '%Y-%m-%d' }}",
           "sku": "11U0610B32",
-          "gtin": "6971526222037",
-          "url": "{{page.url }}"
-        },
-        {
-          "@type": "Offer",
-          "name": "White \/ EU Plug",
-          "availability": "https://schema.org/InStock",
-          "price": 219.0,
-          "priceCurrency": "GBP",
-          "priceValidUntil": "{{ 'now' | date: '%s' | plus: days_product_price_valid_until | date: '%Y-%m-%d' }}",
-          "sku": "11U0610E32",
-          "gtin": "6971526222037",
-          "url": "{{page.url }}"
+          "gtin": "6971526222037"
         }
       ],
       "image": {
         "@type": "ImageObject",
-        "url": "https://uk.ulike.com/cdn/shop/files/air3_-_1.jpg?v=1706584691&width=1024",
-        "image": "https://uk.ulike.com/cdn/shop/files/air3_-_1.jpg?v=1706584691&width=1024",
+        "url": "https://uk.ulike.com/cdn/shop/files/2_84844cc5-ed49-42aa-90b2-c98c8ba89e30.jpg?v=1731503046&width=1024",
+        "image": "https://uk.ulike.com/cdn/shop/files/2_84844cc5-ed49-42aa-90b2-c98c8ba89e30.jpg?v=1731503046&width=1024",
+        "name": "",
         "width": "1024",
         "height": "1024"
       }
     }
   </script>
 {%- endif -%}
+
+{%- if page.url == '/pages/deal' or page.url == '/pages/meta-air-3-product-detail' -%}
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Product",
+      "productID": 8192641794335,
+      "offers": [
+        {
+          "@type": "Offer",
+          "name": "Purple",
+          "availability": "https://schema.org/InStock",
+          "price": 219.99,
+          "priceCurrency": "GBP",
+          "priceValidUntil": "{{ 'now' | date: '%s' | plus: days_product_price_valid_until | date: '%Y-%m-%d' }}",
+          "hasMerchantReturnPolicy": {
+            "@type": "MerchantReturnPolicy",
+            "applicableCountry": "UK",
+            "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow",
+            "merchantReturnDays": 100,
+            "returnMethod": "https://schema.org/ReturnByMail",
+            "returnFees": "https://schema.org/FreeReturn"
+          },
+          "sku": "11A3N28B01",
+          "gtin13": "6971526222037",
+          "url": "/pages/deal"
+        },
+        {
+          "@type": "Offer",
+          "name": "White",
+          "availability": "https://schema.org/InStock",
+          "price": 219.99,
+          "priceCurrency": "GBP",
+          "priceValidUntil": "{{ 'now' | date: '%s' | plus: days_product_price_valid_until | date: '%Y-%m-%d' }}",
+          "hasMerchantReturnPolicy": {
+            "@type": "MerchantReturnPolicy",
+            "applicableCountry": "UK",
+            "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow",
+            "merchantReturnDays": 100,
+            "returnMethod": "https://schema.org/ReturnByMail",
+            "returnFees": "https://schema.org/FreeReturn"
+          },
+          "sku": "11A3N10B02",
+          "gtin": "6971526222037",
+          "url": "/pages/deal"
+        }
+      ],
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.5",
+        "reviewCount": "535"
+      },
+      "brand": {
+        "@type": "Brand",
+        "name": "Ulike"
+      },
+      "name": "Ulike Air 3",
+      "description": "Long-lasting hair removal from the comfort of home.\n• Up to 12 months of smooth skin¹\n• 93% hair reduction in 4 weeks²\n• 13-minute³ full-body sessions\n• Gentle on sensitive skin\n• Skin-safe with CE\/UKCA standards\n• Lightweight \u0026amp; precise coverage",
+      "category": "Ulike Air Series",
+      "url": "/pages/deal",
+      "sku": "11A3N28B01",
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://uk.ulike.com/cdn/shop/files/10.jpg?v=1736755252&width=1024",
+        "image": "https://uk.ulike.com/cdn/shop/files/10.jpg?v=1736755252&width=1024",
+        "name": "",
+        "width": "1024",
+        "height": "1024"
+      }
+    }
+  </script>
+{%- endif -%}
+
+{% comment %} A10 {% endcomment %}
+{%- if page.url == '/pages/summer-sale-2024' or page.url == '/pages/campaign' -%}
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Product",
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.9",
+        "reviewCount": "659"
+      },
+      "url": "https://uk.ulike.com{{page.url }}",
+      "sku": "1120SD6B02",
+      "name": "Ulike Air 10",
+      "offers": [
+        {
+          "@type": "Offer",
+          "name": "Purple",
+          "availability": "https://schema.org/InStock",
+          "price": "{{ page.metafields.custom.seo_price }}",
+          "priceCurrency": "GBP",
+          "priceValidUntil": "{{ 'now' | date: '%s' | plus: days_product_price_valid_until | date: '%Y-%m-%d' }}",
+          "sku": "1120SD6B02",
+          "url": "https://uk.ulike.com{{page.url }}"
+        }
+      ],
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://uk.ulike.com/cdn/shop/files/Air_10_1.jpg?v=1729672647&width=1024",
+        "image": "https://uk.ulike.com/cdn/shop/files/Air_10_1.jpg?v=1729672647&width=1024",
+        "name": "",
+        "width": "1024",
+        "height": "1024"
+      }
+    }
+  </script>
+{%- endif -%}
+

@@ -58,7 +58,15 @@
           <span class="price price--large">
             <span class="visually-hidden">{{ 'product.general.sale_price' | t }}</span>
             {%- if settings.currency_code_enabled -%}
-              {{- product.selected_or_first_available_variant.price | money_with_currency -}}
+              {% if product.id == 9034198876447 -%}
+                {% comment %} {{- product.selected_or_first_available_variant.price | money_with_currency -}} {% endcomment %}
+                {{- product.selected_or_first_available_variant.price | minus: 12000 | money_with_currency }}
+                <span class="original-price">
+                  {{- product.selected_or_first_available_variant.price | money_with_currency -}}
+                </span>
+              {% else %}
+                {{- product.selected_or_first_available_variant.price | money_with_currency -}}
+              {% endif %}
             {%- else -%}
               {{- product.selected_or_first_available_variant.price | money -}}
             {%- endif -%}
@@ -87,27 +95,36 @@
         {%- endif -%}
       </div>
 
-      <div class="product-meta__label-list label-list" data-product-label-list>
-        {%- unless product.selected_or_first_available_variant.available -%}
-          <span class="label label--subdued">{{ 'collection.product.sold_out' | t }}</span>
-        {%- elsif product.selected_or_first_available_variant.compare_at_price
-            > product.selected_or_first_available_variant.price
-        -%}
-          {%- if settings.discount_mode == 'percentage' -%}
-            {%- assign savings = product.selected_or_first_available_variant.compare_at_price
-              | minus: product.selected_or_first_available_variant.price
-              | times: 100.0
-              | divided_by: product.selected_or_first_available_variant.compare_at_price
-              | round
-              | append: '%'
-            -%}
-          {%- else -%}
-            {%- capture savings -%}{{ product.selected_or_first_available_variant.compare_at_price | minus: product.selected_or_first_available_variant.price | money }}{%- endcapture -%}
-          {%- endif -%}
+      {% comment %} 订阅弹出框 {% endcomment %}
+      {% if section.settings.subscribe_button_name != '' %}
+        <div class="price-extra j-price-extra">
+          {{ section.settings.subscribe_button_name }}
+        </div>
+      {%- endif -%}
 
-          <span class="label label--highlight">{{ 'collection.product.discount_html' | t: savings: savings }}</span>
-        {%- endunless -%}
-      </div>
+      {% comment %}
+        <div class="product-meta__label-list label-list" data-product-label-list>
+          {%- unless product.selected_or_first_available_variant.available -%}
+            <span class="label label--subdued">{{ 'collection.product.sold_out' | t }}</span>
+          {%- elsif product.selected_or_first_available_variant.compare_at_price
+              > product.selected_or_first_available_variant.price
+          -%}
+            {%- if settings.discount_mode == 'percentage' -%}
+              {%- assign savings = product.selected_or_first_available_variant.compare_at_price
+                | minus: product.selected_or_first_available_variant.price
+                | times: 100.0
+                | divided_by: product.selected_or_first_available_variant.compare_at_price
+                | round
+                | append: '%'
+              -%}
+            {%- else -%}
+              {%- capture savings -%}{{ product.selected_or_first_available_variant.compare_at_price | minus: product.selected_or_first_available_variant.price | money }}{%- endcapture -%}
+            {%- endif -%}
+
+            <span class="label label--highlight">{{ 'collection.product.discount_html' | t: savings: savings }}</span>
+          {%- endunless -%}
+        </div>
+      {% endcomment %}
     </div>
 
     {%- if section.settings.show_taxes_included -%}
@@ -378,7 +395,7 @@
 <script>
   // ga 事件名称，用来区别不一样的产品
   var gaName = '';
-   window.addEventListener('load', function () {
+  window.addEventListener('load', function () {
     // 增加GA埋点
     var productId = '{{ product.id }}';
     if (productId === '8192641794335') {
@@ -394,6 +411,7 @@
       commonGtmEvent(gaName + '商详-IPL quiz', 'click', '');
     });
     $('.product-form').on('click', '#AddToCart', function () {
+      addDiscountCode();
       commonGtmEvent(gaName + '商详-add cart', 'click', '');
     });
     $('.product-form').on('click', '.shopify-payment-button__button', function () {
@@ -419,7 +437,6 @@
       'click',
       'shopify-section-template--20413464117535__90c8af6d-b8be-4a70-ba15-62cb64f40da7 .image-comparison__button',
       function () {
-        console.log(1111);
         let index = $(
           'shopify-section-template--20413464117535__90c8af6d-b8be-4a70-ba15-62cb64f40da7 .product__result-item .product-results__sliders-list:visible'
         ).attr('index');
@@ -433,9 +450,19 @@
       }
     );
 
-    {% comment %}  分期付款 {% endcomment %}
-    $('.spp2__widget .spp2__widget-option').eq(1).find('.spp2__payment-option-label').click()
-    $('.spp2__widget .spp2__widget-option').hide();
+    // 自动添加折扣码1111
+    function addDiscountCode() {
+      let discountCode = $('.cpnCode').text();
+      console.log(discountCode);
+      if (discountCode) {
+        setCookie('discount_code');
+        // 为空不用清空 code
+        autoDiscountCode(discountCode);
+      }else {
+        autoDiscountCode('{{section.settings.code }}');
+      }
+    }
+    {% comment %} SMOOTH120 {% endcomment %}
   });
 </script>
 <style>
@@ -471,6 +498,33 @@
   .spp2__widget .spp2__widget-option {
     display: none;
   }
+  .price-extra {
+    background: #FFE0E9;
+    border-radius: 3px;
+    display: inline-flex;
+    padding: 4px 10px;
+    justify-content: center;
+    align-items: center;
+    gap: 2px;
+    font-size: 14px;
+    margin-left: 10px;
+    color: #E0004D;
+    cursor: pointer;
+    line-height: 16px;
+  }
+  .price-extra img{
+    height: 14px;
+  }
+  .original-price {
+    margin-left: 8px;
+    font-size: 18px;
+  }
+
+  .original-price .money {
+    text-decoration: line-through;
+    color: #ccc;
+    margin-right: 8px;
+  }
 
   @media (max-width: 768px) {
     .original-price {
@@ -479,6 +533,10 @@
     }
     .original-price .save {
       font-size: 14px;
+    }
+    .price-extra {
+      padding: 4px 10px;
+      font-size: 12px;
     }
   }
 </style>

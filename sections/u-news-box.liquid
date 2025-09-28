@@ -1,0 +1,234 @@
+<style>
+.u-news-box{
+  padding: 70px 0;
+  background: #f9f9f9;
+}
+
+  .u-blog-tag {
+  font-size: 14px;
+  color: #fff;
+  line-height: 1;
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  z-index: 3;
+  background: rgba(0, 0, 0, 0.6);
+  padding: 5px 7px;
+}
+  .u-more {
+  font-size: 14px;
+  color: #000;
+  padding: 10px 0;
+  text-align: center;
+  backdrop-filter: blur(16px);
+  background: rgba(255, 255, 255, 0.6);
+  position: absolute;
+  z-index: 2;
+  width: 100%;
+  bottom: 0;
+  left: 0;
+  transform: translateY(50px);
+  transition: transform 0.8s cubic-bezier(0.645, 0.045, 0.355, 1);
+}
+.u-news-box .title-diy{
+  margin:0;
+}
+.u-news-box .u-news-list{
+  display: flex;
+  flex-wrap: wrap;
+  position: relative;
+  margin-top: 50px;
+}
+
+.u-news-box .u-news-item{
+  width: 22.85%;
+  margin-bottom: 30px;
+}
+
+.u-news-box .u-news-item:nth-child(2),
+.u-news-box .u-news-item:nth-child(4){
+  margin-right: 54.28%;
+}
+
+.u-news-box .u-news-item:nth-child(1){
+  width: 47.86%;
+  height: 100%;
+  position: absolute;
+  left: 50%;
+  top: 0;
+  transform: translateX(-50%);
+}
+
+.u-news-box .u-news-img{
+  position: relative;
+  padding-top: 67.4%;
+  overflow: hidden;
+}
+
+.u-news-box .img{
+  display: block;
+  width: 100%;
+  position: absolute;
+  z-index: 1;
+  object-fit: cover;
+  height: 100%;
+  top: 0;
+  left: 0;
+}
+
+.u-news-box .u-news-img::after{
+  position: absolute;
+  content: '';
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, .15);
+  z-index: 2;
+  opacity: 0;
+  transition: opacity 0.4s cubic-bezier(0.645, 0.045, 0.355, 1);
+}
+.u-news-box .u-news-img:hover::after{
+  opacity: 1;
+}
+
+.u-news-box .u-news-img:hover .u-more{
+  transform: translateY(0);
+}
+
+.u-news-box .u-news-title{
+  font-size: 20px;
+  color: #000;
+  font-family: var(--heading-font-family);
+  line-height: 1.1;
+  margin-top: 12px;
+}
+
+.u-news-box .u-news-p{
+  font-size: 14px;
+  color: #b9b9b9;
+  line-height: 1;
+  margin-top: 12px;
+}
+
+.u-news-box .u-news-item:nth-child(1) .u-news-title{
+  font-size: 25px;
+  margin-top: 20px;
+}
+.u-news-box .u-news-item:nth-child(1) .u-news-p{
+  margin-top: 20px;
+}
+
+.u-news-box .u-news-item:nth-child(1) .u-news-img{
+  padding-top: 71.5%;
+}
+
+.u-news-box .mark-bottom::before{
+  background: #f9f9f9;
+}
+
+@media (max-width:1300px) {
+  .u-news-box .u-news-title{
+    font-size: 18px;
+  }
+  
+  .u-news-box .u-news-item:nth-child(1) .u-news-title{
+    font-size: 20px;
+  }
+}
+
+@media (max-width:863px) {
+  .u-news-box{
+    padding: 60px 0;
+  }
+
+  .u-news-box .u-news-list{
+    margin-top: 40px;
+  }
+
+  .u-news-box .u-news-item{
+    width: 100%;
+  }
+
+  .u-news-box .u-news-item:nth-child(1){
+    width: 100%;
+    height: auto;
+    position: relative;
+    left: auto;
+    transform: translateX(0);
+  }
+
+  .u-news-box .u-news-item:nth-child(2), .u-news-box .u-news-item:nth-child(4){
+    margin-right: 0;
+  }
+
+  .u-news-box .u-news-item:last-child{
+    margin-bottom: 0;
+  }
+}
+</style>
+{%- assign blog = section.settings.blog -%}
+<section class="section-box">
+  <div class="u-news-box">
+    <div class="container">
+      {%- if section.settings.text != blank -%}
+          <h3 class="title-diy">{{ section.settings.text }}</h3>
+        {%- endif -%}
+      <div class="u-news-list">
+        {%- for article in blog.articles limit: 5 -%}
+          <a href="{{ article.url }}" class="u-news-item">
+            <div class="u-news-img mark-bottom">
+              {% assign first_tag = article.tags | first %}
+                {% if first_tag %}
+                  <div class="u-blog-tag">{{ first_tag }}</div>
+                {% endif %}
+              {%- if article.image -%}
+                {{- article.image | image_url: width: article.image.width | image_tag: loading: 'lazy', sizes: '(max-width: 740px) 81vw, (max-width: 999px) 37vw, 425px', sizes: '600,700,800,1000,1200,1400,1600,1800,2000', class: 'img' -}}
+              {%- endif -%}
+              {%- if section.settings.rm_t != blank -%}
+                <div class="u-more">{{ section.settings.rm_t }}</div>
+              {%- endif -%}
+            </div>
+            <div class="u-news-title">{{ article.title }}</div>
+            <div class="u-news-p">{{ article.created_at | date: "%b %d, %Y"  }}</div>
+          </a>
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</section>
+{% schema %}
+{
+  "name": "u-news-box",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "check_f",
+      "label": "翻转",
+      "default":false
+    },
+    {
+      "type": "blog",
+      "id": "blog",
+      "label": "Blog"
+    },
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Title"
+    },
+    {
+      "type": "text",
+      "id": "rm_t",
+      "label": "查看更多文案",
+      "default":"LEARN MORE >"
+    }
+  ],
+  "presets": [
+    {
+      "name": "u-news-box",
+      "blocks": []
+    }
+  ]
+}
+{% endschema %}

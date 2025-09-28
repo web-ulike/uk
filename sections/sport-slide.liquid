@@ -1,0 +1,268 @@
+
+<style>
+  .section-{{ section.id }}-padding {
+    padding-top: calc({{ section.settings.padding_top }}px);
+    padding-bottom: calc({{ section.settings.padding_bottom }}px);
+  }
+  @media screen and (max-width: 768px){
+  .section-{{ section.id }}-padding {
+    padding-top: calc({{ section.settings.padding_top }}px * 0.6);
+    padding-bottom: calc({{ section.settings.padding_bottom }}px * 0.6);
+  }
+}
+ 
+  #shopify-section-{{ section.id }} {
+  }
+      /* kv-banner-box start */
+  @keyframes animate_pt {
+  0% {
+    transform: translate(-50%,100%);
+  }
+  100% {
+    transform: translate(-50%,0%);
+  }
+}
+    .kv-banner-box{
+      background: linear-gradient(180deg, #819DFF 0%, #F5ECFE 100%);
+      height: 125vh;
+    }
+    .kv_content{
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      padding:0 20px;
+      overflow: hidden;
+      position: sticky;
+      height: 100vh;
+      top: 0;
+    }
+    .kv_opt{
+      text-align: center;
+      opacity: 0;
+      transition: opacity 0.6s ease;
+    }
+    .kv_opt .kv_opt-tle{
+      color: #E0004D;
+      text-align: center;
+      /* font-size: 2.3vw; */
+      font-size: max(28px,2.3vw);
+      font-style: normal;
+      font-weight: 570;
+      line-height: 120%;
+      margin-top:max(27px,2.3vw);
+    }
+    .kv_opt .kv_opt-txt{
+      color:  #3F3636;
+      text-align: center;
+      /* font-size: 1.4vw; */
+      font-size: max(16px, 1.4vw);
+      font-style: normal;
+      font-weight: 570;
+      line-height: 150%;
+      margin-top: max(13px,0.6vw);
+    }
+    .kv_opt .kv_opt-img{
+      max-width: 58.7vw;
+      margin: 0 auto;
+    }
+    .kv_opt .kv_opt-img img{
+      width: 100%;
+    }
+    .kv_opt-prt, .kv_opt-prt img{
+      display: block;
+      position: absolute;
+      top: 20%;
+      max-width: max(171px,23.4vw);
+      margin: 0 auto;
+      left: 50%;
+      transform: translateX(-50%);
+      transition: all 0.6s ease;
+    }
+    .kv-banner-box.visible .kv_opt{
+      opacity: 1;
+    }
+    .kv-banner-box.visible .kv_opt-prt, .kv-banner-box.visible .kv_opt-prt img{
+      max-width: 2vw;
+    top: 9.6vw;
+    left: 39.4%;
+    }
+    .kv_opt-box{
+      position: relative;
+    }
+  .kv_opt-prt img{
+    animation: alternate animate_pt 1s ease-in-out forwards;
+}
+  .kv_opt-prt.prt1{
+    z-index: 1;
+  }
+    .kv_opt-prt.prt2{
+    z-index: -1;
+  }
+  .kv_opt-prt.prt1 img {
+    clip-path: inset(0 0 5% 0);
+}
+   .kv_opt-prt.prt2 img {
+    clip-path: inset(95% 0 0 0);
+}
+    @media (max-width: 768px) {
+      .kv_opt .kv_opt-img{
+        max-width: 90vw;
+      }
+      .kv_opt-prt, .kv_opt-prt img {
+          top: -20%;
+      }
+      .kv-banner-box.visible .kv_opt-prt, .kv-banner-box.visible .kv_opt-prt img {
+          max-width: 4vw;
+          top: 22.4vw;
+          left: 38%;
+      }
+        .kv_opt-prt.prt1 img {
+    clip-path: inset(0 0 10% 0);
+}
+   .kv_opt-prt.prt2 img {
+    clip-path: inset(90% 0 0 0);
+}
+    }
+    /* kv-banner-box end*/
+</style>
+
+<section class="{% if section.settings.custom_class != blank %}{{section.settings.custom_class}}{% endif %}">
+  <div class="kv-banner-box">
+      <div class="kv_content">
+       <div class="kv_opt-box">
+        <div class="kv_opt">
+          <div class="kv_opt-img">
+              <picture class="kv_opt-txt">
+                {%- if section.settings.text_image_mobile -%}
+                   <source srcset="{{ section.settings.text_image_mobile | image_url }}" media="(max-width: 767px)"></source>
+                {%- endif -%}
+                {%- if section.settings.text_image -%}
+                    <img src="{{ section.settings.text_image | image_url }}"></img>
+                {%- endif -%}
+              </picture>
+          </div>
+
+           {%- if section.settings.slide_tle != blank -%}
+          <div class="kv_opt-tle">{{ section.settings.slide_tle }}</div>
+            {%- endif -%}
+           {%- if section.settings.slide_text != blank -%}
+          <div class="kv_opt-txt">{{ section.settings.slide_text }}</div>
+          {%- endif -%}
+        </div>
+         <picture class="kv_opt-prt prt1">
+            {%- if section.settings.product_image_mobile -%}
+                   <source srcset="{{ section.settings.product_image_mobile | image_url }}" media="(max-width: 767px)"></source>
+                {%- endif -%}
+                {%- if section.settings.product_image -%}
+                    <img src="{{ section.settings.product_image | image_url }}"></img>
+                {%- endif -%}
+              </picture>
+           <picture class="kv_opt-prt prt2">
+            {%- if section.settings.product_image_mobile -%}
+                   <source srcset="{{ section.settings.product_image_mobile | image_url }}" media="(max-width: 767px)"></source>
+                {%- endif -%}
+                {%- if section.settings.product_image -%}
+                    <img src="{{ section.settings.product_image | image_url }}"></img>
+                {%- endif -%}
+              </picture>
+       </div>
+       
+      </div>
+    </div>
+</section>
+<script>
+const myElement = document.querySelector('.kv-banner-box');
+// 监听页面滚动事件
+// window.addEventListener('scroll', () => {
+//   // 获取页面滚动的垂直距离
+//   const scrollY = window.scrollY || window.pageYOffset;
+//   // 判断滚动距离是否大于 100
+//   if (scrollY > 50) {
+//     myElement.classList.add('visible'); // 添加 class
+//   } else {
+//     myElement.classList.remove('visible'); // 移除 class
+//   }
+// });
+
+  // 1秒后为该元素添加class
+setTimeout(() => {
+  myElement.classList.add('visible');
+}, 1200);
+</script>
+{% schema %}
+{
+  "name": "Sport Slide",
+  "class": "sport-slide",
+  "settings": [
+        {
+      "type": "text",
+      "id": "custom_class",
+      "label": "Custom Class"
+    },
+     {
+      "type": "image_picker",
+      "id": "text_image",
+      "label": "Text Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "text_image_mobile",
+      "label": "Text Image Mobile"
+    },
+     {
+      "type": "image_picker",
+      "id": "product_image",
+      "label": "Product Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "product_image_mobile",
+      "label": "Product Image Mobile"
+    },
+
+    {
+      "type": "text",
+      "id": "slide_tle",
+      "label": "Title"
+    },
+     {
+      "type": "text",
+      "id": "slide_text",
+      "label": "Slide Text"
+    },
+    
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 36
+    }
+  ],
+  "blocks": [
+  ],
+  "presets": [
+    {
+      "name": "Sport Slide",
+      "settings": {},
+      "blocks": [
+      ]
+    }
+  ]
+}
+{% endschema %}

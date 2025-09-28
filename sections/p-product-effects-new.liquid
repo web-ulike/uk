@@ -1,0 +1,731 @@
+{%- liquid
+  assign se_bks = section.blocks
+  assign se_stts = section.settings
+-%}
+<style>
+    .p-product-effects {
+      width: 100%;
+      margin: auto;
+      padding: 90px 0px;
+    }
+    .p-product-effects .title {
+      font-size: 60px;
+      font-weight: 400;
+      line-height: 1.2;
+      max-width:730px;
+      font-family: var(--heading-font-family);
+    }
+    .p-product-effects .box-tabs-block {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap:30px;
+      margin-bottom: 60px;
+    }
+    .p-product-effects .tabs {
+      display: flex;
+      justify-content: center;
+      gap: 0px;
+    }
+    .p-product-effects .tabs .tab {
+      padding: 10px 20px;
+      text-align: center;
+      border-radius: 80px;
+      cursor: pointer;
+      font-size: 18px;
+      line-height: 1.2;
+    }
+    .p-product-effects .tabs .tab:hover {
+      /* background: #f5f3f3; */
+    }
+    .p-product-effects .tabs .tab.active {
+      background-color: #000;
+      color: #fff;
+    }
+    .p-product-effects .effects-swipter {
+      width: 100%;
+      position: relative;
+      overflow: hidden;
+    }
+    .p-product-effects .effects-swipter .abs-op-detail {
+      position: absolute;
+      right: 0px;
+      top: 0px;
+      z-index: 6;
+      background: #fff;
+      padding-right: 160px;
+      height: 240px;
+    }
+    .p-product-effects .effects-swipter .abs-op-detail .images-pagination {
+      display: flex;
+      gap: 20px;
+    }
+    .p-product-effects .effects-swipter .abs-op-detail .images-pagination img {
+      opacity: 0.4;
+    }
+    .p-product-effects .effects-swipter .abs-op-detail .images-pagination .active {
+      opacity: 1;
+    }
+    .p-product-effects .effects-swipter .abs-op-detail .op-button {
+      position: relative;
+      width: 120px;
+      right: 0px;
+      bottom: 0px;
+      margin: 60px 0px 0px auto;
+      text-align: right;
+    }
+    .p-product-effects .effects-swipter .abs-op-detail .op-button img {
+      border-radius: 50%;
+    }
+    .p-product-effects .effects-swipter .abs-op-detail .op-button .swiper-button-prev {
+      transform: rotate(180deg);
+    }
+    .p-product-effects .list {
+      display: flex;
+    }
+    .p-product-effects .list .images-section {
+      width: 1042px;
+    }
+    .p-product-effects .list .images-section .image-container {
+      display: flex;
+      /* flex-direction: column;
+      align-items: center; */
+      position: relative;
+      gap:15px;      
+    }
+    .p-product-effects .img-item{
+      flex:1;
+      position: relative;
+      border-radius: 10px;
+      overflow: hidden;
+      z-index: 1;
+    }
+    .p-product-effects .list .images-section .image-container img {
+      width: 100%;
+    }
+    .p-product-effects .list .images-section .image-container .before-image-caption {
+      padding: 10px 16px;
+      position: absolute;
+      bottom: 19px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #646E78;
+      backdrop-filter: blur(2px);
+      color: #fff;
+      text-align: center;
+      font-size: 16px;
+      line-height: 1.2;
+      border-radius: 40px;
+      z-index: 2;
+    }
+    .p-product-effects .list .images-section .image-container .after-image-caption {
+      padding: 10px 16px;
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #e0004d;
+      white-space:nowrap;
+      backdrop-filter: blur(2px);
+      color: #fff;
+      text-align: center;
+      font-size: 16px;
+      line-height: 1.2;
+      border-radius: 40px;
+      z-index: 2;
+    }
+
+    .p-product-effects .list .testimonial-section {
+      text-align: center;
+      margin-left: 40px;
+      width: 38%;
+      padding: 0px 40px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .p-product-effects .list .testimonial-section .detail {
+      text-align: left;
+      color: #190a0a;
+    }
+    .p-product-effects .list .testimonial-section .detail .name {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+    }
+    .p-product-effects .list .testimonial-section .detail .name img {
+      width: 60px;
+      border-radius: 50%;
+    }
+    .p-product-effects .list .testimonial-section .detail .name span {
+      margin-left: 6px;
+      color: #000;
+      font-family: Saans;
+      font-size: 22px;
+      font-weight: 500;
+      line-height: 21px;
+    }
+    .p-product-effects .list .testimonial-section .detail .testimonial-rating {
+      color: #e0004d;
+      margin: 16px 0px;
+      font-size: 22px;
+      cursor: pointer;
+      height: 18px;
+    }
+    .p-product-effects .list .testimonial-section .detail .testimonial-title {
+      font-size: 30px;
+      line-height: 30px;
+      font-weight: 300;
+      /* 120% */
+    }
+    .p-product-effects .list .testimonial-section .detail .testimonial-desc {
+      padding: 30px 0px;
+      font-size: 16px;
+      font-weight: 300;
+      line-height: 150%;
+    }
+    .p-product-effects .list .testimonial-section .detail .view-more {
+      margin-top: 20px;
+      padding: 10px 20px;
+      border-radius: 25px;
+      text-decoration: none;
+      color: #000;
+      transition: background-color 0.3s, color 0.3s;
+      border: 1px solid #e0004d;
+      border-radius: 60px;
+      display: flex;
+      width: 178px;
+      height: 42px;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      color: #e0004d;
+      font-size: 18px;
+      cursor: pointer;
+    }
+    .p-product-effects .list .testimonial-section .detail .view-more:hover {
+      border-radius: 60px;
+      border: 1px solid #e0004d;
+      background: #fbfaf4;
+    }
+    .p-product-effects .list .testimonial-section .detail .view-more img {
+      width: 12px;
+    }
+
+    .p-product-effects .list .testimonial-section .image-pagination {
+      width: 100%;
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 20px;
+    }
+    .p-product-effects .list .testimonial-section .image-pagination .image-item {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      opacity: 0.4;
+      cursor: pointer;
+    }
+    .p-product-effects .list .testimonial-section .image-pagination .hide-item {
+      display: none;
+    }
+
+    .p-product-effects .list .testimonial-section .image-pagination .active {
+      opacity: 1;
+    }
+    .p-product-effects .list .testimonial-section .image-pagination .image-item img {
+      width: 100%;
+      height: auto;
+      object-fit: cover;
+    }
+
+    .toggle-arraws {
+    display: flex;
+    gap: 40px;
+  }
+
+  .toggle-arraw-item {
+    cursor: pointer;
+    transition: all 0.4s ease;
+    opacity: 0.3;
+  }
+
+  .toggle-arraw-item:hover {
+    opacity: 1;
+  }
+
+  .toggle-arraw-item svg {
+    display: block;
+    max-width: 100%;
+  }
+
+    @media screen and (max-width: 1440px) {
+      .p-product-effects {
+        padding: 50px 0px;
+      }
+      .p-product-effects .title {
+        font-size:40px;
+      }
+      .p-product-effects .box-tabs-block {
+        margin-bottom: 30px;
+      }
+      .p-product-effects .list .images-section {
+        align-items: initial;
+        gap: 15px;
+        padding-right: 20px;
+        width: 70%;
+      }
+
+      .p-product-effects .list .testimonial-section {
+        text-align: center;
+        width: 38%;
+        padding: 0px 20px;
+      }
+
+      .p-product-effects .list .testimonial-section .detail {
+        margin-top: 90px;
+      }
+    }
+    @media (max-width: 768px) {
+      .p-product-effects {
+        padding: 40px 0;
+      }
+      .p-product-effects .title {
+        font-size: 28px;
+        width: 100%;
+        text-align: center;
+      }
+      .p-product-effects .box-tabs-block {
+        flex-direction: column;
+        overflow: auto;
+        scroll-behavior: smooth;
+        gap:20px;
+      }
+      .p-product-effects .box-tabs-block::-webkit-scrollbar {
+        display: none;
+        /* Hide scrollbar for Webkit browsers */
+      }
+      .p-product-effects .tabs {
+        justify-content: center;
+        width:100%;
+      }
+      .p-product-effects .tabs .tab {
+        font-size: 12px;
+        padding:8px 15px;
+      }
+      .p-product-effects .list {
+        display: block;
+      }
+      .p-product-effects .list .images-section {
+        width: 100%;
+        padding-right: 0px;
+        margin-bottom: 30px;
+        gap: 8px;
+      }
+      .p-product-effects .list .images-section .image-container .before-image-caption {
+        bottom: 10px;
+        font-size: 12px;
+        padding: 4px 10px;
+      }
+      .p-product-effects .list .images-section .image-container .after-image-caption {
+        bottom: 10px;
+        font-size: 12px;
+        padding: 4px 10px;
+      }
+      .p-product-effects .list .testimonial-section {
+        width: 100%;
+        margin: 0px;
+        padding: 0px;
+      }
+      .p-product-effects .list .testimonial-section .image-pagination {
+        width: 100%;
+        gap: 6px;
+      }
+      .p-product-effects .list .images-section .image-container{
+        gap:8px;
+      }
+      .p-product-effects .img-item{
+        border-radius:6px;
+      }
+      .p-product-effects .list .testimonial-section .image-pagination .image-item {
+        width: 100%;
+      }
+      .p-product-effects .list .testimonial-section .detail {
+        margin: 0px;
+      }
+      .p-product-effects .list .testimonial-section .detail .name span {
+        color: #000;
+        font-family: Saans;
+        font-size: 13px;
+        font-weight: 500;
+        line-height: 21px;
+      }
+      .p-product-effects .list .testimonial-section .detail .testimonial-title {
+        font-size: 16px;
+        line-height: 22px;
+      }
+      .p-product-effects .list .testimonial-section .detail .testimonial-desc {
+        font-size: 14px;
+        line-height: 150%;
+        padding: 10px 0px;
+      }
+      .p-product-effects .list .testimonial-section .detail .view-more {
+        font-size: 14px;
+        width: 130px;
+        padding: 0px 0px;
+        height: 28px;
+        gap: 7px;
+      }
+      .p-product-effects .list .testimonial-section .detail .view-more img {
+        width: 8px;
+      }
+      .toggle-arraws {
+        justify-content: center;
+        margin-top: 30px;
+      }
+    }
+</style>
+
+<section class="p-product-effects">
+  <div class="container">
+    <div class="box-tabs-block">
+      <h2 class="title">{{ se_stts.text }}</h2>
+      <div class="tabs">
+        {% assign unique_names = '' %}
+        {% for item in se_bks %}
+          {% if forloop.first %}
+            {% assign curr_item = item.settings %}
+          {% endif %}
+          {% if unique_names contains item.settings.title %}
+            {% continue %}
+          {% else %}
+            <a href="#" onclick="return false;" class="tab {% if forloop.first %} active {% endif %}">
+              {{- item.settings.title -}}
+            </a>
+            {% assign unique_names = unique_names | append: item.settings.title | append: ',' %}
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="list">
+      <div class="images-section">
+        <div class="image-container">
+          <div class="img-item">
+            <img
+            loading="lazy"
+            class="img"
+            width="{{ curr_item.image.width }}"
+            height="{{ curr_item.image.height }}"
+            {% render 'image-attributes', image: curr_item.image %}
+            alt="{{ curr_item.image.alt | escape }}"
+          >
+            <div class="before-image-caption">{{ se_stts.text1 }}</div>
+          </div>
+          <div class="img-item">
+            <img
+            loading="lazy"
+            class="img"
+            width="{{ curr_item.image4.width }}"
+            height="{{ curr_item.image4.height }}"
+            {% render 'image-attributes', image: curr_item.image4 %}
+            alt="{{ curr_item.image4.alt | escape }}"
+          >
+            <div class="after-image-caption">{{ se_stts.text2 }}</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-section">
+        <div class="image-pagination" style="height: 0;overflow: hidden;">
+          {% for item in se_bks %}
+            {% if forloop.first %}
+              {% assign activename = item.settings.title %}
+            {% endif %}
+            <div
+              class="image-item  {% if forloop.first %} active {% endif %} {% if item.settings.title != activename %} hide-item {% endif %}"
+              data-title="{{ item.settings.title }}"
+              data-before="{{ item.settings.image | image_url }}"
+              data-image2="{{ item.settings.image2 | image_url }}"
+              data-image3="{{ item.settings.image4 | image_url }}"
+              data-text1="{{ item.settings.text1 | escape }}"
+              data-text2="{{ item.settings.text2 | escape }}"
+              data-text3="{{ item.settings.text3 | escape }}"
+              data-text4="{{ item.settings.text4 | escape }}"
+              data-url="{{ item.settings.text5 }}"
+            >
+              <img
+                loading="lazy"
+                class="img"
+                width="{{ item.settings.image4.width }}"
+                height="{{ item.settings.image4.height }}"
+                {% render 'image-attributes', image: item.settings.image4 %}
+                alt="{{ item.settings.image4.alt | escape }}"
+              >
+            </div>
+          {% endfor %}
+        </div>
+
+        <div class="detail">
+          <div class="name">
+            <img
+              loading="lazy"
+              class="img"
+              width="{{ curr_item.image2.width }}"
+              height="{{ curr_item.image2.height }}"
+              {% render 'image-attributes', image: curr_item.image2 %}
+              alt="{{ curr_item.image2.alt | escape }}"
+            >
+            <span>{{ curr_item.text1 }}</span>
+          </div>
+
+          <div class="testimonial-rating">
+            <img
+                width=""
+              height=""
+              src="https://cdn.shopify.com/s/files/1/0656/9079/6273/files/results_star-full_svg.svg?v=1724416317"
+              loading="lazy"
+              alt="star"
+            >
+          </div>
+
+          <h4 class="testimonial-title">{{ curr_item.text2 }}</h4>
+          <div class="testimonial-desc">
+            {{ curr_item.text3 }}
+          </div>
+        </div>
+        <div class="toggle-arraws">
+          <div class="toggle-arraw-item" data-offset="-1">
+            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="23" viewBox="0 0 30 23" fill="none">
+              <g clip-path="url(#clip0_3763_1290)">
+                <path d="M1.90735e-06 11.4929C1.90735e-06 11.6744 0.067318 11.8544 0.196098 11.992L10.44 22.9676L11.5098 21.9695L2.41463 12.2246H30C30 11.4168 29.3444 10.7612 28.5366 10.7612H0.765366C0.488781 10.7612 0.219515 10.9003 0.0878067 11.1446C0.0278072 11.2544 1.90735e-06 11.3744 1.90735e-06 11.4929Z" fill="#190A0A"></path>
+                <path d="M1.53073 8.92781C2.10292 9.49854 3.02926 9.49854 3.59999 8.92781L11.4937 1.03561L10.459 0.000976562L1.53219 8.92781H1.53073Z" fill="#190A0A"></path>
+              </g>
+              <defs>
+                <clipPath id="clip0_3763_1290">
+                  <rect width="30" height="22.9683" fill="white" transform="matrix(-1 0 0 1 30 0.000976562)"></rect>
+                </clipPath>
+              </defs>
+            </svg>
+          </div>
+          <div class="toggle-arraw-item" data-offset="1">
+            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="23" viewBox="0 0 30 23" fill="none">
+              <g clip-path="url(#clip0_3763_1286)">
+                <path d="M30 11.4929C30 11.6744 29.9327 11.8544 29.8039 11.992L19.56 22.9676L18.4902 21.9695L27.5854 12.2246H0C0 11.4168 0.65561 10.7612 1.46341 10.7612H29.2346C29.5112 10.7612 29.7805 10.9003 29.9122 11.1446C29.9722 11.2544 30 11.3744 30 11.4929Z" fill="#190A0A"></path>
+                <path d="M28.4693 8.92781C27.8971 9.49854 26.9707 9.49854 26.4 8.92781L18.5063 1.03561L19.541 0.000976562L28.4678 8.92781H28.4693Z" fill="#190A0A"></path>
+              </g>
+              <defs>
+                <clipPath id="clip0_3763_1286">
+                  <rect width="30" height="22.9683" fill="white" transform="translate(0 0.000976562)"></rect>
+                </clipPath>
+              </defs>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  $(function () {
+    // 绑定两个按钮的点击事件
+    document.querySelectorAll('.toggle-arraw-item').forEach(button => {
+      button.addEventListener('click', () => {
+        let offset = parseInt(button.getAttribute('data-offset'));
+        slideToTab(offset);
+        startAutoSlide();
+      });
+    });
+    // 子图片切换
+    $(document).on('click', '.testimonial-section .image-item', function () {
+      $(this).addClass('active').siblings().removeClass('active');
+      {% comment %} let afterimg = $(this).attr('data-after'); {% endcomment %}
+      let beforeimg = $(this).attr('data-before');
+      let logoImage = $(this).attr('data-image2');
+      let afterimg = $(this).attr('data-image3');
+      let text = $(this).attr('data-text1');
+      let text2 = $(this).attr('data-text2');
+      let text3 = $(this).attr('data-text3');
+      let text4 = $(this).attr('data-text4');
+      let url = $(this).attr('data-url');
+      $('.images-section .image-container').find('.img-item').eq(0).find('img').attr('srcset', beforeimg);
+      $('.images-section .image-container').find('.img-item').eq(1).find('img').attr('srcset', afterimg);
+      $('.testimonial-section .name span').text(text);
+      $('.testimonial-section .name img').attr('srcset', logoImage);
+      $('.testimonial-section .testimonial-title').text(text2);
+      $('.testimonial-section .testimonial-desc').text(text3);
+      $('.testimonial-section .view-more').attr('href', url);
+      {% comment %} commonGtmEvent(`${g_product_name} Product-before&after-Image switching`,'','Product'); {% endcomment %}
+    });
+
+    //星星跳转到评论区
+    $(document).on('click', '.testimonial-section .testimonial-rating', function () {
+      scrollToElement('judgeme_product_reviews');
+    })
+
+    let currentIndex = 1;
+    const tabsContainer = $('.p-product-effects .box-tabs-block'); // 获取 .tabs 容器
+    const tabs = $('.p-product-effects .tab'); // 获取所有的 .tab 元素
+    const intervalTime = 2000; // 设置间隔时间为 10 秒
+    let autoSlide = null;
+
+    function slideToTab(offset = 1) {
+        // 获取当前的 .tab 元素
+        let currentTab = $(tabs[currentIndex]);
+        let curLeft = currentTab.position().left ;
+        let scrollPosition = curLeft;
+        if(currentIndex == 0){
+          scrollPosition = -30;
+        } else if(currentIndex == 1){
+          scrollPosition = 90;
+        }
+        // 滑动到该位置
+        tabsContainer.animate({ scrollLeft: scrollPosition }, 500);
+
+        // 计算下一个索引，如果超出长度则回到第一个
+        tabs.removeClass('active'); // 移除所有 tab 上的 active 类
+        currentTab.addClass('active'); // 给当前 tab 加上 active 类
+        // 触发点击事件
+        setEffectsItem(currentTab);
+        // 计算下一个索引，如果超出长度则回到第一个
+        // currentIndex = (currentIndex + 1) % tabs.length;
+      currentIndex = (currentIndex + tabs.length + offset) % tabs.length;
+    }
+
+    // 设置并启动轮播
+    function startAutoSlide() {
+      // 清除已有的定时器
+      clearInterval(autoSlide);
+      // 启动新的轮播计时器
+      autoSlide = setInterval(slideToTab, intervalTime);
+    }
+    // 开始自动轮播
+    startAutoSlide();
+
+
+    // tab 切换
+    $(document).on('click', '.p-product-effects .tabs .tab', function () {
+      let name = $(this).text();
+      currentIndex = $(this).index();
+      setEffectsItem($(this));
+      startAutoSlide();
+      commonGtmEvent(`${g_product_name} Product-before&after-${name}`,currentIndex,'Product');
+    });
+
+    function setEffectsItem (ths) {
+      let name = $(ths).text();
+      $(ths).addClass('active').siblings().removeClass('active');
+      $('.testimonial-section .image-item').each(function() {
+        if ($(this).data('title') === name) {
+            $(this).show(); // 显示匹配的项
+        } else {
+            $(this).hide(); // 隐藏不匹配的项
+        }
+      });
+      $('.testimonial-section .image-item:visible').eq(0).click();
+    }
+  });
+</script>
+
+{% schema %}
+{
+  "name": "p-product-effects-new",
+  "blocks": [
+    {
+      "name": "nav-item",
+      "type": "nav-item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "导航名称"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "main image"
+        },
+        {
+          "type": "image_picker",
+          "id": "image4",
+          "label": "Image"
+        },
+        {
+          "type": "image_picker",
+          "id": "image2",
+          "label": "icon头像"
+        },
+        {
+          "type": "text",
+          "id": "text1",
+          "label": "name"
+        },
+        {
+          "type": "text",
+          "id": "text2",
+          "label": "text2"
+        },
+        {
+          "type": "text",
+          "id": "text3",
+          "label": "description"
+        }
+      ]
+    }
+  ],
+  "settings": [
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#f9f9f9"
+    },
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "text1",
+      "label": "Text1"
+    },
+    {
+      "type": "text",
+      "id": "text2",
+      "label": "Text2"
+    },
+    {
+      "type": "text",
+      "id": "text3",
+      "label": "Text3"
+    },
+    {
+      "type": "text",
+      "id": "text4",
+      "label": "Text4"
+    },
+    {
+      "type": "text",
+      "id": "text5",
+      "label": "Text5"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "图片1"
+    },
+    {
+      "type": "image_picker",
+      "id": "image1",
+      "label": "图片3"
+    }
+  ],
+  "presets": [
+    {
+      "name": "p-product-effects-new",
+      "blocks": []
+    }
+  ]
+}
+{% endschema %}

@@ -1,3 +1,10 @@
+<script>
+  if (location.search != '') {
+    location.href = 'https://account.ulike.com/account/profile?site=uk&' + location.search.substr(1);
+  } else {
+    location.href = 'https://account.ulike.com/account/profile?site=uk';
+  }
+</script>
 <section>
   <div class="link-bar hidden-phone">
     <div class="container">
@@ -154,6 +161,7 @@
                                 {{- 'customer.orders.total' | t -}}
                               </span>
                             </th>
+                            <th></th>
                           </tr>
                         </thead>
 
@@ -161,15 +169,35 @@
                           {%- for order in customer.orders -%}
                             <tr
                               class="account__order-table-item"
-                              onclick="window.location.href = '{{ order.customer_url }}'"
+                              {% comment %} onclick="window.location.href = '{{ order.customer_url }}'" {% endcomment %}
                             >
-                              <td>
+                              <td onclick="window.location.href = '{{ order.customer_url }}'">
                                 <span class="link--animated">{{ order.name }}</span>
                               </td>
-                              <td>{{ order.created_at | date: format: 'date' }}</td>
+                              <td onclick="window.location.href = '{{ order.customer_url }}'">
+                                {{ order.created_at | date: format: 'date' }}
+                              </td>
                               <td>{{ order.financial_status_label }}</td>
                               <td>{{ order.fulfillment_status_label }}</td>
-                              <td class="text--right">{{ order.total_net_amount | money }}</td>
+                              <td onclick="window.location.href = '{{ order.customer_url }}'" class="text--right">
+                                {{ order.total_net_amount | money }}
+                              </td>
+                              {% comment %} 换购需求 Fulfilled  {% endcomment %}
+                              <td class="box-exchange-block">
+                                {% if order.fulfillment_status_label == 'Fulfilled'
+                                  and order.financial_status_label == 'Paid'
+                                %}
+                                  {% if order.line_items.size > 1 %}
+                                    {% assign oldName = 'Dark Green / UK Plug' %}
+                                  {% else %}
+                                    {% assign oldName = order.line_items[0].variant.title %}
+                                  {% endif %}
+                                  <div class="btn-exchange j_btn_exchange" title="{{ oldName }}">
+                                    {{ block.settings.text }}
+                                  </div>
+                                  <div class="btn-desc">{{ block.settings.text2 }}</div>
+                                {% endif %}
+                              </td>
                             </tr>
                           {%- endfor -%}
                         </tbody>
@@ -208,6 +236,22 @@
                                 <span>{{ order.total_net_amount | money }}</span>
                               </div>
                             </div>
+                            <div class="box-exchange-block">
+                              {% if order.fulfillment_status_label == 'Fulfilled'
+                                and order.financial_status_label == 'Paid'
+                              %}
+                                {% if order.line_items.size > 1 %}
+                                  {% assign oldName = 'Dark Green / UK Plug' %}
+                                {% else %}
+                                  {% assign oldName = order.line_items[0].variant.title %}
+                                {% endif %}
+
+                                <div class="btn-exchange j_btn_exchange" title="{{ oldName }}">
+                                  {{ block.settings.text }}
+                                </div>
+                                <div class="btn-desc">{{ block.settings.text2 }}</div>
+                              {% endif %}
+                            </div>
 
                             <a
                               class="button button--small button--text button--outline button--full"
@@ -230,6 +274,139 @@
     </div>
   </div>
 </section>
+
+<script>
+  $(function () {
+    const user_token = getCookie('authorized-token');
+    const activityId = '14154969074630657';
+    const siteCode = 'UK'
+    var settings = {
+      url: '//api.ulike.com/promotion/queryActivityInfo',
+      method: 'POST',
+      timeout: 0,
+      headers: {
+        'x-ulike-user-token': user_token,
+        'Content-Type': 'application/json',
+      },
+      data: JSON.stringify({
+        siteCode: siteCode,
+        activityId,
+        includeBenefit: true
+        {% comment %} userEmail: '{{ customer.email }}', {% endcomment %}
+      }),
+    };
+    var product_status = 2;
+    {% for block in section.blocks %}
+      {%  if block.type == "orders" %}
+       product_status = '{{  block.settings.product_status }}';
+      {% endif %}
+    {% endfor %}
+
+   // 状态为0 为可以兑换。 1 为预售 2 不可兑换
+    if(product_status == '0' ){
+      var activityItemDtoList = [];
+      var applyStatus = '';
+      var benefitInfoDtoList = [];
+      $.ajax(settings).done(function (response) {
+        console.log(response);
+        if (response.code == 0) {
+          activityItemDtoList = response.data.activityItemDtoList;
+          applyStatus = response.data.applyStatus;
+          benefitInfoDtoList = response.data.benefitInfoDtoList;
+          if(applyStatus == 'REJECTED'){
+            $('.box-exchange-block').hide()
+          }
+          $('.box-exchange-block').show()
+        } else {
+          console.log('error');
+          $('.box-exchange-block').hide()
+        }
+      });
+
+      $(document).on('click', '.account--order-list .j_btn_exchange', function (e) {
+        e.preventDefault();
+        var title = $(this).attr('title');
+        // 如果是白色就更换成紫色
+        if (title.indexOf('White') > -1) {
+          title = title.replace('White', 'Purple');
+        }
+         // 得到 title id
+         // 得到 title id
+         var newObj = activityItemDtoList.filter((item) => item.itemName == title);
+         let vid = 0;
+         if(newObj.length > 0){
+           vid = newObj[0].resourceId;
+         } else {
+           vid = activityItemDtoList[0].resourceId
+         }
+
+         console.log(applyStatus);
+         if(applyStatus == 'APPLIED'){
+          // 获取第一个 code
+          setCookie("discount_code", benefitInfoDtoList[0].instanceId, 1);
+          buyProduct(vid);
+         }else if (applyStatus == 'NORMAL'){
+          // 发送code
+           sendCodeCart(vid);
+         }
+      });
+
+      function sendCodeCart(vid) {
+        var settings = {
+           "url": "//api.ulike.com/promotion/sendBenefit",
+           "method": "POST",
+           "headers": {
+             "x-ulike-user-token": user_token,
+             "Content-Type": "application/json"
+           },
+           "data": JSON.stringify({
+             "siteCode": siteCode,
+             activityId
+           }),
+         };
+
+         $.ajax(settings).done(function (response) {
+           console.log(response)
+             if(response.code == 0 ){
+               setCookie("discount_code", response.data.instanceId, 1);
+               buyProduct(vid);
+             }
+         });
+      }
+    }
+  });
+</script>
+
+<style>
+  .account--order-list .box-exchange-block {
+    font-size: 12px;
+    padding: 15px 4px !important;
+    text-align: center !important;
+    display: none;
+  }
+  .account--order-list .box-exchange-block .btn-exchange {
+    font-size: 12px;
+    background: #0a0a0a;
+    display: inline-block;
+    padding: 10px;
+    text-align: center;
+    color: #fff;
+    margin: 6px auto;
+    cursor: pointer;
+  }
+  .account--order-list .box-exchange-block .btn-desc {
+    font-size: 12px;
+    line-height: 16px;
+  }
+  .account--order-list .box-exchange-block .btn-desc span {
+    color: #e0004d;
+  }
+  @media screen and (max-width: 780px) {
+    .account--order-list .box-exchange-block .btn-exchange {
+      width: 100%;
+    }
+  }
+</style>
 
 {% schema %}
 {
@@ -254,7 +431,41 @@
     {
       "type": "orders",
       "name": "Order list",
-      "limit": 1
+      "limit": 1,
+      "settings": [
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "按钮名称",
+          "default": "One-Click Upgrade"
+        },
+        {
+          "type": "textarea",
+          "id": "text2",
+          "label": "底部提示文案",
+          "default": "Pay <span>only £189</span> to get Air 10"
+        },
+        {
+          "type": "select",
+          "id": "product_status",
+          "label": "商品状态",
+          "options": [
+            {
+              "value": "0",
+              "label": "可售"
+            },
+            {
+              "value": "1",
+              "label": "预售"
+            },
+            {
+              "value": "2",
+              "label": "缺货"
+            }
+          ],
+          "default": "0"
+        }
+      ]
     }
   ]
 }

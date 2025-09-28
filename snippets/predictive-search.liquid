@@ -1,4 +1,12 @@
-<predictive-search-drawer append-body {% if section.settings.header_layout != 'logo_center_search_open' %}reverse-breakpoint="screen and (min-width: 1200px)"{% endif %} id="search-drawer" initial-focus-selector="#search-drawer [name='q']" class="predictive-search drawer drawer--large drawer--from-left">
+<predictive-search-drawer
+  append-body
+  {% if section.settings.header_layout != 'logo_center_search_open' %}
+    reverse-breakpoint="screen and (min-width: 1200px)"
+  {% endif %}
+  id="search-drawer"
+  initial-focus-selector="#search-drawer [name='q']"
+  class="predictive-search drawer drawer--large drawer--from-left"
+>
   <span class="drawer__overlay"></span>
 
   <header class="drawer__header">
@@ -7,17 +15,43 @@
 
       <input type="hidden" name="type" value="product">
       <input type="hidden" name="options[prefix]" value="last">
-      <input type="hidden" form="predictive-search-form" name="options[unavailable_products]" value="{{ settings.search_unavailable_products }}">
-      <input class="predictive-search__input" type="text" name="q" autocomplete="off" autocorrect="off" aria-label="{{ 'search.general.title' | t }}" placeholder="{{ 'search.general.search_placeholder' | t }}">
+      <input
+        type="hidden"
+        form="predictive-search-form"
+        name="options[unavailable_products]"
+        value="{{ settings.search_unavailable_products }}"
+      >
+      <input
+        class="predictive-search__input"
+        type="text"
+        name="q"
+        autocomplete="off"
+        autocorrect="off"
+        aria-label="{{ 'search.general.title' | t }}"
+        placeholder="{{ 'search.general.search_placeholder' | t }}"
+      >
     </form>
 
-    <button type="button" class="drawer__close-button tap-area" data-action="close" title="{{ 'general.accessibility.close' | t | escape }}">
+    <button
+      type="button"
+      class="drawer__close-button tap-area"
+      data-action="close"
+      title="{{ 'general.accessibility.close' | t | escape }}"
+    >
       {%- render 'icon' with 'close' -%}
     </button>
   </header>
 
   <div class="drawer__content">
-    <div class="predictive-search__content-wrapper">
+    <div
+      class="predictive-search__content-wrapper"
+      data-articles="{{ section.settings.articles_link }}"
+      data-pages="{{ section.settings.pages_link }}"
+      data-collections="{{ section.settings.collections_link }}"
+      data-default-img="{{ section.settings.default_image | image_url }}"
+      data-no="{{ section.settings.no_results }}"
+      data-p="{{ section.settings.text_hot }}"
+    >
       <div hidden class="predictive-search__loading-state">
         <div class="spinner">
           {%- render 'icon' with 'spinner', stroke_width: 4 -%}
@@ -27,6 +61,199 @@
       <div hidden class="predictive-search__results" aria-live="polite">
         {%- comment -%}Content is filled dynamically in JS{%- endcomment -%}
       </div>
+
+      {% for block in section.blocks %}
+        {% if block.type == 'product_search_recommend' %}
+          <div class="product-recommend-wrap">
+            <div class="product-recommend-title">Product recommendation</div>
+            <div class="product-recommend">
+              {% for i in (1..4) %}
+                {% assign key_image = 'product_image_' | append: i %}
+                {% assign key_name = 'product_name_' | append: i %}
+                {% assign key_link = 'product_link_' | append: i %}
+                {% assign key_tag = 'product_tag_' | append: i %}
+                {% assign key_review = 'product_review_' | append: i %}
+                {% assign key_rating = 'product_rating_' | append: i %}
+                {% assign key_price = 'product_price_' | append: i %}
+
+                {% assign image = block.settings[key_image] %}
+                {% assign name = block.settings[key_name] %}
+                {% assign link = block.settings[key_link] %}
+                {% assign tag = block.settings[key_tag] %}
+                {% assign review = block.settings[key_review] %}
+                {% assign rating = block.settings[key_rating] | plus: 0 %}
+                {% assign price = block.settings[key_price] %}
+
+                {% if name != blank %}
+                  <a href="{{ link }}" class="product-recommend-item">
+                    <picture>
+                      <source
+                        media="(max-width: 1200px)"
+                        srcset="{{ image | img_url: '80x' }}"
+                      >
+                      <img
+                        src="{{ image | img_url: '100x' }}"
+                        alt="{{ name }}"
+                      >
+                    </picture>
+                    <div class="product-recommend-info">
+                      {% if name != blank %}
+                        <div class="product-recommend-name">
+                          {{ name }}
+                          {% if tag != blank %}
+                            <span class="product-recommend-tag">{{ tag }}</span>
+                          {% endif %}
+                        </div>
+                      {% endif %}
+                      <div class="header-new-product-star">
+                        <div class="jdgm-widget jdgm-preview-badge jdgm-preview-badge--with-link jdgm--done-setup">
+                          <div
+                            class="jdgm-prev-badge"
+                            data-number-of-reviews="1707"
+                            data-number-of-questions="0"
+                          >
+                            {% assign full_stars = rating | floor %}
+                            {% assign has_half_star = 0 %}
+                            {% if rating > full_stars %}
+                              {% assign has_half_star = 1 %}
+                            {% endif %}
+                            {% assign empty_stars = 5 | minus: full_stars | minus: has_half_star %}
+                            <span class="jdgm-prev-badge__stars">
+                              {%- for i in (1..full_stars) -%}
+                                <span class="jdgm-star jdgm--on"></span>
+                              {%- endfor -%}
+                              {%- if has_half_star == 1 -%}
+                                <span class="jdgm-star jdgm--half"></span>
+                              {%- endif -%}
+                              {%- for i in (1..empty_stars) -%}
+                                <span class="jdgm-star jdgm--off"></span>
+                              {%- endfor -%}
+                            </span>
+                            {% if review != blank %}
+                              <span class="jdgm-prev-badge__text">({{ review }})</span>
+                            {% endif %}
+                          </div>
+                        </div>
+                      </div>
+                      {% if price != blank %}
+                        <div class="product-recommend-price">{{ price | money }}</div>
+                      {% endif %}
+                    </div>
+                  </a>
+                {% endif %}
+              {% endfor %}
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
+
+      {% assign search_product = false %}
+      {% for block in section.blocks %}
+        {% if block.type == 'product_search' %}
+          {% assign search_product = true %}
+          {% break %}
+        {% endif %}
+      {% endfor %}
+
+      {%- if search_product -%}
+        {%- assign color_swatch_config = settings.color_swatch_config | newline_to_br | split: '<br />' -%}
+        <div class="header-search-product-box header-search-product-swiper">
+          <div class="header-search-product-list swiper-wrapper">
+            {% for block in section.blocks %}
+              {% if block.type == 'product_search' %}
+                {%- assign product = block.settings.product -%}
+                <div style="display:none;">{{ product | json }}</div>
+                <a
+                  href="{{ block.settings.link }}"
+                  class="header-search-product-item header-search-product-mp swiper-slide"
+                >
+                  {% if block.settings.tag != blank %}
+                    <div class="header-search-product-tag">{{ block.settings.tag }}</div>
+                  {% endif %}
+                  <div class="header-search-product-img-list">
+                    {%- if block.settings.image != blank -%}
+                      <div class="header-search-product-img-item active">
+                        <img
+                          loading="lazy"
+                          class="img"
+                          width=""
+                          height=""
+                          {% render 'image-attributes', image: block.settings.image %}
+                          alt="{{ block.settings.image.alt | escape }}"
+                        >
+                      </div>
+                    {%- endif -%}
+                    {%- if block.settings.image1 != blank -%}
+                      <div class="header-search-product-img-item">
+                        <img
+                          loading="lazy"
+                          class="img"
+                          width=""
+                          height=""
+                          {% render 'image-attributes', image: block.settings.image1 %}
+                          alt="{{ block.settings.image1.alt | escape }}"
+                        >
+                      </div>
+                    {%- endif -%}
+                    {%- if block.settings.image2 != blank -%}
+                      <div class="header-search-product-img-item">
+                        <img
+                          loading="lazy"
+                          class="img"
+                          width=""
+                          height=""
+                          {% render 'image-attributes', image: block.settings.image2 %}
+                          alt="{{ block.settings.image2.alt | escape }}"
+                        >
+                      </div>
+                    {%- endif -%}
+                  </div>
+                  <div class="header-search-product-cont">
+                    <div class="header-search-product-cont-top">
+                      <h3 class="header-search-product-h3">
+                        {% if product.selected_or_first_available_variant.metafields.custom.variant_title %}
+                          {{ product.selected_or_first_available_variant.metafields.custom.variant_title }}
+                        {% else %}
+                          {{ product.title }}
+                        {% endif %}
+                      </h3>
+                      <div class="header-search-product-price">
+                        <span class="n-price">
+                          {{-
+                            product.selected_or_first_available_variant.metafields.custom.page_price
+                            | times: 100
+                            | money
+                          -}}</span
+                        ><span class="d-price">{{ product.price | money }}</span>
+                      </div>
+                      <div class="header-search-product-dot">
+                        {%- if block.settings.color_s != blank -%}
+                          <div
+                            class="header-search-product-dot-item active"
+                            style="{% render 'color-swatch-style', color_swatch_config: color_swatch_config, value: block.settings.color_s %};background-size: 100% 100%;"
+                          ></div>
+                        {%- endif -%}
+                        {%- if block.settings.color_s1 != blank -%}
+                          <div
+                            class="header-search-product-dot-item"
+                            style="{% render 'color-swatch-style', color_swatch_config: color_swatch_config, value: block.settings.color_s1 %};background-size: 100% 100%;"
+                          ></div>
+                        {%- endif -%}
+                        {%- if block.settings.color_s2 != blank -%}
+                          <div
+                            class="header-search-product-dot-item"
+                            style="{% render 'color-swatch-style', color_swatch_config: color_swatch_config, value: block.settings.color_s2 %};background-size: 100% 100%;"
+                          ></div>
+                        {%- endif -%}
+                      </div>
+                    </div>
+                  </div>
+                </a>
+              {% endif %}
+            {% endfor %}
+          </div>
+        </div>
+      {%- endif -%}
 
       {%- assign search_menu = section.settings.search_menu -%}
 
@@ -48,7 +275,9 @@
             {%- for link in search_menu.links -%}
               <div class="predictive-search__menu">
                 {%- if link.url != '#' -%}
-                  <a href="{{ link.url }}" class="predictive-search__menu-title heading heading--small">{{ link.title }}</a>
+                  <a href="{{ link.url }}" class="predictive-search__menu-title heading heading--small">
+                    {{- link.title -}}
+                  </a>
                 {%- else -%}
                   <p class="predictive-search__menu-title heading heading--small">{{ link.title }}</p>
                 {%- endif -%}
@@ -69,6 +298,8 @@
   </div>
 
   <footer hidden class="drawer__footer drawer__footer--no-top-padding">
-    <button type="submit" form="predictive-search-form" class="button button--primary button--full">{{ 'search.general.view_all_results' | t }}</button>
+    <button type="submit" form="predictive-search-form" class="button button--primary button--full">
+      {{ 'search.general.view_all_results' | t }}
+    </button>
   </footer>
 </predictive-search-drawer>

@@ -1,0 +1,172 @@
+<style>
+  .p-accordion-box {
+    margin-bottom: 15px;
+  }
+  .p-accordion-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    background-color: #f7f8fa;
+    padding: 10px;
+    border: 1px solid #f7f8fa;
+    font-weight: 500;
+    font-size: 14px;
+    color: rgb(29, 29, 31);
+  }
+
+  .p-accordion-info {
+    display: flex;
+    align-items: center;
+  }
+
+  .p-accordion-info img {
+    width: 28px;
+  }
+
+  .p-accordion-info img:nth-child(1) {
+    margin-left: -5px;
+  }
+
+  .p-accordion-info img:nth-child(2) {
+    margin-left: -10px;
+  }
+
+  .p-accordion-header.active .svg-icon {
+    transform: rotate(180deg);
+    transition: transform 0.3s ease;
+  }
+
+  .svg-icon {
+    width: 14px;
+    height: 14px;
+  }
+
+  .p-accordion-content {
+    display: none;
+    border: 1px solid #f7f8fa;
+    border-top: none;
+    color: rgb(44, 46, 47);
+    font-size: 14px;
+  }
+
+  .p-accordion-content .p-accordion-item {
+    border-bottom: 1px solid #f7f8fa;
+    padding: 5px 10px;
+  }
+
+  @media (max-width: 768px) {
+    .p-accordion-header {
+      font-size: 12px;
+    }
+
+    .p-accordion-info img {
+      width: 20px;
+    }
+
+    .p-accordion-content .p-accordion-item {
+      padding: 0 8px;
+    }
+
+    .p-accordion-info img:nth-child(2) {
+      margin-left: -6px;
+    }
+  }
+</style>
+
+<section class="p-accordion-box">
+  {%- if p_block.settings.html_m_checkbox -%}
+    <div class="p-accordion">
+      <div class="p-accordion-wrap">
+        <div class="p-accordion-header">
+          <div class="p-accordion-info">
+            <img
+              src="https://cdn.shopify.com/s/files/1/0656/9079/6273/files/affirm-new-pay_3840x_6a747e6c-5c8d-4696-b07f-eff6265ac2ab.webp?v=1750320270"
+              alt=""
+            >
+            <img
+              src="https://cdn.shopify.com/s/files/1/0656/9079/6273/files/paypal-small-new_3840x_d27a20cc-5ba9-4c7f-8547-32b304f5d6e0.webp?v=1750320739"
+              alt=""
+            >
+            <span>Multiple installment payment options available</span>
+          </div>
+          <svg
+            class="svg-icon"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+            aria-hidden="true"
+            data-slot="icon"
+          >
+            <path fill-rule="evenodd" d="M12.53 16.28a.75.75 0 0 1-1.06 0l-7.5-7.5a.75.75 0 0 1 1.06-1.06L12 14.69l6.97-6.97a.75.75 0 1 1 1.06 1.06l-7.5 7.5Z" clip-rule="evenodd"></path>
+          </svg>
+        </div>
+        <div class="p-accordion-content">
+          <div
+            class="p-accordion-item p-accordion-custom"
+            data-amount="{{ p_product.selected_or_first_available_variant.metafields.custom["page_price"] }}"
+          ></div>
+          <div class="p-accordion-item ">
+            <div
+              style="margin-top: 10px"
+              class="pay-button"
+              data-pp-placement="product"
+              data-pp-message
+              data-pp-amount="{{ p_product.selected_or_first_available_variant.metafields.custom["page_price"] }}"
+              data-pp-buyercountry="GB"
+              data-pp-currency="GBP"
+              data-pp-style-layout="text"
+            ></div>
+          </div>
+          <div class="p-accordion-item">
+            <div class="p-box-installment">
+              <div class="hidden-phone">{{ p_block.settings.html_text }}</div>
+              <div class="hidden-desk">{{ p_block.settings.html_m_text }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  {% else %}
+    <div class="p-accordion-item">
+      <div
+        class="p-accordion-item p-accordion-custom"
+        data-price="{{ p_product.selected_or_first_available_variant.metafields.custom["page_price"] }}"
+      ></div>
+      <div class="p-box-installment">
+        <div class="hidden-phone">{{ p_block.settings.html_text }}</div>
+        <div class="hidden-desk">{{ p_block.settings.html_m_text }}</div>
+      </div>
+      <div
+        style="margin-top: 4px"
+        class="pay-button"
+        data-pp-placement="product"
+        data-pp-message
+        data-pp-amount="{{ p_product.selected_or_first_available_variant.metafields.custom["page_price"] }}"
+        data-pp-buyercountry="GB"
+        data-pp-currency="GBP"
+        data-pp-style-layout="text"
+      ></div>
+    </div>
+  {%- endif -%}
+</section>
+
+<script>
+  $(document).ready(function () {
+    $('.p-accordion-header').click(function () {
+      var content = $(this).next('.p-accordion-content');
+      // 如果内容已经可见，收起
+      if (content.is(':visible')) {
+        content.slideUp();
+        $(this).removeClass('active');
+      } else {
+        // 收起其他打开的内容
+        $('.p-accordion-content').slideUp();
+        $('.p-accordion-header').removeClass('active');
+        // 展开当前内容
+        content.slideDown();
+        $(this).addClass('active');
+      }
+    });
+  });
+</script>

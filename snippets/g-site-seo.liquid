@@ -1,0 +1,24 @@
+{% if request.path contains '/search' %}
+  <meta name="robots" content="noindex,follow" >
+{% endif %}
+
+{% if article.metafields.seo.alternate_languages %}
+  {{ article.metafields.seo.alternate_languages  }}
+{% endif %}
+
+{%- assign canonical_base_url = canonical_url | split: '?' | first -%}
+{% if page.metafields.seo.canonical %}
+  <link rel="canonical" href="{{ page.metafields.seo.canonical | split: '?' | first }}">
+{% elsif product.metafields.seo.canonical %}
+  <link rel="canonical" href="{{ product.metafields.seo.canonical | split: '?' | first }}">
+{% else %}
+  <link rel="canonical" href="{{ canonical_base_url }}">
+{% endif %}
+
+{% if product.metafields.custom["seo-included"] == false %}
+   <meta name="robots" content="noindex,follow">
+{% endif %}
+
+{% if template == 'page' and request.path contains '/pages/test' %}
+  <meta name="robots" content="noindex,follow">
+{% endif %}

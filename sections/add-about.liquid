@@ -1,0 +1,185 @@
+<style>
+.add-about {
+  padding: 60px 0 30px 0;
+  color: #fff;
+  background: var(--bg-url) no-repeat;
+  background-size: cover;
+}
+
+.add-about .container {
+  max-width: 1400px;
+}
+
+.add-about .add-about-title {
+  font-size: 60px;
+  line-height: 1.2;
+  font-weight: normal;
+  margin: 0;
+  text-align: center;
+  font-family: var(--heading-font-family);
+}
+
+.add-about .add-about-p {
+  font-size: 16px;
+  line-height: 1.2;
+  text-align: center;
+  margin: 0 auto;
+  margin-top: 30px;
+  max-width: 850px;
+}
+
+.add-about .add-about-list {
+  display: flex;
+  gap: 20px;
+  margin-top: 45px;
+  justify-content: space-between;
+}
+
+.add-about .add-about-item {
+  text-align: center;
+  line-height: 1.2;
+}
+
+.add-about .add-about-num {
+  font-size: 80px;
+}
+
+.add-about .add-about-item-p {
+  font-size: 20px;
+  margin-top: 5px;
+}
+
+.add-about .add-about-msg {
+  color: #f3f3f3;
+  font-size: 12px;
+  line-height: 1.2;
+  max-width: 735px;
+  margin-top: 80px;
+}
+
+@media (max-width: 1200px) {
+  .add-about .add-about-num {
+    font-size: 60px;
+  }
+  .add-about .add-about-item-p {
+    font-size: 16px;
+  }
+  .add-about .add-about-msg {
+    margin-top: 40px;
+  }
+}
+
+@media (max-width: 991px) {
+  .add-about {
+    padding-top: 50px;
+    background: var(--bg-url-m) no-repeat;
+    background-size: cover;
+  }
+  .add-about .add-about-title {
+    font-size: 28px;
+  }
+  .add-about .add-about-p {
+    font-size: 14px;
+    margin-top: 15px;
+  }
+  .add-about .add-about-list {
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
+  .add-about .add-about-item {
+    width: calc(50% - 10px);
+  }
+  .add-about .add-about-num {
+    font-size: 36px;
+  }
+  .add-about .add-about-item-p {
+    font-size: 14px;
+  }
+  .add-about .add-about-msg {
+    margin-top: 30px;
+  }
+}
+</style>
+<section class="section-box">
+  <div class="add-about" style="--bg-url:url({{ section.settings.image | image_url }});--bg-url-m:url({{ section.settings.image | image_url }});">
+    <div class="container">
+      {%- if section.settings.text != blank -%}
+        <h3 class="add-about-title">{{ section.settings.text }}</h3>
+      {%- endif -%}
+      {%- if section.settings.text1 != blank -%}
+        <p class="add-about-p">{{ section.settings.text1 }}</p>
+      {%- endif -%}
+      <div class="add-about-list">
+        {%- for block in section.blocks -%}
+          <div class="add-about-item">
+            {%- if block.settings.Text != blank -%}
+              <div class="add-about-num">{{ block.settings.Text }}</div>
+            {%- endif -%}
+            {%- if block.settings.text1 != blank -%}
+              <p class="add-about-item-p">{{ block.settings.text1 }}</p>
+            {%- endif -%}
+          </div>
+        {%- endfor -%} 
+      </div>
+      {%- if section.settings.text2 != blank -%}
+        <div class="add-about-msg">{{ section.settings.text2 }}</div>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+{% schema %}
+{
+  "name": "add-about",
+  "blocks": [
+    {
+      "name": "item",
+      "type": "item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "Text",
+          "label": "Text"
+        },
+        {
+          "type": "text",
+          "id": "text1",
+          "label": "Text"
+        }
+      ]
+    }
+  ],
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image1",
+      "label": "Image M"
+    },
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Title"
+    },
+    {
+      "type": "text",
+      "id": "text1",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "text2",
+      "label": "Text"
+    }
+  ],
+  "presets": [
+    {
+      "name": "add-about",
+      "blocks": []
+    }
+  ]
+}
+{% endschema %}

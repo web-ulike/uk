@@ -1,0 +1,194 @@
+<style>
+  .prime-image {
+    padding: 100px 0;
+  }
+
+  .prime-image .prime-title {
+    color: #190a0a;
+    text-align: center;
+    font-size: 48px;
+    line-height: 1.2;
+  }
+
+  .prime-image .prime-list {
+    display: flex;
+    gap: 24px;
+    max-width: 1520px;
+    margin: 0 auto;
+    margin-top: 50px;
+  }
+
+  .prime-image .prime-item {
+    flex: 1;
+    text-align: center;
+  }
+
+  .prime-image .prime-item:not(:first-child, :last-child) {
+    cursor: pointer;
+  }
+
+  .prime-image .prime-item .img {
+    width: 100%;
+  }
+
+  .prime-image .prime-item-text {
+    color: #190a0a;
+    font-size: 24px;
+    line-height: 1.5;
+    margin-top: 15px;
+  }
+
+  .prime-image .prime-item-text span {
+    color: #3f3636;
+    opacity: 0.5;
+  }
+
+  .prime-image .prime-a {
+    color: #e0004d;
+    font-size: 24px;
+    line-height: 1.2;
+    text-decoration: underline;
+  }
+
+  @media (max-width: 1400px) {
+    .prime-image .prime-item-text,
+    .prime-image .prime-a {
+      font-size: 18px;
+    }
+  }
+
+  @media (max-width: 991px) {
+    .prime-image {
+      padding: 50px 0;
+    }
+    .prime-image .prime-title {
+      font-size: 26px;
+    }
+    .prime-image .prime-list {
+      margin-top: 35px;
+    }
+    .prime-image .prime-item-text,
+    .prime-image .prime-a {
+      font-size: 12px;
+      line-height: 1;
+    }
+    .prime-image .prime-a svg {
+      width: 15px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .prime-image .prime-list {
+      flex-wrap: wrap;
+      row-gap: 23px;
+      column-gap: 8px;
+    }
+    .prime-image .prime-item {
+      flex: none;
+      width: calc(50% - 4px);
+    }
+  }
+</style>
+<section>
+  <div class="prime-image to-top">
+    <div class="container">
+      <div class="prime-title to-top">{{ section.settings.title }}</div>
+      <div class="prime-list">
+        {%- for block in section.blocks -%}
+          <div class="prime-item to-top"  {% if block.settings.text2 == '' %}onclick="btnScrollToTop('{{ block.settings.text3 }}')" {% endif %}>
+            {%- if block.settings.img != blank -%}
+              <img
+                class="img"
+                src="{{ block.settings.img | image_url }}"
+                width=""
+                height=""
+                alt="{{ block.settings.img | escape }}"
+              >
+            {%- endif -%}
+            <div class="prime-item-text">
+              {{ block.settings.text }}
+              {%- if block.settings.text1 != blank -%}
+                <span>{{ block.settings.text1 }}</span>
+              {%- endif -%}
+            </div>
+            {%- if block.settings.text2 != blank -%}
+              <a
+                href="javascript:void(0)"
+                {% if block.settings.text2 != '' %}
+                  id="woohoo-trigger-spinthewheel" class="prime-a woohoo-{{ block.settings.text3 }}"
+                {% else %}
+                  class="prime-a"
+                {% endif %}
+              >
+                {{- block.settings.text2 }}
+              </a>
+            {%- endif -%}
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+  function btnScrollToTop(name) {
+    let section = document.querySelector(name);
+    section.scrollIntoView({ behavior: 'smooth' });
+  }
+
+    document.querySelector('.prime-a').addEventListener('click', () => {
+      {% comment %} $('#subscript-plug').show();
+      {% endcomment %}
+      toggleApp();
+    });
+</script>
+{% schema %}
+{
+  "name": "prime-image",
+  "blocks": [
+    {
+      "name": "item",
+      "type": "item",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "img",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text"
+        },
+        {
+          "type": "text",
+          "id": "text1",
+          "label": "Text"
+        },
+        {
+          "type": "text",
+          "id": "text2",
+          "label": "Text"
+        },
+        {
+          "type": "text",
+          "id": "text3",
+          "label": "跳转ID"
+        }
+      ]
+    }
+  ],
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title"
+    }
+  ],
+  "presets": [
+    {
+      "name": "prime-image",
+      "blocks": []
+    }
+  ]
+}
+{% endschema %}

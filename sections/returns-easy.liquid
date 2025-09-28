@@ -1,0 +1,283 @@
+<style>
+.returns-easy {
+  padding: 50px 0 70px 0;
+}
+
+.returns-easy .returns-easy-h3 {
+  color: #190a0a;
+  text-align: center;
+  font-size: 44px;
+  line-height: 1.25;
+  font-weight: normal;
+  font-family: var(--heading-font-family);
+  margin: 0;
+  margin-bottom: 58px;
+}
+
+.returns-easy .returns-easy-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+}
+
+.returns-easy .returns-easy-item {
+  width: calc(33.333% - 16px);
+  text-align: center;
+  padding: 58px 42px;
+  background: #f9f9f9;
+  height: auto;
+}
+
+.returns-easy .returns-easy-item .returns-easy-item-img {
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.returns-easy .img {
+  width: 72px;
+}
+
+.returns-easy .returns-easy-step {
+  color: #190a0a;
+  font-size: 22px;
+  line-height: 1.5;
+  font-family: var(--heading-font-family);
+}
+
+.returns-easy .returns-easy-item-text-h4 {
+  color: #190a0a;
+  font-size: 22px;
+  line-height: 1.5;
+  font-weight: normal;
+  font-family: var(--heading-font-family);
+  margin: 0;
+  margin-bottom: 12px;
+}
+
+.returns-easy .returns-easy-item-text-p {
+  color: #333;
+  font-size: 18px;
+  line-height: 1.35;
+}
+
+.returns-easy .returns-easy-item-text-p p {
+  margin: 0;
+}
+
+.returns-easy .returns-easy-item-text-p a {
+  color: #e0004d;
+  text-decoration: underline;
+  font-family: var(--heading-font-family);
+}
+
+.returns-easy .returns-easy-arraws {
+  display: none;
+}
+
+@media (max-width: 991px) {
+  .returns-easy {
+    padding: 33px 0 42px 0;
+    overflow: hidden;
+  }
+
+  .returns-easy .returns-easy-h3 {
+    font-size: 24px;
+    margin-bottom: 28px;
+  }
+
+  .returns-easy .returns-easy-list {
+    gap: 0px;
+    flex-wrap: nowrap;
+  }
+
+  .returns-easy .returns-easy-item {
+    min-width: 264px;
+    text-align: left;
+    flex-shrink: 0;
+    padding: 24px 20px;
+    height: auto;
+  }
+
+  .returns-easy .returns-easy-item .returns-easy-item-img {
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 5px;
+  }
+
+  .returns-easy .img {
+    width: 45px;
+  }
+
+  .returns-easy .returns-easy-step {
+    font-size: 12px;
+    color: #e0004d;
+  }
+
+  .returns-easy .returns-easy-item-text-h4 {
+    font-size: 14px;
+    margin-bottom: 5px;
+  }
+
+  .returns-easy .returns-easy-item-text-p {
+    font-size: 12px;
+  }
+
+  .returns-easy .returns-easy-arraws {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 13px;
+    margin-top: 17px;
+  }
+
+  .returns-easy .returns-easy-arraw {
+    width: 32px;
+    cursor: pointer;
+  }
+
+  .returns-easy .returns-easy-arraws svg {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+  .returns-easy .returns-easy-arraw .h-show {
+    display: none;
+  }
+
+  .returns-easy .returns-easy-arraw:hover .h-hide {
+    display: none;
+  }
+
+  .returns-easy .returns-easy-arraw:hover .h-show {
+    display: block;
+  }
+}
+</style>
+<section class="section-box">
+  <div class="returns-easy">
+    <div class="container">
+      {%- if section.settings.title != blank -%}
+        <h3 class="returns-easy-h3">{{ section.settings.title }}</h3>
+      {%- endif -%}
+      <div class="returns-easy-swiper">
+        <div class="returns-easy-list swiper-wrapper">
+          {%- for block in section.blocks -%}
+            <div class="returns-easy-item swiper-slide">
+              <div class="returns-easy-item-img">
+                {%- if block.settings.text != blank -%}
+                  <div class="returns-easy-step">{{ block.settings.text }}</div>
+                {%- endif -%}
+                {%- if block.settings.image != blank -%}
+                  <img
+                    loading="lazy"
+                    class="img"
+                    width=""
+                    height=""
+                    {% render 'image-attributes', image: block.settings.image %}
+                    alt="{{ block.settings.image.alt | escape }}"
+                  >
+                {%- endif -%}
+              </div>
+              <div class="returns-easy-item-text">
+                {%- if block.settings.text1 != blank -%}
+                  <h4 class="returns-easy-item-text-h4">{{ block.settings.text1 }}</h4>
+                {%- endif -%}
+                {%- if block.settings.text2 != blank -%}
+                  <div class="returns-easy-item-text-p">
+                    {{ block.settings.text2 }}
+                  </div>
+                {%- endif -%}
+              </div>
+            </div>
+          {%- endfor -%}
+        </div>
+      </div>
+      <div class="returns-easy-arraws">
+        <div class="returns-easy-arraw returns-easy-arraw-left">
+          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none">
+            <path
+              d="M16 0.0996094C20.2169 0.0996094 24.2613 1.77501 27.2432 4.75684C30.225 7.73866 31.9004 11.7831 31.9004 16C31.9004 19.1447 30.9678 22.2192 29.2207 24.834C27.4737 27.4486 24.9901 29.486 22.085 30.6895C19.1797 31.8928 15.9826 32.2081 12.8984 31.5947C9.81414 30.9812 6.98049 29.4668 4.75684 27.2432C2.53318 25.0195 1.01878 22.1859 0.405273 19.1016C-0.208124 16.0174 0.107166 12.8203 1.31055 9.91504C2.51398 7.00989 4.55144 4.52634 7.16602 2.7793C9.78076 1.03218 12.8553 0.0996101 16 0.0996094ZM16 2.15332C15.9829 2.15332 15.9669 2.15884 15.9521 2.16699C14.1473 2.16595 12.3597 2.51823 10.6904 3.20508C9.01047 3.89642 7.48283 4.91273 6.19629 6.19531C3.91552 8.46265 2.4958 11.4546 2.18164 14.6553C1.86758 17.8558 2.67831 21.066 4.47461 23.7334C6.27094 26.4008 8.94065 28.3592 12.0244 29.2715C15.1081 30.1837 18.4137 29.9931 21.3721 28.7324C24.3132 27.4916 26.7353 25.2717 28.2266 22.4492C29.7178 19.6267 30.1861 16.375 29.5537 13.2461C28.9213 10.1172 27.2262 7.303 24.7559 5.28125C22.2855 3.25964 19.1921 2.15448 16 2.15332ZM10.4336 15.9941C10.4248 15.8486 10.4467 15.7025 10.499 15.5664C10.551 15.4313 10.6314 15.3088 10.7344 15.207L18.1211 8.35352H18.1221C18.2202 8.2618 18.3352 8.18977 18.4609 8.14258C18.5866 8.09546 18.7204 8.07362 18.8545 8.07812C18.9887 8.08265 19.1209 8.11344 19.2432 8.16895C19.3653 8.22447 19.4757 8.30335 19.5674 8.40137C19.659 8.49935 19.7302 8.61468 19.7773 8.74023C19.8245 8.86596 19.8463 9.00055 19.8418 9.13477C19.8372 9.26873 19.8064 9.4004 19.751 9.52246C19.6955 9.64463 19.6165 9.75501 19.5186 9.84668L13.0381 15.9268C13.0179 15.9457 13.0068 15.9724 13.0068 16C13.0068 16.0276 13.0179 16.0543 13.0381 16.0732L19.5186 22.1533C19.6165 22.245 19.6955 22.3554 19.751 22.4775C19.8064 22.5996 19.8372 22.7313 19.8418 22.8652C19.8463 22.9994 19.8245 23.134 19.7773 23.2598C19.7302 23.3853 19.659 23.5007 19.5674 23.5986C19.4757 23.6967 19.3653 23.7755 19.2432 23.8311C19.1209 23.8866 18.9887 23.9173 18.8545 23.9219C18.7204 23.9264 18.5866 23.9045 18.4609 23.8574C18.3352 23.8102 18.2202 23.7382 18.1221 23.6465H18.1211L10.7617 16.7539L10.7607 16.7529C10.6571 16.6571 10.5749 16.5405 10.5186 16.4111C10.4621 16.2815 10.4331 16.1414 10.4336 16V15.9941Z"
+              fill="#190A0A" stroke="white" stroke-width="0.2" stroke-linejoin="round" class="h-hide" />
+            <path class="h-show"
+              d="M19.64 23.6267C19.536 23.7311 19.4123 23.8139 19.2762 23.8705C19.14 23.927 18.9941 23.9561 18.8467 23.9561C18.6993 23.9561 18.5533 23.927 18.4172 23.8705C18.281 23.8139 18.1574 23.7311 18.0533 23.6267L10.6667 16.7733C10.554 16.6685 10.4642 16.5416 10.4027 16.4005C10.3413 16.2594 10.3096 16.1072 10.3096 15.9533C10.3096 15.7995 10.3413 15.6472 10.4027 15.5061C10.4642 15.3651 10.554 15.2381 10.6667 15.1333L18.0267 8.24C18.2442 8.03667 18.5335 7.92806 18.8311 7.93806C19.1286 7.94806 19.41 8.07586 19.6133 8.29333C19.8167 8.51081 19.9253 8.80015 19.9153 9.09771C19.9053 9.39527 19.7775 9.67667 19.56 9.88L13.1067 16L19.6 22.08C19.8044 22.2832 19.9225 22.5573 19.93 22.8453C19.9374 23.1334 19.8336 23.4132 19.64 23.6267ZM16 0C12.8355 0 9.74207 0.938384 7.11088 2.69649C4.4797 4.45459 2.42894 6.95345 1.21793 9.87706C0.0069325 12.8007 -0.309921 16.0177 0.307443 19.1214C0.924806 22.2251 2.44866 25.0761 4.6863 27.3137C6.92394 29.5513 9.77487 31.0752 12.8786 31.6926C15.9823 32.3099 19.1993 31.9931 22.1229 30.7821C25.0466 29.5711 27.5454 27.5203 29.3035 24.8891C31.0616 22.2579 32 19.1645 32 16C32 11.7565 30.3143 7.68687 27.3137 4.68629C24.3131 1.68571 20.2435 0 16 0Z"
+              fill="#190A0A" />
+          </svg>
+        </div>
+        <div class="returns-easy-arraw returns-easy-arraw-right">
+          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none">
+            <path
+              d="M16 0.0996094C11.7831 0.0996094 7.73866 1.77501 4.75684 4.75684C1.77501 7.73866 0.0996094 11.7831 0.0996094 16C0.0996101 19.1447 1.03218 22.2192 2.7793 24.834C4.52634 27.4486 7.00989 29.486 9.91504 30.6895C12.8203 31.8928 16.0174 32.2081 19.1016 31.5947C22.1859 30.9812 25.0195 29.4668 27.2432 27.2432C29.4668 25.0195 30.9812 22.1859 31.5947 19.1016C32.2081 16.0174 31.8928 12.8203 30.6895 9.91504C29.486 7.00989 27.4486 4.52634 24.834 2.7793C22.2192 1.03218 19.1447 0.0996101 16 0.0996094ZM16 2.15332C16.0171 2.15332 16.0331 2.15884 16.0479 2.16699C17.8527 2.16595 19.6403 2.51823 21.3096 3.20508C22.9895 3.89642 24.5172 4.91273 25.8037 6.19531C28.0845 8.46265 29.5042 11.4546 29.8184 14.6553C30.1324 17.8558 29.3217 21.066 27.5254 23.7334C25.7291 26.4008 23.0594 28.3592 19.9756 29.2715C16.8919 30.1837 13.5863 29.9931 10.6279 28.7324C7.68677 27.4916 5.26469 25.2717 3.77344 22.4492C2.28219 19.6267 1.81386 16.375 2.44629 13.2461C3.07873 10.1172 4.77378 7.303 7.24414 5.28125C9.71447 3.25964 12.8079 2.15448 16 2.15332ZM21.5664 15.9941C21.5752 15.8486 21.5533 15.7025 21.501 15.5664C21.449 15.4313 21.3686 15.3088 21.2656 15.207L13.8789 8.35352H13.8779C13.7798 8.2618 13.6648 8.18977 13.5391 8.14258C13.4134 8.09546 13.2796 8.07362 13.1455 8.07812C13.0113 8.08265 12.8791 8.11344 12.7568 8.16895C12.6347 8.22447 12.5243 8.30335 12.4326 8.40137C12.341 8.49935 12.2698 8.61468 12.2227 8.74023C12.1755 8.86596 12.1537 9.00055 12.1582 9.13477C12.1628 9.26873 12.1936 9.4004 12.249 9.52246C12.3045 9.64463 12.3835 9.75501 12.4814 9.84668L18.9619 15.9268C18.9821 15.9457 18.9932 15.9724 18.9932 16C18.9932 16.0276 18.9821 16.0543 18.9619 16.0732L12.4814 22.1533C12.3835 22.245 12.3045 22.3554 12.249 22.4775C12.1936 22.5996 12.1628 22.7313 12.1582 22.8652C12.1537 22.9994 12.1755 23.134 12.2227 23.2598C12.2698 23.3853 12.341 23.5007 12.4326 23.5986C12.5243 23.6967 12.6347 23.7755 12.7568 23.8311C12.8791 23.8866 13.0113 23.9173 13.1455 23.9219C13.2796 23.9264 13.4134 23.9045 13.5391 23.8574C13.6648 23.8102 13.7798 23.7382 13.8779 23.6465H13.8789L21.2383 16.7539L21.2393 16.7529C21.3429 16.6571 21.4251 16.5405 21.4814 16.4111C21.5379 16.2815 21.5669 16.1414 21.5664 16V15.9941Z"
+              fill="#190A0A" stroke="white" stroke-width="0.2" stroke-linejoin="round" class="h-hide" />
+
+            <path class="h-show"
+              d="M12.36 23.6267C12.464 23.7311 12.5877 23.8139 12.7238 23.8705C12.86 23.927 13.0059 23.9561 13.1533 23.9561C13.3007 23.9561 13.4467 23.927 13.5828 23.8705C13.719 23.8139 13.8426 23.7311 13.9467 23.6267L21.3333 16.7733C21.446 16.6685 21.5358 16.5416 21.5973 16.4005C21.6587 16.2594 21.6904 16.1072 21.6904 15.9533C21.6904 15.7995 21.6587 15.6472 21.5973 15.5061C21.5358 15.3651 21.446 15.2381 21.3333 15.1333L13.9733 8.24C13.7558 8.03667 13.4665 7.92806 13.1689 7.93806C12.8714 7.94806 12.59 8.07586 12.3867 8.29333C12.1833 8.51081 12.0747 8.80015 12.0847 9.09771C12.0947 9.39527 12.2225 9.67667 12.44 9.88L18.8933 16L12.4 22.08C12.1956 22.2832 12.0775 22.5573 12.07 22.8453C12.0626 23.1334 12.1664 23.4132 12.36 23.6267ZM16 0C19.1645 0 22.2579 0.938384 24.8891 2.69649C27.5203 4.45459 29.5711 6.95345 30.7821 9.87706C31.9931 12.8007 32.3099 16.0177 31.6926 19.1214C31.0752 22.2251 29.5513 25.0761 27.3137 27.3137C25.0761 29.5513 22.2251 31.0752 19.1214 31.6926C16.0177 32.3099 12.8007 31.9931 9.87706 30.7821C6.95344 29.5711 4.45458 27.5203 2.69648 24.8891C0.938375 22.2579 -7.62939e-06 19.1645 -7.62939e-06 16C-7.62939e-06 11.7565 1.6857 7.68687 4.68628 4.68629C7.68686 1.68571 11.7565 0 16 0Z"
+              fill="#190A0A" />
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+  if (window.innerWidth < 991) {
+    let returnsEasySwiper = new Swiper('.returns-easy-swiper', {
+      slidesPerView: "auto",
+      spaceBetween: 15,
+      navigation: {
+        nextEl: ".returns-easy-arraw-right",
+        prevEl: ".returns-easy-arraw-left",
+      }
+    });
+  }
+</script>
+{% schema %}
+{
+  "name": "returns-easy",
+  "blocks": [
+    {
+      "name": "item",
+      "type": "item",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text"
+        },
+        {
+          "type": "text",
+          "id": "text1",
+          "label": "Text"
+        },
+        {
+          "type": "richtext",
+          "id": "text2",
+          "label": "Text"
+        }
+      ]
+    }
+  ],
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title"
+    }
+  ],
+  "presets": [
+    {
+      "name": "returns-easy",
+      "blocks": []
+    }
+  ]
+}
+{% endschema %}

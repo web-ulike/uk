@@ -1,0 +1,501 @@
+<style>
+ .review-list-diy {
+  padding: 80px 0;
+  background: #FBFAF4;
+}
+
+.review-list-diy .review-list-top {
+  display: flex;
+  justify-content: space-between;
+  color: #3F3636;
+}
+
+.review-list-diy .review-list-title {
+  max-width: 580px;
+  line-height: 1;
+  text-align: left;
+  font-size: 50px;
+  line-height: 1.2;
+}
+
+.review-list-diy .review-list-sub{
+  max-width: 506px;
+  text-align: right;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.review-list-diy .review-list-box {
+  margin-top: 70px;
+  display: flex;
+  gap: 20px;
+}
+
+.review-list-diy .review-list-item {
+  width: calc(25% - 15px);
+  display: flex;
+  flex-direction: column;
+  padding-top: 20px;
+  border-top: 1px solid #3F3636;
+}
+
+.review-list-diy .review-list-item .img {
+  display: block;
+  margin: 0;
+}
+
+.review-list-diy .review-list-text {
+  color: #3F3636;
+  margin-top: 20px;
+}
+
+.review-list-diy .review-list-p {
+  font-size: 18px;
+  font-family: var(--heading-font-family);
+  line-height: 1.5;
+}
+
+.review-list-diy .review-list-name {
+  font-size: 16px;
+  position: relative;
+  line-height: 1.9;
+  margin-top: 20px;
+}
+
+.review-list-diy .review-list-btn {
+  width: 100%;
+  height: 48px;
+  font-size: 16px;
+  margin-top: 20px;
+  border-radius: 48px;
+  border: 1px solid #3F3636;
+  line-height: 1.5;
+  cursor: pointer;
+}
+
+.review-list-diy .review-list-btn:hover .btn-txt::before {
+  color: #fff;
+}
+
+.review-list-diy .review-list-btn::after{
+  background: #000;
+}
+
+.review-list-popup {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 99;
+  top: 0;
+  left: 0;
+  display: none;
+}
+
+.review-list-popup .review-list-popup-cont {
+  background: #fff;
+  width: 95%;
+  max-width: 1000px;
+  padding: 20px;
+}
+
+.review-list-popup .review-list-popup-title,.review-list-popup .review-list-popup-no-img-text {
+  font-size: 40px;
+  font-family: var(--heading-font-family);
+  color: #000;
+  line-height: 1.2;
+  text-align: center;
+}
+
+.review-list-popup .review-list-popup-img {
+  display: flex;
+  margin-top: 30px;
+}
+
+.review-list-popup .review-list-popup-item {
+  flex: 1;
+  margin-right: 20px;
+  position: relative;
+}
+
+.review-list-popup .review-list-popup-item:last-child {
+  margin-right: 0;
+}
+
+.review-list-popup .review-list-popup-item .img {
+  display: block;
+  position: relative;
+  z-index: 1;
+}
+
+.review-list-popup .review-list-tag {
+  position: absolute;
+  font-size: 18px;
+  white-space: nowrap;
+  color: #fff;
+  padding: 3px 10px;
+  line-height: 1.2;
+  background: rgba(0, 0, 0, 0.6);
+  left: 50%;
+  top: 30px;
+  transform: translateX(-50%);
+  z-index: 3;
+}
+
+.review-list-popup .review-list-popup-close {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  margin: 0 auto;
+  margin-top: 30px;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.6s ease;
+}
+
+.review-list-popup .review-list-popup-close:hover {
+  transform: rotate(360deg);
+}
+
+.review-list-popup .review-list-popup-close::after,
+.review-list-popup .review-list-popup-close::before {
+  position: absolute;
+  content: '';
+  display: block;
+  width: 2px;
+  height: 22px;
+  background: #fff;
+  top: 50%;
+  left: 50%;
+}
+
+.review-list-popup .review-list-popup-close::after {
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+.review-list-popup .review-list-popup-close::before {
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+@media (max-width:991px) {
+  .review-list-diy{
+    padding: 60px 0 50px 0;
+    overflow: hidden;
+  }
+  .review-list-diy .review-list-top{
+    flex-direction: column;
+    gap: 10px;
+  }
+  .review-list-diy .review-list-title{
+    margin-right: 15px;
+    max-width: none;
+    font-size: 24px;
+  }
+  .review-list-diy .review-list-sub{
+    text-align: left;
+    font-size: 14px;
+    max-width: none;
+  }
+  .review-list-diy .review-list-box{
+    margin-top: 30px;
+    gap: 10px;
+  }
+  .review-list-diy .review-list-item{
+    width: 300px;
+    flex-shrink: 0;
+  }
+
+  .review-list-popup .review-list-popup-cont{
+    padding-bottom: 0;
+  }
+  .review-list-popup .review-list-popup-title,.review-list-popup .review-list-popup-no-img-text{
+    font-size: 28px;
+  }
+  .review-list-popup .review-list-popup-img{
+    flex-wrap: wrap;
+  }
+  .review-list-popup .review-list-popup-item{
+    width: calc(50% - 10px);
+    margin-bottom: 20px;
+    flex: none;
+  }
+  .review-list-popup .review-list-popup-item .img{
+    width: 100%;
+  }
+  .review-list-popup .review-list-popup-item:nth-child(2n){
+    margin-right: 0;
+  }
+  .review-list-popup .review-list-tag{
+    font-size: 16px;
+    top: 20px;
+  }
+  .review-list-diy .review-list-p{
+    font-size: 12px;
+    line-height: 1.2;
+  }
+  .review-list-diy .review-list-name{
+    font-size: 12px;
+    margin-top: 10px;
+  }
+  .review-list-diy .review-list-btn{
+    margin-top: 10px;
+    height: 34px;
+    font-size: 12px;
+  }
+}
+</style>
+<section class="section-box">
+<div class="review-list-diy" data-text="{{ section.settings.r_text1 }},{{ section.settings.r_text2 }},{{ section.settings.r_text3 }},{{ section.settings.r_text4 }}">
+  <div class="container">
+    <div class="review-list-top">
+      <div class="review-list-title to-top">
+        {{ section.settings.title }}
+      </div>
+      <div class="review-list-sub to-top" style="transition-delay: 0.1s">{{ section.settings.text }}</div>
+    </div>
+    <div>
+      <div class="review-list-box">
+        {%- for block in section.blocks -%}
+            <div class="review-list-item to-top" style="transition-delay: 0.{{ forloop.index }}s">
+              {%- if block.settings.image != blank -%}
+                 <img loading="lazy" class="img" width="{{ block.settings.image.width }}" height="{{ block.settings.image.height }}" {% render 'image-attributes', image: block.settings.image %} alt="{{ block.settings.image.alt | escape }}" >
+              {%- endif -%}
+              <div class="review-list-text">
+                <div>
+                  <div class="review-list-p">{{ block.settings.text }}</div>
+                  <div class="review-list-name">{{ block.settings.text1 }}</div>
+                </div>
+                <div class="review-list-btn btn-diy" data-src="{% if block.settings.r_image != blank %}{{ block.settings.r_image | img_url: 'master' }}{% endif %}{% if block.settings.r_image1 != blank %},{{ block.settings.r_image1 | img_url: 'master' }}{% endif %}{% if block.settings.r_image2 != blank %},{{ block.settings.r_image2 | img_url: 'master' }}{% endif %}{% if block.settings.r_image3 != blank %},{{ block.settings.r_image3 | img_url: 'master' }}{% endif %}">
+                  <div class="btn-txt" text="{{ block.settings.text2 }}">
+                    <span>{{ block.settings.text2 }}</span>
+                  </div>
+                </div> 
+              </div>
+            </div>
+        {%- endfor -%}        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="review-list-popup-box">
+  <div class="review-list-popup">
+    <div class="review-list-popup-cont">
+      <div class="review-list-popup-title">{{ section.settings.r_text }}</div>
+      <div class="review-list-popup-img">
+      </div>
+    </div>
+    <div class="review-list-popup-close"></div>
+  </div>
+</div>
+</section>
+<script>
+  (function() {
+    window.addEventListener('load', function () {  
+      $('.review-list-diy .review-list-btn').click(function(){
+        let textL = $(this).closest('.review-list-diy').attr('data-text').split(',').filter(item=>item)
+        let imgL = $(this).attr('data-src').split(',').filter(item=>item)
+        console.log(textL)
+        console.log(imgL)
+        if(textL.length >= imgL.length){
+          let html = imgL.map((item,index)=>{
+            return `<div class="review-list-popup-item">
+                <img src="${item}" alt="" class="img">
+                <div class="review-list-tag">${textL[index]}</div>
+              </div>`
+          })
+  
+          if(imgL.length==0){
+            html='<div class="review-list-popup-no-img-text">{{ section.settings.text2 }}</div>'
+            $('.review-list-popup').addClass('no-img')
+          }
+          
+          $('.review-list-popup .review-list-popup-img').html(html)
+          $('.review-list-popup-box').fadeIn(400)
+          $('.review-list-popup').css({'display':'flex'})
+      }
+    })
+    $('.review-list-popup .review-list-popup-close').click(function(){
+      $('.review-list-popup-box').fadeOut(400)
+      $('.review-list-popup').css({'display':'none'})
+      $('.review-list-popup').removeClass('no-img')
+    })
+
+    function reviewListDiySwiper(){
+        let $p = $('.review-list-diy')
+        let $list = $p.find('.review-list-box')
+        const content = document.querySelector('.review-list-diy .review-list-box');
+        let length = $list.find('.review-list-item').length
+        let width = $list.find('.review-list-item')[0].offsetWidth
+        let index = 0
+        let pWidth = $p[0].offsetWidth
+        let marginW = 10
+        let lWidth = length * (width + marginW) + $list[0].offsetLeft
+        let translateX = 0
+  
+        function changeTransform(num){
+          translateX += (width + marginW) * num
+          if(translateX > lWidth - pWidth) {
+            translateX = lWidth - pWidth
+          }
+          if(translateX<0) translateX = 0
+          $list.css({
+            transform: 'translateX(-' + translateX + 'px)',
+            transition: 'all 1s cubic-bezier(0.645, 0.045, 0.355, 1) 0s'
+          })
+        }
+        detectSwipe(content, () => {
+          changeTransform(1)
+        }, () => {
+          changeTransform(-1)
+        });
+  
+        function detectSwipe(element, onSwipeLeft, onSwipeRight) {
+        let startX = 0;
+  
+        const getEventX = (event) => {
+          return event.touches ? event.touches[0].clientX : event.clientX;
+        };
+  
+        const handleTouchStart = (e) => {
+          startX = getEventX(e);
+        };
+  
+        const handleTouchMove = (e) => {
+          const deltaX = getEventX(e) - startX;
+          if (Math.abs(deltaX) > 10 && e.cancelable) {
+            e.preventDefault();
+          }
+        };
+  
+        const handleTouchEnd = (e) => {
+          const deltaX = getEventX(e.changedTouches ? e.changedTouches[0] : e) - startX;
+          if (deltaX > 10) {
+            onSwipeRight();
+          } else if (deltaX < -10) {
+            onSwipeLeft();
+          }
+        };
+  
+        element.addEventListener('touchstart', handleTouchStart);
+        element.addEventListener('touchmove', handleTouchMove);
+        element.addEventListener('touchend', handleTouchEnd);
+  
+        // Add mouse event listeners for PC compatibility
+        element.addEventListener('mousedown', handleTouchStart);
+        element.addEventListener('mousemove', handleTouchMove);
+        element.addEventListener('mouseup', handleTouchEnd);
+      }
+      }
+      if(window.innerWidth < 991) {
+        reviewListDiySwiper()
+      }
+  })
+  })();
+</script>
+{% schema %}
+{
+"name": "hair-ads-review",
+"blocks": [
+    {
+    "name": "item",
+    "type": "item",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "image",
+        "label": "Image"
+      },
+      {
+        "type": "text",
+        "id": "text",
+        "label": "Text"
+      },
+      {
+        "type": "text",
+        "id": "text1",
+        "label": "Text"
+      },
+      {
+        "type": "text",
+        "id": "text2",
+        "label": "Text"
+      },
+      {
+        "type": "image_picker",
+        "id": "r_image",
+        "label": "Results Image"
+      },
+      {
+        "type": "image_picker",
+        "id": "r_image1",
+        "label": "Results Image"
+      },
+      {
+        "type": "image_picker",
+        "id": "r_image2",
+        "label": "Results Image"
+      },
+      {
+        "type": "image_picker",
+        "id": "r_image3",
+        "label": "Results Image"
+      }
+    ]
+  }
+  ],
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title"
+    },
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "text2",
+      "label": "Update tips"
+    },
+    {
+      "type": "text",
+      "id": "r_text",
+      "label": "Results title"
+    },
+    {
+      "type": "text",
+      "id": "r_text1",
+      "label": "Results text"
+    },
+    {
+      "type": "text",
+      "id": "r_text2",
+      "label": "Results text"
+    },
+    {
+      "type": "text",
+      "id": "r_text3",
+      "label": "Results text"
+    },
+    {
+      "type": "text",
+      "id": "r_text4",
+      "label": "Results text"
+    }
+    
+  ],
+  "presets": [
+    {
+      "name": "hair-ads-review",
+      "blocks": []
+    }
+  ]
+}
+{% endschema %}

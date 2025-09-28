@@ -1,0 +1,174 @@
+<style>
+.warranty-policy-list{
+  padding: 80px 0;
+  background: #f9f9f9;
+}
+
+.warranty-policy-list-title{
+  font-size: 40px;
+  color: #000;
+  font-family: var(--heading-font-family);
+  line-height: 1;
+  text-align: center;
+  max-width: 615px;
+  margin: 0 auto;
+}
+
+.warranty-policy-list-box{
+  display: flex;
+  gap: 30px;
+  margin-top: 60px;
+}
+
+.warranty-policy-list-item{
+  background: #fff;
+  padding: 40px 40px 100px 40px;
+  flex: 1;
+}
+
+.warranty-policy-list-item img{
+  display: block;
+  width: 80px;
+  margin: 0 auto;
+}
+
+.warranty-policy-list-h3{
+  font-size: 30px;
+  color: #000;
+  font-family: var(--heading-font-family);
+  line-height: 1.1;
+  margin-top: 35px;
+}
+
+.warranty-policy-list-p{
+  font-size: 14px;
+  color: #6b6b6b;
+  line-height: 1.5;
+  margin-top: 25px;
+}
+
+.warranty-policy-list-p a{
+  text-decoration: underline;
+  color: #000;
+  font-family: var(--heading-font-family);
+}
+  
+.warranty-policy-list-p ul{
+  list-style: none;
+  padding-left: 20px;
+}
+
+.warranty-policy-list-p li{
+  position: relative;
+  margin-bottom: 15px;
+}
+
+.warranty-policy-list-p li::before{
+  position: absolute;
+  content: '';
+  display: block;
+  width: 7px;
+  height: 7px;
+  background: #000;
+  top: 8px;
+  left: -20px;
+}
+
+@media (max-width:1200px) {
+  .warranty-policy-list-item{
+    padding: 20px 20px 60px 20px;
+  }
+
+  .warranty-policy-list-item img{
+    width: 70px;
+  }
+
+  .warranty-policy-list-h3{
+    font-size: 26px;
+  }
+}
+
+@media (max-width:991px) {
+  .warranty-policy-list{
+    padding: 50px 0;
+  }
+  .warranty-policy-list-title{
+    font-size: 28px;
+  }
+
+  .warranty-policy-list-box{
+    flex-direction: column;
+    margin-top: 30px;
+  }
+  .warranty-policy-list-item{
+    padding: 25px 20px;
+  }
+  .warranty-policy-list-h3{
+    margin-top: 25px;
+    font-size: 22px;
+  }
+}
+</style>
+<section class="section-box">
+  <div class="warranty-policy-list">
+    <div class="container">
+      <div class="warranty-policy-list-title to-top">{{ section.settings.title }}</div>
+      <div class="warranty-policy-list-box">
+        {%- for block in section.blocks -%}
+          <div class="warranty-policy-list-item to-top" style="transition-delay: 0.{{ forloop.index }}s">
+            {%- if block.settings.image != blank -%}
+               <img loading="lazy" width="{{ block.settings.image.width }}" height="{{ block.settings.image.height }}" {% render 'image-attributes', image: block.settings.image %} alt="{{ block.settings.image.alt | escape }}" >
+            {%- endif -%}
+            <div class="warranty-policy-list-h3">
+              {{ block.settings.text }}
+            </div>
+            <div class="warranty-policy-list-p">
+             {{ block.settings.text1 }}
+            </div>
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</section>
+{% schema %}
+{
+"name": "warranty-policy-list",
+"blocks": [
+    {
+    "name": "item",
+    "type": "item",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "image",
+        "label": "Image"
+      },
+      {
+        "type": "text",
+        "id": "text",
+        "label": "Text"
+      },
+      {
+        "type": "richtext",
+        "id": "text1",
+        "label": "Text"
+      }
+    ]
+    }
+  ],
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title"
+    }
+  ],
+  "presets": [
+    {
+      "name": "warranty-policy-list",
+      "blocks": []
+    }
+  ]
+}
+{% endschema %}

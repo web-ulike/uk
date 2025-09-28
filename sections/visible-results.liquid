@@ -1,0 +1,908 @@
+<style>
+.visible-results{
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+}
+
+.visible-results .mb-box{
+  display: none;
+}
+
+.visible-results .visible-results-left{
+  width: 68.49%;
+  position: relative;
+}
+
+.visible-results .visible-results-dot{
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  bottom: 43px;
+  border-radius: 50px;
+  padding: 5px;
+  background: rgba(251, 250, 244, .1);
+  backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  display: flex;
+  gap: 5px;
+  width: max-content;
+}
+
+.visible-results .visible-results-dot-item{
+  background: rgba(251, 250, 244, .1);
+  backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  height: 40px;
+  display: flex;
+  align-items: center;
+  padding: 0 30px;
+  border-radius: 40px;
+  cursor: pointer;
+  color: #FFF;
+  font-size: 16px;
+  line-height: 1.2;
+  flex-shrink: 0;
+}
+
+.visible-results .visible-results-dot-item.active{
+  background: rgba(251, 250, 244, 1);
+  backdrop-filter: blur(0px);
+  color: #3F3636;
+}
+
+.visible-results .visible-results-arraw{
+  position: absolute;
+  top: 50%;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 60px;
+}
+.visible-results .visible-results-arraw-item{
+  cursor: pointer;
+  transition: all .4s ease;
+}
+.visible-results .visible-results-arraw-item:hover{
+  opacity: .6;
+}
+.visible-results .visible-results-cont{
+  position: relative;
+  z-index: 1;
+}
+
+.visible-results .visible-results-img{
+  position: relative;
+  z-index: 0;
+}
+
+.visible-results .visible-results-img-item{
+  position: absolute;
+  z-index: 0;
+  width: 100%;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  transition: all .8s ease;
+}
+
+.visible-results-img-item.active{
+  position: relative;
+  opacity: 1;
+}
+
+.visible-results .visible-results-cont .img{
+  position: relative;
+  z-index: 0;
+  width: 100%;
+}
+
+.visible-results .visible-results-top{
+  position: absolute;
+  z-index: 1;
+  top: 30px;
+  left: 30px;
+}
+
+.visible-results .visible-results-right{
+  flex: 1;
+  padding: 0 60px;
+}
+
+.visible-results .visible-results-box{
+  max-width: 395px;
+}
+
+.visible-results .visible-results-title{
+  color: #190A0A;
+  font-size: 48px;
+  line-height: 1.2;
+}
+
+.visible-results .visible-results-sub{
+  color: #3F3636;
+  font-size: 12px;
+  line-height: 1.5;
+  opacity: 0.5;
+  margin-top: 30px;
+}
+
+.visible-results .visible-results-num{
+  display: none;
+  align-items: flex-end;
+  gap: 15px;
+  margin-top: 50px;
+}
+
+.visible-results .visible-results-num.active{
+  display: flex;
+}
+
+.visible-results .visible-results-n{
+  color: #E0004D;
+  font-size: 34px;
+  line-height: 1;
+}
+
+.visible-results .visible-results-n span{
+  font-size: 70px;
+}
+
+.visible-results .visible-results-p{
+  color: #190A0A;
+  font-size: 16px;
+}
+
+.visible-results .visible-results-db{
+  display: flex;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-top: 56px;
+}
+
+.visible-results .visible-results-db-item{
+  position: relative;
+  flex: 1;
+}
+
+.visible-results .visible-results-db-item:first-child{
+  border-right: 1px solid #fff;
+}
+.visible-results .sm-box{
+ position: absolute;
+ z-index: 0;
+ top: 0;
+ left: 0;
+ width: 100%;
+ height: 100%;
+ opacity: 0;
+ transition: all .8s ease;
+}
+.visible-results .sm-box.active{
+  opacity: 1;
+  position: relative;
+  z-index: 1;
+  width: auto;
+  height: auto;
+}
+.visible-results .visible-results-db-item .sm-img{
+  width: 100%;
+  position: relative;
+  z-index: 0;
+}
+
+.visible-results .visible-results-tag{
+  position: absolute;
+  z-index: 3;
+  width: 70px;
+  height: 25px;
+  border-radius: 25px;
+  background: rgba(251, 250, 244, .25);
+  backdrop-filter: blur(9px);
+  color: #FBFAF4;
+  font-size: 12px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  top: 10px;
+  left: 10px;
+  border: 0.641px solid rgba(251, 250, 244, .25);
+}
+
+.visible-results .visible-results-db-item:last-child .visible-results-tag{
+  left: auto;
+  right: 10px;
+}
+
+.cust_res-txt{
+  color: #3F3636;
+font-size: 12.152px;
+font-style: normal;
+font-weight: 400;
+line-height: 130%;
+}
+  img.cust_res-img.pc-box {
+    margin-top: 53px;
+}
+@media (max-width:1400px) {
+  .visible-results .visible-results-right{
+    padding-left: 30px;
+  }
+  .visible-results .visible-results-title{
+    font-size: 38px;
+  }
+
+  .visible-results .visible-results-sub{
+    margin-top: 20px;
+  }
+
+  .visible-results .visible-results-num{
+    margin-top: 30px;
+  }
+
+  .visible-results .visible-results-n span{
+    font-size: 55px;
+  }
+  .visible-results .visible-results-db{
+    margin-top: 30px;
+  }
+  .visible-results .visible-results-dot-item{
+    padding: 0 15px;
+    font-size: 14px;
+  }
+}
+
+@media (max-width:1200px) {
+  .visible-results .visible-results-title{
+    font-size: 30px;
+  }
+  .visible-results .visible-results-n{
+    font-size: 24px;
+  }
+  .visible-results .visible-results-n span{
+    font-size: 40px;
+  }
+  
+}
+
+@media (max-width:991px) {
+  .visible-results{
+    display: block;
+    padding: 58px 24px;
+    /* overflow: hidden; */
+  }
+  .visible-results .pc-box{
+    display: none;
+  }
+  .visible-results .mb-box{
+    display: block;
+  }
+  .visible-results .visible-results-left{
+    width: 100%;
+  }
+  .visible-results .visible-results-arraw{
+    display: none;
+  }
+  .visible-results .visible-results-dot{
+    position: relative;
+    background: none;
+    bottom: auto;
+    left: auto;
+    transform: translateX(0);
+    width: auto;
+    gap: 10px;
+    border-radius: 0;
+    overflow-x: auto;
+    padding: 0 24px;
+    margin: 0 -24px;
+    margin-top: 36px;
+  }
+
+  .visible-results .visible-results-dot::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+}
+
+  .visible-results .visible-results-dot-item{
+    height: 34px;
+    border: 1px solid #D9D9D9;
+    background: none;
+    font-size: 12px;
+    color: #333;
+
+  }
+  .visible-results .visible-results-dot-item.active{
+    background: none;
+    border-color: #333;
+    font-family: var(--heading-font-family);
+  }
+
+  .visible-results .visible-results-cont{
+    margin-top: 26px;
+    border-radius: 10px 10px 0 0;
+    overflow: hidden;
+  }
+
+  .visible-results .visible-results-top{
+    top: 12px;
+    left: 6px;
+    width: 52px;
+  }
+
+  .visible-results .visible-results-title{
+    font-size: 26px;
+  }
+  .visible-results .visible-results-sub{
+    margin-top: 15px;
+  }
+  .visible-results .visible-results-right{
+    padding: 16px 13px;
+    border-radius: 0px 0px 10px 10px;
+    background: #FBFAF4;
+  }
+  .visible-results .visible-results-box{
+    max-width: none;
+  }
+  .visible-results .visible-results-num{
+    flex-direction: column-reverse;
+    align-items: flex-start;
+    gap: 0;
+    margin-top: 0;
+  }
+  .visible-results .visible-results-det{
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    align-items: center;
+  }
+  .visible-results .visible-results-db{
+    margin-top: 0;
+    border-radius: 6px;
+  }
+  .visible-results .visible-results-tag{
+    background: none;
+    border: 0;
+    backdrop-filter: blur(0px);
+    right: auto !important;
+    left: 50% !important;
+    transform: translateX(-50%);
+    height: auto;
+  }
+  .visible-results .visible-results-p{
+    font-size: 12px;
+  }
+  .visible-results .visible-results-n{
+    font-size: 18px;
+  }
+  .visible-results .visible-results-n span{
+    font-size: 36px;
+  }
+
+  .visible-results .visible-results-num-list{
+    width: 110px;
+    flex-shrink: 0;
+  }
+  .cust_res-txt{
+font-size: 10px;
+}
+  img.cust_res-img.pc-box {
+    margin-top: 0px;
+}
+  .res_custom-vis .visible-results .visible-results-det{
+            display: block;
+  }
+    .res_custom-vis  .visible-results .visible-results-box {
+        display: flex;
+      gap:10px;
+    }
+}
+.visible-results-popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 999;
+  background: rgba(0, 0, 0, .5);
+  display: none;
+}
+
+.visible-results-popup .visible-results-popup-cont {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90%;
+}
+
+.visible-results-popup .visible-results-popup-img {
+  display: flex;
+  border-radius: 8px;
+  overflow: hidden;
+  position: relative;
+}
+
+.visible-results-popup .visible-results-popup-img::before {
+  position: absolute;
+  content: '';
+  display: block;
+  width: 1px;
+  height: 100%;
+  background: #fff;
+  left: 50%;
+  top: 0;
+  transform: translateX(-50%);
+  z-index: 2;
+}
+
+.visible-results-popup .visible-results-popup-img .img-item {
+  flex: 1;
+}
+
+.visible-results-popup .img-item {
+  position: relative;
+}
+
+.visible-results-popup .img-label {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 10px;
+  font-size: 14px;
+  color: #fff;
+  z-index: 2;
+}
+
+.visible-results-popup .visible-results-popup-img img {
+  position: relative;
+  z-index: 1;
+}
+
+.visible-results-popup .visible-results-popup-close svg {
+  width: 1em;
+  height: 1em;
+  display: block;
+}
+
+.visible-results-popup .visible-results-popup-close {
+  color: #fff;
+  font-size: 40px;
+  width: 40px;
+  margin: 0 auto;
+  margin-top: 25px;
+}
+</style>
+<section class="vis-{{section.id}}">
+     <div class="visible-results to-top">
+    <div class="visible-results-title mb-box to-top">{{ section.settings.title }}</div>
+    <div class="visible-results-sub mb-box to-top">{{ section.settings.text }}</div>
+    <div class="visible-results-left to-top" style="transition-delay: 0.2s">
+      <div class="visible-results-dot">
+        {%- for block in section.blocks -%}
+          <div class="visible-results-dot-item {% if forloop.index == 1 %}active{% endif %}">{{ block.settings.text }}</div>
+        {%- endfor -%}
+      </div>
+      <div class="visible-results-cont">
+        <div class="visible-results-top">
+          {%- if section.settings.image != blank -%}
+            <img class="icon-img pc-box" src="{{ section.settings.image | image_url }}" alt="{{ section.settings.image | escape }}"/>
+          {%- endif -%}
+          {%- if section.settings.image1 != blank -%}
+            <img class="icon-img mb-box" src="{{ section.settings.image1 | image_url }}" alt="{{ section.settings.image1 | escape }}"/>
+          {%- endif -%}         
+        </div>
+        <div class="visible-results-img">
+        {%- for block in section.blocks -%}
+          <div class="visible-results-img-item {% if forloop.index == 1 %}active{% endif %}">
+            {%- if block.settings.img != blank -%}
+               <img class="img pc-box" src="{{ block.settings.img | image_url }}" alt="{{ block.settings.img | escape }}"/>
+            {%- endif -%}
+            {%- if block.settings.img1 != blank -%}
+               <img class="img mb-box" src="{{ block.settings.img1 | image_url }}" alt="{{ block.settings.img1 | escape }}"/>
+            {%- endif -%}           
+          </div>
+        {%- endfor -%}
+        </div>
+      {%- if section.blocks.size > 1 -%}
+        <div class="visible-results-arraw">
+          <div class="visible-results-arraw-item">
+            <svg xmlns="http://www.w3.org/2000/svg" width="51" height="51" viewBox="0 0 51 51" fill="none">
+              <g clip-path="url(#clip0_2295_4473)">
+                <circle cx="25.5" cy="25.5" r="24.9205" stroke="white" stroke-width="1.15909"/>
+                <path d="M15.0682 26.0559C15.0682 26.1937 15.1202 26.3304 15.2197 26.4349L23.1355 34.7727L23.9621 34.0145L16.934 26.6117H38.25C38.25 25.998 37.7434 25.5 37.1192 25.5H15.6596C15.4459 25.5 15.2378 25.6056 15.136 25.7913C15.0897 25.8746 15.0682 25.9658 15.0682 26.0559Z" fill="white"/>
+                <path d="M15.0681 22.8636C15.6006 23.2879 16.4628 23.2879 16.994 22.8636L24.3408 16.9965L23.3779 16.2273L15.0695 22.8636H15.0681Z" fill="white"/>
+              </g>
+              <defs>
+                <clipPath id="clip0_2295_4473">
+                  <rect width="51" height="51" fill="white" transform="matrix(-1 0 0 1 51 0)"/>
+                </clipPath>
+              </defs>
+            </svg>
+          </div>
+          <div class="visible-results-arraw-item">
+            <svg xmlns="http://www.w3.org/2000/svg" width="51" height="51" viewBox="0 0 51 51" fill="none">
+              <g clip-path="url(#clip0_2295_4477)">
+                <circle cx="25.5" cy="25.5" r="24.9205" transform="matrix(-1 0 0 1 51 0)" stroke="white" stroke-width="1.15909"/>
+                <path d="M37.091 25.9864C37.091 26.107 37.039 26.2266 36.9395 26.3181L29.0237 33.6136L28.1971 32.9502L35.2251 26.4727H13.9092C13.9092 25.9358 14.4158 25.5 15.04 25.5H36.4996C36.7133 25.5 36.9214 25.5924 37.0231 25.7549C37.0695 25.8278 37.091 25.9076 37.091 25.9864Z" fill="white"/>
+                <path d="M35.9318 22.9166C35.5324 23.2702 34.8858 23.2702 34.4874 22.9166L28.9773 18.0273L29.6995 17.3864L35.9308 22.9166H35.9318Z" fill="white"/>
+              </g>
+              <defs>
+                <clipPath id="clip0_2295_4477">
+                  <rect width="51" height="51" fill="white"/>
+                </clipPath>
+              </defs>
+            </svg>
+          </div>
+        </div>
+      {%- endif -%}         
+      </div>
+    </div>
+    <div class="visible-results-right to-top" style="transition-delay: 0.3s">
+      <div class="visible-results-box">
+        <div class="visible-results-title pc-box">{{ section.settings.title }}</div>
+        <div class="visible-results-sub pc-box">{{ section.settings.text }}</div>
+          {%- if section.settings.logo_img != blank -%}
+                     <img class="cust_res-img pc-box" src="{{ section.settings.logo_img | image_url }}" alt="{{ section.settings.logo_img | escape }}"/>
+            {%- endif -%}
+           {%- if section.settings.logo_img_mb != blank -%}
+                     <img class="cust_res-img mb-box" src="{{ section.settings.logo_img_mb | image_url }}" alt="{{ section.settings.logo_img_mb | escape }}"/>
+            {%- endif -%}
+        {%- if section.settings.logo_text != blank -%}
+      <div class="cust_res-txt">{{ section.settings.logo_text }}</div>
+        {%- endif -%}
+        
+        <div class="visible-results-det">
+          <div class="visible-results-num-list">
+            {%- for block in section.blocks -%}
+              <div class="visible-results-num {% if forloop.index == 1 %}active{% endif %}">
+                <div class="visible-results-n">{{ block.settings.text1 }}</div>
+                <div class="visible-results-p">{{ block.settings.text2 }}</div>
+              </div>
+            {%- endfor -%}
+          </div>
+          <div class="visible-results-db">
+            <div class="visible-results-db-item">
+              <div class="visible-results-tag">{{ section.settings.text1 }}</div>
+              {%- for block in section.blocks -%}
+                <div class="sm-box {% if forloop.index == 1 %}active{% endif %}" data-src="{{ block.settings.img6 | image_url }}" data-src1="{{ block.settings.img7 | image_url }}">
+                  {%- if block.settings.img2 != blank -%}
+                     <img class="sm-img pc-box" src="{{ block.settings.img2 | image_url }}" alt="{{ block.settings.img2 | escape }}"/>
+                  {%- endif -%}
+                  {%- if block.settings.img3 != blank -%}
+                     <img class="sm-img mb-box" src="{{ block.settings.img3 | image_url }}" alt="{{ block.settings.img3 | escape }}"/>
+                  {%- endif -%}
+                </div>
+              {%- endfor -%}
+            </div>
+            <div class="visible-results-db-item">
+              <div class="visible-results-tag">{{ section.settings.text2 }}</div>
+              {%- for block in section.blocks -%}
+                <div class="sm-box {% if forloop.index == 1 %}active{% endif %}" data-src="{{ block.settings.img6 | image_url }}" data-src1="{{ block.settings.img7 | image_url }}">
+                  {%- if block.settings.img4 != blank -%}
+                    <picture>
+                      <source media="(max-width: 768px)" srcset="{{ block.settings.img5 | image_url: '200x' }}">
+                      <img class="sm-img" src="{{ block.settings.img4 | image_url: '400x' }}" alt="{{ block.settings.img4 | escape }}"/>
+                    </picture>
+                  {%- endif -%}
+                  {% comment %} {%- if block.settings.img5 != blank -%}
+                     <img class="sm-img mb-box" src="{{ block.settings.img5 | image_url }}" alt="{{ block.settings.img5 | escape }}"/>
+                  {%- endif -%} {% endcomment %}
+                </div>
+              {%- endfor -%}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="visible-results-popup">
+    <div class="visible-results-popup-cont">
+      <div class="visible-results-popup-img">
+        <div class="img-item">
+          <div class="img-label">{{ section.settings.text1 }}</div>
+          <img src="" alt="">
+        </div>
+        <div class="img-item">
+          <div class="img-label">{{ section.settings.text2 }}</div>
+          <img src="" alt="">
+        </div>
+      </div>
+      <div class="visible-results-popup-close">
+        <svg data-v-b39369a2="" data-v-034dd544="" xmlns="http://www.w3.org/2000/svg"
+          xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512">
+          <path data-v-b39369a2=""
+            d="M289.94 256l95-95A24 24 0 0 0 351 127l-95 95l-95-95a24 24 0 0 0-34 34l95 95l-95 95a24 24 0 1 0 34 34l95-95l95 95a24 24 0 0 0 34-34z"
+            fill="currentColor"></path>
+        </svg>
+      </div>
+    </div>
+  </div>
+  <script>
+    function wrapStringsWithSpan(element) {
+      let text = element.innerText;
+      let parts = text.split(/(\.|\%)/);
+      let html = "";
+      let isPoint = parts.includes('.')
+      let dotFound = false;
+      let isFirst = true
+      for (let i = 0; i < parts.length; i++) {
+          if(parts[i] !==''){
+              if (parts[i] === ".") {
+                  dotFound = true;
+                  html += "</span>" + parts[i];
+              } else if (parts[i] === "%" && dotFound||parts[i] === "%" && !isPoint) {
+                  if(!isPoint){
+                      html += "</span>" + parts[i]
+                  }else{
+                      html += parts[i]
+                      dotFound = false;
+                  }
+              } else {
+                  if(isFirst) {
+                      html+= "<span>" + parts[i];
+                      isFirst = false
+                  }else{
+                      html += parts[i];
+                  }
+              }
+          }
+      }
+      element.innerHTML = html;
+  }
+  document.querySelectorAll('.visible-results-n').forEach(ele=>{
+    wrapStringsWithSpan(ele)
+  })
+    window.addEventListener('load', function() {
+      function visibleResultsSwipercus(){
+        let $p = $('.res_custom-vis .visible-results')
+        let $leftItem = $p.find('.visible-results-img-item')
+        let $rightItem = $p.find('.visible-results-db-item')
+        let $numItem = $p.find('.visible-results-num')
+        let $arraw = $p.find('.visible-results-arraw-item')
+        let $dotItem = $p.find('.visible-results-dot-item')
+        let index = 0
+        let len = $leftItem.length
+        let content = document.querySelector('.visible-results .visible-results-cont')
+        
+        function changeItem(){
+          $leftItem.removeClass('active').eq(index).addClass('active')
+          $rightItem.each(function(){
+            $(this).find('.sm-box').removeClass('active').eq(index).addClass('active')
+          })
+          $dotItem.removeClass('active').eq(index).addClass('active')
+          $numItem.removeClass('active').eq(index).addClass('active')
+        }
+
+        $p.find('.sm-box').click(function () {
+          if (window.innerWidth > 768) return
+          let $popup = $('.visible-results-popup')
+          let src = $(this).attr('data-src')
+          let src1 = $(this).attr('data-src1')
+          $popup.find('.img-item').eq(0).find('img').attr('src', '')
+          $popup.find('.img-item').eq(1).find('img').attr('src', '')
+          if (!src || !src1) return
+          $popup.find('.img-item').eq(0).find('img').attr('src', src)
+          $popup.find('.img-item').eq(1).find('img').attr('src', src1)
+          $popup.fadeIn(300)
+        })
+
+        $('.visible-results-popup .visible-results-popup-close').click(function () {
+          $(this).closest('.visible-results-popup').fadeOut(300)
+        })
+
+        $arraw.click(function(){
+          let sindex = $(this).index()
+          index += sindex?1:-1
+          if(index < 0) index = len-1
+          if(index >= len) index = 0
+          changeItem()
+        })
+
+        $dotItem.click(function(){
+          index = $(this).index()
+          changeItem()
+        })
+        detectSwipe(content, () => {
+          index += 1
+          if (index >= len) index = 0
+          changeItem()
+        }, () => {
+          index -= 1
+          if (index < 0) index = len - 1
+          changeItem()
+        });
+
+        function detectSwipe(element, onSwipeLeft, onSwipeRight) {
+          let startX = 0;
+
+          const getEventX = (event) => {
+            return event.touches ? event.touches[0].clientX : event.clientX;
+          };
+
+          const handleTouchStart = (e) => {
+            startX = getEventX(e);
+          };
+
+          const handleTouchMove = (e) => {
+            const deltaX = getEventX(e) - startX;
+            if (Math.abs(deltaX) > 10 && e.cancelable) {
+              e.preventDefault();
+            }
+          };
+
+          const handleTouchEnd = (e) => {
+            const deltaX = getEventX(e.changedTouches ? e.changedTouches[0] : e) - startX;
+            if (deltaX > 10) {
+              onSwipeRight();
+            } else if (deltaX < -10) {
+              onSwipeLeft();
+            }
+          };
+
+          element.addEventListener('touchstart', handleTouchStart);
+          element.addEventListener('touchmove', handleTouchMove);
+          element.addEventListener('touchend', handleTouchEnd);
+
+          // Add mouse event listeners for PC compatibility
+          element.addEventListener('mousedown', handleTouchStart);
+          element.addEventListener('mousemove', handleTouchMove);
+          element.addEventListener('mouseup', handleTouchEnd);
+        }
+      }
+      visibleResultsSwipercus()
+      // animateNumbersVisibleAnime('.visible-results-n span');
+document.querySelectorAll('.res_custom-vis .visible-results-dot').forEach(ul => {
+  (function(ul) {
+    const liItems = ul.querySelectorAll('.visible-results-dot-item');
+    
+    liItems.forEach(li => {
+      li.addEventListener('click', function () {
+        // 获取li元素的相对位置
+        const liRect = li.getBoundingClientRect();
+        const ulRect = ul.getBoundingClientRect();
+        
+        // 获取li的中心位置相对于 ul 的左边距
+        const liCenterPosition = liRect.left + liRect.width / 2;
+        
+        // 计算要滚动的距离
+        const scrollAmount = liCenterPosition - ulRect.left - ulRect.width / 2;
+        
+        // 让ul横向滚动到合适位置
+        ul.scrollBy({
+          left: scrollAmount,
+          behavior: 'smooth' // 平滑滚动
+        });
+      });
+    });
+  })(ul);
+});
+    })
+  </script>      
+</section>
+{% schema %}
+{
+"name": "visible-results",
+  "class": "res_custom-vis",
+"blocks": [
+  {
+    "name": "item",
+    "type": "item",
+    "settings": [
+      {
+        "type": "text",
+        "id": "text",
+        "label": "Label"
+      },
+      {
+        "type": "image_picker",
+        "id": "img",
+        "label": "左大图"
+      },
+      {
+        "type": "image_picker",
+        "id": "img1",
+        "label": "左大图 M"
+      },
+      {
+        "type": "image_picker",
+        "id": "img2",
+        "label": "右小图1"
+      },
+      {
+        "type": "image_picker",
+        "id": "img3",
+        "label": "右小图1 M"
+      },
+      {
+        "type": "image_picker",
+        "id": "img4",
+        "label": "右小图2"
+      },
+      {
+        "type": "image_picker",
+        "id": "img5",
+        "label": "右小图2 M"
+      },
+      {
+        "type": "image_picker",
+        "id": "img6",
+        "label": "弹窗图片1"
+      },
+      {
+        "type": "image_picker",
+        "id": "img7",
+        "label": "弹窗图片2"
+      },
+      {
+        "type": "text",
+        "id": "text1",
+        "label": "百分比"
+      },
+      {
+        "type": "text",
+        "id": "text2",
+        "label": "部位名"
+      }
+    ]
+  }
+],
+  "settings": [
+      {
+        "type": "image_picker",
+        "id": "image",
+        "label": "图标"
+      },
+      {
+        "type": "image_picker",
+        "id": "image1",
+        "label": "M 图标"
+      },
+     {
+      "type": "text",
+      "id": "title",
+      "label": "标题"
+    },
+    {
+      "type": "text",
+      "id": "text",
+      "label": "副标题"
+    },
+    {
+      "type": "text",
+      "id": "text1",
+      "label": "Before",
+      "default":"BEFORE"
+    },
+    {
+      "type": "text",
+      "id": "text2",
+      "label": "After",
+      "default":"AFTER"
+    },
+     {
+        "type": "text",
+        "id": "logo_text",
+        "label": "Logo text"
+      },
+      {
+        "type": "image_picker",
+        "id": "logo_img",
+        "label": "Logo Images"
+      },
+       {
+        "type": "image_picker",
+        "id": "logo_img_mb",
+        "label": "Logo Images Mobile"
+      }
+  ],
+  "presets": [
+    {
+      "name": "visible-results",
+      "blocks": []
+    }
+  ]
+}
+{% endschema %}

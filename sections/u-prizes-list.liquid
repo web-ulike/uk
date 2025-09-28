@@ -1,0 +1,677 @@
+{% comment %} 情人节活动展示板块 {% endcomment %}
+{%- liquid
+  assign se_id = section.id
+  assign se_bks = section.blocks
+  assign se_stts = section.settings
+-%}
+
+<style>
+  .u-prizes-box {
+    font-family: 'Saans', sans-serif;
+    background: #f9f9f9;
+    padding: 60px 0px 0px;
+    text-align: center;
+    position: relative;
+  }
+  .u-prizes-box p {
+    margin: 0;
+  }
+  .u-prizes-box .head {
+    color: #190a0a;
+    text-align: center;
+    font-family: Saans;
+    font-size: 14px;
+    line-height: 1.1;
+    display: grid;
+    gap: 10px;
+  }
+  .u-prizes-box .head .title {
+    font-size: 44px;
+    font-weight: 500;
+    line-height: 1.3;
+  }
+  .u-prizes-box .head .desc {
+    font-size: 18px;
+  }
+  .u-prizes-box .head .text-tc {
+    font-weight: 500;
+    margin-top: 15px;
+    text-decoration-line: underline;
+    cursor: pointer;
+  }
+  .u-prizes-box .space-holder {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+  }
+  .u-prizes-box .swiper-prizes-list {
+    width: 100%;
+    padding: 80px 0px 0px; 
+    position: sticky;
+    top: 0;
+    min-height: 100vh;
+    overflow: hidden;
+  }
+  .u-prizes-box .swiper-prizes-list .cards {
+    /* height: 100%; */
+    z-index: 2;
+  }
+  .u-prizes-box .swiper-prizes-list .card-cont .card-title {
+    font-size: 24px;
+    line-height: 1.3;
+    margin-top: 20px;
+    font-weight: 500;
+  }
+  .u-prizes-box .swiper-prizes-list .card-cont .card-name {
+    font-size: 16px;
+    line-height: 1.2;
+  }
+
+  .u-prizes-box .swiper-prizes-list .item {
+    position: absolute; 
+    width: 280px;
+    height: 380px;
+    border-radius: 10px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1); 
+    transform-origin: center 120%;
+    background: linear-gradient(180deg, #B13C44 0%, #732329 100%);
+    color:#FFFFFC;
+    backface-visibility: hidden;
+    will-change: transform;
+    left: 50%;
+    cursor: pointer;
+  }
+  .u-prizes-box .swiper-prizes-list .item img {
+    width: 160px;
+    user-drag: none; /* 禁用拖动 */
+    user-select: none; /* 禁用选择 */
+    -webkit-user-drag: none; /* 兼容 Safari */
+    -webkit-user-select: none;
+  }
+
+  .u-prizes-box .abs-prizes-container {
+    position: absolute;
+    bottom: 50px;
+    left: 0px;
+    right: 0px;
+    margin: 0 auto;
+    z-index: 2;
+    background: #FFF;
+    border: 1px solid #ffe0e9;
+    width: 788px;
+    height: 177px;
+    border-radius: 15px;
+    -webkit-border-radius: 15px;
+    -moz-border-radius: 15px;
+    -ms-border-radius: 15px;
+    -o-border-radius: 15px;
+    display: flex;
+    padding: 30px 50px;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+  .u-prizes-box .abs-prizes-container .left-section {
+    flex: 1;
+    text-align: center;
+    padding: 20px;
+    font-size: 24px;
+    font-weight: 500;
+    color: #333;
+  }
+  .u-prizes-box .abs-prizes-container .left-section .text-date {
+    display: none;
+  }
+  .u-prizes-box .abs-prizes-container .right-section {
+    flex: 2;
+    max-height: 300px;
+    overflow-y: hidden;
+    padding: 10px 20px;
+    font-size: 14px;
+    height: 100px;
+  }
+  .u-prizes-box .abs-prizes-container .right-section .prizes-wrapper {
+    display: flex;
+    flex-direction: column;
+    animation: scroll-up 10s linear infinite;
+  }
+  .u-prizes-box .abs-prizes-container .right-section .prize {
+    margin-bottom: 15px;
+    display: flex;
+    align-items: flex-start;
+  }
+  .u-prizes-box .abs-prizes-container .right-section .prize .prize-title {
+    display: inline-block;
+    background-color: #b13c44;
+    color: #fff;
+    padding: 5px 10px;
+    font-weight: 500;
+    border-radius: 5px;
+    margin-right: 10px;
+    font-size: 14px;
+    width: 120px;
+    text-transform: uppercase;
+  }
+  .u-prizes-box .abs-prizes-container .right-section .prize .prize-detail {
+    display: inline-block;
+    font-size: 16px;
+    color: #555;
+    width: 250px;
+    line-height: 1.2;
+    font-weight: 500;
+  }
+  .u-prizes-box .abs-prizes-container .right-section .prize .prize-detail span {
+    display: block;
+    font-weight: 300;
+  }
+  .u-prizes-box .abs-prizes-container .right-section ::-webkit-scrollbar {
+    width: 8px;
+  }
+  .u-prizes-box .abs-prizes-container .right-section ::-webkit-scrollbar-thumb {
+    background: #b13c44;
+    border-radius: 4px;
+  }
+  .u-prizes-box .abs-prizes-container .right-section ::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+  .u-scroll-word {
+    width: 100%;
+    overflow: hidden;
+    background-color: rgba(255, 224, 233, 1); 
+  }
+  .u-scroll-word .scroll-content {
+    display: flex;
+    animation: scrollText 20s linear infinite;
+    font-size: 20px;
+    color: #d6336c;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+    padding: 20px 0px;
+  }
+  .u-scroll-word .item{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+    margin: 0px 20px;
+  }
+  @keyframes scrollText {
+    from {
+      transform: translateX(0%); /* Start from off-screen on the right */
+    }
+    to {
+      transform: translateX(-50%); /* Move completely off-screen to the left */
+    }
+  }
+
+  @media (max-width: 768px) {
+    .u-prizes-box {
+      padding: 40px 0px 0px;
+      /* 减小内边距 */
+      background: #f9f9f9;
+    }
+    .u-prizes-box .head {
+      font-size: 12px;
+      gap: 8px;
+    }
+    .u-prizes-box .head .title {
+      font-size: 16px;
+    }
+    .u-prizes-box .head .desc {
+      font-size: 12px;
+    }
+    .u-prizes-box .head .text-date {
+      display: none;
+    }
+    .u-prizes-box .head .text-tc {
+      margin-top: 0px;
+    }
+    .u-prizes-box .space-holder {
+      height: 35vh;
+    }
+    .u-prizes-box .swiper-prizes-list {
+      width: 100%;
+      min-height: 40vh;
+      padding: 15% 0 20px;
+    }
+    .u-prizes-box .abs-prizes-container {
+      position: initial;
+      width: 100%;
+      background: inherit;
+      display: block;
+      height: initial;
+      padding: 0px 20px 20px;
+      border: 0px;
+    }
+    .u-prizes-box .abs-prizes-container .left-section {
+      font-size: 14px;
+      padding: 0;
+      text-align: left;
+      position: relative;
+      margin-bottom: 10px;
+    }
+    .u-prizes-box .abs-prizes-container .left-section .text-date {
+      position: absolute;
+      right: 0px;
+      bottom: 6px;
+      font-size: 12px;
+      display: block;
+    }
+    .u-prizes-box .abs-prizes-container .right-section {
+      padding: 0px;
+      background: #fffffc;
+      overflow-y: hidden;
+      overflow-x: auto;
+      border: 1px solid #ffe0e9;
+      height: 100%;
+    }
+    .u-prizes-box .abs-prizes-container .right-section .prizes-wrapper {
+      animation: scroll-left 10s linear infinite;
+      -webkit-animation: scroll-left 10s linear infinite;
+      display: inline-flex;
+      flex-direction: initial;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .u-prizes-box .abs-prizes-container .right-section .prize .prize-title {
+      width: initial;
+      font-size: 12px;
+      padding: 2px 10px;
+      line-height: 1.5;
+    }
+    .u-prizes-box .abs-prizes-container .right-section .prizes-wrapper .prize {
+      text-align: center;
+      margin-bottom: 0px;
+      padding: 15px 10px;
+      display: block;
+    }
+    .u-prizes-box .abs-prizes-container .right-section .prizes-wrapper .prize .prize-detail {
+      font-size: 12px;
+      margin-top: 10px;
+      font-weight: 500;
+      width: 200px;
+    }
+    .u-prizes-box .abs-prizes-container .right-section::-webkit-scrollbar {
+      display: none;
+      /* 隐藏滚动条 */
+    }
+    .u-prizes-box .swiper-prizes-list .item{
+      width: 25%;
+      height: 140px;
+      padding: 10px;
+      border-radius: 3px;
+    }
+    .u-prizes-box .swiper-prizes-list .item img {
+      width: 60px;
+    }
+    .u-prizes-box .swiper-prizes-list .card-cont .card-title {
+      font-size: 12px;
+      margin-top: 10px;
+    }
+    .u-prizes-box .swiper-prizes-list .card-cont .card-name {
+      font-size: 8px;
+      transform: scale(0.8);
+    }
+
+    .u-scroll-word .scroll-content {
+      animation: scrollText 20s linear infinite;
+      font-size: 12px;
+      color: #d6336c;
+      gap: 10px;
+      padding: 13px 0px;
+    }
+    .u-scroll-word .item{
+      gap: 10px;
+      margin: 0px 10px;
+    }
+    .u-scroll-word .item img{
+      width: 20px;
+    }
+    
+  }
+
+  /* 滚动动画 */
+  @keyframes scroll-up {
+    0% {
+      transform: translateY(0);
+      // 初始位置    :;
+      -webkit-transform: translateY(0);
+      -moz-transform: translateY(0);
+      -ms-transform: translateY(0);
+      -o-transform: translateY(0);
+    }
+    100% {
+      transform: translateY(-50%); // 滚动到复制内容的末尾
+    }
+  }
+
+  @keyframes scroll-left {
+    0% {
+      transform: translateX(0); /* 初始位置 */
+      -webkit-transform: translateX(0);
+      -moz-transform: translateX(0);
+      -ms-transform: translateX(0);
+      -o-transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-80%);
+      -moz-transform: translateX(-80%);
+      -ms-transform: translateX(-80%);
+      -o-transform: translateX(-80%);
+      -webkit-transform: translateX(-80%);
+    }
+  }
+</style>
+
+<div class="u-prizes-box">
+  <div class="head">
+    <p class="title">{{ se_stts.title }}</p>
+    <div class="desc">{{ se_stts.desc }}</div>
+    <div class="text-date">{{ se_stts.date }}</div>
+    <div class="text-tc">{{ se_stts.terms_and_conditions }}</div>
+  </div>
+  <div class="space-holder">
+    <div class="swiper-prizes-list" style="--r-n:-60deg;">
+        {% for block in se_bks %}
+          {% if block.type == 'item' %}
+            <div class="item">
+              <div class="card-cont">
+                <img
+                  loading="lazy"
+                  class="img"
+                  alt="{{ block.settings.name }}"
+                  src="{{ block.settings.image | img_url: 'master' }}"
+                >
+                <p class="card-title">{{ block.settings.title }}</p>
+                <div class="card-name">{{ block.settings.name }}</div>
+              </div>
+            </div>
+          {% endif %}
+        {% endfor %}
+
+        {% for block in se_bks %}
+          {% if block.type == 'item' %}
+            <div class="item">
+              <div class="card-cont">
+                <img
+                  loading="lazy"
+                  class="img"
+                  alt="{{ block.settings.name }}"
+                  src="{{ block.settings.image | img_url: 'master' }}"
+                >
+                <p class="card-title">{{ block.settings.title }}</p>
+                <div class="card-name">{{ block.settings.name }}</div>
+              </div>
+            </div>
+           {% endif %}
+        {% endfor %}
+    </div>
+  </div>
+
+  {%- liquid
+    assign prize_list = se_bks | where: 'type', 'prize-list'
+  -%}
+
+  {% if prize_list.size > 0 %}
+    <div class="abs-prizes-container" b="{{ prize_list }}" >
+      <div class="left-section">
+        <p>Congratulation!</p>
+        <div class="text-date">{{ se_stts.date }}</div>
+      </div>
+      <div class="right-section">
+        <div class="prizes-wrapper">
+          <!-- 奖品模版 -->
+          {% for block in se_bks %}
+            {% if block.type == 'prize-list' %}
+              <div class="prize">
+                <div class="prize-title">{{ block.settings.title }}</div>
+                <div class="prize-detail">
+                  {{ block.settings.prize_detail }}
+                </div>
+              </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+        <!-- 更多奖品 -->
+      </div>
+    </div>
+  {% endif %}
+
+</div>
+
+<div class="u-scroll-word">
+  <div class="scroll-content">
+    <div class="item">
+      {{se_stts.text3 }}
+    </div>
+</div>
+</div>
+
+{% comment %} 引用外部弹出框 {% endcomment %}
+{% render 'u-tc-popup' %}
+
+<script>
+  let count = 0; // To track cycles
+  let _array = [-60.0, -48.75, -37.5, -26.25, -15.0, -3.75];
+  
+  $(function () {
+    // 打印信息确认
+    $('.u-prizes-box .text-tc').click(function (event) {
+      event.preventDefault(); // 阻止默认事件（例如链接跳转）
+      $('.step-box-popup').fadeIn();
+    });
+    if (isMobile()) {
+      _array = [-60, -40, -20, 0, 20, 40];
+    }
+
+    let p = document.querySelector('.swiper-prizes-list')
+    let width = p.offsetWidth;
+    let card = p.querySelectorAll('.item')
+    let cw = card[0].offsetWidth
+    let ch = card[0].offsetHeight
+    let by = isMobile() ? 18 : 32
+    let pyr = 360 / by //32是数量根据需求自行更改
+
+    card.forEach((item, index) => {
+      item.style.transform = `rotate(calc(${pyr * index - 90}deg - var(--r-n)))`
+      item.style.transformOrigin = `${cw / 2}px ${ch / 2 + width / .9}px`
+      item.style.marginLeft = `${-cw / 2}px`
+    })
+
+
+    // 页面加载时初始化
+    window.addEventListener('load', () => {
+      updateValue();
+    });
+
+    let timeoutId = null;
+    function updateValue() {
+      clearTimeout(timeoutId);
+      let value = _array[count];
+      p.style.setProperty('--r-n', `${value}deg`);
+      startAutoUpdate();
+    }
+
+    function startAutoUpdate() {
+      timeoutId = setTimeout(() => {
+        if (_array.length - 2 < count) {
+          count = 0; // 重置到第一个
+        } else {
+          count++; // 前进到下一项
+        }
+        updateValue(); // 更新显示
+        startAutoUpdate(); // 递归调用
+      }, 5000);
+    }
+
+
+    let startX = 0; // 开始触摸或鼠标按下的 X 坐标
+
+    // 监听鼠标或触摸按下事件
+    $(".swiper-prizes-list").on("mousedown touchstart", function (e) {
+      const event = e.type === "touchstart" ? e.originalEvent.touches[0] : e; // 判断事件类型
+      startX = event.clientX; // 记录开始位置
+    });
+
+    // 监听鼠标或触摸抬起事件
+    $(".swiper-prizes-list").on("mouseup touchend", function (e) {
+      const event = e.type === "touchend" ? e.originalEvent.changedTouches[0] : e; // 判断事件类型
+      const endX = event.clientX; // 记录结束位置
+      const distance = endX - startX; // 计算滑动距离
+
+      if (distance > 50) {
+        if (_array.length - 2 < count){
+          count = 0;
+        } else if (count < 1) {
+          count = _array.length - 2;
+        } else {
+          count--;
+        }
+        updateValue();
+
+      } else if (distance < -50) {
+        if (_array.length - 2 < count){
+          count = 0;
+        } else {
+          count++;
+        }
+        updateValue();
+      }
+    });
+
+
+    
+    const originalItem = $('.u-scroll-word .item');
+    const scrollContent = $('.scroll-content');
+
+    // Function to duplicate the item and insert it into scroll-content
+    function duplicateItem(times) {
+      for (let i = 0; i < times; i++) {
+        const clone = originalItem.clone(); // Clone the original item
+        scrollContent.append(clone); // Append the clone into the .scroll-content container
+      }
+    }
+
+    // Call the function to duplicate the item 10 times
+    duplicateItem(15);
+
+  });
+   
+
+</script>
+
+{% schema %}
+{
+  "name": "u-prizes-list",
+  "settings": [
+    {
+      "type": "html",
+      "id": "title",
+      "label": "标题",
+      "default": "Order & Win"
+    },
+    {
+      "type": "textarea",
+      "id": "desc",
+      "label": "描述",
+      "default": "Place an order for a chance to win exciting prizes."
+    },
+    {
+      "type": "html",
+      "id": "date",
+      "label": "日期",
+      "default": "7th Feb - 14th Feb"
+    },
+    {
+      "type": "html",
+      "id": "terms_and_conditions",
+      "label": "条款和条件",
+      "default": "Terms and Conditions"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "图片"
+    },
+    {
+      "type": "html",
+      "id": "text",
+      "label": "政策弹出框标题"
+    },
+    {
+      "type": "richtext",
+      "id": "text1",
+      "label": "政策弹出框内容"
+    },
+    {
+      "type": "html",
+      "id": "text2",
+      "label": "政策弹出框按钮"
+    },
+    {
+      "type": "html",
+      "id": "text3",
+      "label": "循环延保文本"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "item",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "图片"
+        },
+        {
+          "type": "textarea",
+          "id": "name",
+          "label": "名称",
+          "default": "iPhone 16"
+        },
+        {
+          "type": "textarea",
+          "id": "title",
+          "label": "标题",
+          "default": "1st Prize"
+        }
+      ]
+    },
+    {
+      "type": "prize-list",
+      "name": "prize-list",
+      "settings": [
+        {
+          "type": "textarea",
+          "id": "title",
+          "label": "标题",
+          "default": "1st Prize"
+        },
+        {
+          "type": "html",
+          "id": "prize_detail",
+          "label": "奖品详情",
+          "default": "has just won an iPhone 16"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "u-prizes-list",
+      "blocks": []
+    }
+  ]
+}
+{% endschema %}

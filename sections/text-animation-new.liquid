@@ -1,0 +1,157 @@
+<style>
+.text-animation-new {
+  position: relative;
+  z-index: 1;
+}
+
+.text-animation-new .img {
+  width: 100%;
+}
+
+.text-animation-new .text-animation-cont {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  transform: translateY(-50%);
+  z-index: 2;
+}
+
+.text-animation-new .text-animation-dob {
+  position: relative;
+  z-index: 1;
+}
+
+.text-animation-new .text-animation-gtxt {
+  color: #190a0a;
+  text-align: center;
+  font-size: 40px;
+  line-height: 1.25;
+  font-family: var(--heading-font-family);
+  max-width: 390px;
+  margin: 0 auto;
+}
+
+.text-animation-new .text-animation-txt {
+  color: transparent;
+  text-align: center;
+  font-size: 40px;
+  line-height: 1.25;
+  font-family: var(--heading-font-family);
+  max-width: 390px;
+  margin: 0 auto;
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.text-animation-new .text-animation-txt span {
+  color: transparent;
+  background-clip: text;
+  background-size: var(--num-backgroundSize) 100%;
+  background-repeat: no-repeat;
+  background-image: linear-gradient(90deg, #e0004d, #e0004d);
+}
+
+@media (max-width: 991px) {
+  .text-animation-new .text-animation-gtxt,
+  .text-animation-new .text-animation-txt {
+    font-size: 24px;
+    width: 251px;
+    line-height: 1.5;
+  }
+}
+</style>
+
+<section>
+    <div class="text-animation-new">
+        {%- if section.settings.image != blank or section.settings.image1 != blank -%}
+            <picture>
+            <source srcset="{{section.settings.image1 | image_url }}" media="(max-width: 991px)">
+            <img loading="lazy"
+                class="img"
+                width=""
+                height=""
+                {% render 'image-attributes', image: section.settings.image %}
+                alt="{{ section.settings.image.alt | escape }}">
+            </picture>
+        {%- endif -%}
+        <div class="text-animation-cont">
+            <div class="container">
+                <div class="text-animation-dob">
+                <div class="text-animation-txt" style="--num-backgroundSize:0%;">
+                    <span>
+                    {{ section.settings.text }}
+                    </span>
+                </div>
+                <div class="text-animation-gtxt">
+                    <span>
+                    {{ section.settings.text }}
+                    </span>
+                </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+    function handleScroll() {
+      let textElement = document.querySelector('.text-animation-txt');
+      let scrollPosition = window.scrollY;
+      let windowHeight = window.innerHeight;
+      let reat = textElement.getBoundingClientRect()
+      let scrollThresholdStart = windowHeight * 0.2; // 设置动画开始的滚动位置为页面高度的 20%
+      let scrollThresholdEnd = windowHeight * 0.8; // 设置动画结束的滚动位置为页面高度的 80%
+      // 根据滚动位置计算背景大小
+      let backgroundSize = (1 - (reat.top - windowHeight * 0.2) / (windowHeight * 0.6)) * 100;
+
+      // 如果滚动位置在阈值范围内，则显示文本并设置背景大小
+      if (reat.top >= scrollThresholdStart && reat.top <= scrollThresholdEnd) {
+        textElement.style = '--num-backgroundSize:' + backgroundSize + '%'
+      }
+      if (reat.top < scrollThresholdStart) {
+        textElement.style = '--num-backgroundSize:100%'
+      }
+      if (reat.top > scrollThresholdEnd) {
+        textElement.style = '--num-backgroundSize:0%'
+      }
+    }
+
+    // 监听滚动事件
+    window.addEventListener('scroll', handleScroll);
+
+    // 页面加载完成时触发一次滚动事件，以确保初始状态正确
+    window.addEventListener('load', handleScroll);
+</script>
+{% schema %}
+{
+  "name": "text-animation-new",
+  "settings": [
+    {
+        "type": "image_picker",
+        "id": "image",
+        "label": "Image"
+    },
+    {
+        "type": "image_picker",
+        "id": "image1",
+        "label": "M Image"
+    },
+    {
+      "type": "html",
+      "id": "text",
+      "label": "Text"
+    }
+  ],
+  "blocks": [
+  ],
+  "presets": [
+    {
+      "name": "text-animation-new"
+    }
+  ]
+}
+{% endschema %}

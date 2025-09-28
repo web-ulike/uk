@@ -1,0 +1,107 @@
+<style>
+.olympic-image {
+  padding: 50px 0;
+}
+
+.olympic-image .container {
+  max-width: 1580px;
+}
+
+.olympic-image .olympic-image-cont {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 35px;
+}
+
+.olympic-image .olympic-image-left {
+  max-width: 580px;
+}
+
+.olympic-image .olympic-image-title {
+  color: #190A0A;
+  font-size: 48px;
+  line-height: 1.2;
+}
+
+.olympic-image .olympic-image-p {
+  color: #3F3636;
+  font-size: 12px;
+  line-height: 1.5;
+  margin-top: 30px;
+}
+
+.olympic-image .img {
+  width: 100%;
+}
+
+@media (max-width: 991px) {
+  .olympic-image .olympic-image-cont {
+    align-items: normal;
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .olympic-image .olympic-image-title {
+    font-size: 26px;
+  }
+
+  .olympic-image .olympic-image-p {
+    margin-top: 15px;
+  }
+}
+</style>
+
+<section class="section-box">
+  <div class="olympic-image">
+    <div class="container">
+      <div class="olympic-image-cont">
+        <div class="olympic-image-left">
+          <div class="olympic-image-title">{{ section.settings.text }}</div>
+          <div class="olympic-image-p">{{ section.settings.text1 }}</div>
+        </div>
+        {%- if section.settings.image != blank or section.settings.image1 != blank -%}
+        <div class="olympic-image-img">
+          <picture>
+            <source srcset="{{ section.settings.image1 | image_url }}"
+              media="(max-width: 991px)">
+            <img class="img" src="{{ section.settings.image | image_url }}" width="" height="">
+          </picture>
+        </div>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</section>                
+{% schema %}
+{
+  "name": "olympic-image",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image1",
+      "label": "Image Mobile"
+    },
+    {
+      "type": "text",
+      "id": "text",
+      "label": "标题"
+    },
+    {
+      "type": "text",
+      "id": "text1",
+      "label": "副标题"
+    }
+  ],
+  "presets": [
+    {
+      "name": "olympic-image"
+    }
+  ]
+}
+{% endschema %}

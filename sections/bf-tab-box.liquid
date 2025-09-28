@@ -1,0 +1,183 @@
+<style>
+  #shopify-section-{{ section.id }}{
+    position: sticky;
+    top: 80px;
+    z-index: 3;
+  }
+  .bf-tab-box{
+    background:#000;
+  }
+.bf-tab-box .bf-tab-cont{
+  border-bottom: 1px solid #666666;
+}
+
+.bf-tab-box .bf-tab-scroll{
+  overflow: hidden;
+}
+
+.bf-tab-box .bf-tab-list{
+  display: flex;
+}
+.bf-tab-box .bf-tab-item{
+  flex: 1;
+  text-align: center;
+  color: #666;
+  font-size: 24px;
+  /* margin-bottom: -1px; */
+  padding: 8px 0;
+  cursor: pointer;
+}
+
+.bf-tab-box .bf-tab-item.active{
+  font-family: var(--heading-font-family);
+  color: #fff;
+  border-bottom: 1px solid #DEB581;
+}
+.bf-2024.bf-tab-box{
+  background: linear-gradient(180deg, rgba(244, 52, 90, 1) -13.5%, #b4003e 113.5%);
+}
+.bf-2024 .bf-tab-cont{
+  border:0;
+}
+  .bf-2024 .bf-tab-item{
+    color:#fff;
+    padding: 18px 0;
+    cursor: url('https://cdn.shopify.com/s/files/1/0656/9079/6273/files/cu3.svg'), auto;
+  }
+ .bf-2024 .bf-tab-item.active{
+    border:0;
+   color: #FFF3D4;
+   font-family: var(--text-font-family);
+  }
+  .seo-diy.bf-tab-box{
+    background: #F9F9F9;
+  }
+  .seo-diy .bf-tab-item{
+    color: #000;
+  }
+  .seo-diy .bf-tab-item.active{
+    color: #E0004D;
+  }
+  .seo-diy .bf-tab-cont{
+    border:0;
+  }
+@media (max-width:999px) {
+  .bf-tab-box .bf-tab-cont{
+    border: 0;
+  }
+  .bf-tab-box .bf-tab-item{
+    color: #9D9D9D;
+    font-size: 16px;
+    flex-shrink: 0;
+    white-space: nowrap;
+    padding: 8px 10px;
+  }
+   .bf-2024 .bf-tab-item{
+     color:#fff;
+   }
+  .bf-tab-box .bf-tab-item.active{
+    color: #DEB581;
+  }
+  .bf-2024 .bf-tab-item.active{
+     color:#FFF3D4;
+   }
+  .bf-tab-box .bf-tab-scroll{
+    overflow-x: auto;
+  }
+  .bf-tab-box .bf-tab-scroll::-webkit-scrollbar {
+    display: none;
+  }
+  .seo-diy .bf-tab-item {
+    color: #000;
+  }
+  .seo-diy .bf-tab-item.active{
+    color: #E0004D;
+  }
+}
+@media (max-width:740px) {
+  #shopify-section-{{ section.id }}{
+    top: 61px;
+  }
+}
+  
+
+</style>
+<section class="section-box">
+<div class="bf-tab-box to-top {{ section.settings.text }}">
+  <div class="container">
+    <div class="bf-tab-cont">
+      <div class="bf-tab-scroll">
+        <div class="bf-tab-list">
+          {%- for block in section.blocks -%}
+            <div class="bf-tab-item" data-rout="{{ block.settings.text1 }}">{{ block.settings.text }}</div>
+          {%- endfor -%}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+<script>
+  window.addEventListener('load',function(){
+    $('.bf-tab-box .bf-tab-item').click(function(){
+      let route=$(this).data('rout')
+      $(this).addClass('active').siblings('.bf-tab-item').removeClass('active')
+      if($('#'+route).length){
+        $("html,body").animate({scrollTop: $('#'+route).offset().top - 80}, 'slow');
+        }
+    })
+    window.addEventListener('scroll',function(){
+      const scrollPosition = window.scrollY || window.pageYOffset;
+      $('.bf-tab-box .bf-tab-item').removeClass('active')
+      document.querySelectorAll('.bf-tab-box .bf-tab-item').forEach(item=>{
+        let classN = item.getAttribute('data-rout')
+        if(!document.querySelector('#'+ classN)) return
+        const sectionTop = document.querySelector('#'+ classN).offsetTop;
+		    const sectionHeight = document.querySelector('#'+ classN).offsetHeight;
+        if (scrollPosition >= sectionTop -80 && scrollPosition < (sectionTop + sectionHeight)) {
+            // 移除之前高亮的导航
+            $('.bf-tab-box .bf-tab-item').removeClass('active')
+            // 高亮对应导航
+            item.classList.add('active');
+        }
+      })
+    })
+  })
+  
+</script>
+{% schema %}
+{
+"name": "bf-tab-box",
+"blocks": [
+  {
+    "name": "item",
+    "type": "item",
+    "settings": [
+      {
+        "type": "text",
+        "id": "text",
+        "label": "Text"
+      },
+      {
+        "type": "text",
+        "id": "text1",
+        "label": "Route"
+      }
+    ]
+  }
+],
+"settings": [
+  {
+    "type": "text",
+    "id": "text",
+    "label": "自定义Class"
+  }
+],
+  "presets": [
+  {
+    "name": "bf-tab-box",
+    "blocks": []
+  }
+]
+}
+{% endschema %}

@@ -1,0 +1,104 @@
+<style>
+.text-state-help{
+  padding: 80px 0;
+}
+
+.text-state-help .text-state-help-list{
+  display: flex;
+  gap: 120px;
+}
+
+.text-state-help .text-state-help-item{
+  flex: 1;
+}
+
+.text-state-help .text-state-help-title{
+  font-size: 25px;
+  color: #000;
+  font-family: var(--heading-font-family);
+  line-height: 1.1;
+}
+
+.text-state-help .text-state-help-item-p{
+  font-size: 12px;
+  color: #8f8f8f;
+  margin-top: 45px;
+}
+
+.text-state-help .text-state-help-item-p p{
+  padding-bottom: 30px;
+  margin-bottom: 30px;
+  border-bottom: 1px solid #e3e3e3;
+}
+
+.text-state-help .text-state-help-item-p p:last-child{
+  padding-bottom: 0;
+  margin-bottom: 0;
+  border: 0;
+}
+
+@media (max-width:991px) {
+  .text-state-help{
+    padding: 50px 0;
+  }
+  .text-state-help .text-state-help-list{
+    flex-direction: column;
+    gap: 50px;
+  }
+  .text-state-help .text-state-help-title{
+    font-size: 22px;
+  }
+  .text-state-help .text-state-help-item-p{
+    margin-top: 25px;
+  }
+  .text-state-help .text-state-help-item-p p{
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+  }
+}
+</style>
+<section class="section-box">
+  <div class="text-state-help">
+    <div class="container">
+      <div class="text-state-help-list">
+        {%- for block in section.blocks -%}
+          <div class="text-state-help-item">
+            <div class="text-state-help-title to-top">{{ block.settings.text }}</div>
+            <div class="text-state-help-item-p to-top" style="transition-delay: 0.1s">
+              {{ block.settings.text1 }}
+            </div>
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</section>
+{% schema %}
+{
+"name": "text-state-help",
+"blocks": [
+    {
+    "name": "item",
+    "type": "item",
+    "settings": [
+      {
+        "type": "text",
+        "id": "text",
+        "label": "Text"
+      },
+      {
+        "type": "richtext",
+        "id": "text1",
+        "label": "Text"
+      }
+    ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "text-state-help",
+      "blocks": []
+    }
+  ]
+}
+{% endschema %}

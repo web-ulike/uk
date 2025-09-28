@@ -1,0 +1,1778 @@
+<style>
+  .btn-diy {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    overflow: hidden;
+    transition: all 0.4s ease;
+  }
+
+  .btn-diy .btn-txt {
+    position: relative;
+    overflow: hidden;
+  }
+  .btn-diy .btn-txt span {
+    transition: all 0.4s ease;
+    display: block;
+    position: relative;
+    z-index: 1;
+  }
+  .btn-diy .btn-txt::before {
+    content: attr(text);
+    display: block;
+    position: absolute;
+    transition: all 0.4s ease;
+    transform: translateY(40px);
+    z-index: 1;
+  }
+
+  .btn-diy::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #fff;
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.4s;
+  }
+  .btn-diy:hover::after {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+
+  .btn-diy:hover .btn-txt::before {
+    transform: translateY(0);
+  }
+
+  .btn-diy:hover .btn-txt span {
+    transform: translateY(-40px);
+  }
+
+  .to-top-survey {
+    opacity: 0;
+    transform: translateY(30px);
+    /* transition: all 0.8s ease; */
+  }
+  .to-top-survey.appear {
+    opacity: 1;
+    transform: translateY(0);
+    transition: transform 0.6s, opacity 0.6s cubic-bezier(0.645, 0.045, 0.355, 1);
+  }
+  .survey-box {
+    display: flex;
+    max-height: 100vh;
+    overflow: hidden;
+  }
+
+  .survey-box .survey-img,
+  .survey-box .survey-select-cont {
+    width: 50%;
+    position: relative;
+  }
+  .survey-box .progress-box {
+    height: 4px;
+    width: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: #000;
+    transition: all 0.4s ease;
+  }
+
+  .survey-box .back-btn {
+    position: absolute;
+    top: 24px;
+    left: 24px;
+    z-index: 3;
+    width: 40px;
+    height: 40px;
+    background: #000;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.4s ease;
+    border: 2px solid transparent;
+    pointer-events: none;
+  }
+  .survey-box .back-btn.appear {
+    pointer-events: all;
+  }
+  .survey-box .back-btn::before {
+    content: '';
+    display: block;
+    width: 12px;
+    height: 12px;
+    border-top: 2px solid #fff;
+    border-left: 2px solid #fff;
+    transform: rotate(-45deg);
+    margin-left: 5px;
+    transition: all 0.4s ease;
+  }
+  .survey-box .back-btn:hover {
+    background: none;
+    border-color: #000;
+  }
+  .survey-box .back-btn:hover::before {
+    border-color: #000;
+  }
+
+  .survey-box .reset-btn {
+    position: absolute;
+    top: 24px;
+    left: 24px;
+    display: flex;
+    white-space: nowrap;
+    font-size: 18px;
+    color: #000;
+    align-items: center;
+    cursor: pointer;
+    pointer-events: none;
+  }
+  .survey-box .reset-btn.appear {
+    pointer-events: all;
+  }
+  .survey-box .reset-btn img {
+    width: 15px;
+    margin-right: 10px;
+  }
+  .survey-box .reset-btn span {
+    text-decoration: underline;
+  }
+
+  .survey-box .survey-img img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .survey-box .survey-select-cont {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 30px;
+  }
+
+  .survey-box .survey-item {
+    width: 655px;
+    max-width: 100%;
+    display: none;
+  }
+  .survey-box .survey-item.active {
+    display: block;
+  }
+  .survey-box .survey-title {
+    font-size: 40px;
+    font-family: var(--heading-font-family);
+    color: #000;
+    line-height: 1.2;
+  }
+
+  .survey-box .survey-p {
+    font-size: 16px;
+    color: #000;
+    margin-top: 30px;
+    margin-bottom: -30px;
+    line-height: 1.2;
+  }
+
+  .survey-box .survey-option-item {
+    margin-bottom: 18px;
+    cursor: pointer;
+  }
+
+  .survey-box .img-option {
+    position: relative;
+    width: 95px;
+    height: 95px;
+    margin-right: 14px;
+  }
+  .survey-box .multiple-box .img-option {
+    background: #000;
+  }
+  .survey-box .survey-option-list {
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    margin: -5px;
+    margin-top: 60px;
+    padding: 5px;
+    --survey-width: 0;
+    --survey-height: 0;
+    --survey-left: -100%;
+    --survey-top: 0;
+    --survey-opacity: 1;
+  }
+
+  .survey-box .pointer-none {
+    pointer-events: none;
+  }
+
+  .survey-box .survey-option-list::before {
+    position: absolute;
+    content: '';
+    display: block;
+    border: 2px solid #000;
+    transition: left 0.4s, top 0.4s, opacity 0.4s ease;
+    left: var(--survey-left);
+    top: var(--survey-top);
+    width: var(--survey-width);
+    height: var(--survey-height);
+    opacity: var(--survey-opacity);
+    z-index: 2;
+    pointer-events: none;
+  }
+  .survey-box .img-option.active::before {
+    position: absolute;
+    content: '';
+    display: block;
+    width: calc(100% + 10px);
+    height: calc(100% + 10px);
+    border: 2px solid #000;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  .survey-box .img-option img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: relative;
+    z-index: 1;
+  }
+
+  .survey-box .survey-option-txt {
+    position: absolute;
+    width: 100%;
+    background: #000;
+    color: #fff;
+    font-size: 14px;
+    line-height: 26px;
+    text-align: center;
+    z-index: 2;
+    left: 0;
+    bottom: 0;
+  }
+
+  .survey-box .text-option {
+    background: #f9f9f9;
+    color: #000;
+    font-size: 16px;
+    padding: 15px 36px;
+    position: relative;
+    margin-right: 29px;
+  }
+
+  .survey-box .first-letter .text-option::first-letter {
+    font-weight: bold;
+  }
+
+  .survey-box .text-option.active::before {
+    position: absolute;
+    content: '';
+    display: block;
+    width: calc(100% + 4px);
+    height: calc(100% + 4px);
+    border: 2px solid #000;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .survey-box .survey-btn {
+    margin-top: 30px;
+    cursor: pointer;
+    background: #000;
+    color: #fff;
+    height: 66px;
+    font-size: 20px;
+    border: 2px solid #000;
+  }
+
+  .survey-box .survey-btn:hover span,
+  .survey-box .survey-btn:hover .btn-txt::before {
+    color: #000;
+  }
+
+  .survey-box .survey-inapplicability {
+    max-width: 655px;
+    margin: 0 auto;
+    display: none;
+  }
+
+  .survey-box .survey-inapplicability.active {
+    display: block;
+  }
+
+  .survey-box .survey-inapplicability-title {
+    font-size: 30px;
+    font-family: var(--heading-font-family);
+    text-align: center;
+    color: #000;
+    line-height: 1.2;
+  }
+
+  .survey-box .survey-inapplicability-p {
+    font-size: 20px;
+    color: #000;
+    text-align: center;
+    margin-top: 30px;
+    line-height: 1.5;
+  }
+
+  .survey-box .survey-inapplicability-p p {
+    margin: 0;
+  }
+
+  .survey-box .survey-inapplicability-p a {
+    color: #e7004c;
+    text-decoration: underline;
+  }
+  .survey-box .survey-inapplicability-btn {
+    width: 200px;
+    height: 60px;
+    background: #000;
+    color: #fff;
+    cursor: pointer;
+    border: 2px solid #000;
+    margin: 0 auto;
+    margin-top: 30px;
+  }
+  .survey-box .survey-inapplicability-btn .btn-txt {
+    display: flex;
+  }
+  .survey-box .survey-inapplicability-btn img {
+    width: 15px;
+    margin-right: 8px;
+  }
+  .survey-box .survey-inapplicability-btn .show {
+    position: relative;
+    top: 0px;
+    transition: all 0.4s ease;
+  }
+  .survey-box .survey-inapplicability-btn .hide {
+    position: absolute;
+    top: 30px;
+    transition: all 0.4s ease;
+    z-index: 3;
+  }
+  .survey-box .survey-inapplicability-btn:hover .show {
+    top: -30px;
+  }
+  .survey-box .survey-inapplicability-btn:hover .hide {
+    top: 5px;
+  }
+  .survey-box .survey-inapplicability-btn .btn-txt::before {
+    margin-left: 23px;
+  }
+  .survey-box .survey-inapplicability-btn:hover .btn-txt::before,
+  .survey-box .survey-inapplicability-btn:hover span {
+    color: #000;
+  }
+
+  .survey-box .aequilate-box .text-option {
+    width: 430px;
+    max-width: 100%;
+    margin-right: 0;
+  }
+
+  @media (max-width: 1500px) {
+    .survey-box .survey-select-cont {
+      zoom: 0.9;
+    }
+  }
+
+  @media (max-width: 991px) {
+    .survey-box .survey-img {
+      display: none;
+    }
+    .survey-box .survey-select-cont {
+      width: 100%;
+      padding: 95px 30px;
+      height: calc(90vh - 60px);
+      align-items: flex-start;
+    }
+    .survey-box .survey-title {
+      font-size: 25px;
+    }
+    .survey-box .survey-option-list {
+      margin-top: 40px;
+    }
+    .survey-box .survey-p {
+      margin-top: 20px;
+      margin-bottom: -20px;
+    }
+    .survey-box .text-option {
+      padding: 12px 30px;
+      margin-right: 14px;
+    }
+    .survey-box .survey-btn {
+      margin-top: 20px;
+      font-size: 16px;
+      height: 45px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .survey-box .img-option {
+      width: calc(33.333% - 10px);
+      height: auto;
+    }
+    .survey-box .img-option:nth-child(3n) {
+      margin-right: 0;
+    }
+    .survey-box .text-option {
+      min-width: calc(50% - 7px);
+      /* text-align: center; */
+    }
+    .survey-box .text-option:nth-child(2n) {
+      margin-right: 0;
+    }
+    .survey-box .aequilate-box-m .text-option {
+      width: 80%;
+    }
+    .survey-box .aequilate-box .text-option {
+      width: 100%;
+      margin-right: 0;
+    }
+  }
+
+  .survey-product {
+    display: none;
+    max-width: 680px;
+  }
+  .survey-product.active {
+    display: block;
+  }
+
+  .survey-product .survey-product-title {
+    font-size: 40px;
+    color: #000;
+    font-family: var(--heading-font-family);
+    line-height: 1.2;
+    text-align: center;
+    margin-bottom: 15px;
+  }
+  .survey-product .survey-product-title p {
+    margin: 0;
+  }
+
+  .survey-product .product-area-item {
+    position: relative;
+    overflow: hidden;
+    flex: 1;
+  }
+
+  .survey-product .product-area-img-list {
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+    /* width: 74%; */
+    margin: 0 auto;
+  }
+
+  .survey-product .product-label {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    max-width: 80px;
+    z-index: 6;
+    overflow: hidden;
+    transform: scale(1.3);
+    transform-origin: top right;
+  }
+  .survey-product .product-label img {
+    display: block;
+    position: relative;
+    z-index: 1;
+  }
+  .survey-product .product-label .product-label-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 3;
+    color: #fff;
+    text-align: center;
+    font-family: var(--heading-font-family);
+    line-height: 1;
+    overflow: hidden;
+  }
+  .survey-product .product-label-num {
+    font-size: 22px;
+  }
+  .survey-product .product-label-p {
+    font-size: 24px;
+  }
+
+  .survey-product .product-label::before {
+    position: absolute;
+    content: '';
+    display: block;
+    width: 200%;
+    height: 200%;
+    z-index: 2;
+    background: linear-gradient(
+      -45deg,
+      rgba(255, 255, 255, 0) 40%,
+      rgba(255, 255, 255, 0.5) 50%,
+      rgba(255, 255, 255, 0) 60%
+    );
+    animation: scanning 3s linear infinite;
+  }
+  @keyframes scanning {
+    0% {
+      transform: translate(-100%, -100%);
+    }
+    100% {
+      transform: translate(100%, 100%);
+    }
+  }
+
+  .survey-product .product-area-img-item {
+    width: 100%;
+    overflow: hidden;
+    position: absolute;
+    background: #fff;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    display: none;
+  }
+  .survey-product .product-area-img-item.active {
+    position: relative;
+    display: block;
+  }
+  .survey-product .product-area-img-item.close {
+    z-index: 3;
+    transition: width 0.6s ease;
+    width: 0%;
+    height: 100%;
+    display: block;
+    transform-origin: left;
+  }
+  .survey-product .product-area-img-item.close .img {
+    width: auto;
+    max-width: none;
+    height: 100%;
+  }
+  .survey-product .product-area-item .img {
+    display: block;
+    position: relative;
+    z-index: 1;
+    width: 100%;
+  }
+
+  .survey-product .product-area-cont {
+    position: relative;
+    margin-top: 10px;
+  }
+
+  .survey-product .product-area-dot {
+    position: relative;
+    margin-top: 15px;
+    justify-content: center;
+    z-index: 3;
+    display: flex;
+  }
+
+  .survey-product .product-area-dot .product-area-dot-item {
+    position: relative;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    margin-left: 12px;
+    cursor: pointer;
+    background: linear-gradient(to bottom, #fff 80%, rgba(0, 0, 0, 0.1) 100%);
+    box-shadow: inset 0px 0px 2px 1px rgba(0, 0, 0, 0.05), inset 0px 0px 2px 1px rgba(255, 255, 255, 0.05);
+  }
+  .survey-product .product-area-dot .product-area-dot-item::after {
+    border-radius: inherit;
+    box-shadow: inset 0 1px 1px rgb(0 0 0 / 10%);
+    content: '';
+    display: block;
+    height: inherit;
+    position: absolute;
+    width: inherit;
+  }
+  .survey-product .product-area-dot .product-area-dot-item.active::before {
+    position: absolute;
+    content: '';
+    display: block;
+    width: 120%;
+    height: 120%;
+    border-radius: 50%;
+    border: 1px solid #000;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .survey-product .product-area-h3 {
+    font-size: 25px;
+    font-family: var(--heading-font-family);
+    color: #000;
+    line-height: 1.2;
+    margin: 0;
+    text-align: center;
+  }
+
+  .survey-product .product-area-p {
+    font-size: 14px;
+    color: #636363;
+    line-height: 1.2;
+    text-align: center;
+    margin-top: 20px;
+  }
+
+  .survey-product .product-area-price {
+    font-size: 25px;
+    color: #e7004c;
+    line-height: 1.2;
+    display: inline-block;
+    padding-left: 20px;
+    margin-left: 20px;
+    border-left: 1px solid #dfdfdf;
+  }
+
+  .survey-product .product-area-price span {
+    color: #bcbcbc;
+    font-weight: normal;
+    text-decoration: line-through;
+    display: inline-block;
+    margin-left: 15px;
+  }
+
+  .survey-product .product-area-btn {
+    display: flex;
+    justify-content: center;
+    margin-top: 25px;
+    overflow: hidden;
+  }
+
+  .survey-product .product-area-btn-item {
+    background: #fff;
+    color: #000;
+    font-size: 16px;
+    width: 185px;
+    height: 50px;
+    line-height: 1;
+    border: 2px solid #000;
+    margin-right: 25px;
+    cursor: pointer;
+  }
+  .survey-product .product-area-btn-item::after {
+    background: #000;
+  }
+  .survey-product .product-area-btn-item:last-child:after {
+    background: #fff;
+  }
+  .survey-product .product-area-btn-item:last-child {
+    margin-right: 0;
+    background: #000;
+    color: #fff;
+  }
+  .survey-product .product-area-btn-item:hover span,
+  .survey-product .product-area-btn-item:hover .btn-txt::before {
+    color: #fff;
+  }
+
+  .survey-product .product-area-btn-item:last-child:hover span,
+  .survey-product .product-area-btn-item:last-child:hover .btn-txt::before {
+    color: #000;
+  }
+
+  @media (max-width: 1500px) {
+    .survey-product .product-area-img-list {
+      width: 74%;
+    }
+    .survey-product .survey-product-title {
+      font-size: 30px;
+    }
+    .survey-product .product-label {
+      transform: scale(1);
+    }
+  }
+
+  @media (max-width: 991px) {
+    .survey-product .product-area-h3 {
+      font-size: 17px;
+      text-align: center;
+    }
+    .survey-product .product-area-p {
+      font-size: 12px;
+      text-align: center;
+    }
+
+    .survey-product .product-area-price {
+      font-size: 17px;
+      padding-left: 10px;
+      margin-left: 10px;
+    }
+    .survey-product .product-area-btn {
+      margin-top: 30px;
+    }
+    .survey-product .product-area-dot {
+      top: 0;
+      right: 0;
+      position: relative;
+      justify-content: center;
+      margin-top: 20px;
+    }
+    .survey-product .product-area-dot .product-area-dot-item {
+      width: 30px;
+      height: 30px;
+      margin: 0 8px;
+    }
+    .survey-product .product-area-tag {
+      font-size: 12px;
+      padding: 1px 8px;
+    }
+    .survey-product .survey-product-title {
+      font-size: 25px;
+    }
+    .survey-product .product-label {
+      transform: scale(0.8);
+      transform-origin: top right;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .survey-product .product-area-img-list {
+      width: 100%;
+    }
+    .survey-product .product-area-item .img {
+      max-width: none;
+      object-fit: cover;
+    }
+    .survey-product .product-area-img-item.close .img {
+      width: auto;
+      max-width: none;
+      height: 100%;
+    }
+    .survey-product .product-area-btn-item {
+      width: 145px;
+      height: 40px;
+    }
+  }
+  .breadcrumbs-box {
+    display: none !important;
+  }
+</style>
+<section class="section-box">
+  <div class="survey-box">
+    <div class="survey-img to-top-survey">
+      {%- if section.settings.image != blank -%}
+        <img
+          loading="lazy"
+          width="{{ section.settings.image.width }}"
+          height="{{ section.settings.image.height }}"
+          {% render 'image-attributes', image: section.settings.image %}
+          alt="{{ section.settings.image.alt | escape }}"
+        >
+      {%- endif -%}
+    </div>
+    <div class="survey-select-cont to-top-survey" style="transition-delay: 0.1s">
+      <div class="progress-box"></div>
+      <div class="back-btn to-top-survey"></div>
+      <div class="reset-btn to-top-survey take-again">
+        <img src="https://cdn.shopify.com/s/files/1/0656/9079/6273/files/reset.svg" alt="" srcset="">
+        <span>Take it again</span>
+      </div>
+      {%- for block in section.blocks -%}
+        {% case block.type %}
+          {% when 'image' %}
+            <div
+              class="survey-item {{ block.settings.text10 }} {{ block.settings.text11 }} {% if block.settings.text9 != blank %}multiple-box{% endif %} {% if forloop.index == 1 %}active{% endif %}"
+              data-name="{{ block.settings.text10 }}"
+            >
+              {%- if block.settings.title != blank -%}
+                <div class="survey-title to-top-survey">{{ block.settings.title }}</div>
+              {%- endif -%}
+              {%- if block.settings.sub != blank -%}
+                <div class="survey-p to-top-survey" style="transition-delay: 0.1s">{{ block.settings.sub }}</div>
+              {%- endif -%}
+              <div class="survey-option-list">
+                {%- if block.settings.image != blank and block.settings.text != blank -%}
+                  <div class="survey-option-item img-option to-top-survey" style="transition-delay: 0.1s">
+                    <img
+                      loading="lazy"
+                      width="{{ block.settings.image.width }}"
+                      height="{{ block.settings.image.height }}"
+                      {% render 'image-attributes', image: block.settings.image %}
+                      alt="{{ block.settings.image.alt | escape }}"
+                    >
+                    <div class="survey-option-txt">
+                      {{ block.settings.text }}
+                    </div>
+                  </div>
+                {%- endif -%}
+                {%- if block.settings.image1 != blank and block.settings.text1 != blank -%}
+                  <div class="survey-option-item img-option to-top-survey" style="transition-delay: 0.2s">
+                    <img
+                      loading="lazy"
+                      width="{{ block.settings.image1.width }}"
+                      height="{{ block.settings.image1.height }}"
+                      {% render 'image-attributes', image: block.settings.image1 %}
+                      alt="{{ block.settings.image1.alt | escape }}"
+                    >
+                    <div class="survey-option-txt">
+                      {{ block.settings.text1 }}
+                    </div>
+                  </div>
+                {%- endif -%}
+                {%- if block.settings.image2 != blank and block.settings.text2 != blank -%}
+                  <div class="survey-option-item img-option to-top-survey" style="transition-delay: 0.3s">
+                    <img
+                      loading="lazy"
+                      width="{{ block.settings.image2.width }}"
+                      height="{{ block.settings.image2.height }}"
+                      {% render 'image-attributes', image: block.settings.image2 %}
+                      alt="{{ block.settings.image2.alt | escape }}"
+                    >
+                    <div class="survey-option-txt">
+                      {{ block.settings.text2 }}
+                    </div>
+                  </div>
+                {%- endif -%}
+                {%- if block.settings.image3 != blank and block.settings.text3 != blank -%}
+                  <div class="survey-option-item img-option to-top-survey" style="transition-delay: 0.4s">
+                    <img
+                      loading="lazy"
+                      width="{{ block.settings.image3.width }}"
+                      height="{{ block.settings.image3.height }}"
+                      {% render 'image-attributes', image: block.settings.image3 %}
+                      alt="{{ block.settings.image3.alt | escape }}"
+                    >
+                    <div class="survey-option-txt">
+                      {{ block.settings.text3 }}
+                    </div>
+                  </div>
+                {%- endif -%}
+                {%- if block.settings.image4 != blank and block.settings.text4 != blank -%}
+                  <div class="survey-option-item img-option to-top-survey" style="transition-delay: 0.5s">
+                    <img
+                      loading="lazy"
+                      width="{{ block.settings.image4.width }}"
+                      height="{{ block.settings.image4.height }}"
+                      {% render 'image-attributes', image: block.settings.image4 %}
+                      alt="{{ block.settings.image4.alt | escape }}"
+                    >
+                    <div class="survey-option-txt">
+                      {{ block.settings.text4 }}
+                    </div>
+                  </div>
+                {%- endif -%}
+                {%- if block.settings.image5 != blank and block.settings.text5 != blank -%}
+                  <div class="survey-option-item img-option to-top-survey" style="transition-delay: 0.6s">
+                    <img
+                      loading="lazy"
+                      width="{{ block.settings.image5.width }}"
+                      height="{{ block.settings.image5.height }}"
+                      {% render 'image-attributes', image: block.settings.image5 %}
+                      alt="{{ block.settings.image5.alt | escape }}"
+                    >
+                    <div class="survey-option-txt">
+                      {{ block.settings.text5 }}
+                    </div>
+                  </div>
+                {%- endif -%}
+                {%- if block.settings.image6 != blank and block.settings.text6 != blank -%}
+                  <div class="survey-option-item img-option to-top-survey" style="transition-delay: 0.7s">
+                    <img
+                      loading="lazy"
+                      width="{{ block.settings.image6.width }}"
+                      height="{{ block.settings.image6.height }}"
+                      {% render 'image-attributes', image: block.settings.image6 %}
+                      alt="{{ block.settings.image6.alt | escape }}"
+                    >
+                    <div class="survey-option-txt">
+                      {{ block.settings.text6 }}
+                    </div>
+                  </div>
+                {%- endif -%}
+                {%- if block.settings.image7 != blank and block.settings.text7 != blank -%}
+                  <div class="survey-option-item img-option to-top-survey" style="transition-delay: 0.8s">
+                    <img
+                      loading="lazy"
+                      width="{{ block.settings.image7.width }}"
+                      height="{{ block.settings.image7.height }}"
+                      {% render 'image-attributes', image: block.settings.image7 %}
+                      alt="{{ block.settings.image7.alt | escape }}"
+                    >
+                    <div class="survey-option-txt">
+                      {{ block.settings.text7 }}
+                    </div>
+                  </div>
+                {%- endif -%}
+                {%- if block.settings.image8 != blank and block.settings.text8 != blank -%}
+                  <div class="survey-option-item img-option to-top-survey" style="transition-delay: 0.9s">
+                    <img
+                      loading="lazy"
+                      width="{{ block.settings.image8.width }}"
+                      height="{{ block.settings.image8.height }}"
+                      {% render 'image-attributes', image: block.settings.image8 %}
+                      alt="{{ block.settings.image8.alt | escape }}"
+                    >
+                    <div class="survey-option-txt">
+                      {{ block.settings.text8 }}
+                    </div>
+                  </div>
+                {%- endif -%}
+              </div>
+              {%- if block.settings.text9 != blank -%}
+                <div class="survey-btn btn-diy to-top-survey" style="transition-delay: 1s">
+                  <div class="btn-txt" text="{{ block.settings.text9 }}">
+                    <span>{{ block.settings.text9 }}</span>
+                  </div>
+                </div>
+              {%- endif -%}
+            </div>
+          {% when 'text' %}
+            <div
+              class="survey-item {{ block.settings.text4 }} {{ block.settings.text5 }} {% if block.settings.is_bold %}first-letter{% endif %} {% if block.settings.is_aequilate %}aequilate-box{% endif %} {% if block.settings.is_aequilate_m %}aequilate-box-m{% endif %}"
+              data-name="{{ block.settings.text4 }}"
+            >
+              {%- if block.settings.title != blank -%}
+                <div class="survey-title to-top-survey">{{ block.settings.title }}</div>
+              {%- endif -%}
+              {%- if block.settings.sub != blank -%}
+                <div class="survey-p to-top-survey" style="transition-delay: 0.1s">{{ block.settings.sub }}</div>
+              {%- endif -%}
+              <div class="survey-option-list">
+                {%- if block.settings.text != blank -%}
+                  <div class="survey-option-item text-option to-top-survey" style="transition-delay: 0.1s">
+                    {{ block.settings.text }}
+                  </div>
+                {%- endif -%}
+                {%- if block.settings.text1 != blank -%}
+                  <div class="survey-option-item text-option to-top-survey" style="transition-delay: 0.1s">
+                    {{ block.settings.text1 }}
+                  </div>
+                {%- endif -%}
+                {%- if block.settings.text2 != blank -%}
+                  <div class="survey-option-item text-option to-top-survey" style="transition-delay: 0.1s">
+                    {{ block.settings.text2 }}
+                  </div>
+                {%- endif -%}
+                {%- if block.settings.text3 != blank -%}
+                  <div class="survey-option-item text-option to-top-survey" style="transition-delay: 0.1s">
+                    {{ block.settings.text3 }}
+                  </div>
+                {%- endif -%}
+              </div>
+            </div>
+          {% when 'product' %}
+            <div class="survey-product {{ block.settings.text9 }}">
+              {%- if block.settings.title != blank -%}
+                <div class="survey-product-title to-top-survey">
+                  {{ block.settings.title }}
+                </div>
+              {%- endif -%}
+              <div class="product-area-item to-top-survey" style="transition-delay: 0.1s">
+                <div class="product-area-img-list">
+                  {%- if block.settings.image != blank -%}
+                    <div class="product-area-img-item active">
+                      <img
+                        loading="eager"
+                        class="img"
+                        {% render 'image-attributes', image: block.settings.image %}
+                        alt="{{ block.settings.image.alt | escape }}"
+                      >
+                    </div>
+                  {%- endif -%}
+                  {%- if block.settings.image1 != blank -%}
+                    <div class="product-area-img-item">
+                      <img
+                        loading="eager"
+                        class="img"
+                        width="{{ block.settings.image1.width }}"
+                        height="{{ block.settings.image1.height }}"
+                        {% render 'image-attributes', image: block.settings.image1 %}
+                        alt="{{ block.settings.image1.alt | escape }}"
+                      >
+                    </div>
+                  {%- endif -%}
+                  {%- if block.settings.image2 != blank -%}
+                    <div class="product-area-img-item">
+                      <img
+                        loading="eager"
+                        class="img"
+                        width="{{ block.settings.image2.width }}"
+                        height="{{ block.settings.image2.height }}"
+                        {% render 'image-attributes', image: block.settings.image2 %}
+                        alt="{{ block.settings.image2.alt | escape }}"
+                      >
+                    </div>
+                  {%- endif -%}
+                  {%- if block.settings.image3 != blank -%}
+                    <div class="product-label">
+                      <img
+                        loading="eager"
+                        width="{{ block.settings.image3.width }}"
+                        height="{{ block.settings.image3.height }}"
+                        {% render 'image-attributes', image: block.settings.image3 %}
+                        alt="{{ block.settings.image3.alt | escape }}"
+                      >
+                      <div class="product-label-text">
+                        <div class="product-label-num">{{ block.settings.text6 }}</div>
+                        <div class="product-label-p">{{ block.settings.text7 }}</div>
+                      </div>
+                    </div>
+                  {%- endif -%}
+                </div>
+                <div class="product-area-cont">
+                  <h3 class="product-area-h3 to-top-survey" style="transition-delay: 0.1s">
+                    {{ block.settings.title_p }}
+                    <span class="product-area-price">{{ block.settings.price }}</span>
+                  </h3>
+                  <div class="product-area-dot to-top-survey" style="transition-delay: 0.2s">
+                    {%- if block.settings.text != blank -%}
+                      <div
+                        class="product-area-dot-item active"
+                        data-product-id="{{ block.settings.text1 }}"
+                        style="background:{{ block.settings.text }};"
+                      ></div>
+                    {%- endif -%}
+                    {%- if block.settings.text2 != blank -%}
+                      <div
+                        class="product-area-dot-item"
+                        data-product-id="{{ block.settings.text3 }}"
+                        style="background:{{ block.settings.text2 }};"
+                      ></div>
+                    {%- endif -%}
+                    {%- if block.settings.text4 != blank -%}
+                      <div
+                        class="product-area-dot-item"
+                        data-product-id="{{ block.settings.text5 }}"
+                        style="background:{{ block.settings.text4 }};"
+                      ></div>
+                    {%- endif -%}
+                  </div>
+                  <div class="product-area-btn-box">
+                    <div class="product-area-btn to-top-survey">
+                      <a
+                        href="{{ block.settings.link }}"
+                        class="product-area-btn-item btn-diy to-top-survey {{ block.settings.text10 }}"
+                        style="transition-delay: 0.3s"
+                      >
+                        <div class="btn-txt" text="{{ block.settings.btn_txt }}">
+                          <span> {{ block.settings.btn_txt }} </span>
+                        </div>
+                      </a>
+                      <a
+                        class="product-area-btn-item btn-diy to-top-survey add-to-cart-diy {{ block.settings.text11 }}"
+                        style="transition-delay: 0.4s"
+                        data-product-id="{{ block.settings.text1 }}"
+                      >
+                        <div class="btn-txt loader-button__text" text="{{ block.settings.btn_txt1 }}">
+                          <span> {{ block.settings.btn_txt1 }} </span>
+                        </div>
+                        <span class="loader-button__loader" hidden>
+                          <div class="spinner">
+                            <svg
+                              focusable="false"
+                              width="24"
+                              height="24"
+                              class="icon icon--spinner"
+                              viewBox="25 25 50 50"
+                            >
+                              <circle cx="50" cy="50" r="20" fill="none" stroke="currentColor" stroke-width="5"></circle>
+                            </svg>
+                          </div>
+                        </span>
+                      </a>
+                    </div>
+                  </div>
+                  <div class="product-area-p to-top-survey" style="transition-delay: 0.5s">
+                    {{ block.settings.text8 }}
+                  </div>
+                </div>
+              </div>
+            </div>
+          {% when 'result' %}
+            <div class="survey-inapplicability">
+              {%- if block.settings.title != blank -%}
+                <div class="survey-inapplicability-title to-top-survey">{{ block.settings.title }}</div>
+              {%- endif -%}
+              {%- if block.settings.sub != blank -%}
+                <div class="survey-inapplicability-p to-top-survey" style="transition-delay: 0.1s">
+                  {{ block.settings.sub }}
+                </div>
+              {%- endif -%}
+              <a class="survey-inapplicability-btn btn-diy to-top-survey take-again" style="transition-delay: 0.3s">
+                <div class="btn-txt" text="Take it again">
+                  <img
+                    class="show"
+                    src="https://cdn.shopify.com/s/files/1/0656/9079/6273/files/reset_w.svg"
+                    alt=""
+                    srcset=""
+                  >
+                  <img
+                    class="hide"
+                    src="https://cdn.shopify.com/s/files/1/0656/9079/6273/files/reset.svg"
+                    alt=""
+                    srcset=""
+                  >
+                  <span> Take it again </span>
+                </div>
+              </a>
+            </div>
+        {% endcase %}
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+<script>
+  (function() {
+    let cacheResult =sessionStorage.getItem('cacheResult') || ''
+    let param={
+      skin_color:'',//肤色
+      hair_color:'',//发色
+      gender:'',//性别
+      place:'',//部位
+      pcos:'',//健身| PCOS
+      age:'',//年龄
+      disease:'',//毛发浓密
+      choose:'',//选择价格还是结果
+      answer:'',//产品推荐或不合适
+      site:'us',
+    }
+
+    let sex = {
+      '0' : [{{ section.settings.params }}],
+      '1' : [{{ section.settings.params1 }}],
+      '2' : [{{ section.settings.params2 }}]
+    }
+
+    let length = 8
+    let index=0
+    let nextClass = ''
+    function setParam ($p,time=500){
+      let $c = $p.closest('.survey-box')
+      let pName = $p.data('name')
+      let val = $p.attr('data-val')
+      
+      param[pName] = val
+      index++
+      if(pName=='skin_color' && val*1>3||pName=='hair_color' && val*1>3){
+        $('.survey-box .progress-box').css({'width':'100%'})
+        return getResult(true)
+      }
+      if(pName=='gender'){
+        length = sex[val+''].length
+      }
+
+      if(index>2){
+        nextClass = sex[param.gender+''][index]
+        if(nextClass=='place'|| nextClass=='pcos'){
+          nextClass+= param.gender==1?'1':'0'
+        }
+      }else{
+        nextClass = sex['0'][index]
+      }
+      
+      $('.survey-box .progress-box').css({'width':index/length*100+'%'})
+      if(index!=length){
+        setTimeout(() => {
+          $('.survey-box .back-btn').addClass('appear')
+          $p.fadeOut()
+          setTimeout(() => {
+              $p.find('.to-top-survey').removeClass('appear')
+              $p.find('.survey-option-item').removeClass('active')
+              $p.attr('data-val','')
+              $c.find('.'+nextClass).addClass('pointer-none').fadeIn().find('.to-top-survey').addClass('appear')
+              setTimeout(() => {
+                $c.find('.'+nextClass).removeClass('pointer-none')
+              }, 800)
+          }, 500)
+        }, time)
+      }else{
+        getResult()
+      }
+    }
+
+    function getResult(isOut){
+      let answer =''
+      let className = 'survey-product'
+      if(isOut){
+        answer = 2
+      }else{
+        let gender = param.gender
+        if(gender==0){
+          answer = param.disease ==2 && param.choose==0?'1':'0'
+        }else{
+          answer = param.disease ==2 && param.choose==0&&param.pcos!=0?'1':'0'
+        }
+      }
+      
+      $('.survey-box .back-btn').removeClass('appear')
+      if(!isOut){
+        $('.survey-box .reset-btn').addClass('appear')
+      }
+      
+      param.answer = answer
+      if(answer==2){
+        className='survey-inapplicability'
+      }else{
+        className = 'survey-product' + answer
+      }
+      
+      $('.survey-box .survey-item').fadeOut()
+      setTimeout(() => {
+        $('.'+className).fadeIn().find('.to-top-survey').addClass('appear')
+      }, 400);
+      
+      sessionStorage.setItem('cacheResult',className)
+
+      // 提交数据
+      sendPostRequest('http://api.myulike.com/api/submit-form', param, function (error, data) {
+          if (error) {
+              console.error(error);
+          } else {
+              console.log(data);
+          }
+      });
+    }
+
+    function sendPostRequest(url, data, callback) {
+      fetch(url, {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(data)
+      })
+      .then(response => {
+          if (!response.ok) {
+              throw new Error('Network response was not ok');
+          }
+          return response.json();
+      })
+      .then(data => {
+          callback(null, data);
+      })
+      .catch(error => {
+          callback(error);
+      });
+  }
+
+    window.addEventListener('load',function(){
+        if(cacheResult){
+          $('.survey-box .survey-item').fadeOut()
+          setTimeout(() => {
+            $('.'+cacheResult).fadeIn().find('.to-top-survey').addClass('appear')
+          }, 400);
+          if(cacheResult!='survey-inapplicability'){
+            $('.survey-box .reset-btn').addClass('appear')
+          }
+        }
+        $('.survey-box .survey-item.active').find('.to-top-survey').addClass('appear')
+        $('.survey-box .survey-img,.survey-box .survey-select-cont').addClass('appear')
+        
+        $('.survey-box .survey-option-item').click(function(){
+            let $this = $(this)
+            let $p=$this.closest('.survey-item')
+            let val=$p.attr('data-val')?$p.attr('data-val').split(','): []
+            let index = $this.index()
+            $(this).toggleClass('active')
+            let style = $this.parents('.survey-option-list').attr('style')?$this.parents('.survey-option-list').attr('style').replace('--survey-opacity:1;','--survey-opacity:0;'):''
+            $this.parents('.survey-option-list').attr('style',style)
+            val.push(index)
+            $p.attr('data-val',val.join())
+            
+            if(!$p.hasClass('multiple-box')){
+              $p.addClass('pointer-none')
+              setParam($p)
+            }
+        })
+        $('.survey-box .survey-btn').click(function(){
+            let $this = $(this)
+            let $p=$this.closest('.survey-item')
+            let val=$p.attr('data-val')?$p.attr('data-val').split(','): []
+            let index = $p.index()
+            if($p.hasClass('multiple-box') && $p.find('.img-option.active').length==0){
+                return
+            }
+            val.push(index)
+            $p.attr('data-val',val.join())
+            $this.addClass('pointer-none')
+            setParam($p,0)
+        })
+        $('.survey-box .survey-option-item').hover(function(){
+            let $this=$(this)
+            let $p = $this.parents('.survey-option-list')
+            let PReat =$p[0].getBoundingClientRect()
+            let reat = $this[0].getBoundingClientRect()
+            let left = reat.left-PReat.left-5
+            let top = reat.top-PReat.top-5
+            let width =reat.width+10
+            let height =reat.height+10
+            if(window.innerWidth<991) return
+            if($this.hasClass('text-option')){
+                left = reat.left-PReat.left-2
+                top = reat.top-PReat.top-2
+                width =reat.width+4
+                height =reat.height+4
+            }
+            $p.attr('style',`--survey-width:${width}px;
+                    --survey-height:${height}px;
+                    --survey-left:${left}px;
+                    --survey-top:${top}px;
+                    --survey-opacity:1;`)
+        })
+
+        $('.survey-box .survey-option-list').mouseleave(function(){
+            let style = $(this).attr('style')?$(this).attr('style').replace('--survey-opacity:1;','--survey-opacity:0;'):''
+            let $this=$(this)
+            $this.attr('style',style)
+            setTimeout(() => {
+                $this.attr('style','--survey-opacity:0;')
+            }, 500);
+        })
+
+      $('.survey-box .back-btn').click(function(){
+            // $(this).css({'pointer-events': 'none'})
+            let className = ''
+            if(index>2){
+              className = sex[param.gender+''][index-1]
+            }else{
+              className = sex['0'][index-1]
+            }
+            param[className] = ''
+            if(className=='place'|| className=='pcos'){
+              className += param.gender==1?'1':'0'
+            }
+            index--
+            if(index==0){
+              $('.survey-box .back-btn').removeClass('appear')
+            }
+          $('.survey-box .progress-box').css({'width':index/length*100+'%'})
+
+          $('.survey-box').find('.'+ nextClass).fadeOut()
+          setTimeout(() => {
+              $('.survey-box').find('.'+ nextClass).find('.to-top-survey').removeClass('appear')
+              $('.survey-box').find('.'+ nextClass).find('.survey-option-item').removeClass('active')
+              $('.survey-box').find('.'+ nextClass).attr('data-val','')
+              $('.survey-box').find('.'+className).addClass('pointer-none').fadeIn().find('.to-top-survey').addClass('appear')
+              setTimeout(() => {
+                $('.survey-box').find('.pointer-none').removeClass('pointer-none')
+                nextClass = className
+                // $(this).css({'pointer-events': 'all'})
+              }, 800)
+          }, 500)
+          })
+
+          $('.survey-box .take-again').click(function(){
+            index = 0
+            param={
+              skin_color:'',//肤色
+              hair_color:'',//发色
+              gender:'',//性别
+              place:'',//部位
+              pcos:'',//健身| PCOS
+              age:'',//年龄
+              disease:'',//毛发浓密
+              choose:'',//选择价格还是结果
+              answer:'',//产品推荐或不合适
+              site:'us',
+            }
+            sessionStorage.removeItem('cacheResult');
+            $(this).removeClass('appear')
+            $('.survey-box .progress-box').css({'width':index/length*100+'%'})
+            $('.survey-box .survey-inapplicability,.survey-box .survey-product').fadeOut()
+            $('.survey-box .survey-item').attr('data-val','')
+            $('.survey-box .survey-option-item').removeClass('active')
+            setTimeout(function(){
+              $('.survey-box').find('.'+sex['0'][0]).addClass('pointer-none').fadeIn().find('.to-top-survey').addClass('appear')
+              $('.survey-box .survey-inapplicability,.survey-box .survey-product').find('.to-top-survey').removeClass('appear')
+              setTimeout(() => {
+                $('.survey-box').find('.pointer-none').removeClass('pointer-none')
+              }, 800)
+            },500)
+          })
+      
+        $('html').on('click','.survey-product .product-area-dot-item',function(){
+            let $this = $(this)
+            let index = $this.index()
+            if($this.hasClass('active')) return
+            $this.closest('.product-area-item').find('.product-area-img-item.close').removeClass('close')
+            $this.addClass('active').siblings().removeClass('active')
+            $this.closest('.product-area-item').find('.product-area-img-item.active').removeClass('active').addClass('close')
+            $this.closest('.product-area-item').find('.product-area-img-item').eq(index).addClass('active')
+            $this.closest('.survey-product').find('.add-to-cart-diy').attr('data-product-id',$this.attr('data-product-id'))
+            setTimeout(()=>{
+                $this.closest('.product-area-item').find('.product-area-img-item.close').removeClass('close')
+            },600)
+        })
+        document.querySelectorAll('#shopify-section-{{ section.id }} .add-to-cart-diy').forEach(el=>{
+          el.addEventListener('click',function(){
+            addToCart(this.getAttribute('data-product-id'), this);
+          })
+        })
+    })
+  })();
+</script>
+{% schema %}
+{
+  "name": "survey-module",
+  "class": "survey-s",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "params",
+      "label": "Text",
+      "default": "'skin_color','hair_color','gender','place','pcos','age','disease','choose'"
+    },
+    {
+      "type": "text",
+      "id": "params1",
+      "label": "Text",
+      "default": "'skin_color','hair_color','gender','place','disease','pcos','choose'"
+    },
+    {
+      "type": "text",
+      "id": "params2",
+      "label": "Text",
+      "default": "'skin_color','hair_color','gender','place','age','disease','pcos','choose'"
+    }
+  ],
+  "blocks": [
+    {
+      "name": "Image-item",
+      "type": "image",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title"
+        },
+        {
+          "type": "text",
+          "id": "sub",
+          "label": "Heading"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text"
+        },
+        {
+          "type": "image_picker",
+          "id": "image1",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "text1",
+          "label": "Text"
+        },
+        {
+          "type": "image_picker",
+          "id": "image2",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "text2",
+          "label": "Text"
+        },
+        {
+          "type": "image_picker",
+          "id": "image3",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "text3",
+          "label": "Text"
+        },
+        {
+          "type": "image_picker",
+          "id": "image4",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "text4",
+          "label": "Text"
+        },
+        {
+          "type": "image_picker",
+          "id": "image5",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "text5",
+          "label": "Text"
+        },
+        {
+          "type": "image_picker",
+          "id": "image6",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "text6",
+          "label": "Text"
+        },
+        {
+          "type": "image_picker",
+          "id": "image7",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "text7",
+          "label": "Text"
+        },
+        {
+          "type": "image_picker",
+          "id": "image8",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "text8",
+          "label": "Text"
+        },
+        {
+          "type": "text",
+          "id": "text9",
+          "label": "Button Text"
+        },
+        {
+          "type": "text",
+          "id": "text10",
+          "label": "Param Text"
+        },
+        {
+          "type": "text",
+          "id": "text11",
+          "label": "Custom Class"
+        }
+      ]
+    },
+    {
+      "name": "Text-item",
+      "type": "text",
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "is_bold",
+          "label": "Initial bold",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "is_aequilate",
+          "label": "Aequilate",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "is_aequilate_m",
+          "label": "Mobile Aequilate",
+          "default": false
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title"
+        },
+        {
+          "type": "text",
+          "id": "sub",
+          "label": "Heading"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text"
+        },
+        {
+          "type": "text",
+          "id": "text1",
+          "label": "Text"
+        },
+        {
+          "type": "text",
+          "id": "text2",
+          "label": "Text"
+        },
+        {
+          "type": "text",
+          "id": "text3",
+          "label": "Text"
+        },
+        {
+          "type": "text",
+          "id": "text4",
+          "label": "Param Text"
+        },
+        {
+          "type": "text",
+          "id": "text5",
+          "label": "Custom Class"
+        }
+      ]
+    },
+    {
+      "name": "Product-item",
+      "type": "product",
+      "settings": [
+        {
+          "type": "richtext",
+          "id": "title",
+          "label": "Title"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "color"
+        },
+        {
+          "type": "text",
+          "id": "text1",
+          "label": "ProductId"
+        },
+        {
+          "type": "image_picker",
+          "id": "image1",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "text2",
+          "label": "color"
+        },
+        {
+          "type": "text",
+          "id": "text3",
+          "label": "ProductId"
+        },
+        {
+          "type": "image_picker",
+          "id": "image2",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "text4",
+          "label": "color"
+        },
+        {
+          "type": "text",
+          "id": "text5",
+          "label": "ProductId"
+        },
+        {
+          "type": "image_picker",
+          "id": "image3",
+          "label": "Tag Icon"
+        },
+        {
+          "type": "text",
+          "id": "text6",
+          "label": "Text"
+        },
+        {
+          "type": "text",
+          "id": "text7",
+          "label": "Text"
+        },
+        {
+          "type": "text",
+          "id": "title_p",
+          "label": "Title"
+        },
+        {
+          "type": "text",
+          "id": "price",
+          "label": "Price"
+        },
+        {
+          "type": "text",
+          "id": "btn_txt",
+          "label": "Button text"
+        },
+        {
+          "type": "text",
+          "id": "btn_txt1",
+          "label": "Button text"
+        },
+        {
+          "type": "text",
+          "id": "text8",
+          "label": "Text"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Button link"
+        },
+        {
+          "type": "text",
+          "id": "text9",
+          "label": "Custom Class"
+        },
+        {
+          "type": "text",
+          "id": "text10",
+          "label": "GA Detail Button"
+        },
+        {
+          "type": "text",
+          "id": "text11",
+          "label": "GA Add Cart Button"
+        }
+      ]
+    },
+    {
+      "name": "Result-item",
+      "type": "result",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title"
+        },
+        {
+          "type": "richtext",
+          "id": "sub",
+          "label": "Content"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "survey-module",
+      "blocks": []
+    }
+  ]
+}
+{% endschema %}

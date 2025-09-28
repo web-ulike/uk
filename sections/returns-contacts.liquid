@@ -1,0 +1,228 @@
+<style>
+.returns-contacts {
+  padding: 134px 0 44px 0;
+  background: #f8f8f8;
+}
+
+.returns-contacts .returns-contacts-list {
+  display: flex;
+  gap: 32px;
+}
+
+.returns-contacts .returns-contacts-item {
+  flex: 1;
+  background: #fff;
+  padding: 78px 94px;
+}
+
+.returns-contacts .returns-contacts-item-h4 {
+  color: #190a0a;
+  font-size: 22px;
+  line-height: 1.5;
+  font-weight: normal;
+  font-family: var(--heading-font-family);
+  margin: 0;
+  margin-bottom: 20px;
+}
+
+.returns-contacts .returns-contacts-p {
+  color: #190a0a;
+  font-size: 18px;
+  line-height: 1.2;
+}
+
+.returns-contacts .returns-contacts-p p {
+  margin: 0;
+}
+
+.returns-contacts .returns-contacts-p a {
+  color: #e0004d;
+  text-decoration: underline;
+  font-family: var(--heading-font-family);
+}
+
+.returns-contacts .returns-contacts-li {
+  margin-bottom: 19px;
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  color: #190a0a;
+  font-size: 18px;
+  line-height: 1.2;
+}
+
+.returns-contacts .returns-contacts-li .svg {
+  width: 24px;
+  height: auto;
+  display: block;
+  flex-shrink: 0;
+}
+
+.returns-contacts .returns-contacts-li p {
+  margin: 0;
+}
+
+.returns-contacts .returns-contacts-li a {
+  color: #e0004d;
+  text-decoration: underline;
+  font-family: var(--heading-font-family);
+}
+
+@media (max-width: 1300px) {
+  .returns-contacts .returns-contacts-item {
+    padding: 60px 40px;
+  }
+}
+
+@media (max-width: 991px) {
+  .returns-contacts {
+    padding: 43px 0 17px 0;
+  }
+
+  .returns-contacts .returns-contacts-list {
+    gap: 17px;
+  }
+
+  .returns-contacts .returns-contacts-item-h4 {
+    font-size: 14px;
+    text-align: center;
+    margin-bottom: 15px;
+  }
+
+  .returns-contacts .returns-contacts-p {
+    font-size: 12px;
+  }
+
+  .returns-contacts .returns-contacts-li {
+    font-size: 12px;
+    gap: 12px;
+    margin-bottom: 15px;
+  }
+
+  .returns-contacts .returns-contacts-li .svg {
+    width: 22px;
+  }
+}
+
+@media (max-width: 767px) {
+  .returns-contacts .returns-contacts-list {
+    flex-direction: column;
+  }
+
+  .returns-contacts .returns-contacts-item {
+    padding: 30px 36px;
+  }
+}
+</style>
+<section class="section-box">
+  <div class="returns-contacts">
+    <div class="container">
+      <div class="returns-contacts-list">
+        <div class="returns-contacts-item">
+          <div>
+            {%- if section.settings.text != blank -%}
+              <h4 class="returns-contacts-item-h4">{{ section.settings.text }}</h4>
+            {%- endif -%}
+            {%- if section.settings.text1 != blank -%}
+              <div class="returns-contacts-p">
+                {{ section.settings.text1 }}
+              </div>
+            {%- endif -%}
+          </div>
+        </div>
+        <div class="returns-contacts-item">
+          <div>
+            {%- if section.settings.text2 != blank -%}
+              <h4 class="returns-contacts-item-h4">{{ section.settings.text2 }}</h4>
+            {%- endif -%}
+            {%- if section.settings.image != blank -%}
+              <div class="returns-contacts-li">
+                 <img class="svg" src="{{ section.settings.image | image_url }}" width="{{ section.settings.image.width }}" height="{{ section.settings.image.height }}" alt="{{ section.settings.image.alt }}">
+                {{ section.settings.text3 }}
+              </div>
+            {%- endif -%}
+            {%- if section.settings.image1 != blank -%}
+              <div class="returns-contacts-li">
+                <img class="svg" src="{{ section.settings.image1 | image_url }}" width="{{ section.settings.image1.width }}" height="{{ section.settings.image1.height }}" alt="{{ section.settings.image1.alt }}">
+                {{ section.settings.text4 }}
+              </div>
+            {%- endif -%}
+            {%- if section.settings.image2 != blank -%}
+              <div class="returns-contacts-li">
+                <img class="svg" src="{{ section.settings.image2 | image_url }}" width="{{ section.settings.image2.width }}" height="{{ section.settings.image2.height }}" alt="{{ section.settings.image2.alt }}">
+                {{ section.settings.text5 }}
+              </div>
+            {%- endif -%}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+"name": "returns-contacts",
+  "settings": [
+    {
+      "type": "header",
+      "content": "左边"
+    },
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Title"
+    },
+    {
+      "type": "richtext",
+      "id": "text1",
+      "label": "Text"
+    },
+    {
+      "type": "header",
+      "content": "右边"
+    },
+    {
+      "type": "text",
+      "id": "text2",
+      "label": "Title"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "richtext",
+      "id": "text3",
+      "label": "Text"
+    },
+    {
+      "type": "image_picker",
+      "id": "image1",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "text4",
+      "label": "Text"
+    },
+    {
+      "type": "image_picker",
+      "id": "image2",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "text5",
+      "label": "Text"
+    },
+  ],
+  "presets": [
+  {
+    "name": "returns-contacts",
+    "blocks": []
+  }
+]
+}
+{% endschema %}

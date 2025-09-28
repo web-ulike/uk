@@ -1,0 +1,356 @@
+<style>
+.preheat-identity{
+  padding: 80px 0 120px 0;
+  overflow: hidden;
+}
+
+.hair-ads-identity{
+  padding:90px 0;
+}
+
+.preheat-identity .preheat-identity-cont{
+  display: flex;
+  align-items: center;
+  gap: 130px;
+}
+
+.preheat-identity .preheat-identity-left{
+  flex: 1;
+}
+
+.preheat-identity .preheat-identity-right{
+  width: 68.1%;
+  
+}
+
+  .preheat-identity .preheat-identity-flex{
+    display: flex;
+    gap: 24px;
+  }
+
+.preheat-identity .preheat-identity-title{
+  color: #3F3636;
+  font-size: 50px;
+  line-height: 1.2;
+  letter-spacing: -0.26px;
+}
+
+.preheat-identity .preheat-identity-sub{
+  color: #3F3636;
+  font-size: 18px;
+  line-height: 1.5;
+  letter-spacing: 0.085px;
+  margin-top: 40px;
+}
+
+.preheat-identity .preheat-identity-item{
+  flex: 1;
+  border-top: 1px solid #3F3636;
+  display: flex;
+  flex-direction: column;
+}
+.preheat-identity .preheat-identity-item-tag{
+  color: #3F3636;
+  font-size: 18px;
+  line-height: 1.4;
+  letter-spacing: 0.085px;
+  padding: 16px 0;
+}
+
+.preheat-identity .preheat-identity-item-cont{
+  border: 1px solid #3F3636;
+  flex: 1;
+}
+
+.preheat-identity .img{
+  display: block;
+  width: 100%;
+}
+
+.preheat-identity .mb-box{
+  display:none;
+}
+
+.preheat-identity .preheat-identity-item-text{
+  padding: 50px;
+}
+
+.preheat-identity .preheat-identity-item-sub{
+  color: #E7004C;
+  font-size: 18px;
+  line-height: 1;
+  letter-spacing: 0.18px;
+}
+
+.preheat-identity .preheat-identity-item-p{
+  color: #3F3636;
+  font-size: 16px;
+  line-height: 1.5;
+  letter-spacing: 0.16px;
+  margin-top: 15px;
+}
+
+.officially-identity .preheat-identity-item-cont{
+  border:0;
+}
+.officially-identity .preheat-identity-item-text{
+  padding: 0px;
+  margin-top:28px;
+}
+@media (max-width:1400px) {
+  .preheat-identity .preheat-identity-cont{
+    gap: 60px;
+  }
+  .preheat-identity .preheat-identity-item-text{
+    padding: 30px;
+  }
+  .officially-identity .preheat-identity-item-text{
+    padding: 0px;
+  }
+}
+
+@media (max-width:991px) {
+  .hair-ads-identity{
+    padding:65px 0 30px 0;
+  }
+  .preheat-identity .pc-box{
+    display:none;
+  }
+  .preheat-identity .mb-box{
+    display:block;
+  }
+  .preheat-identity .preheat-identity-cont{
+    flex-direction: column;
+    gap: 40px;
+  }
+  .hair-ads-identity .preheat-identity-cont{
+    align-items: flex-start;
+  }
+  .preheat-identity .preheat-identity-left{
+    flex: none;
+  }
+  .preheat-identity .preheat-identity-right{
+    width: 100%;
+  }
+  .preheat-identity .preheat-identity-title{
+    font-size: 24px;
+  }
+  .preheat-identity .preheat-identity-sub{
+    font-size: 14px;
+    margin-top: 10px;
+  }
+  .preheat-identity .preheat-identity-item-tag{
+    padding: 5px 0;
+    font-size: 14px;
+  }
+  .preheat-identity .preheat-identity-item-sub{
+    font-size: 14px;
+  }
+  .preheat-identity .preheat-identity-item-p{
+    font-size: 12px;
+  }
+  .preheat-identity .preheat-identity-item-text{
+    padding: 22px;
+    padding-bottom: 35px;
+  }
+  .officially-identity .preheat-identity-item-text{
+    padding: 0px;
+    margin-top:20px;
+  }
+  .preheat-identity .preheat-identity-item{
+    min-width: 300px;
+    flex-shrink: 0;
+  }
+}
+
+</style>
+
+<section class="section-box">
+  <div class="preheat-identity {% if section.settings.class_name != blank %}{{ section.settings.class_name }}{% endif %}">
+    <div class="container">
+      <div class="preheat-identity-cont">
+        <div class="preheat-identity-left">
+          <div class="preheat-identity-title line-top">{{ section.settings.text }}</div>
+          <div class="preheat-identity-sub line-top" style="transition-delay: .1s;">{{ section.settings.text1 }}</div>
+        </div>
+        <div class="preheat-identity-right">
+          <div class="preheat-identity-flex">
+          {%- for block in section.blocks -%}
+          <div class="preheat-identity-item to-top" style="transition-delay: 0.{{ forloop.index }}s">
+            <div class="preheat-identity-item-tag line-top">{{ block.settings.text }}</div>
+            <div class="preheat-identity-item-cont to-top">
+              {%- if block.settings.image != blank -%}
+                <img
+                  loading="lazy"
+                  class="img {% if block.settings.image1 != blank %}pc-box{% endif %}"
+                  data-index="{{ forloop.index }}"
+                  width="{{ block.settings.image.width }}"
+                  height="{{ block.settings.image.height }}"
+                  {% render 'image-attributes', image: block.settings.image %}
+                  alt="{{ block.settings.image.alt | escape }}"
+                >
+              {%- endif -%}
+              {%- if block.settings.image1 != blank -%}
+                <img
+                  loading="lazy"
+                  class="img mb-box"
+                  data-index="{{ forloop.index }}"
+                  width="{{ block.settings.image1.width }}"
+                  height="{{ block.settings.image1.height }}"
+                  {% render 'image-attributes', image: block.settings.image1 %}
+                  alt="{{ block.settings.image1.alt | escape }}"
+                >
+              {%- endif -%}
+              {%- if block.settings.text1 != blank or block.settings.text2 != blank -%}
+                <div class="preheat-identity-item-text">
+                  <div class="preheat-identity-item-sub line-top">{{ block.settings.text1 }}</div>
+                  <div class="preheat-identity-item-p line-top" style="transition-delay: .1s;">
+                    {{ block.settings.text2 }}
+                  </div>
+                </div>
+              {%- endif -%}
+            </div>
+          </div>
+          {%- endfor -%}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+  window.addEventListener('load', () => {
+    function preheatIdentitySwiper(){
+      let $p = $('.preheat-identity')
+      let $list = $p.find('.preheat-identity-flex')
+      const content = document.querySelector('.preheat-identity .preheat-identity-right');
+      let length = $list.find('.preheat-identity-item').length
+      let width = $list.find('.preheat-identity-item')[0].offsetWidth
+      let index = 0
+      let pWidth = $p[0].offsetWidth
+      let marginW = 24
+      let lWidth = length * (width + marginW) + $list[0].offsetLeft
+      let translateX = 0
+
+      function changeTransform(num){
+        translateX += (width + marginW) * num
+        if(translateX > lWidth - pWidth) {
+          translateX = lWidth - pWidth
+        }
+        if(translateX<0) translateX = 0
+        $list.css({
+          transform: 'translateX(-' + translateX + 'px)',
+          transition: 'all 1s cubic-bezier(0.645, 0.045, 0.355, 1) 0s'
+        })
+      }
+      detectSwipe(content, () => {
+        changeTransform(1)
+      }, () => {
+        changeTransform(-1)
+      });
+
+      function detectSwipe(element, onSwipeLeft, onSwipeRight) {
+      let startX = 0;
+
+      const getEventX = (event) => {
+        return event.touches ? event.touches[0].clientX : event.clientX;
+      };
+
+      const handleTouchStart = (e) => {
+        startX = getEventX(e);
+      };
+
+      const handleTouchMove = (e) => {
+        const deltaX = getEventX(e) - startX;
+        if (Math.abs(deltaX) > 10 && e.cancelable) {
+          e.preventDefault();
+        }
+      };
+
+      const handleTouchEnd = (e) => {
+        const deltaX = getEventX(e.changedTouches ? e.changedTouches[0] : e) - startX;
+        if (deltaX > 10) {
+          onSwipeRight();
+        } else if (deltaX < -10) {
+          onSwipeLeft();
+        }
+      };
+
+      element.addEventListener('touchstart', handleTouchStart);
+      element.addEventListener('touchmove', handleTouchMove);
+      element.addEventListener('touchend', handleTouchEnd);
+
+      // Add mouse event listeners for PC compatibility
+      element.addEventListener('mousedown', handleTouchStart);
+      element.addEventListener('mousemove', handleTouchMove);
+      element.addEventListener('mouseup', handleTouchEnd);
+    }
+    }
+    if(window.innerWidth < 720) {
+      preheatIdentitySwiper()
+    }
+  })
+</script>
+{% schema %}
+{
+  "name": "preheat-identity",
+  "settings": [
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Title"
+    },
+    {
+      "type": "text",
+      "id": "text1",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "class_name",
+      "label": "自定义class"
+    }
+  ],
+  "blocks": [
+    {
+        "type": "item",
+        "name": "item",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          },
+          {
+            "type": "image_picker",
+            "id": "image1",
+            "label": "Image"
+          },
+          {
+            "type": "text",
+            "id": "text",
+            "label": "Text"
+          },
+          {
+            "type": "text",
+            "id": "text1",
+            "label": "Text"
+          },
+          {
+            "type": "text",
+            "id": "text2",
+            "label": "Text"
+          }
+        ]
+      }
+  ],
+  "presets": [
+    {
+      "name": "preheat-identity",
+      "settings": {},
+      "blocks": [
+      ]
+    }
+  ]
+}
+{% endschema %}

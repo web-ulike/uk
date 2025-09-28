@@ -1,0 +1,288 @@
+<style>
+     #shopify-section-{{ section.id }} {
+  --text-color: {{  section.settings.text_color.red }}, {{  section.settings.text_color.green }}, {{  section.settings.text_color.blue }};
+      --section-background: {{ section.settings.background.red }}, {{ section.settings.background.green }}, {{ section.settings.background.blue }};
+      --background-image: url({{ section.settings.background_image | img_url: '3840x1176' }});
+      {% if section.settings.background_image != blank %}
+        background-image: var( --background-image);
+      {% else %}
+        background-color: var(--section-background)
+      {% endif %}
+    }
+    .section-{{ section.id }}-padding {
+      padding-top: calc({{ section.settings.padding_top }}px);
+      padding-bottom: calc({{ section.settings.padding_bottom }}px);
+    }
+    @media screen and (max-width: 768px){
+      #shopify-section-{{ section.id }} {
+      {% if section.settings.mobile_background_image != blank %}
+        --background-image: url({{ section.settings.mobile_background_image | img_url : '750x1230' }});
+      {% endif %}
+      }
+    .section-{{ section.id }}-padding {
+      padding-top: calc({{ section.settings.padding_top }}px * 0.6);
+      padding-bottom: calc({{ section.settings.padding_bottom }}px * 0.6);
+    }
+  }
+  /* carsoule-item__template start*/
+    .carsoule-item__template{
+      overflow: hidden;
+    }
+    .carsoule-item__template .carsoule-item__tle{
+      color: #FBFAF4;
+      text-align: center;
+      font-size: 44px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 125%;
+      margin-bottom: 50px;
+    }
+    .carsoule-item__template .carsoule-item__ul{
+      display: flex;
+      /* gap: 40px; */
+    }
+    .carsoule-item__ul .carsoule-item__li{
+      text-align: left;
+      flex-shrink: 0;
+      width: 30%;
+    }
+     .carsoule-item__li .carsoule-item-li__tle{
+      color:  #FBFAF4;
+      font-size: 28px;
+      font-style: normal;
+      font-weight: 500;
+      line-height: 125%; /* 35px */
+      margin-top: 20px;
+      margin-bottom: 15px;
+    }
+    .carsoule-item__li  .carsoule-item__txt{
+      color:  #FBFAF4;
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 300;
+      line-height: 125%; /* 20px */
+    }
+    .carsoule-item__ul .carsoule-item__li img{
+      width: 100%;
+    }
+    .carsoule-item__cnt .swiper {
+      overflow: visible;
+    }
+    .check_coupon {
+    display: flex;
+    position: relative;
+    align-items: center;
+    gap: 42px;
+    margin-top: 87px;
+    }
+    .check_coupon .swiper-scrollbar {
+    background: rgba(255, 255, 255, 0.5);
+}
+.check_coupon .swiper-pagination-progressbar .swiper-pagination-progressbar-fill {
+background: #FFF;
+}
+.next_prev-box {
+    display: flex;
+    gap: 50px;
+    color: #fff;
+}
+.next_prev-box svg {
+    cursor: pointer;
+}
+.next_prev-box svg.swiper-button-disabled {
+    opacity: 0.5;
+}
+  .carsoule-item__box {
+    width: 100%;
+    max-width: var(--container-max-width);
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: var(--container-gutter);
+    padding-right: var(--container-gutter);
+    --container-outer-margin: 0px;
+}
+@media screen and (max-width: 500px) {
+  .carsoule-item__template .carsoule-item__tle{
+    font-size: 24px;
+    margin-bottom: 30px;
+  }
+  .carsoule-item__li .carsoule-item-li__tle{
+    font-size: 14px;
+    margin-top: 15px;
+    margin-bottom: 10px;
+  }
+  .carsoule-item__li .carsoule-item__txt{
+    font-size: 12px;
+  }
+  .check_coupon{
+    margin-top: 40px;
+  }
+  .next_prev-box {
+    gap: 30px;
+}
+}
+    /* carsoule-item__template end */
+</style>
+
+<section>
+ <div class="carsoule-item__template section-{{ section.id }}-padding">
+    <div class="carsoule-item__box">
+      <div class="container__custom">
+        <div class="carsoule-item__cnt">
+          <div class="carsoule-item__tle">{{ section.settings.header }}</div>
+          <div class="swiper" id="coupon_process--{{ section.id}}">
+            <div class="carsoule-item__ul swiper-wrapper">
+
+               {%- for block in section.blocks -%}
+              <div class="carsoule-item__li swiper-slide">
+                 {%- if block.settings.image != blank -%}
+                <img src="{{ block.settings.image | image_url }}" loading="lazy"  alt="{{ block.settings.tle }}" width="{{ block.settings.image.width }}" height="{{ block.settings.image.height }}"  class="">
+                 {%- endif -%}
+                <div class="carsoule-item-li__tle">{{ block.settings.tle }}</div>
+                <div class="carsoule-item__txt">{{ block.settings.txt }}</div>
+              </div>
+                {%- endfor -%}
+
+            </div>
+          </div>
+          <div class="check_coupon">
+            <div class="swiper-scrollbar" id="swiper-scrollbar--{{ section.id}}"></div>
+            <div class="next_prev-box">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="13"
+                height="22"
+                viewBox="0 0 13 22"
+                fill="none"
+                class="swiper-button-prev--{{ section.id}}"
+              >
+                <path d="M10.9717 1.99999L1.99998 10.9717L10.9717 19.9434" stroke="currentColor" stroke-width="2" stroke-linecap="square"/>
+              </svg>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="13"
+                height="22"
+                viewBox="0 0 13 22"
+                fill="none"
+                class="swiper-button-next--{{ section.id}}"
+              >
+                <path d="M1.97169 1.99999L10.9434 10.9717L1.97169 19.9434" stroke="currentColor" stroke-width="2" stroke-linecap="square"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{{ 'swiper-bundle.min.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'swiper-bundle.min.aio.min.js' | asset_url }}"></script>
+<script>
+new Swiper('#coupon_process--{{ section.id}}',{
+         slidesPerView: 1.3,
+         spaceBetween:10,
+        pagination: {
+      el: '#swiper-scrollbar--{{ section.id}}',
+      type: 'progressbar',
+    },
+    navigation: {
+      nextEl: '.swiper-button-next--{{ section.id}}',
+      prevEl: '.swiper-button-prev--{{ section.id}}',
+    },
+         breakpoints: {
+         767: {
+           slidesPerView: 2.3,
+           spaceBetween: 30
+         },
+         1024: {
+           slidesPerView: 'auto',
+           spaceBetween: 40
+         }
+         }
+   })
+</script>
+{% schema %}
+{
+  "name": "Carsoule Item",
+  "class": "shopify-section--carsoule-item",
+  "settings": [
+    {
+      "type": "text",
+      "id": "header",
+      "label": "Header"
+    },
+      {
+          "type": "image_picker",
+          "id": "background_image",
+          "label": "Background Image"
+        },
+      {
+          "type": "image_picker",
+          "id": "mobile_background_image",
+          "label": "Mobile Background Image"
+        },
+     {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 40
+    }
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Item",
+      "limit": 20,
+      "settings": [
+         {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+         {
+            "type": "text",
+            "id": "tle",
+            "label": "Title"
+          },
+        {
+            "type": "richtext",
+            "id": "txt",
+            "label": "subHeader"
+          }
+      ]
+    }
+
+  ],
+  "presets": [
+    {
+      "name": "Carsoule Item",
+      "settings": {}
+    }
+  ]
+}
+{% endschema %}

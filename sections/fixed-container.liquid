@@ -1,0 +1,162 @@
+<style>
+.fixed-container {
+  ;position: relative;
+  z-index: 0;
+  height: 100vh;
+  clip-path: inset(0 0 0 0);
+}
+.fixed-container .bg-img {
+  position: fixed;
+  z-index: -1;
+  display: block;
+  margin: 0;
+  min-width: 100%;
+  height: 100vh;
+  object-fit: cover;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.fixed-container .fixed-cont {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-width: 765px;
+  width: 100%;
+  z-index: 1;
+}
+
+.fixed-container .fixed-cont .img {
+  display: block;
+  width: 100%;
+}
+
+.fixed-container .fixed-cont-txt {
+  color: #fffffc;
+  text-align: center;
+  font-size: 18px;
+  line-height: 1.5;
+  max-width: 570px;
+  margin: 0 auto;
+  margin-top: 20px;
+}
+.fixed-container .mb-box{
+   display: none;
+}
+@media (max-width: 768px) {
+  .fixed-container .fixed-cont .img {
+    max-width: 247px;
+    margin: 0 auto;
+  }
+  .fixed-container .fixed-cont-txt {
+    font-size: 12px;
+    max-width: 299px;
+  }
+  .fixed-container .pc-box{
+     display: none;
+  }
+  .fixed-container .mb-box{
+     display: block;
+  }
+}
+</style>
+<section>
+  <div class="fixed-container">
+    <picture>
+      <source srcset="{{ section.settings.image3 | image_url }}" media="(max-width: 991px)">
+      <img class="bg-img" src="{{ section.settings.image | image_url }}" width="" height="">
+    </picture>
+    {% if section.settings.video != blank or section.settings.video1 != blank %}
+      <div class="video-box"></div>
+    {% endif %}
+    <div class="fixed-cont">
+      <div class="container">
+        <picture>
+          <source srcset="{{ section.settings.image2 | image_url }}" media="(max-width: 991px)">
+          <img class="img" src="{{ section.settings.image1 | image_url }}" width="" height="">
+        </picture>
+        <div class="fixed-cont-txt">{{ section.settings.text }}</div>
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+  window.addEventListener('load', function () {
+    if($('.fixed-container .video-box').length){
+      $('.fixed-container .video-box').html(`
+        {% if section.settings.video != blank %}
+          {{-
+            section.settings.video
+            | video_tag:
+              controls: false,
+              playsinline: true,
+              muted: true,
+              autoplay:true,
+              loop:true,
+              class:'bg-img pc-box'
+          -}}
+        {% endif %}
+        {% if section.settings.video1 != blank %}
+          {{-
+            section.settings.video1
+            | video_tag:
+              controls: false,
+              playsinline: true,
+              muted: true,
+              autoplay:true,
+              loop:true,
+              class:'bg-img mb-box'
+          -}}
+        {% endif %}
+      `)
+    }
+  })
+</script>
+{% schema %}
+{
+  "name": "fixed-container",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Background"
+    },
+    {
+      "type": "image_picker",
+      "id": "image3",
+      "label": "Background M"
+    },
+    {
+      "type": "video",
+      "id": "video",
+      "label": "Background Video"
+    },
+    {
+      "type": "video",
+      "id": "video1",
+      "label": "Background Video M"
+    },
+    {
+      "type": "image_picker",
+      "id": "image1",
+      "label": "Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image2",
+      "label": "Image M"
+    },
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Text"
+    }    
+  ],
+  "presets": [
+    {
+      "name": "fixed-container"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,287 @@
+<style>
+.comparison-image-text{
+  padding: 108px 0;
+}
+
+.comparison-image-text .comparison-image-text-list{
+  display: flex;
+  flex-direction: column;
+  gap:64px;
+}
+
+.comparison-image-text .comparison-image-text-item{
+  display: flex;
+  align-items: center;
+}
+
+.comparison-image-text .reverse-box{
+  flex-direction: row-reverse;
+}
+
+.comparison-image-text .comparison-image-text-txt,.comparison-image-text .comparison-image-text-img{
+  width: 50%;
+  position: relative;
+}
+.comparison-image-text .comparison-image-text-img .img{
+  position: relative;
+  z-index:0;
+}
+.comparison-image-text .comparison-image-wrapper{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  z-index: 2;
+}
+
+.comparison-image-text .comparison-image-wrapper video{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.comparison-image-text .video-wrapper__play-button{
+  position: absolute;
+  margin-bottom:0;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+.comparison-image-text .comparison-image-text-txt{
+  padding: 0 40px;
+}
+
+.comparison-image-text .comparison-image-text-cont{
+  max-width: 478px;
+  margin: 0 auto;
+}
+
+.comparison-image-text .comparison-image-text-title{
+  color: #190A0A;
+  font-family: Saans;
+  font-size: 40px;
+  line-height: 1.2;
+}
+
+.comparison-image-text .comparison-image-text-p{
+  color: #3F3636;
+  font-size: 16px;
+  line-height: 1.5;
+  margin-top: 30px;
+}
+
+.comparison-image-text .comparison-image-text-btn{
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 280px;
+  height: 48px;
+  border-radius: 48px;
+  border: 1px solid #3F3636;
+  color: #3F3636;
+  font-size: 16px;
+  line-height: 1.5;
+  margin-top: 30px;
+}
+
+@media (max-width:991px) {
+  .comparison-image-text{
+    padding: 60px 0;
+  }
+  .comparison-image-text .comparison-image-text-list{
+    gap: 94px;
+  }
+  .comparison-image-text .comparison-image-text-item{
+    flex-direction: column;
+    gap: 30px;
+  }
+  .comparison-image-text .comparison-image-text-txt,
+  .comparison-image-text .comparison-image-text-img{
+    width: 100%;
+  }
+  .comparison-image-text .comparison-image-text-txt{
+    padding: 0;
+  }
+  .comparison-image-text .comparison-image-text-cont{
+    max-width: none;
+  }
+  .comparison-image-text .comparison-image-text-title{
+    font-size: 24px;
+  }
+  .comparison-image-text .comparison-image-text-p{
+    font-size: 14px;
+    margin-top: 20px;
+  }
+  .comparison-image-text .comparison-image-text-btn{
+    width: 220px;
+    height: 42px;
+    font-size: 12px;
+    margin-top: 20px;
+  }
+  .comparison-image-text .video-wrapper__play-button{
+      zoom:.6;
+    }
+}
+</style>
+
+<section class="section-box">
+  <div class="comparison-image-text">
+    <div class="container">
+      <div class="comparison-image-text-list">
+        {%- for block in section.blocks -%}
+          <div class="comparison-image-text-item {% if block.settings.checkbox_bol %}reverse-box{% endif %}">
+            <div class="comparison-image-text-img to-top">
+              {%- if block.settings.image != blank -%}
+                <img
+                  loading="lazy"
+                  class="img"
+                  width="{{ block.settings.image.width }}"
+                  height="{{ block.settings.image.height }}"
+                  {% render 'image-attributes', image: block.settings.image %}
+                  alt="{{ block.settings.image.alt | escape }}"
+                >
+              {%- endif -%}
+              {%- if block.settings.video != blank -%}
+                <native-video
+                  {% if block.settings.autoplay %}
+                    autoplay
+                  {% endif %}
+                  class="comparison-image-wrapper"
+                >
+                  {%- unless block.settings.autoplay -%}
+                    <button type="button" class="video-wrapper__play-button video-wrapper__play-button--large video-wrapper__play-button--ripple" title="{{ 'general.accessibility.play_video' | t | escape }}">
+                      {%- if block.settings.v_icon != blank -%}
+                        <img
+                          loading="lazy"
+                          class="v_img"
+                          width="{{ block.settings.v_icon.width }}"
+                          height="{{ block.settings.v_icon.height }}"
+                          {% render 'image-attributes', image: block.settings.v_icon %}
+                          alt="{{ block.settings.v_icon.alt | escape }}"
+                        >
+                      {%- endif -%}
+                    </button>
+                  {%- endunless -%}
+                  <template>
+                    {{-
+                      block.settings.video
+                      | video_tag:
+                        controls: block.settings.show_video_controls,
+                        autoplay: block.settings.autoplay,
+                        muted: block.settings.autoplay,
+                        playsinline: block.settings.autoplay,
+                        loop: true
+                    -}}
+                  </template>
+                </native-video>
+              {%- endif -%}
+            </div>
+            <div class="comparison-image-text-txt to-top" style="transition-delay: 0.1s">
+              <div class="comparison-image-text-cont">
+                <div class="comparison-image-text-title">{{ block.settings.text }}</div>
+                <div class="comparison-image-text-p">{{ block.settings.text1 }}</div>
+                {%- if block.settings.text2 != blank -%}
+                  <div class="comparison-image-text-btn {% if block.settings.text3 != blank %}show-popup-btn{% endif %}" data-name="{{ block.settings.text3 }}">
+                    {{ block.settings.text2 }}
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                      <g clip-path="url(#clip0_1515_3388)">
+                      <path d="M12 0C5.38359 0 0 5.38359 0 12C0 18.6164 5.38359 24 12 24C18.6164 24 24 18.6164 24 12C24 5.38359 18.6164 0 12 0ZM12 22.957C5.95781 22.957 1.04297 18.0422 1.04297 12C1.04297 5.95781 5.95781 1.04297 12 1.04297C18.0422 1.04297 22.957 5.95781 22.957 12C22.957 18.0422 18.0422 22.957 12 22.957Z" fill="#190A0A"></path>
+                      <circle cx="12" cy="12" r="12" fill="#6C6AB4"></circle>
+                      <path d="M18.2641 11.5951H12.5242V5.85762C12.5242 5.56934 12.2875 5.33496 12.0016 5.33496C11.7133 5.33496 11.4789 5.57168 11.4789 5.85762V11.5951H5.74141C5.45312 11.5951 5.21875 11.8318 5.21875 12.1178C5.21875 12.4061 5.45547 12.6404 5.74141 12.6404H11.4789V18.3803C11.4789 18.6686 11.7156 18.9029 12.0016 18.9029C12.2898 18.9029 12.5242 18.6662 12.5242 18.3803V12.6404H18.2617C18.55 12.6404 18.7844 12.4037 18.7867 12.1178C18.7867 11.8295 18.55 11.5951 18.2641 11.5951Z" fill="#FBFAF4"></path>
+                      </g>
+                      <defs>
+                      <clipPath id="clip0_1515_3388">
+                      <rect width="24" height="24" fill="white"></rect>
+                      </clipPath>
+                      </defs>
+                    </svg>
+                  </div>
+                {%- endif -%}
+              </div>
+            </div>
+          </div>
+        {%- endfor -%}       
+      </div>
+    </div>
+  </div>
+</section>
+{% schema %}
+{
+  "name": "comparison-image-text",
+  "blocks": [
+    {
+        "type": "item",
+        "name": "item",
+        "settings": [
+          {
+            "type": "checkbox",
+            "id": "checkbox_bol",
+            "label": "翻转",
+            "default":false
+          },
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          },
+          {
+            "type": "video",
+            "id": "video",
+            "label": "Video",
+            "info": "Replaces the external video if both are set."
+          },
+          {
+            "type": "text",
+            "id": "text",
+            "label": "标题"
+          },
+          {
+            "type": "text",
+            "id": "text1",
+            "label": "副标题"
+          },
+          {
+            "type": "text",
+            "id": "text2",
+            "label": "按钮文字"
+          },
+          {
+            "type": "text",
+            "id": "text3",
+            "label": "弹窗名字"
+          },
+          {
+            "type": "checkbox",
+            "id": "autoplay",
+            "label": "Autoplay",
+            "info": "Video is muted automatically to allow autoplay.",
+            "default": true
+          },
+          {
+            "type": "checkbox",
+            "id": "show_video_controls",
+            "label": "Show video controls",
+            "info": "Only applicable with native video.",
+            "default": false
+          },
+          {
+            "type": "image_picker",
+            "id": "v_icon",
+            "label": "Video Icon"
+          }
+        ]
+      }
+  ],
+  "presets": [
+    {
+      "name": "comparison-image-text",
+      "settings": {},
+      "blocks": [
+      ]
+    }
+  ]
+}
+{% endschema %}

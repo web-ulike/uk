@@ -1,0 +1,372 @@
+<style>
+.summer-hair {
+  position: relative;
+  z-index: 1;
+  min-height: 1000px;
+}
+
+.summer-hair .summer-hair-bg {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  min-height: 1000px;
+  object-fit: cover;
+}
+
+.summer-hair .summer-hair-cont {
+  position: absolute;
+  width: 100%;
+  left: 0;
+  top: 0;
+  padding-top: 100px;
+  z-index: 2;
+}
+
+.summer-hair .summer-hair-title {
+  color: #fff;
+  font-size: 44px;
+  line-height: 1.25;
+  margin: 0;
+  font-weight: normal;
+  font-family: var(--heading-font-family);
+  max-width: 485px;
+}
+
+.summer-hair .black-txt .summer-hair-title {
+  color: #3f3636;
+}
+
+.summer-hair .summer-hair-detail {
+  max-width: 490px;
+  margin-left: auto;
+  margin-right: 0;
+  margin-top: 105px;
+}
+
+.summer-hair .summer-hair-tabs {
+  display: flex;
+  gap: 5px;
+}
+
+.summer-hair .summer-hair-tab {
+  flex: 1 1 auto;
+  min-width: max-content;
+  height: 40px;
+  color: #190a0a;
+  font-size: 20px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 10px;
+  border-radius: 40px;
+  background: #fff;
+  border: 1px solid #d9d9d9;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.summer-hair .summer-hair-tab.active {
+  background: #3f3636;
+  border-color: #333;
+  color: #fff;
+  font-family: var(--heading-font-family);
+}
+
+.summer-hair .summer-hair-tab:hover {
+  border-color: #333;
+}
+
+.summer-hair .summer-hair-text {
+  padding: 37px 30px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(15px);
+  color: #fff;
+  margin-top: 17px;
+  display: none;
+}
+
+.summer-hair .summer-hair-text.active {
+  display: block;
+}
+
+.summer-hair .summer-hair-h4 {
+  font-size: 32px;
+  line-height: 1.2;
+  font-weight: normal;
+  font-family: var(--heading-font-family);
+  margin: 0;
+  margin-bottom: 20px;
+}
+
+.summer-hair .summer-hair-p {
+  font-size: 18px;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.summer-hair .m-img {
+  display: none;
+}
+
+.summer-hair .summer-hair-icon {
+  margin-top: 20px;
+}
+
+@media (max-width: 1500px) {
+  .summer-hair .summer-hair-cont {
+    padding-top: 60px;
+  }
+  .summer-hair .summer-hair-detail {
+    margin-top: 80px;
+  }
+}
+
+@media (max-width: 991px) {
+  .summer-hair {
+    min-height: auto;
+  }
+
+  .summer-hair .summer-hair-bg {
+    display: none;
+  }
+
+  .summer-hair .summer-hair-cont {
+    position: relative;
+    padding: 50px 0 28px 0;
+  }
+
+  .summer-hair .summer-hair-title {
+    color: #3f3636;
+    font-size: 24px;
+  }
+
+  .summer-hair .summer-hair-detail {
+    max-width: none;
+    margin: 0;
+    margin-top: 30px;
+  }
+
+  .summer-hair .summer-hair-tab {
+    height: 30px;
+    font-size: 12px;
+  }
+
+  .summer-hair .summer-hair-text {
+    background: none;
+    color: #000;
+    padding: 0;
+    margin-top: 24px;
+  }
+
+  .summer-hair .summer-hair-h4 {
+    font-size: 20px;
+    margin-bottom: 10px;
+  }
+
+  .summer-hair .summer-hair-p {
+    font-size: 12px;
+  }
+
+  .summer-hair .m-img {
+    display: block;
+    width: 100%;
+  }
+
+  .summer-hair .summer-hair-m {
+    margin-top: 24px;
+    border-radius: 10px;
+    background: #F9F9F9;
+    overflow: hidden;
+  }
+
+  .summer-hair .summer-hair-sm-img {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding: 12px;
+  }
+  .summer-hair .summer-hair-icon {
+    margin-top: 0;
+  }
+  .summer-hair .summer-hair-icon img {
+    margin-top: 0;
+    display: block;
+  }
+
+  .summer-hair .summer-hair-icon:first-child img {
+    height: 62px;
+  }
+  .summer-hair .summer-hair-icon:last-child img {
+    height: 58px;
+  }
+  .summer-hair .summer-hair-icon + .summer-hair-icon {
+    flex: 1;
+  }
+  .summer-hair .summer-hair-icon + .summer-hair-icon img {
+    height: auto;
+  }
+}
+</style>
+<section class="section-box">
+  <div class="summer-hair">
+    <img src="" alt="" width="" height="" class="summer-hair-bg">
+    <div class="summer-hair-cont">
+      <div class="container">
+        {%- if section.settings.title != blank -%}
+          <h3 class="summer-hair-title">{{ section.settings.title }}</h3>
+        {%- endif -%}
+        <div class="summer-hair-detail">
+          {%- if section.blocks.size > 0 -%}
+            <div class="summer-hair-tabs">
+              {%- for block in section.blocks -%}
+                {%- if block.settings.text != blank -%}
+                  <div class="summer-hair-tab {% if forloop.index==1 %}active{% endif %}" data-src="{{ block.settings.image | image_url }}" data-title="{{ block.settings.title_color }}">{{ block.settings.text }}</div>
+                {%- endif -%}
+              {%- endfor -%}
+            </div>
+          {%- endif -%}
+          <div>
+            {%- for block in section.blocks -%}
+              <div class="summer-hair-text {% if forloop.index == 1 %}active{% endif %}">
+                <h4 class="summer-hair-h4">{{ block.settings.text1 }}</h4>
+                <p class="summer-hair-p">{{ block.settings.text2 }}</p>
+                <div class="summer-hair-m">
+                  {%- if section.settings.title != blank -%}
+                  <img src="{{ block.settings.image1 | image_url }}" width="" height=""  alt="" class="m-img">
+                  {%- endif -%}
+                  {%- if block.settings.image2 != blank or block.settings.image3 != blank -%}
+                    <div class="summer-hair-sm-img">
+                      {%- if block.settings.image2 != blank -%}
+                        <div class="summer-hair-icon">
+                          <img src="{{ block.settings.image2 | image_url }}" width="" height=""  alt="">
+                        </div>
+                      {%- endif -%}
+                      {%- if block.settings.image3 != blank -%}
+                        <div class="summer-hair-icon">
+                          <img src="{{ block.settings.image3 | image_url }}" width="" height=""  alt="">
+                        </div>
+                      {%- endif -%}
+                    </div>
+                  {%- endif -%}
+                </div>
+              </div>
+            {%- endfor -%}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const tabs = document.querySelectorAll('.summer-hair .summer-hair-tab');
+  const texts = document.querySelectorAll('.summer-hair .summer-hair-text');
+  const bgEl = document.querySelector('.summer-hair-bg');
+
+  if (!tabs.length || !bgEl) return;
+
+  tabs.forEach((tab, index) => {
+    tab.addEventListener('click', () => {
+      // 切换 tab 的 active
+      tabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+
+      // 切换对应的 text
+      texts.forEach(t => t.classList.remove('active'));
+      if (texts[index]) {
+        texts[index].classList.add('active');
+      }
+
+      const tColorBol = tab.getAttribute('data-title');
+      if(tColorBol == 'true'){
+        document.querySelector('.summer-hair-cont').classList.add('black-txt')
+      }else{
+        document.querySelector('.summer-hair-cont').classList.remove('black-txt')
+      }
+
+      // 设置背景图
+      const bgUrl = tab.getAttribute('data-src');
+      if (bgUrl) {
+        bgEl.setAttribute("src", bgUrl);
+      }
+    });
+  });
+  const firstTColorBol = tabs[0].getAttribute('data-title');
+  const firstBgUrl = tabs[0].getAttribute('data-src');
+  if (firstBgUrl) {
+    bgEl.setAttribute("src", firstBgUrl);
+  }
+  if (firstTColorBol) {
+    document.querySelector('.summer-hair-cont').classList.add('black-txt')
+  }
+});
+</script>
+{% schema %}
+{
+  "name": "summer-hair",
+  "blocks": [
+    {
+      "name": "item",
+      "type": "item",
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "title_color",
+          "label": "pc标题深色",
+          "default":false
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "image_picker",
+          "id": "image1",
+          "label": "Image M"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text"
+        },
+        {
+          "type": "text",
+          "id": "text1",
+          "label": "Text"
+        },
+        {
+          "type": "text",
+          "id": "text2",
+          "label": "Text"
+        },
+        {
+          "type": "image_picker",
+          "id": "image2",
+          "label": "Image Icon"
+        },
+        {
+          "type": "image_picker",
+          "id": "image3",
+          "label": "Image Icon"
+        },
+      ]
+    }
+  ],
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title"
+    }
+  ],
+  "presets": [
+    {
+      "name": "summer-hair",
+      "blocks": []
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,357 @@
+<style>
+  .about-product .about-progress-bar {
+    display: none;
+  }
+
+  .about-product {
+    padding: 100px 0;
+    overflow: hidden;
+  }
+
+  .about-proudct-container {
+    overflow-x: auto;
+  }
+
+  .about-proudct-container::-webkit-scrollbar {
+    display: none;
+  }
+
+  .about-proudct-scroll {
+    min-width: 1520px;
+    padding: 10px 0;
+  }
+
+  .about-product-pc-title {
+    font-size: 48px;
+    color: #190a0a;
+    font-weight: 380px;
+    line-height: 1;
+    margin-bottom: 64px;
+  }
+
+  .about-product-timeline {
+    position: relative;
+    display: flex;
+  }
+
+  .about-product-timeline:after {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    border: 1px dashed #3f3636;
+    content: ' ';
+  }
+
+  .about-product-year {
+    position: relative;
+    flex: 1;
+    font-size: 28px;
+    font-style: italic;
+    line-height: 1;
+    margin-right: 25px;
+    font-family: 'Bodoni 72';
+    color: #3f3636;
+  }
+  .about-product-year img {
+    width: 59px;
+    margin-top: 15px;
+  }
+
+  .about-product-year:last-child {
+    margin-right: 0;
+  }
+
+  .about-product-year.active {
+    color: #e0004d;
+  }
+
+  .about-product-year:after {
+    position: absolute;
+    top: -6px;
+    left: 0;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 1px solid #3f3636;
+    background: #fff;
+    content: ' ';
+    z-index: 1;
+  }
+
+  .about-product-year.active:after {
+    border-color: #e0004d;
+    background: #e0004d;
+  }
+
+  .about-product-content {
+    margin-top: 15px;
+    display: flex;
+  }
+
+  .about-product-item {
+    flex: 1;
+    margin-right: 20px;
+  }
+
+  .about-product-item:last-child {
+    margin-right: 0px;
+  }
+
+  .about-product-item img {
+    width: 237px;
+  }
+
+  .about-product-title {
+    width: 230px;
+    margin: 28px 0 13px;
+    font-size: 24px;
+    line-height: 1;
+    color: #000;
+  }
+
+  .about-product-title.active {
+    color: #e0004d;
+  }
+
+  .about-product-desc {
+    width: 230px;
+    font-size: 18px;
+    line-height: 1.5;
+    margin-bottom: 13px;
+  }
+
+  .about-product-btn {
+    width: 188px;
+    height: 48px;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #e0004d;
+    font-size: 18px;
+    color: #fffffc;
+    font-weight: 570;
+    cursor: pointer;
+    border-radius: 4px;
+    border: 1px solid #e0004d;
+  }
+
+  .about-product-btn:hover .btn-txt {
+    color: #e0004d;
+  }
+
+  @media (max-width: 1200px) {
+    .about-product-pc-title {
+      font-size: 38px;
+      margin-bottom: 50px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .about-product {
+      padding: 60px 0;
+    }
+
+    .about-product-year img {
+      margin-top: 10px;
+      width: 47px;
+    }
+    .about-product-pc-title {
+      font-size: 30px;
+      font-weight: 400;
+      margin-bottom: 40px;
+    }
+
+    .about-proudct-scroll {
+      min-width: 1000px;
+    }
+
+    .about-product-item img {
+      width: 140px;
+    }
+
+    .about-product-title {
+      margin: 17px 0 8px;
+      width: 140px;
+      font-size: 16px;
+    }
+
+    .about-product-content {
+      margin-top: 8px;
+    }
+
+    .about-product-desc {
+      width: 140px;
+      font-size: 12px;
+      margin-bottom: 8px;
+    }
+
+    .about-product-btn {
+      width: 120px;
+      height: 30px;
+      font-size: 12px;
+    }
+
+    .about-product .about-progress-bar {
+      display: block;
+      margin-top: 30px;
+    }
+  }
+</style>
+
+<section id="{{ section.id }}">
+  <div class="container">
+    <div class="about-product">
+      <div class="about-product-pc-title to-top">{{ section.settings.title }}</div>
+      <div class="about-proudct-container">
+        <div class="about-proudct-scroll">
+          <div class="about-product-timeline to-top">
+            {% for block in section.blocks %}
+              {% if block.settings.image_year != blank %}
+                <div class="about-product-year  {% if forloop.first %}active{% endif %}">
+                  <img
+                    src="{{ block.settings.image_year | image_url}}"
+                    width="100%"
+                    height="auto"
+                    alt=""
+                  >
+                </div>
+              {% endif %}
+            {% endfor %}
+          </div>
+          <div class="about-product-content">
+            {% for block in section.blocks %}
+              {% if block.settings.proudct_image != blank %}
+                <div class="about-product-item  to-top">
+                  <img
+                    class="to-top"
+                    src="{{ block.settings.proudct_image | image_url }}"
+                    alt="{{ block.settings.product_title }}"
+                    width="100%"
+                    height="auto"
+                  >
+                  <div class="about-product-title  to-top  {% if forloop.first %}active{% endif %}">
+                    {{ block.settings.product_title }}
+                  </div>
+                  <div class="about-product-desc to-top">{{ block.settings.desc }}</div>
+                  {% if block.settings.show_btn %}
+                    <a class="ipl-product-btn btn-diy about-product-btn to-top" href="{{ block.settings.btn_link }}">
+                      <div class="btn-txt" text="{{ block.settings.btn_text }}">
+                        {{- block.settings.btn_text -}}
+                      </div>
+                    </a>
+                  {% endif %}
+                </div>
+              {% endif %}
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+      <div class="about-progress-bar">
+        <div class="about-progress-inner"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  $(document).ready(function () {
+    {% comment %} $('#{{ section.id }} *').addClass('to-top'); {% endcomment %}
+
+    function updateProgress($content, $progressBar) {
+      var visibleWidth = $content.width();
+      var totalWidth = $content[0].scrollWidth;
+      var scrollLeft = $content.scrollLeft() + 20;
+      var maxScroll = totalWidth - visibleWidth;
+
+      var percent;
+      if (maxScroll <= 0) {
+        percent = 100; // 内容宽度小于等于容器，进度为100%
+      } else {
+        percent = ((scrollLeft + visibleWidth) / totalWidth) * 100;
+      }
+
+      // 保证最大不超过100%
+      percent = Math.min(100, percent);
+
+      $progressBar.css('width', percent + '%');
+    }
+
+    updateProgress($('#{{ section.id }} .about-proudct-container'), $('#{{ section.id }} .about-progress-inner'));
+
+    $('#{{ section.id }} .about-proudct-container').on('scroll', function () {
+      updateProgress($('#{{ section.id }} .about-proudct-container'), $('#{{ section.id }} .about-progress-inner'));
+    });
+
+    $(window).on('resize', function () {
+      updateProgress($('#{{ section.id }} .about-proudct-container'), $('#{{ section.id }} .about-progress-inner'));
+    });
+  });
+</script>
+
+{% schema %}
+{
+  "name": "u-about-product",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "标题",
+      "default": "Core Products"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "image_block",
+      "name": "图片",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image_year",
+          "label": "年"
+        },
+        {
+          "type": "image_picker",
+          "id": "proudct_image",
+          "label": "产品图"
+        },
+        {
+          "type": "text",
+          "id": "product_title",
+          "label": "产品标题"
+        },
+        {
+          "type": "text",
+          "id": "desc",
+          "label": "描述"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_btn",
+          "label": "显示按钮",
+          "default": false
+        },
+        {
+          "type": "text",
+          "id": "btn_text",
+          "label": "按钮文本",
+          "default": "LEARN MORE"
+        },
+        {
+          "type": "url",
+          "id": "btn_link",
+          "label": "按钮跳转地址"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 6,
+  "presets": [
+    {
+      "name": "u-about-product",
+      "blocks": []
+    }
+  ]
+}
+{% endschema %}

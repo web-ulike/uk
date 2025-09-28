@@ -275,17 +275,21 @@
           {%- if section.settings.image1 != blank -%}
             <img loading="lazy" class="faq-img-icon" width="{{ section.settings.image1.width }}" height="{{ section.settings.image1.height }}" {% render 'image-attributes' , image: section.settings.image1 %} alt="{{ section.settings.image1.alt | escape }}">
           {%- endif -%}
-          <div class="faq-text">
-            <div class="faq-title text-top">
-              {{ section.settings.text }}
-              {%- if section.settings.image2 != blank -%}
-                <img loading="lazy" class="faq-title-img" width="{{ section.settings.image2.width }}" height="{{ section.settings.image2.height }}" {% render 'image-attributes' , image: section.settings.image2 %} alt="{{ section.settings.image2.alt | escape }}">
+          {%- if section.settings.text != blank or section.settings.image2 != blank or section.settings.text1 != blank -%}
+            <div class="faq-text">
+              {%- if section.settings.text != blank or section.settings.image2 != blank -%}
+                <div class="faq-title text-top">
+                  {{ section.settings.text }}
+                  {%- if section.settings.image2 != blank -%}
+                    <img loading="lazy" class="faq-title-img" width="{{ section.settings.image2.width }}" height="{{ section.settings.image2.height }}" {% render 'image-attributes' , image: section.settings.image2 %} alt="{{ section.settings.image2.alt | escape }}">
+                  {%- endif -%}
+                </div>
+              {%- endif -%}
+              {%- if section.settings.text1 != blank -%}
+                <div class="faq-title-p">{{ section.settings.text1 }}</div>
               {%- endif -%}
             </div>
-            {%- if section.settings.text1 != blank -%}
-              <div class="faq-title-p">{{ section.settings.text1 }}</div>
-            {%- endif -%}
-          </div>
+          {%- endif -%}
         </div>
         <div class="faq-list">
           {%- for block in section.blocks -%}

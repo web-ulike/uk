@@ -1,0 +1,996 @@
+<style>
+.officially-product{
+  position: relative;
+  height: 410vh;
+}
+
+.officially-product .officially-product-header{
+  padding: 105px 0 95px 0;
+  text-align: center;
+  color: #190A0A;
+}
+
+.officially-product .officially-product-header-title{
+  font-size: 50px;
+  line-height: 1.2;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.officially-product .officially-product-header-sub{
+  font-size: 18px;
+  line-height: 1.5;
+  max-width: 861px;
+  margin: 0 auto;
+  margin-top: 20px;
+}
+
+.officially-product .officially-product-body{
+  position: sticky;
+  height: 100vh;
+  top: 0;
+  overflow: hidden;
+}
+
+.officially-product .officially-product-img{
+  position: absolute;
+  width: 48%;
+  left: 50%;
+  top: 0;
+  transform: translateX(-50%);
+  transform-origin: top center;
+  z-index: 1;
+  mix-blend-mode:screen;
+}
+
+.officially-product .officially-product-video{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 3;
+  opacity: 0;
+}
+.officially-product .officially-product-video img{
+  width:100%;
+}
+
+.officially-product .officially-product-light{
+  position: absolute;
+  width: 11.8%;
+  left: 50%;
+  top: 14.2%;
+  transform: translateX(-50%);
+  z-index: 2;
+  opacity: 0;
+}
+
+.officially-product .officially-product-t{
+  display: block;
+  width: 100%;
+  position: relative;
+  z-index: 1;
+}
+
+.officially-product .officially-product-text{
+  position: absolute;
+  width: 385px;
+  top: 25%;
+  left: 66%;
+  transform: translateY(50%);
+  color: #3F3636;
+  opacity: 0;
+  display: none;
+  z-index: 2;
+}
+
+.officially-product .officially-text-five{
+  left: 20%;
+}
+
+.officially-product .officially-product-icon{
+  display: block;
+}
+
+.officially-product .officially-product-title{
+  font-size: 48px;
+  line-height: 1.2;
+  margin-top: 10px;
+}
+
+.officially-product .officially-product-sub{
+  font-size: 18px;
+  line-height: 1.2;
+  margin: 10px 0;
+}
+
+.officially-product .officially-product-btn{
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 215px;
+  height: 45px;
+  border-radius: 45px;
+  border: 1px solid #3F3636;
+  margin-top: 40px;
+  color: #3F3636;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.officially-product-popup{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  z-index: 999;
+  background: rgba(0, 0, 0, 0);
+  display: flex;
+  justify-content: flex-end;
+  /* opacity: 0; */
+  pointer-events: none;
+  transition: all .4s ease;
+  overflow: hidden;
+}
+.officially-product-popup.active{
+  /* opacity: 1; */
+  background: rgba(0, 0, 0, .3);
+  pointer-events: all;
+}
+.officially-product-popup .officially-product-mark{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height:100%;
+  z-index:1;
+}
+.officially-product-popup .officially-product-cont{
+  width: 100%;
+  height: 100%;
+  max-width: 1280px;
+  background: #FBFAF4;
+  padding: 80px 15px 80px 60px;
+  position: relative;
+  z-index:2;
+  transform: translateX(100%);
+  transition: all .4s ease;
+}
+
+.officially-product-popup.active .officially-product-cont{
+  transform: translateX(0);
+  transition: all .4s ease .1s;
+}
+
+.officially-product-popup .officially-product-popup-det{
+  height: 100%;
+  overflow-y: auto;
+  display: flex;
+  gap: 145px;
+  color: #3F3636;
+  padding-right: 185px;
+}
+
+.officially-product-popup .officially-product-popup-det::-webkit-scrollbar {
+    width: 10px;
+}
+
+.officially-product-popup .officially-product-popup-det::-webkit-scrollbar-track {
+    background-color: none;
+}
+
+.officially-product-popup .officially-product-popup-det::-webkit-scrollbar-thumb {
+    background-color: rgba(228, 221, 221, .3);
+    border-radius: 5px;
+}
+
+.officially-product-popup .officially-product-popup-det::-moz-scrollbar {
+  width: 10px;
+}
+
+.officially-product-popup .officially-product-popup-det::-moz-scrollbar-track {
+  background: none;
+}
+
+.officially-product-popup .officially-product-popup-det::-moz-scrollbar-thumb {
+  background: rgba(228, 221, 221, .3);
+  border-radius: 5px;
+}
+.officially-product-popup .officially-product-close{
+  position: absolute;
+  top: 80px;
+  right: 70px;
+  cursor: pointer;
+  z-index: 3;
+}
+
+.officially-product-popup .officially-product-popup-left{
+  width: 115px;
+  flex-shrink: 0;
+}
+
+.officially-product-popup .officially-product-popup-sub{
+  font-size: 24px;
+  line-height: 1.2;
+}
+
+.officially-product-popup .officially-product-popup-title{
+  font-size: 40px;
+  line-height: 1.2;
+}
+
+.officially-product-popup .officially-product-popup-p{
+  font-size: 18px;
+  line-height: 1.2;
+  margin-top: 20px;
+}
+
+.officially-product-popup .officially-product-popup-video{
+  position: relative;
+  margin-top: 60px;
+}
+
+.officially-product-popup .officially-product-popup-video .img{
+  display: block;
+  width: 100%;
+  position: relative;
+  z-index: 1;
+}
+
+.officially-product-popup .product-video{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  top: 0;
+  left: 0;
+  z-index: 2;
+}
+
+.officially-product-popup .video-wrapper__play-button{
+    left: 50%;
+    top:50%;
+    transform: translate(-50%,-50%);
+  }
+
+@media (max-width:1280px) {
+  .officially-product-popup .officially-product-popup-det{
+    gap: 60px;
+    padding-right: 100px;
+  }
+  .officially-product-popup .officially-product-popup-title{
+    font-size: 35px;
+  }
+  .officially-product-popup .officially-product-popup-p{
+    font-size: 16px;
+  }
+}
+
+@media (max-width:991px) {
+  .officially-product-popup{
+    display: flex;
+    align-items: flex-end;
+  }
+
+  .officially-product-popup .officially-product-cont{
+    padding: 50px 20px;
+    height: auto;
+    max-height: 100%;
+    transform: translateY(100%);
+  }
+
+  .officially-product-popup.active .officially-product-cont{
+    transform: translateY(0);
+  }
+
+  .officially-product-popup .officially-product-close{
+    top: 18px;
+    right: 18px;
+  }
+
+  .officially-product-popup .officially-product-popup-det{
+    gap: 10px;
+    padding-right: 0;
+    flex-direction: column;
+  }
+
+  .officially-product-popup .officially-product-popup-title{
+    font-size: 24px;
+  }
+
+  .officially-product-popup .officially-product-popup-p{
+    font-size: 12px;
+    margin-top: 10px;
+  }
+
+  .officially-product-popup .officially-product-popup-left{
+    width: auto;
+  }
+
+  .officially-product-popup .officially-product-popup-sub{
+    font-size: 14px;
+  }
+
+  .officially-product-popup .officially-product-popup-video{
+    margin-top: 40px;
+  }
+
+}
+
+@media (max-width:1250px) {
+  .officially-product .officially-product-text{
+    max-width: 300px;
+  }
+  .officially-product .officially-product-title{
+    font-size: 30px;
+  }
+  .officially-product .officially-product-sub{
+    font-size: 14px;
+  }
+  .officially-product .officially-product-icon{
+    zoom: .9;
+  }
+}
+
+@media (max-width:991px) {
+  .officially-product .officially-product-header{
+    padding: 50px 0 70px 0;
+    position: absolute;
+    width: 100%;
+    left: 0;
+    top: 0;
+    z-index: 3;
+  }
+  .officially-product .officially-product-header-title{
+    font-size: 24px;
+  }
+
+  .officially-product .officially-product-header-sub{
+    font-size: 14px;
+    margin-top: 10px;
+  }
+  .officially-product .officially-product-body{
+    height: 100vh;
+    top: 0;
+    padding-top: 70%;
+  }
+
+  .officially-product .officially-product-img{
+    width: 65.87%;
+    position: relative;
+  }
+
+  .officially-product .officially-product-text{
+    width: 100%;
+    left: 0;
+    top: 11vh;
+    text-align: center;
+    max-width: none;
+    transform: translate(20%,0);
+    padding: 0 24px;
+  }
+
+  .officially-product .officially-text-five{
+    left: 0;
+    top: auto;
+    bottom: 15%;
+  }
+
+  .officially-product .officially-product-icon{
+    margin: 0 auto;
+  }
+
+  .officially-product .officially-product-btn{
+    margin: 0 auto;
+    font-size: 12px;
+    width: 171px;
+    height: 42px;
+  }
+  
+}
+</style>
+
+<section class="section-box">
+  <div class="officially-product">
+    <div class="officially-product-header">
+      <div class="container">
+        <div class="officially-product-header-title">{{ section.settings.text }}</div>
+        <div class="officially-product-header-sub">{{ section.settings.text1 }}</div>
+      </div>
+    </div>
+    <div class="officially-product-body">
+      <div class="officially-product-img">
+        {%- if section.settings.image != blank -%}
+          <img
+            class="officially-product-t"
+            width="{{ section.settings.image.width }}"
+            height="{{ section.settings.image.height }}"
+            {% render 'image-attributes', image: section.settings.image %}
+            alt="{{ section.settings.image.alt | escape }}"
+          >
+        {%- endif -%}
+        {%- if section.settings.image1 != blank -%}
+          <img
+            class="officially-product-light light-one"
+            width="{{ section.settings.image1.width }}"
+            height="{{ section.settings.image1.height }}"
+            {% render 'image-attributes', image: section.settings.image1 %}
+            alt="{{ section.settings.image1.alt | escape }}"
+          >
+        {%- endif -%}
+        {%- if section.settings.image4 != blank -%}
+          <img
+            class="officially-product-light light-two"
+            width="{{ section.settings.image4.width }}"
+            height="{{ section.settings.image4.height }}"
+            {% render 'image-attributes', image: section.settings.image4 %}
+            alt="{{ section.settings.image4.alt | escape }}"
+          >
+        {%- endif -%}
+        {%- if section.settings.image7 != blank -%}
+          <img
+            class="officially-product-light light-three"
+            width="{{ section.settings.image7.width }}"
+            height="{{ section.settings.image7.height }}"
+            {% render 'image-attributes', image: section.settings.image7 %}
+            alt="{{ section.settings.image7.alt | escape }}"
+          >
+        {%- endif -%}
+        {%- if section.settings.image10 != blank -%}
+          <img
+            class="officially-product-light light-four"
+            width="{{ section.settings.image10.width }}"
+            height="{{ section.settings.image10.height }}"
+            {% render 'image-attributes', image: section.settings.image10 %}
+            alt="{{ section.settings.image10.alt | escape }}"
+          >
+        {%- endif -%}
+         <!-- {%- if section.settings.video_link != blank -%}
+            <video class="officially-product-video pc-box" muted>
+              <source src="{{ section.settings.video_link }}" type="video/mp4">
+              Your browser does not support HTML video.
+            </video>
+        {%- endif -%} -->
+        <!-- {%- if section.settings.video_link != blank -%}
+          <video class="officially-product-video mb-box" muted preload="none" x-webkit-airplay="allow" x5-playsinline="" webkit-playsinline="" playsinline="true">
+            <source src="{{ section.settings.video_link }}" type="video/mp4">
+            Your browser does not support HTML video.
+          </video>
+        {%- endif -%} -->
+        <div class="officially-product-video"></div>
+      </div>
+      <div class="officially-product-text officially-text-one">
+        {%- if section.settings.image2 != blank -%}
+          <img
+            class="officially-product-icon"
+            width="{{ section.settings.image2.width }}"
+            height="{{ section.settings.image2.height }}"
+            {% render 'image-attributes', image: section.settings.image2 %}
+            alt="{{ section.settings.image2.alt | escape }}"
+          >
+        {%- endif -%}
+        <div class="officially-product-title">{{ section.settings.text2 }}</div>
+        <div class="officially-product-sub">{{ section.settings.text3 }}</div>
+        {%- if section.settings.image3 != blank -%}
+          <img
+            class="officially-product-icon"
+            width="{{ section.settings.image3.width }}"
+            height="{{ section.settings.image3.height }}"
+            {% render 'image-attributes', image: section.settings.image3 %}
+            alt="{{ section.settings.image3.alt | escape }}"
+          >
+        {%- endif -%}
+      </div>
+      <div class="officially-product-text officially-text-two">
+        {%- if section.settings.image5 != blank -%}
+          <img
+            class="officially-product-icon"
+            width="{{ section.settings.image5.width }}"
+            height="{{ section.settings.image5.height }}"
+            {% render 'image-attributes', image: section.settings.image5 %}
+            alt="{{ section.settings.image5.alt | escape }}"
+          >
+        {%- endif -%}
+        <div class="officially-product-title">{{ section.settings.text4 }}</div>
+        <div class="officially-product-sub">{{ section.settings.text5 }}</div>
+        {%- if section.settings.image6 != blank -%}
+          <img
+            class="officially-product-icon"
+            width="{{ section.settings.image6.width }}"
+            height="{{ section.settings.image6.height }}"
+            {% render 'image-attributes', image: section.settings.image6 %}
+            alt="{{ section.settings.image6.alt | escape }}"
+          >
+        {%- endif -%}
+      </div>
+      <div class="officially-product-text officially-text-three">
+        {%- if section.settings.image8 != blank -%}
+          <img
+            class="officially-product-icon"
+            width="{{ section.settings.image8.width }}"
+            height="{{ section.settings.image8.height }}"
+            {% render 'image-attributes', image: section.settings.image8 %}
+            alt="{{ section.settings.image8.alt | escape }}"
+          >
+        {%- endif -%}
+        <div class="officially-product-title">{{ section.settings.text6 }}</div>
+        <div class="officially-product-sub">{{ section.settings.text7 }}</div>
+        {%- if section.settings.image9 != blank -%}
+          <img
+            class="officially-product-icon"
+            width="{{ section.settings.image9.width }}"
+            height="{{ section.settings.image9.height }}"
+            {% render 'image-attributes', image: section.settings.image9 %}
+            alt="{{ section.settings.image9.alt | escape }}"
+          >
+        {%- endif -%}
+      </div>
+      <div class="officially-product-text officially-text-four">
+        {%- if section.settings.image11 != blank -%}
+          <img
+            class="officially-product-icon"
+            width="{{ section.settings.image11.width }}"
+            height="{{ section.settings.image11.height }}"
+            {% render 'image-attributes', image: section.settings.image11 %}
+            alt="{{ section.settings.image11.alt | escape }}"
+          >
+        {%- endif -%}
+        <div class="officially-product-title">{{ section.settings.text8 }}</div>
+        <div class="officially-product-sub">{{ section.settings.text9 }}</div>
+        {%- if section.settings.text10 != blank -%}
+          <div class="officially-product-btn">
+            {{ section.settings.text10 }}
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <g clip-path="url(#clip0_1505_2334)">
+              <path d="M12 0C5.38359 0 0 5.38359 0 12C0 18.6164 5.38359 24 12 24C18.6164 24 24 18.6164 24 12C24 5.38359 18.6164 0 12 0ZM12 22.957C5.95781 22.957 1.04297 18.0422 1.04297 12C1.04297 5.95781 5.95781 1.04297 12 1.04297C18.0422 1.04297 22.957 5.95781 22.957 12C22.957 18.0422 18.0422 22.957 12 22.957Z" fill="#190A0A"/>
+              <circle cx="12" cy="12" r="12" fill="#6C6AB4"/>
+              <path d="M18.2641 11.5954H12.5242V5.85786C12.5242 5.56958 12.2875 5.33521 12.0016 5.33521C11.7133 5.33521 11.4789 5.57192 11.4789 5.85786V11.5954H5.74141C5.45312 11.5954 5.21875 11.8321 5.21875 12.118C5.21875 12.4063 5.45547 12.6407 5.74141 12.6407H11.4789V18.3805C11.4789 18.6688 11.7156 18.9032 12.0016 18.9032C12.2898 18.9032 12.5242 18.6665 12.5242 18.3805V12.6407H18.2617C18.55 12.6407 18.7844 12.404 18.7867 12.118C18.7867 11.8297 18.55 11.5954 18.2641 11.5954Z" fill="#FBFAF4"/>
+              </g>
+              <defs>
+              <clipPath id="clip0_1505_2334">
+              <rect width="24" height="24" fill="white"/>
+              </clipPath>
+              </defs>
+            </svg>
+          </div>
+        {%- endif -%}
+              
+      </div>
+      <div class="officially-product-text officially-text-five">
+        <div class="officially-product-title">{{ section.settings.text11 }}</div>
+        <div class="officially-product-sub">{{ section.settings.text12 }}</div>
+        {%- if section.settings.image12 != blank -%}
+          <img
+            class="officially-product-icon"
+            width="{{ section.settings.image12.width }}"
+            height="{{ section.settings.image12.height }}"
+            {% render 'image-attributes', image: section.settings.image12 %}
+            alt="{{ section.settings.image12.alt | escape }}"
+          >
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+              
+  <div class="officially-product-popup">
+    <div class="officially-product-mark"></div>
+    <div class="officially-product-cont">
+      <div class="officially-product-close">
+        <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" viewBox="0 0 23 23" fill="none">
+          <line x1="2.02941" y1="0.848633" x2="22.182" y2="21.0012" stroke="#3F3636" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="22.1836" y1="1.06066" x2="2.03105" y2="21.2132" stroke="#3F3636" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="officially-product-popup-det">
+        <div class="officially-product-popup-left">
+          <div class="officially-product-popup-sub">{{ section.settings.text13 }}</div>
+        </div>
+        <div class="officially-product-popup-right">
+          <div class="officially-product-popup-title">{{ section.settings.text14 }}</div>
+          <div class="officially-product-popup-p">{{ section.settings.text15 }}</div>
+          <div class="officially-product-popup-video">
+            {%- if section.settings.image13 != blank -%}
+              <img
+                class="img"
+                width="{{ section.settings.image13.width }}"
+                height="{{ section.settings.image13.height }}"
+                {% render 'image-attributes', image: section.settings.image13 %}
+                alt="{{ section.settings.image13.alt | escape }}"
+              >
+            {%- endif -%}
+            <!-- {%- if section.settings.text16 != blank -%}
+              <video class="product-video" src="{{ section.settings.text16 }}" loop muted></video>
+            {%- endif -%} -->
+            {%- if section.settings.video != blank -%}
+              <native-video
+                {% if section.settings.autoplay %}
+                  autoplay
+                {% endif %}
+                class="officially-product-popup-wrapper product-video"
+              >
+                {%- unless section.settings.autoplay -%}
+                  <button type="button" class="video-wrapper__play-button video-wrapper__play-button--large video-wrapper__play-button--ripple" title="{{ 'general.accessibility.play_video' | t | escape }}">
+                    {%- if section.settings.v_icon != blank -%}
+                      <img
+                        loading="lazy"
+                        class="v_img"
+                        width="{{ section.settings.v_icon.width }}"
+                        height="{{ section.settings.v_icon.height }}"
+                        {% render 'image-attributes', image: section.settings.v_icon %}
+                        alt="{{ section.settings.v_icon.alt | escape }}"
+                      >
+                    {%- endif -%}
+                  </button>
+                {%- endunless -%}
+                <template>
+                  {{-
+                    section.settings.video
+                    | video_tag:
+                      controls: section.settings.show_video_controls,
+                      autoplay: section.settings.autoplay,
+                      muted: section.settings.autoplay,
+                      playsinline: section.settings.autoplay,
+                      loop: true
+                  -}}
+                </template>
+              </native-video>
+            {%- endif -%}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+  function productScrollTo(){
+    // const pv = document.querySelector('.officially-product-video')
+    // let isPlay = false
+    // document.querySelector('#main').addEventListener('touchstart', function(event) {
+    //   let vt=pv.getAttribute('is-t')
+    //   if(vt) return
+    //   pv.setAttribute('is-t',true)
+    //   let playPromise = pv.play();
+    //   if (playPromise !== undefined) {
+    //     playPromise.then(_ => {
+    //       isPlay = true
+    //       pv.pause();
+    //       pv.currentTime = 0.01
+    //     })
+    //     .catch(error => {
+    //     });   
+    //   }
+    // });
+    let imgP = new ImgPlay('.officially-product-video','https://cdn.shopify.com/s/files/1/0740/5882/6015/files/officially-product-ulike-',16)
+    imgP.loadImg()
+    let pam = {
+      ml:'-8%',
+      ml1:'8%',
+      scale:0.8,
+      mt1:'-3%',
+      mt2:'-6%',
+      mt3:'-9%',
+      mt4:'-45%',
+      mt5:'-70%',
+      translateY:'-50%',
+      translateY1:'-250%',
+      translateX:'0',
+      translateX1:'0'
+    }
+    if(window.innerWidth < 992){
+      pam = {
+        ml:'0',
+        ml:'0',
+        scale:1,
+        mt1:'0',
+        mt2:'0',
+        mt3:'0',
+        mt4:'0',
+        mt5:'-135%',
+        translateY:'0',
+        translateY1:'0',
+        translateX:'0',
+        translateX1:'-20%'
+      }
+    }
+    ScrollTrigger.create({
+      trigger: ".officially-product",
+      start: "top top",
+      end: "+=260%",
+      scrub: true,
+      // markers:true,
+      animation:
+      gsap.timeline()
+      .to(".officially-product-header",{'opacity':'0','scale':pam.scale,ease:'power2.inOut'})
+      .to(".officially-product-img",{'margin-left':pam.ml,'scale':pam.scale,ease:'power2.inOut'},'<')
+      .to(".officially-text-one",{'display':'block','transform':'translate('+ pam.translateX +','+ pam.translateY +')','opacity':'1',ease:'power2.inOut'})
+      .to(".light-one",{'opacity':'1',ease:'power2.inOut'},'<')
+      .to(".officially-text-one",{'display':'none','transform':'translate('+ pam.translateX1 +','+ pam.translateY1 +')','opacity':'0',ease:'power2.inOut'})
+      .to(".light-one",{'opacity':'0',ease:'power2.inOut'},'<')
+      .to(".officially-product-img",{'margin-top':pam.mt1,ease:'power2.inOut'},'<')
+      .to(".officially-text-two",{'display':'block','transform':'translate('+ pam.translateX +','+ pam.translateY +')','opacity':'1',ease:'power2.inOut'})
+      .to(".light-two",{'opacity':'1',ease:'power2.inOut'},'<')
+      .to(".officially-text-two",{'display':'none','transform':'translate('+ pam.translateX1 +','+ pam.translateY1 +')','opacity':'0',ease:'power2.inOut'})
+      .to(".light-two",{'opacity':'0',ease:'power2.inOut'},'<')
+      .to(".officially-product-img",{'margin-top':pam.mt2,ease:'power2.inOut'},'<')
+      .to(".officially-text-three",{'display':'block','transform':'translate('+ pam.translateX +','+ pam.translateY +')','opacity':'1',ease:'power2.inOut'})
+      .to(".light-three",{'opacity':'1',ease:'power2.inOut'},'<')
+      .to(".officially-text-three",{'display':'none','transform':'translate('+ pam.translateX1 +','+ pam.translateY1 +')','opacity':'0',ease:'power2.inOut'})
+      .to(".light-three",{'opacity':'0',ease:'power2.inOut'},'<')
+      .to(".officially-product-img",{'margin-top':pam.mt3,ease:'power2.inOut'},'<')
+      .to(".officially-text-four",{'display':'block','transform':'translate('+ pam.translateX +','+ pam.translateY +')','opacity':'1',ease:'power2.inOut'})
+      .to(".light-four",{'opacity':'1',ease:'power2.inOut'},'<')
+      .to(".officially-text-four",{'display':'none','transform':'translate('+ pam.translateX1 +','+ pam.translateY1 +')','opacity':'0',ease:'power2.inOut'})
+      .to(".light-four",{'opacity':'0',ease:'power2.inOut'},'<')
+      .to(".officially-product-img",{'margin-top':pam.mt4,ease:'power2.inOut'},'<')
+      .to(".officially-product-img",{'margin-left':pam.ml1,'margin-top':pam.mt5,ease:'power2.inOut'})
+    })
+    ScrollTrigger.create({
+      trigger: ".officially-product",
+      start: "top+=60% top",
+      end: "+=50%",
+      scrub: true,
+      // markers:true,
+      onUpdate(self){
+          const video = document.querySelector('.officially-product-video')
+        // if(isPlay||window.innerWidth>991){
+          if(self.progress){
+            video.style.setProperty('opacity','1')
+          }else{
+            video.style.setProperty('opacity','0')
+          }
+          try {
+            // pv.currentTime = self.progress * pv.duration
+           imgP.playImg(Math.round(self.progress*15))
+          } catch (error) {
+            console.log(error);
+          }
+        // }
+      },
+      animation:
+      gsap.timeline()
+      .to(".officially-text-five",{'display':'block','transform':'translate('+ pam.translateX +','+ pam.translateY +')','opacity':'1',ease:'power2.inOut'})
+    })
+  }
+  window.addEventListener('load', () => {
+    // if(window.innerWidth<991){
+    //   $('.officially-product .officially-product-video.pc-box').remove()
+    // }else{
+    //   $('.officially-product .officially-product-video.mb-box').remove()
+    // }
+    productScrollTo()
+    $('.officially-product-btn').click(function(){
+      let $p =  $('.officially-product-popup')
+      $p.addClass('active')
+      if($p.find('.product-video .video-wrapper__play-button').length > 0){
+        // $p.find('.product-video').get(0).play()
+        $p.find('.product-video .video-wrapper__play-button').click()
+        
+      }
+      $('body').css('overflow','hidden')
+    })
+    $('.officially-product-close,.officially-product-mark').click(function(){
+      let $p =  $('.officially-product-popup')
+      $p.removeClass('active')
+      // if($p.find('.product-video').length > 0){
+      //   $p.find('.product-video').get(0).pause()
+      //   $p.find('.product-video').get(0).currentTime = 0
+      // }
+      $('body').css('overflow','')
+    })
+  })
+</script>
+{% schema %}
+{
+  "name": "officially-product",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "video_link",
+      "label": "Video Link"
+    },
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "text1",
+      "label": "Text"
+    },
+    {
+      "type": "header",
+      "content": "Mode 1"
+    },
+    {
+      "type": "image_picker",
+      "id": "image1",
+      "label": "Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image2",
+      "label": "Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image3",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "text2",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "text3",
+      "label": "Text"
+    },
+    {
+      "type": "header",
+      "content": "Mode 2"
+    },
+    {
+      "type": "image_picker",
+      "id": "image4",
+      "label": "Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image5",
+      "label": "Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image6",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "text4",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "text5",
+      "label": "Text"
+    },
+    {
+      "type": "header",
+      "content": "Mode 3"
+    },
+    {
+      "type": "image_picker",
+      "id": "image7",
+      "label": "Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image8",
+      "label": "Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image9",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "text6",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "text7",
+      "label": "Text"
+    },
+    {
+      "type": "header",
+      "content": "Mode 4"
+    },
+    {
+      "type": "image_picker",
+      "id": "image10",
+      "label": "Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image11",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "text8",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "text9",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "text10",
+      "label": "Text"
+    },
+    {
+      "type": "header",
+      "content": "Mode 5"
+    },
+    {
+      "type": "image_picker",
+      "id": "image12",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "text11",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "text12",
+      "label": "Text"
+    },
+    {
+      "type": "header",
+      "content": "Popup"
+    },
+    {
+      "type": "image_picker",
+      "id": "image13",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "text13",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "text14",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "text15",
+      "label": "Text"
+    },
+    {
+      "type": "video",
+      "id": "video",
+      "label": "Video",
+      "info": "Replaces the external video if both are set."
+    },
+    {
+      "type": "checkbox",
+      "id": "autoplay",
+      "label": "Autoplay",
+      "info": "Video is muted automatically to allow autoplay.",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_video_controls",
+      "label": "Show video controls",
+      "info": "Only applicable with native video.",
+      "default": false
+    }
+  ],
+  "presets": [
+    {
+      "name": "officially-product"
+    }
+  ]
+}
+{% endschema %}

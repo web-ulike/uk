@@ -1,0 +1,311 @@
+<style>
+  .announcement-bar-cd .announcement-bar__list{
+    padding-right:10px;
+  }
+  @media screen and (min-width: 741px) {
+    .announcement-bar-cd .announcement-bar__message {
+        min-width: auto;
+    }
+
+    .announcement-bar-cd .announcement-bar__message{
+      text-align: left;
+    }
+}
+  .ulike-head-cd{
+    font-family: var(--heading-font-family);
+    margin-right: 15px;
+  }
+  .ulike-head-cd .ulike__unit-group,
+  .ulike-head-cd .ulike__digits {
+    display: flex;
+    justify-content: center;
+    color:#000;
+  }
+
+  .ulike-head-cd .ulike__unit-group {
+    gap: 2px;
+    align-items: center;
+  }
+
+  .ulike-head-cd .ulike__unit {
+    font-size: 12px;
+    line-height: 1;
+    width: 26px;
+    background: #fff;
+    height: 17px;
+    overflow: hidden;
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .ulike-head-cd .ulike__digits,
+  .ulike-head-cd .ulike__digit {
+    position: relative;
+  }
+
+  .ulike-head-cd .ulike__digits {
+    height: 12px;
+    overflow: hidden;
+  }
+
+  .ulike-head-cd .ulike__digit {
+    width: 1ch;
+    text-align:center;
+  }
+
+  .ulike-head-cd .ulike__digit--roll-in {
+    animation: rollIn 0.5s ease-in-out;
+  }
+
+  .ulike-head-cd .ulike__next-digit-fade {
+    animation: fade 0.5s ease-in-out;
+  }
+
+  .ulike-head-cd .ulike__prev-digit-fade {
+    animation: fade 0.5s ease-in-out reverse;
+  }
+
+  /* Animations */
+  @keyframes rollIn {
+    from {
+      transform: translateY(-100%);
+    }
+
+    to {
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes fade {
+    from {
+      opacity: 0;
+    }
+
+    to {
+      opacity: 1;
+    }
+  }
+
+  .ulike-head-cd .ulike-cd-txt {
+    font-size: 12px;
+    line-height: 1;
+    gap: 2px;
+    display: flex;
+    justify-content: center;
+    margin-top: 2px;
+    color: #fff;
+  }
+
+  .ulike-head-cd .ulike-txt-item {
+    width: 26px;
+    height: 8px;
+    display: flex;
+    justify-content: center;
+  }
+
+  .ulike-head-cd .ulike-txt-item span {
+    transform-origin: top center;
+    transform: scale(0.67);
+  }
+  @media (max-width: 768px) {
+     .ulike-head-cd{
+       margin-right:10px;
+     }
+  }
+</style>
+
+<div class="ulike-head-cd">
+  <div class="ulike__unit-group">
+    <div class="ulike__unit" data-day>
+      <div class="ulike__digits">
+        <div class="ulike__digit" data-col>
+          <div data-pos="next">-</div>
+          <div data-pos="prev">-</div>
+        </div>
+        <div class="ulike__digit" data-col>
+          <div data-pos="next">-</div>
+          <div data-pos="prev">-</div>
+        </div>
+      </div>
+    </div>
+    <div class="ulike__unit" data-hrs>
+      <div class="ulike__digits">
+        <div class="ulike__digit" data-col>
+          <div data-pos="next">-</div>
+          <div data-pos="prev">-</div>
+        </div>
+        <div class="ulike__digit" data-col>
+          <div data-pos="next">-</div>
+          <div data-pos="prev">-</div>
+        </div>
+      </div>
+    </div>
+    <div class="ulike__unit" data-mins>
+      <div class="ulike__digits">
+        <div class="ulike__digit" data-col>
+          <div data-pos="next">-</div>
+          <div data-pos="prev">-</div>
+        </div>
+        <div class="ulike__digit" data-col>
+          <div data-pos="next">-</div>
+          <div data-pos="prev">-</div>
+        </div>
+      </div>
+    </div>
+    <div class="ulike__unit" data-secs>
+      <div class="ulike__digits">
+        <div class="ulike__digit" data-col>
+          <div data-pos="next">-</div>
+          <div data-pos="prev">-</div>
+        </div>
+        <div class="ulike__digit" data-col>
+          <div data-pos="next">-</div>
+          <div data-pos="prev">-</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="ulike-cd-txt">
+    <div class="ulike-txt-item" data-day><span>{{ section.settings.cd_time_t }}</span></div>
+    <div class="ulike-txt-item" data-hrs><span>{{ section.settings.cd_time_t1 }}</span></div>
+    <div class="ulike-txt-item" data-mins><span>{{ section.settings.cd_time_t2 }}</span></div>
+    <div class="ulike-txt-item" data-secs><span>{{ section.settings.cd_time_t3 }}</span></div>
+  </div>
+</div>
+
+<script>
+  window.addEventListener("DOMContentLoaded", () => {
+    {%- if section.settings.cd_time != blank -%}
+      const uec = new UnixEpochalypseCountdown(".ulike-head-cd");
+    {%- endif -%}
+  });
+  class UnixEpochalypseCountdown {
+    constructor(qs) {
+      this.el = document.querySelector(qs);
+      this.time = [];
+      this.animTimeout = null;
+      this.updateTimeout = null;
+      // 设置目标时间为当前时间加8天
+      this.later = new Date("{{ section.settings.cd_time }}");
+      this.update();
+    }
+
+    getTimeLeft() {
+      let timeLeft = {
+        d: 0,
+        h: 0,
+        m: 0,
+        s: 0,
+      };
+
+      const now = new Date();
+      const diff = this.later.getTime() - now.getTime();
+
+      if (diff >= 0) {
+        timeLeft.d = Math.floor(diff / (1000 * 60 * 60 * 24));
+        timeLeft.h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        timeLeft.m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        timeLeft.s = Math.floor((diff % (1000 * 60)) / 1000);
+      }
+
+      return timeLeft;
+    }
+
+    clearAnimations() {
+      if (this.el) {
+        const colAnimsToClear = this.el.querySelectorAll("[data-col]");
+
+        Array.from(colAnimsToClear).forEach((a) => {
+          a.classList.remove("ulike__digit--roll-in");
+        });
+
+        const posAnimsToClear = this.el.querySelectorAll("[data-pos]");
+
+        Array.from(posAnimsToClear).forEach((a) => {
+          a.classList.remove("ulike__next-digit-fade", "ulike__prev-digit-fade");
+        });
+      }
+    }
+
+    update(doAnimations = false) {
+      // 初始化显示为 `-`
+      if (!this.time.length) {
+        let digitCount = 12;
+
+        while (digitCount--) this.time.push("-");
+      }
+
+      // 获取当前剩余时间
+      const display = this.getTimeLeft();
+      const displayDigits = [];
+
+      for (let v in display) {
+        const digits = `${display[v]}`.split("");
+        // 单位数字补零
+        if (digits.length < 2) digits.unshift("0");
+
+        displayDigits.push(...digits);
+      }
+
+      // 倒计时结束检查
+      if (
+        display.d === 0 &&
+        display.h === 0 &&
+        display.m === 0 &&
+        display.s === 0
+      ) {
+        this.hideCountdown();
+        return;
+      }
+
+      // 更新显示
+      const cols = this.el.querySelectorAll("[data-col]");
+
+      if (cols) {
+        Array.from(cols).forEach((c, i) => {
+          const digit = displayDigits[i];
+
+          if (digit !== this.time[i]) {
+            const next = c.querySelector(`[data-pos="next"]`);
+            const prev = c.querySelector(`[data-pos="prev"]`);
+
+            if (doAnimations === true) {
+              c.classList.add("ulike__digit--roll-in");
+              next.classList.add("ulike__next-digit-fade");
+              prev.classList.add("ulike__prev-digit-fade");
+            }
+
+            next.innerHTML = digit;
+            prev.innerHTML = this.time[i];
+          }
+        });
+        // 隐藏天数列（假设天数列为前两列）
+        if (display.d === 0) {
+          this.el.querySelectorAll("[data-day]").forEach((col) => (col.style.display = "none"))
+        }
+      }
+
+      this.time = displayDigits;
+
+      // 清理动画定时器
+      clearTimeout(this.animTimeout);
+      this.animTimeout = setTimeout(this.clearAnimations.bind(this), 500);
+
+      // 循环更新
+      clearTimeout(this.updateTimeout);
+      this.updateTimeout = setTimeout(this.update.bind(this, true), 1000);
+    }
+    hideCountdown() {
+      // 隐藏倒计时容器
+      if (this.el) {
+        this.el.style.display = "none";
+      }
+      // 清除所有定时器
+      clearTimeout(this.animTimeout);
+      clearTimeout(this.updateTimeout);
+    }
+  }
+
+</script>

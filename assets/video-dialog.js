@@ -160,7 +160,7 @@ textDialog(document.getElementsByClassName('slideshow__btn-link'));
  * @param {扩展字段} properties 
  * @returns 
  */
-function addToCart(productId, button, properties) {
+function addToCart(productId, button, properties,code='') {
   // 获取文本元素和加载动画元素
  let textElement ;
  let loaderElement;
@@ -177,6 +177,10 @@ function addToCart(productId, button, properties) {
      loaderElement.hidden = false;
   }
 
+  console.log(properties);
+  if(code){
+    autoDiscountCode(code);
+  }
  fetch('/cart/add.js', {
    method: 'POST',
    headers: {
@@ -232,6 +236,100 @@ function addToCart(productId, button, properties) {
      // 添加购物车失败的处理逻辑
      console.error('Error adding product to cart:', error);
    });
+}
+
+// 加购处理回调
+function addToCartPromise(
+  productId,
+  button,
+  properties,
+  code = "",
+  quantity = 1
+) {
+  return new Promise((resolve, reject) => {
+    // 获取文本元素和加载动画元素
+    var textElement;
+    var loaderElement;
+    if (button) {
+      textElement = button.querySelector(".loader-button__text");
+      loaderElement = button.querySelector(".loader-button__loader");
+
+      if (button.disabled) return;
+      // 禁用按钮
+      button.setAttribute("disabled", "disabled");
+      button.setAttribute("aria-busy", "true");
+      // 显示加载动画
+      textElement.hidden = true;
+      loaderElement.hidden = false;
+    }
+
+    console.log(properties);
+
+    if (code) {
+      autoDiscountCode(code);
+    }
+
+    fetch("/cart/add.js", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        id: productId,
+        quantity: quantity, // 可根据需求设置购买数量
+        properties,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        // 获取购物车列表
+        return fetch("/cart.js")
+          .then((response) => response.json())
+          .then((cartData) => {
+            cartData["sections"] = data["sections"];
+            document.documentElement.dispatchEvent(
+              new CustomEvent("cart:refresh", {
+                bubbles: true,
+                detail: {
+                  cart: cartData,
+                  openMiniCart:
+                    window.themeVariables.settings.cartType === "drawer",
+                },
+              })
+            );
+
+            if (button) {
+              // 恢复按钮状态
+              button.removeAttribute("disabled");
+              button.removeAttribute("aria-busy");
+              // 显示 "Add to Cart"，隐藏加载动画
+              textElement.hidden = false;
+              loaderElement.hidden = true;
+            }
+
+            // Resolve the Promise with the cart data
+            resolve(cartData);
+          });
+      })
+      .catch((error) => {
+        console.error(
+          "Error adding product to cart or getting cart contents:",
+          error
+        );
+
+        if (button) {
+          // 恢复按钮状态
+          button.removeAttribute("disabled");
+          button.removeAttribute("aria-busy");
+          // 显示 "Add to Cart"，隐藏加载动画
+          textElement.hidden = false;
+          loaderElement.hidden = true;
+        }
+
+        // Reject the Promise with the error
+        reject(error);
+      });
+  });
 }
 
 function buyProduct(productId, properties) {
@@ -322,4 +420,178 @@ function copyCodeExtend(code, codeTxt, bt,event){
  setTimeout(()=>{
   bt.innerHTML = codeTxt;
  },7000)
+}
+
+ // 定义函数来滚动到特定的 section
+function scrollToSection(sectionId) {
+  var section = document.getElementById(sectionId);
+  section.scrollIntoView({ behavior: 'smooth' });
+}
+
+class ImgPlay {
+  constructor(cont,urlRoot,maxLength) {
+    this.urlRoot = urlRoot;
+    this.indexRange = [0, maxLength - 1];
+    this.maxLength = maxLength
+    this.eleContainer = document.querySelector(cont);
+    this.percent = 0
+    this.store = {
+      length: 0
+    }
+    this.isPlay = false
+    this.pictureNum = null
+  }
+
+  loadImg(){
+    // 图片序列预加载
+    for ( let start = this.indexRange[0]; start <= this.indexRange[1]; start++) {
+        ((index)=> {
+          let that = this
+          let img = new Image();
+            img.onload = function () {
+                that.store.length++;
+                // 存储预加载的图片对象
+                that.store[index] = this;
+                that.updateLoading();
+            };
+            img.onerror = function () {
+              that.store.length++;
+              that.updateLoading();
+            };
+            img.src = that.urlRoot + index + '.jpg';
+        })(start);
+    }
+  }
+
+  updateLoading(){
+    // loading进度
+    this.percent = Math.round(100 * this.store.length / this.maxLength);
+    if(this.percent == 100 && this.isPlay){
+      this.playImg(this.pictureNum)
+    }
+  }
+
+  playImg(num = null){
+    // 全部加载完毕，无论成功还是失败
+    if (this.percent == 100) {
+      let index = num || this.indexRange[0];
+      this.eleContainer.innerHTML = '';
+      // 依次append图片对象
+      let step = ()=> {
+          if (this.store[index - 1] && num == null) {
+              this.eleContainer.removeChild(this.store[index - 1]);
+          }
+          this.eleContainer.appendChild(this.store[index]);
+          // 序列增加
+          index++;
+          // 如果超过最大限制
+          if (index <= this.indexRange[1]) {
+            if(num == null){
+              setTimeout(step, 42);
+            }else{
+
+            }
+          } else {
+              // 本段播放结束回调
+              // 我这里就放一个重新播放的按钮
+              // this.eleContainer.insertAdjacentHTML('beforeEnd', '<button onclick="">再看一遍</button>');
+          }
+      };
+      if(num == null){
+        // 等100%动画结束后执行播放
+        setTimeout(step, 100);
+      }else{
+        step()
+      }
+      
+    }else{
+      this.isPlay = true
+      this.pictureNum = num
+    }
+  }
+}
+
+class Countdown {
+    constructor(endTime, elName,loop = null) {
+      this.displayElement = document.querySelector(elName);
+      this.timer = null;
+      this.loop = loop
+      this.setEndTime(endTime);
+      this.start();
+      this.locaName = elName+'loopTime'
+    }
+    setEndTime(endTime) {
+      if (endTime) {
+        this.endTime = new Date(endTime).getTime();
+      } else {
+        if(this.loop){
+          let locTime = localStorage.getItem(this.locaName);
+          if(locTime && locTime*1 > new Date().getTime()){
+            this.endTime = locTime*1
+          }else{
+            this.endTime = new Date().getTime() + 2 * 24 * 60 * 60 * 1000;
+            localStorage.setItem(this.locaName, this.endTime)
+          }
+        }else{
+          this.endTime = new Date().getTime();
+        }
+      }
+    }
+    start() {
+      this.timer = setInterval(() => this.update(), 1000);
+    }
+
+    update() {
+      const now = new Date().getTime();
+      const distance = this.endTime - now;
+      let hours = 0;
+      let minutes = 0;
+      let seconds = 0;
+
+      if (distance < 0) {
+        if(this.loop){
+          this.endTime = new Date().getTime() + 2 * 24 * 60 * 60 * 1000;
+          localStorage.setItem(this.locaName, this.endTime)
+        }else{
+          clearInterval(this.timer);
+          hours = 0;
+          minutes = 0;
+          seconds = 0;
+        }
+        
+      }else{
+        hours = Math.floor(distance / (1000 * 60 * 60));
+        minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        seconds = Math.floor((distance % (1000 * 60)) / 1000);
+      }
+
+ // 假设 this.displayElement 是倒计时显示的父元素
+
+if (this.displayElement) {
+  const hoursElement = this.displayElement.querySelector('.h');
+  const minutesElement = this.displayElement.querySelector('.m');
+  const secondsElement = this.displayElement.querySelector('.s');
+
+  if (hoursElement && minutesElement && secondsElement) {
+      hoursElement.innerHTML = this.formatTime(hours);
+      minutesElement.innerHTML = this.formatTime(minutes);
+      secondsElement.innerHTML = this.formatTime(seconds);
+  }
+}
+
+    }
+    formatTime(time) {
+      return time < 10 ? `0${time}` : time;
+    }
+  }
+
+  // 按钮添加loading
+function btnShowLoading($p, isShow = true) {
+  if (isShow) {
+    $p.addClass("loading-btn-cus");
+    $p.append('<span class="loading-span"></span>');
+  } else {
+    $p.removeClass("loading-btn-cus");
+    $p.find(".loading-span").remove();
+  }
 }

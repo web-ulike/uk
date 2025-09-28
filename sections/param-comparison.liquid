@@ -1,0 +1,111 @@
+<style>
+.param-comparison{
+  padding: 80px 0;
+}
+
+.param-comparison .param-comparison-table{
+  margin-top: 60px;
+  width: 100%;
+}
+
+.param-comparison .param-comparison-table th,.param-comparison .param-comparison-table td{
+  background: #f9f9f9;
+  padding: 35px 25px;
+  line-height: 1.2;
+  position: relative;
+  border-right: 3px solid #fff;
+  border-bottom: 3px solid #fff;
+}
+
+.param-comparison .param-comparison-table thead td{
+  font-size: 16px;
+  color: #696969;
+  text-align: center;
+}
+
+.param-comparison .param-comparison-table thead td:nth-child(2){
+  color: #000;
+  white-space: nowrap;
+}
+
+.param-comparison .param-comparison-table td{
+  font-size: 16px;
+  color: #000;
+}
+
+.param-comparison .param-comparison-tag{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: #000;
+}
+
+.param-comparison .param-comparison-tag::before{
+  position: absolute;
+  content: '';
+  width: 7px;
+  height: 13px;
+  border-right: 1.5px solid #fff;
+  border-bottom: 1.5px solid #fff;
+  transform: translate(-50%,-50%) rotate(45deg);
+  left: 50%;
+  top: 50%;
+  margin-top: -2px;
+}
+
+@media (max-width:991px) {
+  .param-comparison{
+    padding: 50px 0;
+  }
+}
+
+@media (max-width:768px) {
+  .param-comparison .param-comparison-table{
+    margin-top: 30px;
+  }
+  .param-comparison .param-comparison-table thead td, .param-comparison .param-comparison-table td{
+    padding:15px 8px;
+    font-size: 12px;
+    zoom: .9;
+  }
+  .param-comparison .param-comparison-tag{
+    zoom: .6;
+  }
+}
+</style>
+<section class="section-box">
+  <div class="param-comparison">
+    <div class="container">
+      <div class="title-diy to-top">{{ section.settings.title }}</div>
+      {{ section.settings.html }}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "param-comparison",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title"
+    },
+    {
+      "type": "html",
+      "id": "html",
+      "label": "HTML"
+    }
+  ],
+  "presets": [
+    {
+      "name": "param-comparison",
+      "blocks": []
+    }
+  ]
+}
+{% endschema %}

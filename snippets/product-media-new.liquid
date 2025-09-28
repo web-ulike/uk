@@ -1,0 +1,213 @@
+{%- if product.media.size > 0 -%}
+  <script src="{{ 'product-new.js' | asset_url }}"></script>
+  <script>
+    var variantArr = [];
+    {% for variant in product.variants %}
+        variantArr.push({
+          vid: {{ variant.id }},
+          position: {{ variant.featured_media.position }},
+          url: '{{ variant.metafields.custom["3d_url"] }}',
+          page_price: '{{ variant.metafields.custom["page_price"] }}',
+          isOriginalPrice: '{{ variant.metafields.custom["isOriginalPrice"] }}',
+          original_price: '{{ variant.compare_at_price | money }}',
+          price: '{{ variant.price | money }}',
+          variantTitle: '{{ variant.metafields.custom["variant_title"] }}',
+          title: '{{ product.title }}'
+        });
+    {% endfor %}
+
+    function addMaxProperty(arr) {
+      for (let i = 0; i < arr.length; i++) {
+          if (i < arr.length - 1) {
+            arr[i].max = arr[i + 1].position - 1;
+          } else {
+            arr[i].max = Number('{{ product.media  | size }}'); // 最后一个对象的 max 被设置为 最大值
+          }
+      }
+      return arr;
+    }
+
+    // 处理 position 相同的情况，保留所有项但标记 max 最大值
+    function convertData(arr) {
+      const positionMaxMap = {}; // 用于存储每个 position 的 max 最大值
+      // 第一步：找到每个 position 的最大 max 值
+      arr.forEach(item => {
+          const position = item.position;
+          if (!positionMaxMap[position] || item.max > positionMaxMap[position]) {
+              positionMaxMap[position] = item.max;
+          }
+      });
+
+      // 第二步：遍历所有项并修改 max 值为该 position 的最大 max
+      arr.forEach(item => {
+          item.max = positionMaxMap[item.position];
+      });
+      // 返回原始数组，但每个对象增加了 isMax 标记
+      return arr;
+    }
+
+    variantArr = addMaxProperty(variantArr);
+    variantArr = convertData(variantArr);
+
+    var productMediaArr = []
+    {% for media in product.media %}
+      productMediaArr.push({{ media | json }});
+    {% endfor %}
+    // 初始化数据
+    generateHtmlForVariant();
+  </script>
+
+  <div class="product-media-new">
+    <!-- 左侧轮播 -->
+    <div class="thumbs-swiper">
+      <div class="swiper swiper_nav">
+        <div class="swiper-wrapper"></div>
+      </div>
+    </div>
+    <div class="main-image-swiper" id="product-images">
+      <!-- Swiper主图 -->
+      <div class="swiper swiper_main">
+        <div class="swiper-wrapper">
+          <!-- 主图 -->
+        </div>
+        <div class="swiper-pagination"></div>
+        <div class="swiper-button-prev">
+          <svg width="71" height="71" viewBox="0 0 71 71" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <g clip-path="url(#clip0_1903_14476)">
+              <g filter="url(#filter0_d_1903_14476)">
+                <circle cx="35.377" cy="36.2051" r="28" transform="rotate(-180 35.377 36.2051)" fill="white" />
+              </g>
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M30.9606 17.9981L30.2535 17.291L28.8393 18.7052L29.5464 19.4123L36.0021 25.8681L42.0873 31.9533C42.8684 32.7343 44.1347 32.7343 44.9157 31.9533L37.4163 24.4538L30.9606 17.9981ZM48.4606 36.9123C48.8511 36.5218 48.8511 35.8886 48.4606 35.4981C48.3291 35.3666 48.1701 35.2794 48.0021 35.2365V35.2052H47.7557H47.7513H47.0021H36.7515H26.501H24.0009C22.8963 35.2052 22.0009 36.1007 22.0009 37.2052H26.501H45.3393L29.5464 52.9981L28.8393 53.7052L30.2535 55.1194L30.9606 54.4123L48.4606 36.9123Z" fill="black" />
+            </g>
+            <defs>
+              <filter id="filter0_d_1903_14476" x="-2.02305" y="-0.194921" width="74.8" height="74.8" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+                <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+                <feOffset dy="1" />
+                <feGaussianBlur stdDeviation="4.7" />
+                <feComposite in2="hardAlpha" operator="out" />
+                <feColorMatrix type="matrix" values="0 0 0 0 0.76974 0 0 0 0 0.76974 0 0 0 0 0.76974 0 0 0 0.25 0" />
+                <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_1903_14476" />
+                <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_1903_14476" result="shape" />
+              </filter>
+              <clipPath id="clip0_1903_14476">
+                <rect width="70" height="70" fill="white" transform="translate(0.376953 0.794922)" />
+              </clipPath>
+            </defs>
+          </svg>
+        </div>
+        <div class="swiper-button-next">
+          <svg width="71" height="71" viewBox="0 0 71 71" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <g clip-path="url(#clip0_1903_14476)">
+              <g filter="url(#filter0_d_1903_14476)">
+                <circle cx="35.377" cy="36.2051" r="28" transform="rotate(-180 35.377 36.2051)" fill="white" />
+              </g>
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M30.9606 17.9981L30.2535 17.291L28.8393 18.7052L29.5464 19.4123L36.0021 25.8681L42.0873 31.9533C42.8684 32.7343 44.1347 32.7343 44.9157 31.9533L37.4163 24.4538L30.9606 17.9981ZM48.4606 36.9123C48.8511 36.5218 48.8511 35.8886 48.4606 35.4981C48.3291 35.3666 48.1701 35.2794 48.0021 35.2365V35.2052H47.7557H47.7513H47.0021H36.7515H26.501H24.0009C22.8963 35.2052 22.0009 36.1007 22.0009 37.2052H26.501H45.3393L29.5464 52.9981L28.8393 53.7052L30.2535 55.1194L30.9606 54.4123L48.4606 36.9123Z" fill="black" />
+            </g>
+            <defs>
+              <filter id="filter0_d_1903_14476" x="-2.02305" y="-0.194921" width="74.8" height="74.8" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+                <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+                <feOffset dy="1" />
+                <feGaussianBlur stdDeviation="4.7" />
+                <feComposite in2="hardAlpha" operator="out" />
+                <feColorMatrix type="matrix" values="0 0 0 0 0.76974 0 0 0 0 0.76974 0 0 0 0 0.76974 0 0 0 0.25 0" />
+                <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_1903_14476" />
+                <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_1903_14476" result="shape" />
+              </filter>
+              <clipPath id="clip0_1903_14476">
+                <rect width="70" height="70" fill="white" transform="translate(0.376953 0.794922)" />
+              </clipPath>
+            </defs>
+          </svg>
+        </div>
+      </div>
+      {% comment %} 分享按钮 {% endcomment %}
+      {% if section.settings.show_share_buttons %}
+        <div class="box-share">
+          <div class="main-share-icon">
+            <img
+              src="https://cdn.shopify.com/s/files/1/0656/9079/6273/files/00df13cd8d824750f32e67ff1fc75641.svg?v=1724665648"
+              alt="share"
+              loading="lazy"
+            >
+          </div>
+          <div class="list">
+            <!-- Facebook Share -->
+            <div class="share-button fb" data-network="facebook"></div>
+            <!-- X (Twitter) Share -->
+            <div class="share-button tw" data-network="twitter"></div>
+            <!-- Pinterest Share -->
+            <div class="share-button pinterest" data-network="pinterest"></div>
+            <!-- Email Share -->
+            <div class="share-button email" data-network="email"></div>
+          </div>
+        </div>
+    {% endif %}
+
+      {% comment %} 移动端标签 {% endcomment %}
+      {% if section.settings.show_tag %}
+        <div class="prodcut-tag">
+          {{ section.settings.text_discount }}
+        </div>
+      {% endif %}
+
+      <div class="three-load"></div>
+      <div class="product-slider-btn-model" attr-model-url="">
+        <img
+          loading="lazy"
+          src="https://cdn.shopify.com/s/files/1/0656/9079/6273/files/3D_c2d55f57-5f91-4ee9-b75e-f3459e41155d.svg?v=1723023155"
+          alt="3d switch"
+        >
+      </div>
+    </div>
+
+    {%- assign first_3d_model = product.media | where: 'media_type', 'model' | first -%}
+
+    {%- if first_3d_model -%}
+      <button
+        class="product__view-in-space button button--ternary button--full"
+        data-shopify-xr
+        data-shopify-model3d-id="{{ first_3d_model.id }}"
+        data-shopify-model3d-default-id="{{ first_3d_model.id }}"
+        data-shopify-title="{{ product.title | escape }}"
+        data-shopify-xr-hidden
+      >
+        {%- render 'icon', icon: 'media-view-in-space' -%}
+        {{- 'product.general.view_in_space' | t -}}
+      </button>
+    {%- endif -%}
+  </div>
+  <a id="hiddenMailtoLink" target="_blank"></a>
+{%- endif -%}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/5.4.4/photoswipe.min.css">
+<script type="module">
+  import PhotoSwipeLightbox from 'https://cdn.shopify.com/s/files/1/0656/9079/6273/files/photoswipe-lightbox.esm.min.js?v=1719456367';
+  const lightbox = new PhotoSwipeLightbox({
+    gallery: '#product-images',
+    children: 'a',
+    mouseMovePan: true,
+    initialZoomLevel: 'fit',
+    secondaryZoomLevel: 1,
+    maxZoomLevel: 2,
+    pswpModule: () =>
+      import('https://cdn.shopify.com/s/files/1/0656/9079/6273/files/photoswipe.esm.min.js?v=1719456367'),
+  });
+  lightbox.init();
+</script>
+
+{% comment %} 增加图片结构化数据 {% endcomment %}
+<script type="application/ld+json">
+  [
+    {% for image in product.images %}
+    {
+      "@context": "https://schema.org/",
+      "@type": "ImageObject",
+      "contentUrl": "https:{{ image.src | img_url: 'master' | escape }}",
+      "acquireLicensePage": "{{ shop.secure_url }}{{ product.url | escape }}",
+      "creditText": "{{ product.title | escape }}"
+    }{% if forloop.last == false %},{% endif %}
+    {% endfor %}
+  ]
+</script>

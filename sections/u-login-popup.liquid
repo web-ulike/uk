@@ -1,0 +1,571 @@
+{%- liquid
+  assign se_id = section.id
+  assign se_bks = section.blocks
+  assign se_stts = section.settings
+-%}
+
+<div id="u-login-popup" class="popup">
+  <div class="overlay">
+    <div class="popup-content" tabindex="0">
+      <button class="close-btn">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="27"
+          height="27"
+          viewBox="0 0 27 27"
+          fill="none"
+        >
+          <path
+            d="M19.6523 7.33765L6.65234 20.3376"
+            stroke="#040000"
+            stroke-width="1.4"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+          <path
+            d="M6.65234 7.33765L19.6523 20.3376"
+            stroke="#040000"
+            stroke-width="1.4"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+      </button>
+      <h2>
+        {{ se_stts.title }}
+      </h2>
+      <form id="login-form">
+        <div class="form-group">
+          <input
+            type="email"
+            class="j_popup_email"
+            name="email"
+            placeholder=" "
+            required
+          >
+          <label for="email">
+            {{ se_stts.email_label }}
+          </label>
+          <div class="input-msg-error"></div>
+        </div>
+        <div class="form-group">
+          <input
+            type="text"
+            class="verification-code"
+            name="email"
+            placeholder=" "
+            required
+            maxlength="12"
+          >
+          <label for="email">{{ se_stts.code_label }}</label>
+          <button type="button" class="send-code-btn" class="btn-secondary">{{ se_stts.send_code_btn }}</button>
+          <div class="input-msg-error"></div>
+        </div>
+        <div class="login-msg-error"></div>
+        <button type="button" class="btn-primary">
+          {{ se_stts.btn_text }}
+        </button>
+      </form>
+      <p class="alternative-login">
+        {{ se_stts.already_have_password_text }}
+        <a href="{{ se_stts.login_link }}" target="_blank">{{ se_stts.login_with_password }}</a>
+      </p>
+    </div>
+  </div>
+</div>
+
+<div class="notification">
+  <span class="notification-icon">
+    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12" fill="none">
+      <circle cx="6" cy="6" r="6" fill="#4CC35B"/>
+      <path d="M8.93881 4.26645C9.11727 4.44491 9.13085 4.72629 8.98047 4.92336L8.93539 4.97487L5.2608 8.64946C5.14365 8.76661 4.9537 8.76661 4.83654 8.64946L2.85558 6.6685C2.66091 6.47382 2.66244 6.15665 2.85901 5.96008C3.0392 5.77989 3.32073 5.76359 3.51635 5.91207L3.56743 5.95666L5.05544 7.44404L8.23039 4.26988C8.41058 4.08969 8.69211 4.07338 8.88773 4.22187L8.93881 4.26645Z" fill="white"/>
+    </svg>
+  </span>
+  <span class="notification-text">{{ se_stts.verification_success_text }}</span>
+</div>
+
+<script>
+  $(document).ready(function () {
+    const errorMessages = {
+      emailRequiredWithPhone:
+        'You cannot subscribe with just your phone number. Please enter both your email and phone number.',
+      emailInvalid: 'Please enter a valid email address.',
+      emailFormat: 'Please enter the correct email format',
+      codeInvalid: 'Please enter the correct verification Code',
+      system_err: "{{ 'general.page.system_err' | t }}",
+    };
+    const thatLogin = $('#u-login-popup');
+
+    // 绑定点击事件到文档中的'.home-btn'和'.january-two .form-btn'类元素
+    $(document).on('click', '{{ se_stts.click_class }}', function (e) {
+      // 阻止默认的事件行为，例如阻止超链接的跳转
+     {% if customer %}
+        // 去掉错误提示
+        location.href = 'https://account.ulike.com/account/notice?site=uk'
+      {% else %}
+        thatLogin.fadeIn();
+        e.preventDefault();
+      {% endif %}
+    });
+
+    $(document).on('click', '#u-login-popup .close-btn', function (e) {
+      // 去掉错误提示
+      thatLogin.fadeOut();
+      e.preventDefault();
+    });
+
+    $(document).on('focus', '.j_popup_email, .verification-code', function () {
+      try {
+        const $input = $(this);
+        const $formGroup = $input.closest('.form-group');
+        
+        if ($formGroup.length === 0) {
+          console.error('Form group not found');
+          return;
+        }
+        // 去掉错误提示
+        $formGroup.removeClass('form-group-error');
+    
+        if (!$input.val()) {
+          const $popupContent = $input.closest('.popup-content');
+          if ($popupContent.length === 0) {
+            return;
+          }
+          $popupContent.addClass('popup-active');
+        }
+      } catch (error) {
+        console.error('An error occurred:', error);
+      }
+    });
+
+    // Blur event using jQuery
+    $(document).on('blur', '.j_popup_email,.verification-code', function () {
+      if (!$(this).val()) {
+        $(this).closest('.popup-content').removeClass('popup-active');
+      }
+    });
+
+    $(document).on('click', '.send-code-btn', function () {
+      let $this = $(this); // 缓存按钮对象
+      let timeLeft = 60; // 倒计时时间
+      let countdown; // 定时器变量
+      let emailError = '';
+      console.log(validateEmailField());
+
+      if (validateEmailField()) {
+        $this.prop('disabled', true); // 禁用按钮
+        $this.text(`${timeLeft}s`);
+        // 倒计时逻辑
+        countdown = setInterval(() => {
+          if (timeLeft > 0) {
+            timeLeft--;
+            $this.text(`${timeLeft}s`);
+          } else {
+            clearInterval(countdown); // 清除定时器
+            $this.text('Obtain your verification code'); // 恢复按钮文字
+            $this.prop('disabled', false); // 启用按钮
+          }
+        }, 1000);
+     
+        let userEmail= $('.j_popup_email').val().trim();
+        let codeForm = {
+          "since":"USER_LOGIN_WITH_EMAIL",
+          userEmail
+        }
+        sendUlikeApi('/user/sendCode', codeForm).then(function (res) {
+          if (res.code == 0){
+            $(".notification").fadeIn();
+            setTimeout(function () {
+              $(".notification").fadeOut();
+            }, 3000);
+          } else {
+            thatLogin.find('.login-msg-error').text(errorMessages.system_err);
+          }
+        });
+      }
+    });
+
+    $(document).on('click', '.btn-primary', function () {
+      let $this = $(this); // 缓存按钮对象
+      let data = {
+        "since": "USER_LOGIN_WITH_EMAIL",
+        "userEmail": '',
+        "verifyCode": "",
+        "returnUrl": "https://account.ulike.com/account/notice?site=uk"
+      };
+      
+      data.userEmail = thatLogin.find('.j_popup_email').val().trim();
+      data.verifyCode = thatLogin.find('.verification-code').val().trim();
+
+      const isEmailValid = validateEmailField();
+      const isCodeValid = validateCodeField();
+
+      if (isEmailValid && isCodeValid) {
+        sendUlikeApi('/user/login', data).then(function (res) {
+          if (res.code === 0) {
+            console.log(res.data.loginUrl)
+            window.location.href = res.data.loginUrl;
+          } else if (res.code === 99998){
+            {% comment %} The verification code you entered is invalid {% endcomment %}
+            thatLogin.find('.login-msg-error').text('The verification code entered is invalid');
+          } else {
+            thatLogin.find('.login-msg-error').text(errorMessages.system_err);
+          }
+        });
+      }
+    });
+
+    /**
+     * 验证邮箱字段的合法性
+     *
+     * 此函数用于验证用户输入的邮箱地址是否有效首先检查邮箱字段是否为空，
+     * 如果为空，则设置相应的错误消息如果邮箱格式不正确，则设置格式错误消息
+     * 如果存在任何错误，函数将打印错误消息并更新HTML以显示错误，然后返回false，
+     * 表示验证失败如果没有错误，函数返回true，表示验证成功
+     *
+     * @return {boolean} 如果邮箱字段验证成功，则返回true；否则返回false
+     */
+    function validateEmailField() {
+      // 初始化邮箱错误消息为空字符串
+      let emailError = '';
+      // 获取用户输入的邮箱地址，并去除前后空格
+      let userEmail = $('.j_popup_email').val().trim();
+
+      // 检查邮箱字段
+      if (userEmail == '') {
+        // 如果邮箱字段为空，则设置错误消息为“邮箱无效”
+        emailError = errorMessages.emailInvalid;
+      } else if (!validateEmail(userEmail)) {
+        // 如果邮箱格式不正确，则设置错误消息为“邮箱格式错误”
+        emailError = errorMessages.emailFormat;
+      }
+
+      // 如果存在邮箱错误
+      if (emailError) {
+        // 更新HTML以显示错误消息
+        $('#login-form .form-group')
+          .eq(0)
+          .find('.input-msg-error')
+          .text(emailError);
+        // 为错误字段的表单组添加错误类
+        $('#login-form .form-group').eq(0).addClass('form-group-error');
+        // 返回false表示验证失败
+        return false;
+      }
+      // 如果没有错误，返回true表示验证成功
+      return true;
+    }
+
+    function validateCodeField() {
+      // 初始化邮箱错误消息为空字符串
+      let codeError = '';
+      // 获取用户输入的邮箱地址，并去除前后空格
+      let userCode = $('.verification-code').val().trim();
+
+      // 检查邮箱字段
+      if (!userCode) {
+        // 如果邮箱字段为空，则设置错误消息为“邮箱无效”
+        codeError = errorMessages.codeInvalid;
+      }
+
+      // 如果存在邮箱错误
+      if (codeError) {
+        // 更新HTML以显示错误消息
+        $('#login-form .form-group')
+          .eq(1)
+          .find('.input-msg-error')
+          .text(codeError);
+        // 为错误字段的表单组添加错误类
+        $('#login-form .form-group').eq(1).addClass('form-group-error');
+        // 返回false表示验证失败
+        return false;
+      }
+      // 如果没有错误，返回true表示验证成功
+      return true;
+    }
+
+
+    // 显示通知
+    $("#showNotification").click(function () {
+      $("#notification").slideDown(300); // 使用 slideDown 动画显示
+    });
+
+    // 隐藏通知
+    $("#hideNotification").click(function () {
+      $("#notification").slideUp(300); // 使用 slideUp 动画隐藏
+    });
+
+
+  });
+</script>
+
+<style>
+  #u-login-popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    display: none;
+  }
+
+  #u-login-popup .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  #u-login-popup .popup-content {
+    position: relative;
+    text-align: center;
+    padding: 50px 30px 35px;
+    background: #fff;
+    width: 480px;
+  }
+  #u-login-popup .popup-active .send-code-btn {
+    color: #2194ff;
+  }
+  #u-login-popup .popup-active .btn-primary {
+    background: #190a0a;
+  }
+
+  #u-login-popup .close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    width: 26px;
+    cursor: pointer;
+  }
+
+  /* Form Styling */
+  #login-popup h2 {
+    color: #000;
+    text-align: center;
+    font-family: Saans;
+    font-size: 25px;
+    font-style: normal;
+    font-weight: 570;
+    line-height: normal;
+  }
+  #login-form {
+    margin-top: 40px;
+  }
+  .form-group {
+    position: relative;
+    margin-bottom: 20px;
+    color: #8e8e8e;
+    font-size: 14px;
+    font-weight: 300;
+    margin-bottom: 30px;
+  }
+
+  #u-login-popup .form-group input {
+    width: 100%;
+    padding: 8px 0px;
+    font-size: 14px;
+    color: rgba(25, 10, 10, 1);
+    outline: none;
+    transition: all 0.3s ease;
+    text-align: left;
+    border: 0px;
+    border-bottom: 1px solid #8e8e8e;
+  }
+
+  #u-login-popup .form-group label {
+    position: absolute;
+    top: 50%;
+    left: 0px;
+    transform: translateY(-50%);
+    padding: 0 5px;
+    color: #8e8e8e;
+    font-size: 14px;
+    padding: 0px;
+    pointer-events: none;
+    transition: all 0.3s ease;
+  }
+
+  #u-login-popup .form-group input:focus + label,
+  #u-login-popup .form-group input:not(:placeholder-shown) + label {
+    top: -4px;
+    left: 0px;
+    font-size: 12px;
+  }
+
+  #u-login-popup .form-group input:focus {
+    border-color: #007bff;
+  }
+  #u-login-popup .form-group .input-msg-error{
+    position: absolute;
+    color: #f42a10;
+    font-size: 11px;
+    font-weight: 300;
+    line-height: 19px;
+    display: none;
+  }
+
+  #u-login-popup .form-group-error {
+    color: #f42a10;
+  }
+  #u-login-popup .form-group-error input {
+    border-color: #f42a10;
+    color: #f42a10;
+  }
+  .form-group-error .input-msg-error {
+    display: block;
+  }
+  #login-form .login-msg-error{
+    color: #f42a10;
+    font-size: 11px;
+    font-weight: 300;
+    margin-bottom: 4px;
+  }
+
+  #u-login-popup .send-code-btn {
+    position: absolute;
+    background: inherit;
+    width: 50%;
+    right: 0px;
+    color: red;
+    padding: 0px;
+    text-align: right;
+    top: 8px;
+    color: rgba(142, 142, 142, 1);
+  }
+
+  .btn-primary {
+    color: #fff;
+    display: flex;
+    padding: 8px 10px;
+    justify-content: center;
+    align-items: center;
+    align-self: stretch;
+    background: #dbd6d6;
+    width: 100%;
+  }
+
+  .alternative-login {
+    margin-top: 20px;
+    font-size: 12px;
+    color: #8e8e8e;
+  }
+
+  .alternative-login a {
+    color: #2194ff;
+    text-decoration: none;
+  }
+
+  .alternative-login a:hover {
+    text-decoration: underline;
+  }
+
+
+  .notification {
+    position: fixed;
+    top: 12%;
+    left: 0;
+    right: 0;
+    display: none; /* 默认隐藏 */
+    padding: 6px 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    {% comment %} display: flex; {% endcomment %}
+    align-items: center;
+    justify-content: center;
+    max-width: 430px;
+    margin: 0 auto;
+    border-radius: 4px;
+    background: #FFF;
+    font-size: 12px;
+  }
+
+  .notification-icon {
+    margin-right: 4px;
+    display: inline-flex;
+  }
+
+  .notification-text {
+    font-size: 12px;
+    color: #000;
+    line-height: 30px;
+  }
+
+
+  @media (max-width: 768px) {
+    #u-login-popup .popup-content {
+      width: 100%;
+      margin: 0px 20px;
+      padding: 30px 20px 20px;
+    }
+    #u-login-popup .popup-content h2 {
+      font-size: 18px;
+    }
+    #u-login-popup #login-form {
+      margin-top: 20px;
+    }
+    #u-login-popup .form-group input {
+      font-size: 12px;
+      padding: 4px 0px;
+    }
+    #u-login-popup .send-code-btn {
+      font-size: 12px;
+      top: 4px;
+    }
+    .notification {
+      max-width: 90%;
+      padding: 5px 10px;
+    }
+    .notification .notification-text {
+      line-height: 16px;
+      display: inline-flex;
+      width: 90%;
+    }
+  }
+</style>
+{% schema %}
+{
+  "name": "u-login-popup",
+  "class": "u-login-popup",
+  "blocks": [],
+  "settings": [
+    { "type": "html", "id": "title", "label": "弹窗标题", "default": "Password-free Login/Register" },
+    { "type": "html", "id": "email_label", "label": "邮箱输入框标签", "default": "Email Address*" },
+    { "type": "html", "id": "code_label", "label": "验证码输入框标签", "default": "Verification Code*" },
+    { "type": "html", "id": "send_code_btn", "label": "发送验证码按钮", "default": "Obtain your verification code" },
+    { "type": "html", "id": "btn_text", "label": "登录/注册按钮", "default": "Login/Register" },
+    {
+      "type": "html",
+      "id": "already_have_password_text",
+      "label": "已有密码文本",
+      "default": "Already have a password?"
+    },
+    { "type": "html", "id": "login_link", "label": "密码登录链接", "default": "https://account.ulike.com/login" },
+    { "type": "html", "id": "login_with_password", "label": "密码登录按钮文本", "default": "Login with password" },
+    {
+      "type": "html",
+      "id": "verification_success_text",
+      "label": "验证码发送成功提示",
+      "default": "The SMS verification code has been sent, please check your phone"
+    },
+    {
+      "type": "html",
+      "id": "click_class",
+      "label": "需要点击事件class",
+      "default": ".home-btn,.january-two .form-btn"
+    }
+  ],
+  "presets": [{ "name": "u-login-popup", "blocks": [] }]
+}
+{% endschema %}

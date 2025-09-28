@@ -1,0 +1,89 @@
+<style>
+  .about-big-image {
+    position: relative;
+    width: 100%;
+  }
+
+  .about-big-image-text {
+    position: absolute;
+    top: 100px;
+    line-height: 1;
+    font-size: 48px;
+    color: #190a0a;
+  }
+
+  .about-big-image-text span {
+    color: #e0004d;
+  }
+
+  @media (max-width: 1200px) {
+    .about-big-image-text {
+      font-size: 38px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .about-big-image {
+      padding: 60px 0;
+    }
+    .about-big-image-text {
+      width: 100%;
+      font-size: 24px;
+      top: 0px;
+      left: 0;
+      right: 0;
+      display: flex;
+      justify-content: center;
+    }
+  }
+</style>
+<section id="about-big-image-{{ section.id }}">
+  <div class="about-big-image to-top">
+    <picture>
+      <source
+        srcset="{{ section.settings.mobile_image | image_url }}"
+        media="(max-width: 768px)"
+      >
+      <img
+        class="img"
+        width="100%"
+        height="auto"
+        src="{{ section.settings.pc_image | image_url }}"
+      >
+    </picture>
+    <div class="container">
+      <div class="about-big-image-text to-top">{{ section.settings.title }}</div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "u-about-image",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "pc_image",
+      "label": "PC端图片"
+    },
+    {
+      "type": "image_picker",
+      "id": "mobile_image",
+      "label": "手机端图片"
+    },
+    {
+      "type": "html",
+      "id": "title",
+      "label": "标题",
+      "default": "<span>800+</span> Global Patents"
+    }
+  ],
+
+  "presets": [
+    {
+      "name": "u-about-image",
+      "blocks": []
+    }
+  ]
+}
+{% endschema %}

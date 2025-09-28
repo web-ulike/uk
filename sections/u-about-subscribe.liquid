@@ -1,0 +1,833 @@
+{%- liquid
+  assign se_id = section.id
+  assign se_bks = section.blocks
+  assign se_stts = section.settings
+-%}
+
+<style>
+  html {
+    padding-bottom: 0px!important;
+  }
+  .box-subscribe-section {
+    background-color: {{ se_stts.bg_color }};
+    padding: 60px 40px;
+  }
+  .box-subscribe-section  .box-subscribe-main {
+    text-align: center;
+    display: flex;
+    justify-content: space-between;
+    justify-content: center;
+    align-items: center;
+  }
+  .input-email-tip p{
+    margin-bottom: 0;
+  }
+
+  .box-subscribe-section .subscription-content {
+    width: 50%;
+    text-align: left;
+    padding-left: 40px;
+  }
+
+  .box-subscribe-section .subscription-content h2 {
+    color: var(--Ulike-, #190a0a);
+    font-size: 48px;
+    font-weight: 500;
+    line-height: 48px;
+    font-family: Saans;
+  }
+
+  .box-subscribe-section .subscription-content p {
+    color: var(--Ulike-, #190a0a);
+    font-family: Saans;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 380;
+    line-height: 28px;
+    /* 140% */
+    letter-spacing: -0.32px;
+    margin-top: 20px;
+  }
+
+  .box-subscribe-section .subscription-form {
+    flex: 1;
+  }
+
+  .box-subscribe-section .subscription-form .subscription-form-block {
+    width: 484px;
+    margin: 0 40px 0px auto;
+  }
+
+  .box-subscribe-section .subscription-form .subscription-form-block .input-group {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 4px;
+    padding-top: 8px;
+    text-align: left;
+  }
+  .box-subscribe-section .subscription-form .subscription-form-block .input-email-tip,
+  .box-subscribe-section .subscription-form .subscription-form-block .input-phone-tip{
+    border-radius: 2px;
+    border: 1px solid #F42A10;
+    background: #FEF0EB;
+    margin-bottom: 4px;
+    display: none;
+    position: relative;
+  }
+  .box-subscribe-section .subscription-form .subscription-form-block .input-email-tip .error,
+  .box-subscribe-section .subscription-form .subscription-form-block .input-phone-tip .error{
+    color: #F42A10;
+    font-size: 14px;
+    line-height: 24px; /* 171.429% */
+  }
+  .box-subscribe-section .subscription-form .subscription-form-block .input-email-tip .close,
+  .box-subscribe-section .subscription-form .subscription-form-block .input-phone-tip .close{
+    position: absolute;
+    right: 10px;
+    top: 0px;
+    cursor: pointer;
+  }
+  .box-subscribe-section .subscription-form .subscription-form-block .input-group .phone-input {
+    padding: 10px 20px 10px 0px;
+    border: 1px solid #756B6E;
+    border-radius: 0px 4px 4px 0px;
+    font-size: 14px;
+    width: 100%;
+    border-left: 0px;
+    text-align: left;
+  }
+
+  .box-subscribe-section .subscription-form .subscription-form-block .input-group .phone-input::placeholder {
+    color: #756b6e;
+  }
+
+
+  .box-subscribe-section .subscription-form .subscription-form-block .input-group .def-input {
+    display: flex;
+    width: 100%;
+    height: 24px;
+    padding: 15px 20px;
+    color: #190a0a;
+    font-size: 14px;
+    font-weight: 380;
+    line-height: 14px;
+    border-radius: 4px;
+    border: 1px solid #756b6e;
+    background: #fff;
+    outline: 0;
+    height: 48px;
+  }
+
+  .box-subscribe-section .subscription-form .subscription-form-block .input-group .def-input::placeholder {
+    color: #756b6e;
+  }
+
+  .box-subscribe-section .subscription-form .subscription-form-block .input-group .def-input:active {
+    border-color: #3f3636;
+  }
+
+  .box-subscribe-section .subscription-form .subscription-form-block .phone-input-container .dropdown .dropdown-selected {
+    display: flex;
+    align-items: center;
+    padding: 11px 20px;
+    background-color: #fff;
+    border: 1px solid #756B6E;
+    cursor: pointer;
+    min-width: 140px;
+    border-radius: 4px 0px 0px 4px;
+    gap: 6px;
+    font-size: 14px;
+    border-right: 0px;
+  }
+  .box-subscribe-section .subscription-form .subscription-form-block .phone-input-container .dropdown .dropdown-selected .name {
+    text-transform: uppercase;
+  }
+
+  .box-subscribe-section .phone-input-container .dropdown .dropdown-menu {
+    display: none;
+    position: absolute;
+    border: 1px solid #fff;
+    width: 100%;
+    z-index: 1000;
+    height: 270px;
+    overflow: auto;
+    width: 270px;
+    margin: 0px 0px 4px;
+    padding: 10px 4px 10px 10px;
+    text-align: left;
+    bottom: 48px;
+    border-radius: 10px;
+    background: #FFF;
+  }
+
+
+  .box-subscribe-section .phone-input-container .dropdown .dropdown-menu .search-box{
+    border-radius: 4px;
+    border: 0.33px solid var(--Ulike-, #86868B);
+    background: #FFF;
+    color: #190A0A;
+    font-family: Saans;
+    font-size: 14px;
+    padding: 8px 10px;
+    width: 100%;
+    line-height: 22px; /* 137.5% */
+  }
+  .box-subscribe-section .phone-input-container .dropdown .dropdown-menu .search-box::placeholder {
+    color: #756B6E;
+  }
+
+  .box-subscribe-section .subscription-form .subscription-form-block .consent-text {
+    font-size: 0.8rem;
+    color: #666;
+    margin: 12px 0px 12px;
+    text-align: left;
+    font-family: Saans;
+    font-size: 15.25px;
+    font-style: normal;
+    font-weight: 380;
+    line-height: 24px;
+  }
+
+  .box-subscribe-section .subscription-form .subscription-form-block .consent-text a {
+    color: var(--Ulike-, #190a0a);
+    text-decoration: underline;
+  }
+
+  .box-subscribe-section .subscription-form .subscription-form-block .subscribe-btn, .common-btn{
+    padding: 0px 1.5rem;
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    width: 100%;
+    border-radius: 4px;
+    background: #E0004D;
+    color: #fff;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 48px;
+    margin-top: 20px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #E0004D;
+  }
+
+  .box-subscribe-section .subscription-form .subscription-form-block .subscribe-btn:hover .btn-txt{
+    color: #E0004D;
+  }
+
+
+  .box-subscribe-section .subscription-form .subscription-form-block .subscribe-btn:hover {
+    background-color: #BC0047;
+  }
+
+  .box-subscribe-section .subscription-form .subscription-form-block .subscribe-btn[aria-busy="true"] {
+      background-color: #BC0047;
+      cursor: wait;
+  }
+  .box-subscribe-section .subscription-form .subscription-form-block .subscribe-btn[aria-busy="true"]:before {
+      content: "";
+      position: absolute;
+      left: 50%;
+      width: 16px;
+      height: 16px;
+      border: 2px solid white;
+      border-radius: 50%;
+      border-top-color: transparent;
+      animation: spin 1s linear infinite;
+      transform: translate(-50%, -50%);
+  }
+  .box-subscribe-section .subscription-form .subscription-form-block .subscribe-btn[aria-busy="true"] .button-text {
+      visibility: hidden;
+  }
+
+  .box-subscribe-section .subscription-form .subscription-form-block .box-msg {
+    color:  #190a0a;
+    text-align: center;
+    font-size: 14px;
+    line-height: 24px;
+    display: none;
+    margin-top: 4px;
+  }
+
+  .box-subscribe-section .subscription-form .subscription-form-block .social-icons {
+    margin-top: 20px;
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+  }
+
+  .box-subscribe-section .subscription-form .subscription-form-block .social-icons a {
+    color: #333;
+    font-size: 0px;
+  }
+
+  .box-subscribe-section .subscription-form .subscription-form-block .social-icons a:hover rect {
+    fill: #3F3636;
+  }
+
+
+  .box-subscribe-section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .box-subscribe-section .dropdown {
+    position: relative;
+  }
+  .box-subscribe-section .dropdown .dropdown-selected {
+    display: flex;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #fff;
+    border: 1px solid #fff;
+    cursor: pointer;
+    min-width: 130px;
+    border-radius: 50px;
+    gap: 6px;
+    font-size: 12px;
+  }
+  .box-subscribe-section .dropdown .dropdown-selected .flag-icon {
+    width: 20px;
+    height: 15px;
+    background-size: cover;
+    margin-right: 5px;
+  }
+  .box-subscribe-section .dropdown .dropdown-selected .caret {
+    margin-left: 0px;
+  }
+
+  .box-subscribe-section .dropdown .dropdown-menu li {
+    padding: 10px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    border-bottom: 0.33px solid rgba(128, 128, 128, 0.55);
+    color: #190A0A;
+  }
+  .box-subscribe-section .dropdown .dropdown-menu li:hover {
+    background: #F5F4F4;
+  }
+
+  @media (max-width: 768px) {
+
+    .box-subscribe-section {
+      height: 100%;
+      display: block;
+      padding: 50px 15px;
+    }
+
+    .box-subscribe-section .box-subscribe-main {
+      display: block;
+      padding: 0px;
+    }
+    .box-subscribe-section .subscription-content {
+      width: 100%;
+      padding-left: 0px;
+      text-align: center;
+    }
+    .box-subscribe-section .subscription-content h2 {
+      font-size: 21px;
+      line-height: 1.3;
+      width: 90%;
+      margin: 0 auto;
+    }
+    .box-subscribe-section .subscription-content p {
+      font-size: 13px;
+      line-height: 1.5;
+      margin-top: 10px;
+    }
+    .box-subscribe-section .subscription-form .subscription-form-block {
+      width: 100%;
+      padding: 30px 0px 20px;
+      margin: 0px;
+    }
+    .box-subscribe-section .subscription-form .subscription-form-block .consent-text {
+      font-size: 12px;
+      line-height: 1.5;
+      margin-bottom: 10px;
+    }
+    .box-subscribe-section .subscription-form .subscription-form-block .box-msg {
+      font-size: 12px;
+      line-height: 1.5;
+      margin-top: 8px;
+    }
+    .box-subscribe-section .subscription-form .subscription-form-block .social-icons {
+      margin-top: 15px;
+      gap: 20px;
+    }
+    .box-subscribe-section .subscription-form .subscription-form-block .social-icons svg {
+      width: 30px;
+      height: 30px;
+    }
+
+    .box-subscribe-section .phone-input-container .dropdown .dropdown-menu{
+      display: none;
+      position: fixed;
+      bottom: 0px;
+      width: 100%;
+      left: 0px;
+      z-index: 2;
+      background: rgba(25, 10, 10, 0.3);
+      z-index: 8;
+      top: 0px;
+      height: 100%;
+      padding: 0px;
+      overflow: hidden;
+    }
+    .m-menu-selector {
+      position: absolute;
+      height: 40%;
+      bottom: 0px;
+      background: rgb(255, 255, 255);
+      padding: 10px;
+      border-radius: 10px 10px 0px 0px;
+      width: 100%;
+      z-index: 9;
+      left: 0px;
+      overflow: auto;
+    }
+
+
+    .box-subscribe-section .subscription-form .subscription-form-block .phone-input-container .dropdown .dropdown-selected {
+       padding: 11px 12px;
+       min-width: 110px;
+      gap:3px;
+    }
+    .box-subscribe-section .subscription-form .subscription-form-block .input-group .def-input {
+      font-size: 13px;
+      border: 1px solid #190A0A;
+      padding:15px 12px;
+    }
+
+    .box-subscribe-section .subscription-form .subscription-form-block .subscribe-btn:hover{
+      background: #e0004d;
+    }
+
+    .box-subscribe-section .subscription-form .subscription-form-block .input-group .phone-input {
+      font-size: 13px;
+      padding:10px 10px 10px 0;
+    }
+    .box-subscribe-section .subscription-form .subscription-form-block .social-icons a:hover rect {
+      fill: #333;
+    }
+  }
+
+  @keyframes spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+</style>
+
+{%- liquid
+  assign se_id = section.id
+  assign se_bks = section.blocks
+  assign se_stts = section.settings
+-%}
+
+<section class="box-subscribe-section">
+  <div class="container box-subscribe-main">
+    <div class="subscription-content">
+      <h2 class="to-top">
+        {{ se_stts.title }}
+      </h2>
+      <p class="hidden-phone to-top">{{ se_stts.text }}</p>
+      <p class="hidden-desk to-top">{{ se_stts.m_text }}</p>
+    </div>
+
+    <div class="subscription-form">
+      <div class="subscription-form-block">
+        <div class="input-group to-top">
+          <input
+            type="text"
+            placeholder="Enter your email address"
+            class="def-input j_input_email "
+          >
+        </div>
+        <div class="input-tip input-email-tip">
+          <p class="error">Please enter a valid email address!</p>
+          <div class="close">
+            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="14" viewBox="0 0 15 14" fill="none">
+              <path d="M10.6987 3.78809L4.02148 10.4653" stroke="#F42A10" stroke-width="0.719088" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M4.02148 3.78809L10.6987 10.4653" stroke="#F42A10" stroke-width="0.719088" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+        </div>
+        <div class="input-group to-top">
+          <div class="phone-input-container">
+            <div class="dropdown">
+              <div class="dropdown-selected">
+                <span class="flag-icon" data-chosen="us"></span>
+                <span class="name">us</span>
+                <span class="caret">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="10" height="6" viewBox="0 0 10 6" fill="none">
+                    <path d="M0.373047 0.485596L4.80039 4.91294L9.22773 0.485596" stroke="#190A0A" stroke-width="0.737891" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </span>
+                <span class="country-code">+1</span>
+              </div>
+              {% comment %} 新增文本框搜索功能 {% endcomment %}
+              <div class="dropdown-menu">
+                <div class="m-menu-selector">
+                  <input type="text" class="search-box" placeholder="Enter Keyword">
+                  <ul class="country-selector">
+                    <!-- 更多国家选项 -->
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+          <input
+            type="text"
+            placeholder="Enter Your Phone Number (Optional)"
+            class="phone-input"
+          >
+        </div>
+        <div class="input-tip input-phone-tip to-top">
+          <p class="error">Please enter a valid phone number.</p>
+          <div class="close">
+            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="14" viewBox="0 0 15 14" fill="none">
+              <path d="M10.6987 3.78809L4.02148 10.4653" stroke="#F42A10" stroke-width="0.719088" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M4.02148 3.78809L10.6987 10.4653" stroke="#F42A10" stroke-width="0.719088" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+        </div>
+        <p class="consent-text to-top">
+          {{ se_stts.privacy_html }}
+        </p>
+        {% comment %}
+          <button type="button" class="subscribe-btn  to-top">
+            <span class="button-text">
+              {{ se_stts.btn_text }}
+            </span>
+          </button>
+        {% endcomment %}
+        <button type="button" class="ipl-product-btn btn-diy subscribe-btn to-top">
+          <span class="btn-txt" text="{{ se_stts.btn_text }}">
+            {{ se_stts.btn_text }}
+          </span>
+        </button>
+        <div class="box-msg">
+          <p class="success">You've successfully subscribed.</p>
+        </div>
+        <div class="social-icons to-top">
+          {% for block in se_bks %}
+            {% assign item = block.settings %}
+            <a
+              href="{{item.link}}"
+              target="_blank"
+              aria-label="Follow Ulike on {{item.link}}"
+              title="Follow Ulike on {{item.link}}"
+              rel="noopener noreferrer"
+            >
+              {{ item.svg }}
+            </a>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/google-libphonenumber/3.2.20/libphonenumber.min.js" defer></script>
+<script src="{{ 'phoneNumber.js' | asset_url }}" defer="defer"></script>
+
+<script>
+
+  // 页面加载完成后再加载
+  window.addEventListener("load", function () {
+    initPhoneHtml();
+    
+    $(document).on("click", '.box-subscribe-section .subscribe-btn', function () {
+      let that = $(this);
+        that.prop("disabled", true).attr("aria-busy", true);
+    
+        var userEmail = $('.box-subscribe-section .j_input_email').val();
+        // 判断手机号码选择
+        let code = $('.box-subscribe-section .phone-input-container .country-code').text();
+        // 手机号码格式验证
+        let phone = $('.box-subscribe-section .phone-input').val();
+
+        const errorMessages = {
+          emailRequiredWithPhone: 'You cannot subscribe with just your phone number. Please enter both your email and phone number.',
+          emailInvalid: 'Please enter a valid email address.',
+          phoneInvalid: 'Please enter a valid phone number.'
+        };
+        
+        // 用于存储错误的变量
+        let emailError = '';
+        let phoneError = '';
+
+        let _tags = {% if se_stts.tag_text != blank %}['{{se_stts.tag_text}}']{% else %}['bottom-subscribe']{% endif %};
+
+        let data = {
+          userEmail: userEmail,
+          userPhone:"",
+          since:"PAGE_BOTTOM_SUBSCRIBE",
+          tags: _tags
+        };
+
+        // 检查邮箱字段
+        if (userEmail == '') {
+          if (phone != '') {
+            emailError = errorMessages.emailRequiredWithPhone;
+          } else {
+            emailError = errorMessages.emailInvalid;
+          }
+        } else if (!validateEmail(userEmail)){
+          emailError = errorMessages.emailInvalid;
+        }
+
+        // 手机号段验证
+        let chosen = $('.box-subscribe-section .flag-icon').attr('data-chosen');
+        const phoneUtil = libphonenumber.PhoneNumberUtil.getInstance();
+        if (phone != ''){
+          phone = code + '-' + phone;
+          try {
+            // Code that may throw an error
+            const number = phoneUtil.parse(phone, chosen);
+            // 检查号码是否有效
+            if (!phoneUtil.isValidNumber(number)) {
+              phoneError = errorMessages.emailInvalid;
+            } else {
+              data.userPhone = phone;
+            }
+          } catch (error) {
+            phoneError = errorMessages.emailInvalid;
+          }
+        }
+
+        if (emailError) {
+          $('.box-subscribe-section .input-email-tip .error').text(errorMessages.emailInvalid);
+          $('.box-subscribe-section .input-email-tip').show().delay(6000).fadeOut();
+        }
+
+        if (phoneError) {
+          $('.box-subscribe-section .input-phone-tip .error').text(errorMessages.phoneInvalid);
+          $('.box-subscribe-section .input-phone-tip').show().delay(6000).fadeOut();
+        }
+    
+        if (emailError || phoneError) {
+          that.prop("disabled", false).attr("aria-busy", false);
+          return;
+        } else {
+          $('.box-subscribe-section .input-email-tip').stop(true, true).hide();
+          $('.box-subscribe-section .input-phone-tip').stop(true, true).hide();
+        }
+
+        sendUlikeApi('/user/userSubscribe', data).then(function (res) {
+          if(res.code == 0){
+            //  清空文本框信息
+            $('.box-subscribe-section .j_input_email').val('');
+            $('.box-subscribe-section .phone-input').val(''); 
+            // 显示成功信息;
+            $('.box-subscribe-section .box-msg .success').text("You've successfully subscribed.")
+            $('.box-subscribe-section .box-msg').fadeIn().delay(6000).fadeOut();
+          
+          } else if(res.code == 99998){
+            // 定义一个常量对象，用于存储订阅成功的消息
+            const messages = {
+              'user_subscribe_email_repeat': 'This email is already subscribed. Please use a different email.',
+              'user_subscribe_phone_repeat': 'This phone number is already subscribed. Please use a different phone number.'
+            };
+            // 检查响应消息是否存在于 messages 对象中
+            if(messages[res.message]) {
+              // 更新订阅成功消息元素的文本内容为对应的提示信息
+              $('.box-subscribe-section .box-msg .success').text(messages[res.message]);
+            }
+            $('.box-subscribe-section .box-msg').fadeIn().delay(6000).fadeOut();
+          } else {
+            $('.box-subscribe-section .box-msg .success').text('{{ 'general.page.system_err' | t }}');
+            $('.box-subscribe-section .box-msg').fadeIn().delay(6000).fadeOut();
+          }
+          that.prop("disabled", false).attr("aria-busy", false);
+        });
+
+     });
+
+    $(document).on('click', '.box-subscribe-section .dropdown-selected', function () {
+      const $dropdownMenu = $('.subscription-form-block .dropdown-menu');
+      $dropdownMenu.toggle();
+    });
+
+    $(document).on('click', '.box-subscribe-section .dropdown-menu li', function () {
+      var code = $(this).data('code');
+      var chosen = $(this).data('chosen');
+      $('.box-subscribe-section .dropdown-selected .country-code').text(code);
+      $('.box-subscribe-section .dropdown-selected .flag-icon').attr('data-chosen', chosen);
+      $('.box-subscribe-section .flag-icon').attr('data-chosen');
+      $('.box-subscribe-section .phone-input-container .name').text(chosen);
+      $('.box-subscribe-section .dropdown-menu').hide();
+      $('.box-subscribe-section .phone-input').focus();
+    });
+
+    $(document).on('click', '.box-subscribe-section .subscription-form-block .close', function () {
+      $(this).closest('.input-tip').fadeOut();
+    });
+
+    $(document).on('input', '.box-subscribe-section .search-box', function (e) {
+        e.stopPropagation();
+        var query = $(this).val().toLowerCase();
+        initPhoneHtml(query);
+    });
+  
+
+
+    // 监听下拉列表空白地方点击事件
+    if(isMobile()){
+      $(document).on('click', '.box-subscribe-section .dropdown-menu', function (event) {
+        // 检查点击事件目标是否不在下拉菜单内
+        if ($(event.target).closest('.m-menu-selector').length) {
+          event.stopPropagation();
+          // 如果条件满足，淡出下拉菜单
+        } else {
+          $(this).fadeOut();
+        }
+      });
+    } else {
+      $(document).on('click', hideOnClickOutside);
+    }
+
+    try {
+        loadCSS("{{ 'phoneNumber.css' | asset_url }}");
+    } catch (error) {
+        console.error('Error loading CSS:', error);
+    }
+  });
+
+  /**
+  * 该函数用于在点击外部区域时隐藏下拉菜单。
+  * 它检查下拉菜单是否可见，并且点击事件是否发生在下拉菜单区域之外。
+  * 如果两个条件都满足，则淡出下拉菜单。
+  * @param {Event} event - 点击事件对象，用于确定点击的目标元素。
+  */
+  function hideOnClickOutside(event) {
+    // 检查下拉菜单是否可见
+    if ($('.box-subscribe-section .dropdown-menu').is(':visible')) {
+      // 检查点击事件目标是否不在下拉菜单内
+      if (!$(event.target).closest('.dropdown').length) {
+        // 如果条件满足，淡出下拉菜单
+        $('.box-subscribe-section .dropdown-menu').fadeOut(); // 假设 .text-box 是要隐藏的文本框的类
+      }
+    }
+  }
+
+  /**
+   * 手机号文本框输入
+   */
+  function initPhoneHtml(query = '') {
+    const lowerCaseQuery = query.toLowerCase();
+    // 根据查询过滤 phoneList，只显示以查询开头的 key
+    const filteredList = phoneList.filter(item => 
+        item.key.toLowerCase().startsWith(lowerCaseQuery)
+    );
+
+    if (filteredList.length === 0) {
+        // Display a default message when no matches are found
+        $('.dropdown-menu .country-selector').html('<li>Sorry, no results found.</li>');
+        return;
+    }
+
+    // 为过滤后的列表生成 HTML
+    const selPhoneHtml = filteredList.map(_ths => 
+        `<li data-code="${_ths.mcode}" data-chosen="${_ths.code}">
+            ${_ths.key}
+            <span class="flag-icon" data-chosen="${_ths.code}"></span>
+        </li>`
+    ).join('');
+    $('.dropdown-menu .country-selector').html(selPhoneHtml);
+  }
+</script>
+{% comment %}
+  <link
+    rel="stylesheet"
+    href="{{ 'phoneNumber.css' | asset_url }}"
+    media="print"
+    onload="this.onload=null;this.media='all';"
+    fetchpriority="low"
+  />
+{% endcomment %}
+
+{% schema %}
+{
+  "name": "u-about-subscribe",
+  "class": "h-subscribe-block",
+  "blocks": [
+    {
+      "name": "social-item",
+      "type": "social-item",
+      "settings": [
+        {
+          "type": "url",
+          "id": "link",
+          "label": "链接"
+        },
+        {
+          "type": "html",
+          "id": "svg",
+          "label": "svg文本"
+        }
+      ]
+    }
+  ],
+  "settings": [
+    {
+      "type": "html",
+      "id": "title",
+      "label": "Title"
+    },
+    {
+      "type": "text",
+      "id": "text",
+      "label": "描述",
+      "default": "Sign up for a chance to win a free device or up to $100 off."
+    },
+    {
+      "type": "html",
+      "id": "m_text",
+      "label": "移动端~描述"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "背景颜色",
+      "default": "#fbeff0"
+    },
+    {
+      "type": "text",
+      "id": "btn_text",
+      "label": "按钮名称",
+      "default": "Subscribe Now"
+    },
+    {
+      "type": "text",
+      "id": "tag_text",
+      "label": "用户标签",
+      "info": "默认为空，用户订阅后，会自动添加该标签，方便后续运营使用，如：subscribe_2021 多个用逗号"
+    },
+    {
+      "type": "html",
+      "id": "privacy_html",
+      "label": "政策-html"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_phone",
+      "label": "开启收集手机号码",
+      "default": false
+    }
+  ],
+  "presets": [
+    {
+      "name": "u-about-subscribe",
+      "blocks": []
+    }
+  ]
+}
+{% endschema %}

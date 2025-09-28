@@ -1,0 +1,119 @@
+<style>
+  .about-brands {
+    display: flex;
+    padding: 100px 0;
+  }
+
+  .about-brands-left {
+    color: #3f3636;
+    font-size: 48px;
+    width: 514px;
+    line-height: 1;
+    overflow: hidden;
+    margin-right: 10px;
+  }
+
+  .about-brands-right {
+    flex: 1;
+  }
+
+  .about-brands-desc {
+    font-size: 18px;
+    line-height: 1.5;
+    color: #3f3636;
+    margin-bottom: 40px;
+  }
+
+  .about-brands-desc:last-child {
+    margin-bottom: 0px;
+  }
+
+  @media (max-width: 1200px) {
+    .about-brands {
+      display: flex;
+      padding: 80px 0;
+    }
+
+    .about-brands-left {
+      font-size: 38px;
+      width: 411px;
+    }
+
+    .about-brands-desc {
+      font-size: 16px;
+      margin-bottom: 32px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .about-brands {
+      display: flex;
+      flex-direction: column;
+      padding: 40px 0;
+    }
+
+    .about-brands-left {
+      font-size: 24px;
+      width: 100%;
+      margin-bottom: 15px;
+    }
+
+    .about-brands-desc {
+      font-size: 12px;
+      line-height: 1.5;
+      margin-bottom: 20px;
+    }
+  }
+</style>
+
+<section id="{{ section.id }}" class="container">
+  <div class="about-brands">
+    <div class="about-brands-left">{{ section.settings.title }}</div>
+    <div class="about-brands-right">
+      <div class="about-brands-desc">
+        {{ section.settings.desc1 }}
+      </div>
+      <div class="about-brands-desc">
+        {{ section.settings.desc2 }}
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  $(document).ready(function () {
+    $('#{{ section.id }} *').addClass('to-top');
+  });
+</script>
+
+{% schema %}
+{
+  "name": "u-about-brand-desc",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "标题",
+      "default": "Our Brands"
+    },
+    {
+      "type": "text",
+      "id": "desc1",
+      "label": "描述1",
+      "default": "Since our founding, we have been at the forefront of innovation in hair removal, combining cutting-edge technology with a commitment to empowerment."
+    },
+    {
+      "type": "text",
+      "id": "desc2",
+      "label": "描述2",
+      "default": "Today, Ulike Global has evolved from a single leading brand into a dynamic, multi-brand powerhouse. Moving forward, we remain committed to delivering superior products driven by our core technologies."
+    }
+  ],
+  "presets": [
+    {
+      "name": "u-about-brand-desc",
+      "blocks": []
+    }
+  ]
+}
+{% endschema %}

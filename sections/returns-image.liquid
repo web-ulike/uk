@@ -1,0 +1,131 @@
+<style>
+.returns-image {
+  padding-bottom: 177px;
+  background: #f8f8f8;
+}
+
+.returns-image .returns-image-cont {
+  position: relative;
+}
+
+.returns-image .img {
+  position: relative;
+  z-index: 1;
+}
+
+.returns-image .returns-image-text {
+  position: absolute;
+  z-index: 2;
+  top: 50%;
+  left: 7.7%;
+  transform: translateY(-50%);
+}
+
+.returns-image .returns-image-h3 {
+  color: #190a0a;
+  font-size: 28px;
+  line-height: 1.5;
+  font-weight: normal;
+  font-family: var(--heading-font-family);
+  margin: 0;
+  margin-bottom: 16px;
+}
+
+.returns-image .returns-image-btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 0 45px;
+  height: 63px;
+  background: #e0004d;
+  color: #fff;
+  font-size: 20px;
+  line-height: 1;
+  font-family: var(--heading-font-family);
+  transition: all 0.4s ease;
+}
+
+.returns-image .returns-image-btn:hover {
+  background: #bc0047;
+}
+
+@media (max-width: 991px) {
+  .returns-image {
+    padding-bottom: 70px;
+  }
+
+  .returns-image .returns-image-text {
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+  }
+
+  .returns-image .returns-image-h3 {
+    font-size: 14px;
+    margin-bottom: 15px;
+  }
+
+  .returns-image .returns-image-btn {
+    height: 43px;
+    font-size: 12px;
+    padding: 0 24px;
+  }
+}
+</style>
+<section class="section-box">
+  <div class="returns-image">
+    <div class="container">
+      <div class="returns-image-cont">
+        <picture>
+          <source srcset="{{ section.settings.image1 | image_url }}" media="(max-width: 991px)">
+          <img class="img" src="{{ section.settings.image | image_url }}" loading="lazy" width="" height="" alt="{{ section.settings.image.alt | escape }}" />
+        </picture>
+        <div class="returns-image-text">
+          {%- if section.settings.text != blank -%}
+            <h3 class="returns-image-h3">{{ section.settings.text }}</h3>
+          {%- endif -%}
+          {%- if section.settings.text1 != blank -%}
+            <a href="{{ section.settings.link }}" class="returns-image-btn">{{ section.settings.text1 }}</a>
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% schema %}
+{
+  "name": "returns-image",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image1",
+      "label": "Image M"
+    },
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "text1",
+      "label": "Text"
+    },
+    {
+      "type": "url",
+      "id": "link",
+      "label": "Link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "returns-image",
+      "blocks": []
+    }
+  ]
+}
+{% endschema %}

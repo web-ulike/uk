@@ -1,0 +1,166 @@
+<link rel="stylesheet" href="https://cdn.shopify.com/s/files/1/0740/5882/6015/files/swiper-bundle.min.css?v=1712905202">
+<script src="https://cdn.shopify.com/s/files/1/0740/5882/6015/files/swiper-bundle.min.js?v=1712905203"></script>
+<style>
+  .about-brands-swiper {
+    position: relative;
+    margin-bottom: 100px;
+    overflow: hidden;
+  }
+
+  .swiper-btn-wrapper {
+    display: none;
+    margin: 20px 0;
+  }
+
+  .swiper-btn-prev {
+    margin-right: 40px;
+  }
+
+  .swiper-btn-prev,
+  .swiper-btn-next {
+    cursor: pointer;
+    opacity: 1;
+    transition: opacity 0.3s;
+  }
+
+  .swiper-btn-prev.disabled,
+  .swiper-btn-next.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none; /* 防止点击 */
+  }
+
+  @media (max-width: 768px) {
+    .swiper-btn-wrapper {
+      display: flex;
+    }
+
+    .about-brands-swiper {
+      margin-bottom: 60px;
+    }
+  }
+</style>
+
+<section id="about-swiper-{{ section.id }}" class="container">
+  {% assign image_count = 0 %}
+  <div class="about-brands-swiper">
+    <div class="swiper-container">
+      <div class="swiper-wrapper">
+        {% for block in section.blocks %}
+          {% if block.type == 'image_block' and block.settings.image != blank %}
+            {% assign image_count = image_count | plus: 1 %}
+            <div class="swiper-slide">
+              <img src="{{ block.settings.image | image_url }}" width="100%" height="auto">
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+    <!-- 导航箭头 -->
+    {% if image_count >= 2 %}
+      <div class="swiper-btn-wrapper">
+        <div class="swiper-btn-prev">
+          <svg xmlns="http://www.w3.org/2000/svg" width="37" height="37" viewBox="0 0 37 37" fill="none">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M16.9908 6.5148L17.4505 6.05505L18.37 6.97454L17.9103 7.43428L13.7129 11.6316L9.75648 15.5881C9.24867 16.0959 8.42533 16.0959 7.91752 15.5881L12.7935 10.7121L16.9908 6.5148ZM5.61275 18.8123C5.35884 18.5584 5.35884 18.1467 5.61275 17.8928C5.69825 17.8073 5.80163 17.7506 5.91086 17.7227V17.7024H6.07107H6.07392H6.56103L25.4161 17.7024H29.9672C30.6854 17.7024 31.2676 18.2846 31.2676 19.0027H25.4161L7.64216 19.0027L17.9103 29.2709L18.37 29.7306L17.4505 30.6501L16.9908 30.1904L5.61275 18.8123Z" fill="#190A0A"/>
+          </svg>
+        </div>
+        <div class="swiper-btn-next">
+          <svg xmlns="http://www.w3.org/2000/svg" width="37" height="37" viewBox="0 0 37 37" fill="none">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M20.1049 6.5148L19.6452 6.05505L18.7257 6.97454L19.1854 7.43428L23.3828 11.6316L27.3392 15.5881C27.847 16.0959 28.6704 16.0959 29.1782 15.5881L24.3022 10.7121L20.1049 6.5148ZM31.4829 18.8123C31.7369 18.5584 31.7369 18.1467 31.4829 17.8928C31.3975 17.8073 31.2941 17.7506 31.1848 17.7227V17.7024H31.0246H31.0218H30.5347L11.6796 17.7024H7.12847C6.41031 17.7024 5.82813 18.2846 5.82813 19.0027H11.6796L29.4535 19.0027L19.1854 29.2709L18.7257 29.7306L19.6452 30.6501L20.1049 30.1904L31.4829 18.8123Z" fill="#190A0A"/>
+          </svg>
+        </div>
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+<script>
+  $(document).ready(function () {
+    $('#about-swiper-{{ section.id }} *').addClass('to-top');
+    var swiper = new Swiper('#about-swiper-{{ section.id }} .swiper-container', {
+      slidesPerView: 3,
+      spaceBetween: 20,
+      breakpoints: {
+        // 当屏幕宽度小于768时，显示1张
+        0: {
+          slidesPerView: 1,
+          spaceBetween: 10,
+        },
+        // 当屏幕宽度大于768时，显示3张
+        768: {
+          slidesPerView: 3,
+          spaceBetween: 20,
+        },
+      },
+    });
+
+    const $prevBtn = $('#about-swiper-{{ section.id }}  .swiper-btn-prev');
+    const $nextBtn = $('#about-swiper-{{ section.id }}  .swiper-btn-next');
+
+    function updateButtons(swiper, $prevBtn, $nextBtn) {
+      if (swiper.isBeginning) {
+        $prevBtn.addClass('disabled').attr('disabled', true);
+      } else {
+        $prevBtn.removeClass('disabled').attr('disabled', false);
+      }
+
+      if (swiper.isEnd) {
+        $nextBtn.addClass('disabled').attr('disabled', true);
+      } else {
+        $nextBtn.removeClass('disabled').attr('disabled', false);
+      }
+    }
+
+    // 初始化按钮状态
+    updateButtons(swiper, $prevBtn, $nextBtn);
+
+    // 监听 Swiper 滑动
+    swiper.on('slideChange', function () {
+      updateButtons(swiper, $prevBtn, $nextBtn);
+    });
+
+    // 自定义按钮事件
+    $prevBtn.on('click', function () {
+      if (!$(this).hasClass('disabled')) {
+        swiper.slidePrev();
+      }
+    });
+
+    $nextBtn.on('click', function () {
+      if (!$(this).hasClass('disabled')) {
+        swiper.slideNext();
+      }
+    });
+
+    $(window).resize(function () {
+      updateButtons(swiper, $prevBtn, $nextBtn);
+    });
+  });
+</script>
+
+{% schema %}
+{
+  "name": "u-about-brand-swiper",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "image_block",
+      "name": "图片",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "图片"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 3,
+  "presets": [
+    {
+      "name": "u-about-brand-swiper",
+      "blocks": []
+    }
+  ]
+}
+{% endschema %}

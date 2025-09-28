@@ -1,0 +1,551 @@
+{{ 'swiper-bundle.min.css' | asset_url | stylesheet_tag }}
+<style>
+  .section-{{ section.id }}-padding {
+    padding-top: calc({{ section.settings.padding_top }}px);
+    padding-bottom: calc({{ section.settings.padding_bottom }}px);
+  }
+  @media screen and (max-width: 768px){
+  .section-{{ section.id }}-padding {
+    padding-top: calc({{ section.settings.padding_top }}px * 0.6);
+    padding-bottom: calc({{ section.settings.padding_bottom }}px * 0.6);
+  }
+}
+ 
+  #shopify-section-{{ section.id }} {
+  }
+    /* carousel start */
+    .carousel-box{
+      overflow: hidden;
+      padding: 145px 0;
+      background: linear-gradient(180deg, #FDF8FF 0%, #FFF 100%);
+    }
+    .carousel-top{
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 74px;
+    }
+    .carousel-top .top_tle{
+      color:  #190A0A;
+      font-size: 48px;
+      font-style: normal;
+      font-weight: 500;
+      line-height: normal;
+      margin-bottom: 20px;
+    }
+    .carousel-top .top_txt {
+      color: #190A0A;
+      font-size: 18px;
+      font-style: normal;
+      font-weight: 300;
+      line-height: 150%;
+    }
+    .top_rt{
+      display: flex;
+      gap: 60px;
+    }
+    .top_rt svg.swiper-button-disabled{
+      opacity: 0.25;
+    }
+    .carousel-d1 img{
+      width: 100%;
+      object-fit: cover;
+    }
+    .carousel-d1 .car-name{
+      color:  #3F3636;
+      font-size: 18px;
+      font-style: normal;
+      font-weight: 500;
+      line-height: 120%; /* 21.6px */
+      margin-top: 28px;
+    }
+    .carousel-d1 .car-cate{
+      color:  #3F3636;
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 380;
+      line-height: 120%;
+      opacity: 0.5;
+      margin-top: 5px;
+    }
+    .carousel-box .carousel-item{
+      width: 250px;
+    }
+    .carousel-box .carousel-item.swiper-slide.swiper-slide-active{
+      width: 325px;
+    }
+   .carousel-item .carsoule_img{
+      height: 650px;
+      display: flex;
+      align-items: end;
+    }
+    .carousel-item .carsoule_img img{
+      width: 250px;
+      height: 250px;
+      transition: all 1s ease;
+      opacity: 0.6;
+      cursor: pointer;
+    }
+  .carousel-item .carsoule_img img.img_oe {
+    position: relative;
+}
+    .carousel-item .carsoule_img img.img_to {
+    position: absolute;
+      z-index: -1;
+      opacity: 0;
+}
+     .carousel-item.swiper-slide.swiper-slide-active .carsoule_img img{
+      opacity: 1;
+      height: 650px;
+        width: 325px;
+    }
+  .carousel-item.swiper-slide.swiper-slide-active .carsoule_img img.img_oe{
+     position: absolute;
+      z-index: -1;
+    opacity: 0;
+  }
+    .carousel-item.swiper-slide.swiper-slide-active .carsoule_img img.img_to{
+     position: relative;
+      z-index: 0;
+      opacity: 1;
+  }
+    .carousel-cnt {
+      align-items: flex-end;
+    }
+   .carousel-d2 {
+    left: -120%;
+    position: absolute;
+    top: 0;
+    width: 120%;
+    text-align: right;
+}
+.carousel-d2_box{
+padding: 38px 20px;
+}
+.carousel-d2 .d2-p1{
+  color:  #3F3636;
+font-size: 18px;
+font-style: normal;
+font-weight: 570;
+line-height: 140%;
+margin-bottom: 7px;
+}
+.carousel-d2 .d2-link{
+  display: block;
+  color:  #E0004D;
+font-size: 16px;
+font-style: normal;
+font-weight: 300;
+line-height: 140%;
+text-decoration-line: underline;
+margin-bottom: 26px;
+}
+.d2-box{
+  display: inline-flex;
+  gap: 15px;
+  align-items: center;
+}
+.d2-box .d2-name{
+  color:  #3F3636;
+font-size: 18px;
+font-style: normal;
+font-weight: 570;
+line-height: 120%;
+}
+.d2-box .d2-txt{
+  color:  #3F3636;
+font-size: 14px;
+font-style: normal;
+font-weight: 400;
+line-height: 120%;
+opacity: 0.5;
+margin-top: 6px;
+}
+.carousel-item.swiper-slide.swiper-slide-active .carousel-d2 .animate_tl {
+  -webkit-clip-path: inset(0% 0 0 0);
+  clip-path: inset(0% 0 0 0);
+  transform: translateY(0);
+  opacity: 1;
+  transition: all 0.6s cubic-bezier(.06,.66,.37,.98);
+  transition-delay: 0.5s;
+}
+.carousel-d2 .animate_tl {
+  -webkit-clip-path: inset(100% 0 0 0);
+  clip-path: inset(100% 0 0 0);
+  transform: translateY(20px);
+  opacity: 0;
+}
+.top_rt svg{
+  cursor: pointer;
+}
+.main-thumbs-swiper{
+  display: none;
+}
+.d2-avt{
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+}
+.d2-avt img{
+  width: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+.carousel-box .swiper-scrollbar{
+  display: none;
+}
+.carousel-box .swiper-scrollbar {
+    background: #DEDEDE;
+    height: 2px;
+    margin-top: 70px;
+}
+.carousel-box .swiper-pagination-progressbar .swiper-pagination-progressbar-fill {
+    background: #000000;
+}
+  .img_oe-mb,.img_to-mb{
+    display: none;
+  }
+@media (max-width: 768px) {
+  .img_oe-mb,.img_to-mb{
+    display: block;
+  }
+  .img_oe-des,.img_to-des{
+     display: none;
+  }
+  .main-thumbs-swiper{
+  display: block;
+  margin-top: 16px;
+  padding-bottom: 35vw;
+}
+.carousel-thb-cnt{
+  display: flex;
+}
+.carousel-item-thb img{
+  display: block;
+width: 100%;
+}
+.carousel-item.swiper-slide.swiper-slide-active .carsoule_img img {
+    height: auto;
+          width: 100%;
+}
+.carousel-item .carsoule_img img {
+    width: 100%;
+    height: auto;
+}
+.carousel-d2 {
+  left: 0;
+  position: absolute;
+  top: 110vw;
+  width: 100%;
+  text-align: left;
+}
+.carousel-d2_box {
+    padding: 16px 0px;
+}
+.carousel-top{
+  margin-bottom: 22px;
+  justify-content: center;
+  text-align: center;
+}
+.carousel-top .top_tle{
+  font-size: 26px;
+  margin-bottom: 15px;
+}
+.top_rt{
+  display: none;
+}
+.carousel-top .top_txt{
+  font-size: 14px;
+}
+.carousel-item .carsoule_img{
+  height: auto;
+}
+.carousel-d1 .car-name,.carousel-d1 .car-cate{
+  display: none;
+}
+.carousel-d2 .d2-p1{
+  font-size: 14px;
+  margin-bottom: 16px;
+}
+.carousel-d2 .d2-link{
+  font-size: 14px;
+  margin-bottom: 16px;
+}
+.d2-avt{
+  width: 38px;
+  height: 38px;
+}
+.d2-box{
+  gap: 10px;
+}
+.d2-box .d2-name{
+font-size: 14px;
+}
+.d2-box .d2-txt{
+font-size: 12px;
+}
+.d2_link-box{
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: space-between;
+}
+.carousel-box .carousel-item-thb.swiper-slide{
+  opacity: 0.5;
+}
+.carousel-box .carousel-item-thb.swiper-slide.swiper-slide-thumb-active{
+  opacity: 1;
+}
+.carousel-box .carousel-item.swiper-slide.swiper-slide-active .carousel-d2 .animate_tl{
+  transition-delay: 0.3s;
+}
+.carousel-box{
+  padding: 56px 0;
+}
+.carousel-box .swiper-scrollbar{
+  display: block;
+}
+}
+/* carousel end */
+</style>
+
+<section class="{% if section.settings.custom_class != blank %}{{section.settings.custom_class}}{% endif %}">
+    <div class="carousel-box to-top">
+      <div class="carousel-wrapper container">
+        <div class="carousel-top">
+          <div class="top_lt">
+              {%- if section.settings.carousel_tle != blank -%}
+        <div class="top_tle">{{ section.settings.carousel_tle }}</div>
+            {%- endif -%}
+            {%- if section.settings.carousel_text != blank -%}
+            <div class="top_txt">{{ section.settings.carousel_text }}</div>
+              {%- endif -%}
+          </div>
+          <div class="top_rt">
+            <svg xmlns="http://www.w3.org/2000/svg" width="50" height="39" viewBox="0 0 50 39" fill="none" class="carousel_left" id="carousel_left--{{ section.id}}">
+              <g clip-path="url(#clip0_4883_82)">
+                <path d="M0 19.8203C0 20.1228 0.112194 20.4228 0.326828 20.6521L17.4 38.9447L19.1829 37.2813L4.02439 21.0399H50C50 19.6935 48.9073 18.6008 47.561 18.6008H1.27561C0.814632 18.6008 0.365852 18.8325 0.146343 19.2399C0.0463409 19.4228 0 19.6228 0 19.8203Z" fill="#190A0A"/>
+                <path d="M2.55125 15.5446C3.50491 16.4958 5.04881 16.4958 6.00003 15.5446L19.1561 2.39089L17.4317 0.666504L2.55369 15.5446H2.55125Z" fill="#190A0A"/>
+              </g>
+              <defs>
+                <clipPath id="clip0_4883_82">
+                  <rect width="50" height="38.2805" fill="white" transform="matrix(-1 0 0 1 50 0.666504)"/>
+                </clipPath>
+              </defs>
+            </svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="50" height="39" viewBox="0 0 50 39" fill="none" class="carousel_right" id="carousel_right--{{ section.id}}">
+              <g clip-path="url(#clip0_4883_78)">
+                <path d="M50 19.8203C50 20.1228 49.8878 20.4228 49.6732 20.6521L32.6 38.9447L30.8171 37.2813L45.9756 21.0399H0C0 19.6935 1.09268 18.6008 2.43902 18.6008H48.7244C49.1854 18.6008 49.6341 18.8325 49.8537 19.2399C49.9537 19.4228 50 19.6228 50 19.8203Z" fill="#190A0A"/>
+                <path d="M47.4487 15.5446C46.4951 16.4958 44.9512 16.4958 44 15.5446L30.8439 2.39089L32.5683 0.666504L47.4463 15.5446H47.4487Z" fill="#190A0A"/>
+              </g>
+              <defs>
+                <clipPath id="clip0_4883_78">
+                  <rect width="50" height="38.2805" fill="white" transform="translate(0 0.666504)"/>
+                </clipPath>
+              </defs>
+            </svg>
+          </div>
+        </div>
+        <div class="main-swiper" id="main-swiper--{{ section.id}}">
+          <div class="carousel-cnt swiper-wrapper">
+
+            {%- for block in section.blocks -%}
+            <div class="carousel-item swiper-slide">
+              <div class="carousel-li">
+                <div class="carousel-d1">
+                  <div class="carsoule_img">
+                     {%- if block.settings.image1 -%}
+                    <img src="{{ block.settings.image1 |image_url }}" alt="" class="img_oe img_oe-des">
+                      {%- endif -%}
+                    {%- if block.settings.image2 -%}
+                     <img src="{{ block.settings.image2 |image_url }}" alt="" class="img_to img_to-des">
+                      {%- endif -%}
+
+                     {%- if block.settings.mobile_image1 -%}
+                    <img src="{{ block.settings.mobile_image1 |image_url }}" alt="" class="img_oe img_oe-mb">
+                      {%- endif -%}
+                    {%- if block.settings.mobile_image1 -%}
+                     <img src="{{ block.settings.mobile_image1 |image_url }}" alt="" class="img_to img_to-mb">
+                      {%- endif -%}
+                  </div>
+                  <div class="car-name">{{ block.settings.avtor }}</div>
+                  <div class="car-cate">{{ block.settings.avtor_cate }}</div>
+                </div>
+                <div class="carousel-d2">
+                 <div class="carousel-d2_box">
+                  <div class="d2-p1 animate_tl">{{ block.settings.des }}</div>
+                 <div class="d2_link-box">
+                  <a href="{{ block.settings.button_link }}" class="d2-link animate_tl" target="_blank">{{ block.settings.link_txt }}</a>
+                  <div class="d2-box animate_tl">
+                    <div class="d2-avt">
+                      <img src="{{ block.settings.image1 |image_url }}" alt="">
+                    </div>
+                    <div class="d2-rt">
+                      <div class="d2-name">{{ block.settings.avtor }}</div>
+                      <div class="d2-txt">{{ block.settings.avtor_cate }}</div>
+                    </div>
+                  </div>
+                 </div>
+                 </div>
+                </div>
+              </div>
+            </div>
+            {%- endfor -%}
+
+            
+          </div>
+        </div>
+        <div class="main-thumbs-swiper" id="main-thumbs--{{ section.id}}">
+          <div class="carousel-thb-cnt swiper-wrapper">
+              {%- for block in section.blocks -%}
+            <div class="carousel-item-thb swiper-slide">
+               <img src="{{ block.settings.image1 |image_url }}" alt="">
+            </div>
+              {%- endfor -%}
+          </div>
+        </div>
+        <div class="swiper-scrollbar" id="swiper-scrollbar--{{ section.id}}"></div>
+      </div>
+    </div>
+</section>
+<script src="{{ 'swiper-bundle.min.aio.min.js' | asset_url }}"></script>
+<script>
+var thumbSport = new Swiper('#main-thumbs--{{ section.id}}',{
+  spaceBetween: 10,
+  slidesPerView: 5,
+  watchSlidesVisibility: true
+})
+   var mainSport = new Swiper('#main-swiper--{{ section.id}}', {
+    watchSlidesProgress: true,
+    slidesPerView: 1,
+      spaceBetween: 20,
+      loop: true,
+      centeredSlides: true,
+      speed:500,
+     slideToClickedSlide: true,
+     autoplay: {
+                    delay: 2000,
+                    disableOnInteraction: true
+        },
+      pagination: {
+        el: '#swiper-scrollbar--{{ section.id}}',
+        type: 'progressbar'
+      },
+      breakpoints: {
+    768: {
+      slidesPerView: 'auto',
+      speed:1000,
+    }
+  },
+      navigation: {
+            nextEl: '#carousel_right--{{ section.id}}',
+            prevEl: '#carousel_left--{{ section.id}}',
+        },
+        thumbs: {
+    swiper: thumbSport,
+  }
+  });
+</script>
+{% schema %}
+{
+  "name": "Sport Carousel",
+  "class": "sport-slide",
+  "settings": [
+        {
+      "type": "text",
+      "id": "custom_class",
+      "label": "Custom Class"
+    },
+    {
+      "type": "text",
+      "id": "carousel_tle",
+      "label": "Title"
+    },
+     {
+      "type": "text",
+      "id": "carousel_text",
+      "label": "Carousel Text"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 36
+    }
+  ],
+  "blocks": [
+        {
+      "type": "item",
+      "name": "item",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image1",
+          "label": "Image1"
+        },
+        {
+          "type": "image_picker",
+          "id": "image2",
+          "label": "Image2"
+        },
+        {
+          "type": "image_picker",
+          "id": "mobile_image1",
+          "label": "Mobile Image1"
+        },
+         {
+          "type": "image_picker",
+          "id": "mobile_image2",
+          "label": "Mobile Image2"
+        },
+        {
+          "type": "text",
+          "id": "avtor",
+          "label": "Avtor Text"
+        },
+        {
+          "type": "text",
+          "id": "avtor_cate",
+          "label": "Avtor cate"
+        },
+        {
+          "type": "text",
+          "id": "des",
+          "label": "Description"
+        },
+         {
+          "type": "text",
+          "id": "link_txt",
+          "label": "Link Text"
+        },
+          {
+        "type": "url",
+        "id": "button_link",
+        "label": "Button link"
+      }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Sport Carousel",
+      "settings": {},
+      "blocks": [
+      ]
+    }
+  ]
+}
+{% endschema %}

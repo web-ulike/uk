@@ -1,0 +1,873 @@
+{%- liquid
+  assign se_id = section.id
+  assign se_bks = section.blocks
+  assign se_stts = section.settings
+-%}
+
+{% if customer %}
+{% else %}
+<div id="u-user-popup" class="popup">
+  <div class="overlay">
+    <div class="popup-content">
+      <button class="close-btn">
+      <picture>
+        <source media="(max-width: 768px)" srcset="https://cdn.shopify.com/s/files/1/0617/6125/7610/files/d53eb056bdad8af0f3937ae7d31e56bc.svg?v=1741318394">
+        <img 
+          loading="lazy"
+          class="image"
+          alt="VIP Benefits"
+          src="https://cdn.shopify.com/s/files/1/0617/6125/7610/files/1_86d72855-81f2-47f3-8535-fa7eab73ea28.svg?v=1741318394"
+          alt="close-image">
+      </picture>
+    </button>
+      <div class="popup-container">
+        <div class="popup-left">
+          <picture>
+            <source media="(max-width: 768px)" srcset="{{ se_stts.m_image | img_url: '1200x' }}">
+            <img 
+              class="image" 
+              alt="VIP Benefits"
+              src="{{ se_stts.image | img_url: '800x' }}" 
+              alt="{{ se_stts.alt_text | escape }}">
+          </picture>
+          <div class="popop-left-benefits">
+            <div class="icon-item">
+              <span class="icon">
+                <img src="https://cdn.shopify.com/s/files/1/0617/6125/7610/files/Vector.svg?v=1741318877" />
+              </span>
+              <span class="text">Extra £20 OFF</span>
+            </div>
+            <div class="icon-item">
+              <span class="icon">
+                <img src="https://cdn.shopify.com/s/files/1/0617/6125/7610/files/Vector_1.svg?v=1741318876" />
+              </span>
+              <span class="text">120-Day Money Back Guarantee</span>
+            </div>
+            <div class="icon-item">
+              <span class="icon">
+                <img src="https://cdn.shopify.com/s/files/1/0617/6125/7610/files/1_0e05c4e3-6ecc-4abf-ba3d-6ac859d3f8d8.svg?v=1741318876" />
+              </span>
+              <span class="text">Free Express Shipping</span>
+            </div>
+          </div>
+        </div>
+        <div class="popup-right">
+          <h2>{{ se_stts.title }}</h2>
+          <p>Join Ulike Membership for exclusive perks, VIP access, and more!</p>
+          <form id="login-form">
+            <div class="form-group">
+              <input type="email" class="j_popup_email" placeholder="{{ se_stts.email_label }}" required>
+              <div class="input-msg-error"></div>
+            </div>
+            <div class="form-group verification-group">
+              <input type="text" class="verification-code" placeholder="{{ se_stts.code_label }}" required maxlength="12">
+              <button type="button" class="send-code-btn">{{ se_stts.send_code_btn }}</button>
+              <div class="input-msg-error"></div>
+            </div>
+
+            {% comment %} 政策 {% endcomment %}
+            <div class="policy-agreement">
+              <input type="checkbox" id="policy-checkbox">
+              <label for="policy-checkbox">
+                To continue, you agree to our 
+                <a href="https://uk.ulike.com/policies/privacy-policy" target="_blank">Privacy Policy</a> and 
+                <a href="https://uk.ulike.com/policies/terms-of-service" target="_blank">Terms of Use</a>.
+              </label>
+            </div>
+
+            <button type="button" class="btn-primary">{{ se_stts.btn_text }}</button>
+            <div class="login-msg-error"></div>
+            <div class="or-divider">
+              <span>Or</span>
+            </div>
+            <div class="social-login">
+              <img data-name="google"  src="https://cdn.shopify.com/s/files/1/0617/6125/7610/files/ebef4abc590ab4a5e9a8553db5a198f9.svg?v=1741332502" loading="lazy" alt="Google"  />
+              <img data-name="amazon" src="https://cdn.shopify.com/s/files/1/0617/6125/7610/files/435a0e8c6c981b28bf983beb102e7171.svg?v=1741332502" loading="lazy" alt="Amazon"  />
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="notification_{{ se_id }}">
+    <div class="notification-icon">
+      <img src="https://cdn.shopify.com/s/files/1/0740/5882/6015/files/color-success.svg?v=1741931573" loading="lazy" alt="Notification"/>
+    </div>
+    <div class="notification-text">
+      Your verification code has been sent – please check your inbox.
+    </div>
+</div>
+
+<div id="floating-box">
+   <img src="https://cdn.shopify.com/s/files/1/0617/6125/7610/files/Group_8.svg?v=1741338737" loading="lazy" alt="login" class="floating-box-icon" />
+</div>
+
+<script>
+  $(document).ready(function () {
+    const errorMessages = {
+      emailRequiredWithPhone:
+        'You cannot subscribe with just your phone number. Please enter both your email and phone number.',
+      emailInvalid: 'Please enter a valid email address.',
+      emailFormat: 'Please enter the correct email format',
+      agreeRequired: 'Please agree to our privacy policy',
+      codeInvalid: 'Please enter the correct verification Code',
+      system_err: "{{ 'general.page.system_err' | t }}",
+    };
+    const thatLogin = $('#u-user-popup');
+    let returnUrl = 'https://account.ulike.com/account/rewards?site=uk';
+
+
+    $(document).on('click', '#u-user-popup .close-btn', function (e) {
+      // 去掉错误提示
+      $('#u-user-popup').fadeOut();
+    });
+
+    $(document).on('focus', '.j_popup_email, .verification-code', function () {
+      try {
+        const $input = $(this);
+        const $formGroup = $input.closest('.form-group');
+        
+        if ($formGroup.length === 0) {
+          console.error('Form group not found');
+          return;
+        }
+        // 去掉错误提示
+        $formGroup.removeClass('form-group-error');
+    
+        if (!$input.val()) {
+          const $popupContent = $input.closest('.popup-content');
+          if ($popupContent.length === 0) {
+            return;
+          }
+          $popupContent.addClass('popup-active');
+        }
+      } catch (error) {
+        console.error('An error occurred:', error);
+      }
+    });
+
+    // Blur event using jQuery
+    $(document).on('blur', '.j_popup_email,.verification-code', function () {
+      if (!$(this).val()) {
+        $(this).closest('.popup-content').removeClass('popup-active');
+      }
+    });
+
+    let errorTimeout; // 存储定时器
+    $(document).on('click', '.send-code-btn', function () {
+      let $this = $(this); // 缓存按钮对象
+      let timeLeft = 60; // 倒计时时间
+      let countdown; // 定时器变量
+      let emailError = '';
+      commonGtmEvent('vip_get code_all', 'click', '');
+      const isPolicyChecked = $('#policy-checkbox').is(':checked');
+      clearTimeout(errorTimeout);
+      if (!isPolicyChecked) {
+        // 请勾选同意服务条款
+        thatLogin.find('.login-msg-error').text('Please agree to our privacy policy');
+        errorTimeout = setTimeout(function () {
+          thatLogin.find('.login-msg-error').text('');
+        }, 3000);
+       return;
+      }
+      if (validateEmailField()) {
+        $this.prop('disabled', true); // 禁用按钮
+        $this.text(`${timeLeft}s`);
+        // 倒计时逻辑
+        countdown = setInterval(() => {
+          if (timeLeft > 0) {
+            timeLeft--;
+            $this.text(`${timeLeft}s`);
+          } else {
+            clearInterval(countdown); // 清除定时器
+            $this.text('Get verification code'); // 恢复按钮文字
+            $this.prop('disabled', false); // 启用按钮
+          }
+        }, 1000);
+     
+        let userEmail= $('.j_popup_email').val().trim();
+        let codeForm = {
+          "since":"USER_LOGIN_WITH_EMAIL",
+          userEmail
+        }
+        sendUlikeApi('/user/sendCode', codeForm).then(function (res) {
+          if (res.code == 0){
+            commonGtmEvent('vip_get code', 'click', '');
+            thatLogin.find('.login-msg-error').html($(".notification_{{ se_id }}").html());
+            errorTimeout = setTimeout(function () {
+              thatLogin.find('.login-msg-error').html('');
+            }, 10000);
+          } else {
+            thatLogin.find('.login-msg-error').text(errorMessages.system_err);
+          }
+          commonGtmEvent('vip_register_error', Json.stringify(res), '');
+        });
+      }
+    });
+
+    $(document).on('click', '.btn-primary', function () {
+      let $this = $(this); // 缓存按钮对象
+
+      let data = {
+        "since": "USER_LOGIN_WITH_EMAIL",
+        "userEmail": '',
+        "verifyCode": "",
+        "returnUrl": returnUrl
+      };
+      
+      data.userEmail = thatLogin.find('.j_popup_email').val().trim();
+      data.verifyCode = thatLogin.find('.verification-code').val().trim();
+
+      const isEmailValid = validateEmailField();
+      const isCodeValid = validateCodeField();
+      const isPolicyChecked = $('#policy-checkbox').is(':checked');
+      if (!isPolicyChecked) {
+        // 请勾选同意服务条款
+        thatLogin.find('.login-msg-error').text('Please agree to our privacy policy');
+        setTimeout(function () {
+          thatLogin.find('.login-msg-error').text('');
+        }, 3000);
+      }
+
+      if (isEmailValid && isCodeValid) {
+        sendUlikeApi('/user/login', data).then(function (res) {
+          if (res.code === 0) {
+            commonGtmEvent('vip_register', 'click', '');
+            window.location.href = res.data.loginUrl;
+          } else if (res.code === 99998){
+            {% comment %} The verification code you entered is invalid {% endcomment %}
+            thatLogin.find('.login-msg-error').text('The verification code entered is invalid');
+          } else {
+            thatLogin.find('.login-msg-error').text(errorMessages.system_err);
+          }
+        });
+      }
+    });
+
+    /**
+     * 验证邮箱字段的合法性
+     *
+     * 此函数用于验证用户输入的邮箱地址是否有效首先检查邮箱字段是否为空，
+     * 如果为空，则设置相应的错误消息如果邮箱格式不正确，则设置格式错误消息
+     * 如果存在任何错误，函数将打印错误消息并更新HTML以显示错误，然后返回false，
+     * 表示验证失败如果没有错误，函数返回true，表示验证成功
+     *
+     * @return {boolean} 如果邮箱字段验证成功，则返回true；否则返回false
+     */
+    function validateEmailField() {
+      // 初始化邮箱错误消息为空字符串
+      let emailError = '';
+      // 获取用户输入的邮箱地址，并去除前后空格
+      let userEmail = $('.j_popup_email').val().trim();
+
+      // 检查邮箱字段
+      if (userEmail == '') {
+        // 如果邮箱字段为空，则设置错误消息为“邮箱无效”
+        emailError = errorMessages.emailInvalid;
+      } else if (!validateEmail(userEmail)) {
+        // 如果邮箱格式不正确，则设置错误消息为“邮箱格式错误”
+        emailError = errorMessages.emailFormat;
+      }
+
+      // 如果存在邮箱错误
+      if (emailError) {
+        // 更新HTML以显示错误消息
+        $('#login-form .form-group')
+          .eq(0)
+          .find('.input-msg-error')
+          .text(emailError);
+        // 为错误字段的表单组添加错误类
+        $('#login-form .form-group').eq(0).addClass('form-group-error');
+        // 返回false表示验证失败
+        return false;
+      }
+      // 如果没有错误，返回true表示验证成功
+      return true;
+    }
+
+    function validateCodeField() {
+      // 初始化邮箱错误消息为空字符串
+      let codeError = '';
+      // 获取用户输入的邮箱地址，并去除前后空格
+      let userCode = $('.verification-code').val().trim();
+
+      // 检查邮箱字段
+      if (!userCode) {
+        // 如果邮箱字段为空，则设置错误消息为“邮箱无效”
+        codeError = errorMessages.codeInvalid;
+      }
+
+      // 如果存在邮箱错误
+      if (codeError) {
+        // 更新HTML以显示错误消息
+        $('#login-form .form-group')
+          .eq(1)
+          .find('.input-msg-error')
+          .text(codeError);
+        // 为错误字段的表单组添加错误类
+        $('#login-form .form-group').eq(1).addClass('form-group-error');
+        // 返回false表示验证失败
+        return false;
+      }
+      // 如果没有错误，返回true表示验证成功
+      return true;
+    }
+
+    // 显示通知
+    $("#showNotification").click(function () {
+      $("#notification").slideDown(300); // 使用 slideDown 动画显示
+    });
+
+    // 隐藏通知
+    $("#hideNotification").click(function () {
+      $("#notification").slideUp(300); // 使用 slideUp 动画隐藏
+    });
+
+
+    // 监听政策协议区域的点击事件
+    $('.policy-agreement').on('click', function(e) {
+      // 确保点击事件不是由<a>标签或政策复选框本身冒泡上来的
+      if (!$(e.target).is('a') || !$(e.target).is('#policy-checkbox')) {
+          // 获取政策复选框
+          let checkbox = $('#policy-checkbox');
+          // 反转复选框的选中状态
+          checkbox.prop('checked', !checkbox.prop('checked'));
+      }
+    });
+
+    // 监听社交登录中的图片点击事件
+    $(thatLogin).on("click", ".social-login img", function () {
+      // 获取社交平台类型
+      let type = $(this).data('name');
+      if (type == 'google'){
+        commonGtmEvent('vip_google', type, '');
+      } else {
+        commonGtmEvent('vip_amaz', type, '');
+      }
+      // 设置站点代码
+      let site = 'UK';
+      // 构造OAuth2授权URL
+      const iframeUrl = `https://api.ulike.com/user/oauth2/authorization/${type}?siteCode=${site}&returnUrl=${returnUrl}`;
+      // 重定向到授权页面
+      location.href = iframeUrl;
+    });
+
+
+    $(document).on("click", "#floating-box", function () {
+      commonGtmEvent('vip_Teaser', 'click', '');
+      $('#u-user-popup').show();
+    });
+
+
+    let popupDelay = 1000 * 8;  // 倒计时（15秒），可动态设置
+    let timerEnded = false;  // 倒计时是否结束
+    let hasScrolled = true; // 用户是否滚动过页面
+    let popupShown = false;  // 防止重复触发弹窗
+    let popupCookieName = 'ulike_popup_login';
+
+    // 显示弹窗
+    function showPopup() {
+      if (popupShown || getCookie(popupCookieName) === '1') return;
+      popupShown = true;
+      commonGtmEvent('vip_impressions', 'show', '');
+      $('#u-user-popup').show();
+      setCookie(popupCookieName, '1', 1);
+      window.removeEventListener('scroll', onUserScroll);
+    }
+
+    // 公共检查方法（你要的提取方法）
+    function checkAndShowPopup() {
+      if (timerEnded && hasScrolled) {
+        showPopup();
+      }
+    }
+
+    // 滚动事件处理器
+    function onUserScroll() {
+      hasScrolled = true;
+      checkAndShowPopup();
+    }
+
+    // 监听滚动
+    window.addEventListener('scroll', onUserScroll);
+
+    // 倒计时结束
+    setTimeout(() => {
+      timerEnded = true;
+      checkAndShowPopup();  // 提取调用
+    }, popupDelay);
+
+    $(document).one('focus', '#login-form .j_popup_email', function () {
+      commonGtmEvent('vip_enter email', 'focus', '');
+    });
+    
+    $(document).one('focus', '#login-form .verification-code', function () {
+      commonGtmEvent('vip_enter code', 'focus', '');
+    });
+
+  });
+  document.addEventListener("DOMContentLoaded", function() {
+    if (window.location.href.includes("ulikeunitedkingdom.myshopify")) {
+      document.querySelector('#u-user-popup').classList.add('hide-plug-diy');
+    }
+  });
+</script>
+<style>
+  .hide-plug-diy {
+    display: none !important;
+  }
+</style>
+<style>
+  #u-user-popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 22;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    display: none;
+  }
+
+  #u-user-popup .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  #u-user-popup .popup-content {
+    position: relative;
+    text-align: center;
+    padding: 50px 30px 35px;
+    background: #fff;
+    width: 480px;
+  }
+
+  #u-user-popup .popup-content {
+    display: flex;
+    max-width: 980px;
+    width: 90%;
+    border-radius: 12px;
+    background: #fff;
+    padding: 0;
+  }
+
+  .popup-container {
+    display: flex;
+  }
+
+  .popup-left {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    border-radius: 12px 0px 0px 12px;
+    overflow: hidden;
+  }
+  .popup-left .popup-left-benefits {
+    position: absolute;
+    bottom: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 90%;
+    font-size: 14px;
+    color: #333;
+  }
+
+  .popup-left img {
+    max-width: 100%;
+    height: auto;
+  }
+
+  #u-user-popup .popop-left-benefits{
+    position: absolute;
+    bottom: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 95%;
+    font-size: 0.7em;
+    color: #333;
+  }
+
+  .icon-item {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .icon-item img{
+    width: 28px;
+  }
+
+  .popup-right {
+    flex: 1;
+    padding: 30px;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .popup-right h2 {
+    font-size: 35px;
+    color: #ff0055;
+    font-family: var(--text-font-family);
+    margin-bottom: 0px;
+  }
+  #u-user-popup .popup-right p {
+    font-size: 18px;
+    color: #000;
+    margin-bottom: 10px;
+    line-height: normal;
+    width: 80%;
+    margin: 0 auto;
+    line-height: 24px;
+  }
+
+  #login-form {
+    margin-top: 20px;
+  }
+
+  #u-user-popup .form-group {
+    margin-bottom: 20px;
+    position: relative;
+  }
+
+  #u-user-popup .form-group .input-msg-error{
+    font-size: 12px;
+    line-height: 18px;
+    display: none;
+  }
+
+  #u-user-popup .form-group input {
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    padding: 5px 15px;
+    outline: none;
+    text-align: left;
+    color: #000;
+    font-size: 16px;
+  }
+
+  #u-user-popup .form-group input::placeholder {
+    color: #BDBDBD;
+  }
+
+  #u-user-popup .form-group-error {
+    color: #E0004D;
+  }
+  .form-group-error input {
+    border-color: #E0004D;
+    color: #E0004D;
+  }
+  .form-group-error .input-msg-error {
+    display: block;
+    display: block;
+    text-align: left;
+    margin: 4px 0px 0px 20px;
+    font-size: 12px;
+  }
+  #login-form .login-msg-error{
+    color: rgba(224, 0, 77, 1);
+    font-size: 14px;
+    font-weight: 300;
+    margin-bottom: 4px;
+    display: flex;
+    text-align: center;
+    margin-top: 10px;
+    justify-content: center;
+  }
+
+
+
+  .verification-group {
+    {% comment %} display: flex; {% endcomment %}
+  }
+
+  .send-code-btn {
+    margin-left: 10px;
+    border: none;
+    background: #000;
+    color: #fff;
+    border-radius: 20px;
+    padding: 5px 20px;
+    cursor: pointer;
+    white-space: nowrap;
+    position: absolute;
+    right: 2px;
+    top: 3px;
+    font-size: 14px;
+  }
+
+  #u-user-popup .btn-primary {
+    width: 100%;
+    background: linear-gradient(180deg, #E0004D -25%, #FF7595 125%);
+    color: #fff;
+    border-radius: 20px;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+  }
+
+  .social-login {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+    gap: 20px;
+  }
+
+  .social-login  img{
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 5px;
+    cursor: pointer;
+  }
+
+  #u-user-popup .alternative-login a {
+    color: #888;
+    font-size: 12px;
+    text-decoration: none;
+    text-align: center;
+    display: inline;
+    margin-left: 5px;
+  }
+  #u-user-popup .policy-agreement {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+
+  #u-user-popup .policy-agreement input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+    cursor: pointer;
+    pointer-events: none;
+  }
+
+  .policy-agreement label {
+    font-size: 14px;
+    color: #333;
+    text-align: left;
+  }
+
+  .policy-agreement a {
+      text-decoration: underline;
+      color: #555;
+  }
+
+  .policy-agreement a:hover {
+      color: #000;
+  }
+
+  #u-user-popup .close-btn {
+    position: absolute;
+    top: 20px;
+    right: 25px;
+    font-size: 24px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    color: #000;
+  }
+
+
+  .notification_{{ se_id }}{
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #ffffff; 
+    border-radius: 25px;
+    padding: 12px 20px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    font-size: 14px;
+    color: #333;
+    width: 80%;
+    max-width: 980px;
+    z-index: 24;
+    display: none;
+  }
+
+  .u-user-popup .notification-icon {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--text-font-family);
+  }
+
+  .u-user-popup .notification-text {
+    color: #000;
+  }
+
+  #floating-box {
+    position: fixed;
+    height: 46px;
+    bottom: 140px;
+    right: 24px;
+    width: 46px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 17;
+    user-select: none;
+  }
+
+  .or-divider {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    color: #bbb;
+    margin: 10px 0;
+  }
+  
+  .or-divider::before,
+  .or-divider::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid #bbb;
+  }
+  
+  .or-divider:not(:empty)::before {
+    margin-right: .75em;
+  }
+  
+  .or-divider:not(:empty)::after {
+    margin-left: .75em;
+  }
+  
+  .or-divider span {
+    font-size: 14px;
+  }
+
+  @media (max-width: 768px) {
+    .popup-container {
+      flex-direction: column;
+    }
+
+    .popup-left {
+      border-radius: 12px 12px 0px 0px;
+    }
+
+    .popup-right {
+      width: 100%;
+      padding: 10px 20px;
+    }
+
+    .popup-right h2 {
+      font-size: 24px;
+    }
+    .icon-item img{
+      width: 22px;
+    }
+
+    #u-user-popup .close-btn {
+      top: -40px;
+      z-index: 2;
+      width: 30px;
+      right: 0px;
+    }
+
+    #u-user-popup .popup-right p {
+      font-size: 14px;
+      width: 90%;
+      line-height: 22px;
+    }
+
+    #u-user-popup .verification-group {
+      flex-direction: column;
+    }
+    #u-user-popup .form-group input {
+      font-size: 12px;
+    }
+
+    .send-code-btn {
+      margin-left: 0;
+      width: 110px;
+      font-size: 10px;
+      padding: 5px 10px;
+    }
+    #u-user-popup .popop-left-benefits {
+      bottom: initial;
+      top: 10px;
+      font-size: 0.6em;
+    }
+    .policy-agreement label {
+      font-size: 10px;
+      text-align: left;
+    }
+    .notification_{{ se_id }}{ 
+      font-size: 10px;
+      width: 90%;
+      padding: 10px 10px;
+    }
+    #u-user-popup .btn-primary { 
+      padding: 6px;
+    }
+    #floating-box {
+      bottom: 150px;
+    }
+    .or-divider {
+      margin: 4px 0;
+    }
+  }
+
+  @media (max-width: 400px) {
+    #u-user-popup .popop-left-benefits {
+      font-size: 0.5em;
+    }
+  }
+</style>
+{% endif %}
+{% schema %}
+{
+  "name": "u-user-popup",
+  "class": "u-user-popup",
+  "blocks": [],
+  "settings": [
+    {"type": "image_picker", "id": "image", "label": "左侧图片"},
+    {"type": "image_picker", "id": "m_image", "label": "左侧移动端图片"},
+    {"type": "html", "id": "title", "label": "弹窗标题", "default": "Unlock Your Benefits"},
+    {"type": "html", "id": "email_label", "label": "邮箱输入框标签", "default": "Email Address*"},
+    {"type": "html", "id": "code_label", "label": "验证码输入框标签", "default": "Verification Code*"},
+    {"type": "html", "id": "send_code_btn", "label": "发送验证码按钮", "default": "Obtain your verification code"},
+    {"type": "html", "id": "btn_text", "label": "登录/注册按钮", "default": "Login/Register"},
+    {"type": "html", "id": "already_have_password_text", "label": "已有密码文本", "default": "Already have a password?"},
+    {"type": "html", "id": "login_link", "label": "密码登录链接", "default": "https://account.ulike.com/login"},
+    {"type": "html", "id": "login_with_password", "label": "密码登录按钮文本", "default": "Login with password"}
+  ],
+  "presets": [{"name": "u-user-popup", "blocks": []}]
+}
+{% endschema %}

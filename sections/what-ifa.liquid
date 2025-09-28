@@ -1,0 +1,171 @@
+<style>
+.what-ifa {
+  padding: 120px 0 95px 0;
+  background: #f6f6f6;
+}
+
+.what-ifa .what-ifa-cont {
+  display: flex;
+  gap: 50px;
+}
+
+.what-ifa .what-ifa-left {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.what-ifa .what-ifa-right {
+  width: 56.6%;
+  flex-shrink: 0;
+}
+
+.what-ifa .what-ifa-h3 {
+  color: #190a0a;
+  font-size: 44px;
+  line-height: 1.2;
+  font-family: var(--heading-font-family);
+  font-weight: normal;
+  margin: 0;
+  margin-bottom: 20px;
+}
+
+.what-ifa .what-ifa-sub {
+  color: #190a0a;
+  font-size: 18px;
+  line-height: 1.5;
+  margin-bottom: 20px;
+}
+
+.what-ifa .what-ifa-p {
+  color: #190a0a;
+  font-size: 18px;
+  line-height: 1.5;
+}
+
+.what-ifa .what-ifa-p strong {
+  font-weight: normal;
+  font-family: var(--heading-font-family);
+}
+
+.what-ifa .icon-img {
+  width: 196px;
+}
+
+.what-ifa .img {
+  width: 100%;
+}
+
+@media (max-width: 991px) {
+  .what-ifa {
+    padding: 58px 0;
+  }
+
+  .what-ifa .what-ifa-cont {
+    flex-direction: column;
+    gap: 30px;
+  }
+
+  .what-ifa .what-ifa-h3 {
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+
+  .what-ifa .what-ifa-sub {
+    font-size: 12px;
+    margin-bottom: 10px;
+  }
+
+  .what-ifa .what-ifa-p {
+    font-size: 14px;
+  }
+
+  .what-ifa .what-ifa-right {
+    width: 100%;
+  }
+
+  .what-ifa .icon-img {
+    width: 108px;
+  }
+}
+
+</style>
+<section class="section-box">
+    <div class="what-ifa">
+        <div class="container">
+        <div class="what-ifa-cont">
+            <div class="what-ifa-left">
+            <div>
+                {%- if section.settings.text != blank -%}
+                    <h3 class="what-ifa-h3">{{ section.settings.text }}</h3>
+                {%- endif -%}
+                {%- if section.settings.text1 != blank -%}
+                     <div class="what-ifa-sub">{{ section.settings.text1 }}</div>
+                {%- endif -%}
+                {%- if section.settings.text2 != blank -%}
+                    <div class="what-ifa-p">{{ section.settings.text2 }}</div>
+                {%- endif -%}
+            </div>
+                {%- if section.settings.image != blank -%}
+                    <img loading="lazy"
+                        class="icon-img"
+                        width=""
+                        height=""
+                        {% render 'image-attributes', image: section.settings.image %}
+                        alt="{{ section.settings.image.alt | escape }}">
+                {%- endif -%}
+            </div>
+            <div class="what-ifa-right">
+                {%- if section.settings.image1 != blank -%}
+                    <img loading="lazy"
+                        class="img"
+                        width=""
+                        height=""
+                        {% render 'image-attributes', image: section.settings.image1 %}
+                        alt="{{ section.settings.image1.alt | escape }}">
+                {%- endif -%}
+            </div>
+        </div>
+        </div>
+    </div>
+</section>
+{% schema %}
+{
+  "name": "what-ifa",
+  "settings": [
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Title"
+    },
+    {
+      "type": "text",
+      "id": "text1",
+      "label": "Text"
+    },
+    {
+      "type": "richtext",
+      "id": "text2",
+      "label": "Text"
+    },
+    {
+        "type": "image_picker",
+        "id": "image",
+        "label": "Icon"
+    },
+    {
+        "type": "image_picker",
+        "id": "image1",
+        "label": "Image"
+    }
+  ],
+  "presets": [
+    {
+      "name": "what-ifa",
+      "blocks": []
+    }
+  ]
+}
+{% endschema %}

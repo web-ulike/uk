@@ -1,0 +1,260 @@
+<style>
+.officially-banner{
+  position: relative;
+  height: 200vh;
+}
+
+.officially-banner .officially-banner-cont{
+  position: sticky;
+  height: 100vh;
+  top: 0;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+}
+
+.officially-banner .img{
+  position: relative;
+  z-index: 1;
+  transform: scale(1.9);
+  top: 18%;
+  min-height: 100%;
+  max-width: none;
+}
+
+.officially-banner .mb-box{
+  display: none;
+}
+
+.officially-banner .officially-banner-text{
+  position: absolute;
+  width: 100%;
+  left: 0;
+  top: 7%;
+  text-align: center;
+  z-index: 2;
+  color: #000;
+}
+
+.officially-banner .officially-banner-title{
+  font-size: 60px;
+  line-height: 1.2;
+  letter-spacing: 0.6px;
+}
+
+.officially-banner .officially-banner-sub{
+  font-size: 20px;
+  line-height: 1.5;
+  letter-spacing: 0.2px;
+}
+
+.officially-banner .officially-banner-btn{
+  background: #000;
+  line-height: 1.3;
+  letter-spacing: 0.18px;
+  font-size: 14px;
+  width: 205px;
+  height: 42px;
+  border-radius: 42px;
+  cursor: pointer;
+  border: 2px solid #000;
+  margin: 0 auto;
+  margin-top: 18px;
+}
+
+.officially-banner .officially-banner-btn span{
+  color: #fff;
+}
+
+.officially-banner .officially-banner-svg{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-style: solid;
+  border-color: #fff;
+  border-width: 20vh 14vw 20vh 14vw;
+  transform: scale(100);
+  pointer-events: none;
+  /* overflow: hidden; */
+}
+
+.officially-banner .officially-banner-svg .img-svg{
+  max-width: none;
+}
+
+
+@media (max-width:1100px) {
+  .officially-banner .officially-banner-svg{
+    border-width: 20vh 10vw 20vh 10vw;
+  }
+}
+
+@media (max-width:991px) {
+  .officially-banner .img{
+    transform: scale(1.85);
+    top: 25%;
+  }
+  .officially-banner .officially-banner-svg{
+    border-width: 30vh 12vw 30vh 12vw;
+  }
+  .officially-banner .officially-banner-svg .img-svg{
+    min-width: 110%;
+  }
+  .officially-banner .pc-box{
+    display: none;
+  }
+  .officially-banner .mb-box{
+    display: block;
+  }
+  .officially-banner .officially-banner-text{
+    top: 35px;
+  }
+  .officially-banner .officially-banner-title{
+    font-size: 34px;
+  }
+  .officially-banner .officially-banner-sub{
+    font-size: 14px;
+  }
+  .officially-banner .officially-banner-btn{
+    font-size: 12px;
+    width: 165px;
+    height: 35px;
+  }
+}
+</style>
+
+<section class="section-box">
+  <div class="officially-banner">
+    <div class="officially-banner-cont">
+      {%- if section.settings.image != blank -%}
+        <img
+          class="img pc-box officially-banner-img"
+          width="{{ section.settings.image.width }}"
+          height="{{ section.settings.image.height }}"
+          {% render 'image-attributes', image: section.settings.image %}
+          alt="{{ section.settings.image.alt | escape }}"
+        >
+      {%- endif -%}
+      {%- if section.settings.image_mobile != blank -%}
+        <img
+          class="img mb-box officially-banner-img"
+          width="{{ section.settings.image_mobile.width }}"
+          height="{{ section.settings.image_mobile.height }}"
+          {% render 'image-attributes', image: section.settings.image_mobile %}
+          alt="{{ section.settings.image_mobile.alt | escape }}"
+        >
+      {%- endif -%}
+      <div class="officially-banner-text">
+        <div class="officially-banner-title">{{ section.settings.text }}</div>
+        <div class="officially-banner-sub">{{ section.settings.text1 }}</div>
+        {%- if section.settings.text2 != blank -%}
+          <div class="officially-banner-btn btn-diy" onclick="btnScrollToTop()">
+            <div class="btn-txt" text="{{ section.settings.text2 }}">
+              <span>{{ section.settings.text2 }}</span>
+            </div>
+          </div>
+        {%- endif -%}
+      </div>
+      <div class="officially-banner-svg">
+        {%- if section.settings.svg_image != blank -%}
+          <img
+            class="img-svg pc-box"
+            width="{{ section.settings.svg_image.width }}"
+            height="{{ section.settings.svg_image.height }}"
+            {% render 'image-attributes', image: section.settings.svg_image %}
+            alt="{{ section.settings.svg_image.alt | escape }}"
+          >
+        {%- endif -%}
+        {%- if section.settings.svg_image_mobile != blank -%}
+          <img
+            class="img-svg mb-box"
+            width="{{ section.settings.svg_image_mobile.width }}"
+            height="{{ section.settings.svg_image_mobile.height }}"
+            {% render 'image-attributes', image: section.settings.svg_image_mobile %}
+            alt="{{ section.settings.svg_image_mobile.alt | escape }}"
+          >
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+  function btnScrollToTop() {
+    // let rectD = document.querySelector('.officially-banner').getBoundingClientRect()
+    // window.scrollTo({
+    //     top: rectD.height+110,
+    //     behavior: 'smooth'
+    // });
+    document.querySelector('#product-components .product-left-panel').scrollIntoView({ behavior: 'smooth' });
+  }
+  
+  function bannerScrollTo(){
+    ScrollTrigger.create({
+      trigger: ".officially-banner",
+      start: "top top",
+      end: "+=100%",
+      scrub: true,
+      animation:
+      gsap.timeline()
+      .to(".officially-banner-text",{'y': '-40%','opacity':0,ease:'power2.inOut'})
+      .to(".officially-banner-img",{'y': '-22%','scale':1.2,ease:'power2.inOut'},'<')
+      .to(".officially-banner-svg",{'scale':1,ease:'power2.inOut'})
+    })
+  }
+  window.addEventListener('load', () => {
+    bannerScrollTo()
+  })
+</script>
+{% schema %}
+{
+  "name": "officially-banner",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_mobile",
+      "label": "Image Mobile"
+    },
+    {
+      "type": "image_picker",
+      "id": "svg_image",
+      "label": "Svg"
+    },
+    {
+      "type": "image_picker",
+      "id": "svg_image_mobile",
+      "label": "Svg Mobile"
+    },
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "text1",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "text2",
+      "label": "Text"
+    }
+  ],
+  "presets": [
+    {
+      "name": "officially-banner"
+    }
+  ]
+}
+{% endschema %}

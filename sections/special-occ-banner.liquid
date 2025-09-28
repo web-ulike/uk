@@ -29,8 +29,8 @@
 }
 
 .special-occ-banner .banner-txt {
-  max-width: 425px;
-  padding-right: 35px;
+  max-width: 470px;
+  /* padding-right: 35px; */
   box-sizing: border-box;
 }
 
@@ -48,7 +48,9 @@
   margin-bottom: 30px;
   max-width: 326px;
 }
-
+.special-occ-banner .sub-txt h6{
+  margin:0;
+}
 .special-occ-banner .sub-txt strong {
   font-weight: normal;
   font-family: var(--heading-font-family);
@@ -190,6 +192,14 @@
 .breadcrumbs-box{
   display:none;
 }
+  @media (max-width:1200px) {
+    .special-occ-banner .banner-txt{
+      max-width:430px;
+    }
+    .special-occ-banner .title-diy{
+      font-size:35px;
+    }
+  }
 @media (max-width:991px) {
   .special-occ-banner .banner-cont{
     top: auto;
@@ -236,6 +246,58 @@
   }
 }
 </style>
+<style>
+  .sb-cs__wrapper {
+    display: flex;
+    align-items: center;
+    {% comment %} height: 100%; {% endcomment %}
+  }
+  
+  .sb-cs__cart {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .sb-cs__link {
+    text-decoration: none;
+  }
+  
+  .sb-cs__link-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 275px;
+    height: 48px;
+    color: #fff !important;
+    background-color: #e0004d !important;
+    font-size: 13px;
+    border-radius: 5px;
+    text-decoration: none !important;
+  }
+  
+  .sb-cs__link-container img {
+    border:none !important;
+  }
+  
+  .sb-cs__vertical-divider {
+    width: 24px;
+    border: 1px solid #F8F8F8 !important;
+    transform: rotate(90deg);
+  }
+  
+  .sb-cs__link-container a:not(.sb-cs__link) {
+    color: #158BCD !important;
+    font-weight: 400;
+    font-size: 10px;
+    font-style: normal;
+    line-height: 20px;
+    text-align: center;
+    margin: 0;
+    text-decoration: none !important;
+  }
+  </style>
 
 <script defer src="https://cdn.jsdelivr.net/npm/@sheerid/jslib@1/sheerid.js"></script>
 <section class="section-box">
@@ -253,7 +315,7 @@
               <div class="sub-txt to-top" style="transition-delay: 0.1s">
                 {{ section.settings.text1 }}
               </div>
-              <div class="select-box to-top" style="transition-delay: 0.2s">
+              {% comment %} <div class="select-box to-top" style="transition-delay: 0.2s">
                 {%- if section.settings.text2 != blank -%}
                   <div class="select-o">
                       <span>{{ section.settings.text2 }}</span>
@@ -274,6 +336,18 @@
                 <div class="msg-one">
                     {{ section.settings.text4 }}
                 </div>
+              </div> {% endcomment %}
+              {% comment %} {% assign link_to_landing_page = shop.metafields.display_options.page_slug | append: "?utm_source=shopify&utm_content=code_snippet" %} {% endcomment %}
+              <div class="sb-cs__wrapper to-top" style="transition-delay: 0.2s">
+                <div class="sb-cs__cart">
+                  <a href="https://accounts.studentbeans.com/oauth/authorize?client_id=9b4d2cac-6dda-44a2-a0bb-c78b125ed61a&country=uk&redirect_uri=https%3A%2F%2Fsh.studentbeans.com%2Foauth%2Fcallback%2Fulikeunitedkingdom.myshopify.com&response_type=code&utm_source=shopify&utm_content=landing_page_button" target="_blank" class="sb-cs__link">
+                    <div class="sb-cs__link-container">
+                      <img src="https://sh.studentbeans.com/assets/ID.svg" alt="Beans ID logo", width="32", height="18">
+                      <span class="sb-cs__vertical-divider"></span>
+                      <span>Exclusive Discount Available</span>
+                    </div>
+                  </a>
+                  </div>
               </div>
   
           </div>
