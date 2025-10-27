@@ -269,27 +269,55 @@
           <div class="subscribe-box-title">{{ section.settings.text }}</div>
           <div class="subscribe-box-submit">
             <div class="subscribe-box-sub">{{ section.settings.text1 }}</div>
-            {%- if section.settings.text3 != blank -%}
-                <input type="email" placeholder="{{ section.settings.text3 }}" class="subscribe-box-input">
-            {%- endif -%}
-            {%- if section.settings.link_name != blank -%}
-            <div class="subscribe-box-link">
-                <div class="link-ck">
-                    <input type="checkbox">
-                    <span></span>
+            {%- form 'customer', class: 'form newsletter-modal__form' -%}
+                {%- if form.posted_successfully? -%}
+                <script>
+                    window.addEventListener('DOMContentLoaded', () => {
+                    document.getElementById('{{ section.id }}').scrollIntoView();
+                    });
+                </script>
+                <div class="form__banner banner banner--success">
+                    <span class="banner__ribbon">{% render 'icon' with 'form-success' %}</span>
+                    <p class="banner__content">{{ 'general.newsletter.success' | t }}</p>
                 </div>
-                <div class="link-txt">
-                    {{ section.settings.link_name }}
-                </div>
-            </div>
-            {%- endif -%}
-            {%- if section.settings.text2 != blank -%}
-                <div class="subscribe-box-btn btn-diy">
-                <div class="btn-txt" text="{{ section.settings.text2 }}">
-                    <span>{{ section.settings.text2 }}</span>
-                </div>
-                </div>
-            {%- endif -%}
+                {%- else -%}
+                {%- if form.errors -%}
+                    <div class="form__banner banner banner--error">
+                    <span class="banner__ribbon">{% render 'icon' with 'form-error' %}</span>
+                    <p class="banner__content">{{ form.errors.messages.email }}</p>
+                    </div>
+                {%- endif -%}
+                    <input type="hidden" name="contact[tags]" value="newsletter">
+                    {%- if section.settings.text3 != blank -%}
+                        <input
+                            type="email"
+                            id="newsletter[{{ section.id }}][contact][email]"
+                            name="contact[email]"
+                            placeholder="{{ section.settings.text3 }}"
+                            class="subscribe-box-input"
+                            required
+                            >
+                    {%- endif -%}
+                    {%- if section.settings.link_name != blank -%}
+                    <div class="subscribe-box-link">
+                        <div class="link-ck">
+                            <input type="checkbox">
+                            <span></span>
+                        </div>
+                        <div class="link-txt">
+                            {{ section.settings.link_name }}
+                        </div>
+                    </div>
+                    {%- endif -%}
+                    {%- if section.settings.text2 != blank -%}
+                        <button type="submit" is="loader-button" class="subscribe-box-btn btn-diy">
+                            <div class="btn-txt" text="{{ section.settings.text2 }}">
+                                <span>{{ section.settings.text2 }}</span>
+                            </div>
+                        </button>
+                    {%- endif -%}
+                {%- endif -%}
+            {%- endform -%}
           </div>
         </div>
         <div class="subscribe-box-img">
