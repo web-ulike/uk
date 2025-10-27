@@ -196,20 +196,26 @@
 </style>
 
 <section class="section-box">
-  <div class="subscribe-box to-top">
+  <div class="subscribe-box">
     <div class="container">
       <div class="subscribe-box-cont">
         <div class="subscribe-box-text">
           <div class="subscribe-box-title">{{ section.settings.text }}</div>
           <div class="subscribe-box-submit">
             <div class="subscribe-box-sub">{{ section.settings.text1 }}</div>
-            <input type="email" placeholder="{{ section.settings.text3 }}" class="subscribe-box-input">
-            <div class="subscribe-box-btn btn-diy">
-              <div class="btn-txt" text="{{ section.settings.text2 }}">
-                <span>{{ section.settings.text2 }}</span>
-              </div>
-            </div>
-            <a href="{{ section.settings.link }}" target="_blank" class="subscribe-box-link">{{ section.settings.link_name }}</a>
+            {%- if section.settings.text3 != blank -%}
+                <input type="email" placeholder="{{ section.settings.text3 }}" class="subscribe-box-input">
+            {%- endif -%}
+            {%- if section.settings.link_name != blank -%}
+            <div class="subscribe-box-link">{{ section.settings.link_name }}</div>
+            {%- endif -%}
+            {%- if section.settings.text2 != blank -%}
+                <div class="subscribe-box-btn btn-diy">
+                <div class="btn-txt" text="{{ section.settings.text2 }}">
+                    <span>{{ section.settings.text2 }}</span>
+                </div>
+                </div>
+            {%- endif -%}
           </div>
         </div>
         <div class="subscribe-box-img">
@@ -270,6 +276,11 @@
       "type": "text",
       "id": "text4",
       "label": "订阅标签"
+    },
+    {
+      "type": "richtext",
+      "id": "link_name",
+      "label": "规则文案"
     }
   ],
   "presets": [
