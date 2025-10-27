@@ -1,0 +1,285 @@
+<style>
+.subscribe-box {
+  padding: 50px 0;
+  overflow: hidden;
+  background: linear-gradient(113deg, #f1dce0 35.61%, #e1daf9 50.69%);
+}
+
+.subscribe-box .container {
+  max-width: 1480px;
+}
+
+.subscribe-box .subscribe-box-cont {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+}
+
+.subscribe-box .subscribe-box-img {
+  width: 45%;
+  position: relative;
+  z-index: 1;
+}
+
+.subscribe-box .j-img {
+  width: 100%;
+  position: relative;
+  z-index: 2;
+}
+
+.subscribe-box .g-img {
+  position: absolute;
+  z-index: 1;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 200%;
+  max-width: none;
+  animation: gs 15s linear infinite;
+}
+
+@keyframes gs {
+  0% {
+    transform: translate(-50%, -50%) rotate(0);
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+.subscribe-box .s-img {
+  width: 24%;
+  position: absolute;
+  z-index: 3;
+  right: 1%;
+  top: 32%;
+  animation: gj 2s linear infinite;
+}
+
+@keyframes gj {
+  0% {
+    transform: translate(0%, 0%);
+  }
+  25% {
+    transform: translate(-15%, 15%);
+  }
+  75% {
+    transform: translate(15%, -15%);
+  }
+  100% {
+    transform: translate(0%, 0%);
+  }
+}
+
+.subscribe-box .subscribe-box-text {
+  flex: 1;
+  text-align: center;
+  position: relative;
+  z-index: 2;
+}
+
+.subscribe-box .subscribe-box-title {
+  font-size: 60px;
+  color: #000;
+  line-height: 1.3;
+  font-family: var(--heading-font-family);
+}
+.subscribe-box .subscribe-box-title p{
+  margin:0;
+}
+.subscribe-box .subscribe-box-submit {
+  max-width: 425px;
+  margin: 0 auto;
+  margin-top: 25px;
+}
+
+.subscribe-box .subscribe-box-sub {
+  font-size: 20px;
+  color: #000;
+  line-height: 1.2;
+}
+
+.subscribe-box .subscribe-box-input {
+  width: 100%;
+  height: 50px;
+  border: 0;
+  background: #fff;
+  border-radius: 50px;
+  text-align: center;
+  font-size: 18px;
+  margin-top: 30px;
+  outline: 0;
+}
+
+.subscribe-box .subscribe-box-btn {
+  width:100%;
+  height: 60px;
+  border-radius: 60px;
+  font-size: 20px;
+  color: #fff;
+  background: #e0004d;
+  font-family: var(--heading-font-family);
+  margin-top: 20px;
+  cursor: pointer;
+}
+.subscribe-box .subscribe-box-btn.disable-box{
+  pointer-events: none;
+  background: #eee;
+}
+ .subscribe-box .subscribe-box-link{
+  color:#a69ec9;
+  font-size:14px;
+  margin-top:10px;
+  text-decoration: underline;
+   display:block;
+}
+
+.subscribe-box .subscribe-box-btn .btn-txt::before {
+  color: #000;
+}
+
+.subscribe-box .subscribe-box-btn::before {
+  position: absolute;
+  content: '';
+  display: block;
+  width: 200%;
+  height: 200%;
+  z-index: 2;
+  background: linear-gradient(
+    -45deg,
+    rgba(255, 255, 255, 0) 40%,
+    rgba(255, 255, 255, 0.5) 50%,
+    rgba(255, 255, 255, 0) 60%
+  );
+  animation: scanning 3s linear infinite;
+}
+
+@keyframes scanning {
+  0% {
+    transform: translate(-100%, -100%);
+  }
+
+  100% {
+    transform: translate(100%, 100%);
+  }
+}
+
+@media (max-width: 1200px) {
+  .subscribe-box .subscribe-box-title {
+    font-size: 50px;
+  }
+}
+
+@media (max-width: 991px) {
+  .subscribe-box {
+    background: linear-gradient(167deg, #f1dce0 35.61%, #e1daf9 50.69%);
+  }
+  .subscribe-box .subscribe-box-title {
+    font-size: 28px;
+  }
+  .subscribe-box .subscribe-box-cont {
+    flex-direction: column;
+  }
+  .subscribe-box .subscribe-box-img {
+    width: 100%;
+  }
+  .subscribe-box .subscribe-box-submit {
+    margin-top: 15px;
+  }
+  .subscribe-box .subscribe-box-input {
+    margin-top: 30px;
+    height: 45px;
+    font-size: 16px;
+  }
+  .subscribe-box .subscribe-box-btn {
+    height: 45px;
+    font-size: 16px;
+  }
+}
+
+</style>
+
+<section class="section-box">
+  <div class="subscribe-box to-top">
+    <div class="container">
+      <div class="subscribe-box-cont">
+        <div class="subscribe-box-img">
+          {%- if section.settings.image != blank -%}
+            <img loading="lazy" class="j-img" width="" height="" src="{{ section.settings.image | image_url }}">
+          {%- endif -%}
+          {%- if section.settings.image1 != blank -%}
+            <img loading="lazy" class="g-img" width="" height="" src="{{ section.settings.image1 | image_url }}">
+          {%- endif -%}
+          {%- if section.settings.image2 != blank -%}
+            <img loading="lazy" class="s-img" width="" height="" src="{{ section.settings.image2 | image_url }}">
+          {%- endif -%}
+        </div>
+        <div class="subscribe-box-text">
+          <div class="subscribe-box-title">{{ section.settings.text }}</div>
+          <div class="subscribe-box-submit">
+            <div class="subscribe-box-sub">{{ section.settings.text1 }}</div>
+            <input type="email" placeholder="{{ section.settings.text3 }}" class="subscribe-box-input">
+            <div class="subscribe-box-btn btn-diy">
+              <div class="btn-txt" text="{{ section.settings.text2 }}">
+                <span>{{ section.settings.text2 }}</span>
+              </div>
+            </div>
+            <a href="{{ section.settings.link }}" target="_blank" class="subscribe-box-link">{{ section.settings.link_name }}</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% schema %}
+{
+  "name": "subscribe-box",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "券"
+    },
+    {
+      "type": "image_picker",
+      "id": "image1",
+      "label": "光"
+    },
+    {
+      "type": "image_picker",
+      "id": "image2",
+      "label": "手"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "标题"
+    },
+    {
+      "type": "text",
+      "id": "text1",
+      "label": "副标题"
+    },
+    {
+      "type": "text",
+      "id": "text2",
+      "label": "按钮文案"
+    },
+    {
+      "type": "text",
+      "id": "text3",
+      "label": "输入框提示文案"
+    },
+    {
+      "type": "text",
+      "id": "text4",
+      "label": "订阅标签"
+    }
+  ],
+  "presets": [
+    {
+      "name": "subscribe-box"
+    }
+  ]
+}
+{% endschema %}
