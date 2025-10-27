@@ -118,20 +118,69 @@
   cursor: pointer;
   padding:0 39px;
 }
+
 .subscribe-box .subscribe-box-btn.disable-box{
   pointer-events: none;
   background: #eee;
 }
- .subscribe-box .subscribe-box-link{
-  color:#a69ec9;
-  font-size:14px;
-  margin-top:10px;
-  text-decoration: underline;
-   display:block;
+
+.subscribe-box .subscribe-box-link{
+    color:#3F3636;
+    font-size:14px;
+    margin-top:10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.subscribe-box .link-ck {
+  border-radius: 1.53px;
+  border: 0.612px solid #3f3636;
+  position: relative;
+  width: 11px;
+  height: 11px;
+  overflow: hidden;
+}
+
+.subscribe-box .link-ck span {
+  position: absolute;
+  display: none;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 5px;
+  height: 8px;
+  border-bottom: 1px solid #3f3636;
+  border-right: 1px solid #3f3636;
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.subscribe-box .link-ck input {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  margin: 0;
+  padding: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.link-ck input[type='checkbox']:checked + span {
+  display: block;
 }
 
 .subscribe-box .subscribe-box-btn .btn-txt::before {
   color: #000;
+}
+
+.subscribe-box .subscribe-box-link p{
+    margin:0;
+}
+
+.subscribe-box .subscribe-box-link a{
+    text-decoration: underline;
 }
 
 .subscribe-box .subscribe-box-btn::before {
@@ -207,7 +256,15 @@
                 <input type="email" placeholder="{{ section.settings.text3 }}" class="subscribe-box-input">
             {%- endif -%}
             {%- if section.settings.link_name != blank -%}
-            <div class="subscribe-box-link">{{ section.settings.link_name }}</div>
+            <div class="subscribe-box-link">
+                <div class="link-ck">
+                    <input type="checkbox">
+                    <span></span>
+                </div>
+                <div class="link-txt">
+                    {{ section.settings.link_name }}
+                </div>
+            </div>
             {%- endif -%}
             {%- if section.settings.text2 != blank -%}
                 <div class="subscribe-box-btn btn-diy">
