@@ -11,6 +11,18 @@
   gap: 40px;
   overflow: hidden;
   background: linear-gradient(180deg, #F7F6FF 0%, #E9E5FF 100%);
+  position: relative;
+  z-index: 1;
+}
+
+.subscribe-box .img-bg{
+  position:absolute;
+  width:100%;
+  height:100%;
+  top:0;
+  left:0;
+  object-fit: cover;
+  z-index: 0;
 }
 
 .subscribe-box .subscribe-box-img {
@@ -265,6 +277,17 @@
   <div class="subscribe-box">
     <div class="container">
       <div class="subscribe-box-cont" style="background:{{ section.settings.bg_color }}">
+        {%- if section.settings.image3 != blank or section.settings.image4 != blank -%}
+          <picture>
+              <source srcset="{{section.settings.image4 | image_url }}" media="(max-width: 991px)">
+              <img loading="lazy"
+                  class="img-bg"
+                  width=""
+                  height=""
+                  {% render 'image-attributes', image: section.settings.image3 %}
+                  alt="{{ section.settings.image3.alt | escape }}">
+          </picture>
+        {%- endif -%}
         <div class="subscribe-box-text">
           <div class="subscribe-box-title">{{ section.settings.text }}</div>
           <div class="subscribe-box-submit">
@@ -343,6 +366,16 @@
       "type": "color_background",
       "id": "bg_color",
       "label": "背景颜色"
+    },
+    {
+      "type": "image_picker",
+      "id": "image3",
+      "label": "背景"
+    },
+    {
+      "type": "image_picker",
+      "id": "image4",
+      "label": "背景 M"
     },
     {
       "type": "image_picker",
