@@ -15,6 +15,8 @@
   position: relative;
   overflow: hidden;
   width: calc(33.333% - 34px);
+  display: flex;
+  flex-direction: column;
 }
 
 .product-area-box .product-area-tag {
@@ -97,6 +99,10 @@
   padding: 45px;
   position: relative;
   text-align: center;
+  flex:1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 
@@ -256,6 +262,7 @@
                      {% render 'image-attributes', image: block.settings.icon %} alt="{{ block.settings.icon.alt | escape }}" > {% endcomment %}
                   <img 
                       class="img lazyload"
+                      loading="lazy"
                       width="{{ block.settings.icon.width }}" 
                       height="{{ block.settings.icon.height }}"
                       src="{{ block.settings.icon | image_url: width: 16 }}"
@@ -272,34 +279,38 @@
               </div>
             </div>
             <div class="product-area-cont">
-              <h3 class="product-area-h3">
-                {{ block.settings.text1 }}
-              </h3>
-              <div class="product-area-p">
-                {{ block.settings.text2 }}
+              <div>
+                <h3 class="product-area-h3">
+                  {{ block.settings.text1 }}
+                </h3>
+                <div class="product-area-p">
+                  {{ block.settings.text2 }}
+                </div>
               </div>
-              <div class="product-area-price " style="color:{{ block.settings.price_color }}">
-                {{ block.settings.text3 }} 
-                {%- if block.settings.text4 != blank -%}
-                  <span>{{ block.settings.text4 }}</span>
-                {%- endif -%}
-              </div>
-              <div class="product-area-btn-box">
-                <div class="product-area-btn ">
-                {%- if block.settings.text5 != blank -%}
-                    <a href="{{ block.settings.link }}" class="product-area-btn-item btn-diy">
-                      <div class="btn-txt" text="{{ block.settings.text5 }}">
-                        <span> {{ block.settings.text5 }}</span>
-                      </div>
-                    </a>
+              <div>
+                <div class="product-area-price " style="color:{{ block.settings.price_color }}">
+                  {{ block.settings.text3 }} 
+                  {%- if block.settings.text4 != blank -%}
+                    <span>{{ block.settings.text4 }}</span>
                   {%- endif -%}
-                  {%- if block.settings.text6 != blank -%}
-                    <div class="product-area-btn-item btn-diy" data-pid="{{ block.settings.text7 }}">
-                      <div class="btn-txt" text="{{ block.settings.text6 }}">
-                        <span>{{ block.settings.text6 }}</span>
+                </div>
+                <div class="product-area-btn-box">
+                  <div class="product-area-btn ">
+                  {%- if block.settings.text5 != blank -%}
+                      <a href="{{ block.settings.link }}" class="product-area-btn-item btn-diy">
+                        <div class="btn-txt" text="{{ block.settings.text5 }}">
+                          <span> {{ block.settings.text5 }}</span>
+                        </div>
+                      </a>
+                    {%- endif -%}
+                    {%- if block.settings.text6 != blank -%}
+                      <div class="product-area-btn-item btn-diy" data-pid="{{ block.settings.text7 }}">
+                        <div class="btn-txt" text="{{ block.settings.text6 }}">
+                          <span>{{ block.settings.text6 }}</span>
+                        </div>
                       </div>
-                    </div>
-                  {%- endif -%}
+                    {%- endif -%}
+                  </div>
                 </div>
               </div>
             </div>
