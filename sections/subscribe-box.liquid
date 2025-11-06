@@ -285,7 +285,32 @@
     width:100%;
   }
 }
+.countdown-ulike {
+    display: flex;
+    align-items: center;
+    font-size: 21px;
+    gap: 6px;
+  }
 
+  .countdown-label {
+    font-size: 18px;
+  }
+
+  .countdown-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    background: white;
+    color: #111;
+    border-radius: 5px;
+  }
+
+  .countdown-separator {
+    font-size: 21px;
+    color: white;
+  }
 </style>
 
 <section class="section-box">
@@ -307,6 +332,9 @@
           <div class="subscribe-box-title">{{ section.settings.text }}</div>
           <div class="subscribe-box-submit">
             <div class="subscribe-box-sub">{{ section.settings.text1 }}</div>
+            {%- if section.settings.text6 != blank -%}
+              <div id="countdown-ulike"></div>
+            {%- endif -%}
             {%- form 'customer', class: 'form newsletter-modal__form' -%}
                 {%- if form.posted_successfully? -%}
                 <script>
@@ -372,6 +400,54 @@
       </div>
     </div>
   </div>
+  <script>
+    class CountdownTimer {
+      constructor(container, endTime, label = 'End in') {
+        this.el = typeof container === 'string' ? document.querySelector(container) : container;
+        this.end = new Date(endTime);
+        this.label = label;
+        this.init();
+      }
+
+      init() {
+        this.el.classList.add('countdown-ulike');
+        const s = (cls, txt = '') => Object.assign(document.createElement('span'), { className: cls, textContent: txt });
+        const d = (cls) => Object.assign(document.createElement('div'), { className: `countdown-box ${cls}` });
+
+        this.labelEl = s('countdown-label', this.label);
+        this.days = d('days-box'); this.daysSep = s('countdown-separator', ':');
+        this.hours = d('hours-box'); this.mSep = s('countdown-separator', ':');
+        this.mins = d('minutes-box'); this.sSep = s('countdown-separator', ':');
+        this.secs = d('seconds-box');
+
+        this.el.append(this.labelEl, this.days, this.daysSep, this.hours, this.mSep, this.mins, this.sSep, this.secs);
+        this.update(); this.timer = setInterval(() => this.update(), 1000);
+      }
+
+      f(n) { return String(n).padStart(2, '0'); }
+
+      update() {
+        const t = this.end - new Date();
+        if (t <= 0) return (clearInterval(this.timer), this.render(0, 0, 0, 0));
+        const d = Math.floor(t / 864e5),
+          h = Math.floor(t / 36e5 % 24),
+          m = Math.floor(t / 6e4 % 60),
+          s = Math.floor(t / 1e3 % 60);
+        this.days.style.display = this.daysSep.style.display = d ? '' : 'none';
+        this.render(d, h, m, s);
+      }
+
+      render(d, h, m, s) {
+        this.days.textContent = this.f(d);
+        this.hours.textContent = this.f(h);
+        this.mins.textContent = this.f(m);
+        this.secs.textContent = this.f(s);
+      }
+    }
+    {%- if section.settings.text6 != blank -%}
+      new CountdownTimer('#countdown-ulike', "{{ section.settings.text6 }}", '{{ section.settings.text5 }}');
+    {%- endif -%}
+  </script>
 </section>
 {% schema %}
 {
@@ -442,7 +518,18 @@
       "type": "richtext",
       "id": "link_name",
       "label": "规则文案"
-    }
+    },
+    {
+      "type": "text",
+      "id": "text5",
+      "label": "倒计时文案"
+    },
+    {
+      "type": "text",
+      "id": "text6",
+      "label": "时间",
+      "info": "时间格式2025-11-06 12:00:00"
+    },
   ],
   "presets": [
     {
