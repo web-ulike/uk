@@ -1,0 +1,394 @@
+<style>
+
+.product-area-box {
+  position: relative;
+  z-index: 1;
+  padding: 80px 0;
+  background: #fff;
+}
+.product-area-box .product-area-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 51px;
+}
+.product-area-box .product-area-item {
+  position: relative;
+  overflow: hidden;
+  width: calc(33.333% - 34px);
+}
+
+.product-area-box .product-area-tag {
+  position: absolute;
+  background: #e7004c;
+  font-size: 16px;
+  font-family: var(--heading-font-family);
+  color: #fff;
+  top: 15px;
+  left: 15px;
+  z-index: 3;
+  padding: 3px 10px;
+  overflow: hidden;
+}
+
+.product-area-box .product-area-tag::before {
+  position: absolute;
+  content: "";
+  display: block;
+  width: 200%;
+  height: 200%;
+  z-index: 2;
+  background: linear-gradient(
+    -45deg,
+    rgba(255, 255, 255, 0) 40%,
+    rgba(255, 255, 255, 0.5) 50%,
+    rgba(255, 255, 255, 0) 60%
+  );
+  animation: scanning 3s linear infinite;
+}
+@keyframes scanning {
+  0% {
+    transform: translate(-100%, -100%);
+  }
+  100% {
+    transform: translate(100%, 100%);
+  }
+}
+
+.product-area-box .product-area-img-list {
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.product-area-box .product-area-img-item {
+  width: 100%;
+  overflow: hidden;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2;
+  display: none;
+}
+.product-area-box .product-area-img-item.active {
+  position: relative;
+  display: block;
+}
+.product-area-box .product-area-img-item.close {
+  z-index: 3;
+  transition: width 0.6s ease;
+  width: 0%;
+  height: 100%;
+  display: block;
+}
+.product-area-box .product-area-img-item.close .img {
+  width: auto;
+  max-width: none;
+  height: 100%;
+}
+.product-area-box .product-area-item .img {
+  display: block;
+  position: relative;
+  z-index: 1;
+  width: 100%;
+}
+
+.product-area-box .product-area-cont {
+  background: #f8f8f8;
+  padding: 45px;
+  position: relative;
+  text-align: center;
+}
+
+
+.product-area-box .product-area-h3 {
+  font-size: 30px;
+  font-family: var(--heading-font-family);
+  color: #000;
+  line-height: 1.2;
+  margin: 0;
+  font-weight: normal;
+}
+
+.product-area-box .product-area-p {
+  font-size: 20px;
+  color: #9b9b9b;
+  line-height: 1.2;
+}
+
+.product-area-box .product-area-price {
+  font-size: 25px;
+  color: #000;
+  font-family: var(--heading-font-family);
+  line-height: 1.2;
+  margin-top: 15px;
+}
+
+.product-area-box .product-area-price span {
+  color: #9b9b9b;
+  font-weight: normal;
+  text-decoration: line-through;
+  display: inline-block;
+  margin-left: 15px;
+}
+
+.product-area-box .product-area-btn {
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+  overflow: hidden;
+}
+
+.product-area-box .product-area-btn-item {
+  background: #000;
+  flex: 1;
+  color: #fff;
+  font-size: 16px;
+  height: 45px;
+  margin-left: 35px;
+  line-height: 1;
+  border: 2px solid #000;
+  cursor: pointer;
+}
+
+.product-area-box .product-area-btn-item::after {
+  background: #f8f8f8;
+}
+
+.product-area-box .product-area-btn-item:hover {
+  color: #000;
+}
+.product-area-box .product-area-btn-item:first-child {
+  margin-left: 0;
+  background: #f8f8f8;
+  color: #000;
+}
+.product-area-box .product-area-btn-item:first-child:hover {
+  color: #fff;
+}
+
+.product-area-box .product-area-btn-item:first-child::after {
+  background: #000;
+}
+
+@media (max-width: 1400px) {
+  .product-area-box .product-area-cont{
+    padding: 30px;
+  }
+  .product-area-box .product-area-h3 {
+    font-size: 25px;
+  }
+  .product-area-box .product-area-p {
+    font-size: 16px;
+  }
+  .product-area-box .product-area-price {
+    font-size: 20px;
+  }
+  .product-area-box .product-area-btn-item {
+    margin-left: 25px;
+  }
+}
+
+@media (max-width: 991px) {
+  .product-area-box {
+    padding: 50px 0;
+  }
+  .product-area-box .product-area-list {
+    flex-wrap: wrap;
+  }
+  .product-area-box .product-area-item {
+    flex: auto;
+    width: 100%;
+  }
+
+  .product-area-box .product-area-cont {
+    padding: 25px 15px;
+  }
+
+  .product-area-box .product-area-h3 {
+    font-size: 25px;
+    text-align: center;
+  }
+  .product-area-box .product-area-p {
+    font-size: 18px;
+    text-align: center;
+  }
+
+  .product-area-box .product-area-price {
+    font-size: 16px;
+    margin-top: 10px;
+  }
+  .product-area-box .product-area-btn {
+    margin-top: 30px;
+  }
+  .product-area-box .product-area-dot {
+    top: 0;
+    right: 0;
+    position: relative;
+    justify-content: center;
+    margin-top: 20px;
+  }
+  .product-area-box .product-area-dot .product-area-dot-item {
+    width: 30px;
+    height: 30px;
+    margin: 0 8px;
+  }
+  .product-area-box .product-area-tag {
+    font-size: 12px;
+    padding: 1px 8px;
+  }
+}
+</style>
+
+<section class="section-box">
+  <div class="product-area-box">
+    <div class="container">
+      <div class="product-area-list">
+        {%- for block in section.blocks -%}
+          <div class="product-area-item" >
+            {%- if block.settings.text != blank -%}
+              <div class="product-area-tag">{{ block.settings.text }}</div>
+            {%- endif -%}
+            <div class="product-area-img-list">
+              <div class="product-area-img-item active">
+                {%- if block.settings.icon != blank -%}
+                   {% comment %} <img loading="lazy" class="img" 
+                    width="{{ block.settings.icon.width }}" height="{{ block.settings.icon.height }}"
+                     {% render 'image-attributes', image: block.settings.icon %} alt="{{ block.settings.icon.alt | escape }}" > {% endcomment %}
+                  <img 
+                      class="img lazyload"
+                      width="{{ block.settings.icon.width }}" 
+                      height="{{ block.settings.icon.height }}"
+                      src="{{ block.settings.icon | image_url: width: 16 }}"
+                      data-src="{{ block.settings.icon | image_url: width: 800 }}"
+                      data-srcset="
+                        {{ block.settings.icon | image_url: width: 500 }} 500w,
+                        {{ block.settings.icon | image_url: width: 800 }} 800w
+                      "
+                      data-sizes="auto"
+                      alt="{{ block.settings.icon.alt | escape }}"
+                    >
+               {%- endif -%}
+
+              </div>
+            </div>
+            <div class="product-area-cont">
+              <h3 class="product-area-h3">
+                {{ block.settings.text1 }}
+              </h3>
+              <div class="product-area-p">
+                {{ block.settings.text2 }}
+              </div>
+              <div class="product-area-price " style="color:{{ block.settings.price_color }}">
+                {{ block.settings.text3 }} 
+                {%- if block.settings.text4 != blank -%}
+                  <span>{{ block.settings.text4 }}</span>
+                {%- endif -%}
+              </div>
+              <div class="product-area-btn-box">
+                <div class="product-area-btn ">
+                {%- if block.settings.text5 != blank -%}
+                    <a href="{{ block.settings.link }}" class="product-area-btn-item btn-diy">
+                      <div class="btn-txt" text="{{ block.settings.text5 }}">
+                        <span> {{ block.settings.text5 }}</span>
+                      </div>
+                    </a>
+                  {%- endif -%}
+                  {%- if block.settings.text6 != blank -%}
+                    <div class="product-area-btn-item btn-diy" data-pid="{{ block.settings.text7 }}">
+                      <div class="btn-txt" text="{{ block.settings.text6 }}">
+                        <span>{{ block.settings.text6 }}</span>
+                      </div>
+                    </div>
+                  {%- endif -%}
+                </div>
+              </div>
+            </div>
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+  <script>
+      window.addEventListener('load', function () {
+        document.querySelectorAll('#shopify-section-{{ section.id }} .product-area-btn-item').forEach((el) => {
+          el.addEventListener('click', function () {
+            addToCart(this.getAttribute('data-pid'));
+          });
+        });
+      })
+  </script>
+</section>
+{% schema %}
+{
+  "name": "product-lists",
+  "blocks": [
+    {
+      "name": "item",
+      "type": "item",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "icon",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Label"
+        },
+        {
+          "type": "text",
+          "id": "text1",
+          "label": "Title"
+        },
+        {
+          "type": "text",
+          "id": "text2",
+          "label": "Text"
+        },
+        {
+          "type": "text",
+          "id": "text3",
+          "label": "Price"
+        },
+        {
+          "type": "text",
+          "id": "text4",
+          "label": "Price"
+        },
+        {
+          "type": "color",
+          "id": "price_color",
+          "label": "Price Color",
+          "default": "#000"
+        },
+        {
+          "type": "text",
+          "id": "text5",
+          "label": "Btn Text"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        },
+        {
+          "type": "text",
+          "id": "text6",
+          "label": "Btn Text"
+        },
+        {
+          "type": "text",
+          "id": "text7",
+          "label": "Product ID"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "product-lists"
+    }
+  ]
+}
+{% endschema %}
