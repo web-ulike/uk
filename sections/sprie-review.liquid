@@ -369,32 +369,14 @@
     }
 
     window.customElements.define('custom-swiper-new', CustomSwiperNew);
+    
     class VideoSlider extends HTMLElement {
       constructor() {
         super();
-        this.onPlayBtnClick = this.onPlayBtnClick.bind(this);
-        this.onVideoClick = this.onVideoClick.bind(this);
-        this.onVideoPlay = this.onVideoPlay.bind(this);
-        this.onVideoPause = this.onVideoPause.bind(this);
-        this.onVideoEnded = this.onVideoEnded.bind(this);
       }
 
       connectedCallback() {
         this.initEvents();
-      }
-
-      disconnectedCallback() {
-        // 清理事件
-        const video = this.querySelector('video');
-        const playBtn = this.querySelector('.play-btn');
-        if (playBtn) playBtn.removeEventListener('click', this.onPlayBtnClick);
-        if (video) {
-          video.removeEventListener('click', this.onVideoClick);
-          video.removeEventListener('play', this.onVideoPlay);
-          video.removeEventListener('playing', this.onVideoPlay);
-          video.removeEventListener('pause', this.onVideoPause);
-          video.removeEventListener('ended', this.onVideoEnded);
-        }
       }
 
       initEvents() {
@@ -403,65 +385,48 @@
 
         if (!video || !playBtn) return console.warn('❌ Missing <video> or .play-btn in <video-slider>');
 
-        // 使用事件驱动按钮显示/隐藏 —— 更可靠
-        video.addEventListener('play', this.onVideoPlay);
-        video.addEventListener('playing', this.onVideoPlay); // 某些浏览器在 play->playing 切换
-        video.addEventListener('pause', this.onVideoPause);
-        video.addEventListener('ended', this.onVideoEnded);
+        // 统一管理播放状态变化
+        video.addEventListener('play', () => {
+          playBtn.style.display = 'none';
+        });
 
-        // 点击播放按钮：先暂停其他，再播放当前（play() 使用 Promise）
-        playBtn.addEventListener('click', this.onPlayBtnClick);
-
-        // 点击视频切换播放/暂停（toggle），不直接操纵按钮显示
-        video.addEventListener('click', this.onVideoClick);
-      }
-
-      onPlayBtnClick(e) {
-        e.stopPropagation();
-        const video = this.querySelector('video');
-        if (!video) return;
-        this.pauseOtherVideos();
-        // 等待 play 成功再交由 play/playing 事件去隐藏按钮
-        const p = video.play();
-        if (p && typeof p.then === 'function') {
-          p.catch(err => {
-            // 用户未与页面进行交互、自动播放被阻止等会抛错
-            console.warn('video.play() rejected:', err);
-          });
-        }
-      }
-
-      onVideoClick(e) {
-        const video = this.querySelector('video');
-        if (!video) return;
-        // toggle 播放/暂停
-        if (video.paused || video.ended) {
-          this.pauseOtherVideos();
-          const p = video.play();
-          if (p && typeof p.then === 'function') {
-            p.catch(err => console.warn('video.play() rejected:', err));
+        video.addEventListener('pause', () => {
+          // 只有用户主动暂停或播放结束才显示按钮
+          if (video.currentTime < video.duration) {
+            playBtn.style.display = '';
           }
-        } else {
-          video.pause();
-          // 不在这里直接显示按钮，pause 事件会触发 onVideoPause 去显示
-        }
-      }
+        });
 
-      onVideoPlay(e) {
-        // video 开始播放 —— 隐藏按钮
-        const playBtn = this.querySelector('.play-btn');
-        if (playBtn) playBtn.style.display = 'none';
-      }
+        video.addEventListener('ended', () => {
+          playBtn.style.display = '';
+        });
 
-      onVideoPause(e) {
-        // video 暂停 —— 显示按钮
-        const playBtn = this.querySelector('.play-btn');
-        if (playBtn) playBtn.style.display = '';
-      }
+        // 点击播放按钮
+        playBtn.addEventListener('click', async (e) => {
+          e.stopPropagation();
+          this.pauseOtherVideos();
+          try {
+            await video.play(); // 等待真正播放成功
+          } catch (err) {
+            console.warn('⚠️ video.play() failed:', err);
+          }
+        });
 
-      onVideoEnded(e) {
-        const playBtn = this.querySelector('.play-btn');
-        if (playBtn) playBtn.style.display = '';
+        // 点击视频切换播放/暂停
+        video.addEventListener('click', async () => {
+          // 等待状态稳定后再判断（解决第一次点击失效）
+          await Promise.resolve();
+          if (video.readyState >= 2 && !video.paused) {
+            video.pause();
+          } else {
+            this.pauseOtherVideos();
+            try {
+              await video.play();
+            } catch (err) {
+              console.warn('⚠️ video.play() failed:', err);
+            }
+          }
+        });
       }
 
       pauseOtherVideos() {
@@ -469,20 +434,18 @@
         allSliders.forEach(slider => {
           if (slider !== this) {
             const v = slider.querySelector('video');
-            // 触发暂停，让该 slider 的 pause 事件来处理显示按钮
+            const btn = slider.querySelector('.play-btn');
             if (v && !v.paused) {
               v.pause();
-            } else if (v && v.paused) {
-              // 兜底：确保按钮显示（防止某些浏览器事件未触发）
-              const btn = slider.querySelector('.play-btn');
-              if (btn) btn.style.display = '';
             }
+            if (btn) btn.style.display = '';
           }
         });
       }
     }
 
     window.customElements.define('video-slider', VideoSlider);
+
 
 
   </script>
