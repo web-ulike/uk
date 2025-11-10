@@ -437,10 +437,7 @@
 
   initSwiper() {
     const swiperContainer = this.querySelector('.swiper-container');
-    if (!swiperContainer) {
-      console.error('Swiper container not found');
-      return;
-    }
+    if (!swiperContainer) return console.error('Swiper container not found');
 
     const disableOn = this.getAttribute('disable-on');
     const isMobile = /Mobi|Android/i.test(navigator.userAgent);
@@ -459,11 +456,8 @@
     const nextButton = navigationEnabled ? this.querySelector('.swiper-next') : null;
 
     let breakpoints = {};
-    try {
-      breakpoints = JSON.parse(this.getAttribute('breakpoints') || '{}');
-    } catch (e) {
-      console.error('Invalid breakpoints JSON');
-    }
+    try { breakpoints = JSON.parse(this.getAttribute('breakpoints') || '{}'); } 
+    catch (e) { console.error('Invalid breakpoints JSON'); }
 
     this.swiper = new Swiper(swiperContainer, {
       slidesPerView,
@@ -489,6 +483,8 @@
       const playBtn = wrapper.querySelector('.play-btn');
       if (!video || !playBtn) return;
 
+      wrapper.style.position = 'relative';
+
       // 动态创建进度条
       let progressContainer = document.createElement('div');
       progressContainer.className = 'video-progress';
@@ -505,48 +501,43 @@
       `;
       let progressBar = document.createElement('div');
       progressBar.className = 'video-progress-bar';
-      progressBar.style.cssText = `
-        width: 0%;
-        height: 100%;
-        background: #fff;
-        transition: width 0.1s linear;
-      `;
+      progressBar.style.cssText = `width:0%; height:100%; background:#fff; transition: width 0.1s linear;`;
       progressContainer.appendChild(progressBar);
-      wrapper.style.position = 'relative'; // 确保进度条绝对定位可用
       wrapper.querySelector('.video-slider').appendChild(progressContainer);
 
-      // 将 video 加入 videos 数组，便于暂停其他视频
-      this.videos.push({ video, playBtn, progressBar });
+      // 视频状态
+      let isPlaying = false;
 
-      // 播放按钮点击
+      // 将视频加入管理数组
+      this.videos.push({ video, playBtn, progressBar, isPlaying });
+
+      // 点击播放按钮
       playBtn.addEventListener('click', e => {
         e.stopPropagation();
         this.pauseOtherVideos(video);
         video.play();
         playBtn.style.display = 'none';
+        isPlaying = true;
       });
 
-      // 点击视频播放/暂停
+      // 点击视频切换播放/暂停
       video.addEventListener('click', () => {
-        if (video.paused) {
+        if (isPlaying) {
+          video.pause();
+          isPlaying = false;
+          playBtn.style.display = '';
+        } else {
           this.pauseOtherVideos(video);
           video.play();
+          isPlaying = true;
           playBtn.style.display = 'none';
-        } else {
-          video.pause();
-          playBtn.style.display = '';
         }
       });
 
-      // 视频事件控制按钮显示
-      video.addEventListener('play', () => playBtn.style.display = 'none');
-      video.addEventListener('pause', () => {
-        if (video.currentTime < video.duration) playBtn.style.display = '';
-      });
-      video.addEventListener('ended', () => {
-        playBtn.style.display = '';
-        progressBar.style.width = '0%';
-      });
+      // 视频事件
+      video.addEventListener('play', () => { isPlaying = true; playBtn.style.display = 'none'; });
+      video.addEventListener('pause', () => { if (!video.ended) { isPlaying = false; playBtn.style.display = ''; } });
+      video.addEventListener('ended', () => { isPlaying = false; playBtn.style.display = ''; progressBar.style.width = '0%'; });
 
       // 更新时间进度条
       video.addEventListener('timeupdate', () => {
@@ -559,16 +550,17 @@
       progressContainer.addEventListener('click', e => {
         const rect = progressContainer.getBoundingClientRect();
         const clickX = e.clientX - rect.left;
-        const percent = clickX / rect.width;
-        video.currentTime = percent * video.duration;
+        video.currentTime = (clickX / rect.width) * video.duration;
       });
     });
   }
 
   pauseOtherVideos(currentVideo) {
-    this.videos.forEach(({ video, playBtn, progressBar }) => {
+    this.videos.forEach(item => {
+      const { video, playBtn, progressBar } = item;
       if (video !== currentVideo && !video.paused) {
         video.pause();
+        item.isPlaying = false;
         if (playBtn) playBtn.style.display = '';
         if (progressBar) progressBar.style.width = '0%';
       }
