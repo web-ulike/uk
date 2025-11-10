@@ -309,7 +309,7 @@
     </custom-swiper-new>
   </div>
   <script>
-    {% comment %} class CustomSwiperNew extends HTMLElement {
+    class CustomSwiperNew extends HTMLElement {
       constructor() {
         super();
       }
@@ -326,7 +326,6 @@
           return;
         }
 
-        // 设备判断
         const disableOn = this.getAttribute('disable-on');
         const isMobile = /Mobi|Android/i.test(navigator.userAgent);
         if ((disableOn === 'mobile' && isMobile) || (disableOn === 'desktop' && !isMobile)) {
@@ -334,7 +333,6 @@
           return;
         }
 
-        // 参数
         const slidesPerView = parseFloat(this.getAttribute('slides-per-view')) || 1.3;
         const spaceBetween = parseFloat(this.getAttribute('space-between')) || 10;
         const loop = this.getAttribute('loop') !== 'false';
@@ -349,14 +347,9 @@
           console.error('Invalid breakpoints format. Expected JSON.');
         }
 
-        // 控件
         const prevButton = navigationEnabled ? this.querySelector('.swiper-prev') : null;
         const nextButton = navigationEnabled ? this.querySelector('.swiper-next') : null;
-        const paginationEl = paginationEnabled
-          ? { el: this.querySelector('.swiper-pagination'), clickable: true }
-          : false;
 
-        // 创建 Swiper
         this.swiper = new Swiper(swiperContainer, {
           slidesPerView,
           spaceBetween,
@@ -383,7 +376,35 @@
           const playBtn = playBtns[index];
           if (!playBtn) return;
 
-          // 点击播放按钮
+          // --- 创建进度条 ---
+          let progressContainer = document.createElement('div');
+          progressContainer.className = 'video-progress';
+          progressContainer.style.cssText = `
+            position: absolute;
+            bottom: 8px;
+            left: 10px;
+            right: 10px;
+            height: 4px;
+            background: rgba(255,255,255,0.3);
+            border-radius:4px;
+            overflow: hidden;
+            cursor: pointer;
+          `;
+          let progressBar = document.createElement('div');
+          progressBar.className = 'video-progress-bar';
+          progressBar.style.cssText = `
+            width: 0%;
+            height: 100%;
+            background: #fff;
+            transition: width 0.1s linear;
+          `;
+          progressContainer.appendChild(progressBar);
+
+          // 确保父级定位正确
+          video.parentElement.style.position = 'relative';
+          video.parentElement.appendChild(progressContainer);
+
+          // --- 点击播放按钮 ---
           playBtn.addEventListener('click', e => {
             e.stopPropagation();
             this.pauseOtherVideos(video);
@@ -391,7 +412,7 @@
             playBtn.style.display = 'none';
           });
 
-          // 点击视频暂停
+          // --- 点击视频暂停/播放 ---
           video.addEventListener('click', e => {
             e.stopPropagation();
             if (video.paused) {
@@ -404,9 +425,25 @@
             }
           });
 
-          // 播放结束后恢复按钮
+          // --- 视频播放结束恢复按钮 ---
           video.addEventListener('ended', () => {
             playBtn.style.display = '';
+            progressBar.style.width = '0%';
+          });
+
+          // --- 更新时间进度条 ---
+          video.addEventListener('timeupdate', () => {
+            if (!video.duration) return;
+            const percent = (video.currentTime / video.duration) * 100;
+            progressBar.style.width = percent + '%';
+          });
+
+          // --- 点击进度条跳转 ---
+          progressContainer.addEventListener('click', e => {
+            const rect = progressContainer.getBoundingClientRect();
+            const clickX = e.clientX - rect.left;
+            const percent = clickX / rect.width;
+            video.currentTime = percent * video.duration;
           });
         });
       }
@@ -418,167 +455,15 @@
           if (v !== currentVideo && !v.paused) {
             v.pause();
             if (allPlayBtns[i]) allPlayBtns[i].style.display = '';
+            // 重置进度条
+            const progressBar = v.parentElement.querySelector('.video-progress-bar');
+            if (progressBar) progressBar.style.width = '0%';
           }
         });
       }
     }
 
-    window.customElements.define('custom-swiper-new', CustomSwiperNew); {% endcomment %}
-    class CustomSwiperNew extends HTMLElement {
-  constructor() {
-    super();
-  }
-
-  connectedCallback() {
-    this.initSwiper();
-    this.initVideoEvents();
-  }
-
-  initSwiper() {
-    const swiperContainer = this.querySelector('.swiper-container');
-    if (!swiperContainer) {
-      console.error('Swiper container not found');
-      return;
-    }
-
-    const disableOn = this.getAttribute('disable-on');
-    const isMobile = /Mobi|Android/i.test(navigator.userAgent);
-    if ((disableOn === 'mobile' && isMobile) || (disableOn === 'desktop' && !isMobile)) {
-      console.log(`Swiper disabled on ${disableOn}`);
-      return;
-    }
-
-    const slidesPerView = parseFloat(this.getAttribute('slides-per-view')) || 1.3;
-    const spaceBetween = parseFloat(this.getAttribute('space-between')) || 10;
-    const loop = this.getAttribute('loop') !== 'false';
-    const centeredSlides = this.getAttribute('centered-slides') !== 'false';
-    const paginationEnabled = this.getAttribute('pagination') === 'true';
-    const navigationEnabled = this.getAttribute('navigation') === 'true';
-
-    let breakpoints = {};
-    try {
-      breakpoints = JSON.parse(this.getAttribute('breakpoints') || '{}');
-    } catch (error) {
-      console.error('Invalid breakpoints format. Expected JSON.');
-    }
-
-    const prevButton = navigationEnabled ? this.querySelector('.swiper-prev') : null;
-    const nextButton = navigationEnabled ? this.querySelector('.swiper-next') : null;
-
-    this.swiper = new Swiper(swiperContainer, {
-      slidesPerView,
-      spaceBetween,
-      loop,
-      centeredSlides,
-      navigation: navigationEnabled ? { prevEl: prevButton, nextEl: nextButton } : false,
-      pagination: {
-        el: this.querySelector('.swiper-pagination'),
-        type: 'progressbar',
-      },
-      breakpoints,
-      preventClicks: false,
-      preventClicksPropagation: false,
-    });
-  }
-
-  initVideoEvents() {
-    const videos = this.querySelectorAll('video');
-    const playBtns = this.querySelectorAll('.play-btn');
-
-    if (!videos.length) return;
-
-    videos.forEach((video, index) => {
-      const playBtn = playBtns[index];
-      if (!playBtn) return;
-
-      // --- 创建进度条 ---
-      let progressContainer = document.createElement('div');
-      progressContainer.className = 'video-progress';
-      progressContainer.style.cssText = `
-        position: absolute;
-        bottom: 8px;
-        left: 10px;
-        right: 10px;
-        height: 4px;
-        background: rgba(255,255,255,0.3);
-        border-radius:4px;
-        overflow: hidden;
-        cursor: pointer;
-      `;
-      let progressBar = document.createElement('div');
-      progressBar.className = 'video-progress-bar';
-      progressBar.style.cssText = `
-        width: 0%;
-        height: 100%;
-        background: #fff;
-        transition: width 0.1s linear;
-      `;
-      progressContainer.appendChild(progressBar);
-
-      // 确保父级定位正确
-      video.parentElement.style.position = 'relative';
-      video.parentElement.appendChild(progressContainer);
-
-      // --- 点击播放按钮 ---
-      playBtn.addEventListener('click', e => {
-        e.stopPropagation();
-        this.pauseOtherVideos(video);
-        video.play();
-        playBtn.style.display = 'none';
-      });
-
-      // --- 点击视频暂停/播放 ---
-      video.addEventListener('click', e => {
-        e.stopPropagation();
-        if (video.paused) {
-          this.pauseOtherVideos(video);
-          video.play();
-          playBtn.style.display = 'none';
-        } else {
-          video.pause();
-          playBtn.style.display = '';
-        }
-      });
-
-      // --- 视频播放结束恢复按钮 ---
-      video.addEventListener('ended', () => {
-        playBtn.style.display = '';
-        progressBar.style.width = '0%';
-      });
-
-      // --- 更新时间进度条 ---
-      video.addEventListener('timeupdate', () => {
-        if (!video.duration) return;
-        const percent = (video.currentTime / video.duration) * 100;
-        progressBar.style.width = percent + '%';
-      });
-
-      // --- 点击进度条跳转 ---
-      progressContainer.addEventListener('click', e => {
-        const rect = progressContainer.getBoundingClientRect();
-        const clickX = e.clientX - rect.left;
-        const percent = clickX / rect.width;
-        video.currentTime = percent * video.duration;
-      });
-    });
-  }
-
-  pauseOtherVideos(currentVideo) {
-    const allVideos = this.querySelectorAll('video');
-    const allPlayBtns = this.querySelectorAll('.play-btn');
-    allVideos.forEach((v, i) => {
-      if (v !== currentVideo && !v.paused) {
-        v.pause();
-        if (allPlayBtns[i]) allPlayBtns[i].style.display = '';
-        // 重置进度条
-        const progressBar = v.parentElement.querySelector('.video-progress-bar');
-        if (progressBar) progressBar.style.width = '0%';
-      }
-    });
-  }
-}
-
-window.customElements.define('custom-swiper-new', CustomSwiperNew);
+    window.customElements.define('custom-swiper-new', CustomSwiperNew);
 
 
 
