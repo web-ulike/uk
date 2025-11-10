@@ -1,0 +1,359 @@
+<style>
+.media-evaluation-box {
+  padding: 60px 0 85px 0;
+  position: relative;
+  z-index: 1;
+}
+.media-evaluation-box .container{
+  margin-bottom: 70px;
+}
+.media-evaluation-box .media-evaluation-marquee {
+  overflow: hidden;
+  position: relative;
+}
+
+.media-evaluation-box .media-evaluation-list {
+  display: flex;
+  padding: 20px 0;
+}
+
+.media-evaluation-box .media-evaluation-item {
+  width: 390px;
+  margin-right: 15px;
+  background: #fff;
+  padding: 45px 32px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-end;
+  flex-shrink: 0;
+  transition: all 0.4s ease;
+  border-radius: 20px;
+  background: #F8F8F8;
+  box-shadow: 0 10px 23.2px 0 rgba(55, 27, 11, 0.10);
+}
+.media-evaluation-new .media-evaluation-box{
+    background:#ffffff;
+  }
+.media-evaluation-new .media-evaluation-box .media-evaluation-item{
+   width: 506px;
+  height:437px;
+  margin-right:43px;
+  background: #F9F9F9;
+}
+
+.media-evaluation-new .media-evaluation-box .media-evaluation-txt{
+  font-size: 26px;
+  line-height: 1.5;
+}
+.media-evaluation-box .media-evaluation-item:hover {
+  transition-delay: 0s !important;
+  transform: translateY(-18px);
+  box-shadow: 0 15px 15px rgba(0, 0, 0, 0.03);
+}
+.media-evaluation-box .media-evaluation-txt-top {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+}
+
+.media-evaluation-box .media-evaluation-txt {
+  font-size: 18px;
+  color: #000;
+  line-height: 1.3;
+  font-weight: bold;
+}
+
+.media-evaluation-box .media-evaluation-logo {
+  display: block;
+  max-width: 60%;
+  margin-top: 50px;
+  position: relative;
+  right: 0;
+  max-height:70px;
+  width:auto;
+}
+
+  .media-evaluation-box .sub-text{
+    color: #3F3636;
+    font-size: 20px;
+    line-height: 1.2;
+    text-align: center;
+    margin-top:20px;
+  }
+
+  .kol-diy .media-evaluation-box{
+    background: #FFF;
+  }
+
+  .kol-diy .media-evaluation-box .media-evaluation-item{
+    border-radius: 20px;
+    background: #F8F8F8;
+  }
+
+  .kol-diy .media-evaluation-box .media-evaluation-item{
+    padding-bottom:30px;
+  }
+
+  .kol-diy .media-evaluation-box .media-evaluation-txt-top{
+    justify-content: flex-start;
+  }
+  
+@media (max-width: 991px) {
+  .media-evaluation-box {
+    padding: 50px 0;
+  }
+  .media-evaluation-box .container{
+    margin-bottom: 30px;
+  }
+  .media-evaluation-box .media-evaluation-item {
+    width: 350px;
+  }
+   .media-evaluation-box .sub-text{
+    font-size: 12px;
+    margin-top:10px;
+  }
+   .kol-diy .media-evaluation-box .media-evaluation-item{
+    border-radius: 10px;
+  }
+}
+</style>
+<section class="section-box{% if section.settings.custom_class != blank %} {{section.settings.custom_class}}{% endif %}">
+  <div class="media-evaluation-box">
+    {%- if section.settings.title != blank -%}
+      <div class="container">
+        <div class="title-diy to-top">{{ section.settings.title }}</div>
+        {%- if section.settings.text != blank -%}
+          <div class="sub-text to-top">{{ section.settings.text }}</div>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+    <div class="media-evaluation-marquee marquee-box">
+      <div class="media-evaluation-list marquee-box-list">
+        {%- for block in section.blocks -%}
+          <div class="media-evaluation-item marquee-box-item to-top" style="transition-delay: 0.{{forloop.index}}s">
+            <div class="media-evaluation-txt-top">
+              <div class="media-evaluation-txt">{{ block.settings.text }}</div>
+            </div>
+            <img loading="lazy" class="media-evaluation-logo" width="{{ block.settings.image.width }}" height="{{ block.settings.image.height }}" {%
+              render 'image-attributes' , image: block.settings.image %} alt="{{ block.settings.image.alt | escape }}">
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+  function enableDragDetection(element, onDragLeft, onDragRight, onTouchEnd) {
+    let startX = 0;
+    let startY = 0;
+    let isDragging = false;
+    let isMobile = false;
+    element.addEventListener('touchstart', (event) => {
+      startX = event.touches[0].clientX;
+      startY = event.touches[0].clientY;
+      isDragging = true;
+      isMobile = true;
+    });
+  
+    element.addEventListener('touchmove', (event) => {
+      if (!isDragging) return;
+      const currentX = event.touches[0].clientX;
+      const currentY = event.touches[0].clientY;
+  
+      const deltaX = currentX - startX;
+      const deltaY = currentY - startY;
+      const distance = Math.abs(deltaX);
+  
+      if (Math.abs(deltaX) > Math.abs(deltaY)) {
+        if (deltaX > 0) {
+          if (onDragRight) {
+            onDragRight(distance);
+          }
+        } else {
+          if (onDragLeft) {
+            onDragLeft(distance);
+          }
+        }
+      }
+      startX = currentX;
+      startY = currentY;
+    });
+  
+    element.addEventListener('touchend', () => {
+      if (onTouchEnd && isDragging) {
+        onTouchEnd(isMobile);
+      }
+      isDragging = false;
+    });
+  
+    element.addEventListener('mousedown', (event) => {
+      startX = event.clientX;
+      startY = event.clientY;
+      isDragging = true;
+      isMobile = false;
+      event.preventDefault();
+    });
+  
+    element.addEventListener('mousemove', (event) => {
+      if (!isDragging) return;
+  
+      const currentX = event.clientX;
+      const currentY = event.clientY;
+  
+      const deltaX = currentX - startX;
+      const deltaY = currentY - startY;
+      const distance = Math.abs(deltaX);
+  
+      if (Math.abs(deltaX) > Math.abs(deltaY)) {
+        if (deltaX > 0) {
+          if (onDragRight) {
+            onDragRight(distance);
+          }
+        } else {
+          if (onDragLeft) {
+            onDragLeft(distance);
+          }
+        }
+      }
+  
+      startX = currentX;
+      startY = currentY;
+    });
+  
+    element.addEventListener('mouseup', () => {
+      if (onTouchEnd && isDragging) {
+        onTouchEnd(isMobile);
+      }
+      isDragging = false;
+    });
+  
+    element.addEventListener('contextmenu', (event) => {
+      event.preventDefault();
+    });
+  }
+  
+  function marqueeFn(elName,bol){
+    var content = document.querySelector("."+elName)
+    var ul = content.querySelector(".marquee-box-list")
+    var speed = 1;
+    var width = content.clientWidth
+    var swidth = ul.clientWidth
+    var liWidthAll = 0
+    let timer = null
+    let isDouble = false
+    let left =0
+    if(width>swidth) isDouble = true
+    if(bol){
+      ul.innerHTML += isDouble?ul.innerHTML+ul.innerHTML:ul.innerHTML
+    }
+    ul.querySelectorAll(".marquee-box-item").forEach(item=>{
+      liWidthAll+=item.offsetWidth+15
+    })
+    ul.style.width = liWidthAll + "px"
+    function run() {
+        if (left < -ul.offsetWidth / (isDouble?3:2)) {
+            left = 0
+        }
+        if(left>0){
+          left = -ul.offsetWidth / (isDouble?3:2)
+        }
+        left-=speed
+
+        ul.style.transform =  'translateX('+left+'px)' 
+
+      }
+    
+    timer = setInterval(run, 10)
+    content.onmouseover = function() {
+        clearInterval(timer)
+    }
+    content.onmouseout = function() {
+      clearInterval(timer)
+        timer = setInterval(run, 10)
+    }
+
+    enableDragDetection(ul,
+      (distance) => {
+        clearInterval(timer)
+        left -=distance
+        run()
+      },
+      (distance) => {
+        clearInterval(timer)
+        left +=distance
+        run()
+      },
+      (isMobile) => {
+      }
+    );
+
+    const observer = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        const isHidden = entry.target.style.display === 'none';
+        if (entry.isIntersecting) {
+          clearInterval(timer)
+          timer = setInterval(run, 10)
+        } else {
+          clearInterval(timer)
+        }
+        if (isHidden) {
+          clearInterval(timer)
+        } else {
+          clearInterval(timer)
+          timer = setInterval(run, 10)
+        }
+      });
+    }, { attributes: true });
+    observer.observe(content);
+  }
+  marqueeFn('marquee-box',true)
+</script>
+{% schema %}
+{
+"name": "media-evaluation-icon-new",
+"blocks": [
+  {
+    "name": "item",
+    "type": "item",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "image",
+        "label": "Image"
+      },
+      {
+        "type": "text",
+        "id": "text",
+        "label": "Text"
+      }
+    ]
+  }
+],
+  "settings": [
+    {
+      "type": "text",
+      "id": "custom_class",
+      "label": "Custom Class"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title"
+    },
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Text"
+    }
+  ],
+  "presets": [
+  {
+    "name": "media-evaluation-icon-new",
+    "blocks": []
+  }
+]
+}
+{% endschema %}
