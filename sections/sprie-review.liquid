@@ -1,0 +1,405 @@
+<style>
+       #shopify-section-{{ section.id }} {
+        --section-background: {{ section.settings.background }};
+         background: var(--section-background);
+     }
+  .media-{{ section.id }}-padding {
+      padding-top: calc({{ section.settings.padding_top }}px);
+      padding-bottom: calc({{ section.settings.padding_bottom }}px);
+    }
+  @media screen and (max-width: 768px){
+    .media-{{ section.id }}-padding {
+      padding-top: calc({{ section.settings.mobile_padding_top }}px);
+      padding-bottom: calc({{ section.settings.mobile_padding_bottom }}px);
+    }
+  }
+  /* real-feedback */
+  .real-feedback{
+    overflow: hidden;
+  }
+  .feedback-top{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 40px;
+  }
+  .feedback-top .feedback-lt{
+    color:  #190A0A;
+  font-size: 48px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.5;
+  }
+  .feedback-top .feedback-rt{
+    display: flex;
+    gap: 32px;
+  }
+  .feedback-top .feedback-rt svg{
+    cursor: pointer;
+    display: block;
+  }
+  .feedback-top .feedback-rt svg.swiper-button-disabled{
+    color: #D1D1D1;
+    cursor: no-drop;
+  }
+    .feedback-top .feedback-rt svg.swiper-button-lock{
+          display: none;
+    }
+  .feedback-cnt .feedback-cnt-li {
+    width: calc(16.66% - 16px);
+    height: auto;
+    aspect-ratio: 0.57;
+  }
+  .feedback-cnt-li video{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .feedback-cnt .swiper-wrapper{
+    /* gap: 16px; */
+  }
+  .feedback-cnt{
+    overflow: hidden;
+  }
+  .feedback-cnt .feedback-cnt-li .play-btn{
+    display: block;
+    cursor: pointer;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+  }
+  .mobile_check-pagia{
+    position: relative;
+    margin-top: 25px;
+    display: none;
+  }
+  .mobile_check-pagia .swiper-pagination-bullets.swiper-pagination-horizontal{
+    top: 0;
+  }
+  .mobile_check-pagia .swiper-pagination-bullet-active{
+    --swiper-pagination-color:#8B8B8B;
+  }
+    .feedback-cnt .feedback-cnt-li .video-wrapper{
+       aspect-ratio: 0.57;
+    }
+  @media screen and (max-width: 740px) {
+    .mobile_check-pagia{
+      display: block;
+    }
+    .feedback-top{
+      margin-bottom: 32px;
+    }
+    .feedback-top .feedback-lt{
+      font-size: 28px;
+    }
+    .feedback-top .feedback-rt svg{
+      width: 20px;
+    }
+    .feedback-top .feedback-rt{
+      /* position: absolute;
+      bottom: 0; */
+      gap: 15px;
+    }
+  }
+</style>
+<section>
+  <div class="real-feedback media-{{ section.id }}-padding">
+    <custom-swiper-new
+      slides-per-view="1.4"
+      space-between="16"
+      loop="false"
+      centered-slides="false"
+      pagination="true"
+      navigation="true"
+      disable-on=""
+      breakpoints='{"768":{"slidesPerView": 6,"spaceBetween": 16}}'
+    >
+      <div class="real-feedback-box container">
+        <div class="feedback-top to-top">
+          <div class="feedback-lt">{{ section.settings.tle }}</div>
+          <div class="feedback-rt">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="36"
+              height="27"
+              viewBox="0 0 36 27"
+              fill="none"
+              class="swiper-prev"
+            >
+              <g  clip-path="url(#clip0_6041_6164)">
+                <path d="M0 13.5094C0 13.7228 0.08078 13.9344 0.235317 14.0961L12.528 26.9983L13.8117 25.825L2.89756 14.3696H36C36 13.42 35.2133 12.6493 34.2439 12.6493H0.918438C0.586536 12.6493 0.263416 12.8127 0.105366 13.1C0.0333672 13.229 0 13.3701 0 13.5094Z" fill="currentColor"/>
+                <path d="M1.83746 10.4938C2.52409 11.1647 3.6357 11.1647 4.32058 10.4938L13.793 1.21625L12.5514 0L1.83921 10.4938H1.83746Z" fill="currentColor"/>
+              </g>
+              <defs>
+                <clipPath id="clip0_6041_6164">
+                  <rect width="36" height="27" fill="white" transform="matrix(-1 0 0 1 36 0)"/>
+                </clipPath>
+              </defs>
+            </svg>
+
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="36"
+              height="27"
+              viewBox="0 0 36 27"
+              fill="none"
+              class="swiper-next"
+            >
+              <g clip-path="url(#clip0_6041_6167)">
+              <path d="M36 13.5094C36 13.7228 35.9192 13.9344 35.7647 14.0961L23.472 26.9983L22.1883 25.825L33.1024 14.3696H0C0 13.42 0.786732 12.6493 1.7561 12.6493H35.0816C35.4135 12.6493 35.7366 12.8127 35.8946 13.1C35.9666 13.229 36 13.3701 36 13.5094Z" fill="currentColor"/>
+              <path d="M34.1625 10.4938C33.4759 11.1647 32.3643 11.1647 31.6794 10.4938L22.207 1.21625L23.4486 0L34.1608 10.4938H34.1625Z" fill="currentColor"/>
+              </g>
+              <defs>
+              <clipPath id="clip0_6041_6167">
+              <rect width="36" height="27" fill="white"/>
+              </clipPath>
+              </defs>
+            </svg>
+          </div>
+        </div>
+        <div class="feedback-cnt to-top">
+          <div class="swiper-container">
+            <div class="swiper-wrapper">
+              {%- for block in section.blocks -%}
+                <div class="feedback-cnt-li swiper-slide">
+                  <video-slider>
+                    {%- assign video_url = block.settings.video -%}
+                    <native-video class="video-wrapper video-wrapper--native">
+                      {{-
+                        video_url
+                        | video_tag:
+                          image_size: 'master',
+                          controls: false,
+                          autoplay: false,
+                          playsinline: true,
+                          muted: true,
+                          loop: true
+                      -}}
+                    </native-video>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="38"
+                      height="38"
+                      viewBox="0 0 38 38"
+                      fill="none"
+                      class="play-btn"
+                    >
+                      <circle opacity="0.4" cx="19" cy="19" r="19" fill="black"/>
+                      <path d="M28.3192 17.9513C29.1378 18.4108 29.1378 19.5891 28.3192 20.0486L14.5889 27.7556C13.7873 28.2056 12.7977 27.6262 12.7977 26.7069L12.7977 11.293C12.7977 10.3736 13.7873 9.79429 14.5889 10.2443L28.3192 17.9513Z" fill="white"/>
+                    </svg>
+                  </video-slider>
+                  <div class="video-text">
+                    <h3 class="video-text-h3">{{ block.settings.text }}</h3>
+                    <div class="video-text-p">{{ block.settings.text1 }}</div>
+                    <div class="video-text-info">
+                      <img
+                        loading="lazy"
+                        class="img"
+                        width=""
+                        height=""
+                        {% render 'image-attributes', image: block.settings.image %}
+                        alt="{{ block.settings.image.alt | escape }}"
+                      >
+                      <div>
+                        <div class="video-text-name">{{ block.settings.text2 }}</div>
+                        <div class="video-text-su">{{ block.settings.text3 }}</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              {%- endfor -%}
+            </div>
+          </div>
+        </div>
+        <div class="mobile_check-pagia">
+          <div class="swiper-pagination"></div>
+        </div>
+      </div>
+    </custom-swiper-new>
+  </div>
+  <script>
+    class CustomSwiperNew extends HTMLElement {
+        constructor() {
+            super();
+        }
+
+        connectedCallback() {
+            this.initSwiper();
+        }
+
+        initSwiper() {
+            const swiperContainer = this.querySelector('.swiper-container');
+            if (!swiperContainer) {
+            console.error('Swiper container not found');
+            return;
+            }
+
+            // **设备判断：是否禁用 Swiper**
+            const disableOn = this.getAttribute('disable-on'); // 'mobile' 或 'desktop'
+            const isMobile = /Mobi|Android/i.test(navigator.userAgent);
+            if ((disableOn === 'mobile' && isMobile) || (disableOn === 'desktop' && !isMobile)) {
+            console.log(`Swiper disabled on ${disableOn}`);
+            return;
+            }
+
+            // **Swiper 组件参数**
+            const slidesPerView = parseFloat(this.getAttribute('slides-per-view')) || 1.3;
+            const spaceBetween = parseFloat(this.getAttribute('space-between')) || 10;
+            const loop = this.getAttribute('loop') !== 'false'; // 默认为 true
+            const centeredSlides = this.getAttribute('centered-slides') !== 'false'; // 默认为 true
+            const paginationEnabled = this.getAttribute('pagination') === 'true'; // 是否启用分页
+            const navigationEnabled = this.getAttribute('navigation') === 'true'; // 是否启用导航按钮
+            let breakpoints = {};
+            try {
+            breakpoints = JSON.parse(this.getAttribute('breakpoints') || '{}');
+            } catch (error) {
+            console.error('Invalid breakpoints format. Expected JSON.');
+            }
+
+            // **动态控制 navigation 和 pagination**
+            const prevButton = navigationEnabled ? this.querySelector('.swiper-prev') : null;
+            const nextButton = navigationEnabled ? this.querySelector('.swiper-next') : null;
+            const paginationEl = paginationEnabled ? { el: this.querySelector('.swiper-pagination'), clickable: true } : false;
+
+            this.swiper = new Swiper(swiperContainer, {
+            slidesPerView,
+            spaceBetween,
+            loop,
+            centeredSlides,
+            navigation: navigationEnabled ? { prevEl: prevButton, nextEl: nextButton } : false,
+            pagination: paginationEl,
+            breakpoints
+            });
+        }
+    }
+
+    window.customElements.define('custom-swiper-new', CustomSwiperNew);
+    class VideoSlider extends HTMLElement {
+        constructor() {
+            super();
+        }
+        connectedCallback() {
+            this.initEvents();
+        }
+        initEvents() {
+            const video = this.querySelector('video');
+            const playBtn = this.querySelector('.play-btn');
+            playBtn.addEventListener('click', () => {
+                video.play();
+                playBtn.style.display = 'none';
+            });
+        }
+    }
+    window.customElements.define('video-slider', VideoSlider);
+  </script>
+</section>
+{% schema %}
+{
+  "name": "sprie-review",
+  "class": "sprie-review",
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Item",
+      "settings": [
+        {
+          "type": "video",
+          "id": "video",
+          "label": "Video",
+          "info": "Replaces the external video if both are set."
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text"
+        },
+        {
+          "type": "text",
+          "id": "text1",
+          "label": "Text"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Images"
+        },
+        {
+          "type": "text",
+          "id": "text2",
+          "label": "Text"
+        },
+        {
+          "type": "text",
+          "id": "text3",
+          "label": "Text"
+        }
+      ]
+    }
+  ],
+  "settings": [
+    {
+      "type": "text",
+      "id": "tle",
+      "label": "Title"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "color_background",
+      "id": "background",
+      "label": "Background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "mobile_padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Mobile Padding Top",
+      "default": 10
+    },
+    {
+      "type": "range",
+      "id": "mobile_padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Mobile Padding Bottom",
+      "default": 10
+    }
+  ],
+  "presets": [
+    {
+      "name": "sprie-review"
+    }
+  ]
+}
+{% endschema %}
