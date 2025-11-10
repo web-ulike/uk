@@ -355,13 +355,12 @@
             loop,
             centeredSlides,
             navigation: navigationEnabled ? { prevEl: prevButton, nextEl: nextButton } : false,
-            pagination: paginationEl,
+            {% comment %} pagination: paginationEl, {% endcomment %}
+             pagination: {
+                el: this.querySelector('.swiper-pagination'),
+                type: 'progressbar',
+            },
             breakpoints,
-              on: {
-                progress(swiper, progress) {
-                console.log('当前进度：', progress);
-                }
-            }
             });
         }
     }
