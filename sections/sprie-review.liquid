@@ -372,10 +372,29 @@
     class VideoSlider extends HTMLElement {
       constructor() {
         super();
+        this.onPlayBtnClick = this.onPlayBtnClick.bind(this);
+        this.onVideoClick = this.onVideoClick.bind(this);
+        this.onVideoPlay = this.onVideoPlay.bind(this);
+        this.onVideoPause = this.onVideoPause.bind(this);
+        this.onVideoEnded = this.onVideoEnded.bind(this);
       }
 
       connectedCallback() {
         this.initEvents();
+      }
+
+      disconnectedCallback() {
+        // 清理事件
+        const video = this.querySelector('video');
+        const playBtn = this.querySelector('.play-btn');
+        if (playBtn) playBtn.removeEventListener('click', this.onPlayBtnClick);
+        if (video) {
+          video.removeEventListener('click', this.onVideoClick);
+          video.removeEventListener('play', this.onVideoPlay);
+          video.removeEventListener('playing', this.onVideoPlay);
+          video.removeEventListener('pause', this.onVideoPause);
+          video.removeEventListener('ended', this.onVideoEnded);
+        }
       }
 
       initEvents() {
@@ -384,36 +403,78 @@
 
         if (!video || !playBtn) return console.warn('❌ Missing <video> or .play-btn in <video-slider>');
 
-        // 点击播放按钮
-        playBtn.addEventListener('click', () => {
-          this.pauseOtherVideos(); // 暂停其他视频
-          video.play();
-          playBtn.style.display = 'none';
-        });
+        // 使用事件驱动按钮显示/隐藏 —— 更可靠
+        video.addEventListener('play', this.onVideoPlay);
+        video.addEventListener('playing', this.onVideoPlay); // 某些浏览器在 play->playing 切换
+        video.addEventListener('pause', this.onVideoPause);
+        video.addEventListener('ended', this.onVideoEnded);
 
-        // 点击视频暂停
-        video.addEventListener('click', () => {
-          if (!video.paused) {
-            video.pause();
-            playBtn.style.display = '';
-          }
-        });
+        // 点击播放按钮：先暂停其他，再播放当前（play() 使用 Promise）
+        playBtn.addEventListener('click', this.onPlayBtnClick);
 
-        // 视频播放结束时显示播放按钮
-        video.addEventListener('ended', () => {
-          playBtn.style.display = '';
-        });
+        // 点击视频切换播放/暂停（toggle），不直接操纵按钮显示
+        video.addEventListener('click', this.onVideoClick);
       }
 
-      // 暂停其他视频
+      onPlayBtnClick(e) {
+        e.stopPropagation();
+        const video = this.querySelector('video');
+        if (!video) return;
+        this.pauseOtherVideos();
+        // 等待 play 成功再交由 play/playing 事件去隐藏按钮
+        const p = video.play();
+        if (p && typeof p.then === 'function') {
+          p.catch(err => {
+            // 用户未与页面进行交互、自动播放被阻止等会抛错
+            console.warn('video.play() rejected:', err);
+          });
+        }
+      }
+
+      onVideoClick(e) {
+        const video = this.querySelector('video');
+        if (!video) return;
+        // toggle 播放/暂停
+        if (video.paused || video.ended) {
+          this.pauseOtherVideos();
+          const p = video.play();
+          if (p && typeof p.then === 'function') {
+            p.catch(err => console.warn('video.play() rejected:', err));
+          }
+        } else {
+          video.pause();
+          // 不在这里直接显示按钮，pause 事件会触发 onVideoPause 去显示
+        }
+      }
+
+      onVideoPlay(e) {
+        // video 开始播放 —— 隐藏按钮
+        const playBtn = this.querySelector('.play-btn');
+        if (playBtn) playBtn.style.display = 'none';
+      }
+
+      onVideoPause(e) {
+        // video 暂停 —— 显示按钮
+        const playBtn = this.querySelector('.play-btn');
+        if (playBtn) playBtn.style.display = '';
+      }
+
+      onVideoEnded(e) {
+        const playBtn = this.querySelector('.play-btn');
+        if (playBtn) playBtn.style.display = '';
+      }
+
       pauseOtherVideos() {
         const allSliders = document.querySelectorAll('video-slider');
         allSliders.forEach(slider => {
           if (slider !== this) {
             const v = slider.querySelector('video');
-            const btn = slider.querySelector('.play-btn');
+            // 触发暂停，让该 slider 的 pause 事件来处理显示按钮
             if (v && !v.paused) {
               v.pause();
+            } else if (v && v.paused) {
+              // 兜底：确保按钮显示（防止某些浏览器事件未触发）
+              const btn = slider.querySelector('.play-btn');
               if (btn) btn.style.display = '';
             }
           }
@@ -422,6 +483,7 @@
     }
 
     window.customElements.define('video-slider', VideoSlider);
+
 
   </script>
 </section>
