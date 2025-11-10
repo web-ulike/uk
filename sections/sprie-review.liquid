@@ -310,227 +310,151 @@
   </div>
   <script>
     class CustomSwiperNew extends HTMLElement {
-        constructor() {
-            super();
-        }
-
-        connectedCallback() {
-            this.initSwiper();
-        }
-
-        initSwiper() {
-            const swiperContainer = this.querySelector('.swiper-container');
-            if (!swiperContainer) {
-            console.error('Swiper container not found');
-            return;
-            }
-
-            // **设备判断：是否禁用 Swiper**
-            const disableOn = this.getAttribute('disable-on'); // 'mobile' 或 'desktop'
-            const isMobile = /Mobi|Android/i.test(navigator.userAgent);
-            if ((disableOn === 'mobile' && isMobile) || (disableOn === 'desktop' && !isMobile)) {
-            console.log(`Swiper disabled on ${disableOn}`);
-            return;
-            }
-
-            // **Swiper 组件参数**
-            const slidesPerView = parseFloat(this.getAttribute('slides-per-view')) || 1.3;
-            const spaceBetween = parseFloat(this.getAttribute('space-between')) || 10;
-            const loop = this.getAttribute('loop') !== 'false'; // 默认为 true
-            const centeredSlides = this.getAttribute('centered-slides') !== 'false'; // 默认为 true
-            const paginationEnabled = this.getAttribute('pagination') === 'true'; // 是否启用分页
-            const navigationEnabled = this.getAttribute('navigation') === 'true'; // 是否启用导航按钮
-            let breakpoints = {};
-            try {
-            breakpoints = JSON.parse(this.getAttribute('breakpoints') || '{}');
-            } catch (error) {
-            console.error('Invalid breakpoints format. Expected JSON.');
-            }
-
-            // **动态控制 navigation 和 pagination**
-            const prevButton = navigationEnabled ? this.querySelector('.swiper-prev') : null;
-            const nextButton = navigationEnabled ? this.querySelector('.swiper-next') : null;
-            const paginationEl = paginationEnabled ? { el: this.querySelector('.swiper-pagination'), clickable: true } : false;
-
-            this.swiper = new Swiper(swiperContainer, {
-            slidesPerView,
-            spaceBetween,
-            loop,
-            centeredSlides,
-            navigation: navigationEnabled ? { prevEl: prevButton, nextEl: nextButton } : false,
-            {% comment %} pagination: paginationEl, {% endcomment %}
-             pagination: {
-                el: this.querySelector('.swiper-pagination'),
-                type: 'progressbar',
-            },
-            breakpoints,
-            });
-        }
-    }
-
-    window.customElements.define('custom-swiper-new', CustomSwiperNew);
-    
-    class VideoSlider extends HTMLElement {
       constructor() {
         super();
-        // 状态与绑定
-        this.isPlaying = false;    // 我们自己的播放状态
-        this.actionLock = false;   // 操作锁，防止并发 play/pause
-        this._inited = false;
-
-        // 绑定方法，便于 add/remove listener
-        this._onPlayBtnClick = this._onPlayBtnClick.bind(this);
-        this._onVideoClick = this._onVideoClick.bind(this);
-        this._onVideoPlaying = this._onVideoPlaying.bind(this);
-        this._onVideoPause = this._onVideoPause.bind(this);
-        this._onVideoEnded = this._onVideoEnded.bind(this);
+        this.videos = [];
       }
 
       connectedCallback() {
-        // 防止重复初始化
-        if (this._inited) return;
-        this._inited = true;
-        this.initEvents();
+        this.initSwiper();
+        this.initVideos(); // ✅ 加载视频逻辑
       }
 
-      disconnectedCallback() {
-        // 清理事件
-        const video = this.querySelector('video');
-        const playBtn = this.querySelector('.play-btn');
-        if (playBtn) playBtn.removeEventListener('click', this._onPlayBtnClick);
-        if (video) {
-          video.removeEventListener('click', this._onVideoClick);
-          video.removeEventListener('playing', this._onVideoPlaying);
-          video.removeEventListener('play', this._onVideoPlaying);
-          video.removeEventListener('pause', this._onVideoPause);
-          video.removeEventListener('ended', this._onVideoEnded);
+      initSwiper() {
+        const swiperContainer = this.querySelector('.swiper-container');
+        if (!swiperContainer) {
+          console.error('Swiper container not found');
+          return;
         }
-      }
 
-      initEvents() {
-        const video = this.querySelector('video');
-        const playBtn = this.querySelector('.play-btn');
-
-        if (!video || !playBtn) return console.warn('❌ Missing <video> or .play-btn in <video-slider>');
-
-        // 媒体事件 -> 驱动内部状态与按钮显示
-        video.addEventListener('playing', this._onVideoPlaying);
-        video.addEventListener('play', this._onVideoPlaying); // 某些浏览器触发 play 再 playing
-        video.addEventListener('pause', this._onVideoPause);
-        video.addEventListener('ended', this._onVideoEnded);
-
-        // 用户触发
-        playBtn.addEventListener('click', this._onPlayBtnClick);
-        video.addEventListener('click', this._onVideoClick);
-
-        // 初始化按钮显示（根据 video 初始状态）
-        if (!video.paused && !video.ended) {
-          this._setPlaying(true);
-        } else {
-          this._setPlaying(false);
+        // **设备判断：是否禁用 Swiper**
+        const disableOn = this.getAttribute('disable-on'); // 'mobile' 或 'desktop'
+        const isMobile = /Mobi|Android/i.test(navigator.userAgent);
+        if ((disableOn === 'mobile' && isMobile) || (disableOn === 'desktop' && !isMobile)) {
+          console.log(`Swiper disabled on ${disableOn}`);
+          return;
         }
-      }
 
-      // —— 内部状态/UI 管理 —— //
-      _setPlaying(flag) {
-        this.isPlaying = !!flag;
-        const btn = this.querySelector('.play-btn');
-        if (btn) btn.style.display = this.isPlaying ? 'none' : '';
-      }
+        // **Swiper 参数**
+        const slidesPerView = parseFloat(this.getAttribute('slides-per-view')) || 1.3;
+        const spaceBetween = parseFloat(this.getAttribute('space-between')) || 10;
+        const loop = this.getAttribute('loop') !== 'false'; // 默认为 true
+        const centeredSlides = this.getAttribute('centered-slides') !== 'false'; // 默认为 true
+        const paginationEnabled = this.getAttribute('pagination') === 'true';
+        const navigationEnabled = this.getAttribute('navigation') === 'true';
 
-      // 当我们主动暂停别人的时候，也希望强制更新它们的状态（避免竞态）
-      pauseOtherVideos() {
-        const all = document.querySelectorAll('video-slider');
-        all.forEach(slider => {
-          if (slider === this) return;
-          const v = slider.querySelector('video');
-          // 主动 pause，且立即更新其组件状态（兜底）
-          try {
-            if (v && !v.paused) v.pause();
-          } catch (e) {
-            // ignore
-          }
-          if (typeof slider._setPlaying === 'function') {
-            slider._setPlaying(false);
-          }
+        let breakpoints = {};
+        try {
+          breakpoints = JSON.parse(this.getAttribute('breakpoints') || '{}');
+        } catch (error) {
+          console.error('Invalid breakpoints format. Expected JSON.');
+        }
+
+        // **导航/分页元素**
+        const prevButton = navigationEnabled ? this.querySelector('.swiper-prev') : null;
+        const nextButton = navigationEnabled ? this.querySelector('.swiper-next') : null;
+
+        this.swiper = new Swiper(swiperContainer, {
+          slidesPerView,
+          spaceBetween,
+          loop,
+          centeredSlides,
+          navigation: navigationEnabled ? { prevEl: prevButton, nextEl: nextButton } : false,
+          pagination: {
+            el: this.querySelector('.swiper-pagination'),
+            type: 'progressbar',
+          },
+          breakpoints,
         });
       }
 
-      // —— 事件处理 —— //
-      async _onPlayBtnClick(e) {
-        e.stopPropagation();
-        const video = this.querySelector('video');
-        if (!video) return;
+      /**
+      * ✅ 视频逻辑初始化
+      */
+      initVideos() {
+        const videos = this.querySelectorAll('video');
+        if (!videos.length) return;
 
-        if (this.actionLock) return; // 正在处理，忽略重复点击
-        this.actionLock = true;
+        this.videos = Array.from(videos);
+        this.videos.forEach((video) => {
+          const playBtn = video.parentElement.querySelector('.play-btn');
+          if (!playBtn) return;
 
-        // pause others first (并强制更新它们的状态)
-        this.pauseOtherVideos();
+          let isPlaying = false;
+          let actionLock = false;
 
-        try {
-          const p = video.play();
-          if (p && typeof p.then === 'function') {
-            await p;
-          }
-          // 成功播放后：playing 事件会调用 _onVideoPlaying 去隐藏按钮并设置 isPlaying
-        } catch (err) {
-          console.warn('video.play() rejected:', err);
-        } finally {
-          this.actionLock = false;
-        }
-      }
-
-      async _onVideoClick(e) {
-        const video = this.querySelector('video');
-        if (!video) return;
-
-        if (this.actionLock) return; // 有并发操作时先返回
-        // 直接根据内部状态 toggle（而不是直接依赖 video.paused）
-        if (this.isPlaying) {
-          // 正在播放 -> 暂停
-          this.actionLock = true;
-          try {
-            video.pause();
-            // pause 事件会调用 _onVideoPause 更新 UI/state
-          } finally {
-            this.actionLock = false;
-          }
-        } else {
-          // 未播放 -> 播放（先 pause others）
-          this.actionLock = true;
-          this.pauseOtherVideos();
-          try {
-            const p = video.play();
-            if (p && typeof p.then === 'function') {
-              await p;
+          // ✅ 播放按钮点击
+          playBtn.addEventListener('click', async (e) => {
+            e.stopPropagation();
+            if (actionLock) return;
+            actionLock = true;
+            this.pauseAllVideos(video);
+            try {
+              await video.play();
+            } catch (err) {
+              console.warn('video.play() failed:', err);
+            } finally {
+              actionLock = false;
             }
-            // playing 事件会更新状态/UI
-          } catch (err) {
-            console.warn('video.play() rejected:', err);
-          } finally {
-            this.actionLock = false;
+          });
+
+          // ✅ 点击视频：切换播放/暂停
+          video.addEventListener('click', async () => {
+            if (actionLock) return;
+            if (isPlaying) {
+              actionLock = true;
+              video.pause();
+              actionLock = false;
+            } else {
+              actionLock = true;
+              this.pauseAllVideos(video);
+              try {
+                await video.play();
+              } catch (err) {
+                console.warn('video.play() failed:', err);
+              } finally {
+                actionLock = false;
+              }
+            }
+          });
+
+          // ✅ 视频事件控制按钮显示
+          video.addEventListener('play', () => {
+            isPlaying = true;
+            playBtn.style.display = 'none';
+          });
+
+          video.addEventListener('pause', () => {
+            isPlaying = false;
+            // 如果是播放结束自动暂停，会触发 ended 事件
+            if (video.currentTime < video.duration) {
+              playBtn.style.display = '';
+            }
+          });
+
+          video.addEventListener('ended', () => {
+            isPlaying = false;
+            playBtn.style.display = '';
+          });
+        });
+      }
+
+      /**
+      * ✅ 暂停所有其他视频
+      */
+      pauseAllVideos(except) {
+        this.videos.forEach((v) => {
+          if (v !== except && !v.paused) {
+            v.pause();
+            const btn = v.parentElement.querySelector('.play-btn');
+            if (btn) btn.style.display = '';
           }
-        }
-      }
-
-      _onVideoPlaying() {
-        // 媒体确实进入播放 -> 更新状态 & 隐藏按钮
-        this._setPlaying(true);
-      }
-
-      _onVideoPause() {
-        // 媒体暂停 -> 更新状态 & 显示按钮 (若已结束，后续 ended 会处理)
-        // 注意：currentTime 与 duration 对比可以判断是否是 ended，但 ended 事件会覆盖
-        this._setPlaying(false);
-      }
-
-      _onVideoEnded() {
-        this._setPlaying(false);
+        });
       }
     }
 
-    window.customElements.define('video-slider', VideoSlider);
+    window.customElements.define('custom-swiper-new', CustomSwiperNew);
+
 
 
 
