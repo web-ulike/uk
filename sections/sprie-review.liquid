@@ -370,22 +370,59 @@
 
     window.customElements.define('custom-swiper-new', CustomSwiperNew);
     class VideoSlider extends HTMLElement {
-        constructor() {
-            super();
-        }
-        connectedCallback() {
-            this.initEvents();
-        }
-        initEvents() {
-            const video = this.querySelector('video');
-            const playBtn = this.querySelector('.play-btn');
-            playBtn.addEventListener('click', () => {
-                video.play();
-                playBtn.style.display = 'none';
-            });
-        }
+      constructor() {
+        super();
+      }
+
+      connectedCallback() {
+        this.initEvents();
+      }
+
+      initEvents() {
+        const video = this.querySelector('video');
+        const playBtn = this.querySelector('.play-btn');
+
+        if (!video || !playBtn) return console.warn('❌ Missing <video> or .play-btn in <video-slider>');
+
+        // 点击播放按钮
+        playBtn.addEventListener('click', () => {
+          this.pauseOtherVideos(); // 暂停其他视频
+          video.play();
+          playBtn.style.display = 'none';
+        });
+
+        // 点击视频暂停
+        video.addEventListener('click', () => {
+          if (!video.paused) {
+            video.pause();
+            playBtn.style.display = '';
+          }
+        });
+
+        // 视频播放结束时显示播放按钮
+        video.addEventListener('ended', () => {
+          playBtn.style.display = '';
+        });
+      }
+
+      // 暂停其他视频
+      pauseOtherVideos() {
+        const allSliders = document.querySelectorAll('video-slider');
+        allSliders.forEach(slider => {
+          if (slider !== this) {
+            const v = slider.querySelector('video');
+            const btn = slider.querySelector('.play-btn');
+            if (v && !v.paused) {
+              v.pause();
+              if (btn) btn.style.display = '';
+            }
+          }
+        });
+      }
     }
+
     window.customElements.define('video-slider', VideoSlider);
+
   </script>
 </section>
 {% schema %}
