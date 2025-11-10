@@ -239,14 +239,16 @@
                     <h3 class="video-text-h3">{{ block.settings.text }}</h3>
                     <div class="video-text-p">{{ block.settings.text1 }}</div>
                     <div class="video-text-info">
-                      <img
-                        loading="lazy"
-                        class="img"
-                        width=""
-                        height=""
-                        {% render 'image-attributes', image: block.settings.image %}
-                        alt="{{ block.settings.image.alt | escape }}"
-                      >
+                        {%- if block.settings.image != blank -%}
+                            <img
+                                loading="lazy"
+                                class="img"
+                                width=""
+                                height=""
+                                {% render 'image-attributes', image: block.settings.image %}
+                                alt="{{ block.settings.image.alt | escape }}"
+                            >
+                        {%- endif -%}
                       <div>
                         <div class="video-text-name">{{ block.settings.text2 }}</div>
                         <div class="video-text-su">{{ block.settings.text3 }}</div>
