@@ -483,6 +483,7 @@ class CustomSwiperNew extends HTMLElement {
       return;
     }
 
+    // 设备判断
     const disableOn = this.getAttribute('disable-on');
     const isMobile = /Mobi|Android/i.test(navigator.userAgent);
     if ((disableOn === 'mobile' && isMobile) || (disableOn === 'desktop' && !isMobile)) {
@@ -490,6 +491,7 @@ class CustomSwiperNew extends HTMLElement {
       return;
     }
 
+    // 参数
     const slidesPerView = parseFloat(this.getAttribute('slides-per-view')) || 1.3;
     const spaceBetween = parseFloat(this.getAttribute('space-between')) || 10;
     const loop = this.getAttribute('loop') !== 'false';
@@ -504,9 +506,11 @@ class CustomSwiperNew extends HTMLElement {
       console.error('Invalid breakpoints format. Expected JSON.');
     }
 
+    // 控件
     const prevButton = navigationEnabled ? this.querySelector('.swiper-prev') : null;
     const nextButton = navigationEnabled ? this.querySelector('.swiper-next') : null;
 
+    // 创建 Swiper
     this.swiper = new Swiper(swiperContainer, {
       slidesPerView,
       spaceBetween,
@@ -526,60 +530,47 @@ class CustomSwiperNew extends HTMLElement {
   initVideoEvents() {
     const videos = this.querySelectorAll('video');
     const playBtns = this.querySelectorAll('.play-btn');
+
     if (!videos.length) return;
 
     videos.forEach((video, index) => {
       const playBtn = playBtns[index];
       if (!playBtn) return;
 
-      // --- 创建进度条容器 ---
+      // ---- 创建进度条 UI ----
+      const videoSlider = video.closest('.video-slider') || video.parentElement;
       const progressContainer = document.createElement('div');
-      progressContainer.className = 'video-progress';
-      progressContainer.style.cssText = `
-        position: absolute;
-        bottom: 8px;
-        left: 0;
-        right: 0;
-        height: 6px;
-        background: rgba(255,255,255,0.25);
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-      `;
+      progressContainer.style.cssText =
+        'display:flex;align-items:center;gap:8px;margin-top:8px;font-size:12px;color:#fff;user-select:none;';
 
-      // --- 创建进度条 ---
+      const currentTimeEl = document.createElement('span');
+      currentTimeEl.textContent = '00:00';
+
       const progressBar = document.createElement('div');
-      progressBar.className = 'video-progress-bar';
-      progressBar.style.cssText = `
-        height: 100%;
-        background: #fff;
-        width: 0%;
-        flex: none;
-        transition: width 0.1s linear;
-      `;
+      progressBar.style.cssText =
+        'flex:1;height:4px;background:rgba(255,255,255,0.3);border-radius:2px;position:relative;cursor:pointer;';
 
-      // --- 创建时间显示 ---
-      const timeDisplay = document.createElement('div');
-      timeDisplay.className = 'video-time';
-      timeDisplay.style.cssText = `
-        position: absolute;
-        right: 6px;
-        bottom: 14px;
-        font-size: 12px;
-        color: #fff;
-        background: rgba(0,0,0,0.4);
-        padding: 2px 6px;
-        border-radius: 4px;
-        user-select: none;
-      `;
-      timeDisplay.textContent = '0:00 / 0:00';
+      const progressFill = document.createElement('div');
+      progressFill.style.cssText =
+        'height:100%;width:0%;background:#fff;border-radius:2px;transition:width 0.1s linear;';
+      progressBar.appendChild(progressFill);
 
+      const durationEl = document.createElement('span');
+      durationEl.textContent = '00:00';
+
+      progressContainer.appendChild(currentTimeEl);
       progressContainer.appendChild(progressBar);
-      video.parentElement.style.position = 'relative';
-      video.parentElement.appendChild(progressContainer);
-      video.parentElement.appendChild(timeDisplay);
+      progressContainer.appendChild(durationEl);
+      videoSlider.appendChild(progressContainer);
 
-      // --- 点击播放按钮 ---
+      let dragging = false;
+
+      // 加载元数据时显示总时长
+      video.addEventListener('loadedmetadata', () => {
+        durationEl.textContent = this.formatTime(video.duration);
+      });
+
+      // 点击播放按钮
       playBtn.addEventListener('click', e => {
         e.stopPropagation();
         this.pauseOtherVideos(video);
@@ -587,7 +578,7 @@ class CustomSwiperNew extends HTMLElement {
         playBtn.style.display = 'none';
       });
 
-      // --- 点击视频播放/暂停 ---
+      // 点击视频播放/暂停
       video.addEventListener('click', e => {
         e.stopPropagation();
         if (video.paused) {
@@ -600,32 +591,55 @@ class CustomSwiperNew extends HTMLElement {
         }
       });
 
-      // --- 播放结束后恢复按钮 ---
+      // 时间更新 → 更新进度条
+      video.addEventListener('timeupdate', () => {
+        if (dragging) return;
+        const percent = (video.currentTime / video.duration) * 100;
+        progressFill.style.width = `${percent}%`;
+        currentTimeEl.textContent = this.formatTime(video.currentTime);
+      });
+
+      // 播放结束
       video.addEventListener('ended', () => {
         playBtn.style.display = '';
-        progressBar.style.width = '0%';
-        timeDisplay.textContent = '0:00 / ' + this.formatTime(video.duration);
+        progressFill.style.width = '0%';
+        currentTimeEl.textContent = '00:00';
       });
 
-      // --- 更新时间和进度条 ---
-      video.addEventListener('timeupdate', () => {
-        if (!video.duration) return;
-        const percent = (video.currentTime / video.duration) * 100;
-        progressBar.style.width = percent + '%';
-        timeDisplay.textContent = `${this.formatTime(video.currentTime)} / ${this.formatTime(video.duration)}`;
+      // 拖动进度条
+      const seek = e => {
+        const rect = progressBar.getBoundingClientRect();
+        let percent = (e.clientX - rect.left) / rect.width;
+        percent = Math.max(0, Math.min(1, percent));
+        const newTime = percent * video.duration;
+        progressFill.style.width = `${percent * 100}%`;
+        currentTimeEl.textContent = this.formatTime(newTime);
+        return newTime;
+      };
+
+      progressBar.addEventListener('mousedown', e => {
+        dragging = true;
+        video.pause();
+        const newTime = seek(e);
+        video.currentTime = newTime;
       });
 
-      // --- 点击进度条跳转 ---
-      progressContainer.addEventListener('click', e => {
-        const rect = progressContainer.getBoundingClientRect();
-        const clickX = e.clientX - rect.left;
-        const percent = clickX / rect.width;
-        video.currentTime = percent * video.duration;
+      window.addEventListener('mousemove', e => {
+        if (!dragging) return;
+        seek(e);
+      });
+
+      window.addEventListener('mouseup', e => {
+        if (!dragging) return;
+        dragging = false;
+        const newTime = seek(e);
+        video.currentTime = newTime;
+        video.play();
+        playBtn.style.display = 'none';
       });
     });
   }
 
-  // --- 暂停其他视频 ---
   pauseOtherVideos(currentVideo) {
     const allVideos = this.querySelectorAll('video');
     const allPlayBtns = this.querySelectorAll('.play-btn');
@@ -633,24 +647,20 @@ class CustomSwiperNew extends HTMLElement {
       if (v !== currentVideo && !v.paused) {
         v.pause();
         if (allPlayBtns[i]) allPlayBtns[i].style.display = '';
-        const progressBar = v.parentElement.querySelector('.video-progress-bar');
-        if (progressBar) progressBar.style.width = '0%';
-        const timeDisplay = v.parentElement.querySelector('.video-time');
-        if (timeDisplay) timeDisplay.textContent = '0:00 / ' + this.formatTime(v.duration);
       }
     });
   }
 
-  // --- 格式化时间 ---
-  formatTime(seconds) {
-    if (isNaN(seconds) || seconds < 0) return '0:00';
-    const m = Math.floor(seconds / 60);
-    const s = Math.floor(seconds % 60);
-    return `${m}:${s.toString().padStart(2, '0')}`;
+  formatTime(sec) {
+    if (!isFinite(sec)) return '00:00';
+    const m = Math.floor(sec / 60);
+    const s = Math.floor(sec % 60);
+    return `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
   }
 }
 
 window.customElements.define('custom-swiper-new', CustomSwiperNew);
+
 
 
   </script>
