@@ -505,9 +505,6 @@ class CustomSwiperNew extends HTMLElement {
 
     const prevButton = navigationEnabled ? this.querySelector('.swiper-prev') : null;
     const nextButton = navigationEnabled ? this.querySelector('.swiper-next') : null;
-    const paginationEl = paginationEnabled
-      ? { el: this.querySelector('.swiper-pagination'), clickable: true }
-      : false;
 
     this.swiper = new Swiper(swiperContainer, {
       slidesPerView,
@@ -577,7 +574,7 @@ class CustomSwiperNew extends HTMLElement {
       video.parentElement.style.position = 'relative';
       video.parentElement.appendChild(progressContainer);
 
-      // 点击播放按钮
+      // 播放按钮点击
       playBtn.addEventListener('click', e => {
         e.stopPropagation();
         this.pauseOtherVideos(video);
@@ -610,11 +607,17 @@ class CustomSwiperNew extends HTMLElement {
         durationEl.textContent = this.formatTime(video.duration);
       });
 
-      // 拖动进度条预览/跳转
+      // 拖动进度条预览/跳转 + 禁用 swiper 拖动
+      progressBar.addEventListener('mousedown', () => this.toggleSwiperDrag(false));
+      progressBar.addEventListener('touchstart', () => this.toggleSwiperDrag(false));
+      progressBar.addEventListener('mouseup', () => this.toggleSwiperDrag(true));
+      progressBar.addEventListener('touchend', () => this.toggleSwiperDrag(true));
+
       progressBar.addEventListener('input', e => {
         const newTime = parseFloat(e.target.value);
         currentTimeEl.textContent = this.formatTime(newTime);
       });
+
       progressBar.addEventListener('change', e => {
         const newTime = parseFloat(e.target.value);
         video.currentTime = newTime;
@@ -627,6 +630,13 @@ class CustomSwiperNew extends HTMLElement {
         currentTimeEl.textContent = '00:00';
       });
     });
+  }
+
+  // 禁用或启用 swiper 拖动
+  toggleSwiperDrag(enable) {
+    if (this.swiper && this.swiper.allowTouchMove !== undefined) {
+      this.swiper.allowTouchMove = enable;
+    }
   }
 
   pauseOtherVideos(currentVideo) {
@@ -648,6 +658,7 @@ class CustomSwiperNew extends HTMLElement {
 }
 
 window.customElements.define('custom-swiper-new', CustomSwiperNew);
+
 
 
 
