@@ -37,7 +37,21 @@
     margin-right: 30px;
     width: 100%;
 }
+.sell-point-slider .sell-point-slider-video-wrapper{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    z-index: 2;
+  }
 
+.sell-point-slider .sell-point-slider-video-wrapper video{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: absolute;
+}
 .sell-point-slider .sell-point-slider-item img{
     display: block;
     margin: 0;
@@ -154,7 +168,7 @@
     padding: 35px 30px;
     left: 0;
     bottom: 0;
-    z-index: 2;
+    z-index: 3;
     color: #fff;
     display: flex;
 }
@@ -270,7 +284,6 @@
 /* .sell-point-slider .sell-point-slider-dot-item.active{
     background: #fff;
 } */
-
 @media (max-width:1500px) {
     .sell-point-slider .sell-point-slider-cont{
         width: 60%;
@@ -343,13 +356,34 @@
         {%- for block in section.blocks -%}
           {% case block.type %}
             {% when 'item' %}
-              <div class="sell-point-slider-item to-top" style="transition-delay: .{{forloop.index}}s">
+              <div class="sell-point-slider-item to-top{% if block.settings.custom_class != blank %} {{block.settings.custom_class}}{% endif %}" style="transition-delay: .{{forloop.index}}s">
                 {%- if block.settings.image != blank -%}
                     <img loading="lazy" width="{{ block.settings.image.width }}"
                     height="{{ block.settings.image.height }}" {% render 'image-attributes' , image: block.settings.image %}
                     alt="{{ block.settings.image.alt | escape }}">
                 {%- endif -%}
-                <div class="sell-point-slider-txt">
+                {%- if block.settings.video != blank -%}
+                  <!-- <native-video {% if block.settings.autoplay %}autoplay{% endif %} class="sell-point-slider-video-wrapper">
+                    <template>
+                      {{- block.settings.video | video_tag: controls: block.settings.show_video_controls,autoplay: block.settings.autoplay,muted: block.settings.autoplay,playsinline: block.settings.autoplay,loop: block.settings.autoplay -}}
+                    </template>
+                  </native-video> -->
+
+                  <native-video autoplay class="video-wrapper video-wrapper--native video-wrapper--native-custom">
+                        {{-
+                          block.settings.video
+                          | video_tag:
+                            controls: false,
+                            autoplay: true,
+                            playsinline: true,
+                            muted: true,
+                            loop: true,
+                            image_size: '740x'
+                        -}}
+                      </native-video>
+                {%- endif -%}
+              {% assign custom_color = block.settings.text_color %}
+                <div class="sell-point-slider-txt" style="color: rgb({{ custom_color.red }}, {{ custom_color.green }}, {{ custom_color.blue }})">
                   <div class="sell-point-slider-num">{{ block.settings.text }}</div>
                   <div class="sell-point-slider-sub">{{ block.settings.text1 }}</div>
                 </div>
@@ -640,6 +674,11 @@
     "name": "item",
     "type": "item",
     "settings": [
+       {
+      "type": "text",
+      "id": "custom_class",
+      "label": "Custom Class"
+    },
       {
         "type": "image_picker",
         "id": "image",
@@ -654,7 +693,37 @@
         "type": "text",
         "id": "text1",
         "label": "Text"
-      }
+      },
+      {
+        "type": "video",
+        "id": "video",
+        "label": "Video",
+        "info": "Replaces the external video if both are set."
+      },
+      {
+        "type": "checkbox",
+        "id": "autoplay",
+        "label": "Autoplay",
+        "info": "Video is muted automatically to allow autoplay.",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "show_video_controls",
+        "label": "Show video controls",
+        "info": "Only applicable with native video.",
+        "default": false
+      },
+      {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#fff"
+    }
     ]
   },
   {
