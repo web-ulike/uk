@@ -1,0 +1,120 @@
+<!-- Appointo Modal -->
+<div id="appointo-modal" style="display: none;">
+  <div id="appointo-embedded-container">
+    <button class="appointo-close-cur" aria-label="Close">
+      <svg xmlns="http://www.w3.org/2000/svg" width="34" height="34" viewBox="0 0 34 34" fill="none">
+      <path d="M12.75 11.3333L21.25 22.6667M21.25 11.3333L12.75 22.6667M17 29.75C20.3815 29.75 23.6245 28.4067 26.0156 26.0156C28.4067 23.6245 29.75 20.3815 29.75 17C29.75 13.6185 28.4067 10.3755 26.0156 7.98439C23.6245 5.5933 20.3815 4.25 17 4.25C13.6185 4.25 10.3755 5.5933 7.98439 7.98439C5.5933 10.3755 4.25 13.6185 4.25 17C4.25 20.3815 5.5933 23.6245 7.98439 26.0156C10.3755 28.4067 13.6185 29.75 17 29.75Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+    <div
+      class="appointo-custom-btn"
+      data-appointo-product-handle="ulike-1-1-virtual-consultation"
+      type="embed"
+    ></div>
+  </div>
+</div>
+
+{% stylesheet %}
+  #appointo-modal {
+    display: none; /* 默认隐藏 */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 9999;
+    align-items: center;
+    justify-content: center;
+  }
+  #appointo-modal .appointo-right, #appointo-body-custom{
+    background: #fff;
+  }
+  #appointo-modal #appointo-embedded-container{
+    width: 928px;
+    position: relative;
+    margin: 0 auto;
+  }
+
+
+  .appointo-close-cur {
+    position: absolute;
+    right: 20px;
+    top: -25px;
+    background: transparent;
+    border: none;
+    font-size: 30px;
+    color: #ffffff;
+    cursor: pointer;
+    z-index: 999999;
+  }
+
+  @media (max-width: 989px) {
+     .appointo-close-cur {
+        top: 10px;
+        right: 10px;
+        font-size: 30px;
+        color: #000;
+        z-index: 999999;
+        height: 40px;
+    }
+    #appointo-modal #appointo-embedded-container{
+      width: 100%;
+      position: initial;
+    }
+    #appointo-modal #appointo-timezone-select {
+      margin-right: 10%;
+      background: #fff;
+      width: 150px;
+    }
+    #appointo-modal .appointo-checbox-item,  #appointo-modal .appointo-radio-item {
+      align-items: flex-start;
+      justify-content: flex-start;
+    }
+    #appointo-modal #appointo-body-custom .appointo-right label {
+      text-align: left;
+    }
+  }
+{% endstylesheet %}
+
+{% javascript %}
+    const btn = document.getElementById("openAppointo");
+    const modal = document.getElementById("appointo-modal");
+    const closeBtn = document.querySelector(".appointo-close-cur");
+    document.addEventListener("DOMContentLoaded", function () {
+        if (!btn || !modal) return;
+
+        // 点击按钮显示
+        btn.addEventListener("click", () => {
+           openModal();
+        });
+
+        // 点击关闭按钮
+        closeBtn?.addEventListener("click", () => {
+        modal.style.display = "none";
+        });
+
+        // 点击背景关闭
+        window.addEventListener("click", (e) => {
+        if (e.target === modal) {
+            modal.style.display = "none";
+        }
+        });
+    });
+
+    function openModal(){
+      modal.style.display = "flex"; // flex 方便居中
+      if(isMobile()){
+        const modalContent = document.getElementById("appointo-modal-content");
+        modalContent.classList.remove("appointo-modal-content-embed");
+        setTimeout(() => {
+          modalContent.classList.remove("appointo-modal-content-embed");
+        }, 1000);
+      }
+    }
+    // document.dispatchEvent(new CustomEvent("appointo:opened"));
+    document.addEventListener("appointo:opened", (e) => {
+      console.log("已打开", e.detail);
+      openModal();
+    });
+{% endjavascript %}
