@@ -1,0 +1,226 @@
+<style>
+.twin-lamps {
+  position: relative;
+}
+
+.twin-lamps .img {
+  width: 100%;
+  position: relative;
+  z-index: 1;
+}
+
+.twin-lamps .twin-lamps-cont {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+  width: 100%;
+  z-index: 2;
+}
+
+.twin-lamps .twin-lamps-text {
+  max-width: 40.94%;
+  color: #fff;
+  margin-right: 0;
+  margin-left: auto;
+}
+
+.twin-lamps .twin-lamps-tag {
+  padding: 10px 18px;
+  border-radius: 30px;
+  background: #374354;
+  font-size: 14px;
+  line-height: 1;
+  display: inline-block;
+  margin-bottom: 20px;
+}
+
+.twin-lamps .twin-lamps-title {
+  font-size: 60px;
+  line-height: 1;
+}
+
+.twin-lamps .twin-lamps-p {
+  color: #929292;
+  font-size: 20px;
+  line-height: 1.1;
+  margin-top: 35px;
+}
+
+  .twin-lamps .twin-lamps-msg{
+    font-size: 12px;
+  }
+
+.twin-lamps .twin-lamps-list {
+  display: flex;
+  gap: 80px;
+  margin-top: 65px;
+  text-align: center;
+}
+
+.twin-lamps .twin-lamps-num {
+  font-size: 100px;
+  line-height: 1;
+  color: #6a7c95;
+}
+
+.twin-lamps .twin-lamps-t {
+  font-size: 18px;
+  line-height: 1.1;
+  margin-top: 10px;
+}
+
+@media (max-width: 1500px) {
+  .twin-lamps .twin-lamps-p {
+    font-size: 16px;
+    margin-top: 25px;
+  }
+  .twin-lamps .twin-lamps-msg{
+    font-size: 12px;
+  }
+  .twin-lamps .twin-lamps-list {
+    gap: 60px;
+    margin-top: 40px;
+  }
+  .twin-lamps .twin-lamps-num {
+    font-size: 70px;
+  }
+  .twin-lamps .twin-lamps-t {
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 991px) {
+  .twin-lamps .twin-lamps-cont {
+    top: auto;
+    transform: translateY(0);
+    bottom: 40px;
+  }
+  .twin-lamps .twin-lamps-text {
+    max-width: 100%;
+  }
+  .twin-lamps .twin-lamps-tag {
+    font-size: 12px;
+    padding: 8px 15px;
+    margin-bottom: 10px;
+  }
+  .twin-lamps .twin-lamps-title {
+    font-size: 28px;
+  }
+  .twin-lamps .twin-lamps-p {
+    font-size: 14px;
+    margin-top: 15px;
+  }
+  .twin-lamps .twin-lamps-msg{
+    font-size: 12px;
+  }
+  .twin-lamps .twin-lamps-list {
+    margin-top: 30px;
+    gap: 40px;
+  }
+  .twin-lamps .twin-lamps-num {
+    font-size: 60px;
+  }
+  .twin-lamps .twin-lamps-t {
+    font-size: 14px;
+  }
+}
+</style>
+
+<section class="section-box">
+   <div class="twin-lamps to-top">
+     <picture>
+        <source srcset="{{ section.settings.image1 | image_url }}" media="(max-width: 991px)">
+        <img class="img" width="" height="" src="{{ section.settings.image | image_url }}">
+      </picture>
+      <div class="twin-lamps-cont">
+        <div class="container">
+          <div class="twin-lamps-text to-top">
+            {%- if section.settings.text != blank -%}
+              <div class="twin-lamps-tag">{{ section.settings.text }}</div>
+            {%- endif -%}
+            <div class="twin-lamps-title">{{ section.settings.text1 }}</div>
+            <div class="twin-lamps-p">{{ section.settings.text2 }}</div>
+            <div class="twin-lamps-list">
+              <div class="twin-lamps-item">
+                <div class="twin-lamps-num">{{ section.settings.text3 }}</div>
+                <div class="twin-lamps-t">{{ section.settings.text4 }}</div>
+              </div>
+              <div class="twin-lamps-item">
+                <div class="twin-lamps-num">{{ section.settings.text5 }}</div>
+                <div class="twin-lamps-t">{{ section.settings.text6 }}</div>
+              </div>
+            </div>
+            {%- if section.settings.text7 != blank -%}
+              <div class="twin-lamps-p twin-lamps-msg">{{ section.settings.text7 }}</div>
+            {%- endif -%}
+          </div>
+        </div>
+      </div>
+    </div>
+</section>
+{% schema %}
+{
+  "name": "twin-lamps",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image1",
+      "label": "Image M"
+    },
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "text1",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "text2",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "text3",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "text4",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "text5",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "text6",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "text7",
+      "label": "Text"
+    }
+  ],
+  "presets": [
+    {
+      "name": "twin-lamps",
+      "settings": {},
+      "blocks": [
+      ]
+    }
+  ]
+}
+{% endschema %}
