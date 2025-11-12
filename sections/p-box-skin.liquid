@@ -4,41 +4,15 @@
   assign se_stts = section.settings
 -%}
 <style>
-       #shopify-section-{{ section.id }} {
-  --text-color: {{  section.settings.text_color.red }}, {{  section.settings.text_color.green }}, {{  section.settings.text_color.blue }};
-      --section-background: {{ section.settings.background.red }}, {{ section.settings.background.green }}, {{ section.settings.background.blue }};
-      --background-image: url({{ section.settings.background_image | img_url: '3840x1176' }});
-      {% if section.settings.background_image != blank %}
-        background-image: var( --background-image);
-      {% else %}
-        background-color: var(--section-background)
-      {% endif %}
+    #shopify-section-{{ se_id }} {
+      background: {{ section.settings.bg_color }};
     }
-    .section-{{ section.id }}-padding {
-      padding-top: calc({{ section.settings.padding_top }}px);
-      padding-bottom: calc({{ section.settings.padding_bottom }}px);
-    }
-    @media screen and (max-width: 768px){
-      #shopify-section-{{ section.id }} {
-      {% if section.settings.mobile_background_image != blank %}
-        --background-image: url({{ section.settings.mobile_background_image | img_url : '750x1230' }});
-      {% endif %}
-      }
-    .section-{{ section.id }}-padding {
-      padding-top: calc({{ section.settings.padding_top }}px * 0.6);
-      padding-bottom: calc({{ section.settings.padding_bottom }}px * 0.6);
-    }
-  }
     .p-box-skin {
       padding: 110px 60px;
       /* background: #fafafa; */
       display: flex;
       max-width: 1920px;
       margin: 0 auto;
-    }
-    .p-box-skin-a3{
-      padding: 110px 40px;
-      max-width: 1600px;
     }
     .p-box-skin .slide-left {
       width: 60%;
@@ -163,9 +137,6 @@
       padding: 0px 60px 0px 40px;
       position: relative;
     }
-  .p-box-skin-a3 .slide-right{
-    padding: 0px 0px 0px 100px;
-  }
     .p-box-skin .slide-right .title {
       font-size: 50px;
       line-height: 60px;
@@ -362,7 +333,6 @@
       position: relative;
       margin-top: 30px;
     }
-
     @media screen and (min-width: 1441px) {
       .p-men-diy{
         max-width:1680px;
@@ -395,11 +365,8 @@
         line-height: 32px;
       }
     }
-    .p-box-skin .m-title {
-      display: none;
-    }
 
-    @media (max-width: 768px) {
+    @media (max-width: 1000px) {
       .p-box-skin {
         padding: 20px 16px 40px;
         display: block;
@@ -409,14 +376,15 @@
         padding: 30px 10px;
         margin-top: 20px;
         border-radius: 12px;
+        background: #fbfaf4;
       }
       .p-box-skin .m-title {
         color: #000;
         text-align: center;
+        font-family: Saans;
         font-size: 28px;
         font-weight: 300;
         line-height: 125%; /* 35px */
-        display: block;
       }
       .p-men-diy .m-title{
         color:#fff;
@@ -448,7 +416,7 @@
       }
 
       .p-box-skin .slide-left .choose-list .hair-color .list {
-        /* border-bottom: 1px solid #86868b; */
+        border-bottom: 1px solid #86868b;
         margin-bottom: 0px;
         padding-bottom: 20px;
       }
@@ -476,7 +444,7 @@
       .p-box-skin .slide-right {
         padding: 0px 16px 20px;
         border-radius: 12px;
-        /* background: #fbfaf4; */
+        background: #fbfaf4;
       }
       .p-box-skin .slide-right .start-block {
         display: none;
@@ -563,8 +531,8 @@
     }
 </style>
 
-<section class="p-box-skin {{ section.settings.text23 }} section-{{ section.id }}-padding">
-  <div class="hidden-lap hidden-desk m-title">
+<section class="p-box-skin {{ section.settings.text23 }}">
+  <div class="hidden-tablet-and-up m-title">
     {{ se_stts.text4 }}
   </div>
   <div class="slide-left">
@@ -758,7 +726,7 @@
 </section>
 
 <script>
-  $(document).ready(function () {
+  window.addEventListener('load', function() {
     let isFlag = false;
     let skinArr = [0, 1, 2, 3, 4];
     let hairArr = [0, 1, 2, 3];
@@ -771,6 +739,7 @@
         $(this).addClass('active').siblings().removeClass('active');
         skinIndex = $(this).index();
         changeSkin();
+        commonGtmEvent(`${g_product_name} Product-IPLtest-skin tone`, skinIndex,'Product');
       }
     });
     $(document).on('click', '.p-box-skin .hair-color .item', function () {
@@ -779,6 +748,7 @@
         $(this).addClass('active').siblings().removeClass('active');
         hairIndex = $(this).index();
         changeSkin();
+        commonGtmEvent(`${g_product_name} Product-IPLtest-hair color`, hairIndex,'Product');
       }
     });
 
@@ -851,16 +821,19 @@
     //  重置抽奖
     $(document).on('click', '.p-box-skin .btn-try-again', function () {
       resetAll();
+      commonGtmEvent(`${g_product_name} Product-IPLtest-try again`, '','Product');
     });
 
     // 了解更多
    $(document).on('click', '.p-box-skin .error-block .learn-more', function () {
       $('#skinMorePopup').show();
+      commonGtmEvent(`${g_product_name} Product-IPLtest-learn more`, '','Product');
    });
 
    //  关闭弹出框
    $(document).on('click', '#skinMorePopup .close-btn', function () {
      $('#skinMorePopup').hide();
+     commonGtmEvent(`${g_product_name} Product-IPLtest-close`, '','Product');
    });
    $(document).on('click', '#skinMorePopup .btn-again', function () {
     $('#skinMorePopup').hide();
@@ -916,7 +889,12 @@
     }
   ],
   "settings": [
-  
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#fafafa"
+    },
     {
       "type": "checkbox",
       "id": "reverse",
@@ -1052,41 +1030,6 @@
       "type": "text",
       "id": "text23",
       "label": "自定义Class"
-    },
-     {
-      "type": "color",
-      "id": "background",
-      "label": "Background"
-    },
-     {
-          "type": "image_picker",
-          "id": "background_image",
-          "label": "Background Image"
-        },
-      {
-          "type": "image_picker",
-          "id": "mobile_background_image",
-          "label": "Mobile Background Image"
-        },
-   {
-      "type": "range",
-      "id": "padding_top",
-      "min": 0,
-      "max": 200,
-      "step": 4,
-      "unit": "px",
-      "label": "Padding Top",
-      "default": 0
-    },
-    {
-      "type": "range",
-      "id": "padding_bottom",
-      "min": 0,
-      "max": 200,
-      "step": 4,
-      "unit": "px",
-      "label": "Padding Bottom",
-      "default": 0
     }
   ],
   "presets": [
