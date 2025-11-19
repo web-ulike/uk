@@ -1,0 +1,300 @@
+{% assign desktop_bg = section.settings.desktop_bg %}
+{% assign mobile_bg = section.settings.mobile_bg %}
+{% assign left_image = section.settings.left_image %}
+
+<div class="container u-left-image-text-wrapper {% if section.settings.hide_on_desktop %}hidden-lap-and-up hidden-desk{% endif %}">
+    {%- if desktop_bg -%}
+      <picture class="u-left-image-text">
+        <source
+          media="(max-width: 768px)"
+          srcset="{% if mobile_bg %}{{ mobile_bg | image_url: width: 800 }}{% else %}{{ desktop_bg | image_url: width: 800 }}{% endif %}"
+        >
+        <img
+          loading="lazy"
+          class="u-left-image-text-img"
+          alt="{{ section.settings.heading_text | escape }}"
+          src="{{ desktop_bg | image_url: width: 1600 }}"
+        >
+      </picture>
+    {%- endif -%}
+    <div class="u-left-image-text-inner">
+      <div class="u-left-image-text-media">
+        {%- if left_image -%}
+          <img
+            loading="lazy"
+            class="u-left-image-text-media-img"
+            src="{{ left_image | image_url: width: 800 }}"
+            alt="{{ section.settings.heading_text | escape }}"
+          >
+        {%- endif -%}
+      </div>
+
+      <div class="u-left-image-text-content">
+        {%- if section.settings.eyebrow_text != blank -%}
+          <div class="u-left-image-text-eyebrow">
+            {{ section.settings.eyebrow_text }}
+          </div>
+        {%- endif -%}
+
+        {%- if section.settings.heading_text != blank -%}
+          <h2 class="u-left-image-text-title">
+            {{ section.settings.heading_text }}
+          </h2>
+        {%- endif -%}
+
+        {%- if section.settings.subheading_text != blank -%}
+          <p class="u-left-image-text-subtitle">
+            {{ section.settings.subheading_text }}
+          </p>
+        {%- endif -%}
+
+        <div class="u-left-image-text-body">
+          {{ section.settings.body_text }}
+        </div>
+
+        {%- if section.settings.button_link != blank and section.settings.button_text != blank -%}
+          <a
+            href="{{ section.settings.button_link }}"
+            class="u-left-image-text-btn js-u-left-image-text-btn"
+          >
+            {{ section.settings.button_text }}
+          </a>
+        {%- endif -%}
+      </div>
+    </div>
+</div>
+
+<script>
+  window.addEventListener('load', function () {
+    var btn = document.querySelector('.js-u-left-image-text-btn');
+    if (btn && typeof commonGtmEvent === 'function') {
+      btn.addEventListener('click', function () {
+        // 通用埋点：左图右文按钮点击
+        commonGtmEvent('u-left-image-text-click', 'true', '{{ section.id }}');
+      });
+    }
+  });
+</script>
+
+<style>
+  .u-left-image-text-wrapper {
+    position: relative;
+    width: 100%;
+    color: #000;
+    background: #F9F9F9;
+    overflow: hidden;
+    display: flex;
+    margin: 40px auto;
+  }
+
+  .u-left-image-text {
+    display: block;
+  }
+
+  .u-left-image-text-img {
+    display: block;
+    max-height: 536px;
+  }
+
+  .u-left-image-text-inner {
+    position: relative;
+    margin: 0 auto;
+    padding: 80px 0px;
+    text-align: center;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .u-left-image-text-media {
+    width: 165px;
+    text-align: center;
+  }
+
+  .u-left-image-text-media-img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .u-left-image-text-content {
+    margin-top: 20px;
+  }
+
+  .u-left-image-text-eyebrow {
+    font-size: 1.3rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+
+  .u-left-image-text-title {
+    font-size: 3rem;
+    line-height: 1;
+    font-weight: 500;
+    margin: 4px 0 20px;
+    font-family: var(--heading-font-family);
+  }
+
+  .u-left-image-text-subtitle {
+    font-size: 1.6rem;
+    margin-bottom: 8px;
+  }
+
+  .u-left-image-text-body {
+    font-size: 22px;
+    line-height: 1.4;
+    width: 70%;
+    margin: 0 auto;
+  }
+  .u-left-image-text-body a{
+    color: #000;
+    text-decoration: underline;
+  }
+
+  .u-left-image-text-btn {
+    display: inline-block;
+    margin-top: 12px;
+    padding: 10px 32px;
+    border-radius: 4px;
+    font-size: 1.5rem;
+    font-weight: 500;
+    text-decoration: none;
+    text-align: center;
+    background: #e0004d;
+    color: #fff;
+  }
+
+  .u-left-image-text-btn:hover {
+    background: #bc0047;
+  }
+
+  @media screen and (max-width: 1200px) {
+    .u-left-image-text-inner {
+      padding: 32px 16px;
+      gap: 24px;
+    }
+
+    .u-left-image-text-title {
+      font-size: 2.6rem;
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    .u-left-image-text-wrapper{
+      flex-direction: column;
+      background: #fff;
+    }
+    .u-left-image-text {
+      order: 2;
+    }
+
+    .u-left-image-text-inner {
+      flex-direction: initial;
+      padding: 40px 0px;
+      text-align: center;
+      display: flex;
+      gap: 10px;
+      flex-wrap: inherit;
+    }
+    .u-left-image-text-img {
+      width: 100%;
+    }
+
+    .u-left-image-text-media {
+      width: 100px;
+      flex: 0 0 100px;
+    }
+
+    .u-left-image-text-content {
+      max-width: 100%;
+      text-align: left;
+    }
+
+    .u-left-image-text-title {
+      font-size: 1.8rem;
+      text-align: left;
+      line-height: 1;
+    }
+
+    .u-left-image-text-subtitle {
+      font-size: 1.5rem;
+    }
+
+    .u-left-image-text-body {
+      font-size: 1rem;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "左图右文",
+  "tag": "section",
+  "class": "u-left-image-text",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "desktop_bg",
+      "label": "Desktop Background Image (optional)"
+    },
+    {
+      "type": "image_picker",
+      "id": "mobile_bg",
+      "label": "Mobile Background Image (optional)"
+    },
+    {
+      "type": "image_picker",
+      "id": "left_image",
+      "label": "Left Image"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow_text",
+      "label": "Small label",
+      "default": "EASY MONEY BACK GUARANTEE"
+    },
+    {
+      "type": "text",
+      "id": "heading_text",
+      "label": "Heading",
+      "default": "100-Day Hair-Free Guarantee"
+    },
+    {
+      "type": "text",
+      "id": "subheading_text",
+      "label": "Subheading",
+      "default": "We’re confident you’ll love Ulike IPL."
+    },
+    {
+      "type": "html",
+      "id": "body_text",
+      "label": "Body text"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button text",
+      "default": "Learn more"
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_on_desktop",
+      "label": "Hide on Desktop",
+      "default": false
+    }
+  ],
+  "presets": [
+    {
+      "name": "u-left-image-text"
+    }
+  ]
+}
+{% endschema %}
