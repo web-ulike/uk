@@ -1,0 +1,776 @@
+<style>
+       #shopify-section-{{ section.id }} {
+        --section-background: {{ section.settings.background }};
+         background: var(--section-background);
+     }
+  .media-{{ section.id }}-padding {
+      padding-top: calc({{ section.settings.padding_top }}px);
+      padding-bottom: calc({{ section.settings.padding_bottom }}px);
+    }
+  @media screen and (max-width: 768px){
+    .media-{{ section.id }}-padding {
+      padding-top: calc({{ section.settings.mobile_padding_top }}px);
+      padding-bottom: calc({{ section.settings.mobile_padding_bottom }}px);
+    }
+  }
+  /* real-feedback */
+  .real-feedback{
+    overflow: hidden;
+  }
+  .feedback-top{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap:40px;
+    margin-top:40px;
+  }
+  .real-feedback .feedback-lt{
+    color:  #190A0A;
+    font-size: 48px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 1.5;
+    text-align: center;
+  }
+  .feedback-top .feedback-rt{
+    display: flex;
+    gap: 32px;
+  }
+  .feedback-top .feedback-rt svg{
+    cursor: pointer;
+    display: block;
+  }
+  .feedback-top .feedback-rt svg.swiper-button-disabled{
+    color: #D1D1D1;
+    cursor: no-drop;
+  }
+    .feedback-top .feedback-rt svg.swiper-button-lock{
+          display: none;
+    }
+  .feedback-cnt .feedback-cnt-li {
+    width: 480px;
+    height: auto;
+    aspect-ratio: 0.57;
+  }
+
+    .feedback-cnt .video-slider {
+        position: relative;
+        z-index:1;
+    }
+  .feedback-cnt-li video{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .feedback-cnt .swiper-wrapper{
+    /* gap: 16px; */
+  }
+  .feedback-cnt{
+    margin-top:50px;
+  }
+  .feedback-cnt .feedback-cnt-li .play-btn{
+    display: block;
+    cursor: pointer;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+  }
+  .mobile_check-pagia{
+    position: relative;
+    margin-top: 25px;
+    display: none;
+  }
+  .mobile_check-pagia .swiper-pagination-bullets.swiper-pagination-horizontal{
+    top: 0;
+  }
+  .mobile_check-pagia .swiper-pagination-bullet-active{
+    --swiper-pagination-color:#8B8B8B;
+  }
+    .feedback-cnt .feedback-cnt-li .video-wrapper{
+       aspect-ratio: 0.57;
+    }
+
+    .feedback-cnt .video-text{
+        padding:30px 20px;
+        background: #F9F9F9;
+        color: #3F3636;
+    }
+
+    .feedback-cnt .video-text-h3{
+        font-size: 28px;
+        line-height: 1.25;
+        margin-bottom:10px;
+    }
+
+    .feedback-cnt .video-text-p{
+        font-size: 18px;
+        line-height: 1.25;
+    }
+
+    .feedback-cnt .video-text-info{
+        display:flex;
+        align-items: center;
+        gap:15px;
+        margin-top:30px;
+    }
+
+    .feedback-cnt .video-text-info .img{
+        width:48px;
+    }
+
+    .feedback-cnt .video-text-name{
+        font-size: 18px;
+        line-height: 1.2;
+        font-family: var(--heading-font-family);
+    }
+
+    .feedback-cnt .video-text-su{
+        font-size: 14px;
+        line-height: 1.2;
+        margin-top:6px;
+        opacity: 0.5;
+    }
+
+    .feedback-top .swiper-pagination{
+        position: relative;
+        bottom: auto;
+        height: 2px;
+        --swiper-theme-color: #190A0A;
+    }
+
+
+  @media screen and (max-width: 740px) {
+    .mobile_check-pagia{
+      display: block;
+    }
+    .feedback-top{
+      margin-bottom: 32px;
+    }
+    .feedback-cnt{
+        margin-top:30px;
+    }
+    .feedback-cnt .feedback-cnt-li {
+        width:100%;
+    }
+    .real-feedback .feedback-lt{
+      font-size: 28px;
+    }
+    .feedback-top .feedback-rt svg{
+      width: 20px;
+    }
+    .feedback-top .feedback-rt{
+      gap: 15px;
+      display:none;
+    }
+    .feedback-cnt .video-text-info{
+        margin-top:20px;
+    }
+    .feedback-cnt .video-text{
+        padding:20px 16px 30px 16px;
+    }
+
+    .feedback-cnt .video-text-h3{
+        font-size: 18px;
+    }
+
+    .feedback-cnt .video-text-p{
+        font-size: 12px;
+    }
+
+    .feedback-cnt .video-text-info .img{
+        width:37px;
+    }
+
+    .feedback-cnt .video-text-name{
+        font-size: 14px;
+    }
+
+    .feedback-cnt .video-text-su{
+        font-size: 12px;
+    }
+
+  }
+</style>
+<section>
+  <div class="real-feedback media-{{ section.id }}-padding">
+    <custom-swiper-new
+      slides-per-view="1"
+      space-between="16"
+      loop="false"
+      centered-slides="false"
+      pagination="true"
+      navigation="true"
+      disable-on=""
+      breakpoints='{"768":{"slidesPerView": "auto","spaceBetween": 30}}'
+    >
+      <div class="real-feedback-box container">
+        <div class="feedback-lt">{{ section.settings.tle }}</div>
+        <div class="feedback-cnt to-top">
+          <div class="swiper-container">
+            <div class="swiper-wrapper">
+              {%- for block in section.blocks -%}
+                <div class="feedback-cnt-li swiper-slide">
+                  <div class="video-slider">
+                    {%- assign video_url = block.settings.video -%}
+                    <native-video class="video-wrapper video-wrapper--native">
+                      {{-
+                        video_url
+                        | video_tag:
+                          image_size: 'master',
+                          controls: false,
+                          autoplay: false,
+                          playsinline: true,
+                          muted: false,
+                          loop: true
+                      -}}
+                    </native-video>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="38"
+                      height="38"
+                      viewBox="0 0 38 38"
+                      fill="none"
+                      class="play-btn"
+                    >
+                      <circle opacity="0.4" cx="19" cy="19" r="19" fill="black"/>
+                      <path d="M28.3192 17.9513C29.1378 18.4108 29.1378 19.5891 28.3192 20.0486L14.5889 27.7556C13.7873 28.2056 12.7977 27.6262 12.7977 26.7069L12.7977 11.293C12.7977 10.3736 13.7873 9.79429 14.5889 10.2443L28.3192 17.9513Z" fill="white"/>
+                    </svg>
+                  </div>
+                  <div class="video-text">
+                    <h3 class="video-text-h3">{{ block.settings.text }}</h3>
+                    <div class="video-text-p">{{ block.settings.text1 }}</div>
+                    <div class="video-text-info">
+                        {%- if block.settings.image != blank -%}
+                            <img
+                                loading="lazy"
+                                class="img"
+                                width=""
+                                height=""
+                                {% render 'image-attributes', image: block.settings.image %}
+                                alt="{{ block.settings.image.alt | escape }}"
+                            >
+                        {%- endif -%}
+                      <div>
+                        <div class="video-text-name">{{ block.settings.text2 }}</div>
+                        <div class="video-text-su">{{ block.settings.text3 }}</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              {%- endfor -%}
+            </div>
+          </div>
+        </div>
+        <div class="feedback-top to-top">
+          
+          <div class="swiper-pagination"></div>
+          <div class="feedback-rt">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="36"
+              height="27"
+              viewBox="0 0 36 27"
+              fill="none"
+              class="swiper-prev"
+            >
+              <g  clip-path="url(#clip0_6041_6164)">
+                <path d="M0 13.5094C0 13.7228 0.08078 13.9344 0.235317 14.0961L12.528 26.9983L13.8117 25.825L2.89756 14.3696H36C36 13.42 35.2133 12.6493 34.2439 12.6493H0.918438C0.586536 12.6493 0.263416 12.8127 0.105366 13.1C0.0333672 13.229 0 13.3701 0 13.5094Z" fill="currentColor"/>
+                <path d="M1.83746 10.4938C2.52409 11.1647 3.6357 11.1647 4.32058 10.4938L13.793 1.21625L12.5514 0L1.83921 10.4938H1.83746Z" fill="currentColor"/>
+              </g>
+              <defs>
+                <clipPath id="clip0_6041_6164">
+                  <rect width="36" height="27" fill="white" transform="matrix(-1 0 0 1 36 0)"/>
+                </clipPath>
+              </defs>
+            </svg>
+
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="36"
+              height="27"
+              viewBox="0 0 36 27"
+              fill="none"
+              class="swiper-next"
+            >
+              <g clip-path="url(#clip0_6041_6167)">
+              <path d="M36 13.5094C36 13.7228 35.9192 13.9344 35.7647 14.0961L23.472 26.9983L22.1883 25.825L33.1024 14.3696H0C0 13.42 0.786732 12.6493 1.7561 12.6493H35.0816C35.4135 12.6493 35.7366 12.8127 35.8946 13.1C35.9666 13.229 36 13.3701 36 13.5094Z" fill="currentColor"/>
+              <path d="M34.1625 10.4938C33.4759 11.1647 32.3643 11.1647 31.6794 10.4938L22.207 1.21625L23.4486 0L34.1608 10.4938H34.1625Z" fill="currentColor"/>
+              </g>
+              <defs>
+              <clipPath id="clip0_6041_6167">
+              <rect width="36" height="27" fill="white"/>
+              </clipPath>
+              </defs>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </custom-swiper-new>
+  </div>
+  <script>
+    {% comment %} class CustomSwiperNew extends HTMLElement {
+      constructor() {
+        super();
+      }
+
+      connectedCallback() {
+        this.initSwiper();
+        this.initVideoEvents();
+      }
+
+      initSwiper() {
+        const swiperContainer = this.querySelector('.swiper-container');
+        if (!swiperContainer) {
+          console.error('Swiper container not found');
+          return;
+        }
+
+        const disableOn = this.getAttribute('disable-on');
+        const isMobile = /Mobi|Android/i.test(navigator.userAgent);
+        if ((disableOn === 'mobile' && isMobile) || (disableOn === 'desktop' && !isMobile)) {
+          console.log(`Swiper disabled on ${disableOn}`);
+          return;
+        }
+
+        const slidesPerView = parseFloat(this.getAttribute('slides-per-view')) || 1.3;
+        const spaceBetween = parseFloat(this.getAttribute('space-between')) || 10;
+        const loop = this.getAttribute('loop') !== 'false';
+        const centeredSlides = this.getAttribute('centered-slides') !== 'false';
+        const paginationEnabled = this.getAttribute('pagination') === 'true';
+        const navigationEnabled = this.getAttribute('navigation') === 'true';
+
+        let breakpoints = {};
+        try {
+          breakpoints = JSON.parse(this.getAttribute('breakpoints') || '{}');
+        } catch (error) {
+          console.error('Invalid breakpoints format. Expected JSON.');
+        }
+
+        const prevButton = navigationEnabled ? this.querySelector('.swiper-prev') : null;
+        const nextButton = navigationEnabled ? this.querySelector('.swiper-next') : null;
+
+        this.swiper = new Swiper(swiperContainer, {
+          slidesPerView,
+          spaceBetween,
+          loop,
+          centeredSlides,
+          navigation: navigationEnabled ? { prevEl: prevButton, nextEl: nextButton } : false,
+          pagination: {
+            el: this.querySelector('.swiper-pagination'),
+            type: 'progressbar',
+          },
+          breakpoints,
+          preventClicks: false,
+          preventClicksPropagation: false,
+        });
+      }
+
+      initVideoEvents() {
+        const videos = this.querySelectorAll('video');
+        const playBtns = this.querySelectorAll('.play-btn');
+
+        if (!videos.length) return;
+
+        videos.forEach((video, index) => {
+          const playBtn = playBtns[index];
+          if (!playBtn) return;
+
+          // --- 创建进度条 ---
+          let progressContainer = document.createElement('div');
+          progressContainer.className = 'video-progress';
+          progressContainer.style.cssText = `
+            position: absolute;
+            bottom: 8px;
+            left: 10px;
+            right: 10px;
+            height: 4px;
+            background: rgba(255,255,255,0.3);
+            border-radius:4px;
+            overflow: hidden;
+            cursor: pointer;
+          `;
+          let progressBar = document.createElement('div');
+          progressBar.className = 'video-progress-bar';
+          progressBar.style.cssText = `
+            width: 0%;
+            height: 100%;
+            background: #fff;
+            transition: width 0.1s linear;
+          `;
+          progressContainer.appendChild(progressBar);
+
+          // 确保父级定位正确
+          video.parentElement.style.position = 'relative';
+          video.parentElement.appendChild(progressContainer);
+
+          // --- 点击播放按钮 ---
+          playBtn.addEventListener('click', e => {
+            e.stopPropagation();
+            this.pauseOtherVideos(video);
+            video.play();
+            playBtn.style.display = 'none';
+          });
+
+          // --- 点击视频暂停/播放 ---
+          video.addEventListener('click', e => {
+            e.stopPropagation();
+            if (video.paused) {
+              this.pauseOtherVideos(video);
+              video.play();
+              playBtn.style.display = 'none';
+            } else {
+              video.pause();
+              playBtn.style.display = '';
+            }
+          });
+
+          // --- 视频播放结束恢复按钮 ---
+          video.addEventListener('ended', () => {
+            playBtn.style.display = '';
+            progressBar.style.width = '0%';
+          });
+
+          // --- 更新时间进度条 ---
+          video.addEventListener('timeupdate', () => {
+            if (!video.duration) return;
+            const percent = (video.currentTime / video.duration) * 100;
+            progressBar.style.width = percent + '%';
+          });
+
+          // --- 点击进度条跳转 ---
+          progressContainer.addEventListener('click', e => {
+            const rect = progressContainer.getBoundingClientRect();
+            const clickX = e.clientX - rect.left;
+            const percent = clickX / rect.width;
+            video.currentTime = percent * video.duration;
+          });
+        });
+      }
+
+      pauseOtherVideos(currentVideo) {
+        const allVideos = this.querySelectorAll('video');
+        const allPlayBtns = this.querySelectorAll('.play-btn');
+        allVideos.forEach((v, i) => {
+          if (v !== currentVideo && !v.paused) {
+            v.pause();
+            if (allPlayBtns[i]) allPlayBtns[i].style.display = '';
+            // 重置进度条
+            const progressBar = v.parentElement.querySelector('.video-progress-bar');
+            if (progressBar) progressBar.style.width = '0%';
+          }
+        });
+      }
+    }
+
+    window.customElements.define('custom-swiper-new', CustomSwiperNew); {% endcomment %}
+
+class CustomSwiperNew extends HTMLElement {
+  constructor() {
+    super();
+  }
+
+  connectedCallback() {
+    this.initSwiper();
+    this.initVideoEvents();
+  }
+
+  initSwiper() {
+    const swiperContainer = this.querySelector('.swiper-container');
+    if (!swiperContainer) {
+      console.error('Swiper container not found');
+      return;
+    }
+
+    const disableOn = this.getAttribute('disable-on');
+    const isMobile = /Mobi|Android/i.test(navigator.userAgent);
+    if ((disableOn === 'mobile' && isMobile) || (disableOn === 'desktop' && !isMobile)) {
+      console.log(`Swiper disabled on ${disableOn}`);
+      return;
+    }
+
+    const slidesPerView = parseFloat(this.getAttribute('slides-per-view')) || 1.3;
+    const spaceBetween = parseFloat(this.getAttribute('space-between')) || 10;
+    const loop = this.getAttribute('loop') !== 'false';
+    const centeredSlides = this.getAttribute('centered-slides') !== 'false';
+    const paginationEnabled = this.getAttribute('pagination') === 'true';
+    const navigationEnabled = this.getAttribute('navigation') === 'true';
+
+    let breakpoints = {};
+    try {
+      breakpoints = JSON.parse(this.getAttribute('breakpoints') || '{}');
+    } catch (error) {
+      console.error('Invalid breakpoints format. Expected JSON.');
+    }
+
+    const prevButton = navigationEnabled ? this.querySelector('.swiper-prev') : null;
+    const nextButton = navigationEnabled ? this.querySelector('.swiper-next') : null;
+
+    this.swiper = new Swiper(swiperContainer, {
+      slidesPerView,
+      spaceBetween,
+      loop,
+      centeredSlides,
+      navigation: navigationEnabled ? { prevEl: prevButton, nextEl: nextButton } : false,
+      pagination: {
+        el: this.querySelector('.swiper-pagination'),
+        type: 'progressbar',
+      },
+      breakpoints,
+      preventClicks: false,
+      preventClicksPropagation: false,
+    });
+  }
+
+  initVideoEvents() {
+    const videos = this.querySelectorAll('video');
+    const playBtns = this.querySelectorAll('.play-btn');
+
+    if (!videos.length) return;
+
+    videos.forEach((video, index) => {
+      const playBtn = playBtns[index];
+      if (!playBtn) return;
+
+      // 创建进度条容器
+      const progressContainer = document.createElement('div');
+      progressContainer.style.position = 'absolute';
+      progressContainer.style.bottom = '5px';
+      progressContainer.style.left = '0';
+      progressContainer.style.width = '100%';
+      progressContainer.style.height = '20px';
+      progressContainer.style.display = 'flex';
+      progressContainer.style.alignItems = 'center';
+      progressContainer.style.padding = '0 8px';
+      progressContainer.style.boxSizing = 'border-box';
+      progressContainer.style.color = '#fff';
+      progressContainer.style.fontSize = '12px';
+      progressContainer.style.fontFamily = 'monospace';
+      progressContainer.style.pointerEvents = 'none';
+
+      const currentTimeEl = document.createElement('span');
+      const durationEl = document.createElement('span');
+      const progressBar = document.createElement('input');
+
+      currentTimeEl.textContent = '00:00';
+      durationEl.textContent = '00:00';
+
+      progressBar.type = 'range';
+      progressBar.min = 0;
+      progressBar.value = 0;
+      progressBar.step = 0.1;
+      progressBar.style.flex = '1';
+      progressBar.style.margin = '0 6px';
+      progressBar.style.height = '3px';
+      progressBar.style.cursor = 'pointer';
+      progressBar.style.pointerEvents = 'auto';
+      progressBar.style.accentColor = '#fff';
+      progressBar.style.background = 'rgba(255,255,255,0.4)';
+      progressBar.style.borderRadius = '2px';
+
+      progressContainer.appendChild(currentTimeEl);
+      progressContainer.appendChild(progressBar);
+      progressContainer.appendChild(durationEl);
+      video.parentElement.style.position = 'relative';
+      video.parentElement.appendChild(progressContainer);
+
+      // 播放按钮点击
+      playBtn.addEventListener('click', e => {
+        e.stopPropagation();
+        this.pauseOtherVideos(video);
+        video.play();
+        playBtn.style.display = 'none';
+      });
+
+      // 点击视频暂停/播放
+      video.addEventListener('click', e => {
+        e.stopPropagation();
+        if (video.paused) {
+          this.pauseOtherVideos(video);
+          video.play();
+          playBtn.style.display = 'none';
+        } else {
+          video.pause();
+          playBtn.style.display = '';
+        }
+      });
+
+      // 播放更新进度
+      video.addEventListener('timeupdate', () => {
+        progressBar.value = video.currentTime;
+        currentTimeEl.textContent = this.formatTime(video.currentTime);
+      });
+
+      // 元数据加载后显示总时长
+      video.addEventListener('loadedmetadata', () => {
+        progressBar.max = video.duration;
+        durationEl.textContent = this.formatTime(video.duration);
+      });
+
+      // 拖动进度条预览/跳转 + 禁用 swiper 拖动
+      progressBar.addEventListener('mousedown', () => this.toggleSwiperDrag(false));
+      progressBar.addEventListener('touchstart', () => this.toggleSwiperDrag(false));
+      progressBar.addEventListener('mouseup', () => this.toggleSwiperDrag(true));
+      progressBar.addEventListener('touchend', () => this.toggleSwiperDrag(true));
+
+      progressBar.addEventListener('input', e => {
+        const newTime = parseFloat(e.target.value);
+        currentTimeEl.textContent = this.formatTime(newTime);
+      });
+
+      progressBar.addEventListener('change', e => {
+        const newTime = parseFloat(e.target.value);
+        video.currentTime = newTime;
+      });
+
+      // 播放结束
+      video.addEventListener('ended', () => {
+        playBtn.style.display = '';
+        progressBar.value = 0;
+        currentTimeEl.textContent = '00:00';
+      });
+    });
+  }
+
+  // 禁用或启用 swiper 拖动
+  toggleSwiperDrag(enable) {
+    if (this.swiper && this.swiper.allowTouchMove !== undefined) {
+      this.swiper.allowTouchMove = enable;
+    }
+  }
+
+  pauseOtherVideos(currentVideo) {
+    const allVideos = this.querySelectorAll('video');
+    const allPlayBtns = this.querySelectorAll('.play-btn');
+    allVideos.forEach((v, i) => {
+      if (v !== currentVideo && !v.paused) {
+        v.pause();
+        if (allPlayBtns[i]) allPlayBtns[i].style.display = '';
+      }
+    });
+  }
+
+  formatTime(sec) {
+    const minutes = Math.floor(sec / 60);
+    const seconds = Math.floor(sec % 60);
+    return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+  }
+}
+
+window.customElements.define('custom-swiper-new', CustomSwiperNew);
+
+
+
+
+
+  </script>
+</section>
+{% schema %}
+{
+  "name": "sprie-review",
+  "class": "sprie-review",
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Item",
+      "settings": [
+        {
+          "type": "video",
+          "id": "video",
+          "label": "Video",
+          "info": "Replaces the external video if both are set."
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text"
+        },
+        {
+          "type": "text",
+          "id": "text1",
+          "label": "Text"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Images"
+        },
+        {
+          "type": "text",
+          "id": "text2",
+          "label": "Text"
+        },
+        {
+          "type": "text",
+          "id": "text3",
+          "label": "Text"
+        }
+      ]
+    }
+  ],
+  "settings": [
+    {
+      "type": "text",
+      "id": "tle",
+      "label": "Title"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "color_background",
+      "id": "background",
+      "label": "Background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "mobile_padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Mobile Padding Top",
+      "default": 10
+    },
+    {
+      "type": "range",
+      "id": "mobile_padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Mobile Padding Bottom",
+      "default": 10
+    }
+  ],
+  "presets": [
+    {
+      "name": "sprie-review"
+    }
+  ]
+}
+{% endschema %}

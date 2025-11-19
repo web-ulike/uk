@@ -1,0 +1,233 @@
+{% comment %}
+  Customer Support / Virtual 1-on-1 Consultation Section
+  File: sections/cs-consult-hero.liquid
+{% endcomment %}
+
+{% assign avatar_url = section.settings.avatar | image_url %}
+
+<section
+  class="cs-consult {{ section.settings.extra_class | escape }} {% if section.settings.hide_on_mobile %} hidden-phone hidden-tablet{% endif %}"
+>
+  <div class="container cs-consult-conn">
+    <div class="cs-consult__media">
+      {% if section.settings.avatar %}
+        <div class="cs-consult__avatar-wrap">
+          <img
+            class="cs-consult__avatar"
+            loading="lazy"
+            decoding="async"
+            alt="{{ section.settings.avatar_alt | escape }}"
+            src="{{ avatar_url | img_url: '360x' }}"
+          >
+          {% if section.settings.show_online %}
+            <span class="cs-consult__online" ></span>
+          {% endif %}
+        </div>
+      {% endif %}
+    </div>
+
+    <div class="cs-consult__content">
+      <h2 id="cs-consult-{{ section.id }}-title" class="cs-consult__title">
+        {{ section.settings.heading | escape }}
+      </h2>
+      {% if section.settings.subheading != blank %}
+        <p class="cs-consult__subtitle">
+          {{ section.settings.subheading }}
+        </p>
+      {% endif %}
+
+      {% if section.settings.enable_modal %}
+        <button
+          type="button"
+          id="openAppointo"
+          class="cs-consult__btn"
+          aria-haspopup="dialog"
+          aria-controls="cs-consult-modal-{{ section.id }}"
+          data-track="open"
+        >
+          {{ section.settings.button_text | escape }}
+        </button>
+      {% else %}
+        {% if section.settings.button_link != blank %}
+          <a
+            class="cs-consult__btn"
+            href="{{ section.settings.button_link }}"
+            aria-label="{{ section.settings.button_text | escape }}"
+            data-track="click"
+          >
+            {{ section.settings.button_text | escape }}
+          </a>
+        {% endif %}
+      {% endif %}
+    </div>
+  </div>
+  <!-- 预约弹窗（初始隐藏）-->
+  {% render 'appointo-modal' %}
+</section>
+
+<style>
+  .cs-consult {
+    position: relative;
+    overflow: hidden;
+    color: {{ section.settings.text_color }};
+    display: flex;
+    height: 360px;
+    background: {{ section.settings.bg_color }};
+  }
+
+  .cs-consult-conn {
+    display: grid;
+    grid-template-columns: 1fr 2.5fr;
+    align-items: center;
+    margin: 0 auto;
+  }
+
+  .cs-consult__media {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .cs-consult__avatar-wrap {
+    position: relative;
+    width: 220px;
+    height: 220px;
+  }
+  .cs-consult__avatar {
+    width: 100%;
+    height: 100%;
+    border-radius: 9999px;
+    object-fit: cover;
+    display: block;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  }
+
+  .cs-consult__online {
+    position: absolute;
+    right: 25px;
+    top: 25px;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: #2ecc71;
+    opacity: 0.659;
+  }
+
+  .cs-consult__content {
+    text-align: left;
+  }
+  .cs-consult__title {
+    font-size: 3.4rem;
+    line-height: 1.2;
+    font-weight: 500;
+    margin: 0 0 10px;
+  }
+  .cs-consult__subtitle {
+    font-size: 18px;
+    line-height: 1.4;
+    margin: 0 0 20px;
+    width: 55%;
+    font-weight: initial;
+  }
+
+  .cs-consult__btn {
+    display: inline-block;
+    appearance: none;
+    border: 0;
+    cursor: pointer;
+    background: {{ section.settings.text_color }};
+    color: {{ section.settings.bg_color }};
+    font-weight: initial;
+    font-size: 18px;
+    line-height: 1;
+    padding: 17px 28px;
+    border-radius: 4px;
+    min-width: 220px;
+    text-align: center;
+    text-decoration: none;
+    transition: transform 0.08s ease, box-shadow 0.2s ease, background 0.2s ease;
+  }
+  .cs-consult__btn:focus {
+    outline: none;
+  }
+
+  @media (max-width: 1200px) {
+    .cs-consult__title {
+      font-size: 2.4rem;
+    }
+  }
+  @media (max-width: 989px) {
+    .cs-consult {
+      text-align: center;
+      padding: 30px 0px;
+      height: inherit;
+    }
+    .cs-consult-conn {
+      text-align: center;
+      margin: 0 auto;
+      display: block;
+    }
+    .cs-consult__online {
+      right: 18px;
+      top: 18px;
+    }
+    .cs-consult__avatar-wrap {
+      width: 160px;
+      height: 160px;
+      margin: 10px auto 0;
+    }
+    .cs-consult__bg-img {
+      max-height: 520px;
+    }
+    .cs-consult__content {
+      text-align: center;
+      margin-top: 20px;
+    }
+    .cs-consult__title {
+      font-size: 1.3rem;
+      margin: 10px 0 8px;
+    }
+    .cs-consult__subtitle {
+      font-size: 12px;
+      margin: 0 auto 20px;
+      width: 80%;
+    }
+    .cs-consult__btn {
+      font-size: 14px;
+      padding: 12px 20px;
+      min-width: 160px;
+    }
+  }
+
+</style>
+
+{% schema %}
+{
+  "name": "CS · Virtual 1-on-1",
+  "tag": "section",
+  "class": "cs-consult-hero",
+  "settings": [
+    { "type": "image_picker", "id": "avatar", "label": "Expert Avatar" },
+    { "type": "text", "id": "avatar_alt", "label": "Avatar alt text", "default": "Customer support expert" },
+    { "type": "checkbox", "id": "show_online", "label": "Show online indicator", "default": true },
+    { "type": "text", "id": "online_aria", "label": "Online badge aria-label", "default": "Expert is online" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Free Virtual 1-on-1 Consultation" },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Our friendly experts are here to help you find your perfect beauty device — and you'll get an exclusive discount after your consultation."
+    },
+
+    { "type": "text", "id": "button_text", "label": "Button text", "default": "TALK TO AN EXPERT" },
+    { "type": "url", "id": "button_link", "label": "Button link (used when modal is disabled)" },
+    { "type": "checkbox", "id": "enable_modal", "label": "Use modal to embed booking widget", "default": true },
+    /* 新增颜色配置 */
+    { "type": "color", "id": "bg_color", "label": "Background color", "default": "#ffffff" },
+    { "type": "color", "id": "text_color", "label": "Text color", "default": "#000000" },
+
+    { "type": "text", "id": "extra_class", "label": "Extra CSS class" },
+    { "type": "checkbox", "id": "hide_on_mobile", "label": "Hide on Mobile", "default": false }
+  ],
+  "presets": [{ "name": "Customer Support · 1-on-1" }]
+}
+{% endschema %}

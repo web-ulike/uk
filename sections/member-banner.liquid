@@ -2,6 +2,7 @@
   :root {
     --container-gutter: 40px;
     --container-max-width: 1600px;
+    --primary-font-color: {{ section.settings.primary_color | default: '#E0004D' }};
   }
 
   html,
@@ -41,7 +42,7 @@
   }
 
   .member-banner .member-banner-title {
-    color: #190a0a;
+    color: var(--primary-font-color);
     font-size: 50px;
     line-height: 1.2;
     letter-spacing: 0.44px;
@@ -51,7 +52,7 @@
   }
 
   .member-banner .member-banner-text-p {
-    color: #190a0a;
+    color: var(--primary-font-color);
     font-size: 20px;
     line-height: 1.5;
     letter-spacing: 0.2px;
@@ -241,7 +242,7 @@
   }
 
   .member-banner .member-banner-success-p {
-    color: #190a0a;
+    color: var(--primary-font-color);
     font-size: 20px;
     line-height: 1.5;
     letter-spacing: 0.2px;
@@ -273,7 +274,10 @@
       font-size: 14px;
       margin: 0 auto;
       margin-top: 10px;
-      max-width: 261px;
+      width: 100%;
+      white-space: normal;
+      overflow-wrap: anywhere;
+      word-break: break-word;
     }
 
     .member-banner .member-banner-input {
@@ -339,7 +343,7 @@
       <div class="container">
         <div class="member-banner-text">
           <h3 class="member-banner-title">{{ section.settings.text }}</h3>
-          <p class="member-banner-text-p">{{ section.settings.text1 }}</p>
+          <p class="member-banner-text-p" >{{ section.settings.text1 | replace: "&nbsp;", " " }}</p>
           <div class="member-banner-form">
             <div class="member-banner-form-item member-email-box">
               <input type="text" placeholder="{{ section.settings.text2 }}" class="member-banner-input">
@@ -688,6 +692,12 @@
       "unit": "秒",
       "label": "等待跳转时间",
       "default": 3
+    },
+    {
+      "type": "color",
+      "id": "primary_color",
+      "label": "字体颜色",
+      "default": "#fff"
     }
   ],
   "presets": [

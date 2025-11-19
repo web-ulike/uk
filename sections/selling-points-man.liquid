@@ -1,0 +1,231 @@
+<style>
+.selling-points-man {
+  padding: 120px 0;
+  background: #000;
+}
+
+.selling-points-man .selling-points-item {
+  display: flex;
+}
+.selling-points-man .selling-points-item.reverse-box {
+  flex-direction: row-reverse;
+}
+.selling-points-man .flex-item {
+  width: 50%;
+}
+
+.selling-points-man .selling-points-img {
+  border-radius: 10px;
+  overflow: hidden;
+}
+.selling-points-man .selling-points-text {
+  padding: 0 30px;
+}
+.selling-points-man .selling-points-text-cont {
+  max-width: 540px;
+  margin: 0 auto;
+  color: #fff;
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.selling-points-man .selling-points-tag {
+  padding: 10px 18px;
+  border-radius: 30px;
+  background: #374354;
+  font-size: 14px;
+  line-height: 1;
+  display: inline-block;
+  margin-bottom: 20px;
+}
+
+.selling-points-man .selling-points-title {
+  font-size: 40px;
+  line-height: 1.2;
+}
+
+.selling-points-man .selling-points-p {
+  font-size: 18px;
+  line-height: 1.4;
+  margin-top: 25px;
+  color:#929292;
+}
+.selling-points-man .selling-points-p p{
+  margin:0;
+}
+.selling-points-man .selling-points-sm-list {
+  display: flex;
+  margin-top: 40px;
+}
+
+.selling-points-man .selling-points-sm-item {
+  text-align: center;
+}
+
+.selling-points-man .selling-points-num {
+  font-size: 60px;
+  color: #6a7c95;
+  line-height: 1;
+}
+
+.selling-points-man .selling-points-t {
+  font-size: 18px;
+  line-height: 1;
+  margin-top:8px;
+}
+
+@media (max-width: 1300px) {
+  .selling-points-man .selling-points-tag {
+    margin-bottom: 10px;
+  }
+  .selling-points-man .selling-points-title {
+    font-size: 30px;
+  }
+  .selling-points-man .selling-points-p {
+    margin-top: 15px;
+    font-size: 15px;
+  }
+  .selling-points-man .selling-points-sm-list {
+    margin-top: 30px;
+  }
+  .selling-points-man .selling-points-num {
+    font-size: 45px;
+  }
+  .selling-points-man .selling-points-t {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 991px) {
+  .selling-points-man {
+    padding: 60px 0;
+  }
+  .selling-points-man .selling-points-list {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+  }
+  .selling-points-man .selling-points-item,
+  .selling-points-man .selling-points-item.reverse-box {
+    flex-direction: column;
+    gap: 30px;
+  }
+  .selling-points-man .flex-item {
+    width: 100%;
+  }
+  .selling-points-man .selling-points-text {
+    padding: 0;
+  }
+  .selling-points-man .selling-points-text-cont {
+    top: 0;
+    transform: translateY(0);
+    max-width: 100%;
+  }
+  .selling-points-man .selling-points-tag {
+    font-size: 12px;
+    padding: 8px 15px;
+  }
+  .selling-points-man .selling-points-title {
+    font-size: 24px;
+  }
+  .selling-points-man .selling-points-p {
+    font-size: 12px;
+    margin-top: 10px;
+  }
+  .selling-points-man .selling-points-sm-list {
+    margin-top: 30px;
+  }
+  .selling-points-man .selling-points-t {
+    font-size: 12px;
+  }
+}
+</style>
+
+<section class="section-box">
+  <div class="selling-points-man to-top">
+    <div class="container">
+      <div class="selling-points-list">
+        {%- for block in section.blocks -%}
+          <div class="selling-points-item {% if block.settings.reverse %}reverse-box{% endif %}">
+            <div class="selling-points-img flex-item to-top">
+              <img class="img" width="" height="" src="{{ block.settings.image | image_url }}" alt="">
+            </div>
+            <div class="selling-points-text flex-item to-top" style="transition-delay: .1s;">
+              <div class="selling-points-text-cont">
+                {%- if block.settings.text != blank -%}
+                  <div class="selling-points-tag">{{ block.settings.text }}</div>
+                {%- endif -%}
+                <div class="selling-points-title">{{ block.settings.text1 }}</div>
+                <div class="selling-points-p">{{ block.settings.text2 }}</div>
+                <div class="selling-points-sm-list">
+                  <div class="selling-points-sm-item">
+                    <div class="selling-points-num">{{ block.settings.text3 }}</div>
+                    <div class="selling-points-t">{{ block.settings.text4 }}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        {%- endfor -%}       
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "selling-points-man",
+  "blocks": [
+    {
+        "type": "item",
+        "name": "item",
+        "settings": [
+          {
+            "type": "checkbox",
+            "id": "reverse",
+            "label": "反转"
+          },
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          },
+          {
+            "type": "text",
+            "id": "text",
+            "label": "Text"
+          },
+          {
+            "type": "text",
+            "id": "text1",
+            "label": "Text"
+          },
+          {
+            "type": "richtext",
+            "id": "text2",
+            "label": "Text"
+          },
+          {
+            "type": "text",
+            "id": "text3",
+            "label": "Text"
+          },
+          {
+            "type": "text",
+            "id": "text4",
+            "label": "Text"
+          }
+        ]
+      }
+  ],
+  "presets": [
+    {
+      "name": "selling-points-man",
+      "settings": {},
+      "blocks": [
+      ]
+    }
+  ]
+}
+{% endschema %}
