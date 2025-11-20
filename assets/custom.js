@@ -744,3 +744,13 @@ function validateEmail(t) {
   const e = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
   return e.test(t);
 }
+
+
+function loadCSS(href) {
+  let link = document.createElement("link");
+  link.rel = "stylesheet";
+  link.href = href;
+  link.media = "all"; // 使其立即生效
+  link.fetchPriority = "low"; // 低优先级加载
+  document.head.appendChild(link);
+}
