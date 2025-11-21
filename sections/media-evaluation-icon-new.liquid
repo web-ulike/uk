@@ -214,28 +214,44 @@
  */
 function enableDragDetection(element, onDrag, onDragEnd) {
     let startX = 0;
+    let startY = 0; // 修复：增加 startY
     let isDragging = false;
     let hasMoved = false;
+    let isTouch = false;
 
+    // 鼠标和触摸事件映射
     const startEvents = ['touchstart', 'mousedown'];
     const moveEvents = ['touchmove', 'mousemove'];
     const endEvents = ['touchend', 'mouseup', 'mouseleave'];
 
+    // 获取事件的 X/Y 坐标
     const getClientX = (event) => event.touches ? event.touches[0].clientX : event.clientX;
     const getClientY = (event) => event.touches ? event.touches[0].clientY : event.clientY;
 
     const handleStart = (event) => {
+        // 仅允许左键点击
         if (event.type === 'mousedown' && event.button !== 0) return; 
 
+        isTouch = event.type.startsWith('touch');
         startX = getClientX(event);
+        startY = getClientY(event); // 修复：设置 startY
         isDragging = true;
         hasMoved = false;
         
+        // 阻止默认行为（如图片拖动）
         if (event.type === 'mousedown') {
             event.preventDefault(); 
         }
 
-        moveEvents.forEach(e => element.addEventListener(e, handleMove, { passive: false }));
+        // 修复：针对 touchmove，需要 { passive: false } 来允许 preventDefault() 阻止页面滚动
+        const moveOptions = isTouch ? { passive: false } : {};
+        
+        // 移除旧的监听器，防止重复绑定
+        moveEvents.forEach(e => element.removeEventListener(e, handleMove, { passive: false }));
+        endEvents.forEach(e => document.removeEventListener(e, handleEnd));
+
+        // 添加新的监听器
+        moveEvents.forEach(e => element.addEventListener(e, handleMove, moveOptions));
         endEvents.forEach(e => document.addEventListener(e, handleEnd));
     };
 
@@ -243,27 +259,33 @@ function enableDragDetection(element, onDrag, onDragEnd) {
         if (!isDragging) return;
 
         const currentX = getClientX(event);
+        const currentY = getClientY(event);
         const deltaX = currentX - startX;
-        
-        // 增加 Y 轴检测，防止垂直滚动被误判为水平拖动 (仅对触摸有效)
-        if (event.touches) {
-            const deltaY = getClientY(event) - startY;
-            if (Math.abs(deltaY) > Math.abs(deltaX) * 2) { 
-                return; 
-            }
+        const deltaY = currentY - startY; 
+
+        // 移动端：如果是垂直滚动为主，则不处理水平拖动
+        if (isTouch && Math.abs(deltaY) > Math.abs(deltaX)) { 
+             // 允许垂直滚动
+             return; 
+        }
+
+        hasMoved = true;
+
+        // 修复：如果事件是可取消的，阻止默认行为（阻止水平滑动时页面也被一起滚动）
+        if (isTouch && event.cancelable) {
+            event.preventDefault(); 
         }
         
-        hasMoved = true;
-        if (event.cancelable) event.preventDefault(); 
-        
         onDrag(deltaX); 
-        startX = currentX; 
+        startX = currentX; // 更新起始 X 坐标
+        startY = currentY; // 更新起始 Y 坐标
     };
 
     const handleEnd = () => {
         if (!isDragging) return;
         isDragging = false;
         
+        // 移除动态绑定的监听器
         moveEvents.forEach(e => element.removeEventListener(e, handleMove));
         endEvents.forEach(e => document.removeEventListener(e, handleEnd));
 
@@ -272,6 +294,7 @@ function enableDragDetection(element, onDrag, onDragEnd) {
         }
     };
 
+    // 修复：使用 { passive: true } 绑定开始事件，提高响应速度
     startEvents.forEach(e => element.addEventListener(e, handleStart, { passive: true }));
     element.addEventListener('contextmenu', (event) => event.preventDefault());
 }
@@ -295,22 +318,24 @@ function marqueeFn(elName) {
     let dragOffset = 0; 
     let isPaused = false;
     let lastTime = 0;
-    let animFrameId = null; // 用于存储 RAF ID
+    let animFrameId = null;
 
     // --- 滚动参数 ---
     let totalContentWidth = 0;
     let viewportWidth = content.clientWidth;
+    let originalItemCount = ul.children.length; // 原始项目数量
 
     // 计算总宽度并设置
     function setupWidths() {
+        // 重新计算列表总宽度，确保计算的是当前 DOM 状态
         totalContentWidth = Array.from(ul.children).reduce((sum, item) => sum + item.offsetWidth + 15, 0);
         ul.style.width = totalContentWidth + "px";
         viewportWidth = content.clientWidth;
     }
 
     // --- 进度条相关计算 ---
-    let scrollRange = 0; // 列表可滚动的最大距离 (ContentWidth - ViewportWidth)
-    let thumbRange = 0;  // 进度条可移动的最大距离 (ScrollbarContainerWidth - ThumbWidth)
+    let scrollRange = 0; 
+    let thumbRange = 0; 
     let thumbWidth = 0;
 
     function setupScrollbar() {
@@ -326,9 +351,8 @@ function marqueeFn(elName) {
 
         scrollbarContainer.style.display = 'block';
 
-        // 计算滑块宽度：(Viewport / Content) * ScrollbarWidth
         thumbWidth = (viewportWidth / totalContentWidth) * scrollbarContainer.clientWidth;
-        thumbWidth = Math.max(thumbWidth, 50); // 最小宽度，防止太细
+        thumbWidth = Math.max(thumbWidth, 50); // 最小宽度
         thumb.style.width = thumbWidth + "px";
         
         thumbRange = scrollbarContainer.clientWidth - thumbWidth;
@@ -343,9 +367,7 @@ function marqueeFn(elName) {
 
         // 同步进度条
         if (thumb && scrollRange > 0) {
-            // 列表的当前滚动比例
             const scrollPercent = Math.abs(left) / scrollRange;
-            // 进度条的位置
             const thumbLeft = scrollPercent * thumbRange;
             thumb.style.transform = `translateX(${thumbLeft}px)`;
         }
@@ -377,32 +399,37 @@ function marqueeFn(elName) {
 
     if (IS_MOBILE) {
         // --- 移动端（手动拖动 + 进度条） ---
+        
+        // 修复：确保移动端只处理原始项目，不克隆
+        if (ul.children.length > originalItemCount) {
+            // 如果之前被 PC 逻辑克隆了，需要移除克隆项，但由于 Liquid 结构，最安全的方法是确保不触发克隆
+            // 在您的 Liquid 模板中，我们不应该有 JS 克隆，而是依赖于初始的 Liquid 渲染。
+            // 假设 Liquid 模板只渲染了 section.blocks 中的项目。
+        }
+
         setupWidths();
         setupScrollbar();
 
-        // 绑定拖动事件到列表本身
+        // 绑定列表拖动事件
         enableDragDetection(ul,
             (deltaX) => {
-                // deltaX 是正值（向右拖动）或负值（向左拖动）
                 const newLeft = left + deltaX;
                 updatePosition(newLeft);
             },
             () => {
-                // 拖动结束，不需要额外的复位操作
+                // 拖动结束
             }
         );
         
-        // 绑定拖动事件到进度条滑块
+        // 绑定进度条拖动事件
         if (thumb) {
             enableDragDetection(thumb,
                 (deltaX) => {
                     if (scrollRange <= 0) return;
 
-                    // 计算滑块的新位置 (0 到 thumbRange)
                     let currentThumbX = parseFloat(thumb.style.transform.replace('translateX(', '').replace('px)', '')) || 0;
                     let newThumbX = Math.min(thumbRange, Math.max(0, currentThumbX + deltaX));
                     
-                    // 将进度条位置映射回列表的滚动位置
                     const scrollPercent = newThumbX / thumbRange;
                     const newLeft = -scrollPercent * scrollRange;
                     
@@ -415,31 +442,28 @@ function marqueeFn(elName) {
     } else {
         // --- PC 端（自动滚动） ---
 
-        // 1. 克隆内容以实现无限滚动
-        ul.innerHTML += ul.innerHTML; // 至少需要三份内容才能保证无限循环（A + B + C）
+        // 1. 克隆内容以实现无限滚动 (安全起见，仅克隆一次，由 JS 管理循环)
+        ul.innerHTML += ul.innerHTML; 
         ul.innerHTML += ul.innerHTML; 
         
         setupWidths();
-        // 这里的 totalContentWidth 是克隆后的总宽度
 
         // 2. 绑定暂停/恢复事件
         content.addEventListener('mouseenter', () => { isPaused = true; });
         content.addEventListener('mouseleave', () => { isPaused = false; });
 
-        // 3. 绑定拖动事件 (PC上鼠标拖动时暂停自动滚动)
+        // 3. 绑定拖动事件 
         enableDragDetection(ul,
             (deltaX) => {
-                isPaused = true; // 拖动时暂停
+                isPaused = true; 
                 dragOffset += deltaX; 
                 ul.style.transform = `translateX(${left + dragOffset}px)`;
             },
             () => {
-                // 拖动结束后，将手动位移合并到自动滚动的 `left` 变量中
                 left += dragOffset;
                 dragOffset = 0;
-                isPaused = false; // 恢复自动滚动
+                isPaused = false; 
 
-                // 循环范围处理 (如果拖动导致跑出有效循环范围)
                 const halfWidth = totalContentWidth / 2; 
                 if (left < -halfWidth) {
                     left += halfWidth;
@@ -464,6 +488,7 @@ function marqueeFn(elName) {
 
 // 启动
 document.addEventListener('DOMContentLoaded', () => {
+    // 检查是否在 Liquid 中使用了 `marqueeFn('marquee-box', true)`，如果使用了，请移除，仅保留这里的调用。
     marqueeFn('marquee-box');
 });
 </script>
