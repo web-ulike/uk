@@ -209,74 +209,66 @@
     </div>
 </section>
 <script>
-/**
- * 参考代码的 enableDragDetection，简化触摸/鼠标事件处理
- * @param {HTMLElement} element - 要监听拖动的元素
- * @param {function} onDragLeft - 向左拖动时触发的回调，参数为距离
- * @param {function} onDragRight - 向右拖动时触发的回调，参数为距离
- * @param {function} onTouchEnd - 拖动结束时触发的回调
- */
+// --- 1. 拖动检测核心函数 (基于用户提供的参考代码，微调以阻止移动端页面滚动) ---
 function enableDragDetection(element, onDragLeft, onDragRight, onTouchEnd) {
     let startX = 0, startY = 0, isDragging = false, isMobile = false;
-    let deltaX = 0; // 用于存储拖动位移
+    let deltaX = 0; // 用于计算相对位移
 
-    const start = (x, y, mobile) => { 
-        startX=x; 
-        startY=y; 
-        isDragging=true; 
-        isMobile=mobile; 
-        deltaX = 0; // 重置位移
-    };
+    const getClientX = (e) => e.touches ? e.touches[0].clientX : e.clientX;
+    const getClientY = (e) => e.touches ? e.touches[0].clientY : e.clientY;
+
+    const start = (x, y, mobile) => { startX = x; startY = y; isDragging = true; isMobile = mobile; deltaX = 0; };
     
-    const move = (x, y, event) => {
-        if(!isDragging) return;
-
+    const move = (e) => {
+        if (!isDragging) return;
+        
+        const x = getClientX(e);
+        const y = getClientY(e);
         const currentDeltaX = x - startX;
         const currentDeltaY = y - startY;
+
+        // 仅在水平移动超过垂直移动时视为水平拖动
+        if (Math.abs(currentDeltaX) > Math.abs(currentDeltaY)) {
+            // 移动端：阻止页面滚动，这是解决问题的关键点之一
+            if (isMobile && e.cancelable) {
+                e.preventDefault(); 
+            }
+            
+            // 计算自上次 move 以来发生的位移
+            const moveDistance = currentDeltaX - deltaX;
+            
+            if (moveDistance > 0) {
+                onDragRight?.(moveDistance);
+            } else if (moveDistance < 0) {
+                onDragLeft?.(Math.abs(moveDistance));
+            }
+
+            deltaX = currentDeltaX; // 更新总位移
+        }
         
-        // 如果是触摸事件且垂直移动为主，则忽略
-        if(isMobile && Math.abs(currentDeltaY) > Math.abs(currentDeltaX) * 2) {
-             // 允许垂直滚动
-             return;
-        }
-
-        // 阻止默认行为（仅在进行水平拖动时尝试阻止）
-        if (event && event.cancelable && isMobile) {
-            event.preventDefault(); 
-        }
-
-        // 核心逻辑：计算自上次 move 以来发生的位移
-        const moveDistance = currentDeltaX - deltaX;
-        
-        if (moveDistance > 0) {
-            onDragRight?.(moveDistance);
-        } else if (moveDistance < 0) {
-            onDragLeft?.(Math.abs(moveDistance));
-        }
-
-        deltaX = currentDeltaX; // 更新总位移
-        startX = x; startY = y; // 更新起始点为当前点（用于下次 move 的相对计算）
+        // 始终更新起始点，以获取下一次的相对位移
+        startX = x; startY = y;
     };
     
-    const end = () => { onTouchEnd?.(isMobile); isDragging=false; };
+    const end = () => { onTouchEnd?.(isMobile); isDragging = false; };
 
-    // --- 绑定事件 ---
-    element.addEventListener('touchstart', e => start(e.touches[0].clientX, e.touches[0].clientY, true), { passive: true });
-    element.addEventListener('touchmove', e => move(e.touches[0].clientX, e.touches[0].clientY, e), { passive: false }); // 确保 touchmove 可以阻止默认行为
+    // --- 事件绑定 ---
+    // 移动端：touchstart 使用 passive: true 提高响应速度
+    element.addEventListener('touchstart', e => start(getClientX(e), getClientY(e), true), { passive: true });
+    // 移动端：touchmove 使用 passive: false 允许 preventDefault() 阻止页面滚动
+    element.addEventListener('touchmove', move, { passive: false }); 
     element.addEventListener('touchend', end);
-    element.addEventListener('mousedown', e => { 
-        e.preventDefault(); // 阻止鼠标拖动默认行为 
-        start(e.clientX, e.clientY, false); 
-    });
-    // 鼠标事件监听绑定到 document，防止快速拖动时丢失事件
-    document.addEventListener('mousemove', e => move(e.clientX, e.clientY));
+
+    // 桌面端：mousedown 阻止默认行为
+    element.addEventListener('mousedown', e => { e.preventDefault(); start(getClientX(e), getClientY(e), false); });
+    // 桌面端：绑定到 document 以防止拖出元素边界
+    document.addEventListener('mousemove', move);
     document.addEventListener('mouseup', end);
-    document.addEventListener('contextmenu', e => e.preventDefault());
+    
+    element.addEventListener('contextmenu', e => e.preventDefault());
 }
 
-/**
- * 跑马灯主函数
- */
+// --- 2. 跑马灯主函数 (包含 PC/Mobile 逻辑分支) ---
 function marqueeFn(elName) {
     const content = document.querySelector("." + elName);
     const ul = content?.querySelector(".marquee-box-list");
@@ -288,39 +280,34 @@ function marqueeFn(elName) {
     const IS_MOBILE = window.matchMedia("(max-width: 991px)").matches;
     const SPEED = 1; 
     let left = 0;
-    let timer = null; // 用于 PC 自动滚动的 timer
+    let timer = null; 
 
-    // --- 宽度计算和设置 (通用) ---
+    // --- 通用：宽度和滚动范围计算 ---
     let totalContentWidth = 0;
     let viewportWidth = content.clientWidth;
-    let originalItemCount = ul.children.length; 
-    
+    let scrollRange = 0; 
+
     function setupWidths(isCloned = false) {
-        // 列表项之间间距为 15px
         totalContentWidth = Array.from(ul.children).reduce((sum, item) => {
-             const style = getComputedStyle(item);
-             return sum + item.offsetWidth + parseFloat(style.marginRight);
+            const style = getComputedStyle(item);
+            return sum + item.offsetWidth + parseFloat(style.marginRight);
         }, 0);
         
-        // 只有在非克隆状态下，才减去最后一个列表项右侧多余的 15px 间距，以确保内容正好铺满
+        // 调整最后一个项目的 margin
         if (!isCloned && ul.children.length > 0) {
-             totalContentWidth += 15; // 补回最后一个项目的 margin-right
-             totalContentWidth -= parseFloat(getComputedStyle(ul.lastElementChild).marginRight || 0);
+            totalContentWidth -= parseFloat(getComputedStyle(ul.lastElementChild).marginRight || 0);
         }
 
         ul.style.width = totalContentWidth + "px";
         viewportWidth = content.clientWidth;
+        scrollRange = totalContentWidth - viewportWidth;
     }
 
+    // --- 移动端：进度条同步 ---
+    let thumbRange = 0; 
 
-    // --- 进度条相关计算 (移动端) ---
-    let scrollRange = 0; 
-    let thumbRange = 0;  
-    
     function setupScrollbar() {
         if (!thumb || !scrollbarContainer) return;
-        
-        scrollRange = totalContentWidth - viewportWidth;
         
         if (scrollRange <= 0) {
             scrollbarContainer.style.display = 'none';
@@ -330,135 +317,101 @@ function marqueeFn(elName) {
         scrollbarContainer.style.display = 'block';
 
         let thumbWidth = (viewportWidth / totalContentWidth) * scrollbarContainer.clientWidth;
-        thumbWidth = Math.max(thumbWidth, 50); // 最小宽度
+        thumbWidth = Math.max(thumbWidth, 50); 
         thumb.style.width = thumbWidth + "px";
         
         thumbRange = scrollbarContainer.clientWidth - thumbWidth;
     }
 
-    // --- 更新列表和进度条位置 (通用) ---
-    function updatePosition(newLeft) {
-        // 限制左移范围 (0 到 -scrollRange)
-        left = Math.min(0, Math.max(-scrollRange, newLeft));
-        
+    function updateScrollAndThumb(newLeft) {
+        // 限制滚动范围
+        left = IS_MOBILE ? Math.min(0, Math.max(-scrollRange, newLeft)) : newLeft;
+
         ul.style.transform = `translateX(${left}px)`;
 
-        // 同步进度条
-        if (thumb && scrollRange > 0) {
+        // 仅移动端同步进度条
+        if (IS_MOBILE && thumb && scrollRange > 0) {
             const scrollPercent = Math.abs(left) / scrollRange;
             const thumbLeft = scrollPercent * thumbRange;
             thumb.style.transform = `translateX(${thumbLeft}px)`;
         }
     }
 
-
-    // --- PC 自动滚动函数 ---
+    // --- PC：自动滚动逻辑 ---
     function run() {
-        const clonedWidth = totalContentWidth / 3; // 假设内容被克隆了 3 份
-        if(left < -clonedWidth) {
-            left += clonedWidth;
+        const halfWidth = totalContentWidth / 2;
+        if(left < -halfWidth) {
+            left += halfWidth; // 循环
         }
         
         left -= SPEED;
         ul.style.transform = `translateX(${left}px)`;
     }
-
-    // --- 初始化和启动 ---
-
-    if (IS_MOBILE) {
-        // --- 移动端（手动拖动 + 进度条） ---
+    
+    // --- 启动逻辑 ---
+    
+    if (!IS_MOBILE) {
+        // --- PC 逻辑 ---
         
-        // 确保只有原始项目
-        while (ul.children.length > originalItemCount) {
-             ul.removeChild(ul.lastChild);
-        }
+        // 1. 克隆内容以实现无限滚动
+        const originalChildren = ul.innerHTML;
+        ul.innerHTML += originalChildren; 
+        ul.innerHTML += originalChildren; 
         
-        setupWidths(false);
-        setupScrollbar();
-
-        // 拖动回调函数 (移动端使用 updatePosition 限制范围)
-        const onDragCallback = (distance, isRight) => {
-             const newLeft = isRight ? left + distance : left - distance;
-             updatePosition(newLeft); 
-        };
-
-        // 绑定列表拖动事件
-        enableDragDetection(ul,
-            (distance) => onDragCallback(distance, false), // onDragLeft
-            (distance) => onDragCallback(distance, true),  // onDragRight
-            () => {} // 拖动结束
-        );
-        
-        // 绑定进度条拖动事件
-        if (thumb) {
-            enableDragDetection(thumb,
-                (distance) => { // onDragLeft
-                    if (scrollRange <= 0) return;
-                    let currentThumbX = parseFloat(thumb.style.transform.replace('translateX(', '').replace('px)', '')) || 0;
-                    let newThumbX = Math.min(thumbRange, Math.max(0, currentThumbX - distance));
-                    const scrollPercent = newThumbX / thumbRange;
-                    updatePosition(-scrollPercent * scrollRange);
-                },
-                (distance) => { // onDragRight
-                    if (scrollRange <= 0) return;
-                    let currentThumbX = parseFloat(thumb.style.transform.replace('translateX(', '').replace('px)', '')) || 0;
-                    let newThumbX = Math.min(thumbRange, Math.max(0, currentThumbX + distance));
-                    const scrollPercent = newThumbX / thumbRange;
-                    updatePosition(-scrollPercent * scrollRange);
-                },
-                () => {}
-            );
-        }
-
-    } else {
-        // --- PC 端（自动滚动） ---
-        
-        // 1. 克隆内容以实现无限滚动 (克隆 3 份)
-        ul.innerHTML += ul.innerHTML; 
-        ul.innerHTML += ul.innerHTML; 
-        
-        setupWidths(true); // 告知 setupWidths 正在处理克隆内容
+        setupWidths(true); 
         
         // 2. 启动自动滚动
         timer = setInterval(run, 10);
         content.onmouseover = ()=>clearInterval(timer);
         content.onmouseout = ()=>timer=setInterval(run,10);
         
-        // 3. 拖动回调函数 (PC 端，拖动时需要暂停自动滚动)
+        // 3. 拖动回调 (PC)
         const onDragCallbackPC = (distance, isRight) => {
              clearInterval(timer);
-             if (isRight) {
-                 left += distance;
-             } else {
-                 left -= distance;
-             }
-             ul.style.transform = `translateX(${left}px)`; 
+             isRight ? left += distance : left -= distance;
+             ul.style.transform = `translateX(${left}px)`;
         };
 
-        // 4. 绑定拖动事件
         enableDragDetection(ul,
-            (distance) => onDragCallbackPC(distance, false), // onDragLeft
-            (distance) => onDragCallbackPC(distance, true),  // onDragRight
+            (d) => onDragCallbackPC(d, false), // onDragLeft
+            (d) => onDragCallbackPC(d, true),  // onDragRight
             () => { timer=setInterval(run,10); } // 拖动结束，恢复自动滚动
         );
 
-        // 5. 绑定 Intersection Observer
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    if (!timer) timer = setInterval(run, 10);
-                } else {
-                    clearInterval(timer);
-                    timer = null;
-                }
-            });
-        });
-        observer.observe(content);
+    } else {
+        // --- 移动端逻辑 ---
+        
+        setupWidths(false);
+        setupScrollbar();
+
+        // 1. 列表拖动回调 (移动端)
+        enableDragDetection(ul,
+            (d) => updateScrollAndThumb(left - d), // onDragLeft
+            (d) => updateScrollAndThumb(left + d), // onDragRight
+            () => {} 
+        );
+        
+        // 2. 进度条拖动回调 (移动端)
+        if (thumb) {
+            enableDragDetection(thumb,
+                (d) => { // onDragLeft
+                    let currentThumbX = parseFloat(thumb.style.transform.replace('translateX(', '').replace('px)', '')) || 0;
+                    let newThumbX = Math.min(thumbRange, Math.max(0, currentThumbX - d));
+                    updateScrollAndThumb(-(newThumbX / thumbRange) * scrollRange);
+                },
+                (d) => { // onDragRight
+                    let currentThumbX = parseFloat(thumb.style.transform.replace('translateX(', '').replace('px)', '')) || 0;
+                    let newThumbX = Math.min(thumbRange, Math.max(0, currentThumbX + d));
+                    updateScrollAndThumb(-(newThumbX / thumbRange) * scrollRange);
+                },
+                () => {}
+            );
+        }
     }
 }
 
-// 启动
 document.addEventListener('DOMContentLoaded', () => {
+    // 确保在 DOM 加载完成后运行
     marqueeFn('marquee-box');
 });
 </script>
