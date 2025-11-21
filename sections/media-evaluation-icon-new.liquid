@@ -210,7 +210,10 @@ function enableDragDetection(element, onDragLeft, onDragRight, onTouchEnd) {
 
 function marqueeFn(elName) {
   const content = document.querySelector("."+elName);
+  if(!content) return; // 元素不存在就直接返回
   const ul = content.querySelector(".marquee-box-list");
+  if(!ul) return; // 子元素不存在也返回
+
   const isMobile = window.innerWidth < 992;
 
   // 计算总宽度
@@ -246,6 +249,7 @@ function marqueeFn(elName) {
 
 window.addEventListener('load', ()=>marqueeFn('marquee-box'));
 window.addEventListener('resize', ()=>marqueeFn('marquee-box'));
+
 </script>
 
 {% schema %}
