@@ -213,7 +213,7 @@
     </div>
 </section>
 <script>
-// --- 1. 基础拖动检测 (通用aaaa) ---
+// --- 1. 基础拖动检测 ---
 function enableDrag(el, onMove, onEnd) {
     let startX = 0, startY = 0, isDragging = false;
 
@@ -230,12 +230,12 @@ function enableDrag(el, onMove, onEnd) {
         const dx = x - startX;
         const dy = y - startY;
 
-        // 移动端防误触：垂直移动大于水平移动时不触发
+        // 移动端防误触
         if (e.touches && Math.abs(dy) > Math.abs(dx)) return;
+        // 阻止水平滑动时的页面滚动
         if (e.touches && e.cancelable) e.preventDefault();
 
-        onMove(dx); // 传输位移差值
-        
+        onMove(dx);
         startX = x; 
         startY = y;
     };
@@ -243,7 +243,7 @@ function enableDrag(el, onMove, onEnd) {
     const end = () => { isDragging = false; onEnd && onEnd(); };
 
     el.addEventListener('touchstart', start, { passive: true });
-    el.addEventListener('touchmove', move, { passive: false });
+    el.addEventListener('touchmove', move, { passive: false }); // 关键：passive: false
     el.addEventListener('touchend', end);
     
     el.addEventListener('mousedown', (e) => { e.preventDefault(); start(e); });
@@ -264,22 +264,31 @@ function marqueeInit() {
     let left = 0;
     let timer = null;
     
-    // 1. 计算宽度
+    // --- 1. 计算内容总宽度 ---
     let contentWidth = 0;
     if (!isMobile) {
         ul.innerHTML += ul.innerHTML + ul.innerHTML; // PC端克隆
     }
     
+    // 累加所有子元素的宽 + margin
     Array.from(ul.children).forEach(item => {
         contentWidth += item.offsetWidth + parseInt(getComputedStyle(item).marginRight || 0);
     });
+
+    // 【关键修改】：加上父容器 ul 的左右 padding
+    const ulStyle = getComputedStyle(ul);
+    const pLeft = parseFloat(ulStyle.paddingLeft) || 0;
+    const pRight = parseFloat(ulStyle.paddingRight) || 0;
+    contentWidth += pLeft + pRight;
+
     ul.style.width = contentWidth + "px";
 
-    // 2. 功能分支
+    // --- 2. 功能分支 ---
     if (!isMobile) {
-        // === PC端：自动滚动 (保持不变) ===
+        // === PC端逻辑 ===
         const run = () => {
             left -= 1;
+            // 简单的无限循环逻辑 (注意：这里不再包含 padding 的影响，仅基于内容位移)
             if (Math.abs(left) >= contentWidth / 3) left = 0;
             ul.style.transform = `translateX(${left}px)`;
         };
@@ -294,43 +303,36 @@ function marqueeInit() {
         });
 
     } else {
-        // === 移动端：手动拖动 + 填充式进度条 ===
+        // === 移动端逻辑 ===
         const viewWidth = box.clientWidth;
-        const maxScroll = contentWidth - viewWidth; // 最大滚动距离
+        const maxScroll = contentWidth - viewWidth; 
 
-        // 统一更新函数
+        // 初始化：如果内容不足以滚动，隐藏进度条
+        if (maxScroll <= 0 && bar) bar.style.display = 'none';
+
         const update = (newLeft) => {
-            // 限制边界 (0 到 -maxScroll)
+            // 限制边界
             if (newLeft > 0) newLeft = 0;
             if (newLeft < -maxScroll) newLeft = -maxScroll;
             
             left = newLeft;
             ul.style.transform = `translateX(${left}px)`;
             
-            // --- 核心修改：进度条"加满"逻辑 ---
+            // 更新进度条 (宽度加满效果)
             if (maxScroll > 0 && thumb) {
-                // 计算当前滚动了百分之多少 (0.0 - 1.0)
                 const percent = Math.abs(left) / maxScroll; 
-                // 设置宽度百分比，限制在 0-100%
                 thumb.style.width = Math.min(100, percent * 100) + '%';
-                // 确保没有位移，固定在左侧
-                thumb.style.transform = 'none'; 
             }
         };
 
-        // 绑定列表拖动
         enableDrag(ul, (dx) => update(left + dx));
         
-        // 绑定进度条拖动 (支持拖拽进度条来滚动)
         if (thumb && bar) {
-            enableDrag(bar, (dx) => { // 监听整个 bar 的拖动会更灵敏
-                // 计算拖动了 bar 总宽度的多少比例
+            enableDrag(bar, (dx) => {
                 const barWidth = bar.clientWidth;
                 if (barWidth > 0) {
-                    const movePercent = dx / barWidth; 
-                    // 反推列表应该移动多少像素 (-movePercent * maxScroll)
-                    // 注意方向：向右拖动进度条 -> 列表向左滚 -> left 减小
-                    update(left - (movePercent * maxScroll));
+                    const moveRatio = dx / barWidth; 
+                    update(left - (moveRatio * maxScroll));
                 }
             });
         }
