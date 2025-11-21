@@ -20,14 +20,13 @@
 
   .blogTakeQuizHtml .product-container {
     width: 100%;
-    height: 17.8em;
+    height: 320px;
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    background-color: white;
     gap: 5em;
     box-sizing: border-box;
-    background: url('https://cdn.shopify.com/s/files/1/0656/9079/6273/files/blog_talk.png?v=1749005302') no-repeat center / cover;
+    background: url('https://cdn.shopify.com/s/files/1/0656/9079/6273/files/blog_talk_1000x.png?v=1749005302') no-repeat center / cover;
   }
 
   .blogTakeQuizHtml .subscribe-section {
@@ -45,11 +44,9 @@
   .blogTakeQuizHtml .subscribe-section .take-title {
     color: #fff;
     font-family: Saans;
-    font-size: 1.9em;
-    font-style: normal;
-    font-weight: 400;
+    font-size: 24px;
     text-align: left;
-    line-height: 1.5;
+    line-height: 1.3;
     margin-bottom: 0.4em;
   }
 
@@ -72,11 +69,11 @@
   }
 
   .blogTakeQuizHtml .features-container {
-    gap: 0.5em;
-    font-size: 1em;
+    gap: 4px;
+    font-size: 14px;
     color: #fff;
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    {% comment %} grid-template-columns: repeat(2, 1fr); {% endcomment %}
   }
 
   .blogTakeQuizHtml .feature-item {
@@ -143,14 +140,17 @@
 
     .blogTakeQuizHtml .feature-item {
       width: 100%;
-      gap: 0.5em;
+      gap: 2px;
+      white-space: initial;
+      align-items: flex-start;
     }
 
     .blogTakeQuizHtml .subscribe-section .take-title {
-      width: 80%;
+      width: 94%;
       line-height: 1.3;
-      font-size: 2.3em;
+      font-size: 18px;
       margin-bottom: 0.8em;
+      font-weight: 500;
     }
 
     .blogTakeQuizHtml .features-container {
@@ -158,6 +158,7 @@
       font-size: 1.6em;
       display: flex;
       flex-wrap: wrap;
+      line-height: 1.2;
     }
 
     .blogTakeQuizHtml .take-quiz-btn {
@@ -186,134 +187,4 @@
               {{ se_stts.advantages_one }}
             </div>
             <div class="feature-item">
-              <div class="check-icon">✔</div>
-              {{ se_stts.advantages_two }}
-            </div>
-            <div class="feature-item">
-              <div class="check-icon">✔</div>
-              {{ se_stts.advantages_three }}
-            </div>
-            <div class="feature-item">
-              <div class="check-icon">✔</div>
-              {{ se_stts.advantages_four }}
-            </div>
-          </div>
-
-          <div class="form-row">
-            {% if se_stts.btn_text != '' %}
-              <button class="take-quiz-btn">{{ se_stts.btn_text }}</button>
-            {% endif %}
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-<script>
-  window.addEventListener("load", function () {
-    const $template = $('#blog-product-plugin-four .blogTakeQuizHtml'); // 获取模板
-    const templateClass = "{{ se_stts.className }}";
-
-    $(`.${templateClass}`).each(function () {
-      const $target = $(this);
-      const sort = $target.data('sort');
-      const $ipl = $(`.ipl-tools[data-sort="${sort}"]`);
-
-      if ($ipl.length === 0) return;
-
-      const title = $ipl.data('cta-title') || "{{ se_stts.title }}";
-      {% comment %} const desc = $ipl.data('cta-subtitle') || ''; {% endcomment %}
-      const btnText = $ipl.data('cta-button-text') || "{{ se_stts.btn_text }}";
-      const btnLink = $ipl.data('cta-button-link') || "{{ se_stts.btn_link }}";
-
-      const $newBlock = $template.clone();
-      $newBlock.attr('data-sort', sort);
-      $newBlock.find('.take-title').text(title);
-      {% comment %} $newBlock.find('.terms span').text(desc); {% endcomment %}
-      $newBlock.find('.take-quiz-btn').text(btnText).data('href', btnLink);
-
-      $target.replaceWith($newBlock);
-    });
-
-    // 点击跳转
-    $(document).on('click', '.take-quiz-btn', function () {
-      const url = $(this).data('href');
-      if (url) {
-        window.location.href = url;
-      }
-    });
-  });
-</script>
-{% schema %}
-{
-  "name": "b-blog-takequiz",
-  "class": "b-blog-takequiz",
-  "blocks": [
-    {
-      "name": "social-item",
-      "type": "social-item",
-      "settings": [
-        {
-          "type": "url",
-          "id": "link",
-          "label": "链接"
-        },
-        {
-          "type": "html",
-          "id": "svg",
-          "label": "svg文本"
-        }
-      ]
-    }
-  ],
-  "settings": [
-    {
-      "type": "text",
-      "id": "className",
-      "label": "class名称"
-    },
-    {
-    "type": "text",
-     "id": "title",
-     "label": "标题"
-    },
-    {
-      "type": "text",
-      "id": "btn_text",
-      "label": "按钮名称",
-      "default": "Read"
-    },
-    {
-      "type": "text",
-      "id": "btn_link",
-      "label": "按钮跳转路径"
-    },
-    {
-      "type": "text",
-      "id": "advantages_one",
-      "label": "特点1"
-    },
-    {
-      "type": "text",
-      "id": "advantages_two",
-      "label": "特点2"
-    },
-    {
-      "type": "text",
-      "id": "advantages_three",
-      "label": "特点3"
-    },
-    {
-      "type": "text",
-      "id": "advantages_four",
-      "label": "特点4"
-    }
-  ],
-  "presets": [
-    {
-      "name": "b-blog-takequiz",
-      "blocks": []
-    }
-  ]
-}
-{% endschema %}
+              <div class="check-icon">✔</div
