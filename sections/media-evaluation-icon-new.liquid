@@ -1,364 +1,471 @@
 <style>
+/* --- 基础布局样式 --- */
 .media-evaluation-box {
-  padding: 60px 0 85px 0;
-  position: relative;
-  z-index: 1;
-  overflow: hidden;
+    padding: 60px 0 85px 0;
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
 }
 
-.media-evaluation-box .container{
-  margin-bottom: 70px;
+.media-evaluation-box .container {
+    margin-bottom: 70px;
 }
 
+/* 跑马灯容器 - 限制宽度，隐藏溢出 */
 .media-evaluation-box .media-evaluation-marquee {
-  
-  position: relative;
+    position: relative;
+    /* 在 PC 端，我们只展示需要滚动的区域 */
 }
 
+/* 列表容器 - 启用 Flex 布局 */
 .media-evaluation-box .media-evaluation-list {
-  display: flex;
-  padding: 20px 0;
+    display: flex;
+    padding: 20px 0;
+    will-change: transform; /* 性能优化 */
 }
 
+/* 列表项样式 */
 .media-evaluation-box .media-evaluation-item {
-  width: 390px;
-  margin-right: 15px;
-  background: #fff;
-  padding: 45px 32px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: flex-end;
-  flex-shrink: 0;
-  transition: all 0.4s ease;
-  border-radius: 20px;
-  background: #F8F8F8;
-  position: relative;
-  z-index: 1;
+    width: 390px;
+    margin-right: 15px;
+    padding: 45px 32px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-end;
+    flex-shrink: 0;
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+    border-radius: 20px;
+    background: #F8F8F8;
+    position: relative;
+    z-index: 1;
 }
 
-.media-evaluation-box .hover-svg{
-  position: absolute;
-  width: 50px;
-  height: auto;
-  top: 46%;
-  left: 35%;
-  display: none;
-  z-index: 1;
-}
-
-{% comment %} .media-evaluation-box .media-evaluation-item:hover .hover-svg{
-  display: block;
-} {% endcomment %}
-
-.media-evaluation-new .media-evaluation-box{
-    background:#ffffff;
-}
-
-.media-evaluation-new .media-evaluation-box .media-evaluation-item{
-   width: 506px;
-  height:437px;
-  margin-right:43px;
-  background: #F9F9F9;
-}
-
-.media-evaluation-new .media-evaluation-box .media-evaluation-txt{
-  font-size: 26px;
-  line-height: 1.5;
-}
+/* Hover 效果 */
 .media-evaluation-box .media-evaluation-item:hover {
-  transition-delay: 0s !important;
-  transform: translateY(-18px);
-  box-shadow: 0 10px 23.2px 0 rgba(55, 27, 11, 0.10);
+    transform: translateY(-12px);
+    box-shadow: 0 12px 28px rgba(55, 27, 11, 0.15);
+    transition-delay: 0s;
 }
+
 .media-evaluation-box .media-evaluation-txt-top {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  position: relative;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    width: 100%;
 }
 
 .media-evaluation-box .media-evaluation-txt {
-  font-size: 18px;
-  color: #000;
-  line-height: 1.3;
-  font-weight: bold;
+    font-size: 18px;
+    color: #000;
+    line-height: 1.3;
+    font-weight: bold;
 }
 
 .media-evaluation-box .media-evaluation-logo {
-  display: block;
-  max-width: 60%;
-  margin-top: 50px;
-  position: relative;
-  right: 0;
-  max-height:70px;
-  width:auto;
+    display: block;
+    max-width: 60%;
+    margin-top: 50px;
+    max-height: 70px;
+    height: auto;
+    width: auto;
 }
 
-  .media-evaluation-box .sub-text{
+.media-evaluation-box .sub-text {
     color: #3F3636;
     font-size: 20px;
     line-height: 1.2;
     text-align: center;
-    margin-top:20px;
-  }
+    margin-top: 20px;
+}
 
-  .kol-diy .media-evaluation-box{
-    background: #FFF;
-  }
+.media-evaluation-box .hover-svg {
+    position: absolute;
+    width: 50px;
+    height: auto;
+    top: 46%;
+    left: 35%;
+    display: none;
+    z-index: 1;
+}
 
-  .kol-diy .media-evaluation-box .media-evaluation-item{
-    border-radius: 20px;
-    background: #F8F8F8;
-  }
+/* --- 进度条容器样式 --- */
+.media-evaluation-box .media-evaluation-scrollbar-container {
+    width: calc(100% - 30px); /* 居中并留白 */
+    margin: 30px auto 0;
+    height: 6px;
+    background: #E0E0E0;
+    border-radius: 3px;
+    overflow: hidden;
+    display: none; /* 默认隐藏，仅在移动端显示 */
+}
 
-  .kol-diy .media-evaluation-box .media-evaluation-item{
-    padding-bottom:30px;
-  }
+/* 进度条滑块样式 */
+.media-evaluation-box .media-evaluation-scrollbar-thumb {
+    height: 100%;
+    background: #3F3633; /* 滑块颜色 */
+    border-radius: 3px;
+    width: 30%; /* 初始宽度，JS 会计算实际宽度 */
+    cursor: grab;
+    will-change: transform; /* 性能优化 */
+}
 
-  .kol-diy .media-evaluation-box .media-evaluation-txt-top{
-    justify-content: flex-start;
-  }
-  @media (min-width: 992px) {
-    .media-evaluation-box .media-evaluation-item:hover{
-      cursor: url(https://cdn.shopify.com/s/files/1/0740/5882/6015/files/900f9d08c855c9a85f7f5a75ea3287cd.svg), auto;
+/* --- 桌面端 (PC) 样式 (> 991px) --- */
+@media (min-width: 992px) {
+    .media-evaluation-box .media-evaluation-item:hover {
+        cursor: url(https://cdn.shopify.com/s/files/1/0740/5882/6015/files/900f9d08c855c9a85f7f5a75ea3287cd.svg), pointer;
     }
-  }
+}
+
+/* --- 移动端样式 (<= 991px) --- */
 @media (max-width: 991px) {
-  .media-evaluation-box {
-    padding: 50px 0;
-  }
-  
-  .media-evaluation-box .container{
-    margin-bottom: 30px;
-  }
+    .media-evaluation-box {
+        padding: 50px 0;
+    }
+    
+    .media-evaluation-box .container {
+        margin-bottom: 30px;
+    }
 
-  .media-evaluation-box .media-evaluation-item {
-    width: 350px;
-  }
+    /* 移动端列表项宽度和圆角 */
+    .media-evaluation-box .media-evaluation-item {
+        width: 300px; /* 进一步减小宽度以适应小屏幕 */
+        border-radius: 10px;
+        margin-right: 12px;
+    }
 
-   .media-evaluation-box .sub-text{
-    font-size: 12px;
-    margin-top:10px;
-  }
+    .media-evaluation-box .sub-text {
+        font-size: 14px;
+        margin-top: 10px;
+    }
 
-   .kol-diy .media-evaluation-box .media-evaluation-item{
-    border-radius: 10px;
-  }
+    /* 移动端显示进度条 */
+    .media-evaluation-box .media-evaluation-scrollbar-container {
+        display: block; 
+    }
 
-  .media-evaluation-box .hover-svg{
-    width: 40px;
-    top: auto;
-    bottom:30px;
-    left: 32px;
-    display:block;
-  }
+    .media-evaluation-box .hover-svg {
+        width: 40px;
+        top: auto;
+        bottom: 30px;
+        left: 32px;
+        display: block;
+    }
 }
 </style>
-<section class="section-box{% if section.settings.custom_class != blank %} {{section.settings.custom_class}}{% endif %}">
-  <div class="media-evaluation-box">
-    {%- if section.settings.title != blank -%}
-      <div class="container">
-        <div class="title-diy to-top">{{ section.settings.title }}</div>
-        {%- if section.settings.text != blank -%}
-          <div class="sub-text to-top">{{ section.settings.text }}</div>
+<section class="section-box{% if section.settings.custom_class != blank %} {{ section.settings.custom_class }}{% endif %}">
+    <div class="media-evaluation-box">
+        {%- if section.settings.title != blank -%}
+        <div class="container">
+            <div class="title-diy to-top">{{ section.settings.title }}</div>
+            {%- if section.settings.text != blank -%}
+            <div class="sub-text to-top">{{ section.settings.text }}</div>
+            {%- endif -%}
+        </div>
         {%- endif -%}
-      </div>
-    {%- endif -%}
-    <div class="media-evaluation-marquee marquee-box">
-      <div class="media-evaluation-list marquee-box-list">
-        {%- for block in section.blocks -%}
-          <a href="{{ block.settings.link }}" class="media-evaluation-item marquee-box-item to-top" style="transition-delay: 0.{{forloop.index}}s">
-            <div class="media-evaluation-txt-top">
-              <div class="media-evaluation-txt">{{ block.settings.text }}</div>
-            </div>
-            <img loading="lazy" class="media-evaluation-logo" width="{{ block.settings.image.width }}" height="{{ block.settings.image.height }}" {%
-              render 'image-attributes' , image: block.settings.image %} alt="{{ block.settings.image.alt | escape }}">
-              <svg class="hover-svg" width="60" height="60" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="30" cy="30" r="29.5" fill="white" stroke="#E1E1E1"/>
-                <g clip-path="url(#clip0_6908_1903)">
-                <path d="M41.4961 20.8487C41.6127 20.9877 41.6769 21.1688 41.6666 21.357L40.8743 36.3495L39.4133 36.2725L40.1167 22.9613L18.9851 40.6928C18.4659 40.074 18.5467 39.1504 19.1655 38.6311L40.4395 20.7801C40.6513 20.6023 40.947 20.5358 41.205 20.6383C41.3215 20.6838 41.4199 20.7579 41.4961 20.8487Z" fill="#190A0A"/>
-                <path d="M38.6743 19.8674C38.6028 20.6724 37.8932 21.2679 37.0891 21.1975L25.9692 20.2257L26.0968 18.7681L38.6732 19.8683L38.6743 19.8674Z" fill="#190A0A"/>
-                </g>
-                <defs>
-                <clipPath id="clip0_6908_1903">
-                <rect width="30" height="22.9683" fill="white" transform="translate(11.1274 31.3286) rotate(-40)"/>
-                </clipPath>
-                </defs>
-              </svg>
 
-          </a>
-        {%- endfor -%}
-      </div>
+        <div class="media-evaluation-marquee marquee-box">
+            <div class="media-evaluation-list marquee-box-list">
+                {%- for block in section.blocks -%}
+                {% assign link_title = block.settings.text | escape | default: 'View item' %}
+                <a href="{{ block.settings.link }}" 
+                   class="media-evaluation-item marquee-box-item to-top" 
+                   style="transition-delay: 0.{{ forloop.index }}s"
+                   title="{{ link_title }}">
+                    <div class="media-evaluation-txt-top">
+                        <div class="media-evaluation-txt">{{ block.settings.text }}</div>
+                    </div>
+                    
+                    <img loading="lazy" 
+                         class="media-evaluation-logo" 
+                         width="{{ block.settings.image.width }}" 
+                         height="{{ block.settings.image.height }}" 
+                         {% render 'image-attributes' , image: block.settings.image %} 
+                         alt="{{ block.settings.image.alt | escape }}">
+
+                    <svg class="hover-svg" width="60" height="60" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="30" cy="30" r="29.5" fill="white" stroke="#E1E1E1"/>
+                        <g clip-path="url(#clip0_6908_1903)">
+                            <path d="M41.4961 20.8487C41.6127 20.9877 41.6769 21.1688 41.6666 21.357L40.8743 36.3495L39.4133 36.2725L40.1167 22.9613L18.9851 40.6928C18.4659 40.074 18.5467 39.1504 19.1655 38.6311L40.4395 20.7801C40.6513 20.6023 40.947 20.5358 41.205 20.6383C41.3215 20.6838 41.4199 20.7579 41.4961 20.8487Z" fill="#190A0A"/>
+                            <path d="M38.6743 19.8674C38.6028 20.6724 37.8932 21.2679 37.0891 21.1975L25.9692 20.2257L26.0968 18.7681L38.6732 19.8683L38.6743 19.8674Z" fill="#190A0A"/>
+                        </g>
+                        <defs>
+                            <clipPath id="clip0_6908_1903">
+                                <rect width="30" height="22.9683" fill="white" transform="translate(11.1274 31.3286) rotate(-40)"/>
+                            </clipPath>
+                        </defs>
+                    </svg>
+                </a>
+                {%- endfor -%}
+            </div>
+        </div>
+
+        <div class="media-evaluation-scrollbar-container">
+            <div class="media-evaluation-scrollbar-thumb"></div>
+        </div>
+
     </div>
-  </div>
 </section>
 <script>
-  function enableDragDetection(element, onDragLeft, onDragRight, onTouchEnd) {
+/**
+ * 启用拖动检测（触摸和鼠标）
+ */
+function enableDragDetection(element, onDrag, onDragEnd) {
     let startX = 0;
-    let startY = 0;
     let isDragging = false;
-    let isMobile = false;
-    element.addEventListener('touchstart', (event) => {
-      startX = event.touches[0].clientX;
-      startY = event.touches[0].clientY;
-      isDragging = true;
-      isMobile = true;
-    });
-  
-    element.addEventListener('touchmove', (event) => {
-      if (!isDragging) return;
-      const currentX = event.touches[0].clientX;
-      const currentY = event.touches[0].clientY;
-  
-      const deltaX = currentX - startX;
-      const deltaY = currentY - startY;
-      const distance = Math.abs(deltaX);
-  
-      if (Math.abs(deltaX) > Math.abs(deltaY)) {
-        if (deltaX > 0) {
-          if (onDragRight) {
-            onDragRight(distance);
-          }
-        } else {
-          if (onDragLeft) {
-            onDragLeft(distance);
-          }
-        }
-      }
-      startX = currentX;
-      startY = currentY;
-    });
-  
-    element.addEventListener('touchend', () => {
-      if (onTouchEnd && isDragging) {
-        onTouchEnd(isMobile);
-      }
-      isDragging = false;
-    });
-  
-    element.addEventListener('mousedown', (event) => {
-      startX = event.clientX;
-      startY = event.clientY;
-      isDragging = true;
-      isMobile = false;
-      event.preventDefault();
-    });
-  
-    element.addEventListener('mousemove', (event) => {
-      if (!isDragging) return;
-  
-      const currentX = event.clientX;
-      const currentY = event.clientY;
-  
-      const deltaX = currentX - startX;
-      const deltaY = currentY - startY;
-      const distance = Math.abs(deltaX);
-  
-      if (Math.abs(deltaX) > Math.abs(deltaY)) {
-        if (deltaX > 0) {
-          if (onDragRight) {
-            onDragRight(distance);
-          }
-        } else {
-          if (onDragLeft) {
-            onDragLeft(distance);
-          }
-        }
-      }
-  
-      startX = currentX;
-      startY = currentY;
-    });
-  
-    element.addEventListener('mouseup', () => {
-      if (onTouchEnd && isDragging) {
-        onTouchEnd(isMobile);
-      }
-      isDragging = false;
-    });
-  
-    element.addEventListener('contextmenu', (event) => {
-      event.preventDefault();
-    });
-  }
-  
-  function marqueeFn(elName,bol){
-    var content = document.querySelector("."+elName)
-    var ul = content.querySelector(".marquee-box-list")
-    var speed = 1;
-    var width = content.clientWidth
-    var swidth = ul.clientWidth
-    var liWidthAll = 0
-    let timer = null
-    let isDouble = false
-    let left =0
-    if(width>swidth) isDouble = true
-    if(bol){
-      ul.innerHTML += isDouble?ul.innerHTML+ul.innerHTML:ul.innerHTML
-    }
-    ul.querySelectorAll(".marquee-box-item").forEach(item=>{
-      liWidthAll+=item.offsetWidth+15
-    })
-    ul.style.width = liWidthAll + "px"
-    function run() {
-        if (left < -ul.offsetWidth / (isDouble?3:2)) {
-            left = 0
-        }
-        if(left>0){
-          left = -ul.offsetWidth / (isDouble?3:2)
-        }
-        left-=speed
+    let hasMoved = false;
 
-        ul.style.transform =  'translateX('+left+'px)' 
+    const startEvents = ['touchstart', 'mousedown'];
+    const moveEvents = ['touchmove', 'mousemove'];
+    const endEvents = ['touchend', 'mouseup', 'mouseleave'];
 
-      }
-    
-    timer = setInterval(run, 10)
-    content.onmouseover = function() {
-        clearInterval(timer)
-    }
-    content.onmouseout = function() {
-      clearInterval(timer)
-        timer = setInterval(run, 10)
+    const getClientX = (event) => event.touches ? event.touches[0].clientX : event.clientX;
+    const getClientY = (event) => event.touches ? event.touches[0].clientY : event.clientY;
+
+    const handleStart = (event) => {
+        if (event.type === 'mousedown' && event.button !== 0) return; 
+
+        startX = getClientX(event);
+        isDragging = true;
+        hasMoved = false;
+        
+        if (event.type === 'mousedown') {
+            event.preventDefault(); 
+        }
+
+        moveEvents.forEach(e => element.addEventListener(e, handleMove, { passive: false }));
+        endEvents.forEach(e => document.addEventListener(e, handleEnd));
+    };
+
+    const handleMove = (event) => {
+        if (!isDragging) return;
+
+        const currentX = getClientX(event);
+        const deltaX = currentX - startX;
+        
+        // 增加 Y 轴检测，防止垂直滚动被误判为水平拖动 (仅对触摸有效)
+        if (event.touches) {
+            const deltaY = getClientY(event) - startY;
+            if (Math.abs(deltaY) > Math.abs(deltaX) * 2) { 
+                return; 
+            }
+        }
+        
+        hasMoved = true;
+        if (event.cancelable) event.preventDefault(); 
+        
+        onDrag(deltaX); 
+        startX = currentX; 
+    };
+
+    const handleEnd = () => {
+        if (!isDragging) return;
+        isDragging = false;
+        
+        moveEvents.forEach(e => element.removeEventListener(e, handleMove));
+        endEvents.forEach(e => document.removeEventListener(e, handleEnd));
+
+        if(hasMoved && onDragEnd) {
+            onDragEnd(); 
+        }
+    };
+
+    startEvents.forEach(e => element.addEventListener(e, handleStart, { passive: true }));
+    element.addEventListener('contextmenu', (event) => event.preventDefault());
+}
+
+/**
+ * 跑马灯主函数
+ */
+function marqueeFn(elName) {
+    const content = document.querySelector("." + elName);
+    const ul = content?.querySelector(".marquee-box-list");
+    const thumb = content?.querySelector(".media-evaluation-scrollbar-thumb");
+    const scrollbarContainer = content?.querySelector(".media-evaluation-scrollbar-container");
+
+    if (!content || !ul) return;
+
+    // --- 设备检测 ---
+    const IS_MOBILE = window.matchMedia("(max-width: 991px)").matches;
+    const SPEED = 1; 
+
+    let left = 0;
+    let dragOffset = 0; 
+    let isPaused = false;
+    let lastTime = 0;
+    let animFrameId = null; // 用于存储 RAF ID
+
+    // --- 滚动参数 ---
+    let totalContentWidth = 0;
+    let viewportWidth = content.clientWidth;
+
+    // 计算总宽度并设置
+    function setupWidths() {
+        totalContentWidth = Array.from(ul.children).reduce((sum, item) => sum + item.offsetWidth + 15, 0);
+        ul.style.width = totalContentWidth + "px";
+        viewportWidth = content.clientWidth;
     }
 
-    enableDragDetection(ul,
-      (distance) => {
-        clearInterval(timer)
-        left -=distance
-        run()
-      },
-      (distance) => {
-        clearInterval(timer)
-        left +=distance
-        run()
-      },
-      (isMobile) => {
-      }
-    );
+    // --- 进度条相关计算 ---
+    let scrollRange = 0; // 列表可滚动的最大距离 (ContentWidth - ViewportWidth)
+    let thumbRange = 0;  // 进度条可移动的最大距离 (ScrollbarContainerWidth - ThumbWidth)
+    let thumbWidth = 0;
 
-    const observer = new IntersectionObserver((entries, observer) => {
-      entries.forEach(entry => {
-        const isHidden = entry.target.style.display === 'none';
-        if (entry.isIntersecting) {
-          clearInterval(timer)
-          timer = setInterval(run, 10)
-        } else {
-          clearInterval(timer)
+    function setupScrollbar() {
+        if (!thumb || !scrollbarContainer) return;
+        
+        scrollRange = totalContentWidth - viewportWidth;
+        
+        // 如果内容没有溢出，则隐藏进度条
+        if (scrollRange <= 0) {
+            scrollbarContainer.style.display = 'none';
+            return;
         }
-        if (isHidden) {
-          clearInterval(timer)
-        } else {
-          clearInterval(timer)
-          timer = setInterval(run, 10)
+
+        scrollbarContainer.style.display = 'block';
+
+        // 计算滑块宽度：(Viewport / Content) * ScrollbarWidth
+        thumbWidth = (viewportWidth / totalContentWidth) * scrollbarContainer.clientWidth;
+        thumbWidth = Math.max(thumbWidth, 50); // 最小宽度，防止太细
+        thumb.style.width = thumbWidth + "px";
+        
+        thumbRange = scrollbarContainer.clientWidth - thumbWidth;
+    }
+
+    // --- 更新列表和进度条位置 ---
+    function updatePosition(newLeft) {
+        // 限制左移范围 (0 到 -scrollRange)
+        left = Math.min(0, Math.max(-scrollRange, newLeft));
+        
+        ul.style.transform = `translateX(${left}px)`;
+
+        // 同步进度条
+        if (thumb && scrollRange > 0) {
+            // 列表的当前滚动比例
+            const scrollPercent = Math.abs(left) / scrollRange;
+            // 进度条的位置
+            const thumbLeft = scrollPercent * thumbRange;
+            thumb.style.transform = `translateX(${thumbLeft}px)`;
         }
-      });
-    }, { attributes: true });
-    observer.observe(content);
-  }
-  marqueeFn('marquee-box',true)
+    }
+
+
+    // --- PC 自动滚动逻辑 ---
+    function animatePC(timestamp) {
+        if (!lastTime) lastTime = timestamp;
+        const deltaTime = timestamp - lastTime;
+        lastTime = timestamp;
+
+        if (!isPaused) {
+            const distance = SPEED * (deltaTime / 16.6);
+            left -= distance;
+
+            // 循环逻辑：
+            const halfWidth = totalContentWidth / 2;
+            if (left < -halfWidth) {
+                left += halfWidth;
+            }
+        }
+        
+        ul.style.transform = `translateX(${left}px)`;
+        animFrameId = requestAnimationFrame(animatePC);
+    }
+
+    // --- 初始化和启动 ---
+
+    if (IS_MOBILE) {
+        // --- 移动端（手动拖动 + 进度条） ---
+        setupWidths();
+        setupScrollbar();
+
+        // 绑定拖动事件到列表本身
+        enableDragDetection(ul,
+            (deltaX) => {
+                // deltaX 是正值（向右拖动）或负值（向左拖动）
+                const newLeft = left + deltaX;
+                updatePosition(newLeft);
+            },
+            () => {
+                // 拖动结束，不需要额外的复位操作
+            }
+        );
+        
+        // 绑定拖动事件到进度条滑块
+        if (thumb) {
+            enableDragDetection(thumb,
+                (deltaX) => {
+                    if (scrollRange <= 0) return;
+
+                    // 计算滑块的新位置 (0 到 thumbRange)
+                    let currentThumbX = parseFloat(thumb.style.transform.replace('translateX(', '').replace('px)', '')) || 0;
+                    let newThumbX = Math.min(thumbRange, Math.max(0, currentThumbX + deltaX));
+                    
+                    // 将进度条位置映射回列表的滚动位置
+                    const scrollPercent = newThumbX / thumbRange;
+                    const newLeft = -scrollPercent * scrollRange;
+                    
+                    updatePosition(newLeft);
+                },
+                () => {}
+            );
+        }
+
+    } else {
+        // --- PC 端（自动滚动） ---
+
+        // 1. 克隆内容以实现无限滚动
+        ul.innerHTML += ul.innerHTML; // 至少需要三份内容才能保证无限循环（A + B + C）
+        ul.innerHTML += ul.innerHTML; 
+        
+        setupWidths();
+        // 这里的 totalContentWidth 是克隆后的总宽度
+
+        // 2. 绑定暂停/恢复事件
+        content.addEventListener('mouseenter', () => { isPaused = true; });
+        content.addEventListener('mouseleave', () => { isPaused = false; });
+
+        // 3. 绑定拖动事件 (PC上鼠标拖动时暂停自动滚动)
+        enableDragDetection(ul,
+            (deltaX) => {
+                isPaused = true; // 拖动时暂停
+                dragOffset += deltaX; 
+                ul.style.transform = `translateX(${left + dragOffset}px)`;
+            },
+            () => {
+                // 拖动结束后，将手动位移合并到自动滚动的 `left` 变量中
+                left += dragOffset;
+                dragOffset = 0;
+                isPaused = false; // 恢复自动滚动
+
+                // 循环范围处理 (如果拖动导致跑出有效循环范围)
+                const halfWidth = totalContentWidth / 2; 
+                if (left < -halfWidth) {
+                    left += halfWidth;
+                } else if (left > 0) {
+                    left -= halfWidth;
+                }
+            }
+        );
+
+        // 4. 启动动画
+        animFrameId = requestAnimationFrame(animatePC);
+
+        // 5. 绑定 Intersection Observer
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                isPaused = !entry.isIntersecting;
+            });
+        });
+        observer.observe(content);
+    }
+}
+
+// 启动
+document.addEventListener('DOMContentLoaded', () => {
+    marqueeFn('marquee-box');
+});
 </script>
 {% schema %}
 {
