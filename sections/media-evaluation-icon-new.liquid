@@ -209,192 +209,138 @@
     </div>
 </section>
 <script>
-/* ------------------------------
-   1. 拖动检测：保持你的原功能132123123
------------------------------- */
-function enableDragDetection(element, onDragLeft, onDragRight, onTouchEnd) {
-    let startX = 0, startY = 0, isDragging = false, isMobile = false;
-    let deltaX = 0;
+// --- 1. 基础拖动检测 (基于您的参考代码优化) ---
+function enableDrag(el, onMove, onEnd) {
+    let startX = 0, startY = 0, isDragging = false;
 
-    const getClientX = (e) => e.touches ? e.touches[0].clientX : e.clientX;
-    const getClientY = (e) => e.touches ? e.touches[0].clientY : e.clientY;
-
-    const start = (x, y, mobile) => {
-        startX = x; startY = y;
+    const start = (e) => {
+        startX = e.touches ? e.touches[0].clientX : e.clientX;
+        startY = e.touches ? e.touches[0].clientY : e.clientY;
         isDragging = true;
-        isMobile = mobile;
-        deltaX = 0;
     };
-    
+
     const move = (e) => {
         if (!isDragging) return;
+        const x = e.touches ? e.touches[0].clientX : e.clientX;
+        const y = e.touches ? e.touches[0].clientY : e.clientY;
+        const dx = x - startX;
+        const dy = y - startY;
+
+        // 移动端防误触：如果垂直移动大于水平移动，不触发拖动
+        if (e.touches && Math.abs(dy) > Math.abs(dx)) return;
+
+        // 阻止水平滑动时的页面滚动
+        if (e.touches && e.cancelable) e.preventDefault();
+
+        onMove(dx); // 回调传输位移
         
-        const x = getClientX(e);
-        const y = getClientY(e);
-        const currentDeltaX = x - startX;
-        const currentDeltaY = y - startY;
-
-        if (Math.abs(currentDeltaX) > Math.abs(currentDeltaY)) {
-            if (isMobile && e.cancelable) e.preventDefault();
-
-            const moveDistance = currentDeltaX - deltaX;
-
-            if (moveDistance > 0) onDragRight?.(moveDistance);
-            else if (moveDistance < 0) onDragLeft?.(Math.abs(moveDistance));
-
-            deltaX = currentDeltaX;
-        }
-
-        startX = x; startY = y;
+        // 更新起始点，实现连续拖动
+        startX = x; 
+        startY = y;
     };
 
-    const end = () => {
-        onTouchEnd?.(isMobile);
-        isDragging = false;
-    };
+    const end = () => { isDragging = false; onEnd && onEnd(); };
 
-    element.addEventListener('touchstart', e => start(getClientX(e), getClientY(e), true), { passive: true });
-    element.addEventListener('touchmove',  move, { passive: false });
-    element.addEventListener('touchend', end);
-
-    element.addEventListener('mousedown', e => { e.preventDefault(); start(getClientX(e), getClientY(e), false); });
+    // 绑定事件 (使用 passive: false 确保能阻止默认行为)
+    el.addEventListener('touchstart', start, { passive: true });
+    el.addEventListener('touchmove', move, { passive: false });
+    el.addEventListener('touchend', end);
+    
+    el.addEventListener('mousedown', (e) => { e.preventDefault(); start(e); });
     document.addEventListener('mousemove', move);
     document.addEventListener('mouseup', end);
-
-    element.addEventListener('contextmenu', e => e.preventDefault());
 }
 
+// --- 2. 业务逻辑 ---
+function marqueeInit() {
+    const box = document.querySelector('.media-evaluation-box');
+    const ul = box.querySelector('.media-evaluation-list');
+    const bar = box.querySelector('.media-evaluation-scrollbar-container');
+    const thumb = box.querySelector('.media-evaluation-scrollbar-thumb');
+    
+    if (!box || !ul) return;
 
-/* ------------------------------
-   2. 主跑马灯函数
------------------------------- */
-function marqueeFn(elName) {
-    const content = document.querySelector("." + elName);
-    const ul = content?.querySelector(".marquee-box-list");
-    const thumb = content?.querySelector(".media-evaluation-scrollbar-thumb");
-    const scrollbarContainer = content?.querySelector(".media-evaluation-scrollbar-container");
-
-    if (!content || !ul) return;
-
-    const IS_MOBILE = window.matchMedia("(max-width: 991px)").matches;
-    const SPEED = 1;
+    const isMobile = window.innerWidth < 992;
     let left = 0;
     let timer = null;
-
-    let totalContentWidth = 0;
-    let viewportWidth = content.clientWidth;
-    let scrollRange = 0;
-
-    /* ----------- 宽度计算 ----------- */
-    function calcWidth() {
-        totalContentWidth = Array.from(ul.children).reduce((sum, item) => {
-            const style = getComputedStyle(item);
-            return sum + item.offsetWidth + parseFloat(style.marginRight);
-        }, 0);
-
-        const last = ul.lastElementChild;
-        if (last) totalContentWidth -= parseFloat(getComputedStyle(last).marginRight || 0);
-
-        ul.style.width = totalContentWidth + "px";
-        viewportWidth = content.clientWidth;
-        scrollRange = totalContentWidth - viewportWidth;
+    
+    // 1. 计算宽度
+    let contentWidth = 0;
+    // 移动端不需要克隆，PC端克隆以实现无限滚动
+    if (!isMobile) {
+        ul.innerHTML += ul.innerHTML + ul.innerHTML; // 克隆3份
     }
+    
+    Array.from(ul.children).forEach(item => {
+        contentWidth += item.offsetWidth + parseInt(getComputedStyle(item).marginRight || 0);
+    });
+    ul.style.width = contentWidth + "px";
 
-    /* ----------- 移动端：进度条 ----------- */
-    let thumbRange = 0;
-
-    function setupScrollbar() {
-        if (!thumb || !scrollbarContainer) return;
-
-        if (scrollRange <= 0) {
-            scrollbarContainer.style.display = 'none';
-            return;
-        }
-        scrollbarContainer.style.display = 'block';
-
-        let thumbWidth = (viewportWidth / totalContentWidth) * scrollbarContainer.clientWidth;
-        thumbWidth = Math.max(thumbWidth, 50);
-        thumb.style.width = thumbWidth + "px";
-
-        thumbRange = scrollbarContainer.clientWidth - thumbWidth;
-    }
-
-    function updateScrollAndThumb(newLeft) {
-        left = Math.min(0, Math.max(-scrollRange, newLeft));
-        ul.style.transform = `translateX(${left}px)`;
-
-        if (IS_MOBILE && thumb && scrollRange > 0) {
-            const percent = Math.abs(left) / scrollRange;
-            thumb.style.transform = `translateX(${percent * thumbRange}px)`;
-        }
-    }
-
-    /* ----------- PC 自动滚动循环 ----------- */
-    function run() {
-        const loopWidth = totalContentWidth / 2; // 因为只克隆一次 = 2份
-
-        if (left <= -loopWidth) {
-            left += loopWidth;
-        }
-
-        left -= SPEED;
-        ul.style.transform = `translateX(${left}px)`;
-    }
-
-    /* ----------- PC: 自动滚动版本 ----------- */
-    if (!IS_MOBILE) {
-
-        /* ★★ 只克隆一次，保持 2 份循环（已修复）★★ */
-        const original = ul.innerHTML;
-        ul.innerHTML += original;
-
-        calcWidth();
-
+    // 2. 功能分支
+    if (!isMobile) {
+        // === PC端：自动滚动 ===
+        const run = () => {
+            left -= 1; // 速度
+            if (Math.abs(left) >= contentWidth / 3) left = 0; // 循环点
+            ul.style.transform = `translateX(${left}px)`;
+        };
         timer = setInterval(run, 10);
+        
+        // 鼠标悬停暂停
+        box.onmouseenter = () => clearInterval(timer);
+        box.onmouseleave = () => timer = setInterval(run, 10);
 
-        content.addEventListener('mouseenter', () => clearInterval(timer));
-        content.addEventListener('mouseleave', () => timer = setInterval(run, 10));
+        // PC 也支持简单的鼠标拖动辅助
+        enableDrag(ul, (dx) => {
+            left += dx;
+            ul.style.transform = `translateX(${left}px)`;
+        });
 
-        enableDragDetection(ul,
-            d => { left -= d; ul.style.transform = `translateX(${left}px)`; },
-            d => { left += d; ul.style.transform = `translateX(${left}px)`; },
-            () => { timer = setInterval(run, 10); }
-        );
+    } else {
+        // === 移动端：手动拖动 + 进度条 ===
+        const viewWidth = box.clientWidth;
+        const maxScroll = contentWidth - viewWidth;
+        
+        // 初始化进度条宽度
+        if (maxScroll > 0 && thumb) {
+            const thumbRatio = viewWidth / contentWidth;
+            thumb.style.width = (thumbRatio * 100) + '%';
+        }
 
-        return;
-    }
+        // 统一更新函数
+        const update = (newLeft) => {
+            // 限制边界
+            if (newLeft > 0) newLeft = 0;
+            if (newLeft < -maxScroll) newLeft = -maxScroll;
+            
+            left = newLeft;
+            ul.style.transform = `translateX(${left}px)`;
+            
+            // 同步进度条
+            if (maxScroll > 0 && thumb && bar) {
+                const percent = Math.abs(left) / maxScroll;
+                const barWidth = bar.clientWidth - thumb.clientWidth;
+                thumb.style.transform = `translateX(${percent * barWidth}px)`;
+            }
+        };
 
-    /* ----------- 移动端版本 ----------- */
-
-    calcWidth();
-    setupScrollbar();
-
-    enableDragDetection(ul,
-        d => updateScrollAndThumb(left - d),
-        d => updateScrollAndThumb(left + d),
-        () => {}
-    );
-
-    if (thumb) {
-        enableDragDetection(thumb,
-            d => {
-                const x = parseFloat(thumb.style.transform.replace("translateX(", "").replace("px)", "")) || 0;
-                const nx = Math.max(0, Math.min(thumbRange, x - d));
-                updateScrollAndThumb(-(nx / thumbRange) * scrollRange);
-            },
-            d => {
-                const x = parseFloat(thumb.style.transform.replace("translateX(", "").replace("px)", "")) || 0;
-                const nx = Math.max(0, Math.min(thumbRange, x + d));
-                updateScrollAndThumb(-(nx / thumbRange) * scrollRange);
-            },
-            () => {}
-        );
+        // 绑定列表拖动
+        enableDrag(ul, (dx) => update(left + dx));
+        
+        // 绑定进度条拖动
+        if (thumb) {
+            enableDrag(thumb, (dx) => {
+                const barWidth = bar.clientWidth - thumb.clientWidth;
+                // 反算列表移动距离
+                const moveRatio = dx / barWidth; 
+                update(left - (moveRatio * maxScroll));
+            });
+        }
     }
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-    marqueeFn("marquee-box");
-});
+// 启动
+document.addEventListener('DOMContentLoaded', marqueeInit);
 </script>
 
 {% schema %}
