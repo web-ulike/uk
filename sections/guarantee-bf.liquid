@@ -1,0 +1,195 @@
+<style>
+.section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+  }
+  @media screen and (max-width: 768px){
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top1 }}px;
+    padding-bottom: {{ section.settings.padding_bottom1 }}px;
+  }
+}
+.guarantee-bf .content-wrapper {
+    display: flex;
+    align-items: center;
+    background: #F9F9F9;
+}
+
+.guarantee-bf .img {
+    width: 50%;
+    height: 100%;
+}
+
+.guarantee-bf .text-block {
+    width: 50%;
+    padding: 25px;
+    text-align: center;
+    color: #190A0A;
+}
+
+.guarantee-bf .img-icon {
+    width: 165px;
+    margin: 0 auto;
+    margin-bottom: 48px;
+}
+
+.guarantee-bf .guarantee-bf-h3 {
+    color: #190A0A;
+    font-size: 44px;
+    line-height: 1.2;
+    margin: 0;
+    font-weight: normal;
+}
+
+.guarantee-bf .guarantee-bf-p {
+    color: #190A0A;
+    font-size: 22px;
+    line-height: 1.5;
+    max-width: 580px;
+    margin: 0 auto;
+}
+
+.guarantee-bf .guarantee-bf-p p {
+    margin: 0;
+}
+
+.guarantee-bf .guarantee-bf-p a {
+    text-decoration: underline;
+}
+
+@media (max-width:991px) {
+
+    .guarantee-bf .content-wrapper {
+    background: none;
+    flex-direction: column-reverse;
+    gap: 30px;
+    }
+
+    .guarantee-bf .img {
+    width: 100%;
+    height: auto;
+    }
+
+    .guarantee-bf .text-block {
+    width: 100%;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    text-align: left;
+    gap: 12px;
+    }
+
+    .guarantee-bf .img-icon {
+    width: 100px;
+    margin: 0;
+    }
+
+    .guarantee-bf .guarantee-bf-h3 {
+    font-size: 24px;
+    }
+
+    .guarantee-bf .guarantee-bf-p {
+    font-size: 12px;
+    max-width: none;
+    margin-top: 10px;
+    }
+}
+</style>
+<section class="section-box">
+    <div class="guarantee-bf section-{{ section.id }}-padding">
+        <div class="container">
+            <div class="content-wrapper">
+            {% if section.settings.image != blank %}
+                <img class="img" src="{{ section.settings.image | image_url }}" width="" height="" alt="">
+            {% endif %}
+            <div class="text-block">
+                {% if section.settings.image1 != blank %}
+                    <img src="{{ section.settings.image1 | image_url }}" width="" height="" alt="" class="img-icon">
+                {% endif %}
+                <div>
+                {% if section.settings.title != blank %}
+                    <h3 class="guarantee-bf-h3">{{ section.settings.title }}</h3>
+                {% endif %}
+                {% if section.settings.sub_title != blank %}
+                    <div class="guarantee-bf-p">{{ section.settings.sub_title }}</div>
+                {% endif %}
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% schema %}
+{
+  "name": "guarantee-bf",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image1",
+      "label": "Image"
+    },
+    {
+      "type": "textarea",
+      "id": "title",
+      "label": "标题"
+    },
+    {
+      "type": "richtext",
+      "id": "sub_title",
+      "label": "Text"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_top1",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Top M",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom1",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Bottom M",
+      "default": 36
+    }
+  ],
+  "presets": [
+    {
+      "name": "guarantee-bf",
+      "blocks": []
+    }
+  ]
+}
+{% endschema %}
