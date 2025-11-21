@@ -209,7 +209,7 @@
     </div>
 </section>
 <script>
-// --- 1. 拖动检测核心函数 (基于用户提供的参考代码，微调以阻止移动端页面滚动) ---
+// --- 1. 拖动检测核心函数 (修复 touchmove 注册和事件流)2313213213 ---
 function enableDragDetection(element, onDragLeft, onDragRight, onTouchEnd) {
     let startX = 0, startY = 0, isDragging = false, isMobile = false;
     let deltaX = 0; // 用于计算相对位移
@@ -217,9 +217,19 @@ function enableDragDetection(element, onDragLeft, onDragRight, onTouchEnd) {
     const getClientX = (e) => e.touches ? e.touches[0].clientX : e.clientX;
     const getClientY = (e) => e.touches ? e.touches[0].clientY : e.clientY;
 
-    const start = (x, y, mobile) => { startX = x; startY = y; isDragging = true; isMobile = mobile; deltaX = 0; };
+    const start = (x, y, mobile) => { startX = x; startY = y; isDragging = true; isMobile = mobile; deltaX = 0; 
+        
+        // 绑定移动和结束事件到 document
+        if (isMobile) {
+            document.addEventListener('touchmove', handleMove, { passive: false }); // 核心修复
+            document.addEventListener('touchend', handleEnd);
+        } else {
+            document.addEventListener('mousemove', handleMove);
+            document.addEventListener('mouseup', handleEnd);
+        }
+    };
     
-    const move = (e) => {
+    const handleMove = (e) => {
         if (!isDragging) return;
         
         const x = getClientX(e);
@@ -229,7 +239,8 @@ function enableDragDetection(element, onDragLeft, onDragRight, onTouchEnd) {
 
         // 仅在水平移动超过垂直移动时视为水平拖动
         if (Math.abs(currentDeltaX) > Math.abs(currentDeltaY)) {
-            // 移动端：阻止页面滚动，这是解决问题的关键点之一
+            
+            // 移动端：在此处调用 event.preventDefault() 阻止页面滚动
             if (isMobile && e.cancelable) {
                 e.preventDefault(); 
             }
@@ -244,26 +255,38 @@ function enableDragDetection(element, onDragLeft, onDragRight, onTouchEnd) {
             }
 
             deltaX = currentDeltaX; // 更新总位移
+        } else if (isMobile && Math.abs(currentDeltaY) > Math.abs(currentDeltaX)) {
+             // 如果是明显的垂直滚动，则放弃水平拖动并结束
+             handleEnd(); 
+             return;
         }
         
-        // 始终更新起始点，以获取下一次的相对位移
+        // 始终更新起始点
         startX = x; startY = y;
     };
     
-    const end = () => { onTouchEnd?.(isMobile); isDragging = false; };
+    const handleEnd = () => { 
+        if (!isDragging) return;
 
-    // --- 事件绑定 ---
-    // 移动端：touchstart 使用 passive: true 提高响应速度
+        onTouchEnd?.(isMobile); 
+        isDragging = false; 
+        
+        // 解绑事件
+        document.removeEventListener('touchmove', handleMove, { passive: false });
+        document.removeEventListener('mousemove', handleMove);
+        document.removeEventListener('touchend', handleEnd);
+        document.removeEventListener('mouseup', handleEnd);
+    };
+
+    // --- 初始事件绑定 ---
+    // touchstart 使用 passive: true 提高响应速度，将 move/end 延迟绑定到 document
     element.addEventListener('touchstart', e => start(getClientX(e), getClientY(e), true), { passive: true });
-    // 移动端：touchmove 使用 passive: false 允许 preventDefault() 阻止页面滚动
-    element.addEventListener('touchmove', move, { passive: false }); 
-    element.addEventListener('touchend', end);
 
-    // 桌面端：mousedown 阻止默认行为
-    element.addEventListener('mousedown', e => { e.preventDefault(); start(getClientX(e), getClientY(e), false); });
-    // 桌面端：绑定到 document 以防止拖出元素边界
-    document.addEventListener('mousemove', move);
-    document.addEventListener('mouseup', end);
+    // mousedown 阻止默认行为，并将 move/end 延迟绑定到 document
+    element.addEventListener('mousedown', e => { 
+        e.preventDefault(); 
+        start(getClientX(e), getClientY(e), false); 
+    });
     
     element.addEventListener('contextmenu', e => e.preventDefault());
 }
@@ -293,7 +316,6 @@ function marqueeFn(elName) {
             return sum + item.offsetWidth + parseFloat(style.marginRight);
         }, 0);
         
-        // 调整最后一个项目的 margin
         if (!isCloned && ul.children.length > 0) {
             totalContentWidth -= parseFloat(getComputedStyle(ul.lastElementChild).marginRight || 0);
         }
@@ -324,12 +346,10 @@ function marqueeFn(elName) {
     }
 
     function updateScrollAndThumb(newLeft) {
-        // 限制滚动范围
         left = IS_MOBILE ? Math.min(0, Math.max(-scrollRange, newLeft)) : newLeft;
 
         ul.style.transform = `translateX(${left}px)`;
 
-        // 仅移动端同步进度条
         if (IS_MOBILE && thumb && scrollRange > 0) {
             const scrollPercent = Math.abs(left) / scrollRange;
             const thumbLeft = scrollPercent * thumbRange;
@@ -337,11 +357,11 @@ function marqueeFn(elName) {
         }
     }
 
-    // --- PC：自动滚动逻辑 ---
+    // --- PC：自动滚动函数 ---
     function run() {
-        const halfWidth = totalContentWidth / 2;
-        if(left < -halfWidth) {
-            left += halfWidth; // 循环
+        const clonedWidth = totalContentWidth / 3;
+        if(left < -clonedWidth) {
+            left += clonedWidth; 
         }
         
         left -= SPEED;
@@ -353,19 +373,16 @@ function marqueeFn(elName) {
     if (!IS_MOBILE) {
         // --- PC 逻辑 ---
         
-        // 1. 克隆内容以实现无限滚动
         const originalChildren = ul.innerHTML;
         ul.innerHTML += originalChildren; 
         ul.innerHTML += originalChildren; 
         
         setupWidths(true); 
         
-        // 2. 启动自动滚动
         timer = setInterval(run, 10);
         content.onmouseover = ()=>clearInterval(timer);
         content.onmouseout = ()=>timer=setInterval(run,10);
         
-        // 3. 拖动回调 (PC)
         const onDragCallbackPC = (distance, isRight) => {
              clearInterval(timer);
              isRight ? left += distance : left -= distance;
@@ -373,25 +390,28 @@ function marqueeFn(elName) {
         };
 
         enableDragDetection(ul,
-            (d) => onDragCallbackPC(d, false), // onDragLeft
-            (d) => onDragCallbackPC(d, true),  // onDragRight
-            () => { timer=setInterval(run,10); } // 拖动结束，恢复自动滚动
+            (d) => onDragCallbackPC(d, false),
+            (d) => onDragCallbackPC(d, true),
+            () => { timer=setInterval(run,10); }
         );
 
     } else {
         // --- 移动端逻辑 ---
         
+        // 确保只有原始项目
+        while (ul.children.length > originalItemCount) { ul.removeChild(ul.lastChild); }
+        
         setupWidths(false);
         setupScrollbar();
 
-        // 1. 列表拖动回调 (移动端)
+        // 列表拖动回调
         enableDragDetection(ul,
-            (d) => updateScrollAndThumb(left - d), // onDragLeft
-            (d) => updateScrollAndThumb(left + d), // onDragRight
+            (d) => updateScrollAndThumb(left - d),
+            (d) => updateScrollAndThumb(left + d),
             () => {} 
         );
         
-        // 2. 进度条拖动回调 (移动端)
+        // 进度条拖动回调
         if (thumb) {
             enableDragDetection(thumb,
                 (d) => { // onDragLeft
@@ -411,7 +431,6 @@ function marqueeFn(elName) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    // 确保在 DOM 加载完成后运行
     marqueeFn('marquee-box');
 });
 </script>
