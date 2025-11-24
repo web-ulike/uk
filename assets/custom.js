@@ -467,7 +467,14 @@ function initGA() {
           bubbles: false,
         })
       );
-    }, 2400);
+    }, 3400);
+  });
+
+  document.body.addEventListener('docapp-discount-code-submit', (e) => { 
+    let code = $('.docapp-coupon-input--input').val()
+    if (code){
+      window.discountOnCartProApp.removeCode(window.discountOnCartProApp.codes[0]);
+    }
   });
 }
 
