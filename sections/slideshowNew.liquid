@@ -1021,9 +1021,9 @@
            
          {%- endcapture -%}
 
-         {%- if section.settings.ulike_d1 != blank -%}
-              <div id="countdown-ulike-slide"></div>
-            {%- endif -%}
+         {%- if block.settings.ulike_d1 != blank -%}
+            <div id="countdown-ulike-slide-{{ block.id }}"></div>
+          {%- endif -%}
          {%- if block.settings.button_1_text != blank and block.settings.button_2_text != blank -%}
            <div class="button-group" {% if section.settings.transition_type != 'fade' %}reveal{% endif %}>
              <div class="button-group__wrapper">
@@ -1186,11 +1186,15 @@
     })
   {%- endif -%}
 
-  {%- if section.settings.ulike_d1 != blank -%}
+ 
     window.addEventListener("DOMContentLoaded", () => {
-      new CountdownTimer('#countdown-ulike-slide', "{{ section.settings.ulike_d1 }}", '{{ section.settings.ulike_d }}');
+      {%- for block in section.blocks -%}
+        {%- if block.settings.ulike_d1 != blank -%}
+          new CountdownTimer('#countdown-ulike-slide-{{ block.id }}', "{{ block.settings.ulike_d1 }}", '{{ block.settings.ulike_d }}');
+        {%- endif -%}
+      {%- endfor -%}
     });
-  {%- endif -%}
+  
 </script>
 {%- if section.blocks.size > 2 and section.settings.show_arrows -%}
   <script>
