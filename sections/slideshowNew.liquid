@@ -791,6 +791,33 @@
         margin-top: 30px;
       }
     }
+    .countdown-ulike {
+    display: flex;
+    align-items: center;
+    font-size: 21px;
+    gap: 6px;
+    margin-top: 30px;
+  }
+
+  .countdown-label {
+    font-size: 18px;
+  }
+
+  .countdown-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    background: white;
+    color: #111;
+    border-radius: 5px;
+  }
+
+  .countdown-separator {
+    font-size: 21px;
+    color: white;
+  }
 </style>
 
 <section class="section section--flush">
@@ -994,6 +1021,9 @@
            
          {%- endcapture -%}
 
+         {%- if section.settings.ulike_d1 != blank -%}
+              <div id="countdown-ulike-slide"></div>
+            {%- endif -%}
          {%- if block.settings.button_1_text != blank and block.settings.button_2_text != blank -%}
            <div class="button-group" {% if section.settings.transition_type != 'fade' %}reveal{% endif %}>
              <div class="button-group__wrapper">
@@ -1154,6 +1184,12 @@
         marketChange({{ section.settings.show_market_time }},{{ section.settings.show_market_time_line }})
       // }
     })
+  {%- endif -%}
+
+  {%- if section.settings.ulike_d1 != blank -%}
+    window.addEventListener("DOMContentLoaded", () => {
+      new CountdownTimer('#countdown-ulike-slide', "{{ section.settings.ulike_d1 }}", '{{ section.settings.ulike_d }}');
+    });
   {%- endif -%}
 </script>
 {%- if section.blocks.size > 2 and section.settings.show_arrows -%}
@@ -1325,6 +1361,17 @@
       "type": "image",
       "name": "Image",
       "settings": [
+        {
+          "type": "text",
+          "id": "ulike_d",
+          "label": "倒计时文案"
+        },
+        {
+          "type": "text",
+          "id": "ulike_d1",
+          "label": "时间",
+          "info": "时间格式2025-11-06 12:00:00"
+        },
         {
           "type": "checkbox",
           "id": "color_reverse",
