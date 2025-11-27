@@ -6507,3 +6507,47 @@ function scrollToTargetFromURL(paramName = 'ulike-reviews', offset = 0) {
 window.addEventListener('DOMContentLoaded', () => {
   scrollToTargetFromURL('ulike-reviews', 80); // 80为顶部偏移量
 });
+
+class CountdownTimer {
+  constructor(container, endTime, label = 'End in') {
+    this.el = typeof container === 'string' ? document.querySelector(container) : container;
+    this.end = new Date(endTime);
+    this.label = label;
+    this.init();
+  }
+
+  init() {
+    this.el.classList.add('countdown-ulike');
+    const s = (cls, txt = '') => Object.assign(document.createElement('span'), { className: cls, textContent: txt });
+    const d = (cls) => Object.assign(document.createElement('div'), { className: `countdown-box ${cls}` });
+
+    this.labelEl = s('countdown-label', this.label);
+    this.days = d('days-box'); this.daysSep = s('countdown-separator', ':');
+    this.hours = d('hours-box'); this.mSep = s('countdown-separator', ':');
+    this.mins = d('minutes-box'); this.sSep = s('countdown-separator', ':');
+    this.secs = d('seconds-box');
+
+    this.el.append(this.labelEl, this.days, this.daysSep, this.hours, this.mSep, this.mins, this.sSep, this.secs);
+    this.update(); this.timer = setInterval(() => this.update(), 1000);
+  }
+
+  f(n) { return String(n).padStart(2, '0'); }
+
+  update() {
+    const t = this.end - new Date();
+    if (t <= 0) return (clearInterval(this.timer), this.render(0, 0, 0, 0));
+    const d = Math.floor(t / 864e5),
+      h = Math.floor(t / 36e5 % 24),
+      m = Math.floor(t / 6e4 % 60),
+      s = Math.floor(t / 1e3 % 60);
+    this.days.style.display = this.daysSep.style.display = d ? '' : 'none';
+    this.render(d, h, m, s);
+  }
+
+  render(d, h, m, s) {
+    this.days.textContent = this.f(d);
+    this.hours.textContent = this.f(h);
+    this.mins.textContent = this.f(m);
+    this.secs.textContent = this.f(s);
+  }
+}
