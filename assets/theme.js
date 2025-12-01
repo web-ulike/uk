@@ -6551,3 +6551,118 @@ class CountdownTimer {
     this.secs.textContent = this.f(s);
   }
 }
+
+class CountdownTimer1 {
+  constructor(container, endTime, options = {}) {
+    this.el = typeof container === 'string' ? document.querySelector(container) : container;
+    if (!this.el) return console.warn('CountdownTimer: container not found.');
+
+    this.end = new Date(endTime);
+    if (isNaN(this.end.getTime())) return console.error('CountdownTimer: Invalid endTime');
+
+    // 默认参数
+    const defaults = {
+      mainLabel: 'End in',
+      hideDaysWhenZero: true,
+      labels: {
+        days: 'Days',
+        hours: 'Hours',
+        minutes: 'Minutes',
+        seconds: 'Seconds'
+      }
+    };
+
+    this.opt = Object.assign({}, defaults, options);
+    this.timer = null;
+
+    this.init();
+  }
+
+  // 创建 DOM 元素
+  c(tag, cls, txt = '') {
+    const el = document.createElement(tag);
+    if (cls) el.className = cls;
+    if (txt) el.textContent = txt;
+    return el;
+  }
+
+  createUnitBox(cls, labelText) {
+    const box = this.c('div', `countdown-box ${cls}`);
+    const num = this.c('span', 'countdown-num');
+    const lab = this.c('span', 'countdown-unit-label', labelText);
+    box.append(num, lab);
+    return { box, num, lab };
+  }
+
+  init() {
+    this.el.classList.add('countdown-ulike');
+
+    // 主 label
+    this.labelEl = this.c('span', 'countdown-label', this.opt.mainLabel);
+
+    // 数字+文案
+    this.days = this.createUnitBox('days-box', this.opt.labels.days);
+    this.hours = this.createUnitBox('hours-box', this.opt.labels.hours);
+    this.mins = this.createUnitBox('minutes-box', this.opt.labels.minutes);
+    this.secs = this.createUnitBox('seconds-box', this.opt.labels.seconds);
+
+    // 分隔符
+    this.daysSep = this.c('span', 'countdown-separator', ':');
+    this.hoursSep = this.c('span', 'countdown-separator', ':');
+    this.minsSep = this.c('span', 'countdown-separator', ':');
+
+    // DOM 顺序
+    this.el.append(
+      this.labelEl,
+
+      this.days.box, this.daysSep,
+      this.hours.box, this.hoursSep,
+      this.mins.box, this.minsSep,
+      this.secs.box
+    );
+
+    this.update();
+    this.timer = setInterval(() => this.update(), 1000);
+  }
+
+  f(n) {
+    return String(n).padStart(2, '0');
+  }
+
+  update() {
+    // 若元素不在页面中，自动停止
+    if (!document.body.contains(this.el)) {
+      clearInterval(this.timer);
+      return;
+    }
+
+    const t = this.end - new Date();
+    if (t <= 0) {
+      clearInterval(this.timer);
+      return this.render(0, 0, 0, 0);
+    }
+
+    const d = Math.floor(t / 864e5);
+    const h = Math.floor((t / 36e5) % 24);
+    const m = Math.floor((t / 6e4) % 60);
+    const s = Math.floor((t / 1e3) % 60);
+
+    // 控制天数显示
+    if (d === 0 && this.opt.hideDaysWhenZero) {
+      this.days.box.style.display = 'none';
+      this.daysSep.style.display = 'none';
+    } else {
+      this.days.box.style.display = '';
+      this.daysSep.style.display = '';
+    }
+
+    this.render(d, h, m, s);
+  }
+
+  render(d, h, m, s) {
+    this.days.num.textContent = this.f(d);
+    this.hours.num.textContent = this.f(h);
+    this.mins.num.textContent = this.f(m);
+    this.secs.num.textContent = this.f(s);
+  }
+}
