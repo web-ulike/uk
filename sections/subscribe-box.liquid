@@ -285,33 +285,64 @@
     width:100%;
   }
 }
-.countdown-ulike {
-    display: flex;
-    align-items: center;
-    font-size: 21px;
-    gap: 6px;
-    margin-top: 30px;
-  }
 
-  .countdown-label {
-    font-size: 18px;
-  }
+.subscribe-box .countdown-ulike {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
 
-  .countdown-box {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 36px;
-    height: 36px;
-    background: white;
-    color: #111;
-    border-radius: 5px;
-  }
+/* 主标题例如：End in */
+.subscribe-box .countdown-label {
+  margin-right: 6px;
+  font-size: 16px;
+  color: #fff;
+}
 
-  .countdown-separator {
-    font-size: 21px;
-    color: white;
-  }
+/* 每个数字块 */
+.subscribe-box .countdown-box {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 2px;
+  width: auto;
+  height: auto;
+  background: none;
+}
+
+/* 数字外观：你可以按需要继续美化 */
+.subscribe-box .countdown-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #ffffff;
+  border-radius: 6px;
+  color: #000;
+  line-height: 1;
+  width: 36px;
+  height: 36px;
+  background: white;
+}
+
+/* 底部文案（Days / Hours / Minutes / Seconds） */
+.subscribe-box .countdown-unit-label {
+  margin-top: 4px;
+  font-size: 12px;
+  color: #fff;
+  line-height: 1;
+}
+
+/* 冒号始终垂直居中对齐数字 */
+.subscribe-box .countdown-separator {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 4px;
+  font-size: 20px;
+  color: #fff;
+  line-height: 1;
+  margin-top: -20px;
+}
 </style>
 
 <section class="section-box">
@@ -405,7 +436,17 @@
     
     {%- if section.settings.text6 != blank -%}
       window.addEventListener("DOMContentLoaded", () => {
-        new CountdownTimer('#countdown-ulike', "{{ section.settings.text6 }}", '{{ section.settings.text5 }}');
+        {% comment %} new CountdownTimer('#countdown-ulike', "{{ section.settings.text6 }}", '{{ section.settings.text5 }}'); {% endcomment %}
+        new CountdownTimer1('#countdown-ulike', "{{ section.settings.text6 }}",  {
+              mainLabel: '{{ section.settings.text5 }}',
+              hideDaysWhenZero: false, // 是否隐藏天数
+              labels: {
+                days: 'Days',
+                hours: 'Hrs',
+                minutes: 'Mins',
+                seconds: 'Secs'
+              }
+            });
       });
 
     {%- endif -%}
