@@ -1191,7 +1191,15 @@
     window.addEventListener("DOMContentLoaded", () => {
       {%- for block in section.blocks -%}
         {%- if block.settings.ulike_d1 != blank -%}
-          new CountdownTimer('#countdown-ulike-slide-{{ block.id }}', "{{ block.settings.ulike_d1 }}", '{{ block.settings.ulike_d }}');
+          new CountdownTimer1('#countdown-ulike-slide-{{ block.id }}', "{{ block.settings.ulike_d1 }}",  {
+              mainLabel: '{{ block.settings.ulike_d }}',
+              hideDaysWhenZero: false, // 是否隐藏天数
+              labels: {
+                days: 'Days',
+                hours: 'Hrs',
+                minutes: 'Mins',
+                seconds: 'Secs'
+            });
         {%- endif -%}
       {%- endfor -%}
     });
