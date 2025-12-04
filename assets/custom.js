@@ -467,7 +467,14 @@ function initGA() {
           bubbles: false,
         })
       );
-    }, 2400);
+    }, 3400);
+  });
+
+  document.body.addEventListener('docapp-discount-code-submit', (e) => { 
+    let code = $('.docapp-coupon-input--input').val()
+    if (code){
+      window.discountOnCartProApp.removeCode(window.discountOnCartProApp.codes[0]);
+    }
   });
 }
 
@@ -743,4 +750,14 @@ function generateGUID() {
 function validateEmail(t) {
   const e = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
   return e.test(t);
+}
+
+
+function loadCSS(href) {
+  let link = document.createElement("link");
+  link.rel = "stylesheet";
+  link.href = href;
+  link.media = "all"; // 使其立即生效
+  link.fetchPriority = "low"; // 低优先级加载
+  document.head.appendChild(link);
 }
