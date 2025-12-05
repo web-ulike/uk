@@ -1,18 +1,22 @@
 <style>
 .subscribe-box {
   padding: 50px 0;
-  
+  {%- if section.settings.is_full -%}
+    position: relative;
+    z-index: 1;
+  {%- endif -%}
 }
 
 .subscribe-box .subscribe-box-cont {
-  padding: 60px 120px;
   display: flex;
   align-items: center;
   gap: 40px;
-  overflow: hidden;
-  background: linear-gradient(180deg, #F7F6FF 0%, #E9E5FF 100%);
-  position: relative;
-  z-index: 1;
+  {% unless section.settings.is_full %}
+    padding: 60px 120px;
+    overflow: hidden;
+    position: relative;
+    z-index: 1;
+  {% endunless %}
 }
 
 .subscribe-box .img-bg{
@@ -249,7 +253,6 @@
 
 @media (max-width: 991px) {
   .subscribe-box {
-    background: linear-gradient(180deg, #F7F6FF 0%, #E9E5FF 100%);
     overflow: hidden;
   }
 
@@ -457,6 +460,12 @@
 {
   "name": "subscribe-box",
   "settings": [
+    {
+      "type": "checkbox",
+      "id": "is_full",
+      "label": "全屏背景",
+      "default":false
+    },
     {
       "type": "checkbox",
       "id": "color_w",
