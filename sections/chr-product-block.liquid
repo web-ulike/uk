@@ -2148,7 +2148,6 @@
       <div class="product-right-panel">
         
         <div class="title" a="{{ se_stts.title }}">
-          <!-- {{ se_stts.title }} -->
           <span>
             {% if product.selected_or_first_available_variant.metafields.custom.variant_title %}
               {{ product.selected_or_first_available_variant.metafields.custom.variant_title }}
@@ -2156,11 +2155,10 @@
               {{ product.title }}
             {% endif %}
           </span>
-          
-        </div>
-        {%- if se_stts.tag_txt != '' -%}
+          {%- if se_stts.tag_txt != '' -%}
             <div class="new-tag">{{ se_stts.tag_txt }}</div>
           {%- endif -%}
+        </div>
         <div class="sub-title">{{ se_stts.desc }}</div>
         <div class="shipped-text">{{ se_stts['shipped-text'] }}</div>
         <div class="loox-rating">
@@ -3046,7 +3044,7 @@
         const images = $('.gift-product-box').data('images').split(',');
         setTimeout(function(){
           $('.product-components_{{ se_id }} .price-block').find('.dis-price').html(price);
-          $('.product-components_{{ se_id }} .title').html(title);
+          $('.product-components_{{ se_id }} .title span').html(title);
           let id = $('.gift-product-box').data('id');
           // 设置图片
           pid_{{ section.id | replace: "template--", ""  }} = id;
@@ -3204,7 +3202,7 @@
         $('.product-components_{{ se_id }} .price-block .original-price').html('');
       }
       if(currentVariant.variantTitle != ''){
-        $('.product-components_{{ se_id }} .title').html(currentVariant.variantTitle);
+        $('.product-components_{{ se_id }} .title span').html(currentVariant.variantTitle);
       }
     }, 10)
   }
