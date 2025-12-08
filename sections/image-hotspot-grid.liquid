@@ -1,0 +1,856 @@
+<section class="routine-section routine-section--{{ section.id }}">
+  <!-- 顶部标题区域 -->
+  <div class="routine-section__header">
+    <h2 class="routine-section__title ">
+      {{ section.settings.heading }}
+    </h2>
+    <p class="routine-section__subtitle line-top">
+      {{ section.settings.subheading }}
+    </p>
+  </div>
+
+  <!-- 3 列 × 每列上下两块 -->
+  <div class="routine-grid">
+    <!-- 左列：大机身 + SkinSensor -->
+    <div class="routine-grid__col">
+      <!-- 左上：大机身图 -->
+      <div class="routine-tile routine-tile--large">
+        {% assign img_desktop = section.settings.left_top_image %}
+        {% assign img_mobile = section.settings.left_top_image_mobile %}
+        {% if img_desktop != blank or img_mobile != blank %}
+          {% assign img_src_desktop = img_desktop | default: img_mobile %}
+          {% assign img_src_mobile = img_mobile | default: img_desktop %}
+          <picture>
+            <source
+              media="(max-width: 768px)"
+              srcset="{{ img_src_mobile | image_url: width: 400 }}"
+            >
+            <img
+              src="{{ img_src_desktop | image_url: width: 900 }}"
+              alt="{{ section.settings.left_top_alt | escape }}"
+              class="routine-tile__image"
+              loading="lazy"
+            >
+          </picture>
+        {% endif %}
+      </div>
+
+      <!-- 左下：SkinSensor -->
+      <div class="routine-tile routine-tile--small first-custom">
+        <div class="routine-tile__label">
+          <div class="routine-tile__label-title">
+            {{ section.settings.left_bottom_label_title }}
+          </div>
+          <div class="routine-tile__label-text">
+            {{ section.settings.left_bottom_label_text }}
+          </div>
+        </div>
+
+        {% if section.settings.left_bottom_popup_id != blank %}
+          <button class="routine-tile__plus" type="button" data-popup="{{ section.settings.left_bottom_popup_id }}">
+            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40" fill="none">
+              <path d="M20 0.524414C30.7561 0.524414 39.4756 9.24391 39.4756 20C39.4756 30.7561 30.7561 39.4756 20 39.4756C9.24391 39.4756 0.524414 30.7561 0.524414 20C0.524414 9.24391 9.24391 0.524414 20 0.524414Z" fill="white" stroke="#FFFFFC" stroke-width="1.04877"/>
+              <line x1="11.4983" y1="19.5002" x2="29.4983" y2="19.5002" stroke="#190A0A" stroke-linecap="round"/>
+              <line x1="20.4983" y1="28.5002" x2="20.4983" y2="11.5002" stroke="#190A0A" stroke-linecap="round"/>
+            </svg>
+          </button>
+        {% endif %}
+
+        <div class="right-img">
+          {% assign img_desktop = section.settings.left_bottom_image %}
+          {% assign img_mobile = section.settings.left_bottom_image_mobile %}
+          {% if img_desktop != blank or img_mobile != blank %}
+            {% assign img_src_desktop = img_desktop | default: img_mobile %}
+            {% assign img_src_mobile = img_mobile | default: img_desktop %}
+            <picture>
+              <source
+                media="(max-width: 768px)"
+                srcset="{{ img_src_mobile | image_url: width: 400 }}"
+              >
+              <img
+                src="{{ img_src_desktop | image_url: width: 600 }}"
+                alt="{{ section.settings.left_bottom_alt | escape }}"
+                loading="lazy"
+              >
+            </picture>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <!-- 中列：冰敷头 + Visible results -->
+    <div class="routine-grid__col col2-flex">
+      <!-- 中上：Next-Gen Ice Cooling -->
+      <div class="routine-tile col2-top">
+        {% assign img_desktop = section.settings.center_top_image %}
+        {% assign img_mobile = section.settings.center_top_image_mobile %}
+        {% if img_desktop != blank or img_mobile != blank %}
+          {% assign img_src_desktop = img_desktop | default: img_mobile %}
+          {% assign img_src_mobile = img_mobile | default: img_desktop %}
+          <picture>
+            <source
+              media="(max-width: 768px)"
+              srcset="{{ img_src_mobile | image_url: width: 400 }}"
+            >
+            <img
+              src="{{ img_src_desktop | image_url: width: 900 }}"
+              alt="{{ section.settings.center_top_alt | escape }}"
+              class="routine-tile__image"
+              loading="lazy"
+            >
+          </picture>
+        {% endif %}
+
+        <div class="col2-top__content">
+          <div class="col2-top__title">Next-Gen Ice Cooling</div>
+          <p class="col2-top__subtitle">Comfort you can feel.</p>
+        </div>
+
+        {% if section.settings.center_top_popup_id != blank %}
+          <button class="routine-tile__plus" type="button" data-popup="{{ section.settings.center_top_popup_id }}">
+            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40" fill="none">
+              <path d="M20 0.524414C30.7561 0.524414 39.4756 9.24391 39.4756 20C39.4756 30.7561 30.7561 39.4756 20 39.4756C9.24391 39.4756 0.524414 30.7561 0.524414 20C0.524414 9.24391 9.24391 0.524414 20 0.524414Z" fill="white" stroke="#FFFFFC" stroke-width="1.04877"/>
+              <line x1="11.4983" y1="19.5002" x2="29.4983" y2="19.5002" stroke="#190A0A" stroke-linecap="round"/>
+              <line x1="20.4983" y1="28.5002" x2="20.4983" y2="11.5002" stroke="#190A0A" stroke-linecap="round"/>
+            </svg>
+          </button>
+        {% endif %}
+      </div>
+
+      <!-- 中下：Visible Results in 2 Weeks -->
+      <div class="routine-tile col2-bottom">
+        {% assign img_desktop = section.settings.center_bottom_image %}
+        {% assign img_mobile = section.settings.center_bottom_image_mobile %}
+        {% if img_desktop != blank or img_mobile != blank %}
+          {% assign img_src_desktop = img_desktop | default: img_mobile %}
+          {% assign img_src_mobile = img_mobile | default: img_desktop %}
+          <picture>
+            <source
+              media="(max-width: 768px)"
+              srcset="{{ img_src_mobile | image_url: width: 400 }}"
+            >
+            <img
+              src="{{ img_src_desktop | image_url: width: 900 }}"
+              alt="{{ section.settings.center_bottom_alt | escape }}"
+              class="routine-tile__image"
+              loading="lazy"
+            >
+          </picture>
+        {% endif %}
+
+        <div class="col2-bottom__content">
+          <div class="col2-bottom__title">Visible Results in 2 Weeks</div>
+        </div>
+        <div class="col2-bottom__right">
+          <div class="col2-bottom__text">Smooth skin that lasts</div>
+        </div>
+
+        {% if section.settings.center_bottom_popup_id != blank %}
+          <button class="routine-tile__plus" type="button" data-popup="{{ section.settings.center_bottom_popup_id }}">
+            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40" fill="none">
+              <path d="M20 0.524414C30.7561 0.524414 39.4756 9.24391 39.4756 20C39.4756 30.7561 30.7561 39.4756 20 39.4756C9.24391 39.4756 0.524414 30.7561 0.524414 20C0.524414 9.24391 9.24391 0.524414 20 0.524414Z" fill="white" stroke="#FFFFFC" stroke-width="1.04877"/>
+              <line x1="11.4983" y1="19.5002" x2="29.4983" y2="19.5002" stroke="#190A0A" stroke-linecap="round"/>
+              <line x1="20.4983" y1="28.5002" x2="20.4983" y2="11.5002" stroke="#190A0A" stroke-linecap="round"/>
+            </svg>
+          </button>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- 右列：Before/After + 4 Power Modes -->
+    <div class="routine-grid__col col3-relative">
+      <!-- 右上：Before / After -->
+      <div class="routine-tile routine-tile--small">
+        {% assign img_desktop = section.settings.right_top_image %}
+        {% assign img_mobile = section.settings.right_top_image_mobile %}
+        {% if img_desktop != blank or img_mobile != blank %}
+          {% assign img_src_desktop = img_desktop | default: img_mobile %}
+          {% assign img_src_mobile = img_mobile | default: img_desktop %}
+          <picture>
+            <source
+              media="(max-width: 768px)"
+              srcset="{{ img_src_mobile | image_url: width: 400 }}"
+            >
+            <img
+              src="{{ img_src_desktop | image_url: width: 900 }}"
+              alt="{{ section.settings.right_top_alt | escape }}"
+              class="routine-tile__image"
+              loading="lazy"
+            >
+          </picture>
+        {% endif %}
+      </div>
+
+      <!-- 右下：4 Power Modes -->
+      <div class="routine-tile col3-bottom">
+        {% assign img_desktop = section.settings.right_bottom_image %}
+        {% assign img_mobile = section.settings.right_bottom_image_mobile %}
+        {% if img_desktop != blank or img_mobile != blank %}
+          {% assign img_src_desktop = img_desktop | default: img_mobile %}
+          {% assign img_src_mobile = img_mobile | default: img_desktop %}
+          <picture>
+            <source
+              media="(max-width: 768px)"
+              srcset="{{ img_src_mobile | image_url: width: 400 }}"
+            >
+            <img
+              src="{{ img_src_desktop | image_url: width: 900 }}"
+              alt="{{ section.settings.right_bottom_alt | escape }}"
+              class="routine-tile__image"
+              loading="lazy"
+            >
+          </picture>
+        {% endif %}
+
+        <div class="routine-tile__label">
+          <div class="routine-tile__label-title">
+            {{ section.settings.right_bottom_label_title }}
+          </div>
+          <div class="routine-tile__label-text">
+            {{ section.settings.right_bottom_label_text }}
+          </div>
+        </div>
+        {% if section.settings.right_bottom_popup_id != blank %}
+          <button class="routine-tile__plus" type="button" data-popup="{{ section.settings.right_bottom_popup_id }}">
+            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40" fill="none">
+              <path d="M20 0.524414C30.7561 0.524414 39.4756 9.24391 39.4756 20C39.4756 30.7561 30.7561 39.4756 20 39.4756C9.24391 39.4756 0.524414 30.7561 0.524414 20C0.524414 9.24391 9.24391 0.524414 20 0.524414Z" fill="white" stroke="#FFFFFC" stroke-width="1.04877"/>
+              <line x1="11.4983" y1="19.5002" x2="29.4983" y2="19.5002" stroke="#190A0A" stroke-linecap="round"/>
+              <line x1="20.4983" y1="28.5002" x2="20.4983" y2="11.5002" stroke="#190A0A" stroke-linecap="round"/>
+            </svg>
+          </button>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .routine-section {
+    padding: 40px 0 60px;
+    background: #020b20;
+    color: #fff;
+  }
+
+  .routine-section__header {
+    text-align: center;
+    margin-bottom: 44px;
+  }
+
+  .routine-section__title {
+    font-size: 44px;
+    font-weight: var(--heading-font-weight);
+    margin: 0px;
+  }
+
+  .routine-section__subtitle {
+    margin: 0;
+    font-size: 18px;
+  }
+
+  /* ====== PC：3 列，每列上下两块 ====== */
+  .routine-grid {
+    display: grid;
+    gap: 0;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .routine-grid__col {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .routine-tile {
+    position: relative;
+    overflow: hidden;
+    border: 1px solid #E4DDDD;
+    border-left: 0px;
+  }
+
+  .routine-tile__image {
+    display: block;
+    width: 100%;
+    user-drag: none;
+    -webkit-user-drag: none;
+    user-select: none;
+    -webkit-user-select: none;
+    pointer-events: none; /* 防拖动&交互 */
+  }
+
+  .routine-tile__label {
+    position: absolute;
+    left: 40px;
+    bottom: 50px;
+    z-index: 1;
+  }
+
+  .routine-tile__label--center {
+    left: 50%;
+    bottom: 24px;
+    transform: translateX(-50%);
+    text-align: center;
+  }
+
+  .routine-tile__label--top-left {
+    top: 12px;
+    bottom: auto;
+    display: flex;
+    gap: 16px;
+  }
+
+  .routine-tile__label-title {
+    font-size: 1.6vw;
+    color: #FFFFFC;
+    line-height: 120%;
+    margin-bottom: 10px;
+  }
+
+  .routine-tile__label-text {
+    font-size: 16px;
+    line-height: 135%;
+  }
+
+  .routine-grid .routine-tile__plus {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #fff;
+    color: #000;
+    font-size: 30px;
+    font-weight: 300;
+    line-height: 1;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 15px;
+    position: absolute;
+    transition: background 0.3s ease-in;
+    animation: pulse-shadow 2s infinite;
+    bottom: 40px;
+    left: 40px;
+  }
+
+  .routine-grid .routine-tile__plus:before,
+  .routine-grid .routine-tile__plus:after {
+    content: '';
+    display: block;
+    width: 15px;
+    height: 2px;
+    background: transparent;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    position: absolute;
+    top: 50%;
+    z-index: 2;
+  }
+
+  .routine-grid .routine-tile__plus:after {
+    transform: translate(-50%,-50%) rotate(90deg);
+  }
+
+  .routine-grid .routine-tile__plus:hover {
+    background: #fff;
+  }
+
+  @keyframes pulse-shadow {
+    0% {
+      box-shadow: 0 0 0 0 rgba(255,255,255, 0.7);
+    }
+
+    70% {
+      box-shadow: 0 0 0 10px rgba(183, 170, 222, 0);
+    }
+
+    100% {
+      box-shadow: 0 0 0 0 rgba(183, 170, 222, 0);
+    }
+  }
+
+  .routine-tile__plus span {
+    transform: translateY(-1px);
+  }
+
+  .routine-tile--open .routine-tile__popover {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+
+  .routine-tile--open .routine-tile__plus {
+    transform: rotate(45deg);
+  }
+
+  .first-custom {
+    height: 238px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: 2.5vw;
+    flex: 1;
+    border-top: 0px;
+  }
+
+  .first-custom img {
+    width: 15vw;
+  }
+
+  .first-custom .routine-tile__plus {
+    top: 2vw;
+    left: 40px;
+  }
+
+  .col2-top {
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    cursor: pointer;
+    border-bottom: 0px;
+  }
+  {% comment %} .col2-top:hover .col2-top__content {
+    transform: translateY(25%); /* 上移 8px，可自行调整 */
+  } {% endcomment %}
+
+  .col2-top .col2-top__content {
+    position: absolute;
+    z-index: 2;
+    text-align: center;
+    padding: 0;
+    margin-top: 5%;
+    width: 70%;
+  }
+
+  .col2-top .routine-tile__image {
+    width: 240px;
+    margin-top: -45%;
+    transition: transform 0.6s ease;
+  }
+  .col2-top:hover .routine-tile__image{
+    transform: translateY(-30%);
+    position: relative;
+  }
+
+
+  .col2-top .col2-top__title {
+    margin: 0;
+    font-weight: 500;
+    font-size: 4.2vw;
+    line-height: 1;
+    letter-spacing: 0.02em;
+    color: rgba(123, 187, 255, 0.9);
+    background: radial-gradient(201.95% 52.18% at 50% 50%, #B6EBEF 0%, #0070CA 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .col2-top .col2-top__subtitle {
+    margin: 0;
+    font-size: 18px;
+    color: #ffffff;
+  }
+   .col2-bottom__right {
+    position: absolute;
+    top: 20px;
+    right: 35px;
+    color: #FBFAF4;
+    font-size: 18px;
+    line-height: 120%;
+   }
+
+  .col2-bottom .col2-bottom__content {
+    position: absolute;
+    bottom: 40px;
+    left: 40px;
+    color: #FBFAF4;
+    font-size: 1.6vw;
+    line-height: 120%;
+    width: 34%;
+  }
+
+  .col2-bottom .routine-tile__plus {
+    bottom: 40px;
+    left: auto;
+    right: 40px;
+  }
+  .col3-relative .routine-tile{
+     border-right: 0px;
+  }
+  .col3-bottom {
+    border-top: 0px;
+    border-right: 0px;
+  }
+
+  .col3-bottom .routine-tile__plus {
+    left: 30px;
+    bottom: 37%;
+  }
+
+  .col3-bottom .routine-tile__label {
+    left: 30px;
+    width: 43%;
+  }
+
+  .col3-bottom .routine-tile__label-title {
+    font-size: 2.1vw;
+    line-height: 120%;
+  }
+
+  /* ====== 响应式：平板 / 移动端 ====== */
+  @media (max-width: 1024px) {
+    .routine-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      height: auto;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .routine-section__title {
+      font-size: 26px;
+    }
+    .routine-section__subtitle {
+      font-size: 12px;
+    }
+
+    .routine-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .routine-tile {
+      border-right: 0px;
+    }
+    .routine-tile__label-title {
+      font-size: 18px;
+      margin-bottom: 0px;
+    }
+    .routine-tile__label-text {
+      font-size: 12px;
+    }
+
+
+    .routine-grid .routine-tile__plus {
+      width: 30px;
+      height: 30px;
+    }
+
+    .first-custom {
+      height: auto;
+      padding: 25px 20px 30px;
+      justify-content: space-between;
+      align-items: inherit;
+    }
+    .first-custom .routine-tile__label {
+      position: inherit;
+      top: 0px;
+      bottom: 0px;
+      left: 0px;
+      text-align: left;
+    }
+    .first-custom .right-img {
+      width: 55%;
+    }
+    .first-custom .routine-tile__plus {
+      width: 30px;
+      height: 30px;
+      top: inherit;
+      left: 20px;
+      z-index: 4;
+      bottom: 35px;
+      margin: 0px;
+    }
+    .first-custom img {
+      width: 100%;
+    }
+
+    .col2-flex {
+      flex-direction: inherit;
+    }
+    .col2-top {
+      border-top: 0px;
+      border-right: 1px solid #E4DDDD;
+    }
+
+    .col2-top .col2-top__title {
+      font-size: 26px;
+      margin-top: 0px;
+    }
+    .col2-top .col2-top__subtitle {
+      font-size: 12px;
+    }
+    .col2-top .routine-tile__image {
+       width: 140px;
+        z-index: 2;
+        position: absolute;
+        top: 0px;
+        left: 0;
+        bottom: 0px;
+        right: 0px;
+        text-align: center;
+        margin: 0 auto;
+    }
+    .col2-top  .routine-tile__plus {
+      text-align: center;
+      left: inherit;
+    }
+
+    .col2-bottom {
+      width: 50%;
+      border-top: 0px;
+      border-bottom: 0px;
+    }
+    .col2-bottom .routine-tile__image {
+      height: 100%;
+    }
+    .col2-bottom .col2-bottom__content {
+      width: 60%;
+      font-size: 18px;
+      bottom: inherit;
+      top: 15px;
+      left: 12px;
+    }
+    .col2-bottom .routine-tile__plus {
+      bottom: inherit;
+      top: 60px;
+      left: 12px;
+    }
+    .col2-bottom__right {
+        top: inherit;
+        bottom: 15px;
+        right: 10px;
+        font-size: 12px;
+    }
+
+    .col2-top:hover .col2-top__content,
+    .col2-top:hover .routine-tile__image {
+      transform: none;
+    }
+
+
+    .col3-relative {
+       flex-direction: column-reverse;
+    }
+    .col3-relative .col3-bottom{
+       border-bottom: 0px;
+       border-top: 1px solid #E4DDDD;
+    }
+
+    .col3-bottom .routine-tile__label-title {
+      font-size: 18px;
+    }
+
+    .col3-bottom .routine-tile__label {
+      left: inherit;
+      right: 20px;
+      bottom: 20px;
+      text-align: right;
+    }
+    .col3-bottom .routine-tile__plus {
+      left: inherit;
+      right: 20px;
+      bottom: 70px;
+    }
+
+
+
+  }
+</style>
+
+<script>
+  (function () {
+    var tiles = document.querySelectorAll('.routine-section--{{ section.id }} .routine-tile');
+
+    tiles.forEach(function (tile) {
+      var btn = tile.querySelector('.routine-tile__plus');
+      if (!btn) return;
+
+      btn.addEventListener('click', function () {
+        var name = this.getAttribute('data-popup');
+
+        // 有 data-popup：走你现在的视频弹窗逻辑
+        if (name) {
+          var videoEl = $('.' + name).find('.video-wrapper__play-button');
+          if (videoEl.length) {
+            videoEl.click();
+          }
+          $('.' + name).addClass('active');
+        } else {
+          // 没有 data-popup：切换本地 popover
+          tile.classList.toggle('routine-tile--open');
+        }
+      });
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Routine grid (3x2)",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Making your routine easier."
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Up to 12 months of smooth skin."
+    },
+    {
+      "type": "image_picker",
+      "id": "left_top_image",
+      "label": "Left top image (desktop)"
+    },
+    {
+      "type": "image_picker",
+      "id": "left_top_image_mobile",
+      "label": "Left top image (mobile)"
+    },
+    {
+      "type": "text",
+      "id": "left_top_alt",
+      "label": "Left top image alt",
+      "default": "Device on skin"
+    },
+    {
+      "type": "image_picker",
+      "id": "left_bottom_image",
+      "label": "Left bottom image (desktop)"
+    },
+    {
+      "type": "image_picker",
+      "id": "left_bottom_image_mobile",
+      "label": "Left bottom image (mobile)"
+    },
+    {
+      "type": "text",
+      "id": "left_bottom_alt",
+      "label": "Left bottom image alt",
+      "default": "Skin sensor shades"
+    },
+    {
+      "type": "text",
+      "id": "left_bottom_label_title",
+      "label": "Left bottom title",
+      "default": "SkinSensor"
+    },
+    {
+      "type": "text",
+      "id": "left_bottom_label_text",
+      "label": "Left bottom text",
+      "default": "Auto-adjusts to your skin."
+    },
+    {
+      "type": "text",
+      "id": "left_bottom_popup_id",
+      "label": "Left bottom popup class (data-popup)",
+      "default": "A3-2",
+      "info": "用于匹配你页面上的弹窗容器 class，例如 A3-2"
+    },
+    {
+      "type": "image_picker",
+      "id": "center_top_image",
+      "label": "Center top image (desktop)"
+    },
+    {
+      "type": "image_picker",
+      "id": "center_top_image_mobile",
+      "label": "Center top image (mobile)"
+    },
+    {
+      "type": "text",
+      "id": "center_top_alt",
+      "label": "Center top image alt",
+      "default": "Next-Gen ice cooling"
+    },
+    {
+      "type": "text",
+      "id": "center_top_popup_id",
+      "label": "Center top popup class (data-popup)",
+      "default": "A3-1"
+    },
+    {
+      "type": "image_picker",
+      "id": "center_bottom_image",
+      "label": "Center bottom image (desktop)"
+    },
+    {
+      "type": "image_picker",
+      "id": "center_bottom_image_mobile",
+      "label": "Center bottom image (mobile)"
+    },
+    {
+      "type": "text",
+      "id": "center_bottom_alt",
+      "label": "Center bottom image alt",
+      "default": "Visible results in 2 weeks"
+    },
+    {
+      "type": "text",
+      "id": "center_bottom_popup_id",
+      "label": "Center bottom popup class (data-popup)",
+      "default": "A3-3"
+    },
+    {
+      "type": "image_picker",
+      "id": "right_top_image",
+      "label": "Right top image (desktop)"
+    },
+    {
+      "type": "image_picker",
+      "id": "right_top_image_mobile",
+      "label": "Right top image (mobile)"
+    },
+    {
+      "type": "text",
+      "id": "right_top_alt",
+      "label": "Right top image alt",
+      "default": "Before and after"
+    },
+    {
+      "type": "image_picker",
+      "id": "right_bottom_image",
+      "label": "Right bottom image (desktop)"
+    },
+    {
+      "type": "image_picker",
+      "id": "right_bottom_image_mobile",
+      "label": "Right bottom image (mobile)"
+    },
+    {
+      "type": "text",
+      "id": "right_bottom_alt",
+      "label": "Right bottom image alt",
+      "default": "4 power modes"
+    },
+    {
+      "type": "text",
+      "id": "right_bottom_label_title",
+      "label": "Right bottom title",
+      "default": "4 Power Modes"
+    },
+    {
+      "type": "text",
+      "id": "right_bottom_label_text",
+      "label": "Right bottom text",
+      "default": "Tailored treatments."
+    },
+    {
+      "type": "text",
+      "id": "right_bottom_popup_id",
+      "label": "Right bottom popup class (data-popup)",
+      "default": "A3-4"
+    }
+  ],
+  "presets": [
+    {
+      "name": "image-hotspot-grid",
+      "category": "Image"
+    }
+  ]
+}
+{% endschema %}
