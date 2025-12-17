@@ -3348,6 +3348,17 @@
           event.preventDefault();
         }
       }, { passive: false });
+      this.addEventListener("touchend", (event) => {
+        const touchClientX = event.changedTouches[0].clientX - this.firstTouchClientX;
+        if (Math.abs(touchClientX) > threshold) {
+          event.preventDefault();
+          if(touchClientX<0){
+            this.next()
+          }else{
+            this.previous()
+          }
+        }
+      });
     }
   };
 
