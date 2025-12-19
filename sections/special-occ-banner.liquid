@@ -7,7 +7,9 @@
 
 .special-occ-banner .container{
   display: flex;
-  justify-content: flex-end;
+  {% unless section.settings.pc_txt_left %}
+   justify-content: flex-end;
+  {% endunless %}
 }
 
 .special-occ-banner .img{
@@ -32,10 +34,10 @@
   max-width: 470px;
   /* padding-right: 35px; */
   box-sizing: border-box;
+  color: {{ section.settings.txt_color }};
 }
 
 .special-occ-banner .title-diy {
-  color: #000;
   line-height: 1;
   margin-bottom: 20px;
   text-align: left;
@@ -43,7 +45,6 @@
 
 .special-occ-banner .sub-txt {
   font-size: 20px;
-  color: #000;
   line-height: 1.2;
   margin-bottom: 30px;
   max-width: 326px;
@@ -192,62 +193,8 @@
 .breadcrumbs-box{
   display:none;
 }
-  @media (max-width:1200px) {
-    .special-occ-banner .banner-txt{
-      max-width:430px;
-    }
-    .special-occ-banner .title-diy{
-      font-size:35px;
-    }
-  }
-@media (max-width:991px) {
-  .special-occ-banner .banner-cont{
-    top: auto;
-    transform: translateY(0);
-    bottom: 40px;
-  }
-  .special-occ-banner .mb-box {
-      display: block;
-  }
 
-  .special-occ-banner .pc-box {
-      display: none;
-  }
-
-  .special-occ-banner .banner-txt {
-      width: 100%;
-      max-width: none;
-      padding: 0;
-  }
-
-  .special-occ-banner .sub-txt {
-      margin-bottom: 20px;
-      font-size: 18px;
-  }
-
-  .special-occ-banner .select-box {
-      display: block;
-  }
-
-  .special-occ-banner .select-box .select-o {
-      margin: 0;
-      height: 50px;
-  }
-
-  .special-occ-banner .select-box .select-btn {
-      margin-top: 20px;
-      width: 100%;
-      height: 50px;
-  }
-  .special-occ-banner .select-box .select-o::before {
-    width: 13px;
-    height: 13px;
-    margin-top: -5px;
-  }
-}
-</style>
-<style>
-  .sb-cs__wrapper {
+.sb-cs__wrapper {
     display: flex;
     align-items: center;
     {% comment %} height: 100%; {% endcomment %}
@@ -297,7 +244,77 @@
     margin: 0;
     text-decoration: none !important;
   }
-  </style>
+  
+  @media (max-width:1200px) {
+    .special-occ-banner .banner-txt{
+      max-width:430px;
+    }
+    .special-occ-banner .title-diy{
+      font-size:35px;
+    }
+  }
+@media (max-width:991px) {
+  .special-occ-banner .banner-cont{
+    
+    transform: translateY(0);
+    {% if section.settings.m_txt_top %}
+      top: 40px;
+      text-align: center;
+    {% else %}
+      top: auto;
+      bottom: 40px;
+    {% endif %}
+  }
+
+  {% if section.settings.m_txt_top %}
+    .special-occ-banner .title-diy {
+      text-align: center;
+    }
+    .sb-cs__wrapper {
+      justify-content: center;
+    }
+  {% endif %}
+
+  .special-occ-banner .mb-box {
+      display: block;
+  }
+
+  .special-occ-banner .pc-box {
+      display: none;
+  }
+
+  .special-occ-banner .banner-txt {
+      width: 100%;
+      max-width: none;
+      padding: 0;
+  }
+
+  .special-occ-banner .sub-txt {
+      margin-bottom: 20px;
+      font-size: 18px;
+  }
+
+  .special-occ-banner .select-box {
+      display: block;
+  }
+
+  .special-occ-banner .select-box .select-o {
+      margin: 0;
+      height: 50px;
+  }
+
+  .special-occ-banner .select-box .select-btn {
+      margin-top: 20px;
+      width: 100%;
+      height: 50px;
+  }
+  .special-occ-banner .select-box .select-o::before {
+    width: 13px;
+    height: 13px;
+    margin-top: -5px;
+  }
+}
+</style>
 
 <script defer src="https://cdn.jsdelivr.net/npm/@sheerid/jslib@1/sheerid.js"></script>
 <section class="section-box">
@@ -418,6 +435,24 @@
     "type": "image_picker",
     "id": "image1",
     "label": "Mobile Image"
+  },
+  {
+    "type": "checkbox",
+    "id": "pc_txt_left",
+    "label": "PC文案居左",
+    "default": false
+  },
+  {
+    "type": "checkbox",
+    "id": "m_txt_top",
+    "label": "M文案顶部",
+    "default": false
+  },
+  {
+    "type": "color",
+    "id": "txt_color",
+    "label": "文案颜色",
+    "default": "#000000"
   },
   {
     "type": "text",
