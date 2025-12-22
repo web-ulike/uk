@@ -993,7 +993,7 @@
           {% for variant in product.variants %}
             {
               vid: {{ variant.id }},
-              position: `{{ variant.featured_media.position }}`,
+              position: `{{ variant.featured_media.position | default: 1 }}`,
               url: `{{ variant.metafields.custom["3d_url"] }}`,
               price: `{{ variant.price | money }}`,
               page_price: `{{ variant.metafields.custom["page_price"] | times: 100 | money }}`,
