@@ -449,15 +449,17 @@
         <h3 class="use-step-title">{{ section.settings.title }}</h3>
       {%- endif -%}
       <div class="use-step-cont">
-        <div class="use-step-jump" data-id="{{ section.settings.text1 }}">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-            <path d="M7 5.99854L12 10.9985L17 5.99854" stroke="#E0004D" stroke-linecap="round"
-              stroke-linejoin="round" />
-            <path d="M7 10.9985L12 15.9985L17 10.9985" stroke="#E0004D" stroke-linecap="round"
-              stroke-linejoin="round" />
-          </svg>
-          FAQs
-        </div>
+        {%- if section.settings.text != blank -%}
+          <div class="use-step-jump" data-id="{{ section.settings.text1 }}">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <path d="M7 5.99854L12 10.9985L17 5.99854" stroke="#E0004D" stroke-linecap="round"
+                stroke-linejoin="round" />
+              <path d="M7 10.9985L12 15.9985L17 10.9985" stroke="#E0004D" stroke-linecap="round"
+                stroke-linejoin="round" />
+            </svg>
+            {{ section.settings.text }}
+          </div>
+        {%- endif -%}
         <div class="use-step-tab">
           {%- for block in section.blocks -%}
             <div class="use-step-tab-item {% if forloop.index == 1 %}active{% endif %}">{{ block.settings.text }}</div>
