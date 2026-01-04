@@ -1,0 +1,309 @@
+<style>
+  .faq-classify{
+    padding: 70px 0 86px 0;
+  }
+  
+  .faq-classify .faq-classify-cont{
+    display: flex;
+    align-items: flex-start;
+    gap:40px;
+  }
+  
+  .faq-classify .faq-classify-header{
+    flex:1;
+    flex-shrink: 0;
+  }
+  
+  .faq-classify .faq-classify-right{
+    width: 1070px;
+    max-width: 100%;
+  }
+  
+  .faq-classify .faq-classify-navigation{
+    display: flex;
+    overflow-x: auto;
+    gap: 23px;
+    margin-bottom:40px;
+  }
+  
+  .faq-classify .faq-classify-nav-item{
+    flex-shrink: 0;
+    color: #000;
+    font-size: 16px;
+    line-height: 1;
+    height:38px;
+    padding:0 24px;
+    display:flex;
+    align-items: center;
+    border:1px solid #595959;
+    cursor: pointer;
+    border-radius: 38px;
+  }
+  
+  .faq-classify .faq-classify-nav-item.active{
+    background:#000;
+    color:#fff;
+    border-color:#000;
+  }
+
+  .faq-classify .img-faq{
+    width:100%;
+    margin-top:15px;
+  }
+  
+  @media screen and (min-width: 741px) {
+     .faq-classify .faq__item .collapsible-toggle,  .faq-classify .faq__item .collapsible__content {
+      padding-left: 0px;
+      padding-right: 0px;
+    }
+  }
+  
+  .faq-classify .faq-classify-wrapper{
+    display:none;
+  }
+
+  .faq-classify .faq-classify-wrapper.active{
+    display:block;
+  }
+  @media screen and (max-width: 991px) {
+    .faq-classify{
+      padding: 50px 0;
+    }
+    
+    .faq-classify .faq-classify-navigation{
+      margin-bottom:10px;
+      gap:12px;
+    }
+
+    .faq-classify .faq-classify-nav-item{
+      font-size:12px;
+      padding:0 12px;
+      height:30px;
+    }
+    
+    .faq-classify .faq-classify-cont{
+      flex-direction: column;
+      align-items: normal;
+      gap: 30px;
+    }
+    
+    .faq-classify .faq-classify-header{
+      text-align: center;
+    }
+    
+    .faq-classify .faq__item{
+      padding:0;
+    }
+  }
+</style>
+
+{%- assign categories = section.blocks | where: 'type', 'category' -%}
+{%- assign questions = section.blocks | where: 'type', 'question' -%}
+{% assign se_id = section.id %}
+
+<section class="section-box">
+  <div class="faq-classify faq-classify_{{ se_id }}">
+    <div class="container">
+      <div class="faq-classify-cont">
+        {%- if section.settings.title != blank  -%}
+          <header class="faq-classify-header">
+            {%- if section.settings.title != blank -%}
+              <h2 class="heading h2">{{ section.settings.title | escape }}</h2>
+            {%- endif -%}
+          </header>
+        {%- endif -%}
+
+        <div class="faq-classify-right">
+          {%- if categories.size > 0 -%}
+            <div class="faq-classify-navigation">
+              {%- for category in categories -%}
+                <div class="faq-classify-nav-item {% if forloop.index == 1 %}active{% endif %}">
+                 {{ category.settings.title | escape }}
+                </div>
+              {%- endfor -%}
+            </div>
+          {%- endif -%}
+          <div class="faq-classify-list" 
+            {% if section.settings.enable_faq_schema -%}
+              itemscope itemtype="https://schema.org/FAQPage"
+            {%- endif %}
+          >
+            {%- for category in categories -%}
+              {%- assign categorytxt = category.settings.title | strip | downcase -%}
+
+              {%- assign has_question = false -%}
+              {%- for block in questions -%}
+                {%- assign catxt = block.settings.text | strip | downcase -%}
+                {%- if categorytxt == catxt -%}
+                  {%- assign has_question = true -%}
+                  {%- break -%}
+                {%- endif -%}
+              {%- endfor -%}
+
+              {%- if has_question -%}
+                <div class="faq-classify-wrapper {% if forloop.first %}active{% endif %}">
+
+                  {%- assign is_first_question = true -%}
+
+                  {%- for block in questions -%}
+                    {%- assign catxt = block.settings.text | strip | downcase -%}
+                    {%- if categorytxt == catxt -%}
+                      <div class="faq__item"
+                          itemscope
+                          itemprop="mainEntity"
+                          itemtype="https://schema.org/Question">
+
+                        <button
+                          is="toggle-button"
+                          class="collapsible-toggle heading"
+                          aria-controls="block-{{ section.id }}-{{ block.id }}"
+                          aria-expanded="{% if is_first_question %}true{% else %}false{% endif %}"
+                          itemprop="name">
+                          {{ block.settings.title }}
+                          <span class="animated-plus"></span>
+                        </button>
+
+                        <collapsible-content
+                          id="block-{{ section.id }}-{{ block.id }}"
+                          class="collapsible anchor"
+                          itemscope
+                          itemprop="acceptedAnswer"
+                          itemtype="https://schema.org/Answer"
+                          {% if is_first_question %}open{% endif %}
+                          {{ block.shopify_attributes }}>
+
+                          <div class="collapsible__content text-container" itemprop="text">
+                            <div>
+                              {{ block.settings.answer }}
+                            </div>
+                            {%- if block.settings.image != blank or block.settings.image1 != blank -%}
+                              <picture>
+                                <source srcset="{{ block.settings.image1 | image_url }}" media="(max-width: 991px)">
+                                <img class="img-faq" width="" height="" src="{{ block.settings.image | image_url }}">
+                              </picture>
+                            {%- endif -%}
+                          </div>
+                        </collapsible-content>
+
+                      </div>
+
+                      {%- assign is_first_question = false -%}
+                    {%- endif -%}
+                  {%- endfor -%}
+
+                </div>
+              {%- endif -%}
+
+            {%- endfor -%}
+          </div>
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+  (function () {
+    const root = document.querySelector(`.faq-classify_{{ se_id }}`);
+    if (!root) return;
+
+    const navItems = Array.from(root.querySelectorAll('.faq-classify-nav-item'));
+    const contentItems = Array.from(root.querySelectorAll('.faq-classify-wrapper'));
+    const navContainer = root.querySelector('.faq-classify-navigation');
+
+    navItems.forEach((item, index) => {
+      item.addEventListener('click', () => {
+        // 1. 当前点击项加 active，其他移除
+        navItems.forEach(el => el.classList.remove('active'));
+        item.classList.add('active');
+  
+        // 2. 对应内容项加 active，其他移除
+        contentItems.forEach(el => el.classList.remove('active'));
+        if (contentItems[index]) {
+          contentItems[index].classList.add('active');
+        }
+        // 滚动当前按钮到最左（带动画）
+        const itemLeft = item.offsetLeft - 26;
+        navContainer.scrollTo({
+          left: itemLeft,
+          behavior: 'smooth'
+        });
+      });
+    });
+  })();
+</script>
+{% schema %}
+{
+  "name": "faq-classify",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "FAQ"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_faq_schema",
+      "label": "Enable FAQ Schema (FAQPage)",
+      "default": true
+    }
+  ],
+  "blocks": [
+    {
+      "type": "category",
+      "name": "Category",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "Category"
+        }
+      ]
+    },
+    {
+      "type": "question",
+      "name": "Question",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Category",
+          "default": "Category"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Question",
+          "default": "About your shop"
+        },
+        {
+          "type": "richtext",
+          "id": "answer",
+          "label": "Answer",
+          "default": "<p>Write content to help your customers to better understand your products or policies.</p>"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "image_picker",
+          "id": "image1",
+          "label": "Image M"
+        },
+       ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "faq-classify",
+      "blocks": [
+      ]
+    }
+  ]
+}
+{% endschema %}
