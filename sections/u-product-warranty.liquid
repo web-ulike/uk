@@ -1,0 +1,1517 @@
+{% comment %}
+  File: sections/u-product-warranty.liquid
+  Updates:
+  - Remove search box (Enter Keyword) for dropdowns.
+  - Channel logic:
+    1) Shopify/Amazon: hide proof upload; Order ID required.
+    2) Other channels: show proof upload; proof required.
+  - Submit validation:
+    - validate required fields (except order_id)
+    - validate channel requirement (order or proof depending on channel)
+    - checkbox merged and required
+  - Upload limits:
+    - max 5 files
+    - max 10MB each
+  - Copy updates (based on table):
+    - field errors, upload errors, uploading wait
+  - API errors mapping:
+    - code 99998 + message user_sys_order_no_invalid => Order ID error text
+  - Success message differs by channel
+{% endcomment %}
+
+<section
+  class="pr-section"
+  data-site-code="{{ section.settings.site_code | escape }}"
+  data-merchant-code="{{ section.settings.merchant_code | escape }}"
+>
+  {%- liquid
+    assign default_info_icon = 'https://cdn.shopify.com/s/files/1/0656/9079/6273/files/jinggao.svg?v=1765960525'
+    assign info_icon_src = default_info_icon
+
+    if section.settings.info_icon_image != blank
+      assign info_icon_src = section.settings.info_icon_image | image_url: width: 64
+    elsif section.settings.info_icon_url != blank
+      assign info_icon_src = section.settings.info_icon_url
+    endif
+  -%}
+
+  <div class="pr-section__inner container">
+    <!-- 左侧说明 -->
+    <div class="pr-section__info">
+      <h2 class="pr-section__title">{{ section.settings.title }}</h2>
+
+      <div class="pr-section__intro">
+        {{ section.settings.intro }}
+      </div>
+
+      <div class="pr-section__tips">
+        {{ section.settings.tips }}
+      </div>
+    </div>
+
+    <!-- 右侧表单 -->
+    <div class="pr-section__form-wrap">
+      <form id="product-registration-form-{{ section.id }}" class="pr-form" novalidate>
+        <!-- 购买渠道（自绘 dropdown + hidden input） -->
+        <div class="pr-form__group">
+          <label class="pr-form__label"> Select your purchase channel <span class="pr-form__required">*</span> </label>
+
+          <div class="pr-form__field">
+            <div class="pr-form__select-wrap pr-dd" data-pr-dropdown>
+              <input type="hidden" name="purchase_channel" data-required="true" value="">
+
+              <div class="dropdown">
+                <div class="dropdown-selected" role="button" tabindex="0" aria-haspopup="listbox" aria-expanded="false">
+                  <span class="name" data-dd-label>Please select</span>
+                  <span class="caret">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="10" height="6" viewBox="0 0 10 6" fill="none">
+                      <path d="M0.373047 0.485596L4.80039 4.91294L9.22773 0.485596" stroke="#190A0A" stroke-width="0.737891" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </span>
+                </div>
+
+                <div class="dropdown-menu" aria-hidden="true">
+                  <div class="m-menu-selector">
+                    <div class="dd-list-wrap">
+                      <ul class="country-selector" role="listbox">
+                        <li class="dd-option" data-value="Shopify" role="option" tabindex="-1">
+                          Ulike Official Website
+                        </li>
+                        <li class="dd-option" data-value="Amazon" role="option" tabindex="-1">Amazon</li>
+                        <li class="dd-option" data-value="Ulta" role="option" tabindex="-1">Ulta</li>
+                        <li class="dd-option" data-value="Nordstrom" role="option" tabindex="-1">Nordstrom</li>
+                        <li class="dd-option" data-value="Bestbuy" role="option" tabindex="-1">Bestbuy</li>
+                        <li class="dd-option" data-value="Others" role="option" tabindex="-1">Others</li>
+                      </ul>
+                      <div class="dd-bottom-mask" aria-hidden="true"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <p class="pr-form__error">Please select your purchase channel.</p>
+          </div>
+        </div>
+
+        <div class="pr-form__two-cols">
+          <div class="pr-form__group">
+            <div class="title">Contact Information</div>
+          </div>
+        </div>
+
+        <!-- 联系信息 -->
+        <div class="pr-form__two-cols">
+          <div class="pr-form__group">
+            <label class="pr-form__label"> First Name <span class="pr-form__required">*</span> </label>
+            <div class="pr-form__field">
+              <input type="text" name="first_name" class="pr-form__input" data-required="true" maxlength="50">
+              <p class="pr-form__error">Please enter your first name.</p>
+            </div>
+          </div>
+
+          <div class="pr-form__group">
+            <label class="pr-form__label"> Last Name <span class="pr-form__required">*</span> </label>
+            <div class="pr-form__field">
+              <input type="text" name="last_name" class="pr-form__input" data-required="true" maxlength="50">
+              <p class="pr-form__error">Please enter your last name.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="pr-form__two-cols">
+          <div class="pr-form__group">
+            <label class="pr-form__label"> Email <span class="pr-form__required">*</span> </label>
+            <div class="pr-form__field">
+              <input
+                type="email"
+                name="email"
+                class="pr-form__input"
+                data-required="true"
+                data-type="email"
+                maxlength="50"
+              >
+              <p class="pr-form__error">Please enter a valid email address.</p>
+            </div>
+          </div>
+
+          {% render 'u-pr-phone-input',
+            section_id: section.id,
+            input_name: 'phone',
+            label_text: 'Phone Number',
+            placeholder_text: 'Enter Your Phone Number',
+            default_country: 'us',
+            default_dial: '+1'
+          %}
+        </div>
+
+        <div class="pr-form__two-cols">
+          <div class="pr-form__group">
+            <div class="title">Order Details</div>
+          </div>
+        </div>
+
+        <!-- 订单信息 -->
+        <div class="pr-form__two-cols">
+          <div class="pr-form__group">
+            <div class="pr-form__label-row">
+              <label class="pr-form__label order_label"> Order ID <span class="pr-form__required">*</span> </label>
+              <span
+                class="pr-form__info-icon"
+                data-modal-key="order"
+                role="button"
+                tabindex="0"
+                aria-label="Order ID tips"
+              >
+                <img src="{{ info_icon_src | escape }}" alt="" width="21" height="21" loading="lazy">
+              </span>
+            </div>
+            <div class="pr-form__field">
+              <input type="text" name="order_id" class="pr-form__input">
+              <p class="pr-form__error">Please enter the order number or upload the purchase receipt.</p>
+            </div>
+          </div>
+
+          <div class="pr-form__group">
+            <div class="pr-form__label-row">
+              <label class="pr-form__label"> Product Serial Number <span class="pr-form__required">*</span> </label>
+              <span
+                class="pr-form__info-icon"
+                data-modal-key="serial"
+                role="button"
+                tabindex="0"
+                aria-label="Serial number tips"
+              >
+                <img src="{{ info_icon_src | escape }}" alt="" width="21" height="21" loading="lazy">
+              </span>
+            </div>
+            <div class="pr-form__field">
+              <input type="text" name="serial_number" class="pr-form__input" data-required="true">
+              <p class="pr-form__error">Please enter the correct product serial number.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="pr-form__two-cols">
+          <!-- 产品名称（自绘 dropdown + hidden input） -->
+          <div class="pr-form__group">
+            <label class="pr-form__label"> Product Name <span class="pr-form__required">*</span> </label>
+
+            <div class="pr-form__field">
+              <div class="pr-form__select-wrap pr-dd" data-pr-dropdown>
+                <input type="hidden" name="product_name" data-required="true" value="">
+
+                <div class="dropdown">
+                  <div
+                    class="dropdown-selected"
+                    role="button"
+                    tabindex="0"
+                    aria-haspopup="listbox"
+                    aria-expanded="false"
+                  >
+                    <span class="name" data-dd-label>Please select</span>
+                    <span class="caret">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="10" height="6" viewBox="0 0 10 6" fill="none">
+                        <path d="M0.373047 0.485596L4.80039 4.91294L9.22773 0.485596" stroke="#190A0A" stroke-width="0.737891" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                    </span>
+                  </div>
+
+                  <div class="dropdown-menu" aria-hidden="true">
+                    <div class="m-menu-selector">
+                      <div class="dd-list-wrap">
+                        <ul class="country-selector" role="listbox">
+                          <li class="dd-option" data-value="Ulike Air+" role="option" tabindex="-1">Ulike Air+</li>
+                          <li class="dd-option" data-value="Ulike Air3" role="option" tabindex="-1">Ulike Air3</li>
+                          <li class="dd-option" data-value="Ulike Air10" role="option" tabindex="-1">Ulike Air10</li>
+                          <li class="dd-option" data-value="Ulike Air 10 Holiday Gift Set" role="option" tabindex="-1">
+                            Ulike Air 10 Holiday Gift Set
+                          </li>
+                          <li class="dd-option" data-value="Ulike ReGlow" role="option" tabindex="-1">Ulike ReGlow</li>
+                          <li
+                            class="dd-option"
+                            data-value="Ulike ReGlow + Ulike ReGlow Lite"
+                            role="option"
+                            tabindex="-1"
+                          >
+                            Ulike ReGlow + Ulike ReGlow Lite
+                          </li>
+                        </ul>
+                        <div class="dd-bottom-mask" aria-hidden="true"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <p class="pr-form__error">Please select the product for which you want to extend the warranty.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 上传凭证（按渠道隐藏/显示） -->
+        <div class="pr-form__group pr-form__group--upload" data-proof-group>
+          <div class="pr-form__upload-header">
+            <label class="pr-form__label">
+              Upload Proof of Purchase
+              <span class="pr-form__info-text">(Maximum 10MB each, up to 5 files)</span>
+            </label>
+            {% comment %} <span
+              class="pr-form__info-icon"
+              data-modal-key="proof"
+              role="button"
+              tabindex="0"
+              aria-label="Proof of purchase tips"
+            >
+              <img src="{{ info_icon_src | escape }}" alt="" width="21" height="21" loading="lazy">
+            </span> {% endcomment %}
+          </div>
+
+          <div class="pr-form__field">
+            <div class="pr-form__upload-list" data-upload-list>
+              <button type="button" class="pr-form__upload-item pr-form__upload-item--add" data-upload-add>
+                <span class="pr-form__upload-plus">
+                  <img
+                    src="https://cdn.shopify.com/s/files/1/0656/9079/6273/files/upload.svg?v=1765959382"
+                    alt="upload"
+                  >
+                </span>
+              </button>
+            </div>
+
+            <input type="file" class="pr-form__file-input" multiple accept="image/*,application/pdf">
+
+            <p class="pr-form__error">Please upload your proof of purchase.</p>
+            <p class="pr-form__hint pr-form__upload-status" data-upload-status style="display:none;"></p>
+          </div>
+        </div>
+
+        <p class="pr-form__note">
+          * At least one item - either the Order ID or the Proof of Purchase must be submitted. If you've purchased from
+          offline stores, the Proof of Purchase must be submitted with the shopping time, product name and store name.
+        </p>
+
+        <div class="pr-form-success-mess">Extended warranty submitted successfully.</div>
+
+        <button type="submit" class="pr-form__submit" data-submit-btn>SUBMIT</button>
+
+        <!-- ✅ 合并复选框：条款 + 营销同意（必选） -->
+        <div class="pr-form__checkboxes" data-checkbox-group>
+          <label class="pr-form__checkbox">
+            <input type="checkbox" name="agree_terms" data-required="true">
+            <span>
+              I agree to Ulike’s <a href="/pages/terms-conditions" target="_blank">Terms of Service</a> and
+              <a href="/pages/privacy-policy" target="_blank">Privacy Policy</a>. including receiving updates about
+              Ulike products, deals, and promotions.
+            </span>
+          </label>
+          <p class="pr-form__error pr-form__error--checkbox">
+            Please agree to our privacy and terms of service information
+          </p>
+        </div>
+      </form>
+
+      <!-- blocks 输出为 template -->
+      <div class="pr-info-templates" style="display:none">
+        {% for block in section.blocks %}
+          {% if block.type == 'info_modal' %}
+            <template
+              id="pr-modal-{{ block.settings.key | strip | downcase }}-{{ section.id }}"
+              data-title="{{ block.settings.title | escape }}"
+            >
+              {{ block.settings.body }}
+            </template>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+  <!-- 通用信息弹窗 -->
+  <div class="pr-info-modal" id="pr-info-modal-{{ section.id }}" aria-hidden="true">
+    <div class="pr-info-modal__backdrop" data-info-close></div>
+    <div
+      class="pr-info-modal__panel"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="pr-info-modal-title-{{ section.id }}"
+    >
+      <div class="pr-info-modal__header">
+        <h3 class="pr-info-modal__title" id="pr-info-modal-title-{{ section.id }}" data-info-modal-title></h3>
+        <button type="button" class="pr-info-modal__close" aria-label="Close" data-info-close>×</button>
+      </div>
+      <div class="pr-info-modal__body" data-info-modal-body></div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .pr-section {
+    padding: 60px 0 80px;
+    background: #fff;
+  }
+  .pr-section__inner {
+    display: flex;
+    align-items: flex-start;
+    gap: 3rem;
+    padding: 60px 20px;
+  }
+  .pr-form__two-cols .title {
+    font-size: 22px;
+    font-weight: 500;
+    margin-bottom: 0;
+  }
+  .pr-section__info {
+    flex: 0 0 44%;
+    max-width: 50%;
+    padding: 30px 30px 0 0;
+  }
+  .pr-section__title {
+    font-size: 32px;
+    line-height: 1.2;
+    font-weight: 500;
+    margin: 0 0 16px;
+  }
+  .pr-section__intro {
+    font-size: 18px;
+    line-height: 1.5;
+    color: #000;
+    margin-bottom: 20px;
+  }
+  .pr-section__tips {
+    font-size: 18px;
+    line-height: 1.5;
+    color: #000;
+  }
+  .pr-section__tips strong {
+    font-weight: 500;
+  }
+
+  .pr-section__form-wrap {
+    flex: 1 1 auto;
+  }
+  .pr-form {
+    background: #fafbfd;
+    padding: 32px 32px 40px;
+    border-radius: 8px;
+  }
+
+  .pr-form__two-cols {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 20px;
+    row-gap: 18px;
+    margin-top: 18px;
+  }
+  .pr-form__group + .pr-form__two-cols {
+    margin-top: 20px;
+  }
+
+  .pr-form__label-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 6px;
+  }
+  .pr-form__label {
+    display: block;
+    font-size: 20px;
+    margin-bottom: 10px;
+  }
+  .pr-form__required {
+    color: #e0004d;
+    margin-left: 2px;
+  }
+
+  .pr-form__field {
+    position: relative;
+  }
+  .pr-form__input {
+    width: 100%;
+    height: 44px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    padding: 0 12px;
+    font-size: 14px;
+    background: #fff;
+    color: #000;
+  }
+  .pr-form__file-input {
+    display: none;
+  }
+  .pr-form__select-wrap {
+    position: relative;
+  }
+  .pr-form__hint {
+    margin-top: 6px;
+    font-size: 12px;
+    color: #888;
+  }
+  .pr-form__note {
+    margin-top: 14px;
+    font-size: 14px;
+    color: #606060;
+  }
+
+  .pr-form-success-mess {
+    text-align: center;
+    font-size: 14px;
+    margin-top: 10px;
+    line-height: 1.3;
+    display: none;
+  }
+  .pr-form-success-mess a {
+    text-decoration: underline;
+    font-weight: 500;
+  }
+
+  .pr-form__checkboxes {
+    width: 80%;
+    margin: 20px auto;
+    font-size: 14px;
+  }
+  .pr-form__checkbox {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 8px;
+  }
+  .pr-form__checkbox input[type='checkbox'] {
+    margin-top: 2px;
+  }
+  .pr-form__checkbox a {
+    text-decoration: underline;
+    color: #1e80ff;
+  }
+
+  .pr-form__submit {
+    margin-top: 32px;
+    width: 100%;
+    height: 56px;
+    border-radius: 4px;
+    border: none;
+    font-size: 18px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    cursor: pointer;
+    background: #000;
+    color: #fff;
+    text-align: center;
+  }
+  .pr-form__submit[disabled] {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  .pr-form__error {
+    margin: 4px 0 0;
+    font-size: 14px;
+    color: #e0004d;
+    display: none;
+  }
+  .pr-form__field.has-error .pr-form__input {
+    border-color: #e0004d;
+  }
+  .pr-form__field.has-error .pr-form__upload-item,
+  .pr-form__field.has-error .pr-form__upload-item--add {
+    border-color: #e0004d;
+  }
+  .pr-form__field.has-error .pr-form__error {
+    display: block;
+  }
+  .pr-form__checkboxes.has-error .pr-form__error--checkbox {
+    display: block;
+  }
+
+  .pr-form__info-text {
+    font-size: 12px;
+    color: #888;
+    margin-left: 6px;
+  }
+  .pr-form__info-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 21px;
+    height: 21px;
+    border-radius: 50%;
+    cursor: pointer;
+  }
+
+  .pr-form__group--upload {
+    margin-top: 24px;
+  }
+  .pr-form__upload-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .pr-form__upload-list {
+    margin-top: 8px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .pr-form__upload-item {
+    position: relative;
+    width: 85px;
+    height: 85px;
+    border-radius: 8px;
+    border: 1px solid #000;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .pr-form__upload-item--add {
+    cursor: pointer;
+  }
+  .pr-form__upload-plus {
+    font-size: 28px;
+    line-height: 1;
+    color: #9a9fb0;
+  }
+  .pr-form__upload-plus img {
+    width: 40px;
+  }
+
+  .pr-form__upload-thumb {
+    width: 100%;
+    height: 100%;
+  }
+  .pr-form__upload-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .pr-form__upload-thumb-text {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px;
+    font-size: 11px;
+    text-align: center;
+    color: #555;
+  }
+  .pr-form__upload-remove {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(0, 0, 0, 0.6);
+    color: #fff;
+    font-size: 14px;
+    line-height: 1;
+    cursor: pointer;
+    padding: 0;
+    text-align: center;
+  }
+
+  /* -------- Custom dropdown (no search) -------- */
+  .pr-form__field.has-error .dropdown-selected {
+    border-color: #e0004d;
+  }
+  .pr-dd .dropdown {
+    position: relative;
+  }
+
+  .pr-dd .dropdown-selected {
+    height: 44px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    padding: 0 12px;
+    background: #fff;
+    color: #000;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    cursor: pointer;
+    user-select: none;
+  }
+  .pr-dd .dropdown-selected .name {
+    font-size: 14px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .pr-dd .dropdown-menu {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: calc(100% + 8px);
+    z-index: 20;
+    display: none;
+  }
+  .pr-dd.is-open .dropdown-menu {
+    display: block;
+  }
+
+  .pr-dd .m-menu-selector {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
+    overflow: hidden;
+  }
+  .pr-dd .dd-list-wrap {
+    position: relative;
+  }
+  .pr-dd .country-selector {
+    margin: 0;
+    padding: 6px;
+    list-style: none;
+    max-height: 200px;
+    overflow-y: auto;
+  }
+  .pr-dd .dd-option {
+    height: 40px;
+    line-height: 40px;
+    padding: 0 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+  }
+  .pr-dd .dd-option:hover {
+    background: #f4f5f8;
+  }
+  .pr-dd .dd-option.is-selected {
+    background: rgba(224, 0, 77, 0.08);
+  }
+
+  .pr-dd .dd-bottom-mask {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 28px;
+    pointer-events: none;
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.92));
+    opacity: 0;
+    transition: opacity 0.15s ease;
+  }
+  .pr-dd.has-mask .dd-bottom-mask {
+    opacity: 1;
+  }
+
+  /* Modal */
+  .pr-info-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 999;
+    display: none;
+  }
+  .pr-info-modal.is-open {
+    display: block;
+  }
+  .pr-info-modal__backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+  }
+  .pr-info-modal__panel {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: min(650px, calc(100vw - 32px));
+    transform: translate(-50%, -50%);
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
+  }
+  .pr-info-modal__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 30px 30px 0;
+  }
+  .pr-info-modal__title {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 500;
+  }
+  .pr-info-modal__close {
+    width: 32px;
+    height: 32px;
+    border: none;
+    background: transparent;
+    font-size: 30px;
+    cursor: pointer;
+    line-height: 1;
+  }
+  .pr-info-modal__body {
+    padding: 25px 30px 40px;
+    font-size: 14px;
+    line-height: 1.3;
+    color: #333;
+    max-height: min(60vh, 520px);
+    overflow: auto;
+  }
+
+  @media screen and (max-width: 749px) {
+    .pr-section {
+      padding: 20px 0 30px;
+    }
+    .pr-section__title {
+      font-size: 24px;
+      text-align: center;
+    }
+    .pr-section__inner {
+      flex-direction: column;
+      gap: 24px;
+      padding: 20px 16px;
+    }
+    .pr-section__info {
+      max-width: none;
+      padding-right: 0;
+    }
+    .pr-form {
+      padding: 20px 16px 24px;
+    }
+    .pr-form__two-cols {
+      grid-template-columns: 1fr;
+    }
+    .pr-form__submit {
+      height: 52px;
+      font-size: 16px;
+    }
+
+    .pr-info-modal__panel {
+      left: 0;
+      right: 0;
+      top: auto;
+      bottom: 0;
+      width: 100%;
+      transform: none;
+      border-radius: 16px 16px 0 0;
+    }
+    .pr-form__checkboxes {
+      width: 100%;
+      font-size: 12px;
+    }
+    .pr-form__checkbox {
+      align-items: flex-start;
+    }
+  }
+</style>
+
+<script>
+  window.addEventListener('DOMContentLoaded', function () {
+    if (!window.jQuery) return;
+    var $ = window.jQuery;
+
+    if (typeof window.sendUlikeApi !== 'function') {
+      console.warn('[u-product-warranty] sendUlikeApi is not found.');
+      return;
+    }
+
+    var sectionId = {{ section.id | json }};
+
+    var SELECTORS = {
+      form: '#product-registration-form-' + sectionId,
+      fileInput: '.pr-form__file-input',
+      uploadList: '[data-upload-list]',
+      required: '[data-required="true"]',
+      modal: '#pr-info-modal-' + sectionId,
+      submitBtn: '[data-submit-btn]',
+      uploadStatus: '[data-upload-status]',
+      proofGroup: '[data-proof-group]',
+      checkboxGroup: '[data-checkbox-group]'
+    };
+
+    var MAX_FILE_SIZE = 10 * 1024 * 1024;
+    var MAX_FILES = 5;
+
+    var CHANNEL_NO_PROOF = ['Shopify', 'Amazon'];
+
+    var COPY = {
+      // field / form
+      orderRequired: 'Please enter your order number.',
+      // upload
+      uploadingWait: 'The file is being uploaded, please wait.',
+      uploadFailed: 'File upload failed, please try again',
+      maxFiles: 'You can upload a maximum of 5 files. Please check.',
+      maxSize: 'The size of a single file cannot exceed 10MB. Please check.',
+      // api errors
+      orderInvalid: 'The order number you entered is incorrect. Please enter it again.',
+      orderExtended: 'The order has been extended, please do not enter it again',
+      snInvalid: 'Please enter the correct product serial number.',
+      orderStatusInvalid: 'Extended warranty failed. The order you submitted has been cancelled. If there are any issues, please contact customer service support@ulikeglobal.com.',
+      orderExpired: 'Extension of warranty failed, the order has exceeded the 2-year warranty period of the product, and the warranty cannot be extended',
+
+      // success
+     successShopifyAmazon: 'Congratulations on successfully extending your warranty! <br/> You can <a href="/account/login" target="_blank" rel="noopener">Log in</a> to your personal account to view the specific warranty details.',
+      successThirdParty:
+        'Your extended warranty information has been successfully submitted. We will notify you of the warranty status after our review. Please be patient. If you have any questions, please contact us via email at support@ulikeglobal.com.'
+    };
+
+    var $form = $(SELECTORS.form);
+    if (!$form.length) return;
+
+    var $fileInput = $form.find(SELECTORS.fileInput);
+    var $uploadList = $form.find(SELECTORS.uploadList);
+    var $requiredFields = $form.find(SELECTORS.required);
+    var $submitBtn = $form.find(SELECTORS.submitBtn);
+    var $uploadStatus = $form.find(SELECTORS.uploadStatus);
+    var $proofGroup = $form.find(SELECTORS.proofGroup);
+    var $checkboxGroup = $form.find(SELECTORS.checkboxGroup);
+
+    var $sectionRoot = $form.closest('.pr-section');
+    var siteCode = ($sectionRoot.data('site-code') || 'US').toString().toUpperCase();
+
+    var state = { uploaded: [], uploadingCount: 0 };
+
+    function getWrapper($field) {
+      var $wrapper = $field.closest('.pr-form__field');
+      if ($wrapper.length) return $wrapper;
+      return $field.closest('.pr-form__checkboxes');
+    }
+
+    function initDefaultErrorTexts() {
+      $form.find('.pr-form__error').each(function () {
+        var $el = $(this);
+        $el.data('defaultText', $.trim($el.text()));
+      });
+    }
+
+    function clearErrorForField($field) {
+      var $wrapper = getWrapper($field);
+      if (!$wrapper.length) return;
+      $wrapper.removeClass('has-error');
+
+      var $error = $wrapper.find('.pr-form__error').first();
+      if ($error.length && $error.data('defaultText')) $error.text($error.data('defaultText'));
+    }
+
+    function setErrorForField($field, message) {
+      var $wrapper = getWrapper($field);
+      if (!$wrapper.length) return;
+      $wrapper.addClass('has-error');
+
+      var $error = $wrapper.find('.pr-form__error').first();
+      if (!$error.length) return;
+
+      if (message) $error.text(message);
+      else if ($error.data('defaultText')) $error.text($error.data('defaultText'));
+    }
+
+    function validateRequiredField($field) {
+      var name = $field.attr('name');
+      if (name === 'order_id') return true;
+
+      var value = '';
+      if ($field.attr('type') === 'checkbox') value = $field.prop('checked') ? '1' : '';
+      else value = $.trim($field.val());
+
+      if (!value) { setErrorForField($field); return false; }
+
+      if ($field.data('type') === 'email') {
+        var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailPattern.test($.trim($field.val()))) { setErrorForField($field); return false; }
+      }
+      return true;
+    }
+
+    function lockSubmit(lock) { $submitBtn.prop('disabled', !!lock); }
+
+    function setUploadStatus(text) {
+      if (!$uploadStatus.length) return;
+      if (!text) { $uploadStatus.hide().text(''); return; }
+      $uploadStatus.show().text(text);
+    }
+
+    function resetErrorsToDefault() {
+      $form.find('.has-error').removeClass('has-error');
+      $form.find('.pr-form__error').each(function () {
+        var $el = $(this);
+        if ($el.data('defaultText')) $el.text($el.data('defaultText'));
+      });
+    }
+
+    function hideResultMessage() {
+      var $msg = $form.find('.pr-form-success-mess');
+      if ($msg.length) $msg.hide().removeClass('pr-form__error').text('');
+    }
+
+    function getChannel() {
+      return ($form.find('[name="purchase_channel"]').val() || '').toString();
+    }
+
+    function clearUploads() {
+      state.uploaded.forEach(function (item) {
+        if (item && item.previewUrl) URL.revokeObjectURL(item.previewUrl);
+      });
+      state.uploaded = [];
+      renderUploadItems();
+      setUploadStatus('');
+      clearErrorForField($fileInput);
+    }
+
+    function toggleProofUI(channel) {
+      var noProofNeeded = CHANNEL_NO_PROOF.indexOf(channel) >= 0;
+
+      if (noProofNeeded) {
+        if ($proofGroup.length) $proofGroup.hide();
+        clearUploads();
+        $form.find('.pr-form__note').hide();
+        $form.find('.order_label .pr-form__required').show();
+      } else {
+        if ($proofGroup.length) $proofGroup.show();
+        $form.find('.pr-form__note').show();
+        $form.find('.order_label .pr-form__required').hide();
+      }
+    }
+
+    function validateChannelRequirement() {
+      var channel = getChannel();
+      var $orderInput = $form.find('input[name="order_id"]');
+      var orderVal = $.trim($orderInput.val());
+      var hasProof = state.uploaded.length > 0;
+
+      if (CHANNEL_NO_PROOF.indexOf(channel) >= 0) {
+        if (orderVal) return true;
+        setErrorForField($orderInput, COPY.orderRequired);
+        return false;
+      }
+
+      if (hasProof) return true;
+
+      setErrorForField($fileInput, 'Please upload your proof of purchase.');
+      return false;
+    }
+
+    /* Modal */
+    var $infoModal = $(SELECTORS.modal);
+    var $infoTitle = $infoModal.find('[data-info-modal-title]');
+    var $infoBody  = $infoModal.find('[data-info-modal-body]');
+    var $infoCloseBtn = $infoModal.find('.pr-info-modal__close');
+    var lastFocusEl = null;
+
+    function openInfoModal(title, bodyHtml, $trigger) {
+      lastFocusEl = $trigger && $trigger.length ? $trigger[0] : null;
+      $infoTitle.text(title || 'Info');
+      $infoBody.html(bodyHtml || '');
+      $infoModal.addClass('is-open').attr('aria-hidden', 'false');
+      document.documentElement.style.overflow = 'hidden';
+      if ($infoCloseBtn.length) $infoCloseBtn.trigger('focus');
+    }
+
+    function closeInfoModal() {
+      $infoModal.removeClass('is-open').attr('aria-hidden', 'true');
+      document.documentElement.style.overflow = '';
+      if (lastFocusEl) lastFocusEl.focus();
+      lastFocusEl = null;
+    }
+
+    $form.on('click', '.pr-form__info-icon', function () {
+      var $icon = $(this);
+      var key = ($icon.data('modal-key') || '').toString().toLowerCase().trim();
+      if (!key) return;
+
+      var $tpl = $('#pr-modal-' + key + '-' + sectionId);
+      if (!$tpl.length) return;
+
+      openInfoModal($tpl.data('title') || 'Info', $tpl.html() || '', $icon);
+    });
+
+    $form.on('keydown', '.pr-form__info-icon', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); $(this).trigger('click'); }
+    });
+
+    $infoModal.on('click', '[data-info-close]', function () { closeInfoModal(); });
+    $(document).on('keydown.pr_modal_' + sectionId, function (e) {
+      if (e.key === 'Escape' && $infoModal.hasClass('is-open')) closeInfoModal();
+    });
+
+    /* Dropdown */
+    function initPrDropdowns() {
+      var $dropdowns = $form.find('[data-pr-dropdown]');
+      if (!$dropdowns.length) return;
+
+      function closeAll(exceptEl) {
+        $dropdowns.each(function () {
+          if (exceptEl && this === exceptEl) return;
+          var $root = $(this);
+          $root.removeClass('is-open has-mask');
+          $root.find('.dropdown-selected').attr('aria-expanded', 'false');
+          $root.find('.dropdown-menu').attr('aria-hidden', 'true');
+        });
+      }
+
+      function updateMask($root) {
+        var $list = $root.find('.country-selector');
+        var el = $list[0];
+        if (!el) return;
+
+        var scrollable = el.scrollHeight > el.clientHeight + 1;
+        var atBottom = (el.scrollTop + el.clientHeight) >= (el.scrollHeight - 1);
+
+        if (scrollable && !atBottom) $root.addClass('has-mask');
+        else $root.removeClass('has-mask');
+      }
+
+      $dropdowns.each(function () {
+        var $root = $(this);
+        if ($root.data('inited')) return;
+        $root.data('inited', true);
+
+        var $hidden = $root.find('input[type="hidden"]').first();
+        var $btn = $root.find('.dropdown-selected');
+        var $menu = $root.find('.dropdown-menu');
+        var $list = $root.find('.country-selector');
+        var $label = $root.find('[data-dd-label]');
+
+        function setSelected(value, labelText) {
+          $hidden.val(value).trigger('change');
+          $label.text(labelText || 'Please select');
+
+          $list.find('.dd-option').removeClass('is-selected')
+            .filter('[data-value="' + value + '"]').addClass('is-selected');
+
+          clearErrorForField($hidden);
+        }
+
+        function open() {
+          closeAll($root[0]);
+          $root.addClass('is-open');
+          $btn.attr('aria-expanded', 'true');
+          $menu.attr('aria-hidden', 'false');
+          updateMask($root);
+        }
+
+        function close() {
+          $root.removeClass('is-open has-mask');
+          $btn.attr('aria-expanded', 'false');
+          $menu.attr('aria-hidden', 'true');
+        }
+
+        $btn.on('click', function (e) {
+          e.preventDefault();
+          e.stopPropagation();
+          if ($root.hasClass('is-open')) close();
+          else open();
+        });
+
+        $btn.on('keydown', function (e) {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            e.stopPropagation();
+            $btn.trigger('click');
+          }
+        });
+
+        $menu.on('click', function (e) { e.stopPropagation(); });
+
+        $list.on('click', '.dd-option', function () {
+          var $opt = $(this);
+          setSelected($opt.data('value'), $opt.text());
+          close();
+        });
+
+        $list.on('scroll', function () { updateMask($root); });
+
+        updateMask($root);
+      });
+
+      $(document).on('click.pr_dd_' + sectionId, function () { closeAll(); });
+      $(document).on('keydown.pr_dd_' + sectionId, function (e) { if (e.key === 'Escape') closeAll(); });
+    }
+
+    /* Upload */
+    function putUpload(file, uploadUrl) {
+      return fetch(uploadUrl, {
+        method: 'PUT',
+        body: file,
+        headers: { 'Content-Type': file.type || 'application/octet-stream' }
+      }).then(function (res) {
+        if (!res.ok) throw new Error('upload PUT failed: ' + res.status);
+        return res;
+      });
+    }
+
+    function renderUploadItems() {
+      if (!$uploadList.length) return;
+      $uploadList.empty();
+
+      state.uploaded.forEach(function (item, index) {
+        var $item = $('<div/>', { class: 'pr-form__upload-item', 'data-index': index });
+
+        $('<button/>', { type: 'button', class: 'pr-form__upload-remove', html: '&times;', 'aria-label': 'Remove file' })
+          .appendTo($item);
+
+        var $thumb = $('<div/>', { class: 'pr-form__upload-thumb' });
+
+        if (item.previewUrl && item.contentType && item.contentType.indexOf('image') === 0) {
+          $('<img/>', { alt: item.name, src: item.previewUrl }).appendTo($thumb);
+        } else {
+          $('<div/>', { class: 'pr-form__upload-thumb-text', text: item.name }).appendTo($thumb);
+        }
+
+        $item.append($thumb);
+        $uploadList.append($item);
+      });
+
+      $uploadList.append(
+        $('<button/>', {
+          type: 'button',
+          class: 'pr-form__upload-item pr-form__upload-item--add',
+          'data-upload-add': 'true',
+          html: '<span class="pr-form__upload-plus"><img src="https://cdn.shopify.com/s/files/1/0656/9079/6273/files/upload.svg?v=1765959382" /></span>',
+          'aria-label': 'Add file'
+        })
+      );
+    }
+
+    function removeUploadedAt(index) {
+      var removed = state.uploaded[index];
+      if (removed && removed.previewUrl) URL.revokeObjectURL(removed.previewUrl);
+
+      state.uploaded = state.uploaded.filter(function (_, i) { return i !== index; });
+      renderUploadItems();
+      clearErrorForField($fileInput);
+    }
+
+    function initUploadUI() {
+      if (!$fileInput.length || !$uploadList.length) return;
+
+      $uploadList.on('click', '[data-upload-add]', function () {
+        hideResultMessage();
+        clearErrorForField($fileInput);
+        $fileInput.trigger('click');
+      });
+
+      $uploadList.on('click', '.pr-form__upload-remove', function () {
+        hideResultMessage();
+        var index = parseInt($(this).closest('.pr-form__upload-item').data('index'), 10);
+        if (!isNaN(index)) removeUploadedAt(index);
+      });
+
+      $fileInput.on('change', function () {
+        hideResultMessage();
+        var files = Array.prototype.slice.call(this.files || []);
+        if (!files.length) return;
+
+        $fileInput.val('');
+
+        if (state.uploaded.length + files.length > MAX_FILES) {
+          setErrorForField($fileInput, COPY.maxFiles);
+          return;
+        }
+
+        for (var i = 0; i < files.length; i++) {
+          if (files[i].size > MAX_FILE_SIZE) {
+            setErrorForField($fileInput, COPY.maxSize);
+            return;
+          }
+        }
+
+        clearErrorForField($fileInput);
+        lockSubmit(true);
+
+        (function uploadOne(idx) {
+          if (idx >= files.length) {
+            renderUploadItems();
+            setUploadStatus('');
+            lockSubmit(false);
+            return;
+          }
+
+          var file = files[idx];
+          state.uploadingCount += 1;
+
+          setUploadStatus(COPY.uploadingWait);
+
+          window.sendUlikeApi('/user/uploadSign', {
+            scene: 'APPLY_WARRANTY',
+            fileName: file.name,
+            contentType: file.type || 'application/octet-stream',
+            size: file.size
+          })
+          .then(function (res) {
+            if (!res || !res.data || !res.data.uploadUrl || !res.data.fileKey) throw new Error('missing uploadUrl/fileKey');
+
+            return putUpload(file, res.data.uploadUrl).then(function () {
+              state.uploaded.push({
+                name: file.name,
+                contentType: file.type,
+                size: file.size,
+                fileKey: res.data.fileKey,
+                previewUrl: URL.createObjectURL(file)
+              });
+            });
+          })
+          .then(function () {
+            state.uploadingCount = Math.max(0, state.uploadingCount - 1);
+            uploadOne(idx + 1);
+          })
+          .catch(function (err) {
+            console.error(err);
+            state.uploadingCount = Math.max(0, state.uploadingCount - 1);
+            setUploadStatus('');
+            lockSubmit(false);
+            setErrorForField($fileInput, COPY.uploadFailed);
+          });
+        })(0);
+      });
+
+      renderUploadItems();
+    }
+
+    /* Payload */
+    function buildApplyPayload() {
+      var rawPhone = $form.find('[name="phone"]').val();
+      var phoneVal = $.trim(rawPhone || '');
+
+      var dial = $.trim($form.find('[name="phone_dial_code"]').val() || '');
+      var fullPhone = null;
+      if (dial && phoneVal) fullPhone = dial + '-' + phoneVal;
+
+      return {
+        siteCode: siteCode,
+        orderChannel: $form.find('[name="purchase_channel"]').val(),
+        firstName: $.trim($form.find('[name="first_name"]').val()),
+        lastName: $.trim($form.find('[name="last_name"]').val()),
+        userEmail: $.trim($form.find('[name="email"]').val()),
+        userPhone: fullPhone,
+        orderNo: $.trim($form.find('[name="order_id"]').val()),
+        productSn: $.trim($form.find('[name="serial_number"]').val()),
+        productTitle: $form.find('[name="product_name"]').val(),
+        fileKeyList: state.uploaded.map(function (x) { return x.fileKey; })
+      };
+    }
+
+    function validateSerialNumber() {
+      var $sn = $form.find('[name="serial_number"]');
+      if (!$sn.length) return true;
+
+      var val = $.trim($sn.val() || '');
+      if (!val) return true;
+
+      var re = /^[A-Za-z0-9]{8,30}$/;
+      if (!re.test(val)) {
+        setErrorForField($sn, 'Please enter the correct product serial number.');
+        return false;
+      }
+
+      clearErrorForField($sn);
+      return true;
+    }
+
+    function validatePhoneOptional() {
+      var $phone = $form.find('[name="phone"]');
+      if (!$phone.length) return true;
+
+      var val = $.trim($phone.val() || '');
+
+      // ✅ 不输入：允许提交
+      if (!val) {
+        clearErrorForField($phone);
+        return true;
+      }
+
+      // ✅ 输入了：必须是合法格式（允许空格/()-，最终要求是数字长度）
+      var cleaned = val.replace(/[\s\-()]/g, '');
+      let  isVerify = window.UprPhone.validate($form[0].querySelector('[data-upr-phone]'))
+      if (!isVerify) {
+        setErrorForField($phone, 'Please enter a valid phone number.');
+        return false;
+      }
+      console.log('phone', isVerify);
+
+      clearErrorForField($phone);
+      return true;
+    }
+
+    function setSuccessMessage(res) {
+      var $msg = $form.find('.pr-form-success-mess');
+      if (!$msg.length) return;
+
+      var channel = getChannel();
+      var isShopifyAmazon = CHANNEL_NO_PROOF.indexOf(channel) >= 0;
+
+      // ✅ 成功：按渠道不同提示
+      if (res.code === 0) {
+        $msg.removeClass('pr-form__error')
+          .html(isShopifyAmazon ? COPY.successShopifyAmazon : COPY.successThirdParty)
+          .fadeIn();
+        return;
+      }
+
+      // ✅ API error mapping：99998 + message
+      if (res.code === 99998) {
+        var msgKey = res.message;
+        // order errors -> order_id
+        if (msgKey === 'user_sys_order_no_invalid') {
+          setErrorForField($form.find('input[name="order_id"]'), COPY.orderInvalid);
+          $msg.hide();
+          return;
+        }
+        if (msgKey === 'user_sys_order_no_exist') {
+          setErrorForField($form.find('input[name="order_id"]'), COPY.orderExtended);
+          $msg.hide();
+          return;
+        }
+
+        // sn errors -> serial_number
+        if (msgKey === 'user_sys_product_sn_invalid') {
+          setErrorForField($form.find('input[name="serial_number"]'), COPY.snInvalid);
+          $msg.hide();
+          return;
+        }
+
+        if (msgKey === 'user_sys_order_status_invalid') {
+          setErrorForField($form.find('input[name="order_id"]'), COPY.orderStatusInvalid);
+          $msg.hide();
+          return;
+        }
+        if (msgKey === 'user_sys_order_expired') {
+          setErrorForField($form.find('input[name="order_id"]'), COPY.orderExpired);
+          $msg.hide();
+          return;
+        }
+
+      }
+
+      // 其他失败：显示后端 message
+      $msg.addClass('pr-form__error')
+        .text(res.message || 'Submit failed. Please try again.')
+        .fadeIn();
+    }
+
+    /* Events */
+    function bindFieldEvents() {
+      $requiredFields.on('input change', function () {
+        hideResultMessage();
+        clearErrorForField($(this));
+      });
+
+      $form.find('input[name="order_id"]').on('input', function () {
+        hideResultMessage();
+        clearErrorForField($(this));
+        clearErrorForField($fileInput);
+      });
+
+      $form.find('[name="purchase_channel"]').on('change', function () {
+        hideResultMessage();
+        toggleProofUI(getChannel());
+      });
+    }
+
+    function bindSubmitEvent() {
+      $form.on('submit', function (e) {
+        e.preventDefault();
+
+        hideResultMessage();
+
+        // 上传中禁止提交
+        if (state.uploadingCount > 0) {
+          setErrorForField($fileInput, COPY.uploadingWait);
+          return;
+        }
+
+        resetErrorsToDefault();
+
+        var hasError = false;
+        $requiredFields.each(function () {
+          if (!validateRequiredField($(this))) hasError = true;
+        });
+        if (hasError) return;
+
+        // 1️⃣ 校验产品序列号（只要填写了，就必须符合规则）
+        if (!validateSerialNumber()) return;
+
+        // 2️⃣ 校验手机号（可选字段：
+        //    - 未填写：允许提交
+        //    - 已填写：必须是合法手机号格式，否则阻止提交）
+        if (!validatePhoneOptional()) return;
+
+        // 3️⃣ 校验购买渠道的组合规则（跨字段校验）：
+        //    - Shopify / Amazon：必须填写 Order ID
+        //    - 其他渠道：必须上传购买凭证
+        if (!validateChannelRequirement()) return;
+
+        lockSubmit(true);
+
+        var payload = buildApplyPayload();
+
+        window.sendUlikeApi("/user/submitWarrantyApply", payload)
+          .then(function (res) {
+            setSuccessMessage(res);
+          })
+          .catch(function (err) {
+            console.error(err);
+          })
+          .finally(function () {
+            lockSubmit(false);
+          });
+      });
+    }
+
+    /* Init */
+    initDefaultErrorTexts();
+    initPrDropdowns();
+    initUploadUI();
+    bindFieldEvents();
+    bindSubmitEvent();
+
+    toggleProofUI(getChannel());
+  });
+</script>
+
+{% schema %}
+{
+  "name": "u-product-warranty",
+  "settings": [
+    { "type": "text", "id": "site_code", "label": "Site code (US/UK/DE/FR)", "default": "US" },
+    { "type": "text", "id": "merchant_code", "label": "Merchant code", "default": "ULIKE" },
+
+    { "type": "image_picker", "id": "info_icon_image", "label": "Info icon image" },
+    {
+      "type": "text",
+      "id": "info_icon_url",
+      "label": "Info icon URL (fallback if no image selected)",
+      "default": "https://cdn.shopify.com/s/files/1/0656/9079/6273/files/jinggao.svg?v=1765960525"
+    },
+    { "type": "text", "id": "title", "label": "Title", "default": "Product Registration Form" },
+    {
+      "type": "richtext",
+      "id": "intro",
+      "label": "Intro",
+      "default": "<p>Please register your product to extend the warranty period. The warranty is valid from the day you purchased the product.</p><p>Warranty Information Tips: Order ID, Serial Number, Proof of Purchase.</p>"
+    },
+    {
+      "type": "html",
+      "id": "tips",
+      "label": "Tips",
+      "default": "<p><strong>Order ID:</strong> You can find your order ID in the order history of the account.</p><p><strong>Product Serial Number:</strong> The Serial Number can be found on the device body.</p><p><strong>Proof of Purchase:</strong> If you bought offline, you’ll need to upload receipts/vouchers.</p>"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "info_modal",
+      "name": "Info modal",
+      "settings": [
+        { "type": "text", "id": "key", "label": "Modal key (order/serial/proof)", "default": "serial" },
+        { "type": "text", "id": "title", "label": "Modal title", "default": "Product Serial Number" },
+        { "type": "html", "id": "body", "label": "Modal content", "default": "<p>Write your guidance here.</p>" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "u-product-warranty",
+      "blocks": [{ "type": "info_modal" }, { "type": "info_modal" }, { "type": "info_modal" }]
+    }
+  ]
+}
+{% endschema %}
