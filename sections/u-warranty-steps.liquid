@@ -1,0 +1,287 @@
+<style>
+  .u-warranty-steps {
+    background: #FAFBFD;
+    padding: 60px 0 60px;
+  }
+
+  .u-warranty-steps__title {
+    font-size: 32px;
+    line-height: 1.2;
+    font-weight: 500;
+    text-align: center;
+  }
+
+  .u-warranty-steps__desc {
+    margin-top: 12px;
+    font-size: 16px;
+    line-height: 1.4;
+    text-align: center;
+    color: #555;
+  }
+
+  .u-warranty-steps__list {
+    margin-top: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 40px;
+  }
+
+  .u-warranty-steps__item {
+    max-width: 280px;
+    text-align: center;
+  }
+
+  .u-warranty-steps__circle {
+    width: 96px;
+    height: 96px;
+    margin: 0 auto 18px;
+    border-radius: 50%;
+    background: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .u-warranty-steps__step-label {
+    font-size: 22px;
+    letter-spacing: 0.08em;
+    font-weight: 500;
+    text-transform: uppercase;
+    color: #fff;
+  }
+
+  .u-warranty-steps__item-title {
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 1.3;
+    margin-bottom: 6px;
+  }
+
+  .u-warranty-steps__item-desc {
+    font-size: 14px;
+    line-height: 1.4;
+    color: #6A6A6A;
+    height: 60px;
+  }
+
+  /* 中间 >> 箭头（PC 容器，负责居中） */
+  .u-warranty-steps__arrow {
+    width: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 7%;
+  }
+
+  /* 具体箭头像之前模块一样，带动画 */
+  .u-warranty-steps .arrow {
+    position: relative;
+    width: 15px;
+    height: 15px;
+    border-right: 3px solid #e7004c;
+    border-bottom: 3px solid #e7004c;
+    transform: rotate(-45deg) scale(0.65);
+    margin: 0 auto;
+    animation: opacityright 1s 0.2s linear infinite;
+  }
+
+  .u-warranty-steps .arrow::before,
+  .u-warranty-steps .arrow::after {
+    position: absolute;
+    content: '';
+    display: block;
+    width: 15px;
+    height: 15px;
+    border-right: 3px solid #e7004c;
+    border-bottom: 3px solid #e7004c;
+    transform: rotate(-45deg);
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  .u-warranty-steps .arrow::before {
+    left: -10px;
+    top: -2px;
+    animation: opacityright 1s 0.1s linear infinite;
+  }
+
+  .u-warranty-steps .arrow::after {
+    left: 10px;
+    top: 17px;
+    animation: opacityright 1s 0.3s linear infinite;
+  }
+
+  @keyframes opacityright {
+    0% {
+      border-color: rgba(253, 51, 112, 1);
+    }
+    100% {
+      border-color: rgba(249, 202, 218, 1);
+    }
+  }
+
+  /* ------------ Mobile ------------ */
+  @media (max-width: 768px) {
+    .u-warranty-steps {
+      padding: 40px 0 45px;
+      background: #f5f6f9;
+    }
+
+    .u-warranty-steps__title {
+      font-size: 24px;
+      padding: 0 16px;
+    }
+
+    .u-warranty-steps__desc {
+      font-size: 14px;
+      padding: 0 24px;
+    }
+
+    .u-warranty-steps__list {
+      margin-top: 30px;
+      flex-direction: column;
+      align-items: center;
+      row-gap: 24px;
+    }
+
+    .u-warranty-steps__item {
+      max-width: 320px;
+      background: transparent;
+    }
+
+    .u-warranty-steps__circle {
+      width: 90px;
+      height: 90px;
+      margin-bottom: 16px;
+    }
+
+    /* 移动端不显示箭头 */
+    .u-warranty-steps__arrow {
+      display: none;
+    }
+  }
+</style>
+
+<section class="u-warranty-steps">
+  <div class="container">
+    <h2 class="u-warranty-steps__title">
+      {{ section.settings.title }}
+    </h2>
+
+    {% if section.settings.desc != blank %}
+      <p class="u-warranty-steps__desc">
+        {{ section.settings.desc }}
+      </p>
+    {% endif %}
+
+    <div class="u-warranty-steps__list">
+      {% for block in section.blocks %}
+        {% if block.type == 'step' %}
+          {% assign label = block.settings.step_label %}
+          {% if label == blank %}
+            {% assign label = 'STEP ' | append: forloop.index %}
+          {% endif %}
+
+          <div class="u-warranty-steps__item" {{ block.shopify_attributes }}>
+            <div class="u-warranty-steps__circle">
+              <span class="u-warranty-steps__step-label">
+                {{ label }}
+              </span>
+            </div>
+            <div class="u-warranty-steps__content">
+              <div class="u-warranty-steps__item-title">
+                {{ block.settings.title }}
+              </div>
+              <div class="u-warranty-steps__item-desc">
+                {{ block.settings.desc }}
+              </div>
+            </div>
+          </div>
+
+          {% unless forloop.last %}
+            <div class="u-warranty-steps__arrow">
+              <div class="arrow"></div>
+            </div>
+          {% endunless %}
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "u-warranty-steps",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "主标题",
+      "default": "How to extend product warranty"
+    },
+    {
+      "type": "textarea",
+      "id": "desc",
+      "label": "描述"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "step",
+      "name": "步骤",
+      "settings": [
+        {
+          "type": "text",
+          "id": "step_label",
+          "label": "圆圈内步骤文案（留空则自动 STEP + 序号）"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "步骤标题",
+          "default": "Add your info"
+        },
+        {
+          "type": "textarea",
+          "id": "desc",
+          "label": "步骤描述",
+          "default": "Fill in the form fields below with your details. Required fields must be completed to continue."
+        }
+      ]
+    }
+  ],
+  "max_blocks": 5,
+  "presets": [
+    {
+      "name": "u-warranty-steps",
+      "blocks": [
+        {
+          "type": "step",
+          "settings": {
+            "step_label": "STEP 1",
+            "title": "Add your info",
+            "desc": "Fill in the form fields below with your details. Required fields must be completed to continue."
+          }
+        },
+        {
+          "type": "step",
+          "settings": {
+            "step_label": "STEP 2",
+            "title": "Register & extend warranty",
+            "desc": "Upload your order screenshot and complete the form to activate your extended warranty."
+          }
+        },
+        {
+          "type": "step",
+          "settings": {
+            "step_label": "STEP 3",
+            "title": "Review to unlock benefits",
+            "desc": "After submission, we'll review your details and email your benefits within 1–2 business days."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
