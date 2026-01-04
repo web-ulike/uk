@@ -1,0 +1,313 @@
+{% comment %}
+  Section: Register benefits slider
+{% endcomment %}
+
+<section id="register-benefits-{{ section.id }}" class="register-benefits">
+  <div class="container">
+    {% if section.settings.heading != blank %}
+      <h2 class="register-benefits__title">
+        {{ section.settings.heading }}
+      </h2>
+    {% endif %}
+
+    {% if section.blocks.size > 0 %}
+      <div class="register-benefits__list" data-rb-slider>
+        {% for block in section.blocks %}
+          <article class="register-benefits__item" {{ block.shopify_attributes }}>
+            {% if block.settings.icon != blank %}
+              <img
+                class="register-benefits__icon"
+                src="{{ block.settings.icon | image_url: width: 160 }}"
+                alt="{{ block.settings.alt | default: block.settings.text | escape }}"
+                loading="lazy"
+              >
+            {% endif %}
+
+            {% if block.settings.text != blank %}
+              <p class="register-benefits__text">
+                {{ block.settings.text }}
+              </p>
+            {% endif %}
+          </article>
+        {% endfor %}
+      </div>
+
+      {% if section.blocks.size > 1 %}
+        <div class="register-benefits__dots" data-rb-dots></div>
+      {% endif %}
+    {% endif %}
+  </div>
+</section>
+
+<style>
+  #register-benefits-{{ section.id }} {
+    padding: 30px 0px;
+    background-color: rgba(255, 255, 255, 1);
+  }
+
+  #register-benefits-{{ section.id }} .register-benefits__title {
+    font-size: 24px;
+    line-height: 1.3;
+    margin-bottom: 32px;
+    font-weight: 500;
+    text-align: center;
+  }
+
+  /* 移动端：横向滑动 */
+  #register-benefits-{{ section.id }} .register-benefits__list {
+    display: flex;
+    gap: 16px;
+    overflow-x: auto;
+    padding-bottom: 16px;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* 隐藏滚动条 */
+  #register-benefits-{{ section.id }} .register-benefits__list::-webkit-scrollbar {
+    display: none;
+  }
+  #register-benefits-{{ section.id }} .register-benefits__list {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  #register-benefits-{{ section.id }} .register-benefits__item {
+    flex: 0 0 80%;
+      background: linear-gradient(
+      180deg,                    
+      rgba(226, 234, 242, 1) 0%,
+      rgba(255, 255, 255, 1) 100%
+    );
+    border-radius: 16px;
+    padding: 40px 45px 60px;
+    {% comment %} box-shadow: 0 12px 30px rgba(0, 0, 0, 0.04); {% endcomment %}
+    scroll-snap-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  #register-benefits-{{ section.id }} .register-benefits__icon {
+    display: block;
+    max-height: 140px; /* icon 导出已经带间距，这里控制整体大小即可 */
+    height: auto;
+    margin-bottom: 40px;
+  }
+
+  #register-benefits-{{ section.id }} .register-benefits__text {
+    font-size: 20px;
+    line-height: 1.3;
+    color: #000000;
+  }
+
+  /* 轮播点（移动端显示） */
+  #register-benefits-{{ section.id }} .register-benefits__dots {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    margin-top: 4px;
+  }
+
+  #register-benefits-{{ section.id }} .register-benefits__dots button {
+    width: 6px;
+    height: 6px;
+    border-radius: 999px;
+    border: none;
+    padding: 0;
+    background-color: #d1d5db;
+    cursor: pointer;
+  }
+
+  #register-benefits-{{ section.id }} .register-benefits__dots button.is-active {
+    width: 18px;
+    background-color: #111111;
+  }
+
+  /* PC / 平板：4 列栅格 */
+  @media (min-width: 768px) {
+    #register-benefits-{{ section.id }} {
+      padding: 60px 24px 40px;
+    }
+
+    #register-benefits-{{ section.id }} .register-benefits__title {
+      font-size: 40px;
+      margin-bottom: 60px;
+      text-align: center;
+    }
+
+    #register-benefits-{{ section.id }} .register-benefits__list {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 47px;
+      overflow: visible;
+      scroll-snap-type: none;
+    }
+
+    #register-benefits-{{ section.id }} .register-benefits__item {
+      flex: 0 0 auto;
+      max-width: none;
+      scroll-snap-align: unset;
+    }
+
+    #register-benefits-{{ section.id }} .register-benefits__dots {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  (function () {
+    var section = document.getElementById('register-benefits-{{ section.id }}');
+    if (!section) return;
+
+    var slider = section.querySelector('[data-rb-slider]');
+    var dotsWrapper = section.querySelector('[data-rb-dots]');
+    if (!slider || !dotsWrapper) return;
+
+    var items = Array.prototype.slice.call(
+      slider.querySelectorAll('.register-benefits__item')
+    );
+    if (!items.length) return;
+
+    // 创建轮播点
+    items.forEach(function (item, index) {
+      var dot = document.createElement('button');
+      dot.type = 'button';
+      if (index === 0) dot.classList.add('is-active');
+      dot.addEventListener('click', function () {
+        var itemRect = item.getBoundingClientRect();
+        var sliderRect = slider.getBoundingClientRect();
+        var offset =
+          item.offsetLeft - (sliderRect.width / 2 - itemRect.width / 2);
+        slider.scrollTo({
+          left: offset,
+          behavior: 'smooth'
+        });
+      });
+      dotsWrapper.appendChild(dot);
+    });
+
+    var dots = Array.prototype.slice.call(
+      dotsWrapper.querySelectorAll('button')
+    );
+
+    function updateActiveDot() {
+      var sliderRect = slider.getBoundingClientRect();
+      var activeIndex = 0;
+      var minDiff = Infinity;
+
+      items.forEach(function (item, index) {
+        var rect = item.getBoundingClientRect();
+        var itemCenter = rect.left + rect.width / 2;
+        var sliderCenter = sliderRect.left + sliderRect.width / 2;
+        var diff = Math.abs(itemCenter - sliderCenter);
+        if (diff < minDiff) {
+          minDiff = diff;
+          activeIndex = index;
+        }
+      });
+
+      dots.forEach(function (dot, idx) {
+        if (idx === activeIndex) {
+          dot.classList.add('is-active');
+        } else {
+          dot.classList.remove('is-active');
+        }
+      });
+    }
+
+    var scrollTimer = null;
+    slider.addEventListener('scroll', function () {
+      if (scrollTimer) window.clearTimeout(scrollTimer);
+      scrollTimer = window.setTimeout(updateActiveDot, 80);
+    });
+
+    // 初始对齐第一个卡片（仅移动端）
+    function centerFirstOnMobile() {
+      if (window.innerWidth >= 768) return;
+      var first = items[0];
+      if (!first) return;
+      var rect = first.getBoundingClientRect();
+      var sliderRect = slider.getBoundingClientRect();
+      var offset =
+        first.offsetLeft - (sliderRect.width / 2 - rect.width / 2);
+      slider.scrollTo({ left: offset });
+    }
+
+    centerFirstOnMobile();
+    window.addEventListener('resize', centerFirstOnMobile);
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Register benefits",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Why Registering Matters"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Benefit item",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "icon",
+          "label": "Icon image"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text",
+          "default": "Register to extend to 3-year warranty"
+        },
+        {
+          "type": "text",
+          "id": "alt",
+          "label": "Icon alt text",
+          "info": "用于无障碍访问（可选）"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 8,
+  "presets": [
+    {
+      "name": "w-exclusive-events",
+      "blocks": [
+        {
+          "type": "item",
+          "settings": {
+            "text": "Register to extend to 3-year warranty"
+          }
+        },
+        {
+          "type": "item",
+          "settings": {
+            "text": "Free 1-on-1 expert consult"
+          }
+        },
+        {
+          "type": "item",
+          "settings": {
+            "text": "Owner tutorials & safety tips"
+          }
+        },
+        {
+          "type": "item",
+          "settings": {
+            "text": "Exclusive events for owners"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
