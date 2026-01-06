@@ -2398,12 +2398,14 @@
                 <div class="original-price">{{ product.price | money }}</div>
               {% else %}
                 <div class="dis-price">{{ product.price | money }}</div>
-                <div class="original-price"></div>
+                {% if product.compare_at_price %}
+                <div class="original-price">{{ product.compare_at_price | money }}</div>
+                {% endif %}
               {% endif %}
             </div>
-            {% if product.compare_at_price %}
-              <!-- <div class="original-price">{{ product.compare_at_price | money }}</div> -->
-            {% endif %}
+            {% comment %} {% if product.compare_at_price >  %}
+              <div class="original-price">{{ product.compare_at_price | money }}</div
+            {% endif %} {% endcomment %}
             {%- if section.settings.show_diy -%}
               <div class="code-list" style="display:none;">
                 {% for block in se_bks %}
