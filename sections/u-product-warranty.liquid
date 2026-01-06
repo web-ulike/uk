@@ -1275,13 +1275,15 @@
       var dial = $.trim($form.find('[name="phone_dial_code"]').val() || '');
       var fullPhone = null;
       if (dial && phoneVal) fullPhone = dial + '-' + phoneVal;
+      
+      let userEmail = ($form.find('[name="email"]').val() || '').replace(/\s+/g, '');
 
       return {
         siteCode: siteCode,
         orderChannel: $form.find('[name="purchase_channel"]').val(),
         firstName: $.trim($form.find('[name="first_name"]').val()),
         lastName: $.trim($form.find('[name="last_name"]').val()),
-        userEmail: $.trim($form.find('[name="email"]').val()),
+        userEmail: userEmail,
         userPhone: fullPhone,
         orderNo: $.trim($form.find('[name="order_id"]').val()),
         productSn: $.trim($form.find('[name="serial_number"]').val()),
