@@ -174,10 +174,14 @@
   border-radius: 20px;
   padding: 50px 30px 30px 70px;
   flex: 1;
-  position: relative;
-  height: 100%;
+  position: absolute;
+  {% comment %} height: 100%; {% endcomment %}
   display: flex;
   overflow: hidden;
+  bottom:0;
+  left:0;
+  width:100%;
+  z-index:2;
 }
 
 .slide-diy .slide-diy-text::before{
@@ -365,6 +369,13 @@
               <div class="slide-diy-img-txt">{{ section.settings.text3 }}</div>
             {%- endif -%}
           </div>
+          <div class="slide-diy-text">
+              {%- for block in section.blocks -%}
+                <div class="slide-diy-txt-item">
+                  {{ block.settings.text }}
+                </div>
+              {%- endfor -%}
+            </div>
         </div>
         <div class="slide-diy-right to-top">
           <div class="slide-diy-img-list to-top" style="transition-delay: 0.3s">
@@ -385,13 +396,7 @@
             </div>
           </div>
           <div class="slide-diy-bottom to-top" style="transition-delay: 0.4s">
-            <div class="slide-diy-text">
-              {%- for block in section.blocks -%}
-                <div class="slide-diy-txt-item">
-                  {{ block.settings.text }}
-                </div>
-              {%- endfor -%}
-            </div>
+            
             <div class="slide-diy-arraw">
               <div class="slide-diy-arraw-item">
                 <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40" fill="none">
