@@ -1,0 +1,176 @@
+<style>
+ .slide-pair {
+    overflow: hidden;
+    padding: 100px 0;
+    background: #F9F9F9;
+    display: flex;
+    flex-direction: column;
+    gap: 26px;
+}
+
+.slide-pair .slide-pair-wrapper {
+    overflow: hidden;
+}
+
+.slide-pair .slide-pair-row {
+    display: flex;
+    gap: 20px;
+    will-change: transform;
+}
+
+.slide-pair .slide-pair-row.slide-pair-right {
+    justify-content: flex-end;
+}
+
+.slide-pair .slide-pair-item {
+    flex-shrink: 0;
+    width: 280px;
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.slide-pair .slide-pair-item img {
+    width: 100%;
+    object-fit: cover;
+    display: block;
+    margin: 0;
+}
+
+@media (max-width:991px) {
+    .slide-pair {
+    padding: 50px 0;
+    gap: 13px;
+    }
+
+    .slide-pair .slide-pair-item {
+    width: 140px;
+    border-radius: 3px;
+    }
+
+    .slide-pair .slide-pair-row {
+    gap: 10px;
+    }
+}
+</style>
+
+<section class="section-box">
+    <div class="slide-pair">
+        <div class="slide-pair-wrapper">
+            <div class="slide-pair-row" data-dir="left">
+                {% for block in section.blocks %}
+                    {% if block.type == 'left' %}
+                    <div class="slide-pair-item">
+                        <img src="{{ block.settings.image | image_url }}" width="" height="" alt="{{ block.settings.img | escape }}">
+                    </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+        <div class="slide-pair-wrapper">
+            <div class="slide-pair-row slide-pair-right" data-dir="right">
+                {% for block in section.blocks %}
+                    {% if block.type == 'right' %}
+                    <div class="slide-pair-item">
+                        <img src="{{ block.settings.image | image_url }}" width="" height="" alt="{{ block.settings.img | escape }}">
+                    </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+    (() => {
+      let OFFSET = 1920 * 0.23;
+      const rows = [];
+      if (window.innerWidth < 1500) OFFSET = (window.innerWidth * 0.23);
+      if (window.innerWidth < 992) OFFSET = 30;
+
+      const VIEWPORT_BOTTOM_START = 20; // 底部开始滚动
+      const VIEWPORT_TOP_STOP = 80;     // 顶部停止滚动
+      const SIDE_STOP = 20;             // 左右停止
+
+      document.querySelectorAll('.slide-pair-row').forEach(row => {
+        const dir = row.dataset.dir;
+        const items = row.querySelectorAll('.slide-pair-item');
+        const first = items[0];
+        const last = items[items.length - 1];
+
+        const startX = dir === 'left' ? OFFSET : -OFFSET;
+
+        row.style.transform = `translateX(${startX}px)`;
+
+        let maxMove;
+        if (dir === 'left') {
+          maxMove = last.getBoundingClientRect().right - (window.innerWidth - SIDE_STOP);
+        } else {
+          maxMove = SIDE_STOP - first.getBoundingClientRect().left;
+        }
+        if (maxMove < 0) maxMove = 0;
+
+        rows.push({ row, dir, startX, maxMove });
+      });
+
+      function update() {
+        rows.forEach(({ row, dir, startX, maxMove }) => {
+          const rect = row.getBoundingClientRect();
+
+          const startY = window.scrollY + rect.bottom - window.innerHeight + VIEWPORT_BOTTOM_START;
+          const endY = window.scrollY + rect.top - VIEWPORT_TOP_STOP;
+
+          if (rect.bottom <= VIEWPORT_BOTTOM_START || rect.top >= window.innerHeight - VIEWPORT_TOP_STOP) return;
+
+          let progress = (window.scrollY - startY) / (endY - startY);
+          progress = Math.max(0, Math.min(1, progress));
+
+          const x = dir === 'left'
+            ? startX - maxMove * progress
+            : startX + maxMove * progress;
+
+          row.style.transform = `translateX(${x}px)`;
+        });
+      }
+
+      window.addEventListener('scroll', update, { passive: true });
+      window.addEventListener('resize', () => location.reload());
+      update();
+
+    })();
+</script>
+{% schema %}
+{
+  "name": "slide-pair",
+  "blocks": [
+    {
+        "type": "left",
+        "name": "Left",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          }
+        ]
+    },
+    {
+        "type": "right",
+        "name": "Right",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          }
+        ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "slide-pair",
+      "settings": {},
+      "blocks": [
+      ]
+    }
+  ]
+}
+{% endschema %}
