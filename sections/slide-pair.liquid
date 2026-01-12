@@ -131,8 +131,26 @@
         });
       }
 
+      function recalcMaxMove() {
+        rows.forEach(rowData => {
+          const { row, dir } = rowData;
+          const items = row.children;
+          const first = items[0];
+          const last = items[items.length - 1];
+
+          if (dir === 'left') {
+            rowData.maxMove = last.getBoundingClientRect().right - (window.innerWidth - SIDE_STOP);
+          } else {
+            rowData.maxMove = SIDE_STOP - first.getBoundingClientRect().left;
+          }
+          if (rowData.maxMove < 0) rowData.maxMove = 0;
+        });
+
+        update();
+      }
+
       window.addEventListener('scroll', update, { passive: true });
-      window.addEventListener('resize', () => location.reload());
+      window.addEventListener('resize', recalcMaxMove);
       update();
 
     })();
