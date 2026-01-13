@@ -1,0 +1,155 @@
+<style>
+  #scroll-top-btn {
+    position: fixed;
+    right: {{ section.settings.offset_right_pc }}px;
+    bottom: {{ section.settings.offset_bottom_pc }}px;
+    width: {{ section.settings.icon_size_pc }}px;
+    cursor: pointer;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity .3s ease, visibility .3s ease;
+    z-index: 9999;
+    border-radius: 50%;
+    background: #FEFDFD;
+    box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.10);
+  }
+
+  #scroll-top-btn.show {
+    opacity: 1;
+    visibility: visible;
+  }
+
+   #scroll-top-btn img{
+    border-radius: 50%;
+   }
+
+  /* ---- 移动端样式 ---- */
+  @media (max-width: 768px) {
+    #scroll-top-btn {
+      right: {{ section.settings.offset_right_mb }}px;
+      bottom: {{ section.settings.offset_bottom_mb }}px;
+      width: {{ section.settings.icon_size_mb }}px;
+    }
+  }
+</style>
+
+<div id="scroll-top-btn">
+  {% if section.settings.icon %}
+    <img src="{{ section.settings.icon | image_url }}" width="" height="" alt="Back to top" style="width:100%;">
+  {% else %}
+    ▲
+  {% endif %}
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const btn = document.getElementById("scroll-top-btn");
+    const showDistance = {{ section.settings.show_distance }};
+
+    window.addEventListener("scroll", function () {
+      if (window.scrollY > showDistance) {
+        btn.classList.add("show");
+      } else {
+        btn.classList.remove("show");
+      }
+    });
+
+    btn.addEventListener("click", function () {
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      });
+    });
+  });
+</script>
+
+{% schema %}
+{
+  "name": "scroll-top-btn",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "icon",
+      "label": "图标"
+    },
+    {
+      "type": "range",
+      "id": "show_distance",
+      "min": 50,
+      "max": 2000,
+      "step": 50,
+      "default": 400,
+      "label": "滚动多少距离后显示按钮(px)"
+    },
+
+    {
+      "type": "header",
+      "content": "PC 图标尺寸 & 位置"
+    },
+    {
+      "type": "range",
+      "id": "icon_size_pc",
+      "min": 20,
+      "max": 200,
+      "step": 2,
+      "default": 50,
+      "label": "PC 图标宽度(px)"
+    },
+    {
+      "type": "range",
+      "id": "offset_right_pc",
+      "min": 0,
+      "max": 150,
+      "step": 2,
+      "default": 20,
+      "label": "PC 右侧距离(px)"
+    },
+    {
+      "type": "range",
+      "id": "offset_bottom_pc",
+      "min": 0,
+      "max": 500,
+      "step": 10,
+      "default": 30,
+      "label": "PC 底部距离(px)"
+    },
+
+    {
+      "type": "header",
+      "content": "移动端 图标尺寸 & 位置"
+    },
+    {
+      "type": "range",
+      "id": "icon_size_mb",
+      "min": 20,
+      "max": 200,
+      "step": 2,
+      "default": 46,
+      "label": "移动端图标宽度(px)"
+    },
+    {
+      "type": "range",
+      "id": "offset_right_mb",
+      "min": 0,
+      "max": 150,
+      "step": 2,
+      "default": 16,
+      "label": "移动端右侧距离(px)"
+    },
+    {
+      "type": "range",
+      "id": "offset_bottom_mb",
+      "min": 0,
+      "max": 500,
+      "step": 10,
+      "default": 20,
+      "label": "移动端底部距离(px)"
+    }
+  ],
+  "presets": [
+    {
+      "name": "scroll-top-btn"
+    }
+  ]
+}
+{% endschema %}
