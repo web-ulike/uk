@@ -1,0 +1,117 @@
+<style>
+.u-breadcrumb .breadcrumb__link{
+    text-decoration: underline;
+}
+.u-breadcrumb .breadcrumb__item:last-child .breadcrumb__link{
+    text-decoration: none;
+}
+
+.u-breadcrumb {
+  overflow: hidden;
+}
+
+.u-breadcrumb .breadcrumb__list {
+  display: flex;
+  flex-wrap: nowrap;
+  min-width: 0; /* ★ 必须：让 ellipsis 生效 */
+}
+
+.u-breadcrumb .breadcrumb__item {
+  flex-shrink: 0; /* ★ 所有项都允许被压缩 */
+  min-width: 0;   /* ★ 允许内容被截断 */
+}
+.u-breadcrumb .breadcrumb__item:last-child{
+    flex-shrink: inherit;
+    flex:1;
+    display: flex;
+}
+.u-breadcrumb .breadcrumb__item:last-child .breadcrumb__link {
+  display: inline-block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 100%;
+}
+</style>
+<div class="container">
+    <nav aria-label="{{ 'general.breadcrumb.title' | t }}" class="u-breadcrumb breadcrumb text--xsmall text--subdued">
+        <ol class="breadcrumb__list" role="list">
+            <li class="breadcrumb__item">
+                <a class="breadcrumb__link" href="{{ routes.root_url }}">{{ 'general.breadcrumb.home' | t }}</a>
+            </li>
+            {%- if article.title != blank -%}
+                <li class="breadcrumb__item">
+                    <a class="breadcrumb__link" href="/blogs/all">Blog</a>
+                </li>
+                <li class="breadcrumb__item">
+                    <a class="breadcrumb__link" href="{{ blog.url }}">{{- blog.title -}}</a>
+                </li>
+                <li class="breadcrumb__item">
+                    <span class="breadcrumb__link" aria-current="page">{{ article.title }}</span>
+                </li>
+            {%- else -%}
+                {% if blog.handle != 'all' %}
+                    <li class="breadcrumb__item">
+                        <a class="breadcrumb__link" href="/blogs/all">Blog</a>
+                    </li>
+                {% endif %}
+                <li class="breadcrumb__item js-el">
+                    <span class="breadcrumb__link" aria-current="page">{{ blog.title }}</span>
+                </li>
+            {%- endif -%}
+        </ol>
+    </nav>
+</div>
+<script>
+    // --- Shopify 最终专用版本 ---
+    // ⭐ 禁用浏览器默认滚动恢复
+    if ('scrollRestoration' in history) {
+    history.scrollRestoration = 'manual';
+    }
+
+    //⭐ 保存滚动位置到 history.state（浏览器后退按钮可自动恢复）
+    function saveScrollPosition() {
+    const y = window.pageYOffset || document.documentElement.scrollTop;
+
+    // 保存到浏览器状态（不会污染 localStorage/sessionStorage）
+    history.replaceState(
+        { ...(history.state || {}), scrollY: y },
+        ''
+    );
+    }
+
+    //⭐ 恢复滚动位置
+    function restoreScrollPosition() {
+    const state = history.state;
+
+    if (state && typeof state.scrollY === 'number') {
+        // Shopify 页面图片很多 → 加一点延迟确保高度渲染完成
+        setTimeout(() => {
+        window.scrollTo(0, state.scrollY);
+        }, 50);
+    }
+    }
+
+    // --- 事件绑定 ---
+
+    // 1. 滚动时随时保存位置
+    window.addEventListener('scroll', saveScrollPosition);
+
+    // 2. 刷新页面后恢复位置
+    window.addEventListener('load', restoreScrollPosition);
+
+    // 3. 点击浏览器后退/前进时恢复位置
+    window.addEventListener('popstate', restoreScrollPosition);
+</script>
+{% schema %}
+{
+  "name": "ulike-breadcrumb",
+  "settings": [],
+  "presets": [
+    {
+      "name": "ulike-breadcrumb",
+      "blocks": []
+    }
+  ]
+}
+{% endschema %}
