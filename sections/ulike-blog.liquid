@@ -1,0 +1,1357 @@
+
+<style>
+.u-blog {
+    padding: 60px 0;
+    position: relative;
+    z-index: 2;
+    min-height: 40vh;
+  }
+
+  .u-blog .u-tags button {
+    margin: 4px;
+    padding: 6px 12px;
+    border: 1px solid #ccc;
+    background: #f9f9f9;
+    cursor: pointer;
+    box-sizing: border-box;
+  }
+
+  .u-blog .u-tags button {
+    padding: 6px 12px;
+    border-radius: 20px;
+  }
+
+  .u-blog .u-tags button.active {
+    background: #333;
+    color: #fff;
+  }
+
+  .u-blog .article-tag {
+    display: inline-block;
+    padding: 2px 6px;
+    background: #eee;
+    border-radius: 3px;
+    font-size: 12px;
+    margin-bottom: 4px;
+  }
+
+  .u-blog .u-blogs-cat-pro {
+    position: relative;
+    z-index: 1;
+    border-bottom: 2px solid #DBDBDB;
+  }
+
+  .u-blog .u-blogs-cat-cont {
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    margin-bottom: -2px;
+  }
+
+  .u-blog .is-oh .u-blogs-cat-cont {
+    display: block;
+  }
+
+  .u-blog .u-blogs-cat {
+    color: #190A0A;
+    font-size: 22px;
+    line-height: 1.27;
+    letter-spacing: 1.359px;
+    white-space: nowrap;
+  }
+
+  .u-blog .u-blogs-cat button {
+    display: inline-flex;
+    align-items: center;
+    flex-shrink: 0;
+    width: fit-content;
+    height: 64px;
+    margin-right: 40px;
+  }
+
+  .u-blog .u-blogs-cat button:last-child {
+    margin-right: 0;
+  }
+
+  .u-blog .u-blogs-cat .active {
+    font-family: var(--heading-font-family);
+    border-bottom: 3px solid #000;
+  }
+
+  .is-fetching .u-blogs-cat button {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .u-blog .u-blogs-cat-arraws {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: calc(100% + 132px);
+    display: none;
+    justify-content: space-between;
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  .u-blog .is-oh .u-blogs-cat-arraws {
+    display: flex;
+  }
+
+  .is-fetching .u-blogs-cat-arraws {
+    opacity: .5;
+    cursor: not-allowed;
+  }
+
+  .u-blog .u-blogs-cat-arraw {
+    width: 56px;
+    cursor: pointer;
+    pointer-events: all;
+    border-radius: 50%;
+    box-shadow: 0 0 10px rgba(0, 0, 0, .1);
+  }
+
+  .u-blog .u-blogs-cat-arraw.is-disabled {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  @media (min-width: 991px) {
+    .u-blog .u-blogs-cat-arraw:hover circle {
+      fill: #000;
+    }
+
+    .u-blog .u-blogs-cat-arraw:hover path {
+      fill: #fff;
+    }
+  }
+
+  .u-blog .u-blogs-cat-arraw svg {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .u-blog .u-list-box {
+    margin-top: 110px;
+  }
+
+  .u-blog .u-list-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 50px;
+  }
+
+  .u-blog .u-blog-h3 {
+    color: #190A0A;
+    font-size: 50px;
+    line-height: 1.16;
+    font-family: var(--heading-font-family);
+    font-weight: normal;
+    margin: 0;
+  }
+
+  .u-blog .u-tags-filter {
+    position: relative;
+    z-index: 2;
+    width: 178px;
+    {% unless section.settings.show_tags %} 
+      display: none !important;
+    {% endunless %}
+  }
+
+  .u-blog .u-tags-filter-top {
+    height: 44px;
+    border-radius: 4px;
+    border: 1px solid #ebebeb;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 10px;
+    color: #190a0a;
+    font-size: 16px;
+    line-height: 1;
+    font-family: var(--heading-font-family);
+    cursor: pointer;
+  }
+
+  .u-blog .u-tags-filter-top .is-mb {
+    display: none;
+  }
+
+  .u-blog .u-tags-filter-tj {
+    display: none;
+    position: absolute;
+    left: 0;
+    width: 100%;
+    background: #fff;
+    padding: 16px 12px;
+    border-radius: 2px;
+    box-shadow: 0px 4px 4px 0px rgba(238, 222, 222, 0.25);
+    z-index: 2;
+    max-height: 550px;
+    overflow-y: auto;
+  }
+
+  .u-blog .u-tags-filter-tj::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .u-blog .u-tags-filter-tj::-webkit-scrollbar-thumb {
+    background: #999;
+    border-radius: 3px;
+  }
+
+  .u-blog .u-tags-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #190A0A;
+    font-size: 14px;
+    line-height: 1.42;
+    font-family: var(--heading-font-family);
+    cursor: pointer;
+    margin-bottom: 16px;
+  }
+
+  .u-blog .u-tags-item:last-child {
+    margin-bottom: 0;
+  }
+
+  .u-blog .u-tags-item span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+    border-radius: 2px;
+    border: 1px solid #EBEBEB;
+    padding: 3px;
+  }
+
+  .u-blog .u-tags-item svg {
+    display: none;
+    margin: 0;
+    max-width: 100%;
+    height: auto;
+  }
+
+  .u-blog .u-tags-item.active svg {
+    display: block;
+  }
+
+  .u-blog .u-tags-item.active span {
+    background: #E0004D;
+    border-color: #E0004D;
+  }
+
+  .u-blog .selected-tag {
+    margin-top: 10px;
+    display: flex;
+    justify-content: flex-start;
+    position: absolute;
+    left: 0;
+    z-index: 1;
+  }
+
+  .u-blog .selected-tag-item {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    padding: 2px 4px;
+    border-radius: 2px;
+    background: #fce8ec;
+    color: #e0004d;
+    font-size: 14px;
+    line-height: 1;
+  }
+
+  .u-blog .u-list-box .u-list-cont {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 32px;
+  }
+
+  .u-blog .u-list-box .u-list-item {
+    width: calc(33.333% - 21.4px);
+  }
+
+  .u-blog .u-list-box .u-list-img {
+    position: relative;
+    padding-top: 75%;
+    overflow: hidden;
+    margin-bottom: 16px;
+    background: #DBDBDB;
+    z-index: 1;
+  }
+
+  .u-blog .u-list-box .u-list-img::before {
+    position: absolute;
+    content: '';
+    top: 50%;
+    left: 50%;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    border-top: 2px solid #E0004D;
+    border-left: 2px solid #E0004D;
+    transform: translate(-50%, -50%) rotate(0deg);
+    animation: u-rotate 1.2s infinite linear;
+    z-index: 1;
+  }
+
+  @keyframes u-rotate {
+    100% {
+      transform: translate(-50%, -50%) rotate(360deg);
+    }
+  }
+
+  .u-blog .u-list-box .img {
+    position: absolute;
+    z-index: 2;
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    top: 0;
+    left: 0;
+    transition: all .4s ease-out;
+  }
+@media (min-width: 991px) {
+  .u-blog .u-list-box .u-list-img:hover .img {
+    transform: scale(1.08);
+  }
+}
+
+  .u-blog .u-blog-tag {
+    font-size: 14px;
+    color: #E0004D;
+    font-size: 12px;
+    line-height: 1;
+    height: 24px;
+    background: #FCE8EC;
+    padding: 0 4px;
+    display: inline-flex;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+
+  .u-blog .u-list-box .u-list-title {
+    font-size: 25px;
+    color: #000;
+    font-family: var(--heading-font-family);
+    font-weight: normal;
+    margin: 0;
+    line-height: 1.1;
+    margin-bottom: 16px;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+  }
+
+  .u-blog .u-list-box .u-list-sub {
+    color: #190A0A;
+    font-size: 14px;
+    line-height: 1.57;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    margin-bottom: 16px;
+  }
+
+  .u-blog .u-list-box .u-list-p {
+    color: #756B6E;
+    font-size: 14px;
+    line-height: 1.57;
+    margin-bottom: 16px;
+  }
+
+  .u-blog .u-more {
+    color: #E0004D;
+    font-size: 12px;
+    line-height: 1.33;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: linear-gradient(0deg, #e0004d 0%, #e0004d 100%) no-repeat;
+    background-size: 100% 1px;
+    background-position: left bottom;
+    width: fit-content;
+  }
+
+  .u-blog .ulike-pagination {
+    margin-top: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .u-blog .ulike-pagination button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    color: #756B6E;
+    font-size: 20px;
+    line-height: 1;
+  }
+
+  .u-blog .ulike-pagination button svg {
+    display: block;
+    margin: 0;
+  }
+
+  .u-blog .ulike-pagination button.active {
+    color: #000;
+    border-bottom: 1px solid #000;
+  }
+
+  @media (max-width:1700px) {
+    .u-blog .u-blogs-cat-arraws {
+      width: 100%;
+    }
+
+    .u-blog .u-blogs-cat-arraw {
+      width: 40px;
+    }
+  }
+
+  @media (max-width:1100px) {
+    .u-blog .u-list-box .u-list-cont {
+      gap: 30px;
+    }
+
+    .u-blog .u-list-box .u-list-item {
+      width: calc(33.333% - 20px);
+    }
+
+    .u-blog .u-list-box .u-list-title {
+      font-size: 20px;
+    }
+  }
+
+  @media (max-width:991px) {
+    .u-blog {
+      padding: 16px 0 50px 0;
+      overflow: hidden;
+    }
+
+    .u-blog .u-blogs-cat {
+      font-size: 16px;
+    }
+
+    .u-blog .u-blogs-cat button {
+      margin-right: 20px;
+    }
+
+    .u-blog .u-list-box {
+      margin-top: 32px;
+    }
+
+    .u-blog .u-list-top {
+      margin-bottom: 40px;
+    }
+
+    .u-blog .u-blog-h3 {
+      font-size: 28px;
+    }
+
+    .u-blog .u-tags-filter {
+      width: 120px;
+    }
+
+    .u-blog .u-tags-filter.open-filter {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      background: rgba(0, 0, 0, .5);
+      z-index: 999;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+    }
+
+    .u-blog .u-tags-filter-top {
+      font-size: 14px;
+      height: 34px;
+      background: #fff;
+      border-radius: 4px 4px 0 0;
+    }
+
+    .u-blog .open-filter .u-tags-filter-top {
+      border: 0;
+      border-bottom: 1px solid #E0E0E0;
+    }
+
+    .u-blog .open-filter .is-pc {
+      display: none;
+    }
+
+    .u-blog .open-filter .is-mb {
+      display: block;
+    }
+
+    .u-blog .u-tags-filter-tj {
+      position: relative;
+      max-height: 55vh;
+    }
+
+    .u-blog .selected-tag {
+      left: auto;
+      right: 0;
+    }
+
+    .u-blog .selected-tag-item {
+      white-space: nowrap;
+    }
+  }
+
+  @media (max-width:768px) {
+    .u-blog .u-list-box .u-list-item {
+      width: 100%;
+    }
+
+    .u-blog .u-list-box .u-list-title {
+      font-size: 18px;
+    }
+  }
+</style>
+
+<div class="u-blog">
+  <div class="container">
+    <div class="u-blogs-cat-pro" style="display:none;">
+      <div class="u-blogs-cat-cont">
+        <div class="u-blogs-cat"></div>
+      </div>
+      <div class="u-blogs-cat-arraws">
+        <div class="u-blogs-cat-arraw u-blogs-cat-left">
+          <svg xmlns="http://www.w3.org/2000/svg" width="56" height="56" viewBox="0 0 56 56" fill="none">
+            <circle cx="28" cy="28" r="28" transform="rotate(-180 28 28)" fill="#FBFAF4" />
+            <path fill-rule="evenodd" clip-rule="evenodd"
+              d="M33.0404 46.293L33.7475 47.0001L35.1617 45.5858L34.4546 44.8787L27.9989 38.423L21.9137 32.3378C21.1326 31.5568 19.8663 31.5568 19.0852 32.3378L26.5847 39.8372L33.0404 46.293ZM15.5404 27.3787C15.1499 27.7693 15.1499 28.4024 15.5404 28.793C15.6719 28.9245 15.8309 29.0117 15.9989 29.0546L15.9989 29.0858L16.2453 29.0858L16.2497 29.0858L16.9989 29.0858L27.2494 29.0858L37.5 29.0858L40.0001 29.0858C41.1046 29.0858 42.0001 28.1904 42.0001 27.0858L37.5 27.0858L18.6617 27.0858L34.4546 11.293L35.1617 10.5859L33.7475 9.17164L33.0404 9.87875L15.5404 27.3787Z"
+              fill="#190A0A" />
+          </svg>
+        </div>
+        <div class="u-blogs-cat-arraw u-blogs-cat-right">
+          <svg xmlns="http://www.w3.org/2000/svg" width="57" height="56" viewBox="0 0 57 56" fill="none">
+            <circle cx="28" cy="28" r="28" transform="matrix(1 -8.74228e-08 -8.74228e-08 -1 0.320312 56)"
+              fill="#FBFAF4" />
+            <path fill-rule="evenodd" clip-rule="evenodd"
+              d="M23.2799 46.293L22.5728 47.0001L21.1586 45.5858L21.8657 44.8787L28.3214 38.423L34.4067 32.3378C35.1877 31.5568 36.454 31.5568 37.2351 32.3378L29.7356 39.8372L23.2799 46.293ZM40.7799 27.3787C41.1704 27.7693 41.1704 28.4024 40.7799 28.793C40.6484 28.9245 40.4894 29.0117 40.3214 29.0546L40.3214 29.0858L40.075 29.0858L40.0706 29.0858L39.3214 29.0858L29.0709 29.0858L18.8203 29.0858L16.3202 29.0858C15.2157 29.0858 14.3202 28.1904 14.3202 27.0858L18.8203 27.0858L37.6586 27.0858L21.8657 11.293L21.1586 10.5859L22.5728 9.17164L23.2799 9.87875L40.7799 27.3787Z"
+              fill="#190A0A" />
+          </svg>
+        </div>
+      </div>
+    </div>
+    <div class="u-list-box">
+      <div class="u-list-top">
+        {% if section.settings.text %}
+          <h3 class="u-blog-h3">{{ section.settings.text }}</h3>
+        {% endif %}
+        <div class="u-tags-filter" style="display:none;">
+          <div class="u-tags-filter-top">
+            {{ section.settings.text1 }}
+            <span class="close-btn">
+              <svg xmlns="http://www.w3.org/2000/svg" class="is-pc" width="21" height="20" viewBox="0 0 21 20"
+                fill="none">
+                <path d="M4.12988 13L10.1299 7L16.1299 13" stroke="#190A0A" stroke-miterlimit="10"
+                  stroke-linecap="round" stroke-linejoin="round"></path>
+              </svg>
+              <svg xmlns="http://www.w3.org/2000/svg" class="is-mb" width="25" height="24" viewBox="0 0 25 24"
+                fill="none">
+                <path fill-rule="evenodd" clip-rule="evenodd"
+                  d="M17.287 7.29299C17.0917 7.09773 16.7752 7.09773 16.5799 7.29299L12.9404 10.9325L9.30086 7.29299C9.10559 7.09773 8.78901 7.09773 8.59375 7.29299L8.2402 7.64655C8.04493 7.84181 8.04493 8.15839 8.2402 8.35365L11.8797 11.9932L8.2402 15.6327C8.04493 15.828 8.04493 16.1445 8.2402 16.3398L8.59375 16.6934C8.78901 16.8886 9.10559 16.8886 9.30086 16.6934L12.9404 13.0538L16.5799 16.6934C16.7752 16.8886 17.0917 16.8886 17.287 16.6934L17.6406 16.3398C17.8358 16.1445 17.8358 15.828 17.6406 15.6327L14.001 11.9932L17.6406 8.35365C17.8358 8.15839 17.8358 7.84181 17.6406 7.64655L17.287 7.29299Z"
+                  fill="#161823"></path>
+              </svg>
+            </span>
+          </div>
+          <div class="u-tags-filter-tj">
+            <div class="u-tags-item"></div>
+          </div>
+          <div class="selected-tag"></div>
+        </div>
+      </div>
+
+      <div class="u-list-cont">
+      </div>
+    </div>
+    <div class="ulike-pagination"></div>
+  </div>
+</div>
+<script>
+  const STORE_DOMAIN = window.Shopify?.shop || window.location.hostname;
+  const STOREFRONT_ACCESS_TOKEN = "{{ section.settings.sat }}";
+  const PAGE_SIZE = {{ section.settings.articles_per_page }};
+
+  let currentBlog = '';
+  let currentTag = '';
+  let showTags = false;
+  let allArticlesCache = [];
+  let isFetching = false;
+  let currentFetchController = null;
+  let loadingOverlay = null;
+  let currentPage = 1;
+
+  // 新增：保存 blogs 列表用于面包屑显示 title
+  let blogsList = [];
+
+  // ------- Loading 控制 -------
+  function showLoading(show) {
+    return ;
+    const container = document.querySelector('.u-blog');
+    if (show) {
+      if (!loadingOverlay) {
+        loadingOverlay = document.createElement('div');
+        loadingOverlay.className = 'loading-overlay';
+        Object.assign(loadingOverlay.style, {
+          position: 'fixed',
+          top: 0, left: 0, width: '100%', height: '100%',
+          background: 'rgba(0,0,0,0.5)', display: 'flex',
+          alignItems: 'center', justifyContent: 'center',
+          zIndex: 9999
+        });
+        const spinner = document.createElement('div');
+        spinner.className = 'spinner';
+        Object.assign(spinner.style, {
+          width: '50px', height: '50px',
+          border: '5px solid #f3f3f3',
+          borderTop: '5px solid #555',
+          borderRadius: '50%',
+          animation: 'spin 1s linear infinite'
+        });
+        loadingOverlay.appendChild(spinner);
+        container.appendChild(loadingOverlay);
+        container.style.position = container.style.position || 'relative';
+      }
+    } else {
+      if (loadingOverlay) {
+        loadingOverlay.remove();
+        loadingOverlay = null;
+      }
+    }
+  }
+
+  // ------- URL 工具 -------
+  function getQueryParam(key) {
+    return new URLSearchParams(window.location.search).get(key);
+  }
+  function updateURLParams(params) {
+    const url = new URL(window.location);
+    Object.keys(params).forEach(key => {
+      if (params[key]) url.searchParams.set(key, params[key]);
+      else url.searchParams.delete(key);
+    });
+    window.history.replaceState({}, '', url);
+  }
+
+  // ------- fetch 通用 -------
+  async function shopifyFetch(query, variables = {}) {
+    if (currentFetchController) {
+      currentFetchController.abort();
+    }
+    currentFetchController = new AbortController();
+    const signal = currentFetchController.signal;
+
+    try {
+      const res = await fetch(`https://${STORE_DOMAIN}/api/{{ section.settings.API_VERSION }}/graphql.json`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-Shopify-Storefront-Access-Token": STOREFRONT_ACCESS_TOKEN
+        },
+        body: JSON.stringify({ query, variables }),
+        signal
+      });
+      return await res.json();
+    } catch (e) {
+      if (e.name === 'AbortError') console.log('请求被中断');
+      else console.error(e);
+      return null;
+    }
+  }
+
+  // ------- 获取分类 -------
+  async function fetchBlogs() {
+    const query = `query { blogs(first:99){ edges{ node{ id title handle }}}}`;
+    const data = await shopifyFetch(query);
+    if (!data) return [];
+    return data.data.blogs.edges.map(e => ({ handle: e.node.handle, title: e.node.title, showTags: true }));
+  }
+
+  // ------- 获取文章增量加载 -------
+  async function fetchArticlesIncremental(blogHandle, onBatchLoaded) {
+    if (isFetching) return;
+    isFetching = true;
+    document.querySelector('.u-blog').classList.add('is-fetching');
+
+    const query = `
+    query getArticles($handle:String!, $first:Int!, $after:String) {
+      blogByHandle(handle:$handle) {
+        articles(first:$first, after:$after,sortKey: PUBLISHED_AT,
+reverse: true) {
+          edges { cursor node { id title excerpt content publishedAt authorV2{name} tags handle image{url altText} } }
+          pageInfo { hasNextPage endCursor }
+        }
+      }
+    }`;
+
+    let after = null;
+    let allEdges = [];
+    let hasNextPage = true;
+    let isFirstBatch = true;
+
+    while (hasNextPage) {
+      const variables = { handle: blogHandle, first: 50, after };
+      const data = await shopifyFetch(query, variables);
+      if (!data) break;
+
+      const articles = data.data.blogByHandle.articles;
+      allEdges = [...allEdges, ...articles.edges];
+      hasNextPage = articles.pageInfo.hasNextPage;
+      after = articles.pageInfo.endCursor;
+
+      onBatchLoaded(allEdges.map(e => e.node), isFirstBatch);
+      isFirstBatch = false;
+    }
+
+    isFetching = false;
+    document.querySelector('.u-blog').classList.remove('is-fetching');
+  }
+
+  // 滚动到顶部
+  function scrollToBlogTop() {
+    const container = document.querySelector('.u-blog');
+    if (!container) return;
+
+    const offset = 80; // 偏移量
+    const top = container.getBoundingClientRect().top + window.scrollY - offset;
+
+    window.scrollTo({
+      top: top,
+      behavior: 'smooth'
+    });
+  }
+
+  function formatDate(date) {
+    console.log(date);
+
+    const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+      "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+    console.log(date);
+
+    const day = String(date.getDate()).padStart(2, '0'); // 保证两位
+    const month = months[date.getMonth()]; // 获取月份缩写
+    const year = date.getFullYear();
+
+    return `${month} ${day}, ${year}`;
+  }
+
+  function getPureArticleText(article) {
+    let html = article.excerpt || article.content || '';
+
+    // --- 1. 删除被转义或未转义的 <style> 块 ---
+    html = html
+      .replace(/<style[^>]*>[\s\S]*?<\/style>/gi, '')          // 正常标签
+      .replace(/&lt;style[^&]*&gt;[\s\S]*?&lt;\/style&gt;/gi, ''); // 被转义标签
+
+    // --- 2. 删除被转义或未转义的 <script> 块 ---
+    html = html
+      .replace(/<script[^>]*>[\s\S]*?<\/script>/gi, '')
+      .replace(/&lt;script[^&]*&gt;[\s\S]*?&lt;\/script&gt;/gi, '');
+
+    // --- 3. 用 DOM 转成纯文本 ---
+    const temp = document.createElement('div');
+    temp.innerHTML = html;
+
+    const text = temp.textContent || temp.innerText || '';
+
+    return text.slice(0, 200) + '...';
+  }
+
+  // ------- 渲染文章 + 分页 -------
+  function renderArticles(allArticles, page = 1) {
+    const list = document.querySelector(".u-list-cont");
+    list.innerHTML = '';
+    const start = (page - 1) * PAGE_SIZE;
+    const pageArticles = allArticles.slice(start, start + PAGE_SIZE);
+
+    const currentBlogTitle = document.querySelector(".u-blogs-cat button.active")?.textContent || '';
+
+    pageArticles.forEach(article => {
+      const imgUrl = article.image?.url || "";
+      const altText = article.image?.altText || article.title;
+      const excerpt = getPureArticleText(article)//article.excerpt || (article.content ? article.content.slice(0, 200) + '...' : '');
+      const tagsHtml = currentBlogTitle ? `<div class="u-blog-tag">${currentBlogTitle}</div>` : '';
+
+      let itemHtml = `
+      <a href="/blogs/${currentBlog}/${article.handle}" class="u-list-item">
+        ${imgUrl ? `<div class="u-list-img"><img src="${imgUrl}" alt="${altText}" class="img" onload="this.style.background='white';"></div>` : ''}
+        <div>
+          ${tagsHtml}
+          <h4 class="u-list-title">${article.title}</h4>
+          <div class="u-list-sub">${excerpt}</div>
+          <div class="u-list-p">${formatDate(new Date(article.publishedAt))}</div>
+          <div class="u-more">
+            LEARN MORE 
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="12" viewBox="0 0 14 12" fill="none">
+              <path d="M0 5.53064L13.087 5.53003" stroke="currentColor" stroke-width="0.608696"/>
+              <path d="M10.3478 2.79089L13.5532 5.53063L10.3478 8.20098" stroke="currentColor" stroke-width="0.608696" stroke-linejoin="round"/>
+            </svg>
+          </div>
+        </div>
+      </a>
+    `;
+      list.insertAdjacentHTML("beforeend", itemHtml);
+    });
+
+    renderPagination(allArticles, page, renderArticlesWithPagination);
+  }
+
+  function renderArticlesWithPagination(allArticles, newPage) {
+    currentPage = newPage;
+    renderArticles(allArticles, currentPage);
+    scrollToBlogTop();
+  }
+
+  // ------- 渲染分页 -------
+  function renderPagination(allArticles, currentPage, renderFn) {
+    const container = document.querySelector(".ulike-pagination");
+    container.innerHTML = '';
+    if (!allArticles || allArticles.length === 0) return;
+
+    const totalPages = Math.ceil(allArticles.length / PAGE_SIZE);
+
+    const prevBtn = document.createElement("button");
+    prevBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="8" height="13" viewBox="0 0 8 13" fill="none"><path d="M7 12.53L1 6.53003L7 0.530029" stroke="currentColor" stroke-width="1.3"/></svg>`;
+    prevBtn.disabled = currentPage === 1;
+    prevBtn.onclick = () => { if (currentPage > 1) renderFn(allArticles, currentPage - 1); }
+    container.appendChild(prevBtn);
+
+    const pages = [];
+    if (totalPages <= 6) { for (let i = 1; i <= totalPages; i++) pages.push(i); }
+    else {
+      if (currentPage <= 4) pages.push(1, 2, 3, 4, '...', totalPages);
+      else if (currentPage >= totalPages - 3) pages.push(1, '...', totalPages - 3, totalPages - 2, totalPages - 1, totalPages);
+      else pages.push(1, '...', currentPage - 1, currentPage, currentPage + 1, '...', totalPages);
+    }
+
+    pages.forEach(p => {
+      const btn = document.createElement("button");
+      if (p === '...') { btn.textContent = '...'; btn.disabled = true; }
+      else { btn.textContent = p; btn.className = (p === currentPage ? "active" : ""); btn.onclick = () => renderFn(allArticles, p); }
+      container.appendChild(btn);
+    });
+
+    const nextBtn = document.createElement("button");
+    nextBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="8" height="13" viewBox="0 0 8 13" fill="none"><path d="M0.5 0.530029L6.5 6.53003L0.5 12.53" stroke="currentColor" stroke-width="1.3"/></svg>`;
+    nextBtn.disabled = currentPage === totalPages;
+    nextBtn.onclick = () => { if (currentPage < totalPages) renderFn(allArticles, currentPage + 1); }
+    container.appendChild(nextBtn);
+  }
+
+  // ------- 渲染选中标签 -------
+  function renderSelectedTag() {
+    const container = document.querySelector(".selected-tag");
+    container.innerHTML = '';
+    if (!currentTag) return;
+
+    const tagEl = document.createElement("div");
+    tagEl.className = "selected-tag-item";
+    const text = document.createElement("span");
+    text.textContent = currentTag;
+
+    const close = document.createElement("span");
+    close.textContent = "×";
+    close.style.cursor = "pointer";
+    close.onclick = () => {
+      currentTag = '';
+      currentPage = 1;
+      renderSelectedTag();
+      const filtered = allArticlesCache;
+      renderArticles(filtered, currentPage);
+      renderPagination(filtered, currentPage, renderArticlesWithPagination);
+      document.querySelectorAll(".u-tags-filter-tj .u-tags-item").forEach(b => b.classList.remove("active"));
+      // 更新面包屑（移除 tag）
+      renderBreadcrumb();
+    };
+
+    tagEl.appendChild(text);
+    tagEl.appendChild(close);
+    container.appendChild(tagEl);
+  }
+
+  // ------- 面包屑（新增：自动插入 .u-breadcrumb，并渲染） -------
+  function renderBreadcrumb() {
+    const bc = document.querySelector('.u-breadcrumb');
+    if (!bc) return;
+
+    // 删除旧的 js-el 元素，保留其他自定义内容
+    bc.querySelectorAll('.js-el').forEach(el => el.remove());
+    const currentBlogTitle = (blogsList.find(b => b.handle === currentBlog)?.title) || '';
+      
+    // 如果没有分类，不生成面包屑
+    if (!currentBlogTitle) return;
+
+    // ====== 分类 ======
+    const catItem = document.createElement('li');
+    catItem.className = 'breadcrumb__item js-el';
+
+    const catLink = document.createElement('span');
+    catLink.className = 'breadcrumb__link';
+    catLink.textContent = currentBlogTitle;  // 分类名字
+    catLink.style.cursor = 'pointer';
+    // 点击分类 → 清空 tag，显示分类全部文章
+    catLink.addEventListener('click', () => {
+      currentTag = '';
+      renderArticles(allArticlesCache, 1);
+      renderBreadcrumb();
+    });
+
+    catItem.appendChild(catLink);
+    bc.querySelector('.breadcrumb__list').appendChild(catItem);
+
+    // ====== 标签 ======
+    if (currentTag) {
+      const tagItem = document.createElement('li');
+      tagItem.className = 'breadcrumb__item js-el';
+
+      const tagLink = document.createElement('span');
+      tagLink.className = 'breadcrumb__link';
+      tagLink.textContent = currentTag; // 当前选中标签
+      //tagLink.style.cursor = 'pointer';
+      // 点击标签 → 移除标签筛选
+      // tagLink.addEventListener('click', () => {
+      //   currentTag = '';
+      //   renderArticles(allArticlesCache, 1);
+      //   renderBreadcrumb();
+      // });
+
+      tagItem.appendChild(tagLink);
+      bc.querySelector('.breadcrumb__list').appendChild(tagItem);
+    }
+    // ====== 给最后一个加 aria-current="page" ======
+    const last = bc.querySelector('.breadcrumb__item.js-el:last-child .breadcrumb__link');
+    if (last) {
+      last.setAttribute('aria-current', 'page');
+    }
+  }
+
+  // ------- 分类容器宽度检测 & 偏移 -------
+  function checkBlogOverflow() {
+    const pro = document.querySelector(".u-blogs-cat-pro");
+    const cat = document.querySelector(".u-blogs-cat");
+    if (!pro || !cat) return;
+
+    const totalWidth = Array.from(cat.children).reduce((sum, el) => sum + el.offsetWidth + parseInt(getComputedStyle(el).marginRight || 0), 0);
+    if (totalWidth > pro.offsetWidth) {
+      pro.classList.add("is-oh");
+    } else {
+      pro.classList.remove("is-oh");
+      cat.style.transform = "translateX(0px)";
+    }
+    updateArrowState();
+  }
+
+  // ------- 偏移到按钮居中（使用 transform） -------
+  function scrollCategoryToButton(btn) {
+    const catPro = document.querySelector(".u-blogs-cat-pro");
+    const cat = document.querySelector(".u-blogs-cat");
+    if (!catPro || !cat || !catPro.classList.contains("is-oh")) return;
+
+    const proWidth = catPro.offsetWidth;
+    const catWidth = cat.scrollWidth;
+    const btnOffsetLeft = btn.offsetLeft;   // 按钮相对 cat 左边的位置
+    const btnWidth = btn.offsetWidth;
+
+    // 目标：让按钮中心对齐容器中心
+    let newX = -(btnOffsetLeft - (proWidth / 2 - btnWidth / 2));
+
+    // 限制边界：不能超出左右
+    const maxOffset = proWidth - catWidth; // 最多能向左偏移的量
+    if (newX < maxOffset) newX = maxOffset; // 右边留白处理
+    if (newX > 0) newX = 0; // 左边留白处理
+
+    // 应用偏移
+    cat.style.transform = `translateX(${newX}px)`;
+    cat.style.transition = "transform 0.3s ease";
+  }
+  // ------- 拖动分类条（仅在 is-oh 时启用） -------
+  function enableCategoryDrag() {
+    const catPro = document.querySelector(".u-blogs-cat-pro");
+    const cat = document.querySelector(".u-blogs-cat");
+    if (!catPro || !cat) return;
+
+    let isDown = false;
+    let startX = 0;
+    let currentX = 0; // 当前 transform 偏移
+    let catWidth = 0;
+    let proWidth = 0;
+
+    // 从 transform 解析出当前 X 偏移
+    function getCurrentTranslateX() {
+      const style = window.getComputedStyle(cat);
+      const matrix = new DOMMatrixReadOnly(style.transform);
+      return matrix.m41; // X 偏移量
+    }
+
+    // 应用偏移并限制边界
+    function setTranslateX(x) {
+      const maxOffset = proWidth - catWidth; // 最多能向左偏移的量
+      if (x < maxOffset) x = maxOffset;      // 防止右侧空白
+      if (x > 0) x = 0;                      // 防止左侧空白
+      cat.style.transform = `translateX(${x}px)`;
+    }
+
+    catPro.addEventListener("mousedown", (e) => {
+      if (!catPro.classList.contains("is-oh")) return;
+      isDown = true;
+      startX = e.clientX;
+      catWidth = cat.scrollWidth;
+      proWidth = catPro.offsetWidth;
+      currentX = getCurrentTranslateX();
+      cat.style.transition = "none"; // 拖动时禁用过渡
+    });
+
+    document.addEventListener("mousemove", (e) => {
+      if (!isDown) return;
+      const dx = e.clientX - startX;
+      setTranslateX(currentX + dx);
+    });
+
+    document.addEventListener("mouseup", () => {
+      if (isDown) {
+        isDown = false;
+        cat.style.transition = "transform 0.3s ease"; // 松开后恢复过渡
+      }
+    });
+
+    // ✅ 触摸支持（移动端）
+    catPro.addEventListener("touchstart", (e) => {
+      if (!catPro.classList.contains("is-oh")) return;
+      isDown = true;
+      startX = e.touches[0].clientX;
+      catWidth = cat.scrollWidth;
+      proWidth = catPro.offsetWidth;
+      currentX = getCurrentTranslateX();
+      cat.style.transition = "none";
+    });
+
+    catPro.addEventListener("touchmove", (e) => {
+      if (!isDown) return;
+      const dx = e.touches[0].clientX - startX;
+      setTranslateX(currentX + dx);
+    });
+
+    catPro.addEventListener("touchend", () => {
+      if (isDown) {
+        isDown = false;
+        cat.style.transition = "transform 0.3s ease";
+      }
+    });
+  }
+
+
+  function updateArrowState() {
+    const leftArrow = document.querySelector(".u-blogs-cat-left");
+    const rightArrow = document.querySelector(".u-blogs-cat-right");
+    const cat = document.querySelector(".u-blogs-cat");
+    const pro = document.querySelector(".u-blogs-cat-pro");
+    if (!leftArrow || !rightArrow || !cat || !pro) return;
+
+    const activeBtn = cat.querySelector("button.active");
+    const buttons = Array.from(cat.querySelectorAll("button"));
+    const idx = buttons.indexOf(activeBtn);
+
+    if (idx <= 0) leftArrow.classList.add("is-disabled");
+    else leftArrow.classList.remove("is-disabled");
+
+    if (idx >= buttons.length - 1) rightArrow.classList.add("is-disabled");
+    else rightArrow.classList.remove("is-disabled");
+  }
+
+  function bindCategoryArrows() {
+    const leftArrow = document.querySelector(".u-blogs-cat-left");
+    const rightArrow = document.querySelector(".u-blogs-cat-right");
+    const cat = document.querySelector(".u-blogs-cat");
+
+    if (!leftArrow || !rightArrow || !cat) return;
+
+    leftArrow.addEventListener("click", () => {
+      const activeBtn = cat.querySelector("button.active");
+      const buttons = Array.from(cat.querySelectorAll("button"));
+      const idx = buttons.indexOf(activeBtn);
+      if (idx > 0) buttons[idx - 1].click();
+    });
+
+    rightArrow.addEventListener("click", () => {
+      const activeBtn = cat.querySelector("button.active");
+      const buttons = Array.from(cat.querySelectorAll("button"));
+      const idx = buttons.indexOf(activeBtn);
+      if (idx < buttons.length - 1) buttons[idx + 1].click();
+    });
+  }
+
+  // ------- 初始化分类 & 标签 -------
+  async function initBlogs() {
+    showLoading(true);
+    const blogs = await fetchBlogs();
+    // 保存用于面包屑显示 title
+    blogsList = blogs || [];
+    const blogContainer = document.querySelector(".u-blogs-cat");
+
+    if(!blogs.length) return
+    document.querySelector(".u-blogs-cat-pro").style.display = ""
+
+    currentBlog = getQueryParam("category") || blogs[0]?.handle || '';
+    currentTag = '';
+    currentPage = 1;
+
+    blogContainer.innerHTML = '';
+    blogs.forEach(b => {
+      const btn = document.createElement("button");
+      btn.textContent = b.title;
+      // 保存 handle/title 到 dataset（备用）
+      btn.dataset.handle = b.handle;
+      btn.dataset.title = b.title;
+      btn.className = (b.handle === currentBlog ? "active" : "");
+      btn.onclick = async () => {
+        if (isFetching) return;
+        showLoading(true);
+        currentBlog = b.handle;
+        showTags = b.showTags;
+        currentTag = '';
+        currentPage = 1;
+        updateURLParams({ category: currentBlog });
+
+        blogContainer.querySelectorAll("button").forEach(btn => btn.classList.remove("active"));
+        btn.classList.add("active");
+        document.querySelector('.selected-tag-item')?.remove();
+
+        await loadArticles(currentBlog, currentPage, true);
+        scrollCategoryToButton(btn);
+        scrollToBlogTop();
+        showLoading(false);
+        updateArrowState();
+
+        // 切换分类后更新面包屑（显示新的分类）
+        renderBreadcrumb();
+      };
+      blogContainer.appendChild(btn);
+    });
+
+    showTags = blogs.find(b => b.handle === currentBlog)?.showTags || false;
+
+    await loadArticles(currentBlog, currentPage, true);
+    showLoading(false);
+
+    checkBlogOverflow();
+    updateArrowState();
+    const activeBtn = blogContainer.querySelector("button.active");
+    if (activeBtn) {
+      scrollCategoryToButton(activeBtn);
+    }
+
+    // 初始化并渲染面包屑（如果有数据）
+    renderBreadcrumb();
+  }
+
+  // ------- 加载文章 -------
+  async function loadArticles(blogHandle, page = 1, updateTags = false) {
+    if (isFetching) return;
+    showLoading(true);
+
+    currentPage = page;
+    const tagContainer = document.querySelector(".u-tags-filter-tj");
+    const tagFilter = document.querySelector(".u-tags-filter");
+    allArticlesCache = [];
+
+    await fetchArticlesIncremental(blogHandle, (currentArticles, isFirstBatch) => {
+      allArticlesCache = currentArticles;
+      const filtered = currentTag ? allArticlesCache.filter(a => a.tags.includes(currentTag)) : allArticlesCache;
+
+      renderArticles(filtered, currentPage);
+
+      if (showTags) {
+        const tags = [...new Set(allArticlesCache.flatMap(a => a.tags))];
+        if (tags.length === 0) {
+          tagFilter.style.display = "none";
+        } else {
+          tagFilter.style.display = "";
+          tagContainer.innerHTML = '';
+          tags.forEach(t => {
+            const btn = document.createElement("div");
+            btn.className = "u-tags-item";
+            btn.innerHTML = `<span><svg xmlns="http://www.w3.org/2000/svg" width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 4.33606L4.5 7.83606L11 1.33606" stroke="white" stroke-width="1.66667"/></svg></span>${t}`;
+            btn.className = (t === currentTag ? "u-tags-item active" : "u-tags-item");
+            btn.onclick = () => {
+              if (isFetching) return;
+              showLoading(true);
+              currentTag = t;
+              currentPage = 1;
+              const filtered = allArticlesCache.filter(a => a.tags.includes(currentTag));
+              renderArticles(filtered, currentPage);
+              renderPagination(filtered, currentPage, renderArticlesWithPagination);
+              tagContainer.querySelectorAll(".u-tags-item").forEach(b => b.classList.remove("active"));
+              btn.classList.add("active");
+              renderSelectedTag();
+              // 更新面包屑（分类 > 标签）
+              renderBreadcrumb();
+              scrollToBlogTop();
+              showLoading(false);
+            };
+            tagContainer.appendChild(btn);
+          });
+        }
+      }
+
+      if (isFirstBatch) showLoading(false);
+
+      // 每次数据更新后确保面包屑同步（本地渲染）
+      renderBreadcrumb();
+    });
+  }
+
+  // ------- 绑定筛选开关 -------
+  function bindFilterToggle() {
+    const filter = document.querySelector(".u-tags-filter");
+    const filterTop = document.querySelector(".u-tags-filter-top");
+    const filterList = document.querySelector(".u-tags-filter-tj");
+
+    if (!filter || !filterTop || !filterList) return;
+
+    filterTop.addEventListener("click", (e) => {
+      e.stopPropagation();
+      filter.classList.toggle("open-filter");
+      // 显示/隐藏完毕
+      if (filter.classList.contains("open-filter")) {
+        filterList.style.display = "block";
+      } else {
+        filterList.style.display = "none";
+      }
+    });
+
+    // 点击其他地方关闭（或者点击某个 tag 项后也关闭）
+    document.addEventListener("click", (e) => {
+      // 如果点击不是 filter 内部，或点击了某个 tag 项，都关闭下拉
+      if (!filter.contains(e.target) || e.target.closest(".u-tags-item")) {
+        filter.classList.remove("open-filter");
+        filterList.style.display = "none";
+      }
+    });
+  }
+
+  // ------- 页面初始化 & 绑定全局事件 -------
+  // 把之前的样式动画（loading spinner）补上（如果页面已经有就不会重复）
+  (function ensureSpinnerStyle() {
+    if (!document.getElementById('__u_blog_spinner_style')) {
+      const style = document.createElement('style');
+      style.id = '__u_blog_spinner_style';
+      style.innerHTML = `
+      @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+      .loading-overlay .spinner { animation: spin 1s linear infinite; }
+      .u-blogs-cat { transition: transform .36s cubic-bezier(.22,.9,.26,1); white-space: nowrap; display: flex; align-items: center; }
+      .u-blogs-cat button { display: inline-block; white-space: nowrap; }
+    `;
+      document.head.appendChild(style);
+    }
+  })();
+
+  // on resize 重新检测是否溢出并更新箭头
+  window.addEventListener('resize', () => {
+    // 防抖简单实现
+    clearTimeout(window.__u_blog_resize_timer);
+    window.__u_blog_resize_timer = setTimeout(() => {
+      checkBlogOverflow();
+    }, 120);
+  });
+
+  // 当 DOM 准备好，初始化
+  document.addEventListener('DOMContentLoaded', () => {
+    initBlogs().then(() => {
+      bindFilterToggle();
+      bindCategoryArrows();
+      // 确保初次渲染后，最新的溢出状态与箭头状态正确
+      checkBlogOverflow();
+      updateArrowState();
+      enableCategoryDrag();
+    });
+  });
+
+  // 如果脚本在 DOM 已经 ready 时被同步执行（例如放在 body 底部），也直接 init
+  if (document.readyState === 'complete' || document.readyState === 'interactive') {
+    // 使用微任务保证其它同步 DOM 操作完成
+    Promise.resolve().then(() => {
+      initBlogs().then(() => {
+        bindFilterToggle();
+        bindCategoryArrows();
+        checkBlogOverflow();
+        updateArrowState();
+      });
+    });
+  }
+  </script>
+{% schema %}
+{
+  "name": "ulike-blog",
+  "settings": [
+    {
+      "type": "text",
+      "id": "sat",
+      "label": "STOREFRONT ACCESS TOKEN",
+      "default":"c625d5d0719c737a655e6412c59a565e",
+      "info": "创建的应用 TOKEN"
+    },
+    {
+      "type": "text",
+      "id": "API_VERSION",
+      "label": "版本号",
+      "default":"2025-07",
+      "info": "Shopify官方更新了才需要修改"
+    },
+    {
+      "type": "text",
+      "id": "text",
+      "label": "标题"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_tags",
+      "label": "Show tags",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "text1",
+      "label": "Text",
+      "default":"Filter By:"
+    },
+    {
+      "type": "range",
+      "id": "articles_per_page",
+      "label": "Blog posts per page",
+      "min": 3,
+      "max": 48,
+      "step": 3,
+      "default": 9
+    }
+  ],
+  "presets": [
+    {
+      "name": "ulike-blog",
+      "settings": {}
+    }
+  ]
+}
+{% endschema %}
