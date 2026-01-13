@@ -1,0 +1,786 @@
+<style>
+.ulike-blog-list {
+  padding-top: 80px;
+  position: relative;
+  z-index: 1;
+}
+
+.ulike-blog-list .ulike-blog-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 63px;
+}
+
+.ulike-blog-list .ulike-blog-h3 {
+  color: #190a0a;
+  font-size: 50px;
+  line-height: 1.16;
+  font-family: var(--heading-font-family);
+  font-weight: normal;
+  margin: 0;
+}
+
+.ulike-blog-list .ulike-blog-link {
+  border-radius: 2px;
+  border: 1px solid #190a0a;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  padding: 0 50px;
+  color: #000;
+  font-size: 16px;
+  line-height: 1.5;
+  font-family: var(--heading-font-family);
+}
+
+.ulike-blog-list .ulike-blog-cont {
+  display: flex;
+  gap: 32px;
+}
+
+.ulike-blog-list .ulike-blog-li {
+  flex: 1;
+  display: flex;
+  row-gap: 20px;
+  column-gap: 32px;
+  flex-wrap: wrap;
+}
+
+.ulike-blog-list .ulike-blog-item {
+  display: flex;
+  gap: 16px;
+  width: calc(50% - 16px);
+}
+
+.ulike-blog-list .ulike-blog-img {
+  width: 243px;
+  overflow: hidden;
+  position: relative;
+  z-index: 1;
+  flex-shrink: 0;
+}
+
+.ulike-blog-list .ulike-blog-img::before {
+  width: 100%;
+  padding-top: 75%;
+  content: '';
+  display: block;
+  position: relative;
+  z-index: 1;
+}
+
+.ulike-blog-list .img {
+  position: absolute;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  object-fit: cover;
+  transition: all 0.4s ease-out;
+}
+
+.ulike-blog-list .ulike-blog-img:hover .img {
+  transform: scale(1.08);
+}
+
+.ulike-blog-list .ulike-blog-info {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+}
+
+.ulike-blog-list .ulike-blog-info::after {
+  position: absolute;
+  content: '';
+  width: 100%;
+  height: 1px;
+  background: #ebebeb;
+  bottom: -10px;
+  transform: translateY(-50%);
+  left: 0;
+  z-index: 1;
+}
+
+.ulike-blog-list .ulike-blog-item:nth-last-child(2) .ulike-blog-info::after,
+.ulike-blog-list .ulike-blog-item:last-child .ulike-blog-info::after {
+  display: none;
+}
+
+.ulike-blog-list .ulike-blog-item-h3 {
+  color: #190a0a;
+  font-size: 24px;
+  font-family: var(--heading-font-family);
+  font-weight: normal;
+  line-height: 1.3;
+  margin: 0;
+  margin-bottom: 16px;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ulike-blog-list .ulike-blog-item-p {
+  color: #190a0a;
+  font-size: 14px;
+  line-height: 1.57;
+  margin: 0;
+  margin-bottom: 16px;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ulike-blog-list .ulike-blog-item-time {
+  color: #756b6e;
+  font-size: 14px;
+  line-height: 1.57;
+}
+
+.ulike-blog-list .ulike-blog-adv {
+  display: none;
+  gap: 32px;
+}
+
+.ulike-blog-list .ulike-blog-adv-item {
+  width: 237px;
+}
+
+.ulike-blog-list .ulike-blog-adv-item:nth-child(2) {
+  display: none;
+}
+
+.ulike-blog-list .ulike-blog-adv-img {
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.ulike-blog-list .ulike-blog-adv-img::before {
+  width: 100%;
+  padding-top: 75%;
+  content: '';
+  display: block;
+  position: relative;
+  z-index: 1;
+}
+
+.ulike-blog-list .adv-img {
+  position: absolute;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  object-fit: cover;
+  transition: all 0.4s ease-out;
+}
+
+.ulike-blog-list .ulike-blog-adv-img:hover .adv-img {
+  transform: scale(1.08);
+}
+
+.ulike-blog-list .ulike-blog-adv-info {
+  padding: 24px 8px 40px 8px;
+  border-radius: 0 0 4px 4px;
+  background: rgba(216, 216, 216, 0.3);
+}
+
+.ulike-blog-list .ulike-blog-adv-h3 {
+  color: #190a0a;
+  font-size: 18px;
+  line-height: 1.33;
+  font-family: var(--heading-font-family);
+  font-weight: normal;
+  margin: 0;
+  margin-bottom: 8px;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ulike-blog-list .ulike-blog-adv-p {
+  color: #190a0a;
+  font-size: 14px;
+  line-height: 1.4;
+  margin: 0;
+  margin-bottom: 16px;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ulike-blog-list .ulike-blog-adv-more {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  color: #e0004d;
+  font-size: 12px;
+  line-height: 1.33;
+  background: linear-gradient(0deg, #e0004d 0%, #e0004d 100%) no-repeat;
+  background-size: 100% 1px;
+  background-position: left bottom;
+}
+
+.ulike-blog-list .ulike-type2 .ulike-blog-adv {
+  display: flex;
+}
+
+.ulike-blog-list .ulike-type3 .ulike-blog-adv {
+  display: flex;
+}
+
+.ulike-blog-list .ulike-type3 .ulike-blog-img {
+  display: none;
+}
+
+.ulike-blog-list .ulike-type4 .ulike-blog-adv {
+  display: flex;
+  flex-wrap: wrap;
+  flex-shrink: 0;
+}
+
+.ulike-blog-list .ulike-type4 .ulike-blog-adv-item:nth-child(2) {
+  display: block;
+}
+
+.ulike-blog-list .ulike-type5 .ulike-blog-adv {
+  display: flex;
+}
+
+.ulike-blog-list .ulike-type5 .ulike-blog-img {
+  display: none;
+}
+
+.ulike-blog-list .ulike-type5 .ulike-blog-adv-item:nth-child(2) {
+  display: block;
+}
+
+.ulike-blog-list .ulike-type6 .ulike-blog-img {
+  display: none;
+}
+
+.ulike-blog-list .ulike-type7 .ulike-blog-img {
+  display: none;
+}
+
+.ulike-blog-list .ulike-type7 .ulike-blog-item {
+  width: calc(33.333% - 21.4px);
+}
+
+.ulike-blog-list .ulike-type8 .ulike-blog-item {
+  width: calc(33.333% - 21.4px);
+}
+
+.ulike-blog-list .ulike-type9 .ulike-blog-item {
+  width: calc(25% - 24px);
+  min-width: 320px;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+}
+
+.ulike-blog-list .ulike-type9 .ulike-blog-img {
+  width: 100%;
+}
+
+.ulike-blog-list .ulike-type10 .ulike-blog-li {
+  display: grid;
+  grid-template-columns: 742px 1fr;
+  gap: 32px;
+  row-gap: 20px;
+}
+
+.ulike-blog-list .ulike-type10 .ulike-blog-item {
+  width: auto;
+}
+
+.ulike-blog-list .ulike-type10 .ulike-blog-item:first-child {
+  grid-row: 1 / span 4;
+  grid-column: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.ulike-blog-list .ulike-type10 .ulike-blog-item:nth-child(n + 2) {
+  grid-column: 2;
+}
+
+.ulike-blog-list .ulike-type10 .ulike-blog-item:first-child .ulike-blog-img {
+  width: 100%;
+}
+
+.ulike-blog-list
+  .ulike-type10
+  .ulike-blog-item:first-child
+  .ulike-blog-info::after {
+  display: none;
+}
+
+.ulike-blog-list .ulike-type10 .ulike-blog-item:first-child .ulike-blog-info {
+  padding: 16px;
+  background: #f6f6f6;
+}
+
+.ulike-blog-list
+  .ulike-type11
+  .ulike-blog-item:nth-child(n + 2)
+  .ulike-blog-img {
+  display: none;
+}
+
+/* ulike-type9 */
+.ulike-blog-list .ulike-type9 .ulike-blog-li {
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  padding-bottom: 20px;
+}
+
+.ulike-blog-list .ulike-type9 .ulike-blog-li::-webkit-scrollbar {
+  height: 6px;
+}
+
+.ulike-blog-list .ulike-type9 .ulike-blog-li::-webkit-scrollbar-thumb {
+  background: #999;
+  border-radius: 4px;
+}
+
+.ulike-blog-list .ulike-type9 .ulike-blog-info::after {
+  display: none !important;
+}
+/* ulike-type9 */
+
+/* ulike-type4 */
+@media (max-width: 1500px) {
+  .ulike-blog-list .ulike-type4 .ulike-blog-item {
+    width: 100%;
+  }
+}
+/* ulike-type4 */
+
+/* ulike-type8 */
+@media (max-width: 1450px) {
+  .ulike-blog-list .ulike-type8 .ulike-blog-item {
+    width: calc(50% - 16px);
+  }
+}
+/* ulike-type8 */
+
+/* ulike-type10 */
+@media (max-width: 1300px) {
+  .ulike-blog-list .ulike-type10 .ulike-blog-li {
+    grid-template-columns: 500px 1fr;
+  }
+  .ulike-blog-list .ulike-type10 .ulike-blog-img {
+    width: 200px;
+  }
+  .ulike-blog-list .ulike-type10 .ulike-blog-item-h3 {
+    font-size: 18px;
+  }
+}
+/* ulike-type10 */
+
+/* ulike-type2 */
+@media (max-width: 1250px) {
+  .ulike-blog-list .ulike-type2 .ulike-blog-item {
+    width: 100%;
+  }
+}
+/* ulike-type2  end*/
+
+@media (max-width: 991px) {
+  .ulike-blog-list {
+    padding-top: 50px;
+    padding-bottom: 98px;
+  }
+
+  .ulike-blog-list .ulike-blog-top {
+    margin-bottom: 46px;
+  }
+
+  .ulike-blog-list .ulike-blog-h3 {
+    font-size: 28px;
+  }
+
+  .ulike-blog-list .ulike-blog-link {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 24px;
+    height: 42px;
+    font-size: 15px;
+    padding: 0 11px;
+    border-radius: 1.2px;
+    z-index: 1;
+  }
+
+  .ulike-blog-list .ulike-blog-cont {
+    flex-direction: column;
+  }
+
+  .ulike-blog-list .ulike-blog-li {
+    gap: 32px;
+  }
+
+  .ulike-blog-list .ulike-blog-item {
+    width: 100%;
+    gap: 8px;
+  }
+
+  .ulike-blog-list .ulike-blog-info::after {
+    bottom: -16px;
+    width: calc(100vw - 48px);
+    left: auto;
+    right: 0;
+  }
+  .ulike-blog-list .ulike-blog-item:nth-last-child(2) .ulike-blog-info::after,
+  .ulike-blog-list .ulike-blog-item:last-child .ulike-blog-info::after {
+    display: block;
+  }
+  .ulike-blog-list .ulike-blog-item-h3 {
+    font-size: 16px;
+    margin-bottom: 8px;
+  }
+  .ulike-blog-list .ulike-blog-item-p {
+    font-size: 12px;
+    margin-bottom: 8px;
+  }
+  .ulike-blog-list .ulike-blog-item-time {
+    font-size: 12px;
+  }
+  .ulike-blog-list .ulike-blog-img {
+    width: 155px;
+  }
+
+  .ulike-blog-list .ulike-blog-adv-item {
+    width: 100%;
+  }
+
+  /* ulike-type7 */
+  .ulike-blog-list .ulike-type7 .ulike-blog-item {
+    width: 100%;
+  }
+
+  .ulike-blog-list .ulike-type7 .ulike-blog-info::after {
+    width: 100%;
+  }
+  /* ulike-type7 */
+
+  /* ulike-type8 */
+  .ulike-blog-list .ulike-type8 .ulike-blog-item {
+    width: 100%;
+  }
+  /* ulike-type8 */
+
+  /* ulike-type10 */
+  .ulike-blog-list .ulike-type10 .ulike-blog-li {
+    grid-template-columns: 1fr;
+    column-gap: 0;
+  }
+
+  .ulike-blog-list .ulike-type10 .ulike-blog-item:first-child {
+    grid-row: auto;
+    grid-column: auto;
+  }
+
+  .ulike-blog-list .ulike-type10 .ulike-blog-item:nth-child(n + 2) {
+    grid-column: auto;
+  }
+  .ulike-blog-list .ulike-type10 .ulike-blog-img {
+    width: 155px;
+  }
+  .ulike-blog-list .ulike-type10 .ulike-blog-item-h3 {
+    font-size: 16px;
+  }
+  /* ulike-type10 */
+}
+
+</style>
+{%- assign blog = section.settings.blog -%}
+<div class="ulike-blog-list">
+    <div class="container">
+      <div class="ulike-blog-top">
+        {% if section.settings.text != blank %}
+          <h3 class="ulike-blog-h3">{{ section.settings.text }}</h3>
+        {% endif %}
+        {% if section.settings.rm_t != blank %}
+            <a href="{{ section.settings.link }}" class="ulike-blog-link">{{ section.settings.rm_t }}</a>
+        {% endif %}
+      </div>
+      <div class="ulike-blog-cont {{ section.settings.list_style }}">
+        <div class="ulike-blog-li">
+            {%- for article in blog.articles limit: section.settings.articles_page -%}
+                <a href="{{ article.url }}" class="ulike-blog-item">
+                    <div class="ulike-blog-img">
+                        {%- if article.image -%}
+                            {{- article.image | image_url: width: article.image.width | image_tag: loading: 'lazy', sizes: '(max-width: 740px) 81vw, (max-width: 999px) 37vw, 425px', sizes: '600,700,800,1000,1200,1400,1600,1800,2000', class: 'img' -}}
+                        {%- endif -%}
+                    </div>
+                    <div class="ulike-blog-info">
+                    <h3 class="ulike-blog-item-h3">
+                        {{ article.title }}
+                    </h3>
+                    {%- if article.excerpt_or_content != blank -%}
+                        <p class="ulike-blog-item-p">
+                            {{- article.excerpt_or_content | strip_html | truncate: 200 -}}
+                        </p>
+                    {%- endif -%}
+                    <div class="ulike-blog-item-time">{{ article.created_at | date: "%B %d, %Y"  }}</div>
+                    </div>
+                </a>
+            {%- endfor -%}
+        </div>
+        {% if section.settings.show_adv %}
+            <div class="ulike-blog-adv">
+                {%- if section.settings.image != blank -%}
+                    <a href="{{ section.settings.link1 }}" class="ulike-blog-adv-item">
+                        {%- if section.settings.image != blank -%}
+                            <div class="ulike-blog-adv-img">
+                                <img
+                                    loading="lazy"
+                                    class="adv-img"
+                                    width=""
+                                    height=""
+                                    {% render 'image-attributes', image: section.settings.image %}
+                                    alt="{{ section.settings.image.alt | escape }}"
+                                >
+                            </div>
+                        {%- endif -%}
+                        <div class="ulike-blog-adv-info">
+                        {% if section.settings.text1 != blank %}
+                            <h3 class="ulike-blog-adv-h3">{{ section.settings.text1 }}</h3>
+                        {% endif %}
+                        {% if section.settings.text2 != blank %}
+                            <p class="ulike-blog-adv-p">
+                                {{ section.settings.text2 }}
+                            </p>
+                        {% endif %}
+                        {% if section.settings.text3 != blank %}
+                            <div class="ulike-blog-adv-more">
+                                {{ section.settings.text3 }}
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="12" viewBox="0 0 14 12" fill="none">
+                                <path d="M0 6.00061L13.087 6" stroke="currentColor" stroke-width="0.608696" />
+                                <path d="M10.3478 3.26086L13.5532 6.0006L10.3478 8.67095" stroke="currentColor"
+                                    stroke-width="0.608696" stroke-linejoin="round" />
+                                </svg>
+                            </div>
+                        {% endif %}
+                        </div>
+                    </a>
+                {% endif %}
+                {%- if section.settings.image1 != blank -%}
+                    <a href="{{ section.settings.link2 }}" class="ulike-blog-adv-item">
+                        {%- if section.settings.image1 != blank -%}
+                            <div class="ulike-blog-adv-img">
+                                <img
+                                    loading="lazy"
+                                    class="adv-img"
+                                    width=""
+                                    height=""
+                                    {% render 'image-attributes', image: section.settings.image1 %}
+                                    alt="{{ section.settings.image.alt | escape }}"
+                                >
+                            </div>
+                        {%- endif -%}
+                        <div class="ulike-blog-adv-info">
+                        {% if section.settings.text4 != blank %}
+                            <h3 class="ulike-blog-adv-h3">{{ section.settings.text4 }}</h3>
+                        {% endif %}
+                        {% if section.settings.text5 != blank %}
+                            <p class="ulike-blog-adv-p">
+                                {{ section.settings.text5 }}
+                            </p>
+                        {% endif %}
+                        {% if section.settings.text6 != blank %}
+                            <div class="ulike-blog-adv-more">
+                                {{ section.settings.text6 }}
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="12" viewBox="0 0 14 12" fill="none">
+                                <path d="M0 6.00061L13.087 6" stroke="currentColor" stroke-width="0.608696" />
+                                <path d="M10.3478 3.26086L13.5532 6.0006L10.3478 8.67095" stroke="currentColor"
+                                    stroke-width="0.608696" stroke-linejoin="round" />
+                                </svg>
+                            </div>
+                        {% endif %}
+                        </div>
+                    </a>
+                {% endif %}
+            </div>
+        {%- endif -%}
+      </div>
+    </div>
+</div>
+
+{% schema %}
+{
+  "name": "ulike-blog-category",
+  "settings": [
+    {
+        "type": "select",
+        "id": "list_style",
+        "label": "选择展示列表方式",
+        "options": [
+        {
+            "value": "ulike-type1",
+            "label": "变量1：分类列表 · 基础版"
+        },
+        {
+            "value": "ulike-type2",
+            "label": "变量2：分类列表 · 图文 + 单运营卡片"
+        },
+        {
+            "value": "ulike-type3",
+            "label": "变量3：分类列表 · 无图 + 单运营卡片"
+        },
+        {
+            "value": "ulike-type4",
+            "label": "变量4：分类列表 · 图文 + 双运营卡片"
+        },
+        {
+            "value": "ulike-type5",
+            "label": "变量5：分类列表 · 无图 + 双运营卡片"
+        },
+        {
+            "value": "ulike-type6",
+            "label": "变量6：分类列表 · 无图两列"
+        },
+        {
+            "value": "ulike-type7",
+            "label": "变量7：分类列表 · 无图三列"
+        },
+        {
+            "value": "ulike-type8",
+            "label": "变量8：分类列表 · 三列图文"
+        },
+        {
+            "value": "ulike-type9",
+            "label": "变量9：分类列表 · 四列大图卡片"
+        },
+        {
+            "value": "ulike-type10",
+            "label": "变量10：分类列表 · 主推大图 + 右侧纯文字列表"
+        },
+        {
+            "value": "ulike-type10 ulike-type11",
+            "label": "变量11：分类列表 · 主推大图 + 右侧图文列表"
+        }
+        ],
+        "default": "ulike-type1"
+    },
+    {
+      "type": "text",
+      "id": "text",
+      "label": "标题"
+    },
+    {
+      "type": "blog",
+      "id": "blog",
+      "label": "Blog"
+    },
+    {
+      "type": "range",
+      "id": "articles_page",
+      "min": 4,
+      "max": 48,
+      "step": 1,
+      "unit": "条",
+      "label": "Blog数量",
+      "default": 4
+    },
+    {
+      "type": "text",
+      "id": "rm_t",
+      "label": "查看更多文案",
+      "default":"View All Blogs"
+    },
+    {
+        "type": "url",
+        "id": "link",
+        "label": "链接"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_adv",
+      "label": "开启广告位",
+      "default": false
+    },
+    {
+        "type": "header",
+        "content": "广告1"
+    },
+    {
+        "type": "image_picker",
+        "id": "image",
+        "label": "Image"
+    },
+    {
+        "type": "text",
+        "id": "text1",
+        "label": "Text"
+    },
+    {
+        "type": "text",
+        "id": "text2",
+        "label": "Text"
+    },
+    {
+        "type": "text",
+        "id": "text3",
+        "label": "Text"
+    },
+    {
+        "type": "url",
+        "id": "link1",
+        "label": "链接"
+    },
+    {
+        "type": "header",
+        "content": "广告2"
+    },
+    {
+        "type": "image_picker",
+        "id": "image1",
+        "label": "Image"
+    },
+    {
+        "type": "text",
+        "id": "text4",
+        "label": "Text"
+    },
+    {
+        "type": "text",
+        "id": "text5",
+        "label": "Text"
+    },
+    {
+        "type": "text",
+        "id": "text6",
+        "label": "Text"
+    },
+    {
+        "type": "url",
+        "id": "link2",
+        "label": "链接"
+    },
+  ],
+  "presets": [
+    {
+      "name": "ulike-blog-category",
+      "settings": {}
+    }
+  ]
+}
+{% endschema %}
