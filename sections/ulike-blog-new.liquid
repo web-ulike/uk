@@ -1,0 +1,898 @@
+
+<style>
+.u-blog {
+    padding: 60px 0;
+    position: relative;
+    z-index: 2;
+    min-height: 40vh;
+  }
+
+  .u-blog .u-tags button {
+    margin: 4px;
+    padding: 6px 12px;
+    border: 1px solid #ccc;
+    background: #f9f9f9;
+    cursor: pointer;
+    box-sizing: border-box;
+  }
+
+  .u-blog .u-tags button {
+    padding: 6px 12px;
+    border-radius: 20px;
+  }
+
+  .u-blog .u-tags button.active {
+    background: #333;
+    color: #fff;
+  }
+
+  .u-blog .article-tag {
+    display: inline-block;
+    padding: 2px 6px;
+    background: #eee;
+    border-radius: 3px;
+    font-size: 12px;
+    margin-bottom: 4px;
+  }
+
+  .u-blog .u-blogs-cat-pro {
+    position: relative;
+    z-index: 1;
+    border-bottom: 2px solid #DBDBDB;
+  }
+
+  .u-blog .u-blogs-cat-cont {
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    margin-bottom: -2px;
+  }
+
+  .u-blog .is-oh .u-blogs-cat-cont {
+    display: block;
+  }
+
+  .u-blog .u-blogs-cat {
+    color: #190A0A;
+    font-size: 22px;
+    line-height: 1.27;
+    letter-spacing: 1.359px;
+    white-space: nowrap;
+  }
+
+  .u-blog .u-blogs-cat a {
+    display: inline-flex;
+    align-items: center;
+    flex-shrink: 0;
+    width: fit-content;
+    height: 64px;
+    margin-right: 40px;
+  }
+
+  .u-blog .u-blogs-cat a:last-child {
+    margin-right: 0;
+  }
+
+  .u-blog .u-blogs-cat .active {
+    font-family: var(--heading-font-family);
+    border-bottom: 3px solid #000;
+  }
+
+  .is-fetching .u-blogs-cat a {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .u-blog .u-blogs-cat-arraws {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: calc(100% + 132px);
+    display: none;
+    justify-content: space-between;
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  .u-blog .is-oh .u-blogs-cat-arraws {
+    display: flex;
+  }
+
+  .is-fetching .u-blogs-cat-arraws {
+    opacity: .5;
+    cursor: not-allowed;
+  }
+
+  .u-blog .u-blogs-cat-arraw {
+    width: 56px;
+    cursor: pointer;
+    pointer-events: all;
+    border-radius: 50%;
+    box-shadow: 0 0 10px rgba(0, 0, 0, .1);
+  }
+
+  .u-blog .u-blogs-cat-arraw.is-disabled {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  @media (min-width: 991px) {
+    .u-blog .u-blogs-cat-arraw:hover circle {
+      fill: #000;
+    }
+
+    .u-blog .u-blogs-cat-arraw:hover path {
+      fill: #fff;
+    }
+  }
+
+  .u-blog .u-blogs-cat-arraw svg {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .u-blog .u-list-box {
+    margin-top: 110px;
+  }
+
+  .u-blog .u-list-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 50px;
+  }
+
+  .u-blog .u-blog-h3 {
+    color: #190A0A;
+    font-size: 50px;
+    line-height: 1.16;
+    font-family: var(--heading-font-family);
+    font-weight: normal;
+    margin: 0;
+  }
+
+  .u-blog .u-tags-filter {
+    position: relative;
+    z-index: 2;
+    width: 178px;
+  }
+
+  .u-blog .u-tags-filter-top {
+    height: 44px;
+    border-radius: 4px;
+    border: 1px solid #ebebeb;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 10px;
+    color: #190a0a;
+    font-size: 16px;
+    line-height: 1;
+    font-family: var(--heading-font-family);
+    cursor: pointer;
+  }
+
+  .u-blog .u-tags-filter-top .is-mb {
+    display: none;
+  }
+
+  .u-blog .u-tags-filter-tj {
+    display: none;
+    position: absolute;
+    left: 0;
+    width: 100%;
+    background: #fff;
+    padding: 16px 12px;
+    border-radius: 2px;
+    box-shadow: 0px 4px 4px 0px rgba(238, 222, 222, 0.25);
+    z-index: 2;
+    max-height: 550px;
+    overflow-y: auto;
+  }
+
+  .u-blog .u-tags-filter-tj::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .u-blog .u-tags-filter-tj::-webkit-scrollbar-thumb {
+    background: #999;
+    border-radius: 3px;
+  }
+
+  .u-blog .u-tags-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #190A0A;
+    font-size: 14px;
+    line-height: 1.42;
+    font-family: var(--heading-font-family);
+    cursor: pointer;
+    margin-bottom: 16px;
+  }
+
+  .u-blog .u-tags-item:last-child {
+    margin-bottom: 0;
+  }
+
+  .u-blog .u-tags-item span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+    border-radius: 2px;
+    border: 1px solid #EBEBEB;
+    padding: 3px;
+  }
+
+  .u-blog .u-tags-item svg {
+    display: none;
+    margin: 0;
+    max-width: 100%;
+    height: auto;
+  }
+
+  .u-blog .u-tags-item.active svg {
+    display: block;
+  }
+
+  .u-blog .u-tags-item.active span {
+    background: #E0004D;
+    border-color: #E0004D;
+  }
+
+  .u-blog .selected-tag {
+    margin-top: 10px;
+    display: flex;
+    justify-content: flex-start;
+    position: absolute;
+    left: 0;
+    z-index: 1;
+  }
+
+  .u-blog .selected-tag-item {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    padding: 2px 4px;
+    border-radius: 2px;
+    background: #fce8ec;
+    color: #e0004d;
+    font-size: 14px;
+    line-height: 1;
+  }
+
+  .u-blog .u-list-box .u-list-cont {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 32px;
+  }
+
+  .u-blog .u-list-box .u-list-item {
+    width: calc(33.333% - 21.4px);
+  }
+
+  .u-blog .u-list-box .u-list-img {
+    position: relative;
+    padding-top: 75%;
+    overflow: hidden;
+    margin-bottom: 16px;
+    background: #DBDBDB;
+    z-index: 1;
+  }
+
+  .u-blog .u-list-box .u-list-img::before {
+    position: absolute;
+    content: '';
+    top: 50%;
+    left: 50%;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    border-top: 2px solid #E0004D;
+    border-left: 2px solid #E0004D;
+    transform: translate(-50%, -50%) rotate(0deg);
+    animation: u-rotate 1.2s infinite linear;
+    z-index: 1;
+  }
+
+  @keyframes u-rotate {
+    100% {
+      transform: translate(-50%, -50%) rotate(360deg);
+    }
+  }
+
+  .u-blog .u-list-box .img {
+    position: absolute;
+    z-index: 2;
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    top: 0;
+    left: 0;
+    transition: all .4s ease-out;
+  }
+@media (min-width: 991px) {
+  .u-blog .u-list-box .u-list-img:hover .img {
+    transform: scale(1.08);
+  }
+}
+
+  .u-blog .u-blog-tag {
+    font-size: 14px;
+    color: #E0004D;
+    font-size: 12px;
+    line-height: 1;
+    height: 24px;
+    background: #FCE8EC;
+    padding: 0 4px;
+    display: inline-flex;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+
+  .u-blog .u-list-box .u-list-title {
+    font-size: 25px;
+    color: #000;
+    font-family: var(--heading-font-family);
+    font-weight: normal;
+    margin: 0;
+    line-height: 1.1;
+    margin-bottom: 16px;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+  }
+
+  .u-blog .u-list-box .u-list-sub {
+    color: #190A0A;
+    font-size: 14px;
+    line-height: 1.57;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    margin-bottom: 16px;
+  }
+
+  .u-blog .u-list-box .u-list-p {
+    color: #756B6E;
+    font-size: 14px;
+    line-height: 1.57;
+    margin-bottom: 16px;
+  }
+
+  .u-blog .u-more {
+    color: #E0004D;
+    font-size: 12px;
+    line-height: 1.33;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: linear-gradient(0deg, #e0004d 0%, #e0004d 100%) no-repeat;
+    background-size: 100% 1px;
+    background-position: left bottom;
+    width: fit-content;
+  }
+
+  .u-blog .ulike-pagination {
+    margin-top: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .u-blog .ulike-pagination a,
+  .u-blog .ulike-pagination span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    color: #756B6E;
+    font-size: 20px;
+    line-height: 1;
+  }
+
+  .u-blog .ulike-pagination a svg {
+    display: block;
+    margin: 0;
+  }
+
+  .u-blog .ulike-pagination .active {
+    color: #000;
+    border-bottom: 1px solid #000;
+  }
+
+  @media (max-width:1700px) {
+    .u-blog .u-blogs-cat-arraws {
+      width: 100%;
+    }
+
+    .u-blog .u-blogs-cat-arraw {
+      width: 40px;
+    }
+  }
+
+  @media (max-width:1100px) {
+    .u-blog .u-list-box .u-list-cont {
+      gap: 30px;
+    }
+
+    .u-blog .u-list-box .u-list-item {
+      width: calc(33.333% - 20px);
+    }
+
+    .u-blog .u-list-box .u-list-title {
+      font-size: 20px;
+    }
+  }
+
+  @media (max-width:991px) {
+    .u-blog {
+      padding: 16px 0 50px 0;
+      overflow: hidden;
+    }
+
+    .u-blog .u-blogs-cat {
+      font-size: 16px;
+    }
+
+    .u-blog .u-blogs-cat a {
+      margin-right: 20px;
+    }
+
+    .u-blog .u-list-box {
+      margin-top: 32px;
+    }
+
+    .u-blog .u-list-top {
+      margin-bottom: 40px;
+    }
+
+    .u-blog .u-blog-h3 {
+      font-size: 28px;
+    }
+
+    .u-blog .u-tags-filter {
+      width: 120px;
+    }
+
+    .u-blog .u-tags-filter.open-filter {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      background: rgba(0, 0, 0, .5);
+      z-index: 999;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+    }
+
+    .u-blog .u-tags-filter-top {
+      font-size: 14px;
+      height: 34px;
+      background: #fff;
+      border-radius: 4px 4px 0 0;
+    }
+
+    .u-blog .open-filter .u-tags-filter-top {
+      border: 0;
+      border-bottom: 1px solid #E0E0E0;
+    }
+
+    .u-blog .open-filter .is-pc {
+      display: none;
+    }
+
+    .u-blog .open-filter .is-mb {
+      display: block;
+    }
+
+    .u-blog .u-tags-filter-tj {
+      position: relative;
+      max-height: 55vh;
+    }
+
+    .u-blog .selected-tag {
+      left: auto;
+      right: 0;
+    }
+
+    .u-blog .selected-tag-item {
+      white-space: nowrap;
+    }
+  }
+
+  @media (max-width:768px) {
+    .u-blog .u-list-box .u-list-item {
+      width: 100%;
+    }
+
+    .u-blog .u-list-box .u-list-title {
+      font-size: 18px;
+    }
+  }
+</style>
+
+<div class="u-blog">
+  <div class="container">
+    {% if section.blocks.size > 0 %}
+      <div class="u-blogs-cat-pro">
+        <div class="u-blogs-cat-cont">
+          <div class="u-blogs-cat">
+            {%- for block in section.blocks -%}
+              <a href="/blogs/{{ block.settings.text1 }}" class="{% if blog.handle contains block.settings.text1 %}active{% endif %}">{{ block.settings.text }}</a>
+            {%- endfor -%}
+          </div>
+        </div>
+        <div class="u-blogs-cat-arraws">
+          <div class="u-blogs-cat-arraw u-blogs-cat-left">
+            <svg xmlns="http://www.w3.org/2000/svg" width="56" height="56" viewBox="0 0 56 56" fill="none">
+              <circle cx="28" cy="28" r="28" transform="rotate(-180 28 28)" fill="#FBFAF4" />
+              <path fill-rule="evenodd" clip-rule="evenodd"
+                d="M33.0404 46.293L33.7475 47.0001L35.1617 45.5858L34.4546 44.8787L27.9989 38.423L21.9137 32.3378C21.1326 31.5568 19.8663 31.5568 19.0852 32.3378L26.5847 39.8372L33.0404 46.293ZM15.5404 27.3787C15.1499 27.7693 15.1499 28.4024 15.5404 28.793C15.6719 28.9245 15.8309 29.0117 15.9989 29.0546L15.9989 29.0858L16.2453 29.0858L16.2497 29.0858L16.9989 29.0858L27.2494 29.0858L37.5 29.0858L40.0001 29.0858C41.1046 29.0858 42.0001 28.1904 42.0001 27.0858L37.5 27.0858L18.6617 27.0858L34.4546 11.293L35.1617 10.5859L33.7475 9.17164L33.0404 9.87875L15.5404 27.3787Z"
+                fill="#190A0A" />
+            </svg>
+          </div>
+          <div class="u-blogs-cat-arraw u-blogs-cat-right">
+            <svg xmlns="http://www.w3.org/2000/svg" width="57" height="56" viewBox="0 0 57 56" fill="none">
+              <circle cx="28" cy="28" r="28" transform="matrix(1 -8.74228e-08 -8.74228e-08 -1 0.320312 56)"
+                fill="#FBFAF4" />
+              <path fill-rule="evenodd" clip-rule="evenodd"
+                d="M23.2799 46.293L22.5728 47.0001L21.1586 45.5858L21.8657 44.8787L28.3214 38.423L34.4067 32.3378C35.1877 31.5568 36.454 31.5568 37.2351 32.3378L29.7356 39.8372L23.2799 46.293ZM40.7799 27.3787C41.1704 27.7693 41.1704 28.4024 40.7799 28.793C40.6484 28.9245 40.4894 29.0117 40.3214 29.0546L40.3214 29.0858L40.075 29.0858L40.0706 29.0858L39.3214 29.0858L29.0709 29.0858L18.8203 29.0858L16.3202 29.0858C15.2157 29.0858 14.3202 28.1904 14.3202 27.0858L18.8203 27.0858L37.6586 27.0858L21.8657 11.293L21.1586 10.5859L22.5728 9.17164L23.2799 9.87875L40.7799 27.3787Z"
+                fill="#190A0A" />
+            </svg>
+          </div>
+        </div>
+      </div>
+    {% endif %}
+    <div class="u-list-box">
+      <div class="u-list-top">
+        {% if section.settings.text %}
+          <h3 class="u-blog-h3">{{ section.settings.text }}</h3>
+        {% endif %}
+        {%- if blog.all_tags.size > 0 -%}
+          <div class="u-tags-filter">
+            <div class="u-tags-filter-top">
+              {{ section.settings.text1 }}
+              <span class="close-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" class="is-pc" width="21" height="20" viewBox="0 0 21 20"
+                  fill="none">
+                  <path d="M4.12988 13L10.1299 7L16.1299 13" stroke="#190A0A" stroke-miterlimit="10"
+                    stroke-linecap="round" stroke-linejoin="round"></path>
+                </svg>
+                <svg xmlns="http://www.w3.org/2000/svg" class="is-mb" width="25" height="24" viewBox="0 0 25 24"
+                  fill="none">
+                  <path fill-rule="evenodd" clip-rule="evenodd"
+                    d="M17.287 7.29299C17.0917 7.09773 16.7752 7.09773 16.5799 7.29299L12.9404 10.9325L9.30086 7.29299C9.10559 7.09773 8.78901 7.09773 8.59375 7.29299L8.2402 7.64655C8.04493 7.84181 8.04493 8.15839 8.2402 8.35365L11.8797 11.9932L8.2402 15.6327C8.04493 15.828 8.04493 16.1445 8.2402 16.3398L8.59375 16.6934C8.78901 16.8886 9.10559 16.8886 9.30086 16.6934L12.9404 13.0538L16.5799 16.6934C16.7752 16.8886 17.0917 16.8886 17.287 16.6934L17.6406 16.3398C17.8358 16.1445 17.8358 15.828 17.6406 15.6327L14.001 11.9932L17.6406 8.35365C17.8358 8.15839 17.8358 7.84181 17.6406 7.64655L17.287 7.29299Z"
+                    fill="#161823"></path>
+                </svg>
+              </span>
+            </div>
+            {% assign c_tags = '' %}
+            <div class="u-tags-filter-tj">
+              {%- for tag in blog.all_tags -%}
+                {% assign tags_string = tag | join: ',' | downcase %}
+                {%- if current_tags contains tags_string -%}
+                  {% assign c_tags = tag %}
+                {%- endif -%}
+                <div class="u-tags-item {% if current_tags contains tags_string %}active{% endif %}">
+                  {%- capture link_to_tag_replacement -%} title={%- endcapture -%}
+                  <span><svg xmlns="http://www.w3.org/2000/svg" width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 4.33606L4.5 7.83606L11 1.33606" stroke="white" stroke-width="1.66667"/></svg></span>
+                  {%- if current_tags contains tag -%}
+                    {{ tag | link_to_remove_tag: tag | replace: 'title=', link_to_tag_replacement }}
+                  {%- else -%}
+                    {{- tag | link_to_tag: tag | replace: 'title=', link_to_tag_replacement -}}
+                  {%- endif -%}
+                </div>
+              {%- endfor -%}
+            </div>
+            <div class="selected-tag">
+              {%- if c_tags != '' -%}
+                <div class="selected-tag-item">
+                  <span>{{ c_tags }}</span>
+                  <a href="/blogs/{{ blog.handle }}">×</a>
+                </div>
+              {%- endif -%}
+            </div>
+          </div>
+        {%- endif -%}
+      </div>
+      {%- paginate blog.articles by section.settings.articles_per_page -%}
+          <article-list
+            {% if settings.stagger_blog_posts_apparition %}
+              stagger-apparition
+            {% endif %}
+            class="u-list-cont"
+          >
+            {%- for article in blog.articles -%}
+              {%- render 'article-item-ulike', article: article -%}
+            {%- endfor -%}
+          </article-list>
+
+          {%- render 'pagination-ulike', paginate: paginate -%}
+        {%- endpaginate -%}
+    </div>
+  </div>
+</div>
+<script>
+class CategoryScroller {
+  constructor(options) {
+    this.container = document.querySelector(options.container);
+    this.cat = document.querySelector(options.cat);
+    this.leftArrow = document.querySelector(options.leftArrow);
+    this.rightArrow = document.querySelector(options.rightArrow);
+
+    if (!this.container || !this.cat) return;
+
+    this.isDragging = false;
+    this.startX = 0;
+    this.currentX = 0;
+    this.catWidth = 0;
+    this.proWidth = 0;
+    this.dragThreshold = 5; // 拖动超过5px认为是拖动
+
+    this.init();
+  }
+
+  init() {
+    this.checkOverflow();
+    this.updateArrowState();
+    this.bindArrows();
+    this.enableDrag();
+    this.bindResize();
+  }
+
+  checkOverflow() {
+    const totalWidth = Array.from(this.cat.children).reduce(
+      (sum, el) => sum + el.offsetWidth + parseInt(getComputedStyle(el).marginRight || 0),
+      0
+    );
+    if (totalWidth > this.container.offsetWidth) {
+      this.container.classList.add("is-oh");
+    } else {
+      this.container.classList.remove("is-oh");
+      this.cat.style.transform = "translateX(0px)";
+    }
+    this.updateArrowState();
+  }
+
+  updateArrowState() {
+    if (!this.leftArrow || !this.rightArrow) return;
+    const activeBtn = this.cat.querySelector("a.active");
+    const buttons = Array.from(this.cat.querySelectorAll("a"));
+    const idx = buttons.indexOf(activeBtn);
+
+    this.leftArrow.classList.toggle("is-disabled", idx <= 0);
+    this.rightArrow.classList.toggle("is-disabled", idx >= buttons.length - 1);
+  }
+
+  bindArrows() {
+    if (!this.leftArrow || !this.rightArrow) return;
+
+    this.leftArrow.addEventListener("click", () => {
+      const buttons = Array.from(this.cat.querySelectorAll("a"));
+      const activeBtn = this.cat.querySelector("a.active");
+      const idx = buttons.indexOf(activeBtn);
+      if (idx > 0) buttons[idx - 1].click();
+    });
+
+    this.rightArrow.addEventListener("click", () => {
+      const buttons = Array.from(this.cat.querySelectorAll("a"));
+      const activeBtn = this.cat.querySelector("a.active");
+      const idx = buttons.indexOf(activeBtn);
+      if (idx < buttons.length - 1) buttons[idx + 1].click();
+    });
+  }
+
+  enableDrag() {
+    if (!this.container || !this.cat) return;
+
+    const getTranslateX = () => {
+      const transform = this.cat.style.transform || "translateX(0px)";
+      const match = transform.match(/-?\d+/);
+      return match ? parseFloat(match[0]) : 0;
+    };
+
+    const setTranslateX = (x) => {
+      const maxOffset = this.proWidth - this.catWidth;
+      if (x < maxOffset) x = maxOffset;
+      if (x > 0) x = 0;
+      this.cat.style.transform = `translateX(${x}px)`;
+    };
+
+    let dragged = false;
+
+    const startDrag = (clientX) => {
+      if (!this.container.classList.contains("is-oh")) return;
+      this.isDragging = true;
+      this.startX = clientX;
+      this.catWidth = this.cat.scrollWidth;
+      this.proWidth = this.container.offsetWidth;
+      this.currentX = getTranslateX();
+      this.cat.style.transition = "none";
+      document.body.style.userSelect = "none";
+      dragged = false;
+    };
+
+    const moveDrag = (clientX, e) => {
+      if (!this.isDragging) return;
+      e.preventDefault();
+      const dx = clientX - this.startX;
+      if (Math.abs(dx) > this.dragThreshold) dragged = true;
+      setTranslateX(this.currentX + dx);
+    };
+
+    const endDrag = () => {
+      if (!this.isDragging) return;
+      this.isDragging = false;
+      this.cat.style.transition = "transform 0.3s ease";
+      document.body.style.userSelect = "";
+    };
+
+    // pointer 事件统一处理鼠标和触摸
+    this.container.addEventListener('pointerdown', (e) => {
+      e.preventDefault();
+      startDrag(e.clientX);
+
+      const pointerMove = (ev) => moveDrag(ev.clientX, ev);
+      const pointerUp = () => {
+        endDrag();
+        document.removeEventListener('pointermove', pointerMove);
+        document.removeEventListener('pointerup', pointerUp);
+      };
+
+      document.addEventListener('pointermove', pointerMove);
+      document.addEventListener('pointerup', pointerUp);
+    });
+
+    // 阻止拖动触发 a 标签点击
+    this.cat.querySelectorAll('a').forEach(a => {
+      a.addEventListener('click', (e) => {
+        if (dragged) {
+          e.preventDefault(); // 拖动过就阻止点击
+          dragged = false;
+        }
+      });
+    });
+  }
+
+  scrollToButton(btn) {
+    if (!btn || !this.container.classList.contains("is-oh")) return;
+
+    const proWidth = this.container.offsetWidth;
+    const catWidth = this.cat.scrollWidth;
+    const btnOffsetLeft = btn.offsetLeft;
+    const btnWidth = btn.offsetWidth;
+
+    let newX = -(btnOffsetLeft - (proWidth / 2 - btnWidth / 2));
+    const maxOffset = proWidth - catWidth;
+    if (newX < maxOffset) newX = maxOffset;
+    if (newX > 0) newX = 0;
+
+    this.cat.style.transform = `translateX(${newX}px)`;
+    this.cat.style.transition = "transform 0.3s ease";
+  }
+
+  bindResize() {
+    window.addEventListener('resize', () => {
+      clearTimeout(this.__resizeTimer);
+      this.__resizeTimer = setTimeout(() => this.checkOverflow(), 120);
+    });
+  }
+}
+
+// 使用示例
+document.addEventListener('DOMContentLoaded', () => {
+  const scroller = new CategoryScroller({
+    container: ".u-blogs-cat-pro",
+    cat: ".u-blogs-cat",
+    leftArrow: ".u-blogs-cat-left",
+    rightArrow: ".u-blogs-cat-right"
+  });
+  scroller.scrollToButton(document.querySelector('.u-blogs-cat a.active'));
+});
+
+// ------- 绑定筛选开关 -------
+  function bindFilterToggle() {
+    const filter = document.querySelector(".u-tags-filter");
+    const filterTop = document.querySelector(".u-tags-filter-top");
+    const filterList = document.querySelector(".u-tags-filter-tj");
+
+    if (!filter || !filterTop || !filterList) return;
+
+    filterTop.addEventListener("click", (e) => {
+      e.stopPropagation();
+      filter.classList.toggle("open-filter");
+      // 显示/隐藏完毕
+      if (filter.classList.contains("open-filter")) {
+        filterList.style.display = "block";
+      } else {
+        filterList.style.display = "none";
+      }
+    });
+
+    // 点击其他地方关闭（或者点击某个 tag 项后也关闭）
+    document.addEventListener("click", (e) => {
+      // 如果点击不是 filter 内部，或点击了某个 tag 项，都关闭下拉
+      if (!filter.contains(e.target) || e.target.closest(".u-tags-item")) {
+        filter.classList.remove("open-filter");
+        filterList.style.display = "none";
+      }
+    });
+  }
+  bindFilterToggle()
+</script>
+
+
+
+
+{% schema %}
+{
+  "name": "ulike-blog-new",
+  "blocks": [
+    {
+      "name": "item",
+      "type": "item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text"
+        },
+        {
+          "type": "text",
+          "id": "text1",
+          "label": "handle"
+        }
+      ]
+    }
+  ],
+  "settings": [
+    {
+      "type": "text",
+      "id": "text",
+      "label": "标题"
+    },
+    {
+      "type": "text",
+      "id": "text1",
+      "label": "Text",
+      "default":"Filter By:"
+    },
+    {
+      "type": "text",
+      "id": "rm_t",
+      "label": "LEARN MORE",
+      "default":"LEARN MORE"
+    },
+    {
+      "type": "range",
+      "id": "articles_per_page",
+      "label": "Blog posts per page",
+      "min": 3,
+      "max": 48,
+      "step": 3,
+      "default": 9
+    }
+  ],
+  "presets": [
+    {
+      "name": "ulike-blog-new",
+      "settings": {}
+    }
+  ]
+}
+{% endschema %}
