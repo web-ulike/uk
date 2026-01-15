@@ -17,6 +17,10 @@
   - API errors mapping:
     - code 99998 + message user_sys_order_no_invalid => Order ID error text
   - Success message differs by channel
+  - NEW (Remark):
+    - When purchase_channel === Others, show remark input (maxlength 100) and include remark in payload
+    - Switch away from Others: hide + clear remark + clear error
+    - No special character restriction: only remove control chars, trim, and hard cap length
 {% endcomment %}
 
 <section
@@ -36,7 +40,7 @@
   -%}
 
   <div class="pr-section__inner container">
-    <!-- 左侧说明 -->
+    <!-- Left intro -->
     <div class="pr-section__info">
       <h2 class="pr-section__title">{{ section.settings.title }}</h2>
 
@@ -49,10 +53,10 @@
       </div>
     </div>
 
-    <!-- 右侧表单 -->
+    <!-- Right form -->
     <div class="pr-section__form-wrap">
       <form id="product-registration-form-{{ section.id }}" class="pr-form" novalidate>
-        <!-- 购买渠道（自绘 dropdown + hidden input） -->
+        <!-- Purchase channel -->
         <div class="pr-form__group">
           <label class="pr-form__label"> Select your purchase channel <span class="pr-form__required">*</span> </label>
 
@@ -94,13 +98,28 @@
           </div>
         </div>
 
+        <!-- ✅ Remark (only for Others) -->
+        <div class="pr-form__group pr-form__group--remark" data-remark-group style="display:none;">
+          <label class="pr-form__label"> Purchase channel details <span class="pr-form__required">*</span> </label>
+          <div class="pr-form__field">
+            <input
+              type="text"
+              name="remark"
+              class="pr-form__input"
+              maxlength="100"
+              placeholder="Please describe where you purchased the product (e.g., store name / platform)."
+            >
+            <p class="pr-form__error">Please enter your purchase channel details.</p>
+          </div>
+        </div>
+
         <div class="pr-form__two-cols">
           <div class="pr-form__group">
             <div class="title">Contact Information</div>
           </div>
         </div>
 
-        <!-- 联系信息 -->
+        <!-- Contact info -->
         <div class="pr-form__two-cols">
           <div class="pr-form__group">
             <label class="pr-form__label"> First Name <span class="pr-form__required">*</span> </label>
@@ -151,7 +170,7 @@
           </div>
         </div>
 
-        <!-- 订单信息 -->
+        <!-- Order info -->
         <div class="pr-form__two-cols">
           <div class="pr-form__group">
             <div class="pr-form__label-row">
@@ -168,7 +187,7 @@
             </div>
             <div class="pr-form__field">
               <input type="text" name="order_id" class="pr-form__input">
-              <p class="pr-form__error">Please enter the order number or upload the purchase receipt.</p>
+              <p class="pr-form__error">Please enter the order number or upload the proof of purchase.</p>
             </div>
           </div>
 
@@ -193,7 +212,7 @@
         </div>
 
         <div class="pr-form__two-cols">
-          <!-- 产品名称（自绘 dropdown + hidden input） -->
+          <!-- Product name -->
           <div class="pr-form__group">
             <label class="pr-form__label"> Product Name <span class="pr-form__required">*</span> </label>
 
@@ -249,24 +268,13 @@
           </div>
         </div>
 
-        <!-- 上传凭证（按渠道隐藏/显示） -->
+        <!-- Proof upload -->
         <div class="pr-form__group pr-form__group--upload" data-proof-group>
           <div class="pr-form__upload-header">
             <label class="pr-form__label">
               Upload Proof of Purchase
               <span class="pr-form__info-text">(Maximum 10MB each, up to 5 files)</span>
             </label>
-            {% comment %}
-              <span
-                class="pr-form__info-icon"
-                data-modal-key="proof"
-                role="button"
-                tabindex="0"
-                aria-label="Proof of purchase tips"
-              >
-                <img src="{{ info_icon_src | escape }}" alt="" width="21" height="21" loading="lazy">
-              </span>
-            {% endcomment %}
           </div>
 
           <div class="pr-form__field">
@@ -297,23 +305,23 @@
 
         <button type="submit" class="pr-form__submit" data-submit-btn>SUBMIT</button>
 
-        <!-- ✅ 合并复选框：条款 + 营销同意（必选） -->
+        <!-- Checkbox -->
         <div class="pr-form__checkboxes" data-checkbox-group>
           <label class="pr-form__checkbox">
             <input type="checkbox" name="agree_terms" data-required="true">
             <span>
-              I agree to Ulike’s <a href="/pages/terms-conditions" target="_blank">Terms of Service</a> and
-              <a href="/pages/privacy-policy" target="_blank">Privacy Policy</a>. including receiving updates about
+              I agree to Ulike’s <a href="/pages/terms-conditions" target="_blank" rel="noopener">Terms of Service</a> and
+              <a href="/pages/privacy-policy" target="_blank" rel="noopener">Privacy Policy</a>, including receiving updates about
               Ulike products, deals, and promotions.
             </span>
           </label>
           <p class="pr-form__error pr-form__error--checkbox">
-            Please agree to our privacy and terms of service information
+            Please agree to our privacy policy and terms of service.
           </p>
         </div>
       </form>
 
-      <!-- blocks 输出为 template -->
+      <!-- blocks as templates -->
       <div class="pr-info-templates" style="display:none">
         {% for block in section.blocks %}
           {% if block.type == 'info_modal' %}
@@ -329,7 +337,7 @@
     </div>
   </div>
 
-  <!-- 通用信息弹窗 -->
+  <!-- Info modal -->
   <div class="pr-info-modal" id="pr-info-modal-{{ section.id }}" aria-hidden="true">
     <div class="pr-info-modal__backdrop" data-info-close></div>
     <div
@@ -834,7 +842,8 @@
       submitBtn: '[data-submit-btn]',
       uploadStatus: '[data-upload-status]',
       proofGroup: '[data-proof-group]',
-      checkboxGroup: '[data-checkbox-group]'
+      checkboxGroup: '[data-checkbox-group]',
+      remarkGroup: '[data-remark-group]'
     };
 
     var MAX_FILE_SIZE = 10 * 1024 * 1024;
@@ -847,18 +856,22 @@
       orderRequired: 'Please enter your order number.',
       // upload
       uploadingWait: 'The file is being uploaded, please wait.',
-      uploadFailed: 'File upload failed, please try again',
+      uploadFailed: 'File upload failed, please try again.',
       maxFiles: 'You can upload a maximum of 5 files. Please check.',
       maxSize: 'The size of a single file cannot exceed 10MB. Please check.',
       // api errors
       orderInvalid: 'The order number you entered is incorrect. Please enter it again.',
-      orderExtended: 'The order has been extended, please do not enter it again',
+      orderExtended: 'This order has already been used for a warranty extension. Please do not enter it again.',
       snInvalid: 'Please enter the correct product serial number.',
-      orderStatusInvalid: 'Extended warranty failed. The order you submitted has been cancelled. If there are any issues, please contact customer service support@ulikeglobal.com.',
-      orderExpired: 'Extension of warranty failed, the order has exceeded the 2-year warranty period of the product, and the warranty cannot be extended',
-
+      orderStatusInvalid:
+        'Extended warranty failed. The order you submitted has been cancelled. If you have any questions, please contact customer service at support@ulikeglobal.com.',
+      orderExpired:
+        'Warranty extension failed. The order has exceeded the 2-year warranty period and cannot be extended.',
+      // remark
+      remarkRequired: 'Please enter your purchase channel details.',
       // success
-     successShopifyAmazon: 'Congratulations on successfully extending your warranty! <br/> You can <a href="/account/login" target="_blank" rel="noopener">Log in</a> to your personal account to view the specific warranty details.',
+      successShopifyAmazon:
+        'Congratulations on successfully extending your warranty! <br/> You can <a href="/account/login" target="_blank" rel="noopener">Log in</a> to your personal account to view the specific warranty details.',
       successThirdParty:
         'Your extended warranty information has been successfully submitted. We will notify you of the warranty status after our review. Please be patient. If you have any questions, please contact us via email at support@ulikeglobal.com.'
     };
@@ -873,9 +886,10 @@
     var $uploadStatus = $form.find(SELECTORS.uploadStatus);
     var $proofGroup = $form.find(SELECTORS.proofGroup);
     var $checkboxGroup = $form.find(SELECTORS.checkboxGroup);
+    var $remarkGroup = $form.find(SELECTORS.remarkGroup);
 
     var $sectionRoot = $form.closest('.pr-section');
-    var siteCode = ($sectionRoot.data('site-code') || 'US').toString().toUpperCase();
+    var siteCode = ($sectionRoot.data('site-code') || 'UK').toString().toUpperCase();
 
     var state = { uploaded: [], uploadingCount: 0 };
 
@@ -955,6 +969,59 @@
       return ($form.find('[name="purchase_channel"]').val() || '').toString();
     }
 
+    /* ✅ Remark helpers */
+    function normalizeRemark(val) {
+      // No special character restriction:
+      // 1) remove ASCII control chars (0x00-0x1F, 0x7F)
+      // 2) trim
+      // 3) hard cap 100 chars (avoid bypassing maxlength)
+      var s = (val == null ? '' : String(val));
+      s = s.replace(/[\u0000-\u001F\u007F]/g, '');
+      s = $.trim(s);
+      if (s.length > 100) s = s.slice(0, 100);
+      return s;
+    }
+
+    function clearRemark() {
+      var $remark = $form.find('[name="remark"]');
+      if ($remark.length) {
+        $remark.val('');
+        clearErrorForField($remark);
+      }
+    }
+
+    function toggleRemarkUI(channel) {
+      var isOthers = channel === 'Others';
+      if (!$remarkGroup.length) return;
+
+      if (isOthers) {
+        $remarkGroup.show();
+      } else {
+        $remarkGroup.hide();
+        clearRemark();
+      }
+    }
+
+    function validateRemarkIfNeeded() {
+      var channel = getChannel();
+      if (channel !== 'Others') return true;
+
+      var $remark = $form.find('[name="remark"]');
+      if (!$remark.length) return true;
+
+      var v = normalizeRemark($remark.val());
+      $remark.val(v);
+
+      if (!v) {
+        setErrorForField($remark, COPY.remarkRequired);
+        return false;
+      }
+
+      clearErrorForField($remark);
+      return true;
+    }
+
+    /* Upload helpers */
     function clearUploads() {
       state.uploaded.forEach(function (item) {
         if (item && item.previewUrl) URL.revokeObjectURL(item.previewUrl);
@@ -978,6 +1045,9 @@
         $form.find('.pr-form__note').show();
         $form.find('.order_label .pr-form__required').hide();
       }
+
+      // ✅ remark only for Others
+      toggleRemarkUI(channel);
     }
 
     function validateChannelRequirement() {
@@ -1284,7 +1354,7 @@
       var fullPhone = null;
       if (dial && phoneVal) fullPhone = dial + '-' + phoneVal;
 
-      let userEmail = ($form.find('[name="email"]').val() || '').replace(/\s+/g, '');
+      var userEmail = ($form.find('[name="email"]').val() || '').replace(/\s+/g, '');
 
       return {
         siteCode: siteCode,
@@ -1296,7 +1366,9 @@
         orderNo: $.trim($form.find('[name="order_id"]').val()),
         productSn: $.trim($form.find('[name="serial_number"]').val()),
         productTitle: $form.find('[name="product_name"]').val(),
-        fileKeyList: state.uploaded.map(function (x) { return x.fileKey; })
+        fileKeyList: state.uploaded.map(function (x) { return x.fileKey; }),
+        // ✅ remark included (free of special-char restriction)
+        remark: normalizeRemark($form.find('[name="remark"]').val())
       };
     }
 
@@ -1309,7 +1381,7 @@
 
       var re = /^[A-Za-z0-9]{8,30}$/;
       if (!re.test(val)) {
-        setErrorForField($sn, 'Please enter the correct product serial number.');
+        setErrorForField($sn, COPY.snInvalid);
         return false;
       }
 
@@ -1323,20 +1395,17 @@
 
       var val = $.trim($phone.val() || '');
 
-      // ✅ 不输入：允许提交
+      // not filled -> allow submit
       if (!val) {
         clearErrorForField($phone);
         return true;
       }
 
-      // ✅ 输入了：必须是合法格式（允许空格/()-，最终要求是数字长度）
-      var cleaned = val.replace(/[\s\-()]/g, '');
-      let  isVerify = window.UprPhone.validate($form[0].querySelector('[data-upr-phone]'))
+      var isVerify = window.UprPhone.validate($form[0].querySelector('[data-upr-phone]'));
       if (!isVerify) {
         setErrorForField($phone, 'Please enter a valid phone number.');
         return false;
       }
-      console.log('phone', isVerify);
 
       clearErrorForField($phone);
       return true;
@@ -1349,7 +1418,6 @@
       var channel = getChannel();
       var isShopifyAmazon = CHANNEL_NO_PROOF.indexOf(channel) >= 0;
 
-      // ✅ 成功：按渠道不同提示
       if (res.code === 0) {
         $msg.removeClass('pr-form__error')
           .html(isShopifyAmazon ? COPY.successShopifyAmazon : COPY.successThirdParty)
@@ -1357,10 +1425,9 @@
         return;
       }
 
-      // ✅ API error mapping：99998 + message
       if (res.code === 99998) {
         var msgKey = res.message;
-        // order errors -> order_id
+
         if (msgKey === 'user_sys_order_no_invalid') {
           setErrorForField($form.find('input[name="order_id"]'), COPY.orderInvalid);
           $msg.hide();
@@ -1372,7 +1439,6 @@
           return;
         }
 
-        // sn errors -> serial_number
         if (msgKey === 'user_sys_product_sn_invalid') {
           setErrorForField($form.find('input[name="serial_number"]'), COPY.snInvalid);
           $msg.hide();
@@ -1390,9 +1456,13 @@
           return;
         }
 
+        if (msgKey === 'user_sys_order_no_repeat') {
+          setErrorForField($form.find('input[name="order_id"]'), COPY.orderExtended);
+          $msg.hide();
+          return;
+        }
       }
 
-      // 其他失败：显示后端 message
       $msg.addClass('pr-form__error')
         .text(res.message || 'Submit failed. Please try again.')
         .fadeIn();
@@ -1411,6 +1481,14 @@
         clearErrorForField($fileInput);
       });
 
+      // ✅ remark: normalize as user types, clear error state
+      $form.on('input change', '[name="remark"]', function () {
+        hideResultMessage();
+        var $el = $(this);
+        $el.val(normalizeRemark($el.val()));
+        clearErrorForField($el);
+      });
+
       $form.find('[name="purchase_channel"]').on('change', function () {
         hideResultMessage();
         toggleProofUI(getChannel());
@@ -1423,7 +1501,6 @@
 
         hideResultMessage();
 
-        // 上传中禁止提交
         if (state.uploadingCount > 0) {
           setErrorForField($fileInput, COPY.uploadingWait);
           return;
@@ -1437,17 +1514,12 @@
         });
         if (hasError) return;
 
-        // 1️⃣ 校验产品序列号（只要填写了，就必须符合规则）
         if (!validateSerialNumber()) return;
-
-        // 2️⃣ 校验手机号（可选字段：
-        //    - 未填写：允许提交
-        //    - 已填写：必须是合法手机号格式，否则阻止提交）
         if (!validatePhoneOptional()) return;
 
-        // 3️⃣ 校验购买渠道的组合规则（跨字段校验）：
-        //    - Shopify / Amazon：必须填写 Order ID
-        //    - 其他渠道：必须上传购买凭证
+        // ✅ validate remark (only when Others)
+        if (!validateRemarkIfNeeded()) return;
+
         if (!validateChannelRequirement()) return;
 
         lockSubmit(true);
@@ -1482,7 +1554,7 @@
 {
   "name": "u-product-warranty",
   "settings": [
-    { "type": "text", "id": "site_code", "label": "Site code (US/UK/DE/FR)", "default": "US" },
+    { "type": "text", "id": "site_code", "label": "Site code (US/UK/DE/FR)", "default": "UK" },
     { "type": "text", "id": "merchant_code", "label": "Merchant code", "default": "ULIKE" },
 
     { "type": "image_picker", "id": "info_icon_image", "label": "Info icon image" },
