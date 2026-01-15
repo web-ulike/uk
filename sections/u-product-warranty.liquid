@@ -930,7 +930,15 @@
 
     function validateRequiredField($field) {
       var name = $field.attr('name');
+
+      // order_id is handled by channel rule
       if (name === 'order_id') return true;
+
+      // ✅ remark: required ONLY when channel === Others
+      if (name === 'remark') {
+        var channel = getChannel();
+        if (channel !== 'Others') return true; // hidden/non-required
+      }
 
       var value = '';
       if ($field.attr('type') === 'checkbox') value = $field.prop('checked') ? '1' : '';
