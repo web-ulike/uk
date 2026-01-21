@@ -3,10 +3,48 @@ $(function () {
   let disCode = ''; // 优惠券code
   document.addEventListener('variant:changed', function (event) {
     const variant = event.detail.variant; // 假设事件传递了 variant 详细信息
+    console.log(variant);
     //  关闭3d模型
     $('.main-image-swiper .close-three-btn').click();
     generateHtmlForVariant(variant.id);
     //更改顶部选择的值
+
+    // 处理是否有捆绑商品
+    if ($('.product-new .product-detail-recommend-item').length > 0) {
+      let first_item = $('.product-new .product-detail-recommend-item').first();
+      // 需要处理第一个产品
+      let falg = false;
+      $('.product-new .product-detail-recommend-item')
+        .not(':first')
+        .each(function () {
+          let s_vid = $(this).attr('s_vid');
+          if (variant.id == s_vid) {
+            falg = true;
+            $(this).removeClass('hidden-item');
+            $(this).closest('.product-recommend-card-wrapper').removeClass('hidden-item');
+          } else {
+            $(this).addClass('hidden-item');
+            $(this).closest('.product-recommend-card-wrapper').addClass('hidden-item');
+          }
+        });
+      if (!falg) {
+        first_item.addClass('hidden-item');
+        first_item.closest('.product-recommend-card-wrapper').addClass('hidden-item');
+      } else {
+        $('.product-new .product-detail-recommend-item').removeClass('active');
+        first_item
+          .removeClass('hidden-item')
+          .addClass('active');
+        first_item.closest('.product-recommend-card-wrapper').removeClass('hidden-item');
+
+        // 更换图片和价格跟 ID
+        first_item
+          .find('.product-item__primary-image')
+          .attr('src', variant.featured_image.src);
+        first_item.attr('pid', variant.id);
+      }
+    }
+
   });
 
   document.addEventListener('cart:refresh', function (event) {
@@ -32,6 +70,154 @@ $(function () {
     // $('#AddToCart').click();
 
   });
+
+
+  $(document).on('click', '.product-detail-recommend-item', function () {
+    $('.product-new .product-detail-recommend-item').removeClass('active');
+    $(this).addClass('active');
+    let handle = $(this).data('handle'); // 比如 "glow-duo"
+    let _productImage = $(this).data('image');
+    let _pid = $(this).attr('pid').trim();
+    let add_vid = $(this).attr('add-vid');
+    let product_id = $(this).attr('product-id');
+
+    $(".product-form__buy-buttons [name='product-id']").val(product_id);
+    $(".product-form__buy-buttons [name='id']").val(_pid);
+
+    disCode = $(this).data('code');
+
+    if (!handle) {
+      code = $('.p-box-discount-code').attr('auto-code');
+      disCode = code;
+      generateHtmlForVariant(_pid);
+      return false;
+    } // handle 为空时不处理
+
+    // 修改图片
+    $('.swiper_nav .product__media-image:first').attr(
+      'src',
+      convertShopifyImageUrl(_productImage, '80x')
+    );
+
+    $('.swiper_main .swiper-slide[data-swiper-slide-index="0"]')
+      .find('.product__media-image')
+      .attr('src', convertShopifyImageUrl(_productImage, '870x'));
+
+    $('.swiper_main .swiper-slide[data-swiper-slide-index="0"]')
+      .find('a')
+      .attr('data-pswp-src', _productImage);
+
+    // 修改移动端图片
+    $('.swiper_main .swiper-slide[data-swiper-slide-index="0"]')
+      .find('source').attr('srcset', convertShopifyImageUrl(_productImage, '870x'));
+
+    swiperMain.slideToLoop(0)
+    swiperproductNav.slideToLoop(0)
+
+    const root =
+      (window.Shopify && Shopify.routes && Shopify.routes.root) || '/';
+
+    fetch(`${root}products/${encodeURIComponent(handle)}?view=metafields-json`)
+      .then((r) => r.json())
+      .then((data) => {
+        const variant = (add_vid ? data.variants.find(v => String(v.id) === String(add_vid) || String(v.variant_id) === String(add_vid)) : data.variants[0]) || data.variants[0];
+        const currentVariant = variant?.metafields?.custom || {};
+
+        if (currentVariant.isOriginalPrice == 'true') {
+          let _price = currentVariant.price;
+          $(currentVariant.price).text().replace('$', '');
+          $('.p-box-price .price').html('US' + _price);
+          if (currentVariant.price == currentVariant.original_price) {
+            $('.p-box-price .original_price').html('');
+          } else {
+            $('.p-box-price .original_price').html(
+              currentVariant.original_price
+            );
+          }
+          let curPiice = $(_price).text().replace('$', '');
+          // 显示原始价格
+          $('.pay-button').attr('data-pp-amount', curPiice);
+          $('klarna-placement').attr('data-purchase-amount', curPiice);
+          $('.affirm-as-low-as').attr('data-amount', curPiice);
+        } else {
+          // 显示折扣价格
+          if (currentVariant.price != '' && currentVariant.page_price != '') {
+            $('.p-box-price .price').html(
+              'US' + formatMoney(currentVariant.page_price)
+            );
+            $('.p-box-price .original_price').html('US' + currentVariant.price);
+            $('.pay-button').attr('data-pp-amount', currentVariant.page_price);
+            $('.affirm-as-low-as').attr(
+              'data-amount',
+              currentVariant.page_price
+            );
+          } else if (currentVariant.price != '') {
+            $('.p-box-price .price').html('US' + currentVariant.price);
+            $('.p-box-price .original_price').html('');
+          }
+        }
+
+        if (currentVariant.variantTitle != '') {
+          $('.product-info-new .product-meta__title').html(
+            currentVariant.variantTitle
+          );
+        }
+        // 描述
+        $('.product-info-new .product-subinfo').html(data.description_html);
+        // 标题
+        if (currentVariant.variant_title != '') {
+          $('.product-info-new .product-meta__title').html(
+            currentVariant.variant_title
+          );
+        } else {
+          $('.product-info-new .product-meta__title').html(data.title);
+        }
+        $('.product-info-new .p-box-price .information').hide();
+      });
+  });
+
+  $('.product-info-new').on(
+    'click',
+    '.product-detail-recommend-item .product-bundle-add',
+    function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      const $btn = $(this);
+      if ($btn.hasClass('is-loading')) return;
+
+      const $item = $btn.closest('.product-detail-recommend-item');
+      const _pid = $item.attr('pid');
+      const product_id = $item.attr('product-id');
+      const gEventName = $item.attr('data-event-name');
+      const _code = $item.attr('data-code');
+
+      commonGtmEvent(`bundle ${gEventName}`, '', 'Product');
+      $(".product-form__buy-buttons [name='product-id']").val(product_id);
+
+
+      $btn.addClass('is-loading');
+      let ret;
+      try {
+        ret = addToCart(_pid, '', {}, _code);
+      } catch (err) {
+        console.error(err);
+        $btn.removeClass('is-loading');
+        return;
+      }
+      setTimeout(() => {
+        $btn.removeClass('is-loading');
+      }, 4000);
+
+      if (_code == undefined || _code == '') {
+        applyDiscountWithDelay(disCode, 1500);
+      }
+    }
+  );
+
+
+
+
+
 
   // 置顶栏 变体选择点击
   $(document).on("click", ".product-sticky-form .combo-box__option-item", function () {
@@ -162,8 +348,30 @@ $(function () {
         setCookie('discount_code', code, 1);
         autoDiscountCode(code);
       }
+
+
+      // 初始化给捆绑商品赋值
+      if ($('.product-new .product-detail-recommend-item').length > 0) {
+        $('.product-new .product-detail-recommend-item').first().attr('data-code', disCode);
+        let _item = document.querySelectorAll('.product-recommend-card-wrapper:not(.hidden-item)');
+        if (_item.length > 0) {
+          $('.product-new .product-recommend-card-wrapper').first().removeClass('hidden-item');
+        }
+      }
+
     }
   }, 1000)
+
+
+  function applyDiscountWithDelay(code, delay = 1500) {
+    setCookie('discount_code', code, 1);
+    autoDiscountCode(code);
+    setTimeout(function () {
+      setCookie('discount_code', code, 1);
+      autoDiscountCode(code);
+    }, delay);
+  }
+
 
   // 直接添加购物车
   $(document).on('click', '.button-buy-now ', function () {
@@ -260,8 +468,8 @@ function generateHtmlForVariant(vid) {
     let loadingAttr = i == position - 1 ? 'fetchpriority="high"' : 'loading="lazy"';
     const pictureElement = `
     <picture>
-        <source media="(max-width: 768px)" srcset="${convertShopifyImageUrl(imageUrl, '800x')}">
-        <img class="product__media-image" ${loadingAttr} src="${convertShopifyImageUrl(imageUrl, '1740x')}" alt="${ths.alt}" media_type="${ths.media_type}" >
+        <source media="(max-width: 768px)" srcset="${convertShopifyImageUrl(imageUrl, '870x')}">
+        <img class="product__media-image" ${loadingAttr} src="${convertShopifyImageUrl(imageUrl, '870x')}" alt="${ths.alt}" media_type="${ths.media_type}" >
     </picture>
     `;
 
