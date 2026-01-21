@@ -6,12 +6,8 @@
   assign se_bks = section.blocks
   assign se_stts = section.settings
 -%}
-{% comment %}
-  <script
-    src="https://www.paypal.com/sdk/js?client-id=AftujuxwA7Dh1XhsMvpuCuEIVnMK6N4iqRGezy_5oojdqjKwxQvRCNxkJVUsnn8IqDR5WDjn2ZOxx8C8&components=messages"
-    data-namespace="PayPalSDK"
-  ></script>
-{% endcomment %}
+{% comment %} 捆绑变量 {% endcomment %}
+{% assign flag = false %}
 
 <div class="product-info-new">
   <product-meta form-id="{{ product_form_id }}" price-class="price--large" class="product-meta">
@@ -656,7 +652,12 @@
           </div>
         {%- when 'installment' -%}
           {% render 'p-accordion-item', p_product: product, p_block: block %}
-
+        
+        {%- when 'product_recommend_item' -%}
+          
+          {% render 'product-recommend-card', p_block: block, flag: flag %}
+          {% assign flag = true %}
+          
         {%- when 'discountCode' -%}
           <div
             class="p-box-discount-code"
