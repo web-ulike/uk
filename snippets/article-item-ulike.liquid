@@ -1,0 +1,39 @@
+<a href="{{ article.url }}" class="u-list-item">
+  <div class="u-list-img">
+    {%- if article.image -%}
+      {{-
+        article.image
+        | image_url: width: article.image.width
+        | image_tag:
+          loading: 'lazy',
+          sizes: '(max-width: 740px) 81vw, (max-width: 999px) 37vw, 425px',
+          sizes: '600,700,800,1000,1200,1400,1600,1800,2000',
+          class: 'img',
+          onload: "this.style.background='white';"
+      -}}
+    {%- endif -%}
+  </div>
+  <div>
+    {%- if blog.handle -%}
+      <div class="u-blog-tag">{{ blog.handle }}</div>
+    {%- endif -%}
+    <h4 class="u-list-title">{{ article.title }}</h4>
+    <div class="u-list-sub">
+        {% if article.excerpt != blank %}
+            {{ article.excerpt }}
+        {% elsif article.content != blank %}
+            {{ article.content | strip_html | slice: 0, 200 }}
+        {% endif %}
+    </div>
+    <div class="u-list-p">{{ article.updated_at | date: '%b %d, %Y' }}</div>
+    {%- if section.settings.rm_t != blank -%}
+      <div class="u-more">
+        {{ section.settings.rm_t }}
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="12" viewBox="0 0 14 12" fill="none">
+          <path d="M0 5.53064L13.087 5.53003" stroke="currentColor" stroke-width="0.608696"/>
+          <path d="M10.3478 2.79089L13.5532 5.53063L10.3478 8.20098" stroke="currentColor" stroke-width="0.608696" stroke-linejoin="round"/>
+        </svg>
+      </div>
+    {%- endif -%}
+  </div>
+</a>
