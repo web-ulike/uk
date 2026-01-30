@@ -76,10 +76,18 @@
   bottom: 0;
   z-index: 1;
   }
-  .sport_nav-box .sport_nav-li.active .sport_nav-txt {
-  opacity: 1;
-  color: #E0004D;
+  .sport_nav-box .sport_nav-li .sport_nav-tag-icon {
+    display: none;
   }
+  .sport_nav-box .sport_nav-li.active .sport_nav-txt {
+    opacity: 1;
+    color: #E0004D;
+  }
+
+  .sport_nav-box .sport_nav-li.active .sport_nav-tag-icon {
+    display: block;
+  }
+
   .sport_nav-box .sport_nav-li.active .sport_nav-tag{
     opacity: 1;
   }
@@ -114,9 +122,12 @@
     .sport_nav-box .sport_nav-tag{
       font-size: 10px;
     }
-     .sport-nav {
-      /* top: calc(100vh - 39.33px); */
-  }
+    .sport_nav-box .sport_nav-li.active .sport_nav-tag-icon {
+      display: flex;
+      width: 20px;
+      justify-content: center;
+      align-items: center;
+    }
   }
 </style>
 
@@ -133,6 +144,11 @@
             <div class="sport_nav-txt">{{ block.settings.text1 }}</div>
             {% if block.settings.text2 != blank %}
               <div class="sport_nav-tag">{{ block.settings.text2 }}</div>
+            {% endif %}
+            {% if block.settings.tag_icon != blank %}
+              <div class="sport_nav-tag-icon">
+                {{ block.settings.tag_icon | image_url: width: 26 | image_tag: loading: 'lazy', alt: block.settings.text2 }}
+              </div>
             {% endif %}
           </a>
         {%- endfor -%}
@@ -242,6 +258,11 @@
           "type": "text",
           "id": "text2",
           "label": "Text2"
+        },
+        {
+          "type": "image_picker",
+          "id": "tag_icon",
+          "label": "Tag Icon"
         },
         {
           "type": "text",
