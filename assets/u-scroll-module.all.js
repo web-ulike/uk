@@ -253,10 +253,5 @@
       if (r) initOne(r);
     });
   }
-
-  if (document.readyState === 'loading') {
-    window.addEventListener('load', () => requestAnimationFrame(boot));
-  } else {
-    requestAnimationFrame(boot);
-  }
+  window.addEventListener('load', () => requestAnimationFrame(boot));
 })();
