@@ -1,0 +1,402 @@
+{% comment %}
+  Section: u-scroll-word
+  Purpose: Horizontal looping marquee text with optional icon (SVG preferred)
+  Notes:
+  - No jQuery required
+  - Auto duplicates content for seamless loop
+  - Respects prefers-reduced-motion
+{% endcomment %}
+
+{%- liquid
+  assign se_id = section.id
+  assign st = section.settings
+-%}
+
+<style>
+  .u-scroll-word--{{ se_id }} {
+    width: 100%;
+    overflow: hidden;
+    background: {{ st.bg_color }};
+  }
+
+  .u-scroll-word--{{ se_id }} .u-scroll-word__inner {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+  }
+
+  /* track = moving belt */
+  .u-scroll-word--{{ se_id }} .u-scroll-word__track {
+    display: flex;
+    width: max-content;
+    align-items: center;
+    gap: {{ st.item_gap }}px;
+    padding: {{ st.padding_y }}px 0;
+    will-change: transform;
+    animation: uScrollWordMarquee--{{ se_id }} {{ st.duration }}s linear infinite;
+  }
+
+  /* group = one unit that will be cloned */
+  .u-scroll-word--{{ se_id }} .u-scroll-word__group {
+    display: inline-flex;
+    align-items: center;
+    gap: {{ st.item_gap }}px;
+    white-space: nowrap;
+  }
+
+  .u-scroll-word--{{ se_id }} .u-scroll-word__item {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: {{ st.item_inner_gap }}px;
+    white-space: nowrap;
+
+    font-family: 'Saans', sans-serif;
+    font-size: {{ st.font_size }}px;
+    line-height: 1.2;
+    color: {{ st.text_color }};
+    font-weight: {{ st.font_weight }};
+  }
+
+  .u-scroll-word--{{ se_id }} .u-scroll-word__text {
+    display: inline-block;
+    white-space: nowrap;
+  }
+
+  /* SVG icon wrapper */
+  .u-scroll-word--{{ se_id }} .u-scroll-word__icon {
+    display: inline-flex;
+    align-items: center;
+    color: {{ st.text_color }}; /* ✅ icon follows text color */
+  }
+
+  .u-scroll-word--{{ se_id }} .u-scroll-word__icon svg {
+    width: {{ st.icon_size }}px;
+    height: auto;
+    display: block;
+  }
+
+  /* ✅ Force pasted SVG to follow currentColor (avoid hard-coded colors) */
+  .u-scroll-word--{{ se_id }} .u-scroll-word__icon svg * {
+    stroke: currentColor !important;
+  }
+  .u-scroll-word--{{ se_id }} .u-scroll-word__icon svg [fill]:not([fill="none"]) {
+    fill: currentColor !important;
+  }
+
+  /* Image icon fallback */
+  .u-scroll-word--{{ se_id }} .u-scroll-word__item img {
+    width: {{ st.icon_size }}px;
+    height: auto;
+    -webkit-user-drag: none;
+    user-select: none;
+    pointer-events: none;
+  }
+
+  @keyframes uScrollWordMarquee--{{ se_id }} {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+
+  /* Reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    .u-scroll-word--{{ se_id }} .u-scroll-word__track {
+      animation: none !important;
+      transform: none !important;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .u-scroll-word--{{ se_id }} .u-scroll-word__track {
+      padding: {{ st.m_padding_y }}px 0;
+      gap: {{ st.m_item_gap }}px;
+      animation-duration: {{ st.m_duration }}s;
+    }
+
+    .u-scroll-word--{{ se_id }} .u-scroll-word__group {
+      gap: {{ st.m_item_gap }}px;
+    }
+
+    .u-scroll-word--{{ se_id }} .u-scroll-word__item {
+      font-size: {{ st.m_font_size }}px;
+      gap: {{ st.m_item_inner_gap }}px;
+    }
+
+    .u-scroll-word--{{ se_id }} .u-scroll-word__icon svg {
+      width: {{ st.m_icon_size }}px;
+    }
+
+    .u-scroll-word--{{ se_id }} .u-scroll-word__item img {
+      width: {{ st.m_icon_size }}px;
+    }
+  }
+</style>
+
+<div class="u-scroll-word u-scroll-word--{{ se_id }}" data-u-scroll-word>
+  <div class="u-scroll-word__inner">
+    <div class="u-scroll-word__track" data-track>
+      <!-- Group #1 (base) -->
+      <div class="u-scroll-word__group" data-group>
+        <div class="u-scroll-word__item">
+          {%- if st.icon_svg != blank -%}
+            <span class="u-scroll-word__icon" aria-hidden="true">
+              {{ st.icon_svg }}
+            </span>
+          {%- elsif st.icon != blank -%}
+            <img loading="lazy" alt="" src="{{ st.icon | image_url: width: 64 }}">
+          {%- endif -%}
+
+          <span class="u-scroll-word__text">{{ st.text }}</span>
+        </div>
+      </div>
+
+      <!-- Group #2 (clone slot) -->
+      <div class="u-scroll-word__group" data-group-clone aria-hidden="true"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  (function () {
+    var root = document.querySelector('.u-scroll-word--{{ se_id }}[data-u-scroll-word]');
+    if (!root) return;
+
+    var track = root.querySelector('[data-track]');
+    var group = root.querySelector('[data-group]');
+    var cloneSlot = root.querySelector('[data-group-clone]');
+    if (!track || !group || !cloneSlot) return;
+
+    // Build group #2 as clone of group #1
+    cloneSlot.innerHTML = group.innerHTML;
+
+    function ensureCoverage() {
+      // Remove old auto groups (keep: group + cloneSlot)
+      var autos = track.querySelectorAll('[data-auto-group="1"]');
+      autos.forEach(function (n) { n.remove(); });
+
+      var rootWidth = root.getBoundingClientRect().width;
+      var groupWidth = group.getBoundingClientRect().width;
+
+      // If empty or too small, skip
+      if (!groupWidth || groupWidth < 10) return;
+
+      // Need enough width for smooth loop (safe target: >= 2x viewport)
+      var target = rootWidth * 2;
+
+      // Re-measure after resetting
+      var currentTrackWidth = track.getBoundingClientRect().width;
+      if (currentTrackWidth >= target) return;
+
+      // Add more cloned groups if needed
+      var maxAdds = 20;
+      var adds = 0;
+      while (currentTrackWidth < target && adds < maxAdds) {
+        var g = document.createElement('div');
+        g.className = 'u-scroll-word__group';
+        g.setAttribute('aria-hidden', 'true');
+        g.setAttribute('data-auto-group', '1');
+        g.innerHTML = group.innerHTML;
+        track.appendChild(g);
+
+        adds++;
+        currentTrackWidth = track.getBoundingClientRect().width;
+      }
+    }
+
+    // Init once images/svg render
+    function init() {
+      ensureCoverage();
+    }
+
+    // If icon is an image, wait for it; otherwise init immediately
+    var img = root.querySelector('img');
+    if (img && !img.complete) {
+      img.addEventListener('load', init, { once: true });
+      img.addEventListener('error', init, { once: true });
+      setTimeout(init, 800); // fallback
+    } else {
+      init();
+    }
+
+    // Recalc on resize (throttle)
+    var t = null;
+    window.addEventListener('resize', function () {
+      clearTimeout(t);
+      t = setTimeout(ensureCoverage, 150);
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "u-scroll-word",
+  "settings": [
+    {
+      "type": "html",
+      "id": "text",
+      "label": "滚动文本",
+      "default": "100-Day Money Back Guarantee"
+    },
+    {
+      "type": "html",
+      "id": "icon_svg",
+      "label": "SVG 图标（可选，粘贴 <svg>…</svg>，优先于图片）",
+      "default": "<svg viewBox=\"0 0 24 24\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\" aria-hidden=\"true\"><path d=\"M12 21s-7.2-4.6-9.6-9.1C.4 8.2 2.2 5 5.6 5c2 0 3.4 1.1 4.4 2.4C11 6.1 12.4 5 14.4 5c3.4 0 5.2 3.2 3.2 6.9C19.2 16.4 12 21 12 21z\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linejoin=\"round\"/></svg>"
+    },
+    {
+      "type": "image_picker",
+      "id": "icon",
+      "label": "图标图片（可选，若填写 SVG 则不会使用此图片）"
+    },
+
+    {
+      "type": "header",
+      "content": "样式"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "背景色",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "文字颜色",
+      "default": "#E11D48"
+    },
+    {
+      "type": "range",
+      "id": "font_size",
+      "label": "字体大小（PC）",
+      "min": 10,
+      "max": 36,
+      "step": 1,
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "font_weight",
+      "label": "字重（PC）",
+      "min": 300,
+      "max": 700,
+      "step": 100,
+      "default": 500
+    },
+    {
+      "type": "range",
+      "id": "icon_size",
+      "label": "图标大小（PC）",
+      "min": 12,
+      "max": 48,
+      "step": 1,
+      "default": 18
+    },
+    {
+      "type": "range",
+      "id": "padding_y",
+      "label": "上下内边距（PC）",
+      "min": 6,
+      "max": 40,
+      "step": 1,
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "item_gap",
+      "label": "组间距（PC）",
+      "min": 6,
+      "max": 80,
+      "step": 1,
+      "default": 30
+    },
+    {
+      "type": "range",
+      "id": "item_inner_gap",
+      "label": "图标与文字间距（PC）",
+      "min": 4,
+      "max": 40,
+      "step": 1,
+      "default": 16
+    },
+
+    {
+      "type": "header",
+      "content": "动画"
+    },
+    {
+      "type": "range",
+      "id": "duration",
+      "label": "滚动速度（PC，秒）",
+      "min": 6,
+      "max": 60,
+      "step": 1,
+      "default": 20
+    },
+
+    {
+      "type": "header",
+      "content": "移动端"
+    },
+    {
+      "type": "range",
+      "id": "m_font_size",
+      "label": "字体大小（M）",
+      "min": 10,
+      "max": 28,
+      "step": 1,
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "m_icon_size",
+      "label": "图标大小（M）",
+      "min": 10,
+      "max": 36,
+      "step": 1,
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "m_padding_y",
+      "label": "上下内边距（M）",
+      "min": 6,
+      "max": 30,
+      "step": 1,
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "m_item_gap",
+      "label": "组间距（M）",
+      "min": 6,
+      "max": 50,
+      "step": 1,
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "m_item_inner_gap",
+      "label": "图标与文字间距（M）",
+      "min": 4,
+      "max": 24,
+      "step": 1,
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "m_duration",
+      "label": "滚动速度（M，秒）",
+      "min": 6,
+      "max": 60,
+      "step": 1,
+      "default": 20
+    }
+  ],
+  "presets": [
+    {
+      "name": "u-scroll-word"
+    }
+  ]
+}
+{% endschema %}
