@@ -1,5 +1,4 @@
 <style>
-
 .product-area-box {
   position: relative;
   z-index: 1;
@@ -94,6 +93,11 @@
   width: 100%;
 }
 
+/* ✅ 图片加链接：保证 a 撑满整块可点 */
+.product-area-box .product-area-img-link{
+  display: block;
+}
+
 .product-area-box .product-area-cont {
   background: #f8f8f8;
   padding: 45px;
@@ -104,7 +108,6 @@
   flex-direction: column;
   justify-content: space-between;
 }
-
 
 .product-area-box .product-area-h3 {
   font-size: 30px;
@@ -250,34 +253,40 @@
     <div class="container">
       <div class="product-area-list">
         {%- for block in section.blocks -%}
-          <div class="product-area-item" >
+          <div class="product-area-item">
             {%- if block.settings.text != blank -%}
               <div class="product-area-tag">{{ block.settings.text }}</div>
             {%- endif -%}
+
             <div class="product-area-img-list">
               <div class="product-area-img-item active">
                 {%- if block.settings.icon != blank -%}
-                   {% comment %} <img loading="lazy" class="img" 
-                    width="{{ block.settings.icon.width }}" height="{{ block.settings.icon.height }}"
-                     {% render 'image-attributes', image: block.settings.icon %} alt="{{ block.settings.icon.alt | escape }}" > {% endcomment %}
-                  <img 
-                      class="img lazyload"
-                      loading="lazy"
-                      width="{{ block.settings.icon.width }}" 
-                      height="{{ block.settings.icon.height }}"
-                      src="{{ block.settings.icon | image_url: width: 16 }}"
-                      data-src="{{ block.settings.icon | image_url: width: 800 }}"
-                      data-srcset="
-                        {{ block.settings.icon | image_url: width: 500 }} 500w,
-                        {{ block.settings.icon | image_url: width: 800 }} 800w
-                      "
-                      data-sizes="auto"
-                      alt="{{ block.settings.icon.alt | escape }}"
-                    >
-               {%- endif -%}
+                  {%- if block.settings.link != blank -%}
+                    <a href="{{ block.settings.link }}" class="product-area-img-link">
+                  {%- endif -%}
 
+                  <img 
+                    class="img lazyload"
+                    loading="lazy"
+                    width="{{ block.settings.icon.width }}" 
+                    height="{{ block.settings.icon.height }}"
+                    src="{{ block.settings.icon | image_url: width: 16 }}"
+                    data-src="{{ block.settings.icon | image_url: width: 800 }}"
+                    data-srcset="
+                      {{ block.settings.icon | image_url: width: 500 }} 500w,
+                      {{ block.settings.icon | image_url: width: 800 }} 800w
+                    "
+                    data-sizes="auto"
+                    alt="{{ block.settings.icon.alt | escape }}"
+                  >
+
+                  {%- if block.settings.link != blank -%}
+                    </a>
+                  {%- endif -%}
+                {%- endif -%}
               </div>
             </div>
+
             <div class="product-area-cont">
               <div>
                 <h3 class="product-area-h3">
@@ -287,22 +296,25 @@
                   {{ block.settings.text2 }}
                 </div>
               </div>
+
               <div>
-                <div class="product-area-price " style="color:{{ block.settings.price_color }}">
-                  {{ block.settings.text3 }} 
+                <div class="product-area-price" style="color:{{ block.settings.price_color }}">
+                  {{ block.settings.text3 }}
                   {%- if block.settings.text4 != blank -%}
                     <span>{{ block.settings.text4 }}</span>
                   {%- endif -%}
                 </div>
+
                 <div class="product-area-btn-box">
-                  <div class="product-area-btn ">
-                  {%- if block.settings.text5 != blank -%}
+                  <div class="product-area-btn">
+                    {%- if block.settings.text5 != blank -%}
                       <a href="{{ block.settings.link }}" class="product-area-btn-item btn-diy">
                         <div class="btn-txt" text="{{ block.settings.text5 }}">
-                          <span> {{ block.settings.text5 }}</span>
+                          <span>{{ block.settings.text5 }}</span>
                         </div>
                       </a>
                     {%- endif -%}
+
                     {%- if block.settings.text6 != blank -%}
                       <div class="product-area-btn-item btn-diy" data-code="{{ block.settings.code }}" data-pid="{{ block.settings.text7 }}">
                         <div class="btn-txt" text="{{ block.settings.text6 }}">
@@ -319,17 +331,19 @@
       </div>
     </div>
   </div>
+
   <script>
-      window.addEventListener('load', function () {
-        document.querySelectorAll('#shopify-section-{{ section.id }} .product-area-btn-item').forEach((el) => {
-          el.addEventListener('click', function () {
-            autoDiscountCode(this.getAttribute('data-code'));
-            addToCart(this.getAttribute('data-pid'));
-          });
+    window.addEventListener('load', function () {
+      document.querySelectorAll('#shopify-section-{{ section.id }} .product-area-btn-item').forEach((el) => {
+        el.addEventListener('click', function () {
+          autoDiscountCode(this.getAttribute('data-code'));
+          addToCart(this.getAttribute('data-pid'));
         });
-      })
+      });
+    });
   </script>
 </section>
+
 {% schema %}
 {
   "name": "product-lists",
@@ -382,7 +396,7 @@
         {
           "type": "url",
           "id": "link",
-          "label": "Link"
+          "label": "Link（标题/图片跳转）"
         },
         {
           "type": "text",
