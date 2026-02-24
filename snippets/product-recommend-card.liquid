@@ -1,0 +1,184 @@
+{% assign product_item = p_block.settings.product_recommend_item %}
+{% assign se_tt = p_block.settings %}
+{%- assign s_vid = se_tt.variant_id | plus: 0 -%}
+{%- assign p_vid = product.selected_or_first_available_variant.id | plus: 0 -%}
+{%- comment -%}
+  产品推荐卡片片段
+  参数: p_block, flag
+{%- endcomment -%}
+
+ {% if flag == false and p_block.type == 'product_recommend_item' %}
+   <div class="product-recommend-card-wrapper hidden-item">
+    {% if section.settings.build_title != '' -%}
+      <div class="recommend-title">{{ section.settings.build_title }}</div>
+    {% endif %}
+    <div class="product-detail-recommend-item active" 
+        pid="{{- product.selected_or_first_available_variant.id -}}"
+        product-id="{{ product.id }}"
+        data-image="{{ product.selected_or_first_available_variant.featured_image | image_url }}"
+        data-event-name="{{  section.settings.build_product_badge_text }}"
+      >
+      <div class="p-recommend-info">
+        <img
+          src="{{ product.selected_or_first_available_variant.featured_image | image_url }}"
+          alt="{{ product.title }}"
+          class="product-item__primary-image"
+          width="100px"
+          height="auto"
+          loading="lazy"
+        >
+        <div class="product-recommend-content">
+          <div class="product-recommend-name">
+            {%  if section.settings.build_product_title != '' %}
+              {{ section.settings.build_product_title }}
+            {% else %}
+                {{ product.title }}
+            {% endif %}
+          </div>
+          <div class="product-recommend-price">
+            {% if product.selected_or_first_available_variant.metafields.custom.page_price  %}
+              <div class="product-price">
+                {%- assign p_page_price = product.selected_or_first_available_variant.metafields.custom.page_price | times: 100 -%}
+                {{ p_page_price | money }}
+                {% if p_page_price > product.price %}
+                  <div class="product-recommend-original-price">{{ product.price | money }}</div>
+                {% endif %}
+              </div>
+            {% else %}
+              <div class="product-price">
+                {{ product.price | money }}
+                {% if product.compare_at_price > product.price %}
+                  <div class="product-recommend-original-price">{{ product.compare_at_price | money }}</div>
+                {% endif %}
+              </div>
+            {% endif %}
+          {%- if section.settings.build_product_price_text != '' %}
+              <div class="price-discount">{{ section.settings.build_product_price_text }}</div>
+            {% endif %}
+          </div>
+          {% comment %} 增加描述 {% endcomment %}
+          {%- if section.settings.build_product_text != '' %}
+            <div class="product-recommend-desc">
+              {{ section.settings.build_product_text }}
+            </div>
+          {%- endif %}
+        </div>
+      </div>
+      <div class="product-bundle-add">
+        <svg width="30" height="30" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <g clip-path="url(#clip0_419_1085)">
+          <path d="M7.99911 0.908203C4.07184 0.908203 0.908203 4.07184 0.908203 7.99911C0.908203 11.9264 4.07184 15.09 7.99911 15.09C11.9264 15.09 15.09 11.9264 15.09 7.99911C15.09 4.07184 11.9264 0.908203 7.99911 0.908203ZM7.99911 13.9991C4.69002 13.9991 1.99911 11.3082 1.99911 7.99911C1.99911 4.69002 4.69002 1.99911 7.99911 1.99911C11.3082 1.99911 13.9991 4.69002 13.9991 7.99911C13.9991 11.3082 11.3082 13.9991 7.99911 13.9991ZM12.5446 7.99911C12.5446 8.29002 12.29 8.54457 11.9991 8.54457H8.54457V11.9991C8.54457 12.29 8.29002 12.5446 7.99911 12.5446C7.7082 12.5446 7.45366 12.29 7.45366 11.9991V8.54457H3.99911C3.7082 8.54457 3.45366 8.29002 3.45366 7.99911C3.45366 7.7082 3.7082 7.45366 3.99911 7.45366H7.45366V3.99911C7.45366 3.7082 7.7082 3.45366 7.99911 3.45366C8.29002 3.45366 8.54457 3.7082 8.54457 3.99911V7.45366H11.9991C12.29 7.45366 12.5446 7.7082 12.5446 7.99911Z" fill="#515151"/>
+          </g>
+          <defs>
+          <clipPath id="clip0_419_1085">
+          <rect width="16" height="16" fill="white"/>
+          </clipPath>
+          </defs>
+        </svg>
+      </div>
+      {% if section.settings.build_product_badge_text != '' %}
+        <div class="recommend-badge">
+          <div class="recommend-badge-text">
+          {{ section.settings.build_product_badge_text }}
+          </div>
+        </div>
+      {% endif %}
+
+    </div>
+  </div>
+  {% endif %}
+
+  {% if p_block.type == 'product_recommend_item' %}
+     <div class="product-recommend-card-wrapper {% if s_vid != p_vid %} hidden-item {%- endif -%}">
+      {% if se_tt.title != '' -%}
+        <div class="recommend-title">{{ se_tt.title }}</div>
+      {%- endif %}
+
+      <div class="product-detail-recommend-item {% if s_vid != p_vid %} hidden-item {%- endif -%}"
+          data-code="{{ p_block.settings.code }}"
+          s_vid="{{ s_vid }}"
+          product-id="{{ product_item.id }}"
+          data-variant_id="{{ p_block.settings.variant_id }}"
+          pid="{%- if se_tt.vid != '' %}{{ se_tt.vid }}{%- else -%}{{- product_item.selected_or_first_available_variant.id }}{%- endif -%}"
+          data-handle="{{ product_item.handle }}"
+          data-image="{{ se_tt.image | image_url }}"
+          add-vid = "{{ se_tt.vid }}"
+          data-event-name="{{ se_tt.badge_text }}"
+        >
+      <div class="p-recommend-info">
+        <img
+          src="{{ se_tt.image | image_url: height: 90 }}"
+          alt="{{ product_item.title }}"
+          height="90px"
+          width="90px"
+          height="auto"
+          loading="lazy"
+          class="recommend-image"
+        >
+        <div class="product-recommend-content">
+          <div class="product-recommend-name">
+            {%  if se_tt.v_title != '' %}
+              {{ se_tt.v_title }}
+            {% else %}
+              {{ product_item.title }}
+            {% endif %}
+          </div>
+          <div class="product-recommend-price">
+            {% if se_tt.vid != '' %}
+              {% assign target_id = se_tt.vid | plus: 0 %}
+              {% assign target_variant = product_item.variants | where: 'id', target_id | first %}
+              {% if target_variant == '' or target_variant == nil %}
+                {% assign target_variant = product_item.selected_or_first_available_variant %}
+              {% endif %}
+            {% else %}
+              {% assign target_variant = product_item.selected_or_first_available_variant %}
+            {% endif %}
+
+            {% if target_variant.metafields.custom.page_price %}
+              <div class="product-price 1" >
+                {{ target_variant.metafields.custom.page_price | times: 100 | money }}
+                <div class="product-recommend-original-price">{{ target_variant.price | money }}</div>
+              </div>
+            {% else %}
+              <div class="product-price 2">
+                {{ target_variant.price | money }}
+              {% if target_variant.compare_at_price > target_variant.price %}
+                <div class="product-recommend-original-price">{{ target_variant.compare_at_price | money }}</div>
+              {% endif %}
+              </div>
+            {% endif %}
+            {% if se_tt.price_discount != '' %}
+              <div class="price-discount">{{ se_tt.price_discount }}</div>
+            {% endif %}
+          </div>
+          {% comment %} 增加描述 {% endcomment %}
+          {%- if se_tt.text_desc != '' %}
+            <div class="product-recommend-desc">
+              {{ se_tt.text_desc }}
+            </div>
+          {%- endif %}
+        </div>
+      </div>
+      <div class="product-bundle-add">
+        <svg width="30" height="30" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <g clip-path="url(#clip0_419_1085)">
+          <path d="M7.99911 0.908203C4.07184 0.908203 0.908203 4.07184 0.908203 7.99911C0.908203 11.9264 4.07184 15.09 7.99911 15.09C11.9264 15.09 15.09 11.9264 15.09 7.99911C15.09 4.07184 11.9264 0.908203 7.99911 0.908203ZM7.99911 13.9991C4.69002 13.9991 1.99911 11.3082 1.99911 7.99911C1.99911 4.69002 4.69002 1.99911 7.99911 1.99911C11.3082 1.99911 13.9991 4.69002 13.9991 7.99911C13.9991 11.3082 11.3082 13.9991 7.99911 13.9991ZM12.5446 7.99911C12.5446 8.29002 12.29 8.54457 11.9991 8.54457H8.54457V11.9991C8.54457 12.29 8.29002 12.5446 7.99911 12.5446C7.7082 12.5446 7.45366 12.29 7.45366 11.9991V8.54457H3.99911C3.7082 8.54457 3.45366 8.29002 3.45366 7.99911C3.45366 7.7082 3.7082 7.45366 3.99911 7.45366H7.45366V3.99911C7.45366 3.7082 7.7082 3.45366 7.99911 3.45366C8.29002 3.45366 8.54457 3.7082 8.54457 3.99911V7.45366H11.9991C12.29 7.45366 12.5446 7.7082 12.5446 7.99911Z" fill="#515151"/>
+          </g>
+          <defs>
+          <clipPath id="clip0_419_1085">
+          <rect width="16" height="16" fill="white"/>
+          </clipPath>
+          </defs>
+        </svg>
+      </div>
+      {% comment %} 角标 {% endcomment %}
+      {% if badge_text != '' %}
+        <div class="recommend-badge">
+          <div class="recommend-badge-text">
+          {{ se_tt.badge_text }}
+          </div>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+  {% endif %}
