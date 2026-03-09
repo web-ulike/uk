@@ -18,7 +18,7 @@
           {% else %}
             href="javascript:void(0);"
           {% endif %}
-          class="s-spring-sale__card {% if forloop.first %}is-large{% endif %}"
+          class="s-spring-sale__card{% if forloop.first %} is-large{% endif %}{% if forloop.index == 2 %} is-wide{% endif %}"
           {{ block.shopify_attributes }}
         >
           <div class="s-spring-sale__content">
@@ -83,8 +83,27 @@
   #shopify-section-{{ sid }} .s-spring-sale__grid {
     display: grid;
     grid-template-columns: 1.12fr 1fr 1fr;
+    grid-template-areas:
+      "large wide wide"
+      "large small1 small2";
     grid-auto-rows: 142px;
     gap: 12px;
+  }
+
+  #shopify-section-{{ sid }} .s-spring-sale__card.is-large {
+    grid-area: large;
+  }
+
+  #shopify-section-{{ sid }} .s-spring-sale__card.is-wide {
+    grid-area: wide;
+  }
+
+  #shopify-section-{{ sid }} .s-spring-sale__card:nth-child(3) {
+    grid-area: small1;
+  }
+
+  #shopify-section-{{ sid }} .s-spring-sale__card:nth-child(4) {
+    grid-area: small2;
   }
 
   #shopify-section-{{ sid }} .s-spring-sale__card {
@@ -107,9 +126,12 @@
   }
 
   #shopify-section-{{ sid }} .s-spring-sale__card.is-large {
-    grid-row: span 2;
     min-height: 296px;
     padding: 24px 20px 16px;
+  }
+
+  #shopify-section-{{ sid }} .s-spring-sale__card.is-wide {
+    padding: 18px 22px 14px 26px;
   }
 
   #shopify-section-{{ sid }} .s-spring-sale__content {
@@ -162,10 +184,6 @@
     max-height: 170px;
   }
 
-  #shopify-section-{{ sid }} .s-spring-sale__card:nth-child(2) {
-    padding: 18px 22px 14px 26px;
-  }
-
   @media screen and (max-width: 768px) {
     #shopify-section-{{ sid }} .s-spring-sale {
       padding: 28px 0;
@@ -182,16 +200,23 @@
 
     #shopify-section-{{ sid }} .s-spring-sale__grid {
       grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-areas: none;
       grid-auto-rows: auto;
       gap: 10px;
     }
 
     #shopify-section-{{ sid }} .s-spring-sale__card,
-    #shopify-section-{{ sid }} .s-spring-sale__card.is-large {
+    #shopify-section-{{ sid }} .s-spring-sale__card.is-large,
+    #shopify-section-{{ sid }} .s-spring-sale__card.is-wide {
       min-height: 164px;
+      grid-area: auto;
       grid-row: auto;
       padding: 14px 12px 10px;
       border-radius: 8px;
+    }
+
+    #shopify-section-{{ sid }} .s-spring-sale__card.is-wide {
+      padding: 14px 12px 10px;
     }
 
     #shopify-section-{{ sid }} .s-spring-sale__title {
