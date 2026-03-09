@@ -31,18 +31,34 @@
             {% endif %}
           </div>
 
-          {% if bs.image != blank %}
+          {% if bs.image != blank or bs.image_mobile != blank %}
             <div class="s-spring-sale__image-wrap">
-              {{
-                bs.image
-                | image_url: width: 1200
-                | image_tag:
-                  loading: 'lazy',
-                  widths: '320,480,640,800,1000,1200',
-                  sizes: '(max-width: 768px) 50vw, 33vw',
-                  class: 's-spring-sale__image',
-                  alt: bs.title | escape
-              }}
+              {% if bs.image != blank or bs.image_mobile != blank %}
+                <picture>
+                  {% if bs.image_mobile != blank %}
+                    <source
+                      media="(max-width: 768px)"
+                      srcset="
+                        {{ bs.image_mobile | image_url: width: 320 }} 320w,
+                        {{ bs.image_mobile | image_url: width: 480 }} 480w,
+                        {{ bs.image_mobile | image_url: width: 640 }} 640w,
+                        {{ bs.image_mobile | image_url: width: 800 }} 800w
+                      "
+                      sizes="50vw"
+                    >
+                  {% endif %}
+                  {{
+                    bs.image | default: bs.image_mobile
+                    | image_url: width: 1200
+                    | image_tag:
+                      loading: 'lazy',
+                      widths: '320,480,640,800,1000,1200',
+                      sizes: '(max-width: 768px) 50vw, 33vw',
+                      class: 's-spring-sale__image',
+                      alt: bs.title | escape
+                  }}
+                </picture>
+              {% endif %}
             </div>
           {% endif %}
         </a>
@@ -82,11 +98,12 @@
 
   #shopify-section-{{ sid }} .s-spring-sale__grid {
     display: grid;
-    grid-template-columns: 1.12fr 1fr 1fr;
+    grid-template-columns: minmax(0, 1.12fr) minmax(0, 1fr) minmax(0, 1fr);
     grid-template-areas:
       "large wide wide"
       "large small1 small2";
     grid-auto-rows: 142px;
+    align-items: stretch;
     gap: 12px;
   }
 
@@ -140,6 +157,7 @@
     text-align: center;
     max-width: 260px;
     margin: 0 auto;
+    width: 100%;
   }
 
   #shopify-section-{{ sid }} .s-spring-sale__title {
@@ -165,6 +183,7 @@
     justify-content: center;
     flex: 1 1 auto;
     margin-top: 8px;
+    min-width: 0;
   }
 
   #shopify-section-{{ sid }} .s-spring-sale__card.is-large .s-spring-sale__image-wrap {
@@ -178,6 +197,14 @@
     width: auto;
     max-height: 88px;
     object-fit: contain;
+  }
+
+  #shopify-section-{{ sid }} .s-spring-sale__image-wrap picture {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
   }
 
   #shopify-section-{{ sid }} .s-spring-sale__card.is-large .s-spring-sale__image {
@@ -199,44 +226,43 @@
     }
 
     #shopify-section-{{ sid }} .s-spring-sale__grid {
+      display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
       grid-template-areas: none;
       grid-auto-rows: auto;
+      align-items: stretch;
       gap: 10px;
     }
 
     #shopify-section-{{ sid }} .s-spring-sale__card,
     #shopify-section-{{ sid }} .s-spring-sale__card.is-large,
     #shopify-section-{{ sid }} .s-spring-sale__card.is-wide {
-      min-height: 164px;
+      min-height: 138px;
       grid-area: auto;
       grid-row: auto;
-      padding: 14px 12px 10px;
+      padding: 12px 10px 8px;
       border-radius: 8px;
     }
 
-    #shopify-section-{{ sid }} .s-spring-sale__card.is-wide {
-      padding: 14px 12px 10px;
-    }
-
     #shopify-section-{{ sid }} .s-spring-sale__title {
-      font-size: 14px;
-      line-height: 1.35;
-    }
-
-    #shopify-section-{{ sid }} .s-spring-sale__subtitle {
       font-size: 13px;
       line-height: 1.3;
     }
 
+    #shopify-section-{{ sid }} .s-spring-sale__subtitle {
+      margin-top: 2px;
+      font-size: 12px;
+      line-height: 1.25;
+    }
+
     #shopify-section-{{ sid }} .s-spring-sale__image-wrap,
     #shopify-section-{{ sid }} .s-spring-sale__card.is-large .s-spring-sale__image-wrap {
-      margin-top: 10px;
+      margin-top: 8px;
     }
 
     #shopify-section-{{ sid }} .s-spring-sale__image,
     #shopify-section-{{ sid }} .s-spring-sale__card.is-large .s-spring-sale__image {
-      max-height: 95px;
+      max-height: 78px;
     }
   }
 </style>
@@ -297,7 +323,12 @@
         {
           "type": "image_picker",
           "id": "image",
-          "label": "Card image"
+          "label": "Card image (desktop)"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_mobile",
+          "label": "Card image (mobile)"
         },
         {
           "type": "url",
