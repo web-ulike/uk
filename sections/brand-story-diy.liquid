@@ -184,6 +184,16 @@
     top: 0;
   }
 
+  .brand-story-popup .brand-story-popup-local-video {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    object-fit: contain;
+    background: #000;
+  }
+
   .brand-story-popup .brand-story-popup-close {
     width: 45px;
     height: 45px;
@@ -284,7 +294,12 @@
         <div class="brand-story-cont">
           <div
             class="brand-story-play to-top"
-            data-src="https://www.youtube.com/embed/{{ section.settings.video_url.id }}?playsinline=1&autoplay=1&controls=1&mute=1&loop=1&playlist={{ section.settings.video_url.id }}&enablejsapi=1&rel=0&modestbranding=1&origin={{ 'https://' | append: request.host | url_encode }}"
+            {% if section.settings.local_video_url != blank %}
+              data-video-type="local"
+            {% elsif section.settings.video_url != blank %}
+              data-video-type="youtube"
+              data-src="https://www.youtube.com/embed/{{ section.settings.video_url.id }}?playsinline=1&autoplay=1&controls=1&mute=1&loop=1&playlist={{ section.settings.video_url.id }}&enablejsapi=1&rel=0&modestbranding=1&origin={{ 'https://' | append: request.host | url_encode }}"
+            {% endif %}
           >
             <div class="play-btn">
               <span class="span1"></span>
@@ -306,7 +321,13 @@
   <div class="brand-story-popup">
     <div class="brand-story-popup-cont">
       <div class="brand-story-popup-video">
-        <iframe title="" src="" allow="autoplay;" allowfullscreen="allowfullscreen"></iframe>
+        {%- if section.settings.local_video_url != blank -%}
+          <video class="brand-story-popup-local-video" controls playsinline preload="metadata">
+            <source src="{{ section.settings.local_video_url }}" type="video/mp4">
+          </video>
+        {%- else -%}
+          <iframe title="" src="" allow="autoplay;" allowfullscreen="allowfullscreen"></iframe>
+        {%- endif -%}
       </div>
       <div class="brand-story-popup-close"></div>
     </div>
@@ -315,13 +336,37 @@
   <script>
     window.addEventListener('DOMContentLoaded', function () {
       $('html').on('click', '.brand-story-box .brand-story-play', function () {
-        $('.brand-story-popup iframe').attr('src', $(this).attr('data-src'));
-        $('.brand-story-popup').fadeIn();
+        var videoType = $(this).attr('data-video-type');
+        var $popup = $('.brand-story-popup');
+        var $iframe = $popup.find('iframe');
+        var localVideo = $popup.find('.brand-story-popup-local-video').get(0);
+
+        if (videoType === 'local') {
+          if (localVideo) {
+            localVideo.currentTime = 0;
+            localVideo.play();
+          }
+        } else {
+          $iframe.attr('src', $(this).attr('data-src'));
+        }
+
+        $popup.fadeIn();
         commonGtmEvent('首页-video', 'click', '');
       });
+
       $('html').on('click', '.brand-story-popup .brand-story-popup-close', function () {
-        $('.brand-story-popup').fadeOut();
-        $('.brand-story-popup iframe').attr('src', '');
+        var $popup = $('.brand-story-popup');
+        var $iframe = $popup.find('iframe');
+        var localVideo = $popup.find('.brand-story-popup-local-video').get(0);
+
+        $popup.fadeOut();
+        $iframe.attr('src', '');
+
+        if (localVideo) {
+          localVideo.pause();
+          localVideo.currentTime = 0;
+        }
+
         commonGtmEvent('首页-video close', 'click', '');
       });
     });
@@ -345,6 +390,11 @@
     },
     {
       "type": "text",
+      "id": "local_video_url",
+      "label": "Local video URL"
+    },
+    {
+      "type": "text",
       "id": "title",
       "label": "Title"
     },
@@ -357,7 +407,7 @@
       "type": "video_url",
       "id": "video_url",
       "accept": ["vimeo", "youtube"],
-      "label": "External video",
+      "label": "YouTube/Vimeo video",
       "default": "https://www.youtube.com/watch?v=_9VUPq3SxOc"
     }
   ],
