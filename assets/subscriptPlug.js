@@ -678,7 +678,7 @@ function reverseTransform(transformedData) {
  */
 function sendApiRequest(url, data) {
   data.siteCode = 'UK'; // Ensure the site code is set to 'UK'
-  url = 'https://api.ulike.com' + url;
+  url = 'https://api.ulike.com/eu' + url;
   data.language = window.Shopify.locale;
   // Set up the AJAX settings
   var settings = {

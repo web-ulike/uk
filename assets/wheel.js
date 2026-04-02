@@ -14,7 +14,7 @@ class Wheel {
         this.isShow = false;
         this.subscripSuccessData = "";
         this.shopCurrencySymbol = "$";
-        this.api = "https://api.ulike.com";
+        this.api = "https://api.ulike.com/eu";
         // 活动存储对象
         this.subscribeActFrom = {
             resourceId: "",

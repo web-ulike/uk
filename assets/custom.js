@@ -695,7 +695,7 @@ function formatMoney(cents, format = '') {
 
 function sendUlikeApi(url, data) {
   data.siteCode = 'UK'; // Ensure the site code is set to 'UK'
-  var _url = 'https://api.ulike.com' + url;
+  var _url = 'https://api.ulike.com/eu' + url;
   data.language = window.Shopify.locale;
 
   data.requestId = generateGUID();
