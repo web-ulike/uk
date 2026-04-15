@@ -1,0 +1,518 @@
+{% comment %}
+  Section: safely-treat
+  - Click item title to toggle active (expand/collapse)
+  - Sync left list active + right number active
+  - Add "New" badge + right "+" svg button inside title
+{% endcomment %}
+
+<style>
+.safely-treat {
+  position: relative;
+  z-index: 1;
+}
+
+.safely-treat .img {
+  width: 100%;
+  position: relative;
+  z-index: 1;
+}
+
+.safely-treat .safely-treat-num {
+  position: absolute;
+  height: 13vw;
+  top: 22.64vw;
+  left: 28.9vw;
+  z-index: 2;
+  display: flex;
+  flex-direction: column-reverse;
+  justify-content: space-between;
+}
+
+.safely-treat .safely-treat-num-item {
+  width: 33px;
+  height: 33px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 1.6px solid #6c6ab4;
+  color: #6c6ab4;
+  background: #fff;
+  font-size: 22px;
+  line-height: 1;
+}
+
+.safely-treat .safely-treat-num-item.active {
+  background: #6c6ab4;
+  color: #fff;
+  border-color: #fff;
+}
+
+.safely-treat .safely-treat-cont {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  transform: translateY(-50%);
+  z-index: 2;
+}
+
+.safely-treat .safely-treat-text {
+  max-width: 678px;
+  margin-left: auto;
+  margin-right: 0;
+}
+
+.safely-treat .safely-treat-sub {
+  color: #6c6ab4;
+  font-size: 32px;
+  line-height: 1.2;
+  margin-bottom: 16px;
+}
+
+.safely-treat .safely-treat-h3 {
+  color: #190a0a;
+  font-size: 48px;
+  line-height: 1.2;
+  font-weight: normal;
+  margin: 0;
+}
+
+.safely-treat .safely-treat-list {
+  margin-top: 56px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.safely-treat .safely-treat-item {
+  border-radius: 20px;
+  background: #f8f8f8;
+  padding: 24px 27px;
+}
+
+.safely-treat .safely-treat-item-cont {
+  display: none;
+}
+
+.safely-treat .active .safely-treat-item-cont {
+  display: block;
+}
+
+.safely-treat .safely-treat-item.active {
+  background: linear-gradient(94deg, #f8f8f8 9.47%, #f2f1f8 90.53%);
+  filter: drop-shadow(4px 4px 5px #dbdbef);
+}
+
+/* ===== Title row layout (left content + right + icon) ===== */
+.safely-treat .safely-treat-item-title {
+  color: #3f3636;
+  font-size: 30px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* <-- key */
+  gap: 23px;
+  cursor: pointer;
+}
+
+/* left group */
+.safely-treat .safely-treat-item-title-left{
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+/* index bubble (replaces old ".safely-treat-item-title span") */
+.safely-treat .safely-treat-index{
+  width: 33px;
+  height: 33px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 1.6px solid #6c6ab4;
+  color: #6c6ab4;
+  font-size: 22px;
+  line-height: 1;
+  flex: 0 0 auto;
+}
+
+.safely-treat .active .safely-treat-index {
+  background: #6c6ab4;
+  color: #fff;
+}
+
+/* title text */
+.safely-treat .safely-treat-title-text{
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* NEW badge */
+.safely-treat .safely-treat-badge{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px 10px;
+  border-radius: 4px;
+  background: #CAC9E2;
+  color: #ffffff;
+  font-size: 18px;
+  line-height: 1;
+  flex: 0 0 auto;
+}
+
+/* right + button */
+.safely-treat .safely-treat-toggle{
+  margin-left: 12px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  line-height: 0;
+  flex: 0 0 auto;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.safely-treat .safely-treat-toggle .safely-treat-icon{
+  display: block;
+}
+
+/* 默认显示 + */
+.safely-treat .safely-treat-toggle .safely-treat-icon {
+  width: 48px;
+  height: 48px
+}
+.safely-treat  .safely-treat-toggle .safely-treat-icon--minus{
+  display: none;
+}
+
+/* 展开后显示 - */
+.safely-treat .safely-treat-item.active .safely-treat-icon--plus{ display: none; }
+.safely-treat .safely-treat-item.active .safely-treat-icon--minus{ display: block; }
+
+
+/* content text */
+.safely-treat .safely-treat-item-p {
+  color: #3f3636;
+  font-size: 16px;
+  line-height: 1.5;
+  margin-top: 14px;
+}
+
+.safely-treat .img-list {
+  margin-top: 14px;
+  display: flex;
+  gap: 16px;
+}
+
+.safely-treat .img-icon {
+  width: 84px;
+  height: auto;
+}
+
+@media (max-width: 1500px) {
+  .safely-treat .safely-treat-text {
+    max-width: 550px;
+  }
+
+  .safely-treat .safely-treat-sub {
+    font-size: 26px;
+  }
+
+  .safely-treat .safely-treat-h3 {
+    font-size: 38px;
+  }
+
+  .safely-treat .safely-treat-list {
+    margin-top: 30px;
+    gap: 15px;
+  }
+
+  .safely-treat .safely-treat-item {
+    border-radius: 12px;
+    padding: 12px 18px;
+  }
+
+  .safely-treat .safely-treat-item-title {
+    font-size: 20px;
+  }
+
+  .safely-treat .safely-treat-index {
+    width: 26px;
+    height: 26px;
+    font-size: 18px;
+  }
+
+  .safely-treat .safely-treat-badge{
+    font-size: 14px;
+    padding: 5px 10px;
+    border-radius: 8px;
+  }
+
+  .safely-treat .safely-treat-toggle .safely-treat-icon{
+    width: 26px;
+    height: 26px;
+  }
+
+  .safely-treat .img-icon {
+    width: 50px;
+  }
+}
+
+@media (max-width: 991px) {
+  .safely-treat .safely-treat-cont,
+  .safely-treat .container,
+  .safely-treat .safely-treat-text {
+    height: 100%;
+  }
+
+  .safely-treat .safely-treat-cont {
+    padding: 40px 0 20px 0;
+    text-align: center;
+  }
+
+  .safely-treat .safely-treat-text {
+    max-width: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .safely-treat .safely-treat-sub {
+    font-size: 16px;
+    margin-bottom: 10px;
+  }
+
+  .safely-treat .safely-treat-h3 {
+    font-size: 28px;
+  }
+
+  .safely-treat .safely-treat-item-title {
+    font-size: 18px;
+    justify-content: space-between;
+  }
+
+  .safely-treat .safely-treat-index {
+    width: 17px;
+    height: 17px;
+    font-size: 12px;
+  }
+
+  .safely-treat .safely-treat-badge{
+    font-size: 12px;
+    padding: 4px 8px;
+    border-radius: 7px;
+  }
+
+  .safely-treat .safely-treat-item-p {
+    font-size: 12px;
+    margin-top: 8px;
+  }
+
+  .safely-treat .img-list {
+    justify-content: center;
+    gap: 8px;
+    margin-top: 8px;
+  }
+
+  .safely-treat .img-icon {
+    width: 30px;
+  }
+
+  .safely-treat .safely-treat-num {
+    height: 33.4vw;
+    left: 58.67vw;
+    top: 84.4vw;
+  }
+
+  .safely-treat .safely-treat-num-item {
+    width: 20px;
+    height: 20px;
+    font-size: 12px;
+  }
+  .safely-treat  .safely-treat-toggle .safely-treat-icon--plus{
+    width: 26px;
+    height: 26px;
+  }
+}
+</style>
+
+<section class="section-box">
+  <div class="safely-treat">
+    {%- if section.settings.image != blank -%}
+      <picture>
+        <source srcset="{{ section.settings.image1 | image_url }}" media="(max-width: 991px)">
+        <img class="img" src="{{ section.settings.image | image_url:width: 1920 }}" width="" height="" alt="">
+      </picture>
+    {%- endif -%}
+
+    <div class="safely-treat-num">
+      {%- for block in section.blocks -%}
+        <div class="safely-treat-num-item">{{ forloop.index }}</div>
+      {%- endfor -%}
+    </div>
+
+    <div class="safely-treat-cont">
+      <div class="container">
+        <div class="safely-treat-text">
+          <div class="safely-treat-top">
+            {%- if section.settings.text != blank -%}
+              <div class="safely-treat-sub">{{ section.settings.text }}</div>
+            {%- endif -%}
+            {%- if section.settings.text1 != blank -%}
+              <h3 class="safely-treat-h3">{{ section.settings.text1 }}</h3>
+            {%- endif -%}
+          </div>
+
+          <div class="safely-treat-list">
+            {%- for block in section.blocks -%}
+              <div class="safely-treat-item" {{ block.shopify_attributes }}>
+                {%- if block.settings.text != blank -%}
+                  <div class="safely-treat-item-title" role="button" tabindex="0">
+                    <div class="safely-treat-item-title-left">
+                      <span class="safely-treat-index">{{ forloop.index }}</span>
+                      <span class="safely-treat-title-text">{{ block.settings.text }}</span>
+                      {%- assign badge_text = block.settings.badge_text | strip -%}
+                      {%- if badge_text != blank -%}
+                        <span class="safely-treat-badge">{{ badge_text }}</span>
+                      {%- endif -%}
+                    </div>
+
+                   <button class="safely-treat-toggle" type="button" aria-label="Toggle" aria-expanded="false">
+                      <!-- plus -->
+                      <svg class="safely-treat-icon safely-treat-icon--plus" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+                        <path d="M17 24.5C21.6667 24.5 31 24.5 31 24.5" stroke="#6C6AB4" stroke-width="2" stroke-linecap="round"/>
+                        <path d="M24 17.5C24 22.1667 24 31.5 24 31.5" stroke="#6C6AB4" stroke-width="2" stroke-linecap="round"/>
+                      </svg>
+
+                      <svg class="safely-treat-icon safely-treat-icon--minus" xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48" fill="none">
+                        <path d="M17 24.5C21.6667 24.5 31 24.5 31 24.5" stroke="#6C6AB4" stroke-width="2" stroke-linecap="round"/>
+                      </svg>
+
+                    </button>
+                  </div>
+                {%- endif -%}
+
+                <div class="safely-treat-item-cont">
+                  {%- if block.settings.text1 != blank -%}
+                    <div class="safely-treat-item-p">{{ block.settings.text1 }}</div>
+                  {%- endif -%}
+
+                  <div class="img-list">
+                    {%- if block.settings.image != blank -%}
+                      <img class="img-icon" src="{{ block.settings.image | image_url }}" width="" height="" alt="">
+                    {%- endif -%}
+                    {%- if block.settings.image1 != blank -%}
+                      <img class="img-icon" src="{{ block.settings.image1 | image_url }}" width="" height="" alt="">
+                    {%- endif -%}
+                    {%- if block.settings.image2 != blank -%}
+                      <img class="img-icon" src="{{ block.settings.image2 | image_url }}" width="" height="" alt="">
+                    {%- endif -%}
+                    {%- if block.settings.image3 != blank -%}
+                      <img class="img-icon" src="{{ block.settings.image3 | image_url }}" width="" height="" alt="">
+                    {%- endif -%}
+                  </div>
+                </div>
+              </div>
+            {%- endfor -%}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+function initSafelyTreat(containerSelector = '.safely-treat') {
+  const container = document.querySelector(containerSelector);
+  if (!container) return;
+
+  const items = Array.from(container.querySelectorAll('.safely-treat-item'));
+  const titles = Array.from(container.querySelectorAll('.safely-treat-item-title'));
+  const nums = Array.from(container.querySelectorAll('.safely-treat-num-item'));
+
+  function closeAll() {
+    items.forEach(item => item.classList.remove('active'));
+    nums.forEach(num => num.classList.remove('active'));
+    titles.forEach(t => {
+      const btn = t.querySelector('.safely-treat-toggle');
+      if (btn) btn.setAttribute('aria-expanded', 'false');
+    });
+  }
+
+  titles.forEach((title, index) => {
+    const handler = () => {
+      const parentItem = title.closest('.safely-treat-item');
+      if (!parentItem) return;
+
+      const isOpen = parentItem.classList.contains('active');
+
+      closeAll();
+
+      if (!isOpen) {
+        parentItem.classList.add('active');
+        if (nums[index]) nums[index].classList.add('active');
+
+        const btn = title.querySelector('.safely-treat-toggle');
+        if (btn) btn.setAttribute('aria-expanded', 'true');
+      }
+    };
+
+    title.addEventListener('click', (e) => {
+      const toggleBtn = e.target.closest('.safely-treat-toggle');
+      if (toggleBtn) {
+        e.preventDefault();
+        e.stopPropagation();
+        handler();
+        return;
+      }
+      handler();
+    });
+
+    title.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        handler();
+      }
+    });
+  });
+}
+
+initSafelyTreat();
+</script>
+
+{% schema %}
+{
+  "name": "safely-treat",
+  "blocks": [
+    {
+      "name": "item",
+      "type": "item",
+      "settings": [
+        { "type": "text", "id": "text", "label": "Text" },
+        { "type": "text", "id": "text1", "label": "Text" },
+        { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "image_picker", "id": "image1", "label": "Image" },
+        { "type": "image_picker", "id": "image2", "label": "Image" },
+        { "type": "image_picker", "id": "image3", "label": "Image" },
+        { "type": "text", "id": "badge_text", "label": "Badge text"},
+      ]
+    }
+  ],
+  "settings": [
+    { "type": "image_picker", "id": "image", "label": "Image" },
+    { "type": "image_picker", "id": "image1", "label": "M Image" },
+    { "type": "text", "id": "text", "label": "Text" },
+    { "type": "text", "id": "text1", "label": "Text" }
+  ],
+  "presets": [
+    { "name": "safely-treat", "blocks": [] }
+  ]
+}
+{% endschema %}
