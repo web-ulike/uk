@@ -1,0 +1,207 @@
+<style>
+  .p-evaluate-carousel {
+  }
+  .p-evaluate-carousel .carousel-container {
+    background: #f5f5f5;
+    width: 100%;
+    margin: auto;
+    padding: 100px 20px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .p-evaluate-carousel .swiper-slide {
+    width: 25%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    position: relative;
+  }
+  .p-evaluate-carousel .detail {
+    padding: 20px 20px;
+    position: relative;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    margin: 20px auto;
+    position: relative;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    height: 230px;
+    background: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+  }
+
+  .p-evaluate-carousel .detail::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: -15px;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 15px solid transparent;
+    border-right: 15px solid transparent;
+    border-top: 15px solid white;
+  }
+  .p-evaluate-carousel .detail p {
+    color: #000;
+    text-align: center;
+    font-family: Saans;
+    font-size: 24px;
+    font-weight: 500;
+    line-height: 40px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    height: 130px;
+  }
+  .p-evaluate-carousel .logo {
+    width: 300px;
+  }
+
+  @media (max-width: 768px) {
+    .p-evaluate-carousel .carousel-container {
+      padding: 50px 16px;
+    }
+    .p-evaluate-carousel .swiper-slide {
+      width: 60%;
+    }
+    .p-evaluate-carousel .detail {
+      height: 118px;
+    }
+    .p-evaluate-carousel .detail p {
+      font-size: 12px;
+      font-weight: 500;
+      line-height: 20px;
+      height: 60px;
+    }
+    .p-evaluate-carousel .logo {
+      width: 200px;
+    }
+  }
+</style>
+
+{%- liquid
+  assign se_id = section.id
+  assign se_bks = section.blocks
+  assign se_stts = section.settings
+-%}
+
+<section class="p-evaluate-carousel">
+  <div class="carousel-container">
+    <div class="swiper-container">
+      <div class="swiper-wrapper">
+        {% for item in se_bks %}
+          <div class="swiper-slide">
+            <div class="detail">
+              <p>{{ item.settings.text }}</p>
+            </div>
+            {% if item.settings.image != block %}
+              <picture>
+                {{-
+                  item.settings.image
+                  | image_url: width: item.settings.image.width
+                  | image_tag: loading: 'lazy', class: 'logo'
+                -}}
+              </picture>
+            {% endif %}
+          </div>
+        {% endfor %}
+      </div>
+      <!-- Add Pagination -->
+      <div class="swiper-pagination"></div>
+    </div>
+  </div>
+</section>
+<script>
+  window.addEventListener('load', function() {
+    var swiper = new Swiper('.p-evaluate-carousel .swiper-container', {
+      loop: true,
+      speed: 3000,
+      spaceBetween: isMobile() ? 10 : 20,
+      slidesPerView: 'auto',
+      autoplay: {
+        delay: 100,
+        disableOnInteraction: false,
+      },
+    });
+  });
+</script>
+{% schema %}
+{
+  "name": "p-evaluate-carousel",
+  "blocks": [
+    {
+      "name": "item",
+      "type": "item",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text"
+        }
+      ]
+    }
+  ],
+  "settings": [
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#f9f9f9"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "图片"
+    },
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "text1",
+      "label": "Text1"
+    },
+    {
+      "type": "text",
+      "id": "text2",
+      "label": "Text2"
+    },
+    {
+      "type": "text",
+      "id": "text3",
+      "label": "Text3"
+    },
+    {
+      "type": "text",
+      "id": "text4",
+      "label": "Text4"
+    },
+    {
+      "type": "text",
+      "id": "text5",
+      "label": "Text5"
+    }
+  ],
+  "presets": [
+    {
+      "name": "p-evaluate-carousel",
+      "blocks": []
+    }
+  ]
+}
+{% endschema %}
