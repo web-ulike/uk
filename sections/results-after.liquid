@@ -1,0 +1,535 @@
+<style>
+.results-after .compare-inner {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+}
+
+.results-after .compare-before-wrap {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  display: block;
+}
+
+.results-after .compare-before-wrap {
+  width: 50%;
+  overflow: hidden;
+}
+
+.results-after .compare-before {
+  width: auto;
+  height: 100%;
+  pointer-events: none;
+  user-select: none;
+  max-width: none;
+}
+
+.results-after .compare-after {
+  display: block;
+  width: 100%;
+  height: auto;
+  pointer-events: none;
+  user-select: none;
+}
+
+.results-after .compare-handle {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  margin-left: -1px;
+  width: 2px;
+  height: 100%;
+  background: #fff;
+  cursor: col-resize;
+  transition: background 0.3s;
+}
+
+.results-after .compare-handle svg {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: block;
+  margin: 0;
+  transform: translate(-50%, -50%);
+}
+
+.results-after .compare-label {
+  position: absolute;
+  top: 15px;
+  padding: 0 15px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  line-height: 1;
+  background: rgba(0, 0, 0, 0.4);
+  color: #fff;
+  user-select: none;
+}
+
+.results-after .compare-label-left {
+  left: 15px;
+}
+
+.results-after .compare-label-right {
+  right: 15px;
+}
+
+.results-after compare-container {
+  width: 100%;
+  display: block;
+  max-width: 850px;
+  flex: 1;
+}
+
+.results-after .compare-msg {
+  color: #fff;
+  text-align: center;
+  font-size: 12px;
+  line-height: 1.2;
+  max-width: 445px;
+  width: calc(100% - 30px);
+  position: absolute;
+  left: 50%;
+  bottom: 30px;
+  transform: translateX(-50%);
+  z-index: 3;
+}
+
+.results-after {
+  padding: 80px 0;
+}
+
+.results-after .results-after-h3 {
+  color: #190a0a;
+  text-align: center;
+  font-size: 50px;
+  line-height: 1.25;
+  font-weight: normal;
+  margin: 0;
+}
+
+.results-after .results-after-p {
+  color: #190a0a;
+  text-align: center;
+  font-size: 18px;
+  line-height: 1.2;
+  margin: 0;
+  margin-top: 16px;
+}
+
+.results-after .results-after-cont {
+  display: flex;
+  justify-content: space-between;
+  gap: 40px;
+  margin-top: 60px;
+}
+
+.results-after .results-after-left {
+  max-width: 678px;
+  flex: 1;
+}
+
+.results-after .results-after-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.results-after .results-after-item {
+  display: flex;
+  align-items: center;
+  gap: 56px;
+  padding: 0 50px;
+  border-radius: 20px;
+  background: #f8f8f8;
+  height: 76px;
+}
+
+.results-after .results-after-item .img {
+  width: 58px;
+  height: auto;
+}
+
+.results-after .results-after-item .txt {
+  flex: 1;
+  color: #3f3636;
+  font-size: 30px;
+  line-height: 1;
+  margin: 0;
+}
+
+.results-after .results-after-item svg {
+  display: block;
+  margin: 0;
+}
+
+.results-after .results-after-info {
+  color: #190a0a;
+  font-family: Saans;
+  font-size: 24px;
+  line-height: 1.25;
+  font-family: var(--heading-font-family);
+  margin-top: 40px;
+}
+
+.results-after .results-after-msg {
+  color: #625959;
+  font-size: 16px;
+  line-height: 1.5;
+  margin-top: 40px;
+}
+
+@media (max-width: 1400px) {
+  .results-after .results-after-item {
+    padding: 0 20px;
+    height: 58px;
+    border-radius: 15px;
+  }
+  .results-after .results-after-item .img {
+    width: 40px;
+  }
+  .results-after .results-after-item .txt {
+    font-size: 24px;
+  }
+  .results-after .results-after-item svg {
+    zoom: 0.8;
+  }
+  .results-after .results-after-info {
+    font-size: 18px;
+    margin-top: 20px;
+  }
+  .results-after .results-after-msg {
+    font-size: 14px;
+    margin-top: 20px;
+  }
+  .results-after compare-container {
+    min-width: 500px;
+    flex-shrink: 0;
+  }
+}
+
+@media (max-width: 991px) {
+  .results-after {
+    padding: 40px 0;
+  }
+
+  .results-after .results-after-h3 {
+    font-size: 28px;
+  }
+
+  .results-after .results-after-p {
+    font-size: 12px;
+    margin-top: 15px;
+  }
+
+  .results-after .results-after-cont {
+    flex-direction: column-reverse;
+    gap: 20px;
+    margin-top: 20px;
+  }
+  .results-after compare-container {
+    min-width: 100%;
+    flex: none;
+  }
+  .results-after .results-after-left {
+    width: 100%;
+    flex: none;
+    max-width: none;
+  }
+  .results-after .results-after-list {
+    gap: 7px;
+  }
+  .results-after .results-after-item {
+    padding: 0 23px;
+    border-radius: 10px;
+    height: 36px;
+    gap: 26px;
+  }
+
+  .results-after .results-after-item .img {
+    width: 27px;
+  }
+
+  .results-after .results-after-item .txt {
+    font-size: 14px;
+  }
+
+  .results-after .results-after-item svg {
+    zoom: 1;
+    width: 13px;
+    height: auto;
+  }
+
+  .results-after .results-after-info,
+  .results-after .results-after-msg {
+    font-size: 12px;
+  }
+  .results-after .compare-msg {
+    display: none;
+  }
+  .results-after .compare-handle svg {
+    width: 40px;
+    height: auto;
+  }
+}
+</style>
+<section class="section-box">
+  <div class="results-after">
+    <div class="container">
+      {%- if section.settings.title != blank -%}
+        <h3 class="results-after-h3">{{ section.settings.title }}</h3>
+      {%- endif -%}
+      {%- if section.settings.text != blank -%}
+        <p class="results-after-p">{{ section.settings.text }}</p>
+      {%- endif -%}
+      <div class="results-after-cont">
+        <div class="results-after-left">
+          <div class="results-after-list">
+            {%- for block in section.blocks -%}
+              <div class="results-after-item">
+                  {%- if block.settings.image != blank -%}
+                    <img
+                        loading="lazy"
+                        class="img"
+                        width="{{ block.settings.image.width }}"
+                        height="{{ block.settings.image.height }}"
+                        {% render 'image-attributes', image: block.settings.image %}
+                        alt="{{ block.settings.image.alt | escape }}"
+                      >
+                  {%- endif -%}
+                  {%- if block.settings.text != blank -%}
+                    <p class="txt">{{ block.settings.text }}</p>
+                  {%- endif -%}
+                <div class="icon-svg">
+                  {%- if block.settings.text1 -%}
+                      <svg xmlns="http://www.w3.org/2000/svg" width="27" height="22" viewBox="0 0 27 22" fill="none">
+                        <path d="M0.789062 13.6467L7.36801 20.7896L25.7891 0.789551" stroke="#E0004D" stroke-width="1.57895"
+                          stroke-linecap="round" />
+                      </svg>
+                    {%- else -%}
+                      <svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" viewBox="0 0 19 19" fill="none">
+                        <path
+                          d="M16.5964 0.28049L9.11797 7.75892L1.6426 0.283542C1.267 -0.0920584 0.653214 -0.0890047 0.280667 0.283542C-0.094934 0.659143 -0.0918805 1.27293 0.280667 1.64548L7.75604 9.12085L0.280667 16.5962C-0.0949342 16.9718 -0.0918805 17.5856 0.280667 17.9582C0.656268 18.3338 1.27005 18.3307 1.6426 17.9582L9.11797 10.4828L16.5964 17.9612C16.972 18.3368 17.5858 18.3338 17.9583 17.9612C18.3339 17.5856 18.3309 16.9718 17.9583 16.5993L10.4799 9.12085L17.9553 1.64548C18.3309 1.26988 18.3278 0.656088 17.9583 0.280488C17.5827 -0.095113 16.9689 -0.0920588 16.5964 0.28049Z"
+                          fill="#3F3636" />
+                      </svg>
+                  {%- endif -%}
+                </div>
+              </div>
+            {%- endfor -%}
+          </div>
+            {%- if section.settings.text4 != blank -%}
+            <div class="results-after-info">{{  section.settings.text4 }}</div>
+            {%- endif -%}
+            {%- if section.settings.text5 != blank -%}
+              <div class="results-after-msg">{{ section.settings.text5 }}</div>
+            {%- endif -%}
+        </div>
+        <compare-container>
+          <div class="compare-inner">
+              {%- if section.settings.image1 != blank -%}
+                <img
+                    loading="lazy"
+                    class="compare-after" 
+                    width="{{ section.settings.image1.width }}"
+                    height="{{ section.settings.image1.height }}"
+                    {% render 'image-attributes', image: section.settings.image1 %}
+                    alt="{{ section.settings.image1.alt | escape }}"
+                  >
+              {%- endif -%}
+              {%- if section.settings.image != blank -%}
+                <div class="compare-before-wrap">
+                  <img
+                      loading="lazy"
+                      class="compare-before"
+                      width="{{ section.settings.image.width }}"
+                      height="{{ section.settings.image.height }}"
+                      {% render 'image-attributes', image: section.settings.image %}
+                      alt="{{ section.settings.image.alt | escape }}"
+                    >
+                </div>
+              {%- endif -%}
+            <div class="compare-handle">
+              <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 50 50" fill="none">
+                <g clip-path="url(#clip0_6_1758)">
+                  <foreignObject x="-41" y="-41" width="132" height="132">
+                    <div xmlns="http://www.w3.org/1999/xhtml"
+                      style="backdrop-filter:blur(10px);clip-path:url(#bgblur_1_6_1758_clip_path);height:100%;width:100%">
+                    </div>
+                  </foreignObject>
+                  <rect data-figma-bg-blur-radius="20" x="-21" y="-21" width="92" height="92" fill="white"
+                    fill-opacity="0.2" />
+                  <path d="M8.83984 25.23L23.0482 10.9406L23.0482 39.5194L8.83984 25.23Z" fill="white" />
+                  <path d="M41.8398 25.23L27.6315 39.5194L27.6315 10.9406L41.8398 25.23Z" fill="white" />
+                </g>
+                <rect x="1" y="1" width="48" height="48" rx="24" stroke="white" stroke-width="2" />
+                <defs>
+                  <clipPath id="bgblur_1_6_1758_clip_path" transform="translate(41 41)">
+                    <rect x="-21" y="-21" width="92" height="92" />
+                  </clipPath>
+                  <clipPath id="clip0_6_1758">
+                    <rect width="50" height="50" rx="25" fill="white" />
+                  </clipPath>
+                </defs>
+              </svg>
+            </div>
+            {%- if section.settings.text1 != blank -%}
+              <span class="compare-label compare-label-left">{{ section.settings.text1 }}</span>
+            {%- endif -%}
+            {%- if section.settings.text2 != blank -%}
+              <span class="compare-label compare-label-right">{{ section.settings.text2 }}</span>
+            {%- endif -%}
+            {%- if section.settings.text3 != blank -%}
+              <div class="compare-msg">
+                {{ section.settings.text3 }}
+              </div>
+            {%- endif -%}
+          </div>
+        </compare-container>
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+  class CompareContainer extends HTMLElement {
+    constructor() {
+      super();
+    }
+
+    connectedCallback() {
+      this.init();
+    }
+
+    init() {
+      const beforeImg = this.querySelector('.compare-before-wrap');
+      const afterImg = this.querySelector('.compare-after');
+      const handle = this.querySelector('.compare-handle');
+      const container = this.querySelector('.compare-inner');
+
+      if (!beforeImg || !afterImg || !handle || !container) {
+        console.warn('CompareContainer: HTML structure is incomplete.');
+        return;
+      }
+
+      let isDragging = false;
+
+      const startDrag = (e) => {
+        isDragging = true;
+        document.body.classList.add('is-dragging');
+        move(e);
+      };
+
+      const stopDrag = () => {
+        isDragging = false;
+        document.body.classList.remove('is-dragging');
+      };
+
+      const move = (e) => {
+        if (!isDragging) return;
+        const rect = container.getBoundingClientRect();
+        const x = e.touches ? e.touches[0].clientX : e.clientX;
+        let offset = ((x - rect.left) / rect.width) * 100;
+        offset = Math.max(0, Math.min(100, offset));
+
+        beforeImg.style.width = `${offset}%`;
+        handle.style.left = `${offset}%`;
+      };
+
+      handle.addEventListener('mousedown', startDrag);
+      handle.addEventListener('touchstart', startDrag);
+      window.addEventListener('mousemove', move);
+      window.addEventListener('touchmove', move);
+      window.addEventListener('mouseup', stopDrag);
+      window.addEventListener('touchend', stopDrag);
+    }
+  }
+
+  customElements.define('compare-container', CompareContainer);
+
+</script>
+{% schema %}
+{
+  "name": "results-after",
+  "blocks": [
+    {
+      "name": "item",
+      "type": "item",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text"
+        },
+        {
+          "type": "checkbox",
+          "id": "text1",
+          "label": "Icon"
+        }
+      ]
+    }
+  ],
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title"
+    },
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Text"
+    },
+    {
+        "type": "image_picker",
+        "id": "image",
+        "label": "Image"
+    },
+    {
+        "type": "image_picker",
+        "id": "image1",
+        "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "text1",
+      "label": "Text",
+      "default":"Before"
+    },
+    {
+      "type": "text",
+      "id": "text2",
+      "label": "Text",
+      "default":"Week 2"
+    },
+    {
+      "type": "text",
+      "id": "text3",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "text4",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "text5",
+      "label": "Text"
+    }
+  ],
+  "presets": [
+    {
+      "name": "results-after",
+      "blocks": []
+    }
+  ]
+}
+{% endschema %}
