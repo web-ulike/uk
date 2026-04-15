@@ -1,0 +1,297 @@
+<style>
+.Inventor-technology {
+  position: relative;
+  z-index: 1;
+}
+
+.Inventor-technology .img {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+}
+
+.Inventor-technology .Inventor-technology-cont {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  transform: translateY(-50%);
+  z-index: 2;
+}
+
+.Inventor-technology .Inventor-technology-text {
+  max-width: 612px;
+  margin-right: 0;
+  margin-left: auto;
+}
+
+.pulse-timer-icon {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+/* ✅ TAG 图标（新增：配置图片） */
+.pulse-timer-icon .tag-icon{
+  display: block;
+  width: 55px;
+}
+
+/* ✅ TAG 样式（新增） */
+.Inventor-technology .Inventor-technology-tag{
+  display: inline-flex;
+  font-size: 32px;
+  line-height: 1.2;
+  background: linear-gradient(157deg, #adacee 13.99%, #6e69c9 66.24%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  justify-content: center;
+  align-items: center;
+  white-space: nowrap;
+}
+
+.Inventor-technology .Inventor-technology-h3 {
+  color: #190a0a;
+  font-size: 64px;
+  line-height: 1.2;
+  margin: 0;
+  font-weight: normal;
+}
+
+.Inventor-technology .span {
+  display: block;
+  width: 125px;
+  height: 4px;
+  background: #7c7abc;
+  margin: 45px 0;
+}
+
+.Inventor-technology .Inventor-technology-p {
+  color: #3f3636;
+  font-size: 18px;
+  line-height: 1.2;
+  margin: 0;
+}
+
+.Inventor-technology .img-icon {
+  width: 100%;
+  margin: 20px 0;
+}
+
+.Inventor-technology .Inventor-technology-msg {
+  color: #625959;
+  font-size: 16px;
+  line-height: 1.2;
+  margin-top: 30px;
+}
+
+@media (max-width: 1700px) {
+  .Inventor-technology .Inventor-technology-h3 {
+    font-size: 50px;
+  }
+
+  .Inventor-technology .span {
+    margin: 20px 0;
+  }
+
+  .Inventor-technology .Inventor-technology-p {
+    font-size: 16px;
+  }
+  .Inventor-technology .Inventor-technology-msg {
+    font-size: 14px;
+    margin-top: 20px;
+  }
+}
+
+@media (max-width: 1300px) {
+  .Inventor-technology .Inventor-technology-text {
+    max-width: 500px;
+  }
+
+  .Inventor-technology .Inventor-technology-h3 {
+    font-size: 36px;
+  }
+
+  .Inventor-technology .Inventor-technology-p {
+    font-size: 14px;
+  }
+
+  .Inventor-technology .Inventor-technology-msg {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 991px) {
+  .Inventor-technology .Inventor-technology-cont {
+    height: 100%;
+    padding: 40px 0 20px 0;
+  }
+
+  .Inventor-technology .container,
+  .Inventor-technology .Inventor-technology-text {
+    height: 100%;
+  }
+
+  .Inventor-technology .Inventor-technology-text {
+    max-width: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    text-align: center;
+  }
+
+  .pulse-timer-icon {
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+
+  /* ✅ Mobile 不显示图标（原来隐藏 svg，这里改成隐藏图片） */
+  .pulse-timer-icon .tag-icon{
+    display: none;
+  }
+
+  /* ✅ Mobile 下 TAG 更紧凑一点 */
+  .Inventor-technology .Inventor-technology-tag{
+    margin: 0px;
+    font-size: 16px;
+  }
+
+  .Inventor-technology .Inventor-technology-h3 {
+    font-size: 28px;
+    margin-bottom: 10px;
+  }
+  .Inventor-technology .span {
+    display: none;
+  }
+  .Inventor-technology .Inventor-technology-p {
+    font-size: 12px;
+  }
+  .Inventor-technology .Inventor-technology-msg {
+    margin-top: 10px;
+  }
+  .Inventor-technology .img-icon {
+    margin: 10px 0;
+  }
+}
+</style>
+
+<section class="section-box">
+  <div class="Inventor-technology">
+    <picture>
+      <source srcset="{{ section.settings.image1 | image_url }}" media="(max-width: 991px)">
+      <img class="img" src="{{ section.settings.image | image_url }}" width="" height="">
+    </picture>
+
+    <div class="Inventor-technology-cont">
+      <div class="container">
+        <div class="Inventor-technology-text">
+          <div class="Inventor-technology-top">
+            {%- if section.settings.title != blank -%}
+
+              {%- if section.settings.tag_text != blank -%}
+                <div class="pulse-timer-icon">
+                  {%- if section.settings.tag_icon != blank -%}
+                    <img
+                      class="tag-icon"
+                      src="{{ section.settings.tag_icon | image_url: width: 70 }}"
+                      alt=""
+                      width="35"
+                      height="52"
+                      loading="lazy"
+                    >
+                  {%- endif -%}
+
+                  <div class="Inventor-technology-tag">
+                    {{ section.settings.tag_text }}
+                  </div>
+                </div>
+              {%- endif -%}
+
+              <h3 class="Inventor-technology-h3">{{ section.settings.title }}</h3>
+              <span class="span"></span>
+            {%- endif -%}
+
+            {%- if section.settings.text != blank -%}
+              <p class="Inventor-technology-p">{{ section.settings.text }}</p>
+            {%- endif -%}
+          </div>
+
+          <div class="Inventor-technology-bottom">
+            <img src="{{ section.settings.image2 | image_url }}" alt="" class="img-icon" width="" height="">
+            {%- if section.settings.text1 != blank -%}
+              <p class="Inventor-technology-p">{{ section.settings.text1 }}</p>
+            {%- endif -%}
+            {%- if section.settings.text2 != blank -%}
+              <div class="Inventor-technology-msg">{{ section.settings.text2 }}</div>
+            {%- endif -%}
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Inventor-technology",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image1",
+      "label": "M Image"
+    },
+
+    {
+      "type": "image_picker",
+      "id": "tag_icon",
+      "label": "Tag Icon"
+    },
+    {
+      "type": "text",
+      "id": "tag_text",
+      "label": "Tag Text"
+    },
+
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title"
+    },
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Text"
+    },
+    {
+      "type": "image_picker",
+      "id": "image2",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "text1",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "text2",
+      "label": "Text"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Inventor-technology",
+      "blocks": []
+    }
+  ]
+}
+{% endschema %}
