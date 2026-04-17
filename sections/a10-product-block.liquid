@@ -1872,7 +1872,6 @@
                         {% if value == option.selected_value %} active {% endif%}
                       "
                       id="{{ variant_for_value.id }}"
-                      page_price="{{ variant_for_value.metafields.custom["page_price"] }}"
                       variant_title="{{ variant_for_value.metafields.custom["variant_title"] }}"
                       price="{{ variant_for_value.price | money }}"
                       inventory_quantity="{{ variant_for_value.inventory_quantity }}"
@@ -1955,38 +1954,16 @@
         </div>
 
         <div class="price-block 1111">
-           {% if product.selected_or_first_available_variant.metafields.custom["isOriginalPrice"] == true %}
-              <div class="price-dis" style="display:none">£{{ product.selected_or_first_available_variant.metafields.custom.page_price }}</div>
-           {% endif %}
           <div class="price">
             <div class="price-p ">
-              {%if product.selected_or_first_available_variant.metafields.custom.isOriginalPrice == true %}
-                <div class="dis-price">
-                  {{ product.selected_or_first_available_variant.price | money }}
-                </div>
+              <div class="dis-price">
+                {{ product.selected_or_first_available_variant.price | money }}
+              </div>
+              {% if product.selected_or_first_available_variant.compare_at_price > product.selected_or_first_available_variant.price %}
                 <div class="original-price">
                   {{ product.selected_or_first_available_variant.compare_at_price | money }}
                 </div>
-              {% else %}
-                {% if product.selected_or_first_available_variant.metafields.custom.page_price != blank %}
-                  <div class="dis-price price">
-                    {{
-                      product.selected_or_first_available_variant.metafields.custom.page_price
-                      | times: 100
-                      | money
-                    }}
-                  </div>
-                {% else %}
-                  {% comment %} 如果url == '' 就生成一个div 价格 {% endcomment %}
-                  <div class="dis-price">
-                    {{ block.settings.price_text | money }}
-                  </div>
-                {% endif %}
-                <div class="original-price">
-                  {{ product.selected_or_first_available_variant.price | money }}
-                </div>
               {% endif %}
-
             </div>
             {% comment %} 隐藏的code {% endcomment %}
             <div class="text-code">{{ section.settings.text1 }}</div>
@@ -2138,73 +2115,6 @@
             </div>
           {% endif %}
         {% endfor %}
-        {% comment %}  增加折叠栏 {% endcomment %}
-        {% if se_bks.size > 0 %}
-          <div class="box-collapsible-bar" style="margin-top: 25px;">
-            <div class="list">
-              {% for item in se_bks %}
-                {% if item.type == 'collapsible-item' %}
-                  {% assign se_item = item.settings %}
-                  <div class="item">
-                    <div class="box-head">
-                      <p class="name">{{ se_item.title }}</p>
-                      <div class="abs-op">
-                        <div class="add">
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="19"
-                            height="19"
-                            viewBox="0 0 19 19"
-                            fill="none"
-                          >
-                            <path d="M17.8066 8.80506H10.1918V1.19338C10.1918 0.810934 9.87778 0.5 9.49844 0.5C9.116 0.5 8.80506 0.814043 8.80506 1.19338V8.80506H1.19338C0.810934 8.80506 0.5 9.1191 0.5 9.49844C0.5 9.88089 0.814043 10.1918 1.19338 10.1918H8.80506V17.8066C8.80506 18.1891 9.1191 18.5 9.49844 18.5C9.88089 18.5 10.1918 18.186 10.1918 17.8066V10.1918H17.8035C18.186 10.1918 18.4969 9.87778 18.5 9.49844C18.5 9.116 18.186 8.80506 17.8066 8.80506Z" fill="#3F3636"/>
-                          </svg>
-                        </div>
-                        <div class="minus">
-                          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="3" viewBox="0 0 20 3" fill="none">
-                            <path fill-rule="evenodd" clip-rule="evenodd" d="M0.800781 1.4998C0.800781 1.11321 1.11418 0.799805 1.50078 0.799805H18.5008C18.8874 0.799805 19.2008 1.11321 19.2008 1.4998C19.2008 1.8864 18.8874 2.1998 18.5008 2.1998H1.50078C1.11418 2.1998 0.800781 1.8864 0.800781 1.4998Z" fill="#3F3636"/>
-                          </svg>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="box-detail">
-                      {% if se_item.check_img == true %}
-                        <div class="title"></div>
-                        {% comment %} 轮播 {% endcomment %}
-                        <div class="collapsible-swiper">
-                          <div class="swiper-wrapper">
-                            {% for itemimg in se_bks %}
-                              {% if itemimg.type == 'collapsible-image' %}
-                                {% assign se_itemimg = itemimg.settings %}
-                                <div class="swiper-slide">
-                                  {{-
-                                    se_itemimg.image
-                                    | image_url: width: se_itemimg.image.width
-                                    | image_tag: loading: 'lazy', draggable: false
-                                  -}}
-                                </div>
-                              {% endif %}
-                            {% endfor %}
-                          </div>
-                          <div class="swiper-button-prev">
-                            <img src="https://cdn.shopify.com/s/files/1/0740/5882/6015/files/Artwork_1.png?v=1712483416">
-                          </div>
-                          <div class="swiper-button-next">
-                            <img src="https://cdn.shopify.com/s/files/1/0740/5882/6015/files/Artwork.png?v=1712482544">
-                          </div>
-                          <div class="swiper-pagination"></div>
-                        </div>
-
-                      {% else %}
-                        {{ se_item.text_html }}
-                      {% endif %}
-                    </div>
-                  </div>
-                {% endif %}
-              {% endfor %}
-            </div>
-          </div>
-        {% endif %}
       </div>
     </div>
   </div>
@@ -2228,8 +2138,6 @@
         vid: {{ variant.id }},
         position: {{ variant.featured_media.position }},
         url: '{{ variant.metafields.custom["3d_url"] }}',
-        page_price: '{{ variant.metafields.custom["page_price"] }}',
-        isOriginalPrice: '{{ variant.metafields.custom["isOriginalPrice"] }}',
         original_price: '{{ variant.compare_at_price | money }}',
         price: '{{ variant.price | money }}',
         variantTitle: '{{ variant.metafields.custom["variant_title"] }}',
@@ -2435,33 +2343,6 @@
 
     fixBottomBar();
 
-    // 折叠
-    const myCollswiper = new Swiper('.collapsible-swiper', {
-      loop: true, // 循环模式选项
-      pagination: {
-        el: '.swiper-pagination',
-        clickable: true,
-      },
-      lazy: {
-        loadPrevNext: true, // 预加载前后两张图片
-      },
-      navigation: {
-        nextEl: '.swiper-button-next',
-        prevEl: '.swiper-button-prev',
-      },
-    });
-
-    $('#shopify-section-{{ section.id }}').on('click', '.box-collapsible-bar .item .box-head', function () {
-      var item = $(this).closest('.item');
-      if($(item).find('.box-detail').is(":hidden")){
-        $(this).find('.add').fadeTo( "slow", 0);
-        $(this).find('.minus').fadeTo( "slow", 1);
-      } else {
-        $(this).find('.add').fadeTo( "slow", 1);
-        $(this).find('.minus').fadeTo( "slow", 0);
-      }
-      $(item).find('.box-detail').slideToggle('slow');
-    });
 
     {% if section.settings.show_time %}
       const countdownP = new Countdown("{{ section.settings.text5 }}", ".price-block-countdown",'loop');
@@ -2518,18 +2399,16 @@
       $('#myThumbs_{{ section.id }} .swiper-wrapper').html(_productHtml);
       $('#myGallery_{{ section.id }} .swiper-wrapper').html(_productHtml);
       initProductImages_{{se_id }}();
-      // 3D 模型加载
-      if (currentVariant.isOriginalPrice == 'true') {
-        $('.product-components_{{ se_id }} .price-block .dis-price').html(currentVariant.price);
-        $('.product-components_{{ se_id }} .price-block .original-price').html(currentVariant.original_price);
-      }else {
-        if(currentVariant.price != '' && currentVariant.page_price != ''){
-          $('.product-components_{{ se_id }} .price-block .dis-price').html(formatMoney(currentVariant.page_price));
-          $('.product-components_{{ se_id }} .price-block .original-price').html(currentVariant.price);
-        } else if(currentVariant.price != '') {
-          $('.product-components_{{ se_id }} .price-block .dis-price').html(currentVariant.price);
-          $('.product-components_{{ se_id }} .price-block .original-price').html('');
-        }
+      $('.product-components_{{ se_id }} .price-block .dis-price').html(currentVariant.price);
+      if (
+        currentVariant.original_price &&
+        currentVariant.original_price !== '$0.00' &&
+        currentVariant.original_price !== '£0.00' &&
+        currentVariant.original_price !== currentVariant.price
+      ) {
+        $('.product-components_{{ se_id }} .price-block .original-price').html(currentVariant.original_price).show();
+      } else {
+        $('.product-components_{{ se_id }} .price-block .original-price').html('').hide();
       }
 
       if(currentVariant.variantTitle != ''){
@@ -2768,45 +2647,6 @@
           "id": "name",
           "label": "描述",
           "default": "Visible results in just one week"
-        }
-      ]
-    },
-    {
-      "type": "collapsible-item",
-      "name": "collapsible-item",
-      "settings": [
-        {
-          "type": "textarea",
-          "id": "title",
-          "label": "标题",
-          "default": "Air 10 vs. Air 3"
-        },
-        {
-          "type": "textarea",
-          "id": "sub_title",
-          "label": "子标题",
-          "default": "Effectiveness"
-        },
-        {
-          "type": "richtext",
-          "id": "text_html",
-          "label": "描述"
-        },
-        {
-          "type": "checkbox",
-          "id": "check_img",
-          "label": "是否显示图片"
-        }
-      ]
-    },
-    {
-      "type": "collapsible-image",
-      "name": "collapsible-image",
-      "settings": [
-        {
-          "type": "image_picker",
-          "id": "image",
-          "label": "图片描述"
         }
       ]
     },
