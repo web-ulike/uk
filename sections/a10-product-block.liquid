@@ -587,6 +587,58 @@
     opacity: 0;
   }
 
+  .product-components .product-right-panel .btn-amazon {
+    display: flex;
+    height: 50px;
+    padding: 14px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50px;
+    border: 1px solid #3f3636;
+    background: transparent;
+    cursor: pointer;
+    overflow: hidden;
+    transition: all 0.4s ease;
+    position: relative;
+    font-family: var(--text-font-family);
+    margin-top: 10px;
+    width: 100%;
+    text-decoration: none;
+    color: inherit;
+    box-sizing: border-box;
+  }
+
+  .btn-amazon::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #190a0a;
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.4s;
+    border: 1px solid #000;
+    border-radius: 50px;
+  }
+
+  .product-components .product-right-panel .btn-amazon .loader-button__text {
+    position: relative;
+    z-index: 2;
+  }
+
+  .product-components .product-right-panel .btn-amazon:hover::after {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+
+  .product-components .product-right-panel .btn-amazon:hover .loader-button__text {
+    color: #fff;
+    z-index: 3;
+    transition: all 0.4s ease;
+  }
+
   .summer-sale-diy .product-right-panel .group-sharing .winning-info .btn-group-purchase {
     background: none;
     color: #190a0a;
@@ -1175,6 +1227,12 @@
       height: 40px;
       font-weight: bold;
       margin-top: 15px;
+    }
+    .product-components .product-right-panel .btn-amazon {
+      font-size: 12px;
+      height: 40px;
+      font-weight: bold;
+      margin-top: 10px;
     }
 
     .product-components .product-right-panel .pay-block .more-payment .active {
@@ -2006,29 +2064,42 @@
 
         <div class="group-sharing">
           <div class="winning-info">
-            {% if se_stts['group-purchase'] != blank %}
-              <div class="btn-group-purchase">
-                <span class="loader-button__text">{{ se_stts['group-purchase'] }}</span>
-                <span class="loader-button__loader" hidden>
-                  <div class="spinner">
-                    <svg focusable="false" width="24" height="24" class="icon icon--spinner" viewBox="25 25 50 50">
-                      <circle cx="50" cy="50" r="20" fill="none" stroke="currentColor" stroke-width="5"></circle>
-                    </svg>
-                  </div>
-                </span>
-              </div>
-            {% endif %}
-            {% if se_stts['btn-purchase'] != blank %}
-              <div class="btn-purchase">
-                <span class="loader-button__text">{{ se_stts['btn-purchase'] }}</span>
-                <span class="loader-button__loader" hidden>
-                  <div class="spinner">
-                    <svg focusable="false" width="24" height="24" class="icon icon--spinner" viewBox="25 25 50 50">
-                      <circle cx="50" cy="50" r="20" fill="none" stroke="currentColor" stroke-width="5"></circle>
-                    </svg>
-                  </div>
-                </span>
-              </div>
+            <div class="winning-info-main">
+              {% if se_stts['group-purchase'] != blank %}
+                <div class="btn-group-purchase">
+                  <span class="loader-button__text">{{ se_stts['group-purchase'] }}</span>
+                  <span class="loader-button__loader" hidden>
+                    <div class="spinner">
+                      <svg focusable="false" width="24" height="24" class="icon icon--spinner" viewBox="25 25 50 50">
+                        <circle cx="50" cy="50" r="20" fill="none" stroke="currentColor" stroke-width="5"></circle>
+                      </svg>
+                    </div>
+                  </span>
+                </div>
+              {% endif %}
+              {% if se_stts['btn-purchase'] != blank %}
+                <div class="btn-purchase">
+                  <span class="loader-button__text">{{ se_stts['btn-purchase'] }}</span>
+                  <span class="loader-button__loader" hidden>
+                    <div class="spinner">
+                      <svg focusable="false" width="24" height="24" class="icon icon--spinner" viewBox="25 25 50 50">
+                        <circle cx="50" cy="50" r="20" fill="none" stroke="currentColor" stroke-width="5"></circle>
+                      </svg>
+                    </div>
+                  </span>
+                </div>
+              {% endif %}
+            </div>
+            {% if section.settings.show_amazon_button and section.settings.amazon_button_link != blank %}
+              <a
+                class="btn-amazon"
+                href="{{ section.settings.amazon_button_link }}"
+                {% if section.settings.amazon_button_new_tab %}
+                  target="_blank" rel="noopener noreferrer"
+                {% endif %}
+              >
+                <span class="loader-button__text">{{ section.settings.amazon_button_text }}</span>
+              </a>
             {% endif %}
           </div>
         </div>
@@ -2606,6 +2677,29 @@
       "type": "html",
       "id": "subscribe_button_name",
       "label": "订阅发券按钮名称"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_amazon_button",
+      "label": "显示Amazon按钮",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "amazon_button_text",
+      "label": "Amazon按钮文案",
+      "default": "Buy on Amazon"
+    },
+    {
+      "type": "url",
+      "id": "amazon_button_link",
+      "label": "Amazon按钮链接"
+    },
+    {
+      "type": "checkbox",
+      "id": "amazon_button_new_tab",
+      "label": "Amazon按钮新窗口打开",
+      "default": true
     }
   ],
   "blocks": [
