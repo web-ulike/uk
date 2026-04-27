@@ -2194,6 +2194,8 @@
 </div>
 <script>
   var pid_{{ section.id | replace: "template--", ""  }} = '{{ product.selected_or_first_available_variant.id }}';
+  const autoUseDiscountCode_{{ se_id }} = {{ section.settings.auto_use_discount_code | json }};
+  const discountCode_{{ se_id }} = {{ section.settings.text1 | json }};
   function isMobileW(){
     return window.innerWidth < 992
   }
@@ -2309,7 +2311,7 @@
       {%- if section.settings.is_cart_aloebera -%}
         giftParam = { _aloevera: true };
       {% endif %}
-        addToCart(pid_{{ section.id | replace: "template--", ""  }}, $(this)[0], giftParam,'{{ section.settings.text1 }}',quantity);
+        addToCart(pid_{{ section.id | replace: "template--", ""  }}, $(this)[0], giftParam, autoUseDiscountCode_{{ se_id }} ? discountCode_{{ se_id }} : '', quantity);
       }
     });
 
@@ -2354,7 +2356,7 @@
         {%- if section.settings.is_cart_aloebera -%}
           giftParam = { _aloevera: true };
         {% endif %}
-        addToCart(pid_{{ section.id | replace: "template--", ""  }}, $(this)[0], giftParam,{{ section.settings.text1 }});
+        addToCart(pid_{{ section.id | replace: "template--", ""  }}, $(this)[0], giftParam, autoUseDiscountCode_{{ se_id }} ? discountCode_{{ se_id }} : '');
       }
     });
 
@@ -2639,6 +2641,12 @@
       "type": "text",
       "id": "text1",
       "label": "优惠券代码"
+    },
+    {
+      "type": "checkbox",
+      "id": "auto_use_discount_code",
+      "label": "是否自动使用折扣码",
+      "default": false
     },
     {
       "type": "text",
