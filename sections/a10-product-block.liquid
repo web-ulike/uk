@@ -2064,6 +2064,18 @@
 
         <div class="group-sharing">
           <div class="winning-info">
+           {% if section.settings.show_amazon_button and section.settings.amazon_button_link != blank %}
+              <a
+                class="btn-amazon"
+                href="{{ section.settings.amazon_button_link }}"
+                {% if section.settings.amazon_button_new_tab %}
+                  target="_blank" rel="noopener noreferrer"
+                {% endif %}
+              >
+                <span class="loader-button__text">{{ section.settings.amazon_button_text }}</span>
+              </a>
+            {% endif %}
+
             <div class="winning-info-main">
               {% if se_stts['group-purchase'] != blank %}
                 <div class="btn-group-purchase">
@@ -2090,17 +2102,7 @@
                 </div>
               {% endif %}
             </div>
-            {% if section.settings.show_amazon_button and section.settings.amazon_button_link != blank %}
-              <a
-                class="btn-amazon"
-                href="{{ section.settings.amazon_button_link }}"
-                {% if section.settings.amazon_button_new_tab %}
-                  target="_blank" rel="noopener noreferrer"
-                {% endif %}
-              >
-                <span class="loader-button__text">{{ section.settings.amazon_button_text }}</span>
-              </a>
-            {% endif %}
+
           </div>
         </div>
         {%- if section.settings.image != blank or section.settings.text7 != blank -%}
