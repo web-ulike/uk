@@ -2466,7 +2466,7 @@
       $('#myThumbs_{{ section.id }} .swiper-wrapper').html(_productHtml);
       $('#myGallery_{{ section.id }} .swiper-wrapper').html(_productHtml);
       initProductImages_{{se_id }}();
-      $('.product-components_{{ se_id }} .price-block .dis-price').html(currentVariant.price);
+      {% comment %} $('.product-components_{{ se_id }} .price-block .dis-price').html(currentVariant.price);
       if (
         currentVariant.original_price &&
         currentVariant.original_price !== '$0.00' &&
@@ -2476,6 +2476,19 @@
         $('.product-components_{{ se_id }} .price-block .original-price').html(currentVariant.original_price).show();
       } else {
         $('.product-components_{{ se_id }} .price-block .original-price').html('').hide();
+      } {% endcomment %}
+       // 价格
+      if (currentVariant.isOriginalPrice == 'true') {
+        $('.product-components_{{ se_id }} .price-block .dis-price').html(currentVariant.price);
+        $('.product-components_{{ se_id }} .price-block .original-price').html(currentVariant.original_price);
+      }else {
+        if(currentVariant.price != '' && currentVariant.page_price != ''){
+          $('.product-components_{{ se_id }} .price-block .dis-price').html(formatMoney(currentVariant.page_price));
+          $('.product-components_{{ se_id }} .price-block .original-price').html(currentVariant.price);
+        } else if(currentVariant.price != '') {
+          $('.product-components_{{ se_id }} .price-block .dis-price').html(currentVariant.price);
+          $('.product-components_{{ se_id }} .price-block .original-price').html('');
+        }
       }
 
       if(currentVariant.variantTitle != ''){
