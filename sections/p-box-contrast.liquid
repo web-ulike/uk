@@ -1,0 +1,698 @@
+{%- liquid
+  assign se_id = section.id
+  assign se_bks = section.blocks
+  assign se_stts = section.settings
+-%}
+
+<style>
+  .p-boc-contrast_{{ se_id }} {
+    background: {{ se_stts.bg_color }};
+    padding: 90px 0px 60px;
+  }
+  .p-boc-contrast_{{ se_id }} .title {
+    color: #190A0A;
+    font-size: 50px;
+    font-weight: 300;
+    text-align: center;
+    line-height: 120%; /* 60px */
+  }
+  .p-boc-contrast_{{ se_id }} .txt-desc {
+    color: #190A0A;
+    text-align: center;
+    font-size: 18px;
+    font-weight: 300;
+    line-height: 150%; /* 27px */
+    width: 30%;
+    margin: 20px auto 60px;
+  }
+
+  .box-product-contrast {
+    display: flex;
+    width: 100%;
+    background: #f2f2f9;
+    overflow: hidden;
+  }
+  .box-product-contrast .comparison-container {
+    padding: 80px 60px 20px;
+    border-radius: 10px;
+    border-radius: 20px;
+    width: 100%;
+    display: flex;
+    -webkit-border-radius: 20px;
+    -moz-border-radius: 20px;
+    -ms-border-radius: 20px;
+    -o-border-radius: 20px;
+  }
+  .box-product-contrast .comparison-container .features {
+    padding: 0px 0px 20px;
+    border-radius: 20px 0px 0px 20px;
+    background: #EDEBFC;
+    margin-top: 100px;
+    -webkit-border-radius: 20px 0px 0px 20px;
+    -moz-border-radius: 20px 0px 0px 20px;
+    -ms-border-radius: 20px 0px 0px 20px;
+    -o-border-radius: 20px 0px 0px 20px;
+    width: 20%;
+  }
+  .box-product-contrast .comparison-container .features .feature-item {
+    text-align: center;
+    font-family: Saans;
+    font-size: 26px;
+    font-weight: 500;
+    line-height: 64px;
+    color: #6C6AB4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 25px 20px;
+    position: relative;
+  }
+
+  .box-product-contrast .comparison-container .features .feature-item::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 10%; /* 从容器左侧偏移10% */
+    width: 80%; /* 线的宽度为容器的80% */
+    height: 1px; /* 线的高度 */
+    background-color: #b8b7ea; /* 线的颜色 */
+  }
+
+  .box-product-contrast .comparison-container .features .feature-item:last-child {
+    border-bottom: none;
+  }
+  .box-product-contrast .comparison-container .features .feature-item:last-child::after {
+    display: none;
+  }
+
+  .box-product-contrast .comparison-container .a10-column {
+    width: 16%;
+    border-radius: 20px 20px 20px 0px;
+    background: #ffe0e9;
+    padding-top: 60px;
+    position: relative;
+  }
+  .box-product-contrast .comparison-container .a10-column .abs-box-vs {
+    position: absolute;
+    right: -25%;
+    top: -5%;
+  }
+  .box-product-contrast .comparison-container .a10-column .abs-box-vs img {
+    width: 120px;
+  }
+  .box-product-contrast .comparison-container .a10-column .header {
+    position: relative;
+  }
+  .box-product-contrast .comparison-container .a10-column .header img {
+    position: absolute;
+    top: -130px;
+    width: 150px;
+    border-radius: 50%;
+    border-radius: 50%;
+    left: 0px;
+    right: 0px;
+    margin: 0 auto;
+  }
+  .box-product-contrast .comparison-container .a10-column .header h3 {
+    margin: 0px;
+    color: #e0004d;
+    font-size: 36px;
+    font-weight: 500;
+    line-height: 64px;
+    text-align: center;
+    font-family: Saans;
+    padding: 60px 0px 30px;
+
+  }
+  .box-product-contrast .comparison-container .a10-column .check,
+  .box-product-contrast .comparison-container .a10-column .empty {
+    width: 56px;
+    height: 56px;
+    background-image: url('https://cdn.shopify.com/s/files/1/0656/9079/6273/files/Frame_457394237.svg?v=1723275212');
+    background-repeat: no-repeat;
+    margin: 0px auto;
+    background-size: 100% 100%;
+    height: 115px;
+    border-radius: 50%;
+  }
+  .box-product-contrast .comparison-container .a10-column .price {
+    color: #e0004d;
+    font-size: 72px;
+    font-weight: 500;
+    display: flex;
+    height: 82px;
+    line-height: 82px;
+    text-align: center;
+    justify-content: center;
+    margin: 12px 0px;
+    position: relative;
+    gap: 2px;
+  }
+  .box-product-contrast .comparison-container .a10-column .price .abs-only{
+    border-radius: 17.737px;
+    border: 0.887px solid #E0004D;
+    background: #E0004D;
+    color: var(--Ulike-Air0-BG, #F2F2F9);
+    text-align: center;
+    font-family: Saans;
+    font-size: 22px;
+    font-weight: 300;
+    line-height: 27.971px;
+    position: absolute;
+    right: 24%;
+    top: -22px;
+    padding: 0px 8px;
+  }
+
+  .box-product-contrast .comparison-container .a10-column .price span {
+    font-size: 24px;
+    line-height: 2.2;
+  }
+  .box-product-contrast .comparison-container .comparison-table {
+    display: flex;
+    justify-content: space-around;
+    margin-left: 20px;
+    background: #fbfbfe;
+    border-radius: 20px 20px 20px 20px;
+    -webkit-border-radius: 20px 20px 20px 20px;
+    -moz-border-radius: 20px 20px 20px 20px;
+    -ms-border-radius: 20px 20px 20px 20px;
+    -o-border-radius: 20px 20px 20px 20px;
+    width: 64%;
+    padding-top: 60px;
+  }
+  .box-product-contrast .comparison-container .comparison-table .a10-swiper-container{
+    width: 100%;
+  }
+  .box-product-contrast .comparison-container .comparison-table .swiper-button-next,
+  .box-product-contrast .comparison-container .comparison-table .swiper-button-prev{
+    display: none;
+  }
+
+  .box-product-contrast .comparison-container .comparison-table .header {
+    position: relative;
+    width: 100%;
+    text-align: center;
+  }
+  .box-product-contrast .comparison-container .comparison-table .header img {
+    position: absolute;
+    top: -130px;
+    width: 150px;
+    border-radius: 50%;
+    border-radius: 50%;
+    left: 0px;
+    right: 0px;
+    margin: 0 auto;
+  }
+  .box-product-contrast .comparison-container .comparison-table .header h3 {
+    margin: 0px;
+    color: #3F3636;
+    font-size: 36px;
+    font-weight: 300;
+    line-height: 64px;
+    /* 171.419% */
+    padding: 60px 0px 30px;
+  }
+  .box-product-contrast .comparison-container .comparison-table .column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 25%;
+  }
+
+  .box-product-contrast .comparison-container .comparison-table .column::after {
+    content: '';
+    position: absolute;
+    top: 50%; /* 线条从父元素高度的50%开始 */
+    right: 0;
+    height: 90%; /* 线的高度为60% */
+    width: 1.5px; /* 线的宽度 */
+    background-color: #E4DDDD; /* 线的颜色 */
+    transform: translateY(-50%); /* 将线条向上移动自身高度的50%，实现垂直居中 */
+  }
+  .box-product-contrast .comparison-container .comparison-table .column:last-child::after {
+    display: none;
+  }
+
+  .box-product-contrast .comparison-container .comparison-table .column .check,
+  .box-product-contrast .comparison-container .comparison-table .column .empty {
+    width: 56px;
+    height: 56px;
+    background-image: url('https://cdn.shopify.com/s/files/1/0656/9079/6273/files/Frame_457394236_1.svg?v=1723271762');
+    background-repeat: no-repeat;
+    background-size: cover;
+    border-radius: 50%;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    -ms-border-radius: 50%;
+    -o-border-radius: 50%;
+    margin: 0px auto;
+    background-size: 100% 100%;
+    height: 115px;
+  }
+  .box-product-contrast .comparison-container .comparison-table .column .empty {
+    background-image: none;
+  }
+  .box-product-contrast .comparison-container .comparison-table .column .price {
+    color: #e0004d;
+    font-size: 46px;
+    font-weight: 300;
+    display: flex;
+    color: #190A0A;
+    height: 82px;
+    line-height: 82px;
+    text-align: center;
+    justify-content: center;
+    margin: 12px 0px;
+    position: relative;
+    gap: 2px;
+  }
+  .box-product-contrast .comparison-container .comparison-table .column .price span {
+    font-size: 24px;
+    line-height: 3;
+  }
+  .p-boc-contrast_{{ se_id }} .text-data-source{
+    color: #3F3636;
+    text-align: center;
+    font-size: 16px;
+    font-weight: 300;
+    line-height: 150%; /* 24px */
+    margin: 35px 0px 0px;
+  }
+
+  @media screen and (max-width: 1440px) {
+    .p-boc-contrast_{{ se_id }} {
+      background: {{ se_stts.bg_color }};
+      padding: 60px 0px 20px;
+    }
+    .box-product-contrast .comparison-container .features .feature-item {
+      font-size: 28px;
+      line-height: 32px;
+      height: 114px;
+    }
+    .box-product-contrast .comparison-container {
+      padding: 80px 40px 20px;
+    }
+    .p-boc-contrast_{{ se_id }} .title {
+      font-size: 36px;
+    }
+    .p-boc-contrast_{{ se_id }} .txt-desc{
+      width: 45%;
+    }
+    .box-product-contrast .comparison-container .a10-column .header h3{
+      font-size: 28px;
+    }
+    .box-product-contrast .comparison-container .comparison-table .header h3{
+      font-size: 28px;
+    }
+    .box-product-contrast .comparison-container .a10-column .price {
+      font-size: 60px;
+    }
+    .box-product-contrast .comparison-container .comparison-table .column .price {
+      font-size: 40px;
+    }
+    .box-product-contrast .comparison-container .a10-column .abs-box-vs {
+      right: -21%;
+      top: -5%;
+      z-index: 2;
+    }
+    .box-product-contrast .comparison-container .a10-column .abs-box-vs {
+      width: 70px;
+    }
+  }
+
+
+  @media (max-width: 1000px) {
+    .p-boc-contrast_{{ se_id }} {
+      padding: 50px 0px 20px;
+    }
+    .p-boc-contrast_{{ se_id }} .title {
+      font-size: 28px;
+      width: 80%;
+      margin: 0 auto;
+    }
+    .p-boc-contrast_{{ se_id }} .txt-desc {
+      font-size: 14px;
+      width: 80%;
+      margin: 20px auto;
+    }
+
+    .box-product-contrast .comparison-container {
+      padding: 0px 0px 70px 16px;
+      position: relative;
+    }
+    .box-product-contrast .comparison-container .features {
+      width: 30%;
+      margin-top: 80px;
+      padding: 0px 0px;
+    }
+    .box-product-contrast .comparison-container .features .feature-item {
+      font-size: 12px;
+      line-height: 20px;
+      height: 52px;
+      padding: 6px 5px;
+    }
+    .box-product-contrast .comparison-container .a10-column {
+      width: 30%;
+      padding: 20px 0px 0px;
+      margin-top: 40px;
+      border-radius: 7.5px 7.5px 7.5px 0px;
+    }
+    .box-product-contrast .comparison-container .a10-column .header h3 {
+      font-size: 14px;
+      padding: 20px 0px 10px;
+      line-height: 40px;
+    }
+    .box-product-contrast .comparison-container .a10-column .header img {
+      width: 60px;
+      top: -50px;
+    }
+    .box-product-contrast .comparison-container .a10-column .check, .box-product-contrast .comparison-container .a10-column .empty {
+      width: 30px;
+      height: 52px;
+    }
+    .box-product-contrast .comparison-container .a10-column .price {
+      font-size: 26px;
+      margin: 6px 0px;
+      line-height: 40px;
+      height: 40px;
+    }
+    .box-product-contrast .comparison-container .a10-column .price span {
+      font-size: 12px;
+      line-height: 32px;
+    }
+    .box-product-contrast .comparison-container .a10-column .abs-box-vs {
+      width: 40px;
+      right: -19%;
+      top: -5%;
+    }
+    .box-product-contrast .comparison-container .a10-column .abs-box-vs img {
+       width: 130px;
+    }
+    .box-product-contrast .comparison-container .a10-column .price .abs-only {
+      font-size: 12px;
+      line-height: 18px;
+      right: 21%;
+      top: -12px;
+    }
+
+
+    .box-product-contrast .comparison-container .comparison-table {
+      display: block;
+      margin-left: 6px;
+      padding: 0px 0px 0px;
+      overflow: hidden;
+      width: 40%;
+      margin-top: 0px;
+      background: inherit;
+    }
+    .box-product-contrast .comparison-container .comparison-table .a10-swiper-container {
+      background: #fbfbfe;
+      margin-top: 40px;
+      border-radius: 20px 20px 20px 20px;
+      -webkit-border-radius: 20px 20px 20px 20px;
+      -moz-border-radius: 20px 20px 20px 20px;
+      -ms-border-radius: 20px 20px 20px 20px;
+      -o-border-radius: 20px 20px 20px 20px;
+      padding: 20px 0px 0px;
+    }
+    .box-product-contrast .comparison-container .comparison-table .swiper-wrapper {
+      background: #fbfbfe;
+    }
+    .box-product-contrast .comparison-container .comparison-table .column .header h3 {
+      font-size: 14px;
+      padding: 20px 0px 10px;
+      line-height: 40px;
+    }
+    .box-product-contrast .comparison-container .comparison-table .column .header img {
+      width: 60px;
+      top: -50px;
+      z-index: 10;
+    }
+    .box-product-contrast .comparison-container .comparison-table .column .check, .box-product-contrast .comparison-container .comparison-table .column .empty {
+      width: 30px;
+      height: 52px;
+    }
+    .box-product-contrast .comparison-container .comparison-table .column .price {
+      font-size: 18px;
+      margin: 6px 0px;
+      line-height: 40px;
+      height: 40px;
+    }
+    .box-product-contrast .comparison-container .comparison-table .column .price span {
+      font-size: 12px;
+      line-height: 32px;
+    }
+    .p-boc-contrast_{{ se_id }} .text-data-source{
+      font-size: 12px;
+      width: 80%;
+      margin: 0 auto;
+    }
+    .box-product-contrast .comparison-container .comparison-table .swiper-button-next,
+    .box-product-contrast .comparison-container .comparison-table .swiper-button-prev{
+      display: block;
+      top: initial;
+      bottom: 10px;
+      right: 10px;
+      left: inherit;
+      width: 50px;
+      height: 50px;
+    }
+    .box-product-contrast .comparison-container .comparison-table .swiper-button-next img,
+    .box-product-contrast .comparison-container .comparison-table .swiper-button-prev img {
+      width: 100%;
+    }
+    .box-product-contrast .comparison-container .comparison-table .swiper-button-prev{
+      right: 90px;
+      transform: rotate(180deg);
+    }
+    .box-product-contrast .comparison-container .comparison-table .column::after {
+      width: 0.4px;
+    }
+
+  }
+</style>
+<section class="p-boc-contrast_{{ se_id }}">
+  <h2 class="title">{{ se_stts.text }}</h2>
+  <div class="txt-desc">{{ se_stts.text1 }}</div>
+  <div class="box-product-contrast">
+    <div class="comparison-container ">
+      <div class="features">
+        <h3 class="feature-item">Hair removal methods</h3>
+        <h3 class="feature-item">Long-lasting results</h3>
+        <h3 class="feature-item">Safe for skin</h3>
+        <h3 class="feature-item">Nearly painless</h3>
+        <h3 class="feature-item">Quick at-home sessions</h3>
+        <h3 class="feature-item">Lifetime cost</h3>
+      </div>
+
+      <div class="column a10-column">
+        {% comment %} 对比定位 {% endcomment %}
+        <div class="abs-box-vs">
+          <img
+            src="https://cdn.shopify.com/s/files/1/0656/9079/6273/files/VS.svg?v=1724663968"
+            loading="lazy"
+            alt="vs"
+          >
+        </div>
+        <div class="header ">
+          <img
+            src="https://cdn.shopify.com/s/files/1/0656/9079/6273/files/Frame_457394328.png?v=1724032754"
+            alt="Ulike Air 10 IPL"
+            loading="lazy"
+          >
+          <h3>Ulike Air 10 IPL</h3>
+        </div>
+        <div class="check"></div>
+        <div class="check"></div>
+        <div class="check"></div>
+        <div class="check"></div>
+        <div class="price">
+          <span>$</span>349
+          <div class="abs-only">Only</div>
+        </div>
+      </div>
+      <div class="comparison-table">
+        <div class=" a10-swiper-container">
+          <div class="swiper-wrapper">
+            <!-- Laser Column -->
+            <div class="column swiper-slide">
+              <div class="header">
+                <img
+                  src="https://cdn.shopify.com/s/files/1/0656/9079/6273/files/Frame_457394329_1.jpg?v=1724032754"
+                  alt="Laser"
+                  loading="lazy"
+                >
+                <h3>Laser</h3>
+              </div>
+              <div class="check"></div>
+              <div class="empty"></div>
+              <div class="empty"></div>
+              <div class="empty"></div>
+              <div class="price">
+                <span>$</span>
+                64,000
+              </div>
+            </div>
+            <div class="column swiper-slide">
+              <div class="header">
+                <img
+                  src="https://cdn.shopify.com/s/files/1/0656/9079/6273/files/Frame_457394330_1.png?v=1724032753"
+                  alt="Shaving"
+                  loading="lazy"
+                >
+                <h3>Shaving</h3>
+              </div>
+              <div class="empty"></div>
+              <div class="check"></div>
+              <div class="check"></div>
+              <div class="check"></div>
+              <div class="price"><span>$</span>10,207</div>
+            </div>
+
+            <!-- Cream Column -->
+            <div class="column swiper-slide">
+              <div class="header">
+                <img
+                  src="https://cdn.shopify.com/s/files/1/0656/9079/6273/files/Frame_457394331.png?v=1724032754"
+                  alt="Cream"
+                  loading="lazy"
+                >
+                <h3>Cream</h3>
+              </div>
+              <div class="empty"></div>
+              <div class="check"></div>
+              <div class="check"></div>
+              <div class="empty"></div>
+              <div class="price"><span>$</span>10,555</div>
+            </div>
+
+            <!-- Waxing Column -->
+            <div class="column swiper-slide">
+              <div class="header">
+                <img
+                  src="https://cdn.shopify.com/s/files/1/0656/9079/6273/files/Frame_457394332.png?v=1724032754"
+                  alt="Waxing"
+                  loading="lazy"
+                >
+                <h3>Waxing</h3>
+              </div>
+              <div class="empty"></div>
+              <div class="empty"></div>
+              <div class="empty"></div>
+              <div class="check"></div>
+              <div class="price"><span>$</span>23,000</div>
+            </div>
+          </div>
+          <div class="swiper-button-prev">
+            <img
+              src="https://cdn.shopify.com/s/files/1/0656/9079/6273/files/Frame_457394236_5.svg?v=1724411470"
+              alt=""
+              loading="lazy"
+            >
+          </div>
+          <div class="swiper-button-next">
+            <img
+              src="https://cdn.shopify.com/s/files/1/0656/9079/6273/files/Frame_457394236_5.svg?v=1724411470"
+              alt=""
+              loading="lazy"
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <p class="text-data-source">{{ se_stts.text2 }}</p>
+</section>
+
+<script>
+  window.addEventListener('load', function() { 
+    if (isMobile()) {
+      var a10swiper = new Swiper('.a10-swiper-container', {
+        slidesPerView: 1.4,
+        spaceBetween: 10,
+        navigation: {
+          nextEl: '.a10-swiper-container .swiper-button-next',
+          prevEl: '.a10-swiper-container .swiper-button-prev',
+        }
+        {% comment %} autoplay: {
+          delay: 100000,
+          disableOnInteraction: false,
+        }, {% endcomment %}
+      });
+    }
+  });
+</script>
+
+{% schema %}
+{
+  "name": "p-box-contrast",
+  "blocks": [
+    {
+      "name": "item",
+      "type": "item",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text"
+        }
+      ]
+    }
+  ],
+  "settings": [
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#f9f9f9"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "图片"
+    },
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "text1",
+      "label": "Text1"
+    },
+    {
+      "type": "text",
+      "id": "text2",
+      "label": "Text2"
+    },
+    {
+      "type": "text",
+      "id": "text3",
+      "label": "Text3"
+    },
+    {
+      "type": "text",
+      "id": "text4",
+      "label": "Text4"
+    },
+    {
+      "type": "text",
+      "id": "text5",
+      "label": "Text5"
+    }
+  ],
+  "presets": [
+    {
+      "name": "p-box-contrast",
+      "blocks": []
+    }
+  ]
+}
+{% endschema %}
