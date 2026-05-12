@@ -148,6 +148,10 @@
   font-weight: 600;
   line-height: normal;
   margin-top:20px;
+  text-decoration: none;
+    }
+    .product_name-tag:hover{
+      color: #FFF;
     }
     .comparison-cont h3{
       font-family: var(--heading-font-family);
@@ -253,7 +257,13 @@
                         <div class="comm-tle">{{ block.settings.product_text }}</div>
                       {% endif %}
                       {% if block.settings.product_name_tag != blank %}
-                        <div class="product_name-tag">{{ block.settings.product_name_tag }}</div>
+                        {% if block.settings.product_name_tag_link != blank %}
+                          <a class="product_name-tag" href="{{ block.settings.product_name_tag_link }}">
+                            {{ block.settings.product_name_tag }}
+                          </a>
+                        {% else %}
+                          <div class="product_name-tag">{{ block.settings.product_name_tag }}</div>
+                        {% endif %}
                       {% endif %}
                     </th>
                     <th>
@@ -262,7 +272,13 @@
                         <div class="comm-tle">{{ block.settings.product_text1 }}</div>
                       {% endif %}
                       {% if block.settings.product_name_tag1 != blank %}
-                        <div class="product_name-tag">{{ block.settings.product_name_tag1 }}</div>
+                        {% if block.settings.product_name_tag_link1 != blank %}
+                          <a class="product_name-tag" href="{{ block.settings.product_name_tag_link1 }}">
+                            {{ block.settings.product_name_tag1 }}
+                          </a>
+                        {% else %}
+                          <div class="product_name-tag">{{ block.settings.product_name_tag1 }}</div>
+                        {% endif %}
                       {% endif %}
                     </th>
 
@@ -273,7 +289,13 @@
                           <div class="comm-tle">{{ block.settings.product_text2 }}</div>
                         {% endif %}
                         {% if block.settings.product_name_tag2 != blank %}
-                          <div class="product_name-tag">{{ block.settings.product_name_tag2 }}</div>
+                          {% if block.settings.product_name_tag_link2 != blank %}
+                            <a class="product_name-tag" href="{{ block.settings.product_name_tag_link2 }}">
+                              {{ block.settings.product_name_tag2 }}
+                            </a>
+                          {% else %}
+                            <div class="product_name-tag">{{ block.settings.product_name_tag2 }}</div>
+                          {% endif %}
                         {% endif %}
                       </th>
                     {% endif %}
@@ -487,9 +509,19 @@
           "label": "Tag Product Name"
         },
         {
+          "type": "url",
+          "id": "product_name_tag_link",
+          "label": "Tag Product Name Link"
+        },
+        {
           "type": "text",
           "id": "product_name_tag1",
           "label": "Tag Product Name1"
+        },
+        {
+          "type": "url",
+          "id": "product_name_tag_link1",
+          "label": "Tag Product Name Link1"
         },
         {
           "type": "text",
@@ -497,9 +529,19 @@
           "label": "Tag Product Name2"
         },
         {
+          "type": "url",
+          "id": "product_name_tag_link2",
+          "label": "Tag Product Name Link2"
+        },
+        {
           "type": "text",
           "id": "product_name_tag3",
           "label": "Tag Product Name3"
+        },
+        {
+          "type": "url",
+          "id": "product_name_tag_link3",
+          "label": "Tag Product Name Link3"
         }
       ]
     },
