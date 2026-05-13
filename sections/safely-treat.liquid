@@ -85,6 +85,14 @@
   gap: 30px;
 }
 
+.safely-treat .safely-treat-note {
+  margin-top: 22px;
+  color: #6f6a76;
+  font-size: 13px;
+  line-height: 1.45;
+  text-align: left;
+}
+
 .safely-treat .safely-treat-item {
   border-radius: 20px;
   background: #f8f8f8;
@@ -234,6 +242,11 @@
     gap: 15px;
   }
 
+  .safely-treat .safely-treat-note {
+    margin-top: 16px;
+    font-size: 10px;
+  }
+
   .safely-treat .safely-treat-item {
     border-radius: 12px;
     padding: 12px 18px;
@@ -313,6 +326,13 @@
   .safely-treat .safely-treat-item-p {
     font-size: 12px;
     margin-top: 8px;
+  }
+
+  .safely-treat .safely-treat-note {
+    margin-top: 10px;
+    font-size: 9px;
+    line-height: 1.35;
+    text-align: left;
   }
 
   .safely-treat .img-list {
@@ -422,6 +442,10 @@
               </div>
             {%- endfor -%}
           </div>
+
+          {%- if section.settings.note_text != blank -%}
+            <div class="safely-treat-note">{{ section.settings.note_text }}</div>
+          {%- endif -%}
         </div>
       </div>
     </div>
@@ -509,7 +533,12 @@ initSafelyTreat();
     { "type": "image_picker", "id": "image", "label": "Image" },
     { "type": "image_picker", "id": "image1", "label": "M Image" },
     { "type": "text", "id": "text", "label": "Text" },
-    { "type": "text", "id": "text1", "label": "Text" }
+    { "type": "text", "id": "text1", "label": "Text" },
+    {
+      "type": "text",
+      "id": "note_text",
+      "label": "Bottom note"
+    }
   ],
   "presets": [
     { "name": "safely-treat", "blocks": [] }
