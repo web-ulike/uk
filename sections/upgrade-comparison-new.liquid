@@ -95,6 +95,10 @@
      height: 108px;
      margin: 0 auto;
   }
+  .comparison-cont .comparison-product-image-link {
+    display: inline-block;
+    text-decoration: none;
+  }
   .comparison-cont .comm-txt{
     color: #000;
   font-size: 24px;
@@ -252,7 +256,13 @@
                       <div class="comm-txt">{{ block.settings.tle }}</div>
                     </th>
                     <th>
-                      <img src="{{ block.settings.product_image | image_url }}" alt="">
+                      {% if block.settings.product_image_link != blank %}
+                        <a class="comparison-product-image-link" href="{{ block.settings.product_image_link }}">
+                          <img src="{{ block.settings.product_image | image_url }}" alt="">
+                        </a>
+                      {% else %}
+                        <img src="{{ block.settings.product_image | image_url }}" alt="">
+                      {% endif %}
                       {% if block.settings.product_text != blank %}
                         <div class="comm-tle">{{ block.settings.product_text }}</div>
                       {% endif %}
@@ -267,7 +277,13 @@
                       {% endif %}
                     </th>
                     <th>
-                      <img src="{{ block.settings.product_image1 | image_url }}" alt="">
+                      {% if block.settings.product_image_link1 != blank %}
+                        <a class="comparison-product-image-link" href="{{ block.settings.product_image_link1 }}">
+                          <img src="{{ block.settings.product_image1 | image_url }}" alt="">
+                        </a>
+                      {% else %}
+                        <img src="{{ block.settings.product_image1 | image_url }}" alt="">
+                      {% endif %}
                       {% if block.settings.product_text1 != blank %}
                         <div class="comm-tle">{{ block.settings.product_text1 }}</div>
                       {% endif %}
@@ -284,7 +300,13 @@
 
                     {% if section.settings.enable_txt2 %}
                       <th>
-                        <img src="{{ block.settings.product_image2 | image_url }}" alt="">
+                        {% if block.settings.product_image_link2 != blank %}
+                          <a class="comparison-product-image-link" href="{{ block.settings.product_image_link2 }}">
+                            <img src="{{ block.settings.product_image2 | image_url }}" alt="">
+                          </a>
+                        {% else %}
+                          <img src="{{ block.settings.product_image2 | image_url }}" alt="">
+                        {% endif %}
                         {% if block.settings.product_text2 != blank %}
                           <div class="comm-tle">{{ block.settings.product_text2 }}</div>
                         {% endif %}
@@ -473,6 +495,11 @@
           "label": "Product Images"
         },
         {
+          "type": "url",
+          "id": "product_image_link",
+          "label": "Product Image Link"
+        },
+        {
           "type": "richtext",
           "id": "product_text1",
           "label": "Product Name1"
@@ -481,6 +508,11 @@
           "type": "image_picker",
           "id": "product_image1",
           "label": "Product Images1"
+        },
+        {
+          "type": "url",
+          "id": "product_image_link1",
+          "label": "Product Image Link1"
         },
 
         {
@@ -492,6 +524,11 @@
           "type": "image_picker",
           "id": "product_image2",
           "label": "Product Images2"
+        },
+        {
+          "type": "url",
+          "id": "product_image_link2",
+          "label": "Product Image Link2"
         },
         {
           "type": "richtext",
