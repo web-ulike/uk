@@ -460,15 +460,15 @@ function initGA() {
     }
   );
 
-  // document.body.addEventListener('docapp-discount-code-remove', (e) => {
-  //   setTimeout(function () {
-  //     document.documentElement.dispatchEvent(
-  //       new CustomEvent('cart:refresh', {
-  //         bubbles: false,
-  //       })
-  //     );
-  //   }, 3400);
-  // });
+  document.body.addEventListener('docapp-discount-code-remove', (e) => {
+    setTimeout(function () {
+      document.documentElement.dispatchEvent(
+        new CustomEvent('cart:refresh', {
+          bubbles: false,
+        })
+      );
+    }, 3400);
+  });
 
   // document.body.addEventListener('docapp-discount-code-submit', (e) => { 
   //   let code = $('.docapp-coupon-input--input').val()
