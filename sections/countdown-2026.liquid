@@ -1,0 +1,466 @@
+{%- liquid
+  assign sid = section.id
+  assign st = section.settings
+-%}
+
+<style>
+  #shopify-section-{{ sid }} {
+    --cd2026-bg: {{ st.background }};
+    --cd2026-text: {{ st.text_color }};
+    --cd2026-btn-bg: {{ st.btn_color }};
+    --cd2026-btn-text: {{ st.btn_text_color }};
+    --cd2026-box-bg: {{ st.time_box_bg }};
+    --cd2026-box-text: {{ st.time_box_text }};
+    --cd2026-bottom-offset: 0px;
+    --cd2026-fixed-bg: #FFFFFF;
+    --cd2026-fixed-text: #000000;
+    --cd2026-fixed-box-bg: #000000;
+    --cd2026-fixed-box-text: #FFFFFF;
+    --cd2026-fixed-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    --cd2026-fixed-transition: 0.18s ease-out;
+    --cd2026-fixed-translate: 0px;
+  }
+
+  #countdown-2026-{{ sid }} {
+    width: 100%;
+    background: var(--cd2026-bg);
+    color: var(--cd2026-text);
+    position: relative;
+    z-index: 4;
+    transform: translate3d(0, 0, 0);
+    transition:
+      background var(--cd2026-fixed-transition),
+      color var(--cd2026-fixed-transition),
+      box-shadow var(--cd2026-fixed-transition);
+    will-change: auto;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+  }
+
+  #countdown-2026-{{ sid }}.is-fixed {
+    position: fixed;
+    left: 0;
+    bottom: var(--cd2026-bottom-offset);
+    width: 100%;
+    right: 0;
+    background: var(--cd2026-fixed-bg);
+    color: var(--cd2026-fixed-text);
+    box-shadow: var(--cd2026-fixed-shadow);
+    animation: cd2026FixedIn-{{ sid }} var(--cd2026-fixed-transition) both;
+    transform: translateZ(0);
+  }
+
+  #countdown-2026-{{ sid }}.is-fixed .cd2026__title,
+  #countdown-2026-{{ sid }}.is-fixed .cd2026__title-mobile,
+  #countdown-2026-{{ sid }}.is-fixed .cd2026__sep {
+    color: var(--cd2026-fixed-text);
+  }
+
+  #countdown-2026-{{ sid }}.is-fixed .cd2026__item {
+    background: var(--cd2026-fixed-box-bg);
+    color: var(--cd2026-fixed-box-text);
+  }
+
+  #countdown-2026-{{ sid }} .cd2026__inner {
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 30px;
+    height: 4.3rem;
+  }
+
+  #countdown-2026-{{ sid }} .cd2026__title {
+    color: var(--cd2026-text);
+    font-size: 18px;
+    line-height: 1.2;
+    white-space: nowrap;
+    flex: 0 0 auto;
+  }
+
+  #countdown-2026-{{ sid }} .cd2026__title-mobile {
+    display: none;
+  }
+
+  #countdown-2026-{{ sid }} .cd2026__countdown {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 0 0 auto;
+  }
+
+  #countdown-2026-{{ sid }} .cd2026__sep {
+    color: var(--cd2026-text);
+    font-size: 18px;
+    line-height: 1;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transform: translateY(-1px);
+  }
+
+  #countdown-2026-{{ sid }} .cd2026__item {
+    width: 34px;
+    height: 34px;
+    border-radius: 4px;
+    background: #fff;
+    color: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 17px;
+    line-height: 1;
+  }
+
+  #countdown-2026-{{ sid }} .cd2026__btn {
+    min-width: 140px;
+    height: 37px;
+    padding: 0 20px;
+    border-radius: 999px;
+    background: #E0004D;
+    color: #FBFAF4;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    text-decoration: none;
+    font-size: 14px;
+    line-height: 1;
+    font-weight: 500;
+    text-transform: uppercase;
+    white-space: nowrap;
+    border: 0;
+    box-sizing: border-box;
+    transition: opacity .25s ease, transform .25s ease;
+    flex: 0 0 auto;
+  }
+
+  #countdown-2026-{{ sid }} .cd2026__btn:hover {
+    opacity: .9;
+  }
+
+  @media screen and (max-width: 768px) {
+    #countdown-2026-{{ sid }} .cd2026__inner {
+      justify-content: space-between;
+      gap: 10px;
+      height: 50px;
+    }
+
+    #countdown-2026-{{ sid }} .cd2026__title {
+      display: none;
+    }
+
+    #countdown-2026-{{ sid }} .cd2026__title-mobile {
+      display: block;
+      font-size: 12px;
+      line-height: 1.2;
+      color: var(--cd2026-text);
+      width: 72px;
+      flex: 0 0 72px;
+    }
+
+    #countdown-2026-{{ sid }} .cd2026__countdown {
+      gap: 6px;
+      flex: 0 0 auto;
+    }
+
+    #countdown-2026-{{ sid }} .cd2026__sep {
+      font-size: 16px;
+    }
+
+    #countdown-2026-{{ sid }} .cd2026__item {
+      width: 30px;
+      height: 30px;
+      font-size: 14px;
+    }
+
+    #countdown-2026-{{ sid }} .cd2026__btn {
+      height: 30px;
+      padding: 0 14px;
+      font-size: 12px;
+      min-width: 80px;
+    }
+  }
+
+  @media screen and (max-width: 375px) {
+    #countdown-2026-{{ sid }} .cd2026__inner {
+      gap: 4px;
+    }
+    #countdown-2026-{{ sid }} .cd2026__item {
+      width: 24px;
+      height: 24px;
+      font-size: 12px;
+    }
+    #countdown-2026-{{ sid }} .cd2026__btn {
+      padding: 0 10px;
+    }
+  }
+</style>
+
+<section
+  id="countdown-2026-{{ sid }}"
+  class="countdown-2026"
+  data-fixed="{{ st.enable_fixed }}"
+  data-fixed-threshold="6"
+>
+  <div class="cd2026__inner container">
+    <div class="cd2026__title">{{ st.title }}</div>
+
+    <div class="cd2026__title-mobile">
+      {{ st.title_mobile | newline_to_br }}
+    </div>
+
+    <div class="cd2026__countdown" id="cd2026-timer-{{ sid }}">
+      <div class="cd2026__item" data-days>00</div>
+      <span class="cd2026__sep">:</span>
+      <div class="cd2026__item" data-hours>00</div>
+      <span class="cd2026__sep">:</span>
+      <div class="cd2026__item" data-minutes>00</div>
+      <span class="cd2026__sep">:</span>
+      <div class="cd2026__item" data-seconds>00</div>
+    </div>
+
+    {%- if st.button_text != blank and st.button_url != blank -%}
+      <a class="cd2026__btn" href="{{ st.button_url }}">
+        {{ st.button_text }}
+      </a>
+    {%- endif -%}
+  </div>
+</section>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var sectionEl = document.getElementById('countdown-2026-{{ sid }}');
+    var timerEl = document.getElementById('cd2026-timer-{{ sid }}');
+
+    if (!sectionEl || !timerEl) return;
+
+    var daysEl = timerEl.querySelector('[data-days]');
+    var hoursEl = timerEl.querySelector('[data-hours]');
+    var minutesEl = timerEl.querySelector('[data-minutes]');
+    var secondsEl = timerEl.querySelector('[data-seconds]');
+
+    function pad(num) {
+      num = parseInt(num, 10) || 0;
+      return num < 10 ? '0' + num : String(num);
+    }
+
+    function getEndTime() {
+      var isEveryDay = {{ st.is_countdown_every_day | json }};
+
+      if (isEveryDay) {
+        var now = new Date();
+        return new Date(
+          now.getFullYear(),
+          now.getMonth(),
+          now.getDate(),
+          23, 59, 59, 999
+        ).getTime();
+      }
+
+      var endDateStr = {{ st.end_date | json }};
+      if (!endDateStr) return 0;
+
+      var ts = new Date(endDateStr).getTime();
+      return isNaN(ts) ? 0 : ts;
+    }
+
+    var endTime = getEndTime();
+    var timer = null;
+
+    function render(diff) {
+      if (diff < 0) diff = 0;
+
+      var days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      var hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      var minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+      var seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+      daysEl.textContent = pad(days);
+      hoursEl.textContent = pad(hours);
+      minutesEl.textContent = pad(minutes);
+      secondsEl.textContent = pad(seconds);
+    }
+
+    function tick() {
+      var now = Date.now();
+
+      if ({{ st.is_countdown_every_day | json }}) {
+        var currentEndTime = getEndTime();
+        if (currentEndTime !== endTime) {
+          endTime = currentEndTime;
+        }
+      }
+
+      var diff = endTime - now;
+      render(diff);
+
+      if (diff <= 0 && !{{ st.is_countdown_every_day | json }}) {
+        clearInterval(timer);
+      }
+    }
+
+    render(Math.max(endTime - Date.now(), 0));
+    timer = setInterval(tick, 1000);
+
+    if (sectionEl.dataset.fixed === 'true') {
+      var placeholder = document.createElement('div');
+      placeholder.setAttribute('aria-hidden', 'true');
+      placeholder.style.display = 'none';
+      sectionEl.parentNode.insertBefore(placeholder, sectionEl.nextSibling);
+
+      var threshold = parseInt(sectionEl.dataset.fixedThreshold, 10) || 0;
+      var startTop = 0;
+      var isFixed = false;
+      var ticking = false;
+
+      function updateMetrics() {
+        var wasFixed = sectionEl.classList.contains('is-fixed');
+
+        if (wasFixed) {
+          sectionEl.classList.remove('is-fixed');
+        }
+        var rect = sectionEl.getBoundingClientRect();
+        var scrollTop = window.pageYOffset || document.documentElement.scrollTop || 0;
+        startTop = rect.top + scrollTop;
+        placeholder.style.height = sectionEl.offsetHeight + 'px';
+
+        if (wasFixed) {
+          sectionEl.classList.add('is-fixed');
+        }
+      }
+
+      function setFixedState(shouldFix) {
+        if (shouldFix === isFixed) return;
+
+        isFixed = shouldFix;
+
+        if (shouldFix) {
+          placeholder.style.display = 'block';
+          placeholder.style.height = sectionEl.offsetHeight + 'px';
+          sectionEl.classList.add('is-fixed');
+        } else {
+          sectionEl.classList.remove('is-fixed');
+          placeholder.style.display = 'none';
+        }
+      }
+
+      function handleScroll() {
+        var scrollTop = window.pageYOffset || document.documentElement.scrollTop || 0;
+        setFixedState(scrollTop >= startTop + threshold);
+        ticking = false;
+      }
+
+      function requestTick() {
+        if (ticking) return;
+        ticking = true;
+        requestAnimationFrame(handleScroll);
+      }
+
+      updateMetrics();
+      handleScroll();
+
+      window.addEventListener('scroll', requestTick, { passive: true });
+      window.addEventListener('resize', function () {
+        if (sectionEl.classList.contains('is-fixed')) {
+          placeholder.style.height = sectionEl.offsetHeight + 'px';
+        }
+        updateMetrics();
+        handleScroll();
+      });
+    }
+  });
+</script>
+
+{% schema %}
+{
+  "name": "countdown-2026",
+  "class": "countdown-2026-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "PC title",
+      "default": "Spring Sale starts in"
+    },
+    {
+      "type": "textarea",
+      "id": "title_mobile",
+      "label": "Mobile title",
+      "default": "Spring Sale\nstarts in"
+    },
+    {
+      "type": "text",
+      "id": "end_date",
+      "label": "End date",
+      "info": "格式：2026-03-08T23:59:59",
+      "default": "2026-03-08T23:59:59"
+    },
+    {
+      "type": "checkbox",
+      "id": "is_countdown_every_day",
+      "label": "Countdown to 23:59:59 every day",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button text",
+      "default": "SHOW NOW"
+    },
+    {
+      "type": "url",
+      "id": "button_url",
+      "label": "Button link"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_fixed",
+      "label": "Enable fixed on scroll",
+      "default": false
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background",
+      "default": "#160203"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "time_box_bg",
+      "label": "Time box background",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "time_box_text",
+      "label": "Time box text color",
+      "default": "#111111"
+    },
+    {
+      "type": "color",
+      "id": "btn_color",
+      "label": "Button background",
+      "default": "#E1005A"
+    },
+    {
+      "type": "color",
+      "id": "btn_text_color",
+      "label": "Button text color",
+      "default": "#FFFFFF"
+    }
+  ],
+  "presets": [
+    {
+      "name": "countdown-2026"
+    }
+  ]
+}
+{% endschema %}
