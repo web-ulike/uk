@@ -191,6 +191,40 @@
 
     <!-- Cards -->
     <div class="sf-es__cards">
+      <div class="sf-es-signup" data-sf-es-subscribe>
+        {%- if st.heading != blank -%}
+          <h3 class="sf-es-signup__title">{{ st.heading }}</h3>
+        {%- endif -%}
+
+        {%- if st.desc != blank -%}
+          <div class="sf-es-signup__desc">{{ st.desc }}</div>
+        {%- endif -%}
+
+        <form class="sf-es-form" novalidate>
+          <div class="sf-es-form__row">
+            <input
+              class="sf-es-input"
+              type="email"
+              name="email"
+              placeholder="{{ st.email_placeholder }}"
+              autocomplete="email"
+              data-sf-es-email
+            >
+          </div>
+
+          <label class="sf-es-consent">
+            <input type="checkbox" data-sf-es-consent>
+            <span>{{ st.consent_html }}</span>
+          </label>
+
+          <button class="sf-es-btn" type="submit" data-sf-es-submit>
+            {{ st.button_text }}
+          </button>
+
+          <div class="sf-es-msg" hidden data-sf-es-msg></div>
+        </form>
+      </div>
+
       <!-- Card 1 -->
       <div class="sf-es-card sf-es-card--gift">
         <div class="sf-es-card__body">
@@ -237,6 +271,14 @@
         <div class="sf-es-card__body">
           {%- if st.card2_title != blank -%}
             <div class="sf-es-card__title">{{ st.card2_title }}</div>
+          {%- endif -%}
+
+          {%- if st.card2_text != blank -%}
+            <div class="sf-es-card__text sf-es-card__text--desktop">{{ st.card2_text }}</div>
+          {%- endif -%}
+
+          {%- if st.card2_note != blank -%}
+            <div class="sf-es-card__note sf-es-card__note--desktop">{{ st.card2_note }}</div>
           {%- endif -%}
 
           <form class="sf-es-form" novalidate>
@@ -754,12 +796,6 @@
     })();
 
     var subRoot = root.querySelector('[data-sf-es-subscribe]');
-    if (!subRoot) return;
-
-    var form = subRoot.querySelector('form');
-    var email = subRoot.querySelector('[data-sf-es-email]');
-    var consent = subRoot.querySelector('[data-sf-es-consent]');
-    var msg = subRoot.querySelector('[data-sf-es-msg]');
     var successText = root.getAttribute('data-success-text') || 'Subscription successful!';
 
     function validateEmail(v) {
@@ -780,62 +816,70 @@
       msg.className = 'sf-es-msg';
     }
 
-    var submitBtn = subRoot.querySelector('[data-sf-es-submit]');
     var MSG = window.ULIKE_MESSAGES || {};
 
-    form.addEventListener('submit', function (e) {
-      e.preventDefault();
-      clear();
+    root.querySelectorAll('[data-sf-es-subscribe]').forEach(function (subRoot) {
+      var form = subRoot.querySelector('form');
+      var email = subRoot.querySelector('[data-sf-es-email]');
+      var consent = subRoot.querySelector('[data-sf-es-consent]');
+      var msg = subRoot.querySelector('[data-sf-es-msg]');
+      var submitBtn = subRoot.querySelector('[data-sf-es-submit]');
+      if (!form) return;
 
-      var v = ((email && email.value) || '').trim();
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        clear(msg);
 
-      if (!v) {
-        email && email.focus();
-        return show('error', MSG.email_empty || '{{ st.error_empty | escape }}');
-      }
-      if (!validateEmail(v)) {
-        email && email.focus();
-        return show('error', MSG.email_invalid || '{{ st.error_email | escape }}');
-      }
-      if (consent && !consent.checked) {
-        return show('error', MSG.consent_required || '{{ st.error_consent | escape }}');
-      }
+        var v = ((email && email.value) || '').trim();
 
-      // Call the same subscribe API used by sf-banner
-      if (typeof window.subscriptionApiNew !== 'function') {
-        return show('error', MSG.default_error || 'Subscription service is unavailable.');
-      }
+        if (!v) {
+          email && email.focus();
+          return show(msg, 'error', MSG.email_empty || '{{ st.error_empty | escape }}');
+        }
+        if (!validateEmail(v)) {
+          email && email.focus();
+          return show(msg, 'error', MSG.email_invalid || '{{ st.error_email | escape }}');
+        }
+        if (consent && !consent.checked) {
+          return show(msg, 'error', MSG.consent_required || '{{ st.error_consent | escape }}');
+        }
 
-      // loading state
-      if (submitBtn) {
-        submitBtn.disabled = true;
-        submitBtn.classList.add('is-loading');
-      }
+        // Call the same subscribe API used by sf-banner
+        if (typeof window.subscriptionApiNew !== 'function') {
+          return show(msg, 'error', MSG.default_error || 'Subscription service is unavailable.');
+        }
 
-      window
-        .subscriptionApiNew(v, 'spring_festival', 'USER_SUBSCRIBE')
-        .then(function (res) {
-          // Compatible with your sf-banner return shape
-          if (res && res.code === 0) {
-            show('success', successText);
-            // keep value by default (same as banner). If you want clear, uncomment:
-            // form.reset();
-          } else {
-            var key = res && res.message ? res.message : '';
-            var errText = key && MSG[key] ? MSG[key] : MSG.default_error || '{{ st.error_email | escape }}';
-            show('error', errText);
-          }
-        })
-        .catch(function (err) {
-          console.error(err);
-          show('error', MSG.default_error || 'Something went wrong. Please try again.');
-        })
-        .finally(function () {
-          if (submitBtn) {
-            submitBtn.disabled = false;
-            submitBtn.classList.remove('is-loading');
-          }
-        });
+        // loading state
+        if (submitBtn) {
+          submitBtn.disabled = true;
+          submitBtn.classList.add('is-loading');
+        }
+
+        window
+          .subscriptionApiNew(v, 'spring_festival', 'USER_SUBSCRIBE')
+          .then(function (res) {
+            // Compatible with your sf-banner return shape
+            if (res && res.code === 0) {
+              show(msg, 'success', successText);
+              // keep value by default (same as banner). If you want clear, uncomment:
+              // form.reset();
+            } else {
+              var key = res && res.message ? res.message : '';
+              var errText = key && MSG[key] ? MSG[key] : MSG.default_error || '{{ st.error_email | escape }}';
+              show(msg, 'error', errText);
+            }
+          })
+          .catch(function (err) {
+            console.error(err);
+            show(msg, 'error', MSG.default_error || 'Something went wrong. Please try again.');
+          })
+          .finally(function () {
+            if (submitBtn) {
+              submitBtn.disabled = false;
+              submitBtn.classList.remove('is-loading');
+            }
+          });
+      });
     });
   });
 </script>
