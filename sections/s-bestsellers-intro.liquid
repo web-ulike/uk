@@ -1,0 +1,218 @@
+{%- liquid
+  assign sid = section.id
+  assign st = section.settings
+-%}
+
+<section id="s-bestsellers-{{ sid }}" class="s-bestsellers-intro">
+  <div class="s-bestsellers-intro__inner container">
+    <div class="s-bestsellers-intro__content">
+      {%- if st.heading != blank -%}
+        <h2 class="s-bestsellers-intro__heading">
+          <span class="s-bestsellers-intro__heading-text">{{ st.heading }}</span>
+          {%- if st.decor_image != blank -%}
+            {{
+              st.decor_image
+              | image_url: width: 80
+              | image_tag:
+                loading: 'lazy',
+                widths: '40,60,80',
+                class: 's-bestsellers-intro__decor-img',
+                alt: ''
+            }}
+          {%- endif -%}
+        </h2>
+      {%- endif -%}
+
+      {%- if st.subheading != blank -%}
+        <div class="s-bestsellers-intro__subheading">
+          <p>{{ st.subheading }}</p>
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+<style>
+  #s-bestsellers-{{ sid }} {
+    --bg: {{ st.background }};
+    --heading-color: {{ st.heading_color }};
+    --subheading-color: {{ st.subheading_color }};
+    --pt: {{ st.padding_top }}px;
+    --pb: {{ st.padding_bottom }}px;
+    --pt-m: {{ st.mobile_padding_top }}px;
+    --pb-m: {{ st.mobile_padding_bottom }}px;
+    background: var(--bg);
+  }
+
+  #s-bestsellers-{{ sid }} .s-bestsellers-intro__inner {
+    padding-top: var(--pt);
+    padding-bottom: var(--pb);
+  }
+
+  #s-bestsellers-{{ sid }} .s-bestsellers-intro__heading {
+    margin: 0;
+    position: relative;
+    font-size: 56px;
+    font-family: "Bodoni-Book";
+    line-height: 1;
+    color: var(--heading-color);
+    font-weight: inherit;
+  }
+
+  #s-bestsellers-{{ sid }} .s-bestsellers-intro__heading-text {
+    display: inline;
+  }
+
+  #s-bestsellers-{{ sid }} .s-bestsellers-intro__decor-img {
+    display: inline-block !important;
+    width: 30px;
+    height: auto;
+    margin-left: 4px;
+    vertical-align: top;
+    transform: translateY(2px);
+    float: none !important;
+    position: static !important;
+  }
+
+  #s-bestsellers-{{ sid }} .s-bestsellers-intro__subheading {
+    margin-top: 20px;
+  }
+
+  #s-bestsellers-{{ sid }} .s-bestsellers-intro__subheading p {
+    margin: 0;
+    font-size: 18px;
+    line-height: 1.4;
+    color: var(--subheading-color);
+  }
+
+  @media screen and (max-width: 999px) {
+
+    #s-bestsellers-{{ sid }} .s-bestsellers-intro__inner {
+      padding-top: var(--pt-m);
+      padding-bottom: var(--pb-m);
+    }
+
+    #s-bestsellers-{{ sid }} .s-bestsellers-intro__content {
+      max-width: 100%;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    #s-bestsellers-{{ sid }} .s-bestsellers-intro__heading {
+      width: 100%;
+      margin: 0 auto;
+      text-align: center;
+      font-size: 28px;
+      line-height: 1.1;
+    }
+
+    #s-bestsellers-{{ sid }} .s-bestsellers-intro__heading-text {
+      display: inline;
+    }
+
+    #s-bestsellers-{{ sid }} .s-bestsellers-intro__decor-img {
+      width: 15px;
+      margin-left: 2px;
+      vertical-align: top;
+      transform: translateY(1px);
+    }
+
+    #s-bestsellers-{{ sid }} .s-bestsellers-intro__subheading {
+      margin-top: 10px;
+    }
+
+    #s-bestsellers-{{ sid }} .s-bestsellers-intro__subheading p {
+      font-size: 12px;
+      line-height: 1.2;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "s Bestsellers Intro",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Bestsellers"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "The next-generation in simple and smooth skin."
+    },
+    {
+      "type": "image_picker",
+      "id": "decor_image",
+      "label": "Decor image"
+    },
+    {
+      "type": "text",
+      "id": "background",
+      "label": "Background",
+      "info": "Supports color or gradient. Example: #FFFFFF or linear-gradient(180deg, #FFF5F8 0%, #FFFFFF 100%).",
+      "default": "#fff"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading Color",
+      "default": "#E0004D"
+    },
+    {
+      "type": "color",
+      "id": "subheading_color",
+      "label": "Subheading Color",
+      "default": "#190A0A"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding top desktop",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "default": 44
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding bottom desktop",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "mobile_padding_top",
+      "label": "Padding top mobile",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 28
+    },
+    {
+      "type": "range",
+      "id": "mobile_padding_bottom",
+      "label": "Padding bottom mobile",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 20
+    }
+  ],
+  "presets": [
+    {
+      "name": "s Bestsellers Intro"
+    }
+  ]
+}
+{% endschema %}
