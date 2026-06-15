@@ -529,12 +529,14 @@
   /* cards */
   #sf-es-{{ sid }} .sf-es__cards{
     display: grid;
-    grid-template-columns: minmax(260px, 32%) 1fr;
+    grid-template-columns: minmax(260px, 32%) repeat(2, minmax(0, 1fr));
     gap: 20px 24px;
     align-items: end;
   }
 
   #sf-es-{{ sid }} .sf-es-signup{
+    order: -1;
+    grid-column: 1;
     align-self: end;
     max-width: 340px;
     padding-bottom: 66px;
@@ -555,6 +557,7 @@
   }
 
   #sf-es-{{ sid }} .sf-es-card{
+    grid-column: auto;
     min-width: 0;
     display: flex;
     flex-direction: column-reverse;
@@ -605,6 +608,9 @@
     border-radius: var(--sf-es-radius);
     background: var(--sf-es-card);
     overflow: hidden;
+  }
+  #sf-es-{{ sid }} .sf-es-card__body{
+    min-width: 0;
   }
   #sf-es-{{ sid }} .sf-es-card__picture{
     display: block;
@@ -759,12 +765,30 @@
     #sf-es-{{ sid }} .sf-es__cards{
       grid-template-columns: 1fr;
       gap: 12px;
+      align-items: stretch;
+    }
+    #sf-es-{{ sid }} .sf-es-signup{
+      display: none;
     }
     #sf-es-{{ sid }} .sf-es-card{
+      display: flex;
+      flex-direction: row;
       padding: 15px;
       gap: 10px;
-      grid-template-columns: 55% 45%;
-      align-items: start;
+      align-items: center;
+      border-radius: var(--sf-es-radius);
+      background: var(--sf-es-card);
+      overflow: hidden;
+    }
+    #sf-es-{{ sid }} .sf-es-card--sub .sf-es-form{
+      display: block;
+    }
+    #sf-es-{{ sid }} .sf-es-card--sub .sf-es-card__text--desktop,
+    #sf-es-{{ sid }} .sf-es-card--sub .sf-es-card__note--desktop{
+      display: none;
+    }
+    #sf-es-{{ sid }} .sf-es-card__body{
+      flex: 1 1 55%;
     }
     #sf-es-{{ sid }} .sf-es-card__title {
       font-size: 16px;
@@ -778,6 +802,11 @@
     }
 
     #sf-es-{{ sid }} .sf-es-card__media{
+      flex: 0 0 42%;
+      width: 42%;
+      aspect-ratio: auto;
+      border-radius: 0;
+      background: transparent;
       justify-content: center;
     }
     #sf-es-{{ sid }} .sf-es-btn{
@@ -787,7 +816,7 @@
       font-size: 8px;
     }
     #sf-es-{{ sid }} .sf-es-form{
-      marign: 0px;
+      margin: 0px;
     }
     #sf-es-{{ sid }} .sf-es-input{
       height: 30px;
@@ -831,21 +860,20 @@
       setInterval(tick, 1000);
     })();
 
-    var subRoot = root.querySelector('[data-sf-es-subscribe]');
     var successText = root.getAttribute('data-success-text') || 'Subscription successful!';
 
     function validateEmail(v) {
       return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(v || '').trim());
     }
 
-    function show(type, text) {
+    function show(msg, type, text) {
       if (!msg) return;
       msg.hidden = false;
       msg.className = 'sf-es-msg ' + (type === 'success' ? 'is-success' : 'is-error');
       msg.textContent = text;
     }
 
-    function clear() {
+    function clear(msg) {
       if (!msg) return;
       msg.hidden = true;
       msg.textContent = '';
