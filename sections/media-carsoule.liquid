@@ -18,7 +18,7 @@
 
   <section>
    <div class="media-carousel">
-    <h2 class="js-bounce"  aria-label="Your Exclusive Luxury Self-Care Experience" data-repeat="true"></h2>
+    <h2 class="js-bounce"  aria-label="{{ section.settings.tle }}" data-repeat="true"></h2>
         <custom-swiper-new 
   slides-per-view="1.3" 
   space-between="5" 
@@ -31,12 +31,33 @@
 >
     <div class="media-carousel-container swiper-container to-top">
       <div class="media-carousel-wrapper swiper-wrapper">
+
+
+ {% for block in section.blocks %}
+
         <div class="media-carousel-list swiper-slide">
            <picture class="media-carousel-img">
-              <source media="(min-width: 1024px)" srcset="./images/uk-brand/2-1.png">
-              <img src="./images/uk-brand/2-1.png" alt="" loading="lazy">
+                     {%- if block.settings.image_mobile -%}
+          <source media="(max-width: 767px)" srcset="{{ block.settings.image_mobile | image_url }}">
+               {%- endif -%}
+           {%- if block.settings.image -%}
+          <img src="{{ block.settings.image | image_url }}" alt="{{ block.settings.image.alt }}" loading="lazy" decoding="async">
+            {%- endif -%}
             </picture>
-            <div class="play-button" data-video="https://uk.ulike.com/cdn/shop/videos/c/vp/6bfd0fb8c5804fe6a24436679676325b/6bfd0fb8c5804fe6a24436679676325b.HD-720p-1.6Mbps-33764216.mp4?v=0">
+
+
+            {% if block.settings.video %}
+
+                 {% assign video_url = '' %}
+
+                {% for source in block.settings.video.sources %}
+                {% if source.mime_type == 'video/mp4' %}
+                    {% assign video_url = source.url %}
+                {% endif %}
+                {% endfor %}
+
+
+            <div class="play-button" data-video="{{ video_url }}">
               <svg  width="75" height="75" viewBox="0 0 75 75" fill="none">
                 <g clip-path="url(#clip0_2066_159)">
                   <path d="M37.4996 74.9999C28.8481 74.995 20.4642 71.9997 13.7683 66.5213C7.07238 61.0429 2.47604 53.4183 0.757919 44.9392C-0.960203 36.46 0.305531 27.6476 4.3407 19.9948C8.37588 12.3419 14.9324 6.31926 22.8996 2.94694C32.0636 -0.925218 42.3905 -0.99839 51.6085 2.74352C60.8264 6.48544 68.1804 13.7359 72.0526 22.8999C75.9247 32.064 75.9979 42.3909 72.256 51.6088C68.5141 60.8268 61.2636 68.1808 52.0996 72.0529C47.4808 74.0078 42.5149 75.0101 37.4996 74.9999ZM29.3806 22.0709C29.1153 22.0709 28.861 22.1763 28.6734 22.3638C28.4859 22.5514 28.3806 22.8057 28.3806 23.0709V51.9259C28.3806 52.1039 28.4281 52.2787 28.5182 52.4322C28.6084 52.5857 28.7378 52.7123 28.8933 52.7991C29.0487 52.8858 29.2245 52.9295 29.4024 52.9256C29.5804 52.9217 29.7541 52.8704 29.9056 52.7769L53.3456 38.3519C53.4903 38.2623 53.6097 38.1371 53.6925 37.9884C53.7753 37.8396 53.8188 37.6722 53.8188 37.5019C53.8188 37.3317 53.7753 37.1643 53.6925 37.0155C53.6097 36.8668 53.4903 36.7416 53.3456 36.6519L29.8996 22.2209C29.7436 22.1243 29.564 22.0724 29.3806 22.0709Z" fill="white"/>
@@ -48,32 +69,15 @@
                 </defs>
               </svg>
             </div>
+        {% endif %}
+
 
         </div>
-         <div class="media-carousel-list swiper-slide">
-           <picture class="media-carousel-img">
-              <source media="(min-width: 1024px)" srcset="./images/uk-brand/2-1.png">
-              <img src="./images/uk-brand/2-1.png" alt="" loading="lazy">
-            </picture>
-        </div>
-         <div class="media-carousel-list swiper-slide">
-           <picture class="media-carousel-img">
-              <source media="(min-width: 1024px)" srcset="./images/uk-brand/2-1.png">
-              <img src="./images/uk-brand/2-1.png" alt="" loading="lazy">
-            </picture>
-        </div>
-         <div class="media-carousel-list swiper-slide">
-           <picture class="media-carousel-img">
-              <source media="(min-width: 1024px)" srcset="./images/uk-brand/2-1.png">
-              <img src="./images/uk-brand/2-1.png" alt="" loading="lazy">
-            </picture>
-        </div>
-         <div class="media-carousel-list swiper-slide">
-           <picture class="media-carousel-img">
-              <source media="(min-width: 1024px)" srcset="./images/uk-brand/2-1.png">
-              <img src="./images/uk-brand/2-1.png" alt="" loading="lazy">
-            </picture>
-        </div>
+          {% endfor %}
+
+
+
+
       </div>
     </div>
     <div class="media-carousel-nav to-top">
