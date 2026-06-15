@@ -1,0 +1,101 @@
+<style>
+         #shopify-section-{{ section.id }} {
+      --section-background: {{ section.settings.background }};
+       background: var(--section-background);
+   }
+     .media-{{ section.id }}-padding {
+    padding-top: calc({{ section.settings.padding_top }}px);
+    padding-bottom: calc({{ section.settings.padding_bottom }}px);
+  }
+@media screen and (max-width: 768px){
+  .media-{{ section.id }}-padding {
+    padding-top: calc({{ section.settings.mobile_padding_top }}px);
+    padding-bottom: calc({{ section.settings.mobile_padding_bottom }}px );
+  }
+}
+
+</style>
+
+  <section>
+  <div class="exclusive-care-space">
+    <div class="exclusive-care-space-box">
+       <picture class="exclusive-care-space__image exclusive-care-space__image--1" data-speed="2" mobile-data-speed="4">
+        <source media="(min-width: 1024px)" srcset="./images/uk-brand/1-1.png">
+        <img src="./images/uk-brand/mob-1-1.png" alt="" loading="lazy">
+      </picture>
+       <picture class="exclusive-care-space__image exclusive-care-space__image--2" data-speed="3" mobile-data-speed="3">
+        <source media="(min-width: 1024px)" srcset="./images/uk-brand/1-2.png">
+        <img src="./images/uk-brand/mob-1-2.png" alt="" loading="lazy">
+      </picture>
+       <picture class="exclusive-care-space__image exclusive-care-space__image--3" data-speed="4" mobile-data-speed="2">
+        <source media="(min-width: 1024px)" srcset="./images/uk-brand/1-3.png">
+        <img src="./images/uk-brand/mob-1-3.png" alt="" loading="lazy">
+      </picture>
+       <picture class="exclusive-care-space__image exclusive-care-space__image--4" data-speed="3" mobile-data-speed="1">
+        <source media="(min-width: 1024px)" srcset="./images/uk-brand/1-4.png">
+        <img src="./images/uk-brand/mob-1-4.png" alt="" loading="lazy">
+      </picture>
+      <div class="exclusive-care-space-content">
+        <div class="exclusive-care-space-wrapper">
+            <div class="exclusive-care-space-tle js-bounce" aria-label="Your Exclusive Luxury Self-Care Experience" data-repeat="true"></div>
+          <div class="exclusive-care-space-txt to-top" data-repeat="true">
+            <p>The Ulike Self-Care Space evolves into an exclusive luxe hotel suite experience, hosted in selected premium hotels across Europe's most influential cities.</p>
+            <p>Each suite becomes a private self-care sanctuary, where advanced beauty technology meets the comfort and refinement of a luxury stay.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </section>
+
+<script>
+
+{% schema %}
+{
+  "name": "exclusive-care",
+  "settings": [
+    {
+      "type": "text",
+      "id": "tle",
+      "label": "Title"
+    },
+    {
+      "type": "text",
+      "id": "txt",
+      "label": "Text"
+    },
+       {
+      "type": "color_background",
+      "id": "background",
+      "label": "Background",
+      "default": "#ffffff"
+    }
+  ],
+  "blocks": [
+    {
+        "type": "item",
+        "name": "item",
+        "settings": [
+                          {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Images"
+        },
+     {
+          "type": "image_picker",
+          "id": "image_mobile",
+          "label": "Mobile Images"
+        }
+        ]
+      }
+  ],
+  "presets": [
+    {
+      "name": "exclusive-care",
+      "settings": {},
+      "blocks": [
+      ]
+    }
+  ]
+}
+{% endschema %}
