@@ -176,6 +176,40 @@
 
     <!-- Cards -->
     <div class="sf-es__cards">
+      <div class="sf-es-signup" data-sf-es-subscribe>
+        {%- if st.card1_title != blank -%}
+          <h3 class="sf-es-signup__title">{{ st.card1_title }}</h3>
+        {%- endif -%}
+
+        {%- if st.card1_text != blank -%}
+          <div class="sf-es-signup__desc">{{ st.card1_text }}</div>
+        {%- endif -%}
+
+        <form class="sf-es-form" novalidate>
+          <div class="sf-es-form__row">
+            <input
+              class="sf-es-input"
+              type="email"
+              name="email"
+              placeholder="{{ st.email_placeholder }}"
+              autocomplete="email"
+              data-sf-es-email
+            >
+          </div>
+
+          <label class="sf-es-consent">
+            <input type="checkbox" data-sf-es-consent>
+            <span>{{ st.consent_html }}</span>
+          </label>
+
+          <button class="sf-es-btn" type="submit" data-sf-es-submit>
+            {{ st.button_text }}
+          </button>
+
+          <div class="sf-es-msg" hidden data-sf-es-msg></div>
+        </form>
+      </div>
+
       <!-- Card 1 -->
       <div class="sf-es-card">
         <div class="sf-es-card__media" aria-hidden="true">
@@ -277,39 +311,6 @@
         </div>
       </div>
 
-      <div class="sf-es-signup" data-sf-es-subscribe>
-        {%- if st.card1_title != blank -%}
-          <h3 class="sf-es-signup__title">{{ st.card1_title }}</h3>
-        {%- endif -%}
-
-        {%- if st.card1_text != blank -%}
-          <div class="sf-es-signup__desc">{{ st.card1_text }}</div>
-        {%- endif -%}
-
-        <form class="sf-es-form" novalidate>
-          <div class="sf-es-form__row">
-            <input
-              class="sf-es-input"
-              type="email"
-              name="email"
-              placeholder="{{ st.email_placeholder }}"
-              autocomplete="email"
-              data-sf-es-email
-            >
-          </div>
-
-          <label class="sf-es-consent">
-            <input type="checkbox" data-sf-es-consent>
-            <span>{{ st.consent_html }}</span>
-          </label>
-
-          <button class="sf-es-btn" type="submit" data-sf-es-submit>
-            {{ st.button_text }}
-          </button>
-
-          <div class="sf-es-msg" hidden data-sf-es-msg></div>
-        </form>
-      </div>
     </div>
   </div>
 </section>
@@ -485,14 +486,12 @@
   /* cards */
   #sf-es-{{ sid }} .sf-es__cards{
     display: grid;
-    grid-template-columns: minmax(280px, 32%) repeat(2, minmax(0, 1fr));
+    grid-template-columns: minmax(280px, 1fr) 420px 420px;
     gap: 32px;
     align-items: center;
   }
 
   #sf-es-{{ sid }} .sf-es-signup{
-    order: -1;
-    grid-column: 1;
     align-self: center;
     justify-self: center;
     width: 100%;
