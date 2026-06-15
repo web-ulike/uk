@@ -356,6 +356,20 @@
                      <div class="preheat-specialist-name line-top">{{ block.settings.text1 }}</div>
                     <div class="preheat-specialist-sub line-top">{{ block.settings.text2 }}</div>
                   </div>
+
+
+
+
+
+                  {% if block.settings.btn_text != blank %}
+                                          {% assign video_url = '' %}
+                {% for source in block.settings.video.sources %}
+                {% if source.mime_type == 'video/mp4' %}
+                    {% assign video_url = source.url %}
+                {% endif %}
+                {% endfor %}
+                  <div class="play-button preheat-specialist__btn" data-video="{{ video_url }}"> {{ block.settings.btn_text }} </div>
+                  {%  endif %}
                 </div>
               </div>
             {%- endfor -%}
@@ -558,7 +572,22 @@
             "type": "text",
             "id": "text2",
             "label": "Text"
-          }
+          },
+                {
+          "type": "video",
+          "id": "video",
+          "label": "Video"
+        },
+             {
+          "type": "video",
+          "id": "mb_video",
+          "label": "Mobile Video"
+        },
+         {
+      "type": "text",
+      "id": "btn_text",
+      "label": "button Text"
+    }
         ]
       }
   ],
