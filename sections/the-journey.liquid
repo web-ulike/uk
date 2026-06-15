@@ -1,0 +1,278 @@
+<style>
+         #shopify-section-{{ section.id }} {
+      --section-background: {{ section.settings.background }};
+       background: var(--section-background);
+   }
+     .media-{{ section.id }}-padding {
+    padding-top: calc({{ section.settings.padding_top }}px);
+    padding-bottom: calc({{ section.settings.padding_bottom }}px);
+  }
+@media screen and (max-width: 768px){
+  .media-{{ section.id }}-padding {
+    padding-top: calc({{ section.settings.mobile_padding_top }}px);
+    padding-bottom: calc({{ section.settings.mobile_padding_bottom }}px );
+  }
+}
+  /* the-journey start */
+
+   .the-journey{
+    position: relative;
+   }
+   .the-journey-bg img{
+    height: 750px;
+    width: 100%;
+    object-fit: cover;
+   }
+
+   .the-journey-pos{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    inset: 0;
+    display: flex;
+    align-items: flex-end;
+   }
+   .the-journey-cnt{
+    display: flex;
+   }
+.the-journey-pos h3{
+  color:  #190A0A;
+        font-family: 'Sans';
+font-size: 48px;
+font-style: normal;
+font-weight: 400;
+line-height: 120%; 
+margin-bottom: 154px;
+}
+.the-journey-item{
+  display: flex;
+  flex: 1;
+}
+.the-journey-line{
+  width: 1px;
+  height: 100%;
+  background-color: #3F3636;
+  position: relative;
+}
+.the-journey-line::before{
+  content: '';
+  display: block;
+  position: absolute;
+  width: 6px;
+  height: 6px;
+   background-color: #3F3636;
+   border-radius: 50%;
+   left: 50%;
+   transform: translateX(-50%);
+}
+.the-journey-rt{
+  padding-left: 40px;
+  padding-bottom: 112px;
+}
+.the-journey-rt img{
+  max-width: 360px;
+}
+.the-journey-rt .the-journey-time{
+  color:  #E0004D;
+        font-family: 'Sans';
+font-size: 16px;
+font-style: normal;
+font-weight: 400;
+line-height: 120%;
+margin-bottom: 8px;
+}
+.the-journey-tle{
+  color:  #3F3636;
+        font-family: 'Sans';
+font-size: 24px;
+font-style: normal;
+font-weight: 400;
+line-height: 120%;
+  margin-bottom: 8px;
+}
+.the-journey-p{
+  color:  #3F3636;
+        font-family: 'Sans';
+font-size: 16px;
+font-style: normal;
+font-weight: 400;
+line-height: 120%; 
+max-width: 255px;
+}
+.js-brand-line .the-journey-line{
+  transform: scaleY(0);
+  transform-origin: center bottom;
+transition: transform 1.2s, opacity 1.2s ease-in-out;
+}
+.js-brand-line .the-journey-rt{
+    opacity: 0;
+    transform: translateY(20%);
+}
+.js-brand-line.appear .the-journey-line{
+  transform: scaleY(1);
+}
+.js-brand-line.appear .the-journey-rt{
+    opacity: 1;
+    transform: translateY(0%);
+    transition: transform 1s, opacity 1s ease-in-out;
+}
+  @media screen and (max-width: 1023px) {
+    .the-journey .container{
+      padding: 0;
+    }
+    .the-journey-pos h3{
+      font-size: 28px;
+      margin-bottom: 56px;
+      padding: 0 var(--container-gutter);
+    }
+    .the-journey-cnt-scroll{
+      overflow-x: auto;
+      padding-left: var(--container-gutter);
+    }
+    .the-journey-rt{
+          padding-left: 20px;
+    padding-bottom: 57px;
+    }
+    .the-journey-rt .the-journey-time{
+      font-size: 12px;
+      margin-bottom: 6px;
+    }
+    .the-journey-tle {
+ font-size: 18px;
+
+    margin-bottom: 6px;
+}
+.the-journey-p {
+    font-size: 12px;
+    max-width: 192px;
+    margin-bottom: 15px;
+}
+.the-journey-rt img {
+    max-width: 272px;
+}
+.the-journey-cnt {
+  gap: 30px;
+}
+.the-journey-bg img {
+    height: 442px;
+}
+  }
+   /* the-journey end */
+</style>
+
+  <section>
+
+   <div class="the-journey">
+       <picture class="the-journey-bg">
+             {%- if section.settings.image_mobile -%}
+          <source media="(max-width: 767px)" srcset="{{ section.settings.image_mobile | image_url }}">
+               {%- endif -%}
+           {%- if section.settings.image -%}
+          <img src="{{ section.settings.image | image_url }}" alt="{{ section.settings.image.alt }}" loading="lazy" decoding="async">
+            {%- endif -%}
+            </picture>
+            <div class="the-journey-pos">
+    <div class="container">
+      <div class="the-journey-wrapper">
+            <h3 class="js-bounce"  aria-label="{{ section.settings.tle }}" data-repeat="true"></h3>
+            <div class="the-journey-cnt-scroll">
+        <div class="the-journey-cnt js-brand-line">
+
+
+
+              {% for block in section.blocks %}
+          <div class="the-journey-item">
+            <div class="the-journey-line"></div>
+            <div class="the-journey-rt" style="transition-delay: 0.2s;">
+                  {%  if block.settings.date_txt != blank %}
+              <div class="the-journey-time">{{ block.settings.date_txt }}</div>
+               {% endif %}
+                {%  if block.settings.tle != blank %}
+              <div class="the-journey-tle">{{ block.settings.tle }}</div>
+                {% endif %}
+              {%  if block.settings.txt != blank %}
+               <div class="the-journey-p">{{ block.settings.txt }}</div>
+                {% endif %}
+               {%  if block.settings.image %}
+               <img src="{{ block.settings.image | image_url }}" alt="">
+               {% endif %}
+            </div>
+          </div>
+            {% endfor %}
+
+
+
+        </div>
+        </div>
+      </div>
+    </div>
+    </div>
+  </div>
+  </section>
+
+<script>
+
+{% schema %}
+{
+  "name": "the-journey",
+  "settings": [
+    {
+      "type": "text",
+      "id": "tle",
+      "label": "Title"
+    },
+     {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Images"
+        },
+     {
+          "type": "image_picker",
+          "id": "image_mobile",
+          "label": "Mobile Images"
+        }
+  ],
+  "blocks": [
+                {
+        "type": "item",
+        "name": "item",
+        "settings": [
+           {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Images"
+        },
+     {
+          "type": "image_picker",
+          "id": "image_mobile",
+          "label": "Mobile Images"
+        },
+           {
+          "type": "text",
+          "id": "date_txt",
+          "label": "Date"
+        },
+          {
+          "type": "text",
+          "id": "tle",
+          "label": "Title"
+        },
+         {
+          "type": "text",
+          "id": "txt",
+          "label": "Text"
+        }
+          
+        ]
+      }
+  ],
+  "presets": [
+    {
+      "name": "the-journey",
+      "settings": {},
+      "blocks": [
+      ]
+    }
+  ]
+}
+{% endschema %}
