@@ -115,24 +115,19 @@ line-height: 125%;
       </div>
       <div class="household-easy-ico">
            {% for block in section.blocks %}
+
+               {%- case block.type -%}
+                  {%- when 'item' -%}
         <div class="household-ico-item to-top" style="transition-delay: 0.3s;">
-          <img src="./images/uk-brand/doctor1.svg" alt="" loading="lazy">
-          <div class="household-ico-txt">NO TIME CONSUMING</div>
+            {% if block.settings.image  %}
+          <img src="{{ block.settings.image | image_url }}" alt="" loading="lazy">
+          {% endif %}
+          <div class="household-ico-txt">{{ block.settings.tle }}</div>
         </div>
+    {% endcase %}
            {% endfor %}
 
-        <div class="household-ico-item to-top" style="transition-delay: 0.5s;">
-          <img src="./images/uk-brand/doctor1.svg" alt="" loading="lazy">
-          <div class="household-ico-txt">NO TIME CONSUMING</div>
-        </div>
-        <div class="household-ico-item to-top" style="transition-delay: 0.7s;">
-          <img src="./images/uk-brand/doctor1.svg" alt="" loading="lazy">
-          <div class="household-ico-txt">NO TIME CONSUMING</div>
-        </div>
-        <div class="household-ico-item to-top" style="transition-delay: 0.9s;">
-          <img src="./images/uk-brand/doctor1.svg" alt="" loading="lazy">
-          <div class="household-ico-txt">NO TIME CONSUMING</div>
-        </div>
+
       </div>
 
 
@@ -152,13 +147,20 @@ line-height: 125%;
 
 
               {% for block in section.blocks %}
+
+                   {%- case block.type -%}
+                  {%- when 'img' -%}
           <div class="household-easy-swiper-slide swiper-slide">
             <picture class="household-easy-swiper-pic">
-              <source media="(min-width: 1024px)" srcset="./images/uk-brand/household1.png">
-              <img src="./images/uk-brand/household1.png" alt="" loading="lazy">
+              {%- if block.settings.image_mobile -%}
+          <source media="(max-width: 767px)" srcset="{{ block.settings.image_mobile | image_url }}">
+               {%- endif -%}
+           {%- if block.settings.image -%}
+          <img src="{{ block.settings.image | image_url }}" alt="{{ block.settings.image.alt }}" loading="lazy" decoding="async">
+            {%- endif -%}
             </picture>
           </div>
-
+    {% endcase %}
    {% endfor %}
 
 
@@ -221,15 +223,43 @@ line-height: 125%;
         }
   ],
   "blocks": [
-    {
+                {
         "type": "item",
         "name": "item",
         "settings": [
-            {
-      "type": "text",
-      "id": "txt",
-      "label": "Text"
-    },
+           {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Images"
+        },
+     {
+          "type": "image_picker",
+          "id": "image_mobile",
+          "label": "Mobile Images"
+        },
+           {
+          "type": "text",
+          "id": "tle",
+          "label": "Title"
+        }
+          
+        ]
+      },
+      {
+        "type": "img",
+        "name": "Images",
+        "settings": [
+           {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Images"
+        },
+     {
+          "type": "image_picker",
+          "id": "image_mobile",
+          "label": "Mobile Images"
+        }
+          
         ]
       }
   ],
