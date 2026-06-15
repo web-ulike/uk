@@ -13,20 +13,98 @@
     padding-bottom: calc({{ section.settings.mobile_padding_bottom }}px );
   }
 }
+   /* brand-img-cnt start */
+.brand-img-cnt{
+  position: relative;
+}
+.brand-img-cnt .brand-img-cnt-box{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+}
+.brand-img-cnt-box-wrp{
 
+}
+.brand-img-cnt-box .container{
+      display: flex;
+    justify-content: flex-end;
+}
+.brand-img-cnt  .brand-img-cnt-box-wrp{
+    max-width: 513px;
+    padding-top: 120px;
+}
+.brand-img-cnt-box-wrp h3{
+  color: #FFF;
+        font-family: 'Sans';
+font-size: 48px;
+font-style: normal;
+font-weight: 400;
+line-height: 120%; 
+text-transform: uppercase;
+margin-bottom: 20px;
+}
+.brand-img-cnt-box-wrp .brand-img-cnt-txt{
+  color: #FFF;
+        font-family: 'Sans';
+font-size: 18px;
+font-style: normal;
+font-weight: 400;
+line-height: 150%; 
+font-style: italic;
+
+}
+.brand-img-cnt-pic{
+  height: 600px;
+  width: 100%;
+}
+.brand-img-cnt-pic img{
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+}
+  @media screen and (max-width: 1023px) {
+    .brand-img-cnt-pic {
+    height: auto;
+    width: 100%;
+}
+.brand-img-cnt-box .container{
+  justify-content: center;
+}
+.brand-img-cnt .brand-img-cnt-box-wrp {
+    max-width: 308px;
+    padding-top: 56px;
+    text-align: center;
+}
+.brand-img-cnt-box-wrp h3{
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+.brand-img-cnt-box-wrp .brand-img-cnt-txt{
+  font-size: 12px;
+font-style: normal;
+
+}
+  }
+/* brand-img-cnt end */
 </style>
 
   <section>
   <div class="brand-img-cnt">
      <picture class="brand-img-cnt-pic to-top">
-              <source media="(min-width: 1024px)" srcset="./images/uk-brand/3-1.png">
-              <img src="./images/uk-brand/mob-3-1.png" alt="" loading="lazy">
+            {%- if section.settings.image_mobile -%}
+          <source media="(max-width: 767px)" srcset="{{ section.settings.image_mobile | image_url }}">
+               {%- endif -%}
+           {%- if section.settings.image -%}
+          <img src="{{ section.settings.image | image_url }}" alt="{{ section.settings.image.alt }}" loading="lazy" decoding="async">
+            {%- endif -%}
             </picture>
     <div class="brand-img-cnt-box">
       <div class="container">
       <div class="brand-img-cnt-box-wrp">
-         <h3 class="js-bounce"  aria-label="The Experience" data-repeat="true"></h3>
-        <div class="brand-img-cnt-txt to-top" data-repeat="true">Guests move through a calming, thoughtfully designed space, experiencing how effortless smooth skin can be —without the time, pain, or upkeep of traditional methods.</div>
+         <h3 class="js-bounce"  aria-label="{{ section.settings.tle }}" data-repeat="true"></h3>
+        <div class="brand-img-cnt-txt to-top" data-repeat="true">{{ section.settings.txt }}</div>
       </div>
       </div>
     </div>
@@ -43,6 +121,11 @@
       "type": "text",
       "id": "tle",
       "label": "Title"
+    },
+        {
+      "type": "text",
+      "id": "txt",
+      "label": "Text"
     },
                {
           "type": "image_picker",
