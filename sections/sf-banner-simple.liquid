@@ -1,0 +1,335 @@
+{%- comment -%}
+  Section: sf-banner-simple
+  - No subscribe / No topbar / No JS
+  - Title split: PC vs Mobile (text + image options)
+{%- endcomment -%}
+
+{%- liquid
+  assign sid = section.id
+  assign st = section.settings
+-%}
+
+<section id="sf-banner-simple-{{ sid }}" class="sf-banner-simple">
+  <!-- Background -->
+  <div class="sf-banner-simple__bg" aria-hidden="true">
+    {% if st.bg_mobile != blank or st.bg_pc != blank %}
+      <picture>
+        {% if st.bg_mobile != blank %}
+          <source
+            media="(max-width: 768px)"
+            srcset="
+              {{ st.bg_mobile | image_url: width: 640 }} 640w,
+              {{ st.bg_mobile | image_url: width: 960 }} 960w,
+              {{ st.bg_mobile | image_url: width: 1200 }} 1200w
+            "
+            sizes="100vw"
+          >
+        {% endif %}
+
+        {% if st.bg_pc != blank %}
+          <source
+            media="(min-width: 769px)"
+            srcset="
+              {{ st.bg_pc | image_url: width: 1280 }} 1280w,
+              {{ st.bg_pc | image_url: width: 1600 }} 1600w,
+              {{ st.bg_pc | image_url: width: 1920 }} 1920w,
+              {{ st.bg_pc | image_url: width: 2400 }} 2400w
+            "
+            sizes="100vw"
+          >
+        {% endif %}
+
+        {% assign fallback_bg = st.bg_pc | default: st.bg_mobile %}
+        {% if fallback_bg != blank %}
+          {{
+            fallback_bg
+            | image_url: width: 2400
+            | image_tag:
+              class: 'sf-banner-simple__bg-img',
+              loading: 'eager',
+              fetchpriority: 'high',
+              decoding: 'async',
+              alt: fallback_bg.alt
+          }}
+        {% endif %}
+      </picture>
+    {% endif %}
+  </div>
+
+  <!-- Content -->
+  <div class="sf-banner-simple__inner container">
+    <div class="sf-banner-simple__grid">
+      <div class="sf-banner-simple__content">
+        {% if st.eyebrow != blank %}
+          <p class="sf-banner-simple__eyebrow">{{ st.eyebrow }}</p>
+        {% endif %}
+
+        {%- comment -%} Title {%- endcomment -%}
+        <div class="sf-banner-simple__title">
+          {% if st.title_image_pc != blank or st.title_image_mobile != blank %}
+            {% assign title_fallback = st.title_image_pc | default: st.title_image_mobile %}
+            <picture class="sf-banner-simple__title-picture">
+              {% if st.title_image_mobile != blank %}
+                <source
+                  media="(max-width: 768px)"
+                  srcset="{{ st.title_image_mobile | image_url: width: 700 }}"
+                >
+              {% endif %}
+              {% if st.title_image_pc != blank %}
+                <source
+                  media="(min-width: 769px)"
+                  srcset="{{ st.title_image_pc | image_url: width: 900 }}"
+                >
+              {% endif %}
+              {{
+                title_fallback
+                | image_url: width: 900
+                | image_tag:
+                  class: 'sf-banner-simple__title-img',
+                  loading: 'eager',
+                  fetchpriority: 'high',
+                  decoding: 'async',
+                  alt: title_fallback.alt
+              }}
+            </picture>
+          {% elsif st.title != blank %}
+            <h2 class="sf-banner-simple__title-text">{{ st.title }}</h2>
+          {% endif %}
+        </div>
+
+        {% if st.subtitle != blank %}
+          <div class="sf-banner-simple__subtitle">{{ st.subtitle }}</div>
+        {% endif %}
+
+        {% if st.cta_text != blank and st.cta_link != blank %}
+          <a class="sf-banner-simple__btn" href="{{ st.cta_link }}">
+            {{ st.cta_text }}
+          </a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  #sf-banner-simple-{{ sid }}.sf-banner-simple{
+    position: relative;
+    overflow: hidden;
+    --sf-banner-text-color: {{ st.text_color }};
+    --sf-banner-subtitle-color: {{ st.subtitle_color | default: st.text_color }};
+    --sf-banner-btn-text-color: {{ st.btn_text_color }};
+    --sf-banner-btn-bg-color: {{ st.btn_bg_color }};
+    --sf-banner-btn-border-color: {{ st.btn_border_color }};
+  }
+
+  #sf-banner-simple-{{ sid }} .sf-banner-simple__bg{
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  #sf-banner-simple-{{ sid }} .sf-banner-simple__bg picture,
+  #sf-banner-simple-{{ sid }} .sf-banner-simple__bg-img{
+    width: 100%;
+    display: block;
+  }
+
+  #sf-banner-simple-{{ sid }} .sf-banner-simple__inner{
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    left: 0px;
+    right: 0px;
+  }
+
+  #sf-banner-simple-{{ sid }} .sf-banner-simple__grid{
+    display: grid;
+    grid-template-columns: 1fr;
+    align-items: center;
+  }
+
+  #sf-banner-simple-{{ sid }} .sf-banner-simple__content{
+    width: 100%;
+    max-width: 30%;
+    color: var(--sf-banner-text-color);
+    position: relative;
+    z-index: 2;
+    padding: 8% 0px 0px;
+  }
+
+  #sf-banner-simple-{{ sid }} .sf-banner-simple__eyebrow{
+    color: #FFF;
+    font-size: 12px;
+    display: inline-block;
+    padding: 2px 10px;
+    gap: 10px;
+    position: relative;
+    overflow: hidden;
+    border-radius: 4px;
+    background: linear-gradient(104deg, #E7004C 34.68%, #FF77A4 50.21%, #E7004C 65.32%), #D9D9D9;
+  }
+  #sf-banner-simple-{{ sid }} .sf-banner-simple__eyebrow::before {
+    position: absolute;
+    content: '';
+    display: block;
+    width: 200%;
+    height: 200%;
+    z-index: 2;
+    background: linear-gradient(-45deg,rgba(255,255,255,0) 40%,rgba(255,255,255,0.5) 50%,rgba(255,255,255,0) 60%);
+    animation: slideshowScanning 2.2s linear infinite;
+    }
+
+    @keyframes slideshowScanning {
+    0% {
+        transform: translate(-50%, -50%);
+    }
+
+    100% {
+        transform: translate(50%, 50%);
+    }
+   }
+
+  #sf-banner-simple-{{ sid }} .sf-banner-simple__title-picture{
+    display: block;
+    margin: 0 0 14px;
+    max-width: 460px;
+    line-height: 0;
+  }
+
+  #sf-banner-simple-{{ sid }} .sf-banner-simple__title-img{
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  #sf-banner-simple-{{ sid }} .sf-banner-simple__title-text{
+    margin: 0 0 14px;
+    color: #111;
+    font-size: 65px;
+    font-family: 'Bodoni-Book';
+    line-height: 1;
+    font-weight: 500;
+  }
+
+  #sf-banner-simple-{{ sid }} .sf-banner-simple__subtitle{
+    color: var(--sf-banner-subtitle-color);
+    font-size: 32px;
+    line-height: 1.3;
+  }
+  #sf-banner-simple-{{ sid }} .sf-banner-simple__subtitle p{ margin: 0; }
+
+  #sf-banner-simple-{{ sid }} .sf-banner-simple__btn{
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 22px;
+    width: fit-content;
+    height: 52px;
+    padding: 0 30px;
+    border-radius: 4px;
+    border: 1px solid var(--sf-banner-btn-border-color);
+    background: var(--sf-banner-btn-bg-color);
+    color: var(--sf-banner-btn-text-color);
+    font-size: 14px;
+    line-height: 1;
+    font-weight: 500;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.4s ease;
+  }
+  #sf-banner-simple-{{ sid }} .sf-banner-simple__btn:hover{
+    background: #3f3636;
+  }
+
+  @media(max-width: 1520px){
+    #sf-banner-simple-{{ sid }} .sf-banner-simple__content{
+      padding: 7% 0px 0px;
+      max-width: 32%;
+    }
+    #sf-banner-simple-{{ sid }} .sf-banner-simple__title-img{
+      width: 70%;
+    }
+    #sf-banner-simple-{{ sid }} .sf-banner-simple__title-text{
+      font-size: 46px;
+    }
+  }
+
+  @media (max-width: 768px){
+    #sf-banner-simple-{{ sid }} .sf-banner-simple__content{
+      max-width: 100%;
+      padding: 40px 0px 0;
+      text-align: center;
+    }
+
+    #sf-banner-simple-{{ sid }} .sf-banner-simple__title-picture{
+      width: 100%;
+      margin: 0 auto;
+      text-align: center;
+      display: flex;
+      justify-content: center;
+    }
+
+    #sf-banner-simple-{{ sid }} .sf-banner-simple__title-img{
+      width: auto;
+      max-width: 100%;
+    }
+
+    #sf-banner-simple-{{ sid }} .sf-banner-simple__eyebrow{
+      margin-bottom: 6px;
+    }
+
+    #sf-banner-simple-{{ sid }} .sf-banner-simple__title-text{
+      font-size: 22px;
+      line-height: 1.15;
+      text-align: center;
+      margin-bottom: 12px;
+    }
+
+    #sf-banner-simple-{{ sid }} .sf-banner-simple__subtitle{
+      font-size: 18px;
+      margin: 12px auto 0px;
+      color: var(--sf-banner-subtitle-color);
+      text-align: center;
+      width: 260px;
+      line-height: 1.3;
+    }
+
+    #sf-banner-simple-{{ sid }} .sf-banner-simple__btn{
+      margin-top: 16px;
+      height: 48px;
+      font-size: 15px;
+      padding: 0px 30px;
+      border-radius: 2px;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "sf-banner-simple",
+  "settings": [
+    { "type": "header", "content": "图片资源" },
+    { "type": "image_picker", "id": "bg_pc", "label": "背景图（PC）" },
+    { "type": "image_picker", "id": "bg_mobile", "label": "背景图（Mobile）" },
+
+    { "type": "header", "content": "标题（PC / Mobile）" },
+    { "type": "image_picker", "id": "title_image_pc", "label": "标题艺术字图片（PC，可选，优先）" },
+    { "type": "image_picker", "id": "title_image_mobile", "label": "标题艺术字图片（Mobile，可选，优先）" },
+    { "type": "text", "id": "title", "label": "标题文本（无艺术字图时显示）", "default": "DARE to GLOW" },
+
+    { "type": "header", "content": "文案内容" },
+    { "type": "text", "id": "eyebrow", "label": "顶部小标题（可选）", "default": "Early Spring Sale" },
+    { "type": "color", "id": "text_color", "label": "主文字颜色", "default": "#000000" },
+    { "type": "color", "id": "subtitle_color", "label": "副标题颜色", "default": "#000000" },
+    { "type": "richtext", "id": "subtitle", "label": "副标题（可选）" },
+    { "type": "header", "content": "按钮（可选）" },
+    { "type": "color", "id": "btn_text_color", "label": "按钮文字颜色", "default": "#FFFFFF" },
+    { "type": "color", "id": "btn_bg_color", "label": "按钮背景颜色", "default": "#130304" },
+    { "type": "color", "id": "btn_border_color", "label": "按钮边框颜色", "default": "#130304" },
+
+    { "type": "text", "id": "cta_text", "label": "按钮文案", "default": "SHOP NOW" },
+    { "type": "url", "id": "cta_link", "label": "按钮链接" }
+  ],
+  "presets": [{ "name": "sf-banner-simple" }]
+}
+{% endschema %}
