@@ -143,8 +143,8 @@ mm.add({
 
 images.forEach((img) => {
   const speed = isMobile ? img.getAttribute("mobile-data-speed") || 1 :  img.getAttribute("data-speed") || 1;   
-  gsap.to(img, {
-    yPercent: -100 * speed, 
+  gsap.from(img, {
+    yPercent: 100 * speed, 
     ease: "none",
     scrollTrigger: {
       trigger: ".exclusive-care-space-box",
