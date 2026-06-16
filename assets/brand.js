@@ -1,5 +1,5 @@
 // 缓存需要添加动画的元素
-const classNames = '.js-bounce,.js-brand-line';
+const classNames = '.js-bounce,.js-brand-line,.js-bounce1-to-top';
 const animateElements = document.querySelectorAll(classNames);
 
 // IntersectionObserver 配置
