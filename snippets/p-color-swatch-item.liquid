@@ -1,0 +1,38 @@
+{%- comment -%}
+  用途：渲染单个颜色 swatch（用于 option.values 循环）
+  传参：
+    - value
+    - option
+    - se_id
+    - product
+    - color_swatch_config
+{%- endcomment -%}
+
+{%- assign variant_for_value = product.variants | where: 'option1', value | first -%}
+{%- if variant_for_value -%}
+  <div
+    class="color-swatch {% if value == option.selected_value %} active {% endif %} {% if variant_for_value.inventory_quantity <= 0 %} is-disabled{% endif%}"
+    id="{{ variant_for_value.id }}"
+    inventory_quantity="{{ variant_for_value.inventory_quantity }}"
+    position="{{ variant_for_value.featured_media.position }}"
+    data-p="{{ variant_for_value.featured_media.position }}"
+    name="{{ value }}"
+  >
+    <input
+      class="color-swatch__radio visually-hidden"
+      type="radio"
+      name="option_{{ se_id }}"
+      {% if value == option.selected_value %}checked="checked"{% endif %}
+      value="{{ value }}"
+    >
+
+    <label
+      class="color-swatch__item"
+      data-txt="{{ color_swatch_config }}"
+      data-text1="{{ value }}"
+      style="{% render 'color-swatch-style', color_swatch_config: color_swatch_config, value: value %}"
+    >
+      <span class="visually-hidden">{{ value }}</span>
+    </label>
+  </div>
+{%- endif -%}
