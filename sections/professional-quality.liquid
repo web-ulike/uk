@@ -113,8 +113,45 @@
     font-family: var(--heading-font-family);
   }
 
-  .professional-quality .professional-quality-text {
+  .professional-quality .professional-quality-product-row {
     margin-top: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .professional-quality .professional-quality-text {
+    margin-top: 0;
+  }
+
+  .professional-quality .professional-quality-add-btn {
+    min-width: 116px;
+    height: 32px;
+    padding: 0 14px;
+    border: 0;
+    border-radius: 0;
+    background: #3f3636;
+    color: #fff;
+    font-size: 12px;
+    line-height: 1;
+    font-family: var(--text-font-family);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.25s ease;
+  }
+
+  .professional-quality .professional-quality-add-btn:hover {
+    opacity: 0.85;
+  }
+
+  .professional-quality .professional-quality-add-btn.is-loading,
+  .professional-quality .professional-quality-add-btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
   }
 
   .professional-quality .professional-quality-right {
@@ -274,6 +311,16 @@
       padding-left: 0;
       margin-top: 20px;
     }
+    .professional-quality .professional-quality-product-row {
+      gap: 8px;
+    }
+
+    .professional-quality .professional-quality-add-btn {
+      min-width: 92px;
+      height: 28px;
+      padding: 0 10px;
+      font-size: 10px;
+    }
   }
 
   @media (max-width: 460px) {
@@ -353,8 +400,21 @@
                       </div>
                     {%- endif -%}
                   </div>
-                  {%- if block.settings.text != blank -%}
-                    <div class="professional-quality-text">{{ block.settings.text }}</div>
+                  {%- if block.settings.text != blank or block.settings.product != blank -%}
+                    <div class="professional-quality-product-row">
+                      {%- if block.settings.text != blank -%}
+                        <div class="professional-quality-text">{{ block.settings.text }}</div>
+                      {%- endif -%}
+                      {%- if block.settings.product != blank -%}
+                        <button
+                          type="button"
+                          class="professional-quality-add-btn"
+                          data-product-id="{{ block.settings.product.selected_or_first_available_variant.id }}"
+                        >
+                          ADD TO BASKET
+                        </button>
+                      {%- endif -%}
+                    </div>
                   {%- endif -%}
                 </div>
                 {%- if section.settings.text2 != blank -%}
@@ -420,8 +480,21 @@
                         >
                       {%- endif -%}
                     </div>
-                    {%- if block.settings.text != blank -%}
-                      <div class="professional-quality-text">{{ block.settings.text }}</div>
+                    {%- if block.settings.text != blank or block.settings.product != blank -%}
+                      <div class="professional-quality-product-row">
+                        {%- if block.settings.text != blank -%}
+                          <div class="professional-quality-text">{{ block.settings.text }}</div>
+                        {%- endif -%}
+                        {%- if block.settings.product != blank -%}
+                          <button
+                            type="button"
+                            class="professional-quality-add-btn"
+                            data-product-id="{{ block.settings.product.selected_or_first_available_variant.id }}"
+                          >
+                            ADD TO BASKET
+                          </button>
+                        {%- endif -%}
+                      </div>
                     {%- endif -%}
                   </div>
                   {%- if section.settings.text2 != blank -%}
@@ -645,6 +718,47 @@
       onResize();
       // 在此处执行你的事件或操作
     });
+
+    function initProfessionalQualityAddToCart() {
+      const buttons = document.querySelectorAll('.professional-quality-add-btn');
+      if (!buttons.length) return;
+
+      buttons.forEach((button) => {
+        if (button.dataset.inited === 'true') return;
+        button.dataset.inited = 'true';
+
+        button.addEventListener('click', function () {
+          const productId = this.dataset.productId;
+          if (!productId || typeof addToCartPromise !== 'function') return;
+
+          const originalText = this.textContent;
+          const code = window.code || null;
+
+          this.disabled = true;
+          this.classList.add('is-loading');
+          this.textContent = 'ADDING...';
+
+          addToCartPromise(productId, null, {}, code)
+            .then((cartData) => {
+              this.textContent = 'ADDED';
+              document.dispatchEvent(new CustomEvent('cart:refresh', { detail: cartData }));
+              setTimeout(() => {
+                this.textContent = originalText;
+              }, 1200);
+            })
+            .catch((error) => {
+              console.error('Add to basket failed', error);
+              this.textContent = originalText;
+            })
+            .finally(() => {
+              this.disabled = false;
+              this.classList.remove('is-loading');
+            });
+        });
+      });
+    }
+
+    window.addEventListener('load', initProfessionalQualityAddToCart);
   })();
 
   window.addEventListener('load', function () {
@@ -748,6 +862,11 @@
           "type": "text",
           "id": "text",
           "label": "Text"
+        },
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Add to basket product"
         },
         {
           "type": "checkbox",
