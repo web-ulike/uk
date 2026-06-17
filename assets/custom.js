@@ -693,6 +693,16 @@ function formatMoney(cents, format = '') {
   }
 }
 
+function subscriptionApiNew(email, tag,type) {
+  let data = {
+    userEmail: email,
+    userPhone: '',
+    scene: type || 'USER_SUBSCRIBE',
+    tags: [tag],
+  };
+  return sendUlikeApi('/user/userSubscribe', data);
+}
+
 function sendUlikeApi(url, data) {
   data.siteCode = 'UK'; // Ensure the site code is set to 'UK'
   var _url = 'https://api.ulike.com/eu' + url;
