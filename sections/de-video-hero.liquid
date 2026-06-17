@@ -1,0 +1,428 @@
+<style>
+  #shopify-section-{{ section.id }} .de-video-hero {
+    position: relative;
+    overflow: hidden;
+    background: #292426;
+    color: #fff;
+  }
+
+  #shopify-section-{{ section.id }} .de-video-hero__media {
+    position: relative;
+    z-index: 1;
+  }
+
+  #shopify-section-{{ section.id }} .de-video-hero__media::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(25, 10, 10, {{ section.settings.overlay_opacity | divided_by: 100.0 }});
+    pointer-events: none;
+  }
+
+  #shopify-section-{{ section.id }} .de-video-hero__image {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  #shopify-section-{{ section.id }} .de-video-hero__picture {
+    display: block;
+    width: 100%;
+  }
+
+  #shopify-section-{{ section.id }} .de-video-hero__content {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    display: flex;
+    min-height: 0;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding: 120px 0 90px;
+    text-align: center;
+  }
+
+  #shopify-section-{{ section.id }} .de-video-hero__title {
+    max-width: 900px;
+    margin: 0 auto 38px;
+    color: #fff;
+    font-family: var(--heading-font-family);
+    font-size: 44px;
+    font-weight: normal;
+    line-height: 1.25;
+  }
+
+  #shopify-section-{{ section.id }} .de-video-hero__play {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 47px;
+    padding: 0 25px;
+    border-radius: 999px;
+    border: 1px solid #FFF;
+    background: rgba(255, 255, 255, 0.20);
+    backdrop-filter: blur(11.388129234313965px);
+    color: #fff;
+    cursor: pointer;
+    font-size: 16px;
+    line-height: 1;
+  }
+
+  #shopify-section-{{ section.id }} .de-video-hero__play svg {
+    width: 11px;
+    height: 11px;
+    margin-left: 7px;
+  }
+
+  #shopify-section-{{ section.id }} .de-video-hero__badges {
+    display: grid;
+    width: min(980px, 100%);
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 22px;
+    align-items: end;
+  }
+
+  #shopify-section-{{ section.id }} .de-video-hero__badge {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    color: #fff;
+    font-family: var(--heading-font-family);
+    font-size: 20px;
+    font-weight: normal;
+    line-height: 1.25;
+  }
+
+  #shopify-section-{{ section.id }} .de-video-hero__badge-image {
+    display: block;
+    width: 58px;
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 9px;
+  }
+
+  #shopify-section-{{ section.id }} .de-video-hero__badge:first-child .de-video-hero__badge-image {
+    width: 125px;
+    margin-bottom: 0px;
+  }
+
+
+  #shopify-section-{{ section.id }} .de-video-hero__modal {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    background: rgba(0, 0, 0, 0.78);
+  }
+
+  #shopify-section-{{ section.id }} .de-video-hero__modal.is-open {
+    display: flex;
+  }
+
+  #shopify-section-{{ section.id }} .de-video-hero__dialog {
+    position: relative;
+    width: min(960px, 100%);
+  }
+
+  #shopify-section-{{ section.id }} .de-video-hero__video {
+    display: block;
+    width: 100%;
+    max-height: 80vh;
+    background: #000;
+  }
+
+  #shopify-section-{{ section.id }} .de-video-hero__close {
+    position: absolute;
+    right: 0;
+    top: -46px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: #fff;
+    color: #190a0a;
+    cursor: pointer;
+    font-size: 26px;
+    font-weight: 300;
+    line-height: 1;
+    text-align: center;
+  }
+
+  @media (max-width: 991px) {
+
+    #shopify-section-{{ section.id }} .de-video-hero__content {
+      min-height: 0;
+      padding: 54px 0 36px;
+    }
+
+    #shopify-section-{{ section.id }} .de-video-hero__title {
+      max-width: 80%;
+      margin-bottom: 20px;
+      font-size: 22px;
+      line-height: 1.25;
+    }
+
+    #shopify-section-{{ section.id }} .de-video-hero__play {
+      min-height: 36px;
+      padding: 0 18px;
+      font-size: 12px;
+    }
+
+    #shopify-section-{{ section.id }} .de-video-hero__badges {
+      width: 100%;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 20px;
+      align-items: baseline;
+      padding: 13px;
+    }
+
+    #shopify-section-{{ section.id }} .de-video-hero__badge {
+      font-size: 10px;
+      line-height: 1.25;
+    }
+
+    #shopify-section-{{ section.id }} .de-video-hero__badge-image {
+      width: 40px;
+      margin-bottom: 8px;
+    }
+
+    #shopify-section-{{ section.id }} .de-video-hero__badge:first-child {
+      grid-column: 1 / -1;
+      align-items: flex-start;
+      margin-left: 20px;
+      margin-bottom: 30px;
+    }
+
+    #shopify-section-{{ section.id }} .de-video-hero__badge:first-child .de-video-hero__badge-image {
+      width: 93px;
+      margin-bottom: 0;
+    }
+
+    #shopify-section-{{ section.id }} .de-video-hero__badge:first-child .de-video-hero__badge-text {
+      display: none;
+    }
+
+    #shopify-section-{{ section.id }} .de-video-hero__modal {
+      padding: 16px;
+    }
+
+    #shopify-section-{{ section.id }} .de-video-hero__close {
+      right: 0;
+      top: -42px;
+      width: 34px;
+      height: 34px;
+      font-size: 24px;
+    }
+  }
+</style>
+
+<section class="de-video-hero"{% if section.settings.anchor_id != blank %} id="{{ section.settings.anchor_id | escape }}"{% endif %}>
+  <div class="de-video-hero__media">
+    {%- if section.settings.image != blank -%}
+      <picture class="de-video-hero__picture">
+        {%- if section.settings.mobile_image != blank -%}
+          <source
+            media="(max-width: 991px)"
+            srcset="{{ section.settings.mobile_image | image_url: width: 750 }} 750w, {{ section.settings.mobile_image | image_url: width: 1100 }} 1100w"
+          >
+        {%- endif -%}
+        <img
+          loading="lazy"
+          class="de-video-hero__image"
+          width="{{ section.settings.image.width }}"
+          height="{{ section.settings.image.height }}"
+          {% render 'image-attributes', image: section.settings.image %}
+          alt="{{ section.settings.image.alt | default: section.settings.title | escape }}"
+        >
+      </picture>
+    {%- endif -%}
+  </div>
+
+  <div class="container">
+    <div class="de-video-hero__content">
+      <div class="de-video-hero__top">
+        {%- if section.settings.title != blank -%}
+          <h2 class="de-video-hero__title to-top">{{ section.settings.title }}</h2>
+        {%- endif -%}
+
+        {%- if section.settings.video != blank and section.settings.button_label != blank -%}
+          <button class="de-video-hero__play to-top" style="transition-delay: 0.2s" type="button" aria-haspopup="dialog">
+            {{ section.settings.button_label }}
+            <svg viewBox="0 0 10 12" fill="none" aria-hidden="true">
+              <path d="M9.5 6L0.5 11.1962L0.5 0.803848L9.5 6Z" fill="currentColor"/>
+            </svg>
+          </button>
+        {%- endif -%}
+      </div>
+
+      {%- if section.blocks.size > 0 -%}
+        <div class="de-video-hero__badges">
+          {%- for block in section.blocks -%}
+            <div class="de-video-hero__badge to-top" {{ block.shopify_attributes }}>
+              {%- if block.settings.image != blank -%}
+                <img
+                  loading="lazy"
+                  class="de-video-hero__badge-image"
+                  width="{{ block.settings.image.width }}"
+                  height="{{ block.settings.image.height }}"
+                  {% render 'image-attributes', image: block.settings.image %}
+                  alt="{{ block.settings.image.alt | default: block.settings.text | escape }}"
+                >
+              {%- endif -%}
+
+              {%- if block.settings.text != blank -%}
+                <div class="de-video-hero__badge-text">{{ block.settings.text | newline_to_br }}</div>
+              {%- endif -%}
+            </div>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+
+  {%- if section.settings.video != blank -%}
+    <div class="de-video-hero__modal" role="dialog" aria-modal="true" aria-label="{{ section.settings.title | escape }}">
+      <div class="de-video-hero__dialog">
+        <button class="de-video-hero__close" type="button" aria-label="Close">×</button>
+        {{ section.settings.video | video_tag: class: 'de-video-hero__video', controls: true, playsinline: true, preload: 'metadata' }}
+      </div>
+    </div>
+  {%- endif -%}
+</section>
+
+<script>
+  (() => {
+    const section = document.getElementById('shopify-section-{{ section.id }}');
+    if (!section) return;
+
+    const openButton = section.querySelector('.de-video-hero__play');
+    const modal = section.querySelector('.de-video-hero__modal');
+    const closeButton = section.querySelector('.de-video-hero__close');
+    const video = section.querySelector('.de-video-hero__video');
+    if (!openButton || !modal || !video) return;
+
+    const openModal = () => {
+      modal.classList.add('is-open');
+      document.documentElement.classList.add('lock-all');
+      video.currentTime = 0;
+      video.play();
+    };
+
+    const closeModal = () => {
+      modal.classList.remove('is-open');
+      document.documentElement.classList.remove('lock-all');
+      video.pause();
+    };
+
+    openButton.addEventListener('click', openModal);
+    closeButton?.addEventListener('click', closeModal);
+    modal.addEventListener('click', (event) => {
+      if (event.target === modal) closeModal();
+    });
+    window.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && modal.classList.contains('is-open')) closeModal();
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "DE video hero",
+  "settings": [
+    {
+      "type": "text",
+      "id": "anchor_id",
+      "label": "Anchor ID",
+      "default": "overview"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Desktop image"
+    },
+    {
+      "type": "image_picker",
+      "id": "mobile_image",
+      "label": "Mobile image"
+    },
+    {
+      "type": "video",
+      "id": "video",
+      "label": "Local video"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "label": "Overlay opacity",
+      "min": 0,
+      "max": 80,
+      "step": 5,
+      "unit": "%",
+      "default": 20
+    },
+    {
+      "type": "textarea",
+      "id": "title",
+      "label": "Title",
+      "default": "Salonpräzision für zuhause – dermatologisch entwickelt, sicher und sichtbar effektiv."
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "Video ansehen"
+    }
+  ],
+  "blocks": [
+    {
+      "name": "Badge",
+      "type": "badge",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Icon"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Text",
+          "default": "Dermatologisch getestet"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "DE video hero",
+      "blocks": [
+        {
+          "type": "badge"
+        },
+        {
+          "type": "badge"
+        },
+        {
+          "type": "badge"
+        },
+        {
+          "type": "badge"
+        },
+        {
+          "type": "badge"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
