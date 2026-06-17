@@ -411,7 +411,7 @@
                           class="professional-quality-add-btn"
                           data-product-id="{{ block.settings.product.selected_or_first_available_variant.id }}"
                         >
-                          ADD TO BASKET
+                          {{ block.settings.button_text | default: 'ADD TO BASKET' }}
                         </button>
                       {%- endif -%}
                     </div>
@@ -491,7 +491,7 @@
                             class="professional-quality-add-btn"
                             data-product-id="{{ block.settings.product.selected_or_first_available_variant.id }}"
                           >
-                            ADD TO BASKET
+                            {{ block.settings.button_text | default: 'ADD TO BASKET' }}
                           </button>
                         {%- endif -%}
                       </div>
@@ -731,24 +731,17 @@
           const productId = this.dataset.productId;
           if (!productId || typeof addToCartPromise !== 'function') return;
 
-          const originalText = this.textContent;
           const code = window.code || null;
 
           this.disabled = true;
           this.classList.add('is-loading');
-          this.textContent = 'ADDING...';
 
           addToCartPromise(productId, null, {}, code)
             .then((cartData) => {
-              this.textContent = 'ADDED';
               document.dispatchEvent(new CustomEvent('cart:refresh', { detail: cartData }));
-              setTimeout(() => {
-                this.textContent = originalText;
-              }, 1200);
             })
             .catch((error) => {
               console.error('Add to basket failed', error);
-              this.textContent = originalText;
             })
             .finally(() => {
               this.disabled = false;
@@ -867,6 +860,12 @@
           "type": "product",
           "id": "product",
           "label": "Add to basket product"
+        },
+        {
+          "type": "text",
+          "id": "button_text",
+          "label": "Button text",
+          "default": "ADD TO BASKET"
         },
         {
           "type": "checkbox",
