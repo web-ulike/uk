@@ -693,7 +693,7 @@ function formatMoney(cents, format = '') {
   }
 }
 
-function subscriptionApiNew(email, tag,type) {
+function subscriptionApiNew(email, tag, type) {
   let data = {
     userEmail: email,
     userPhone: '',
