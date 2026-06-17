@@ -179,7 +179,25 @@
   document.addEventListener('DOMContentLoaded', function () {
     const navLinks = document.querySelectorAll('.sport_nav-box a');
     const sections = document.querySelectorAll('section');
+    const sportNav = document.querySelector('.sport-nav');
     let isScrolling = false;
+
+    function getStickyOffset() {
+      const headerHeight = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--header-height')) || 0;
+      const navHeight = sportNav ? sportNav.offsetHeight : 0;
+      return headerHeight + navHeight;
+    }
+
+    function smoothScrollToTarget(targetSection) {
+      if (!targetSection) return;
+
+      const targetTop = targetSection.getBoundingClientRect().top + window.pageYOffset - getStickyOffset();
+
+      window.scrollTo({
+        top: targetTop,
+        behavior: 'smooth',
+      });
+    }
     // Intersection Observer callback
     const observerCallback = (entries) => {
       if (isScrolling) return;
@@ -220,13 +238,11 @@
         navLinks.forEach((link) => link.classList.remove('active'));
         this.classList.add('active');
         isScrolling = true;
-        targetSection.scrollIntoView({
-          behavior: 'smooth',
-        });
+        smoothScrollToTarget(targetSection);
 
         setTimeout(() => {
           isScrolling = false;
-        }, 1000);
+        }, 1200);
       });
     });
   });
