@@ -1,0 +1,434 @@
+{% liquid
+  assign anchor_id = section.settings.anchor_id | strip
+  assign desktop_video = section.settings.video
+  assign mobile_video = section.settings.mobile_video | default: desktop_video
+  assign desktop_poster = section.settings.poster_image
+  assign mobile_poster = section.settings.mobile_poster_image | default: desktop_poster
+%}
+
+<section
+  class="de-autoglide-mode"
+  {% if anchor_id != blank %}
+    id="{{ anchor_id | escape }}"
+  {% endif %}
+  style="
+    --de-autoglide-bg: {{ section.settings.background }};
+    --de-autoglide-text: {{ section.settings.text_color }};
+    --de-autoglide-muted: {{ section.settings.muted_color }};
+    --de-autoglide-accent: {{ section.settings.accent_color }};
+  "
+>
+  <div class="container">
+    <div class="de-autoglide-mode__grid">
+      <div class="de-autoglide-mode__media">
+        {% if desktop_video != blank %}
+          <div class="de-autoglide-mode__video-wrap">
+            {{
+              desktop_video
+              | video_tag:
+                controls: false,
+                playsinline: true,
+                muted: true,
+                loop: true,
+                class: 'de-autoglide-mode__video de-autoglide-mode__video--desktop',
+                data-autoglide-video: ''
+            }}
+            {% if mobile_video != blank %}
+              {{
+                mobile_video
+                | video_tag:
+                  controls: false,
+                  playsinline: true,
+                  muted: true,
+                  loop: true,
+                  class: 'de-autoglide-mode__video de-autoglide-mode__video--mobile',
+                  data-autoglide-video: ''
+              }}
+            {% endif %}
+          </div>
+        {% elsif desktop_poster != blank %}
+          <div class="de-autoglide-mode__video-wrap">
+            <picture>
+              <source srcset="{{ mobile_poster | image_url: width: 900 }}" media="(max-width: 749px)">
+              {{ desktop_poster | image_url: width: 1200 | image_tag: loading: 'lazy', class: 'de-autoglide-mode__poster', alt: section.settings.poster_alt }}
+            </picture>
+          </div>
+        {% endif %}
+      </div>
+
+      <div class="de-autoglide-mode__content to-top">
+        {% if section.settings.tag_text != blank %}
+          <div class="de-autoglide-mode__tag to-top" style="transition-delay: 0.1s" >
+            {% if section.settings.tag_icon != blank %}
+              {{ section.settings.tag_icon | image_url: width: 90 | image_tag: loading: 'lazy', class: 'de-autoglide-mode__tag-icon', alt: section.settings.tag_text }}
+            {% endif %}
+            <span>{{ section.settings.tag_text }}</span>
+          </div>
+        {% endif %}
+
+        {% if section.settings.title != blank %}
+          <h2 class="de-autoglide-mode__title to-top" style="transition-delay: 0.2s" >{{ section.settings.title | newline_to_br }}</h2>
+        {% endif %}
+
+        <span class="de-autoglide-mode__line" aria-hidden="true"></span>
+
+        {% if section.settings.text != blank %}
+          <div class="de-autoglide-mode__text" style="transition-delay: 0.3s" >{{ section.settings.text }}</div>
+        {% endif %}
+
+        {% if section.settings.compare_image != blank %}
+          <div class="de-autoglide-mode__compare">
+            {{ section.settings.compare_image | image_url: width: 780 | image_tag: loading: 'lazy', class: 'de-autoglide-mode__compare-image', alt: section.settings.compare_alt }}
+          </div>
+        {% endif %}
+
+        {% if section.settings.note != blank %}
+          <div class="de-autoglide-mode__note" style="transition-delay: 0.4s" >{{ section.settings.note }}</div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .de-autoglide-mode {
+    overflow: hidden;
+    padding: 86px 0;
+    background: var(--de-autoglide-bg);
+    color: var(--de-autoglide-text);
+  }
+
+  .de-autoglide-mode__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.42fr) minmax(320px, .78fr);
+    align-items: center;
+    gap: clamp(48px, 5vw, 72px);
+  }
+
+  .de-autoglide-mode__video-wrap {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 902 / 508;
+    background: #d8d0c7;
+  }
+
+  .de-autoglide-mode__video,
+  .de-autoglide-mode__poster {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform .55s ease;
+  }
+
+  .de-autoglide-mode__video-wrap:hover .de-autoglide-mode__video,
+  .de-autoglide-mode__video-wrap:hover .de-autoglide-mode__poster {
+    transform: scale(1.025);
+  }
+
+  .de-autoglide-mode__video--mobile {
+    display: none;
+  }
+
+  .de-autoglide-mode__tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+    color: var(--de-autoglide-accent);
+    font-size: 20px;
+    line-height: 1.15;
+  }
+
+  .de-autoglide-mode__tag-icon {
+    display: block;
+    width: 36px;
+    height: auto;
+    flex: 0 0 auto;
+  }
+
+  .de-autoglide-mode__title {
+    margin: 0;
+    max-width: 520px;
+    font-size: clamp(34px, 3vw, 48px);
+    line-height: 1.08;
+    font-weight: 400;
+    letter-spacing: 0;
+  }
+
+  .de-autoglide-mode__line {
+    display: block;
+    width: 100px;
+    height: 3px;
+    margin: 26px 0;
+    background: var(--de-autoglide-accent);
+  }
+
+  .de-autoglide-mode__text {
+    max-width: 520px;
+    color: var(--de-autoglide-muted);
+    font-size: 14px;
+    line-height: 1.45;
+  }
+
+  .de-autoglide-mode__compare {
+    max-width: 470px;
+    margin-top: 34px;
+    overflow: hidden;
+  }
+
+  .de-autoglide-mode__compare-image {
+    display: block;
+    width: 100%;
+    height: auto;
+    transition: transform .45s ease;
+  }
+
+  .de-autoglide-mode__compare:hover .de-autoglide-mode__compare-image {
+    transform: scale(1.025);
+  }
+
+  .de-autoglide-mode__note {
+    max-width: 520px;
+    margin-top: 14px;
+    color: var(--de-autoglide-muted);
+    font-size: 10px;
+    line-height: 1.35;
+  }
+
+  @media (max-width: 991px) {
+    .de-autoglide-mode {
+      padding: 50px 0;
+    }
+
+    .de-autoglide-mode__grid {
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+
+    .de-autoglide-mode__content {
+      display: contents;
+    }
+
+    .de-autoglide-mode__tag {
+      order: 1;
+      margin-bottom: 0;
+      font-size: 14px;
+      gap: 8px;
+    }
+
+    .de-autoglide-mode__tag-icon {
+      width: 26px;
+    }
+
+    .de-autoglide-mode__title {
+      order: 2;
+      max-width: 340px;
+      font-size: 24px;
+      line-height: 1.12;
+    }
+
+    .de-autoglide-mode__line {
+      order: 3;
+      width: 57px;
+      height: 2px;
+      margin: 0;
+    }
+
+    .de-autoglide-mode__text {
+      order: 4;
+      max-width: 330px;
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .de-autoglide-mode__media {
+      order: 5;
+    }
+
+    .de-autoglide-mode__video--desktop {
+      display: none;
+    }
+
+    .de-autoglide-mode__video--mobile {
+      display: block;
+    }
+
+    .de-autoglide-mode__compare {
+      order: 6;
+      max-width: none;
+      margin-top: -14px;
+    }
+
+    .de-autoglide-mode__note {
+      order: 7;
+      margin-top: -8px;
+      font-size: 12px;
+      color: #3F3636;
+      opacity: 0.5;
+    }
+  }
+</style>
+
+<script>
+  (() => {
+    const section = document.currentScript.closest('.shopify-section');
+    const root = section && section.querySelector('.de-autoglide-mode');
+    if (!root) return;
+
+    const videos = Array.from(root.querySelectorAll('[data-autoglide-video]'));
+    if (!videos.length) return;
+
+    const getActiveVideo = () => {
+      const isMobile = window.matchMedia('(max-width: 991px)').matches;
+      return videos.find((video) => isMobile ? video.classList.contains('de-autoglide-mode__video--mobile') : video.classList.contains('de-autoglide-mode__video--desktop')) || videos[0];
+    };
+
+    const pauseInactive = (activeVideo) => {
+      videos.forEach((video) => {
+        if (video !== activeVideo) video.pause();
+      });
+    };
+
+    const playActive = () => {
+      const activeVideo = getActiveVideo();
+      pauseInactive(activeVideo);
+      activeVideo.muted = true;
+      activeVideo.playsInline = true;
+      activeVideo.play().catch(() => {});
+    };
+
+    const pauseAll = () => {
+      videos.forEach((video) => video.pause());
+    };
+
+    if ('IntersectionObserver' in window) {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            playActive();
+          } else {
+            pauseAll();
+          }
+        });
+      }, { threshold: 0.45 });
+      observer.observe(root);
+    } else {
+      playActive();
+    }
+
+    window.addEventListener('resize', () => {
+      const rect = root.getBoundingClientRect();
+      if (rect.top < window.innerHeight && rect.bottom > 0) playActive();
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "DE AutoGlide Mode",
+  "settings": [
+    {
+      "type": "text",
+      "id": "anchor_id",
+      "label": "Anchor ID",
+      "default": "autoglide-mode"
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background",
+      "default": "#f8f8ff"
+    },
+    {
+      "type": "video",
+      "id": "video",
+      "label": "Desktop video"
+    },
+    {
+      "type": "video",
+      "id": "mobile_video",
+      "label": "Mobile video"
+    },
+    {
+      "type": "image_picker",
+      "id": "poster_image",
+      "label": "Poster image"
+    },
+    {
+      "type": "image_picker",
+      "id": "mobile_poster_image",
+      "label": "Mobile poster image"
+    },
+    {
+      "type": "text",
+      "id": "poster_alt",
+      "label": "Poster alt",
+      "default": "Ulike AutoGlide treatment"
+    },
+    {
+      "type": "image_picker",
+      "id": "tag_icon",
+      "label": "Tag icon"
+    },
+    {
+      "type": "text",
+      "id": "tag_text",
+      "label": "Tag text",
+      "default": "AutoGlide-Modus"
+    },
+    {
+      "type": "textarea",
+      "id": "title",
+      "label": "Title",
+      "default": "10 Minuten.\nGanzkörperbehandlung."
+    },
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "Text",
+      "default": "Durch schnellere Lichtimpulse alle 0,25 Sekunden deckt das Gerät eine größere Behandlungsfläche ab und ermöglicht eine effiziente Haarentfernung von Kopf bis Fuß - schneller als je zuvor."
+    },
+    {
+      "type": "image_picker",
+      "id": "compare_image",
+      "label": "Compare image"
+    },
+    {
+      "type": "text",
+      "id": "compare_alt",
+      "label": "Compare image alt",
+      "default": "AutoGlide treatment area comparison"
+    },
+    {
+      "type": "textarea",
+      "id": "note",
+      "label": "Note",
+      "default": "¹ Basierend auf internen Labortests von Ulike. Individuelle Ergebnisse können variieren."
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#190a0a"
+    },
+    {
+      "type": "color",
+      "id": "muted_color",
+      "label": "Muted text color",
+      "default": "#5f595d"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent color",
+      "default": "#6e69c9"
+    }
+  ],
+  "presets": [
+    {
+      "name": "DE AutoGlide Mode"
+    }
+  ]
+}
+{% endschema %}

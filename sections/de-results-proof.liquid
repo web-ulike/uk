@@ -1,0 +1,455 @@
+{% liquid
+  assign anchor_id = section.settings.anchor_id | strip
+  assign desktop_image = section.settings.image
+  assign mobile_image = section.settings.mobile_image | default: desktop_image
+  assign metric = section.settings.metric | default: '-96<span>52%</span>'
+%}
+
+<section
+  class="de-results-proof"
+  {% if anchor_id != blank %}
+    id="{{ anchor_id | escape }}"
+  {% endif %}
+  style="
+    --de-results-proof-bg: {{ section.settings.background }};
+    --de-results-proof-text: {{ section.settings.text_color }};
+    --de-results-proof-muted: {{ section.settings.muted_color }};
+    --de-results-proof-accent: {{ section.settings.accent_color }};
+  "
+>
+  {% if desktop_image != blank %}
+    <picture class="de-results-proof__picture" aria-hidden="true">
+      {% if mobile_image != blank %}
+        <source media="(max-width: 749px)" srcset="{{ mobile_image | image_url: width: 1200 }}">
+      {% endif %}
+      <img
+        src="{{ desktop_image | image_url: width: 2400 }}"
+        alt="{{ desktop_image.alt | escape }}"
+        class="de-results-proof__bg-image"
+        loading="lazy"
+      >
+    </picture>
+  {% endif %}
+  <div class="de-results-proof__inner">
+    <div class="container">
+      <div class="de-results-proof__content">
+        {% if section.settings.sgs_image != blank %}
+          <div class="de-results-proof__sgs de-results-proof__sgs--mobile">
+            {{ section.settings.sgs_image | image_url: width: 220 | image_tag: loading: 'lazy', class: 'de-results-proof__sgs-image', alt: section.settings.sgs_alt }}
+            {% if section.settings.sgs_text != blank %}
+              <div class="de-results-proof__sgs-text">{{ section.settings.sgs_text }}</div>
+            {% endif %}
+          </div>
+        {% endif %}
+
+        {% if section.settings.title != blank %}
+          <h2 class="de-results-proof__title to-top" style="transition-delay: 0.1s">{{ section.settings.title | newline_to_br }}</h2>
+        {% endif %}
+
+        {% if section.settings.subtitle != blank %}
+          <div class="de-results-proof__subtitle to-top" style="transition-delay: 0.2s">{{ section.settings.subtitle }}</div>
+        {% endif %}
+
+        <div class="de-results-proof__metric to-top" style="transition-delay: 0.3s">
+          {% if section.settings.metric_label != blank %}
+            <div class="de-results-proof__metric-label">{{ section.settings.metric_label }}</div>
+          {% endif %}
+          <div class="de-results-proof__metric-value">
+            {{ metric }}
+          </div>
+          {% if section.settings.metric_caption != blank %}
+            <div class="de-results-proof__metric-caption">{{ section.settings.metric_caption }}</div>
+          {% endif %}
+        </div>
+
+        {% if section.settings.before_after_image != blank %}
+          {% assign before_after_mobile_image = section.settings.before_after_mobile_image | default: section.settings.before_after_image %}
+          <div class="de-results-proof__before-after to-top" style="transition-delay: 0.4s">
+            <picture class="de-results-proof__before-after-picture">
+              {% if before_after_mobile_image != blank %}
+                <source media="(max-width: 749px)" srcset="{{ before_after_mobile_image | image_url: width: 750 }}">
+              {% endif %}
+              {{ section.settings.before_after_image | image_url: width: 520 | image_tag: loading: 'lazy', class: 'de-results-proof__before-after-image', alt: section.settings.before_after_image.alt }}
+            </picture>
+          </div>
+        {% endif %}
+
+        {% if section.settings.footnote != blank %}
+          <div class="de-results-proof__footnote to-top" style="transition-delay: 0.5s">{{ section.settings.footnote }}</div>
+        {% endif %}
+      </div>
+    </div>
+
+    {% if section.settings.sgs_image != blank %}
+      <div class="de-results-proof__sgs de-results-proof__sgs--desktop to-top" style="transition-delay: 0.4s">
+        {{ section.settings.sgs_image | image_url: width: 240 | image_tag: loading: 'lazy', class: 'de-results-proof__sgs-image', alt: section.settings.sgs_alt }}
+        {% if section.settings.sgs_text != blank %}
+          <div class="de-results-proof__sgs-text">{{ section.settings.sgs_text }}</div>
+        {% endif %}
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+<style>
+  .de-results-proof {
+    position: relative;
+    overflow: hidden;
+    background-color: var(--de-results-proof-bg);
+    color: var(--de-results-proof-text);
+  }
+
+  .de-results-proof__picture {
+    position: relative;
+    z-index: 1;
+    display: block;
+    width: 100%;
+  }
+
+  .de-results-proof__bg-image {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .de-results-proof__inner {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+  }
+
+  .de-results-proof__inner > .container {
+    position: relative;
+    height: 100%;
+  }
+
+  .de-results-proof__content {
+    position: relative;
+    z-index: 2;
+    width: 680px;
+    padding-top: 6%;
+    transform: none;
+  }
+
+  .de-results-proof__title {
+    margin: 0 0 30px;
+    font-size: 50px;
+    line-height: 1.25;
+    font-weight: 300;
+  }
+
+  .de-results-proof__subtitle {
+    margin-bottom: 50px;
+    font-size: 18px;
+    line-height: 1.5;
+  }
+
+  .de-results-proof__metric {
+    margin-bottom: 10px;
+  }
+
+  .de-results-proof__metric-label,
+  .de-results-proof__metric-caption,
+  .de-results-proof__sgs-text,
+  .de-results-proof__footnote {
+    color: rgba(63, 54, 54, 0.5);
+  }
+
+  .de-results-proof__metric-label {
+    margin-bottom: 0;
+    font-size: 18px;
+    line-height: 1.2;
+  }
+
+  .de-results-proof__metric-value {
+    display: inline-flex;
+    align-items: baseline;
+    min-width: 0;
+    background: #8d8bd5;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    font-size: 95px;
+    line-height: 1.2;
+    font-weight: 300;
+  }
+
+  .de-results-proof__metric-value span {
+    margin-left: 3px;
+    font-size: 57px;
+  }
+
+  .de-results-proof__metric-caption {
+    font-size: 18px;
+    line-height: 1.2;
+  }
+
+  .de-results-proof__before-after-picture {
+    display: block;
+    width: 100%;
+  }
+
+  .de-results-proof__before-after {
+    width: 394px;
+    margin-top: 20px;
+    overflow: hidden;
+    border-radius: 3px;
+  }
+
+  .de-results-proof__before-after-image {
+    display: block;
+    width: 100%;
+    height: auto;
+    transition: transform .45s ease;
+  }
+
+  .de-results-proof__before-after:hover .de-results-proof__before-after-image {
+    transform: scale(1.035);
+  }
+
+  .de-results-proof__footnote {
+    width: 910px;
+    max-width: none;
+    margin-top: 20px;
+    font-size: 18px;
+    line-height: 1.5;
+  }
+
+  .de-results-proof__sgs {
+    text-align: center;
+  }
+
+  .de-results-proof__sgs--desktop {
+    position: absolute;
+    z-index: 3;
+    right: 60px;
+    bottom: 5%;
+    width: 230px;
+    padding: 25px;
+    background: rgba(255, 255, 255, 0.58);
+  }
+
+  .de-results-proof__sgs--mobile {
+    display: none;
+  }
+
+  .de-results-proof__sgs-image {
+    display: block;
+    width: 100%;
+    height: auto;
+    margin: 0 auto 10px;
+  }
+
+  .de-results-proof__sgs-text {
+    font-size: 14px;
+    line-height: 1.2;
+    color: #020202;
+  }
+
+  @media (max-width: 749px) {
+    .de-results-proof__inner {
+      position: absolute;
+      inset: 0;
+      min-height: 0;
+      display: block;
+      padding: 43px 0 28px;
+    }
+
+    .de-results-proof__inner > .container {
+      padding: 0;
+    }
+
+    .de-results-proof__content {
+      position: relative;
+      width: 100%;
+      padding-top: 0;
+      transform: none;
+      text-align: center;
+    }
+
+    .de-results-proof__sgs--desktop {
+      display: none;
+    }
+
+    .de-results-proof__sgs--mobile {
+      display: block;
+      width: 75px;
+      margin: 0px auto 10px;
+    }
+    .de-results-proof__sgs-image {
+      margin: 0 auto;
+    }
+
+    .de-results-proof__sgs--mobile .de-results-proof__sgs-text {
+      font-size: 8px;
+      line-height: 1.2;
+    }
+
+    .de-results-proof__title {
+      max-width: 80%;
+      margin: 0 auto 10px;
+      font-size: 22px;
+    }
+
+    .de-results-proof__subtitle {
+      max-width: 80%;
+      margin: 0 auto 25px;
+      font-size: 12px;
+    }
+
+    .de-results-proof__metric {
+      margin-bottom: 0;
+    }
+
+    .de-results-proof__metric-label {
+      margin-bottom: 6px;
+      font-size: 12px;
+    }
+
+    .de-results-proof__metric-value {
+      min-width: 0;
+      padding: 0;
+      font-size: 52px;
+      line-height: .88;
+    }
+    .de-results-proof__metric-value span {
+      font-size: 32px;
+    }
+
+    .de-results-proof__metric-caption {
+      font-size: 12px;
+      line-height: 1.25;
+    }
+
+    .de-results-proof__before-after {
+      width: 100%;
+      margin-top: 69%;
+      padding: 0px 16px;
+    }
+
+    .de-results-proof__footnote {
+      width: auto;
+      padding: 0px 16px;
+      margin: 10px auto 0;
+      font-size: 10px;
+      color: #625959;
+      opacity: 1;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "DE Results Proof",
+  "settings": [
+    {
+      "type": "text",
+      "id": "anchor_id",
+      "label": "Anchor ID",
+      "default": "results"
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background",
+      "default": "#f8f8ff"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Desktop background image"
+    },
+    {
+      "type": "image_picker",
+      "id": "mobile_image",
+      "label": "Mobile background image"
+    },
+    {
+      "type": "image_picker",
+      "id": "sgs_image",
+      "label": "SGS SVG image"
+    },
+    {
+      "type": "text",
+      "id": "sgs_alt",
+      "label": "SGS image alt",
+      "default": "SGS"
+    },
+    {
+      "type": "text",
+      "id": "sgs_text",
+      "label": "SGS text",
+      "default": "Lab-effectiveness Certified"
+    },
+    {
+      "type": "textarea",
+      "id": "title",
+      "label": "Title",
+      "default": "Klinisch getestet, sichtbare\nErgebnisse in 2 Wochen¹"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Unterstützt durch eine 14-tägige Anwenderstudie von SGS Schweiz"
+    },
+    {
+      "type": "text",
+      "id": "metric_label",
+      "label": "Metric label",
+      "default": "Bis zu"
+    },
+    {
+      "type": "html",
+      "id": "metric",
+      "label": "Metric HTML",
+      "default": "-96<span>52%</span>"
+    },
+    {
+      "type": "text",
+      "id": "metric_caption",
+      "label": "Metric caption",
+      "default": "Reduktion der Haardichte¹"
+    },
+    {
+      "type": "image_picker",
+      "id": "before_after_image",
+      "label": "Before after image"
+    },
+    {
+      "type": "image_picker",
+      "id": "before_after_mobile_image",
+      "label": "Mobile before after image"
+    },
+    {
+      "type": "textarea",
+      "id": "footnote",
+      "label": "Footnote",
+      "default": "Hinweis: ¹ Basierend auf einer unabhängigen Drittstudie mit 32 erwachsenen asiatischen Teilnehmerinnen nach 14 Tagen kontinuierlicher Anwendung. Es wurden sichtbare Verbesserungen bei Haaranzahl, Haarlänge und Haardichte im Bereich der Bikinizone festgestellt. Individuelle Ergebnisse können variieren."
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#190a0a"
+    },
+    {
+      "type": "color",
+      "id": "muted_color",
+      "label": "Muted text color",
+      "default": "#5f595d"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent color",
+      "default": "#8c86cf"
+    }
+  ],
+  "presets": [
+    {
+      "name": "DE Results Proof"
+    }
+  ]
+}
+{% endschema %}

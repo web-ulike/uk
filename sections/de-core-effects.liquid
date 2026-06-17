@@ -1,0 +1,989 @@
+{% liquid
+  assign anchor_id = section.settings.anchor_id | strip
+  assign cover_image = section.settings.cover_image
+  assign mobile_cover_image = section.settings.mobile_cover_image | default: cover_image
+  assign main_image = section.settings.main_image
+  assign mobile_main_image = section.settings.mobile_main_image | default: main_image
+  assign slide_count = 1
+  assign scroll_count = 2.5
+  assign total_scroll_min = 1400
+  assign total_scroll_min_mobile = 1350
+%}
+
+<section
+  class="de-core-effects"
+  {% if anchor_id != blank %}
+    id="{{ anchor_id | escape }}"
+  {% endif %}
+  style="
+    --de-core-progress: 0;
+    --de-core-header-height: 80px;
+    --de-core-cover-progress: 0;
+    --de-core-feature-progress: 0;
+    --de-core-intro-height: {{ section.settings.intro_scroll_height }}vh;
+    --de-core-bg: {{ section.settings.background }};
+    --de-core-text: {{ section.settings.text_color }};
+    --de-core-muted: {{ section.settings.muted_color }};
+    --de-core-accent: {{ section.settings.accent_color }};
+    --de-core-slide-count: {{ slide_count }};
+    --de-core-scroll-count: {{ scroll_count }};
+    --de-core-total-scroll-height: 250vh;
+    --de-core-total-scroll-min: {{ total_scroll_min }}px;
+    --de-core-total-scroll-min-mobile: {{ total_scroll_min_mobile }}px;
+  "
+>
+  <div class="de-core-effects__intro">
+    <div class="de-core-effects__sticky">
+      <div class="de-core-effects__track">
+        <div class="de-core-effects__panel de-core-effects__feature de-core-effects__feature-bg" aria-hidden="true">
+          <div class="de-core-effects__visual">
+            {% if main_image != blank %}
+              <picture>
+                <source srcset="{{ mobile_main_image | image_url: width: 900 }}" media="(max-width: 749px)">
+                {{ main_image | image_url: width: 1800 | image_tag: loading: 'eager', class: 'de-core-effects__image', alt: main_image.alt }}
+              </picture>
+            {% endif %}
+          </div>
+        </div>
+
+        <div class="de-core-effects__features" aria-live="polite">
+          {% for block in section.blocks limit: 1 %}
+            <article class="de-core-effects__content-panel" {{ block.shopify_attributes }}>
+              <div class="de-core-effects__content">
+                <div class="de-core-effects__copy">
+                  {% if block.settings.tag != blank or block.settings.icon != blank %}
+                    <div class="de-core-effects__tag to-top">
+                      {% if block.settings.icon != blank %}
+                        {{ block.settings.icon | image_url: width: 90 | image_tag: loading: 'lazy', class: 'de-core-effects__icon', alt: block.settings.tag }}
+                      {% endif %}
+                      {% if block.settings.tag != blank %}
+                        <span>{{ block.settings.tag }}</span>
+                      {% endif %}
+                    </div>
+                  {% endif %}
+
+                  {% if block.settings.title != blank %}
+                    <h2 class="de-core-effects__title to-top">{{ block.settings.title | newline_to_br }}</h2>
+                  {% endif %}
+
+                  <span class="de-core-effects__line to-top" aria-hidden="true"></span>
+
+                  {% if block.settings.text != blank %}
+                    <div class="de-core-effects__text to-top">{{ block.settings.text }}</div>
+                  {% endif %}
+                </div>
+
+                <div class="de-core-effects__chart">
+                  <div class="de-core-effects__metrics">
+                    <div class="de-core-effects__metric">
+                      <strong>{{ section.settings.metric_1_value }}</strong>
+                      <span>{{ section.settings.metric_1_label }}</span>
+                    </div>
+                    <div class="de-core-effects__metric de-core-effects__metric--html">
+                      <strong>{{ section.settings.metric_2_value }}</strong>
+                      <span>{{ section.settings.metric_2_label }}</span>
+                    </div>
+                    <div class="de-core-effects__metric">
+                      <strong>{{ section.settings.metric_3_value }}</strong>
+                      <span>{{ section.settings.metric_3_label }}</span>
+                    </div>
+                  </div>
+
+                  {% if section.settings.chart_image != blank %}
+                    <div class="de-core-effects__data">
+                      {{ section.settings.chart_image | image_url: width: 680 | image_tag: loading: 'lazy', class: 'de-core-effects__data-image', alt: section.settings.chart_image.alt }}
+                    </div>
+                  {% endif %}
+
+                  {% if section.settings.chart_note != blank %}
+                    <div class="de-core-effects__note">{{ section.settings.chart_note | newline_to_br }}</div>
+                  {% endif %}
+                </div>
+              </div>
+            </article>
+          {% endfor %}
+        </div>
+      </div>
+
+      <div class="de-core-effects__cover" aria-hidden="true"></div>
+      {% if cover_image != blank %}
+        <picture class="de-core-effects__cover-picture" aria-hidden="true">
+          <source srcset="{{ mobile_cover_image | image_url: width: 900 }}" media="(max-width: 749px)">
+          {{ cover_image | image_url: width: 1800 | image_tag: loading: 'eager', class: 'de-core-effects__cover-image', alt: cover_image.alt }}
+        </picture>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+<style>
+  .de-core-effects {
+    position: relative;
+    overflow: clip;
+    background: var(--de-core-bg);
+    color: var(--de-core-text);
+  }
+
+  .de-core-effects__intro {
+    position: relative;
+    height: var(--de-core-total-scroll-height);
+    min-height: var(--de-core-total-scroll-min);
+    background: var(--de-core-bg);
+  }
+
+  .de-core-effects__sticky {
+    position: sticky;
+    top: var(--de-core-header-height);
+    width: 100%;
+    height: calc(100vh - var(--de-core-header-height));
+    min-height: 560px;
+    overflow: hidden;
+    background: var(--de-core-bg);
+  }
+
+  .de-core-effects__track {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+  }
+
+  .de-core-effects__panel {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    min-height: calc(560px - var(--de-core-header-height));
+    overflow: hidden;
+  }
+
+  .de-core-effects__cover {
+    display: none;
+  }
+
+  .de-core-effects__cover-picture {
+    position: absolute;
+    inset: 0;
+    z-index: 20;
+    display: block;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    will-change: transform;
+  }
+
+  .de-core-effects__cover-image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  .de-core-effects__features {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+  }
+
+  .de-core-effects__feature-bg {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background: var(--de-core-bg);
+  }
+
+  .de-core-effects__visual {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    display: block;
+    width: 100%;
+    height: 100%;
+    min-height: 100%;
+    overflow: hidden;
+  }
+
+  .de-core-effects__visual picture {
+    position: absolute;
+    inset: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    min-height: 100%;
+  }
+
+  .de-core-effects__image {
+    position: absolute;
+    inset: 0;
+    display: block;
+    width: 100%;
+    max-width: none;
+    height: 100%;
+    min-height: 100%;
+    transition: none;
+  }
+
+  .de-core-effects__visual:hover .de-core-effects__image {
+    transform: none;
+  }
+
+  .de-core-effects__content-panel {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 0;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  .de-core-effects__content {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+  }
+
+  .de-core-effects__copy,
+  .de-core-effects__chart {
+    position: absolute;
+    right: 10%;
+    top: 30%;
+    width: min(520px, calc(100vw - 48px));
+  }
+
+  .de-core-effects__chart {
+    right: 10%;
+    top: 15%;
+    width: min(500px, calc(100vw - 48px));
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(24px);
+  }
+
+  .de-core-effects__tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 22px;
+    color: #3CC3FC;
+    font-size: 32px;
+    line-height: 1.2;
+  }
+
+  .de-core-effects__icon {
+    display: block;
+    width: 80px;
+    height: auto;
+    flex: 0 0 auto;
+  }
+
+  .de-core-effects__title {
+    margin: 0;
+    color: var(--de-core-text);
+    font-size: 44px;
+    line-height: 1.25;
+    font-weight: 300;
+    letter-spacing: 0;
+  }
+
+  .de-core-effects__line {
+    display: block;
+    width: 124px;
+    height: 6px;
+    margin: 25px 0;
+    background: var(--de-core-accent);
+  }
+
+  .de-core-effects__text {
+    color: var(--de-core-text);
+    font-size: 18px;
+    line-height: 1.5;
+  }
+
+  .de-core-effects__data {
+    max-width: 500px;
+    margin-top: 0;
+    overflow: hidden;
+  }
+
+  .de-core-effects__metrics {
+    width: min(100%, 500px);
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    margin-bottom: 16px;
+    border-radius: 8px;
+    background: rgba(12, 13, 34, .78);
+    overflow: hidden;
+  }
+
+  .de-core-effects__metric {
+    min-height: 76px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 12px 16px;
+    border-right: 1px solid rgba(255, 255, 255, .08);
+  }
+
+  .de-core-effects__metric:last-child {
+    border-right: 0;
+  }
+
+  .de-core-effects__metric strong {
+    color: var(--de-core-accent);
+    font-size: 44px;
+    line-height: 1.2;
+    font-weight: 300;
+    letter-spacing: 0;
+  }
+
+  .de-core-effects__metric--html strong span {
+    display: inline-block;
+    color: var(--de-core-accent);
+    font-size: 30px;
+    line-height: 1;
+    vertical-align: baseline;
+  }
+
+  .de-core-effects__metric span {
+    margin-top: 6px;
+    color: #fff;
+    font-size: 14px;
+    line-height: 1.2;
+  }
+
+  .de-core-effects__data-image {
+    display: block;
+    width: 100%;
+    height: auto;
+    transition: transform .45s ease;
+  }
+
+  .de-core-effects__note {
+    max-width: 480px;
+    margin-top: 35px;
+    color: var(--de-core-muted);
+    font-size: 16px;
+    line-height: 1.5;
+  }
+
+  @media (max-width: 991px) {
+    .de-core-effects {
+      --de-core-header-height: 64px;
+    }
+
+    .de-core-effects__sticky {
+      position: relative;
+      top: auto;
+      display: block;
+      height: auto;
+      min-height: 0;
+      padding-top: 0;
+      overflow: visible;
+      background: var(--de-core-bg);
+    }
+
+    .de-core-effects__intro {
+      height: auto;
+      min-height: 0;
+      background: var(--de-core-bg);
+    }
+
+    .de-core-effects__intro > .pin-spacer {
+      background: var(--de-core-bg) !important;
+    }
+
+    .de-core-effects__track {
+      position: relative;
+      top: 0;
+      z-index: 1;
+      width: 100%;
+      min-height: 0;
+      height: auto;
+      background: var(--de-core-bg);
+    }
+
+    .de-core-effects__features {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    .de-core-effects__panel {
+      position: relative;
+      inset: auto;
+      min-height: 0;
+      width: 100%;
+      height: auto;
+      overflow: visible;
+    }
+
+    .de-core-effects__cover-image {
+      object-position: center;
+    }
+
+    .de-core-effects__cover {
+      display: none;
+    }
+
+    .de-core-effects__cover-picture {
+      position: absolute;
+      inset: 0 auto auto 0;
+      z-index: 20;
+      display: block;
+      width: 100%;
+      height: 100vh;
+      height: 100svh;
+      min-height: 100svh;
+      pointer-events: none;
+      overflow: hidden;
+      will-change: transform;
+    }
+
+    .de-core-effects.is-mobile-cover-active .de-core-effects__cover,
+    .de-core-effects.is-mobile-cover-active .de-core-effects__cover-picture {
+      display: block;
+    }
+
+    .de-core-effects__cover-picture .de-core-effects__cover-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+    }
+
+    .de-core-effects__content-panel {
+      position: absolute;
+      inset: 0;
+      top: 100px;
+      display: block;
+      padding: 48px 16px 0;
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+    }
+
+    .de-core-effects__content {
+      width: 100%;
+      max-width: none;
+      height: 100%;
+    }
+
+    .de-core-effects__copy {
+      position: relative;
+      top: auto;
+      left: auto;
+      width: 100%;
+      right: auto;
+    }
+
+    .de-core-effects__chart {
+      --de-core-chart-width: min(340px, calc(100vw - 32px));
+      position: absolute;
+      left: calc((100% - var(--de-core-chart-width)) / 2);
+      right: auto;
+      top: auto;
+      bottom: 40px;
+      width: var(--de-core-chart-width);
+      margin: 0;
+      opacity: 1;
+      visibility: visible;
+      transform: none;
+    }
+
+    .de-core-effects__visual {
+      position: relative;
+      inset: auto;
+      width: 100%;
+      height: auto;
+      min-height: 0;
+      overflow: visible;
+    }
+
+    .de-core-effects__visual picture {
+      position: relative;
+      inset: auto;
+      display: block;
+      width: 100%;
+      height: auto;
+      min-height: 0;
+    }
+
+    .de-core-effects__image {
+      position: relative;
+      inset: auto;
+      display: block;
+      width: 100%;
+      max-width: 100%;
+      height: auto;
+      min-height: 0;
+      object-fit: contain;
+    }
+
+    .de-core-effects__feature-bg {
+      top: 100px;
+      height: auto;
+      min-height: 0;
+      background: var(--de-core-bg);
+    }
+
+    .de-core-effects__tag {
+      margin-bottom: 0px;
+      font-size: 14px;
+    }
+
+    .de-core-effects__icon {
+      width: 40px;
+    }
+
+    .de-core-effects__title {
+      font-size: 24px;
+    }
+
+    .de-core-effects__line {
+      width: 61px;
+      height: 2px;
+      margin: 20px 0;
+    }
+
+    .de-core-effects__text {
+      font-size: 12px;
+    }
+
+    .de-core-effects__data {
+      max-width: none;
+      margin-top: 17px;
+    }
+
+    .de-core-effects__data-image {
+      width: 100%;
+      height: auto;
+    }
+
+    .de-core-effects__metrics {
+      margin-bottom: 10px;
+      border-radius: 4px;
+    }
+
+    .de-core-effects__metric {
+      min-height: 89px;
+      border-radius: 7.146px;
+      padding: 8px 10px;
+    }
+
+    .de-core-effects__metric strong {
+      font-size: 31px;
+    }
+
+    .de-core-effects__metric--html strong span {
+      font-size: 21px;
+    }
+
+    .de-core-effects__metric span {
+      font-size: 10px;
+    }
+
+    .de-core-effects__note {
+      margin-top: 12px;
+      font-size: 10px;
+    }
+  }
+</style>
+
+<script>
+  (() => {
+    const initCoreEffects{{ section.id | replace: '-', '_' }} = () => {
+      const root = document.querySelector('#shopify-section-{{ section.id }} .de-core-effects');
+      if (!root) return;
+      if (root.dataset.coreEffectsInit === 'true') return;
+      root.dataset.coreEffectsInit = 'true';
+
+      const intro = root.querySelector('.de-core-effects__intro');
+      const track = root.querySelector('.de-core-effects__track');
+      const coverMask = root.querySelector('.de-core-effects__cover');
+      const cover = root.querySelector('.de-core-effects__cover-picture');
+      const panels = Array.from(root.querySelectorAll('.de-core-effects__content-panel'));
+      if (!intro) return;
+
+      const loadScript = (src, globalName) => new Promise((resolve, reject) => {
+        if (globalName && window[globalName]) {
+          resolve();
+          return;
+        }
+
+        const existing = document.querySelector(`script[src="${src}"]`);
+        if (existing) {
+          if (existing.dataset.loaded === 'true' || (globalName && window[globalName])) {
+            resolve();
+            return;
+          }
+          existing.addEventListener('load', resolve, { once: true });
+          existing.addEventListener('error', reject, { once: true });
+          return;
+        }
+
+        const script = document.createElement('script');
+        script.src = src;
+        script.defer = true;
+        script.addEventListener('load', () => {
+          script.dataset.loaded = 'true';
+          resolve();
+        }, { once: true });
+        script.addEventListener('error', reject, { once: true });
+        document.head.appendChild(script);
+      });
+
+      const initGsap = () => {
+        if (!window.gsap || !window.ScrollTrigger) return;
+
+        window.gsap.registerPlugin(window.ScrollTrigger);
+        window.ScrollTrigger.getAll().forEach((trigger) => {
+          if (trigger.trigger === intro) trigger.kill();
+        });
+
+        const refreshAfterLayout = () => {
+          window.requestAnimationFrame(() => {
+            window.ScrollTrigger.refresh();
+            window.setTimeout(() => window.ScrollTrigger.refresh(), 180);
+            window.setTimeout(() => window.ScrollTrigger.refresh(), 650);
+          });
+        };
+
+        if (root.dataset.coreEffectsRefreshBound !== 'true') {
+          root.dataset.coreEffectsRefreshBound = 'true';
+
+          root.querySelectorAll('img').forEach((image) => {
+            if (image.complete) {
+              if (image.decode) image.decode().then(refreshAfterLayout).catch(refreshAfterLayout);
+              return;
+            }
+
+            image.addEventListener('load', refreshAfterLayout, { once: true });
+            image.addEventListener('error', refreshAfterLayout, { once: true });
+          });
+
+          if (document.fonts && document.fonts.ready) {
+            document.fonts.ready.then(refreshAfterLayout).catch(() => {});
+          }
+
+          window.addEventListener('load', refreshAfterLayout, { once: true });
+        }
+
+        const isMobile = window.matchMedia('(max-width: 991px)').matches;
+
+        if (isMobile) {
+          root.classList.remove('is-mobile-cover-active');
+          if (coverMask) window.gsap.set(coverMask, { display: 'none', yPercent: 0, clearProps: 'transform' });
+          if (track) window.gsap.set(track, { clearProps: 'transform' });
+          window.gsap.set(panels, {
+            autoAlpha: 0,
+            pointerEvents: 'none',
+            clearProps: 'transform'
+          });
+          if (cover) {
+            window.gsap.set(cover, { display: 'block', yPercent: 0 });
+            const mobileCoverScroll = () => Math.max(500, Math.round(window.innerHeight * 0.8));
+            const mobileTl = window.gsap.timeline({
+              scrollTrigger: {
+                trigger: intro,
+                start: 'top top',
+                end: () => '+=' + mobileCoverScroll(),
+                pin: root.querySelector('.de-core-effects__sticky'),
+                pinSpacing: true,
+                scrub: true,
+                invalidateOnRefresh: true
+              }
+            });
+            mobileTl.to(cover, { yPercent: -100, y: 0, ease: 'none' }, 0);
+            mobileTl.to(panels, {
+              autoAlpha: 1,
+              pointerEvents: 'auto',
+              duration: .12,
+              ease: 'power1.out'
+            }, .84);
+            const firstCopy = panels[0] ? panels[0].querySelector('.de-core-effects__copy') : null;
+            if (firstCopy) {
+              mobileTl.to(firstCopy, {
+                autoAlpha: 1,
+                y: 0,
+                duration: .2,
+                ease: 'power2.out'
+              }, .86);
+            }
+          } else {
+            window.gsap.set(panels, {
+              autoAlpha: 1,
+              pointerEvents: 'auto'
+            });
+          }
+          panels.forEach((panel) => {
+            const copy = panel.querySelector('.de-core-effects__copy');
+            const chart = panel.querySelector('.de-core-effects__chart');
+            if (copy) window.gsap.set(copy, cover ? { autoAlpha: 0, y: 18 } : { autoAlpha: 1, y: 0, clearProps: 'transform' });
+            if (chart) window.gsap.set(chart, { autoAlpha: 1, y: 0, clearProps: 'transform' });
+          });
+          refreshAfterLayout();
+          return;
+        }
+
+        if (cover) window.gsap.set(cover, { yPercent: 0 });
+        window.gsap.set(panels, { autoAlpha: 0, pointerEvents: 'none' });
+
+        panels.forEach((panel) => {
+          const copy = panel.querySelector('.de-core-effects__copy');
+          const chart = panel.querySelector('.de-core-effects__chart');
+          if (copy) window.gsap.set(copy, { autoAlpha: 0, y: 28 });
+          if (chart) window.gsap.set(chart, { autoAlpha: 0, y: 24 });
+        });
+
+        const firstPanel = panels[0];
+        const firstCopy = firstPanel ? firstPanel.querySelector('.de-core-effects__copy') : null;
+        const firstChart = firstPanel ? firstPanel.querySelector('.de-core-effects__chart') : null;
+
+        const tl = window.gsap.timeline({
+          scrollTrigger: {
+            trigger: intro,
+            start: 'top top',
+            end: 'bottom bottom',
+            scrub: true,
+            invalidateOnRefresh: true
+          }
+        });
+
+        if (cover) {
+          tl.to(cover, { yPercent: 0, duration: .18, ease: 'none' }, 0);
+          tl.to(cover, { yPercent: -100, duration: .52, ease: 'none' }, .18);
+        }
+
+        if (firstPanel) {
+          tl.to(firstPanel, { autoAlpha: 1, pointerEvents: 'auto', duration: .08, ease: 'none' }, .64);
+        }
+
+        if (firstCopy) {
+          tl.to(firstCopy, { autoAlpha: 1, y: 0, duration: .22, ease: 'power2.out' }, .7);
+        }
+
+        if (firstCopy) {
+          tl.to(firstCopy, { autoAlpha: 0, y: -18, duration: .18, ease: 'power1.inOut' }, 1.36);
+        }
+
+        if (firstChart) {
+          tl.to(firstChart, { autoAlpha: 1, y: 0, duration: .22, ease: 'power1.inOut' }, 1.48);
+        }
+
+        refreshAfterLayout();
+      };
+
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        if (cover) cover.style.display = 'none';
+        panels.forEach((panel, index) => {
+          panel.style.opacity = index === 0 ? '1' : '0';
+          panel.style.visibility = index === 0 ? 'visible' : 'hidden';
+          panel.style.pointerEvents = index === 0 ? 'auto' : 'none';
+        });
+        return;
+      }
+
+      if (window.gsap && window.ScrollTrigger) {
+        initGsap();
+        return;
+      }
+
+      loadScript('https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js', 'gsap')
+        .then(() => loadScript('https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js', 'ScrollTrigger'))
+        .then(initGsap)
+        .catch(() => {});
+    };
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initCoreEffects{{ section.id | replace: '-', '_' }}, { once: true });
+    } else {
+      initCoreEffects{{ section.id | replace: '-', '_' }}();
+    }
+
+    document.addEventListener('shopify:section:load', (event) => {
+      if (!event.target || event.target.id !== 'shopify-section-{{ section.id }}') return;
+      const loadedRoot = event.target.querySelector('.de-core-effects');
+      if (loadedRoot) loadedRoot.dataset.coreEffectsInit = '';
+      initCoreEffects{{ section.id | replace: '-', '_' }}();
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "DE 五大核心特效",
+  "settings": [
+    {
+      "type": "text",
+      "id": "anchor_id",
+      "label": "锚点 ID",
+      "default": "core-effects"
+    },
+    {
+      "type": "range",
+      "id": "intro_scroll_height",
+      "label": "第一屏滚动高度",
+      "min": 120,
+      "max": 240,
+      "step": 10,
+      "unit": "vh",
+      "default": 170
+    },
+    {
+      "type": "image_picker",
+      "id": "cover_image",
+      "label": "PC 第一屏透明文字遮罩 PNG"
+    },
+    {
+      "type": "image_picker",
+      "id": "mobile_cover_image",
+      "label": "M 端第一屏透明文字遮罩 PNG"
+    },
+    {
+      "type": "image_picker",
+      "id": "main_image",
+      "label": "PC 第二屏固定全屏主图"
+    },
+    {
+      "type": "image_picker",
+      "id": "mobile_main_image",
+      "label": "M 端第二屏固定全屏主图"
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "第二屏背景色",
+      "default": "#171b2a"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "文字颜色",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "muted_color",
+      "label": "辅助文字颜色",
+      "default": "#b9bed4"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "强调色",
+      "default": "#78c8ff"
+    },
+    {
+      "type": "header",
+      "content": "第三屏图表配置"
+    },
+    {
+      "type": "header",
+      "content": "第三屏图表配置"
+    },
+    {
+      "type": "text",
+      "id": "metric_1_value",
+      "label": "指标 1 数值",
+      "default": "<16°C"
+    },
+    {
+      "type": "text",
+      "id": "metric_1_label",
+      "label": "指标 1 文案",
+      "default": "Kontrolltemperatur"
+    },
+    {
+      "type": "html",
+      "id": "metric_2_value",
+      "label": "指标 2 数值",
+      "default": "30<span>min</span>"
+    },
+    {
+      "type": "text",
+      "id": "metric_2_label",
+      "label": "指标 2 文案",
+      "default": "Behandlungsdauer"
+    },
+    {
+      "type": "text",
+      "id": "metric_3_value",
+      "label": "指标 3 数值",
+      "default": "4x"
+    },
+    {
+      "type": "text",
+      "id": "metric_3_label",
+      "label": "指标 3 文案",
+      "default": "Kühlsystem-Leistung"
+    },
+    {
+      "type": "image_picker",
+      "id": "chart_image",
+      "label": "第三屏图表图片"
+    },
+    {
+      "type": "textarea",
+      "id": "chart_note",
+      "label": "第三屏注释",
+      "default": "¹ Hinweis: Patent Nr. ZL201921999186.4\n² Basierend auf internen Labortests von Ulike. Individuelle Ergebnisse können variieren."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "core",
+      "name": "核心卖点",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "icon",
+          "label": "标签图标"
+        },
+        {
+          "type": "text",
+          "id": "tag",
+          "label": "标签文案",
+          "default": "Saphir-Eis-Kühltechnologie"
+        },
+        {
+          "type": "textarea",
+          "id": "title",
+          "label": "标题",
+          "default": "Entwickelt für maximalen\nKomfort während der\nAnwendung."
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "正文",
+          "default": "Sorgt für ein kühles Hautgefühl während der Anwendung und macht die Haarentfernung angenehm."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "DE 五大核心特效",
+      "blocks": [
+        {
+          "type": "core"
+        },
+        {
+          "type": "core"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

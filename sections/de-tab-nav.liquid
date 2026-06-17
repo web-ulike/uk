@@ -1,0 +1,441 @@
+<style>
+  #shopify-section-{{ section.id }} {
+    position: relative;
+    top: auto;
+    z-index: 3;
+    transition: transform 0.28s ease, opacity 0.28s ease;
+  }
+
+  #shopify-section-{{ section.id }}.is-tab-nav-fixed {
+    position: fixed;
+    top: var(--header-height, 0px);
+    left: 0;
+    right: 0;
+    width: 100%;
+    z-index: 3;
+  }
+
+  #shopify-section-{{ section.id }}.is-tab-nav-hidden {
+    transform: translateY(-100%);
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  #shopify-section-{{ section.id }} .de-tab-nav {
+    background: {{ section.settings.background }};
+    border-top: 0.25px solid #E4DDDD;
+    border-bottom: 0.25px solid #E4DDDD;
+  }
+
+  #shopify-section-{{ section.id }} .de-tab-nav__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 28px;
+    min-height: 80px;
+  }
+
+  #shopify-section-{{ section.id }} .de-tab-nav__list {
+    display: flex;
+    align-items: center;
+    gap: 64px;
+    min-width: 0;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: none;
+    padding-block: 4px;
+    margin-block: -4px;
+  }
+
+  #shopify-section-{{ section.id }} .de-tab-nav__list::-webkit-scrollbar {
+    display: none;
+  }
+
+  #shopify-section-{{ section.id }} .de-tab-nav__link {
+    flex: 0 0 auto;
+    color: rgba(0, 0, 0, 0.5);
+    font-size: 20px;
+    line-height: 1.2;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: color 0.2s ease;
+  }
+
+  #shopify-section-{{ section.id }} .de-tab-nav__link:hover,
+  #shopify-section-{{ section.id }} .de-tab-nav__link.is-active {
+    color: {{ section.settings.active_color }};
+  }
+
+  #shopify-section-{{ section.id }} .de-tab-nav__button {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 42px;
+    padding: 0 32px;
+    border-radius: 999px;
+    background: {{ section.settings.button_background }};
+    color: {{ section.settings.button_text_color }};
+    font-size: 14px;
+    font-family: var(--heading-font-family);
+    line-height: 1;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  @media (max-width: 991px) {
+    #shopify-section-{{ section.id }}.is-tab-nav-fixed {
+      top: var(--header-height, 0px);
+    }
+
+    #shopify-section-{{ section.id }} .de-tab-nav__inner {
+      gap: 16px;
+      min-height: 56px;
+      padding-right: 0;
+    }
+
+    #shopify-section-{{ section.id }} .de-tab-nav__list {
+      gap: 20px;
+      padding-block: 6px;
+      margin-block: -6px;
+    }
+
+    #shopify-section-{{ section.id }} .de-tab-nav__link {
+      font-size: 12px;
+      line-height: 1.25;
+    }
+
+    #shopify-section-{{ section.id }} .de-tab-nav__button {
+      min-height: 36px;
+      padding: 0 10px;
+      font-size: 12px;
+    }
+  }
+</style>
+
+<nav class="de-tab-nav" aria-label="{{ section.settings.aria_label | escape }}">
+  <div class="container">
+    <div class="de-tab-nav__inner">
+      <div class="de-tab-nav__list">
+        {%- for block in section.blocks -%}
+          <a
+            class="de-tab-nav__link{% if forloop.first %} is-active{% endif %}"
+            href="{{ block.settings.link | default: '#' }}"
+            {{ block.shopify_attributes }}
+          >
+            {{ block.settings.label }}
+          </a>
+        {%- endfor -%}
+      </div>
+
+      {%- if section.settings.button_label != blank -%}
+        <a class="de-tab-nav__button" href="{{ section.settings.button_link | default: '#' }}">
+          {{ section.settings.button_label }}
+        </a>
+      {%- endif -%}
+    </div>
+  </div>
+</nav>
+
+<script>
+  (() => {
+    const section = document.getElementById('shopify-section-{{ section.id }}');
+    if (!section) return;
+
+    const links = [...section.querySelectorAll('.de-tab-nav__link')];
+    const list = section.querySelector('.de-tab-nav__list');
+    const button = section.querySelector('.de-tab-nav__button');
+    const scrollLinks = button ? [...links, button] : links;
+
+    const getCurrentScrollY = () => window.pageYOffset || document.documentElement.scrollTop || 0;
+
+    let lastScrollY = getCurrentScrollY();
+    let navHeight = section.offsetHeight;
+    let navTriggerBottom = 0;
+    let navScrollTicking = false;
+
+    const getSectionNormalTop = () => {
+      const wasFixed = section.classList.contains('is-tab-nav-fixed');
+      const wasHidden = section.classList.contains('is-tab-nav-hidden');
+
+      section.classList.remove('is-tab-nav-fixed', 'is-tab-nav-hidden');
+      const top = section.getBoundingClientRect().top + getCurrentScrollY();
+
+      if (wasFixed) section.classList.add('is-tab-nav-fixed');
+      if (wasHidden) section.classList.add('is-tab-nav-hidden');
+
+      return top;
+    };
+
+    const updateNavPosition = () => {
+      navHeight = section.offsetHeight;
+      navTriggerBottom = getSectionNormalTop() + navHeight;
+    };
+
+    const showFixedNav = () => {
+      section.classList.add('is-tab-nav-fixed');
+      section.classList.remove('is-tab-nav-hidden');
+    };
+
+    const hideFixedNav = () => {
+      section.classList.add('is-tab-nav-fixed', 'is-tab-nav-hidden');
+    };
+
+    const resetNav = () => {
+      section.classList.remove('is-tab-nav-fixed', 'is-tab-nav-hidden');
+    };
+
+    const updateNavVisibility = () => {
+      const currentY = getCurrentScrollY();
+      const isScrollingUp = currentY < lastScrollY;
+      const isScrollingDown = currentY > lastScrollY;
+      const hasPassedSection = currentY > navTriggerBottom;
+
+      if (!hasPassedSection) {
+        resetNav();
+      } else if (isScrollingUp) {
+        showFixedNav();
+      } else if (isScrollingDown || !section.classList.contains('is-tab-nav-hidden')) {
+        hideFixedNav();
+      }
+
+      lastScrollY = Math.max(currentY, 0);
+      navScrollTicking = false;
+    };
+
+    const getHash = (link) => {
+      const href = link.getAttribute('href') || '';
+      if (!href || href === '#') return '';
+
+      if (href.includes('#')) {
+        const hash = href.slice(href.indexOf('#'));
+        return hash.length > 1 ? hash : '';
+      }
+
+      return '';
+    };
+
+    const getTarget = (hash) => {
+      if (!hash) return null;
+      const id = decodeURIComponent(hash.slice(1));
+      return document.getElementById(id) || document.querySelector(`[id="${CSS.escape(id)}"]`);
+    };
+
+    const getScrollTop = (target) => {
+      const stickyHeight = section.offsetHeight;
+      const headerHeight = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--header-height')) || 0;
+      return target.getBoundingClientRect().top + window.pageYOffset - stickyHeight - headerHeight + 50;
+    };
+
+    const setActive = (activeLink, shouldCenter = false) => {
+      if (!activeLink || !activeLink.classList.contains('de-tab-nav__link')) return;
+      if (activeLink.classList.contains('is-active')) return;
+
+      links.forEach((link) => link.classList.remove('is-active'));
+      activeLink.classList.add('is-active');
+
+      if (shouldCenter && list) {
+        const left = activeLink.offsetLeft - (list.clientWidth - activeLink.offsetWidth) / 2;
+        list.scrollTo({ left, behavior: 'smooth' });
+      }
+    };
+
+    const targets = links
+      .map((link) => {
+        const target = getTarget(getHash(link));
+        return target ? { link, target } : null;
+      })
+      .filter(Boolean);
+
+    const hasTargets = targets.length > 0;
+
+    scrollLinks.forEach((link) => {
+      const hash = getHash(link);
+      if (!hash) return;
+
+      link.addEventListener('click', (event) => {
+        const target = getTarget(hash);
+        if (!target) return;
+
+        event.preventDefault();
+        setActive(link, true);
+        window.scrollTo({ top: getScrollTop(target), behavior: 'smooth' });
+      });
+    });
+
+    let ticking = false;
+
+    const setActiveLink = () => {
+      if (!hasTargets) {
+        ticking = false;
+        return;
+      }
+      const headerHeight = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--header-height')) || 0;
+      const offset = section.offsetHeight + headerHeight + 16;
+      const currentY = window.pageYOffset + offset;
+      let active = targets[0];
+
+      targets.forEach((item, index) => {
+        const targetTop = item.target.offsetTop;
+        const nextTarget = targets[index + 1]?.target;
+        const targetBottom = nextTarget ? nextTarget.offsetTop : document.documentElement.scrollHeight;
+
+        if (currentY >= targetTop && currentY < targetBottom) {
+          active = item;
+        }
+      });
+
+      setActive(active.link, true);
+      ticking = false;
+    };
+
+    const requestActiveUpdate = () => {
+      if (ticking) return;
+      ticking = true;
+      window.requestAnimationFrame(setActiveLink);
+    };
+
+    window.setTimeout(() => {
+      updateNavPosition();
+      updateNavVisibility();
+      if (hasTargets) setActiveLink();
+    }, 100);
+
+    window.addEventListener('scroll', () => {
+      if (!navScrollTicking) {
+        navScrollTicking = true;
+        window.requestAnimationFrame(updateNavVisibility);
+      }
+      requestActiveUpdate();
+    }, { passive: true });
+
+    window.addEventListener('resize', () => {
+      updateNavPosition();
+      updateNavVisibility();
+      requestActiveUpdate();
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "DE tab nav",
+  "settings": [
+    {
+      "type": "text",
+      "id": "aria_label",
+      "label": "ARIA label",
+      "default": "Page navigation"
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#8b8b8b"
+    },
+    {
+      "type": "color",
+      "id": "active_color",
+      "label": "Active color",
+      "default": "#e0004d"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "JETZT VORBESTELLEN"
+    },
+    {
+      "type": "text",
+      "id": "button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "color",
+      "id": "button_background",
+      "label": "Button background",
+      "default": "#e0004d"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button text color",
+      "default": "#ffffff"
+    }
+  ],
+  "blocks": [
+    {
+      "name": "Tab",
+      "type": "tab",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "Übersicht"
+        },
+        {
+          "type": "text",
+          "id": "link",
+          "label": "Link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "DE tab nav",
+      "blocks": [
+        {
+          "type": "tab",
+          "settings": {
+            "label": "Übersicht",
+            "link": "#overview"
+          }
+        },
+        {
+          "type": "tab",
+          "settings": {
+            "label": "Ergebnisse",
+            "link": "#results"
+          }
+        },
+        {
+          "type": "tab",
+          "settings": {
+            "label": "Sicherheit",
+            "link": "#safety"
+          }
+        },
+        {
+          "type": "tab",
+          "settings": {
+            "label": "Technologie",
+            "link": "#technology"
+          }
+        },
+        {
+          "type": "tab",
+          "settings": {
+            "label": "Anwendung",
+            "link": "#usage"
+          }
+        },
+        {
+          "type": "tab",
+          "settings": {
+            "label": "FAQ",
+            "link": "#faq"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

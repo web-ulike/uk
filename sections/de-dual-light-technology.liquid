@@ -1,0 +1,897 @@
+{% liquid
+  assign anchor_id = section.settings.anchor_id | strip
+%}
+
+<section
+  class="de-dual-light-tech"
+  {% if anchor_id != blank %}
+    id="{{ anchor_id | escape }}"
+  {% endif %}
+  style="
+    --de-dlt-dark: {{ section.settings.dark_background }};
+    --de-dlt-light: {{ section.settings.light_background }};
+    --de-dlt-text: {{ section.settings.text_color }};
+    --de-dlt-muted: {{ section.settings.muted_color }};
+    --de-dlt-accent: {{ section.settings.accent_color }};
+  "
+>
+  <div class="de-dlt-chapter de-dlt-chapter--stack" data-dlt-chapter="stack">
+    <div class="de-dlt-sticky">
+      <div class="de-dlt-scene de-dlt-scene--dual">
+        <div class="de-dlt-image-layer">
+        {% if section.settings.dual_image != blank %}
+          <picture>
+            <source srcset="{{ section.settings.dual_mobile_image | default: section.settings.dual_image | image_url: width: 900 }}" media="(max-width: 749px)">
+            {{ section.settings.dual_image | image_url: width: 1800 | image_tag: loading: 'eager', class: 'de-dlt-full-image', alt: section.settings.dual_title }}
+          </picture>
+        {% endif %}
+        </div>
+
+        <div class="de-dlt-copy de-dlt-copy--dual">
+        {% if section.settings.dual_icon != blank or section.settings.dual_eyebrow != blank %}
+          <div class="de-dlt-eyebrow">
+            {% if section.settings.dual_icon != blank %}
+              {{ section.settings.dual_icon | image_url: width: 80 | image_tag: loading: 'lazy', class: 'de-dlt-icon', alt: section.settings.dual_eyebrow }}
+            {% endif %}
+            {% if section.settings.dual_eyebrow != blank %}
+              <span>{{ section.settings.dual_eyebrow }}</span>
+            {% endif %}
+          </div>
+        {% endif %}
+        <h2 class="de-dlt-title">{{ section.settings.dual_title | newline_to_br }}</h2>
+        <div class="de-dlt-line"></div>
+        <div class="de-dlt-text">{{ section.settings.dual_text }}</div>
+        <div class="de-dlt-stats">
+          <div>
+            {% if section.settings.dual_metric_1_top_label != blank %}
+              <em>{{ section.settings.dual_metric_1_top_label }}</em>
+            {% endif %}
+            <div class="de-dlt-stat-value de-dlt-stat-value--one">{{ section.settings.dual_metric_1_value }}</div>
+          </div>
+          <div>
+            {% if section.settings.dual_metric_2_top_label != blank %}
+              <em>{{ section.settings.dual_metric_2_top_label }}</em>
+            {% endif %}
+            <div class="de-dlt-stat-value de-dlt-stat-value--two">{{ section.settings.dual_metric_2_value }}</div>
+          </div>
+        </div>
+        {% if section.settings.dual_note != blank %}
+          <div class="de-dlt-note">{{ section.settings.dual_note }}</div>
+        {% endif %}
+        </div>
+      </div>
+
+      <div class="de-dlt-scene de-dlt-scene--sensor">
+        <div class="de-dlt-image-layer de-dlt-image-layer--sensor">
+        {% if section.settings.sensor_image != blank %}
+          <picture>
+            <source srcset="{{ section.settings.sensor_mobile_image | default: section.settings.sensor_image | image_url: width: 900 }}" media="(max-width: 749px)">
+            {{ section.settings.sensor_image | image_url: width: 1800 | image_tag: loading: 'lazy', class: 'de-dlt-full-image', alt: section.settings.sensor_title }}
+          </picture>
+        {% endif %}
+        </div>
+
+        <div class="de-dlt-copy de-dlt-copy--sensor">
+        {% if section.settings.sensor_icon != blank or section.settings.sensor_eyebrow != blank %}
+          <div class="de-dlt-eyebrow">
+            {% if section.settings.sensor_icon != blank %}
+              {{ section.settings.sensor_icon | image_url: width: 80 | image_tag: loading: 'lazy', class: 'de-dlt-icon', alt: section.settings.sensor_eyebrow }}
+            {% endif %}
+            {% if section.settings.sensor_eyebrow != blank %}
+              <span>{{ section.settings.sensor_eyebrow }}</span>
+            {% endif %}
+          </div>
+        {% endif %}
+        <h2 class="de-dlt-title">{{ section.settings.sensor_title | newline_to_br }}</h2>
+        <div class="de-dlt-line"></div>
+        <div class="de-dlt-text">{{ section.settings.sensor_text }}</div>
+        {% if section.settings.sensor_small_video != blank %}
+          <div class="de-dlt-small-image">
+            {{
+              section.settings.sensor_small_video
+              | video_tag:
+                controls: false,
+                playsinline: true,
+                muted: true,
+                autoplay: true,
+                loop: true,
+                class: 'de-dlt-small-image__img'
+            }}
+          </div>
+        {% endif %}
+        </div>
+      </div>
+
+      <div class="de-dlt-scene de-dlt-scene--ushr">
+        <div class="de-dlt-image-layer de-dlt-image-layer--ushr">
+          {% if section.settings.ushr_image != blank %}
+            <picture>
+              <source srcset="{{ section.settings.ushr_mobile_image | default: section.settings.ushr_image | image_url: width: 900 }}" media="(max-width: 749px)">
+              {{ section.settings.ushr_image | image_url: width: 1800 | image_tag: loading: 'lazy', class: 'de-dlt-full-image', alt: section.settings.ushr_title }}
+            </picture>
+          {% endif %}
+        </div>
+
+        <div class="de-dlt-copy de-dlt-copy--ushr">
+        {% if section.settings.ushr_icon != blank or section.settings.ushr_eyebrow != blank %}
+          <div class="de-dlt-eyebrow">
+            {% if section.settings.ushr_icon != blank %}
+              {{ section.settings.ushr_icon | image_url: width: 80 | image_tag: loading: 'lazy', class: 'de-dlt-icon', alt: 'USHR' }}
+            {% endif %}
+            {% if section.settings.ushr_eyebrow != blank %}
+              <div class="de-dlt-eyebrow-html">{{ section.settings.ushr_eyebrow }}</div>
+            {% endif %}
+          </div>
+        {% endif %}
+        <h2 class="de-dlt-title">{{ section.settings.ushr_title | newline_to_br }}</h2>
+        <div class="de-dlt-line"></div>
+        <div class="de-dlt-text">{{ section.settings.ushr_text }}</div>
+        <div class="de-dlt-icons">
+          {% if section.settings.ushr_feature_icon_1 != blank %}
+            <div class="de-dlt-feature-icon">
+              {{ section.settings.ushr_feature_icon_1 | image_url: width: 120 | image_tag: loading: 'lazy', class: 'de-dlt-feature-icon__img', alt: section.settings.ushr_feature_text_1 }}
+            </div>
+          {% endif %}
+          {% if section.settings.ushr_feature_icon_2 != blank %}
+            <div class="de-dlt-feature-icon">
+              {{ section.settings.ushr_feature_icon_2 | image_url: width: 120 | image_tag: loading: 'lazy', class: 'de-dlt-feature-icon__img', alt: section.settings.ushr_feature_text_2 }}
+            </div>
+          {% endif %}
+          {% if section.settings.ushr_feature_icon_3 != blank %}
+            <div class="de-dlt-feature-icon">
+              {{ section.settings.ushr_feature_icon_3 | image_url: width: 120 | image_tag: loading: 'lazy', class: 'de-dlt-feature-icon__img', alt: section.settings.ushr_feature_text_3 }}
+            </div>
+          {% endif %}
+        </div>
+        {% if section.settings.ushr_note != blank %}
+          <div class="de-dlt-note">{{ section.settings.ushr_note }}</div>
+        {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .de-dual-light-tech {
+    overflow: clip;
+    background: #fff;
+    color: var(--de-dlt-text);
+    --de-dlt-header-height: 0px;
+  }
+
+  .de-dlt-chapter {
+    position: relative;
+    height: 400vh;
+    min-height: 2600px;
+  }
+
+  .de-dlt-sticky {
+    position: sticky;
+    top: var(--de-dlt-header-height);
+    height: calc(100vh - var(--de-dlt-header-height));
+    min-height: 720px;
+    overflow: hidden;
+    background: #fff;
+  }
+
+  .de-dlt-scene,
+  .de-dlt-image-layer {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .de-dlt-scene {
+    z-index: 1;
+  }
+
+  .de-dlt-scene--sensor {
+    z-index: 2;
+    background: #fff;
+    clip-path: inset(100% 0 0 0);
+    -webkit-clip-path: inset(100% 0 0 0);
+    will-change: clip-path;
+  }
+
+  .de-dlt-scene--ushr {
+    z-index: 3;
+    background: #fff;
+    clip-path: inset(100% 0 0 0);
+    -webkit-clip-path: inset(100% 0 0 0);
+    will-change: clip-path;
+  }
+
+  .de-dlt-image-layer {
+    z-index: 1;
+  }
+
+  .de-dlt-full-image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .de-dlt-copy {
+    position: absolute;
+    z-index: 5;
+    width: 610px;
+    color: var(--de-dlt-text);
+  }
+
+  .de-dlt-copy--dual {
+    left: 9%;
+    top: 50%;
+    bottom: auto;
+    transform: translateY(-50%);
+    color: #190a0a;
+  }
+
+  .de-dlt-copy--sensor {
+    left: clamp(56px, 7.5vw, 150px);
+    top: 54%;
+    transform: translateY(-50%);
+    color: #190a0a;
+  }
+
+  .de-dlt-copy--sensor .de-dlt-small-image {
+    width: min(500px, 28vw);
+    max-width: 500px;
+    margin-top: clamp(24px, 3vh, 50px);
+  }
+
+  .de-dlt-copy--ushr {
+    left: 10.5%;
+    top: 50%;
+    bottom: auto;
+    transform: translateY(-50%);
+    opacity: 0;
+  }
+
+  .de-dlt-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
+    color: #BCBBE3;
+    font-size: 32px;
+    line-height: 1.25;
+  }
+
+  .de-dlt-icon {
+    width: 80px;
+    height: auto;
+  }
+
+  .de-dlt-title {
+    margin: 0;
+    font-size: 44px;
+    line-height: 1.25;
+    font-weight: 400;
+  }
+
+  .de-dlt-copy--dual .de-dlt-title {
+    font-size: 50px;
+  }
+
+  .de-dlt-copy--sensor .de-dlt-title,
+  .de-dlt-copy--ushr .de-dlt-title {
+    font-size: 44px;
+  }
+
+  .de-dlt-copy--ushr .de-dlt-eyebrow {
+    font-size: 30px;
+  }
+
+  .de-dlt-copy--ushr .de-dlt-text {
+    color: #FFF;
+    font-size: 18px;
+  }
+
+  .de-dlt-copy--ushr .de-dlt-feature-icon {
+    width: 120px;
+    min-height: 120px;
+  }
+
+  .de-dlt-line {
+    width: 124px;
+    height: 6px;
+    margin: 20px 0;
+    background: #7C7ABC;
+  }
+
+  .de-dlt-text {
+    max-width: 430px;
+    font-size: 18px;
+    line-height: 1.55;
+    color: #3F3636;
+    line-height: 1.55;
+    font-weight: 400;
+  }
+
+  .de-dlt-stats {
+    display: flex;
+    gap: 48px;
+    margin-top: 50px;
+  }
+
+  .de-dlt-stats em {
+    display: block;
+    color: #190a0a;
+    font-size: 28px;
+    line-height: 1.25;
+    font-style: normal;
+   }
+
+  .de-dlt-stat-value {
+    color: #6e69c9;
+    font-size: 96px;
+    background: linear-gradient(180deg, #BCBBFF 0%, #5B5A92 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    line-height: 1;
+  }
+  .de-dlt-stat-value span{
+    font-size: 40px;
+  }
+
+  .de-dlt-stats small,
+  .de-dlt-note {
+    color: var(--de-dlt-muted);
+    font-size: 16px;
+    line-height: 1.5;
+  }
+
+  .de-dlt-note {
+    margin-top: 20px;
+  }
+
+  .de-dlt-small-image {
+    width: 500px;
+    margin-top: 50px;
+    overflow: hidden;
+  }
+
+  .de-dlt-small-image__img {
+    display: block;
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+  }
+
+  .de-dlt-icons {
+    display: flex;
+    gap: 25px;
+    margin-top: 70px;
+  }
+
+  .de-dlt-feature-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  @media (min-width: 750px) and (max-height: 860px) {
+    .de-dlt-copy--sensor {
+      top: 55%;
+      width: 560px;
+    }
+
+    .de-dlt-copy--sensor .de-dlt-eyebrow {
+      margin-bottom: 10px;
+    }
+
+    .de-dlt-copy--sensor .de-dlt-line {
+      margin: 14px 0;
+    }
+
+    .de-dlt-copy--sensor .de-dlt-small-image {
+      width: min(460px, 27vw);
+      margin-top: 22px;
+    }
+  }
+
+  @media (max-width: 749px) {
+    .de-dual-light-tech {
+      --de-dlt-header-height: 64px;
+    }
+
+    .de-dlt-chapter {
+      height: 380vh;
+      min-height: 2560px;
+    }
+
+    .de-dlt-sticky {
+      min-height: calc(720px - var(--de-dlt-header-height));
+    }
+
+    .de-dlt-full-image {
+      object-position: center top;
+    }
+
+    .de-dlt-copy {
+      width: calc(100% - 28px);
+      left: 14px;
+    }
+
+    .de-dlt-copy--dual {
+      top: 68%;
+      bottom: auto;
+      transform: translateY(-50%);
+    }
+
+    .de-dlt-copy--sensor {
+      top: 70%;
+      transform: translateY(-50%);
+    }
+
+    .de-dlt-copy--ushr {
+      top: 70%;
+      bottom: auto;
+      transform: translateY(-50%);
+    }
+
+    .de-dlt-eyebrow {
+      gap: 6px;
+      margin-bottom: 20px;
+      font-size: 14px;
+      line-height: 1.2;
+    }
+
+    .de-dlt-icon {
+      width: 40px;
+    }
+
+    .de-dlt-title {
+      max-width: 330px;
+      font-size: 24px;
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+    }
+
+    .de-dlt-copy--dual .de-dlt-title,
+    .de-dlt-copy--sensor .de-dlt-title,
+    .de-dlt-copy--ushr .de-dlt-title {
+      font-size: 24px;
+      max-width: 280px;
+    }
+
+    .de-dlt-line {
+      width: 64px;
+      height: 2px;
+      margin: 20px 0 20px;
+    }
+
+    .de-dlt-text {
+      max-width: 340px;
+      font-size: 12px;
+      line-height: 1.55;
+    }
+
+    .de-dlt-stats {
+      gap: 50px;
+      margin-top: 30px;
+    }
+
+    .de-dlt-stats em {
+      font-size: 14px;
+      line-height: 1.25;
+    }
+
+    .de-dlt-stat-value {
+      font-size: 52px;
+    }
+
+    .de-dlt-stat-value span {
+      font-size: 12px;
+    }
+
+    .de-dlt-note {
+      margin-top: 12px;
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .de-dlt-stats span {
+      font-size: 21px;
+    }
+
+    .de-dlt-small-image {
+      width: min(100%, 260px);
+      margin-top: 18px;
+    }
+
+    .de-dlt-copy--sensor .de-dlt-small-image {
+      width: min(100%, 265px);
+      margin-top: 18px;
+    }
+
+    .de-dlt-feature-icon {
+      width: 52px;
+      min-height: 52px;
+    }
+
+    .de-dlt-copy--ushr .de-dlt-feature-icon {
+      width: 52px;
+      min-height: 52px;
+    }
+
+    .de-dlt-copy--ushr .de-dlt-eyebrow {
+      font-size: 14px;
+      color: #fff;
+    }
+
+    .de-dlt-copy--ushr .de-dlt-title {
+      max-width: 360px;
+      font-size: 24px;
+      line-height: 1.24;
+      color: #fff;
+    }
+
+    .de-dlt-copy--ushr .de-dlt-line {
+      width: 68px;
+      height: 2px;
+      margin: 18px 0 24px;
+      background: #45BFFF;
+    }
+
+    .de-dlt-copy--ushr .de-dlt-text {
+      max-width: 350px;
+      color: #fff;
+      font-size: 14px;
+      line-height: 1.55;
+    }
+
+    .de-dlt-icons {
+      gap: 12px;
+      margin-top: 20px;
+    }
+  }
+</style>
+
+<script>
+  (() => {
+    const initDualLightTech{{ section.id | replace: '-', '_' }} = () => {
+      const root = document.querySelector('#shopify-section-{{ section.id }} .de-dual-light-tech');
+      if (!root || root.dataset.dltInit === 'true') return;
+      root.dataset.dltInit = 'true';
+
+      const loadScript = (src, globalName) => new Promise((resolve, reject) => {
+        if (globalName && window[globalName]) {
+          resolve();
+          return;
+        }
+        const existing = document.querySelector(`script[src="${src}"]`);
+        if (existing) {
+          existing.addEventListener('load', resolve, { once: true });
+          existing.addEventListener('error', reject, { once: true });
+          if (globalName && window[globalName]) resolve();
+          return;
+        }
+        const script = document.createElement('script');
+        script.src = src;
+        script.defer = true;
+        script.addEventListener('load', resolve, { once: true });
+        script.addEventListener('error', reject, { once: true });
+        document.head.appendChild(script);
+      });
+
+      const initGsap = () => {
+        if (!window.gsap || !window.ScrollTrigger) return;
+        window.gsap.registerPlugin(window.ScrollTrigger);
+
+        const stack = root.querySelector('[data-dlt-chapter="stack"]');
+        if (stack) {
+          const dualCopy = stack.querySelector('.de-dlt-copy--dual');
+          const sensorScene = stack.querySelector('.de-dlt-scene--sensor');
+          const sensorCopy = stack.querySelector('.de-dlt-copy--sensor');
+          const ushrScene = stack.querySelector('.de-dlt-scene--ushr');
+          const ushrImage = stack.querySelector('.de-dlt-image-layer--ushr');
+          const ushrCopy = stack.querySelector('.de-dlt-copy--ushr');
+          const ushrShrinkTargets = [ushrImage, ushrCopy].filter(Boolean);
+
+          window.gsap.set([sensorScene, ushrScene], {
+            x: 0,
+            y: 0,
+            xPercent: 0,
+            yPercent: 0,
+            scale: 1,
+            clearProps: 'transform'
+          });
+
+          window.gsap.timeline({
+            scrollTrigger: {
+              trigger: stack,
+              start: 'top top',
+              end: 'bottom bottom',
+              scrub: true
+            }
+          })
+            .to(dualCopy, { autoAlpha: 1, yPercent: -50, y: 0, duration: .28, ease: 'none' }, 0)
+            .to(dualCopy, { autoAlpha: 0, yPercent: -50, y: -24, duration: .2, ease: 'power1.inOut' }, .36)
+            .fromTo(sensorScene, {
+              clipPath: 'inset(100% 0% 0% 0%)',
+              webkitClipPath: 'inset(100% 0% 0% 0%)'
+            }, {
+              clipPath: 'inset(0% 0% 0% 0%)',
+              webkitClipPath: 'inset(0% 0% 0% 0%)',
+              duration: .24,
+              ease: 'none'
+            }, .46)
+            .fromTo(sensorCopy, { autoAlpha: 0, yPercent: -50, y: 34 }, { autoAlpha: 1, yPercent: -50, y: 0, duration: .18, ease: 'power1.out' }, .6)
+            .to(sensorCopy, { autoAlpha: 1, yPercent: -50, y: 0, duration: .14, ease: 'none' }, .74)
+            .to(sensorCopy, { autoAlpha: 0, yPercent: -50, y: -22, duration: .18, ease: 'power1.inOut' }, .82)
+            .fromTo(ushrScene, {
+              clipPath: 'inset(100% 0% 0% 0%)',
+              webkitClipPath: 'inset(100% 0% 0% 0%)'
+            }, {
+              clipPath: 'inset(0% 0% 0% 0%)',
+              webkitClipPath: 'inset(0% 0% 0% 0%)',
+              duration: .24,
+              ease: 'none'
+            }, .88)
+            .fromTo(ushrCopy, { autoAlpha: 0, yPercent: -50, y: 28 }, { autoAlpha: 1, yPercent: -50, y: 0, duration: .16, ease: 'power1.out' }, .94)
+            .to(ushrShrinkTargets, { scale: .9, transformOrigin: 'center center', duration: .12, ease: 'none' }, .98);
+        }
+
+        window.ScrollTrigger.refresh();
+      };
+
+      if (window.gsap && window.ScrollTrigger) {
+        initGsap();
+        return;
+      }
+
+      loadScript('https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js', 'gsap')
+        .then(() => loadScript('https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js', 'ScrollTrigger'))
+        .then(initGsap)
+        .catch(() => {});
+    };
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initDualLightTech{{ section.id | replace: '-', '_' }}, { once: true });
+    } else {
+      initDualLightTech{{ section.id | replace: '-', '_' }}();
+    }
+
+    document.addEventListener('shopify:section:load', (event) => {
+      if (!event.target || event.target.id !== 'shopify-section-{{ section.id }}') return;
+      const root = event.target.querySelector('.de-dual-light-tech');
+      if (root) root.dataset.dltInit = '';
+      initDualLightTech{{ section.id | replace: '-', '_' }}();
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "DE 双灯管技术",
+  "settings": [
+    {
+      "type": "text",
+      "id": "anchor_id",
+      "label": "锚点 ID",
+      "default": "dual-light-technology"
+    },
+    {
+      "type": "color",
+      "id": "dark_background",
+      "label": "深色背景",
+      "default": "#121826"
+    },
+    {
+      "type": "color",
+      "id": "light_background",
+      "label": "浅色背景",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "深色模块文字色",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "muted_color",
+      "label": "辅助文字色",
+      "default": "#9fa7ba"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "强调色",
+      "default": "#706ed6"
+    },
+    {
+      "type": "header",
+      "content": "模块一：双灯管技术"
+    },
+    {
+      "type": "image_picker",
+      "id": "dual_image",
+      "label": "PC 图片"
+    },
+    {
+      "type": "image_picker",
+      "id": "dual_mobile_image",
+      "label": "M 图片"
+    },
+    {
+      "type": "image_picker",
+      "id": "dual_icon",
+      "label": "图标"
+    },
+    {
+      "type": "text",
+      "id": "dual_eyebrow",
+      "label": "标签",
+      "default": "Dual Lights"
+    },
+    {
+      "type": "textarea",
+      "id": "dual_title",
+      "label": "标题",
+      "default": "Bessere Ergebnisse in\nKürzerer Zeit."
+    },
+    {
+      "type": "textarea",
+      "id": "dual_text",
+      "label": "正文",
+      "default": "Dank einer größeren Behandlungsfenster und einer doppelten Lichtquelle ermöglicht das Air 10 Pro schnellere Behandlungen."
+    },
+    {
+      "type": "text",
+      "id": "dual_metric_1_top_label",
+      "label": "指标 1 上方文案",
+      "default": "Energieabgabe"
+    },
+    {
+      "type": "html",
+      "id": "dual_metric_1_value",
+      "label": "指标 1 HTML",
+      "default": "+57%"
+    },
+    {
+      "type": "text",
+      "id": "dual_metric_2_top_label",
+      "label": "指标 2 上方文案",
+      "default": "Blitzgeschwindigkeit"
+    },
+    {
+      "type": "html",
+      "id": "dual_metric_2_value",
+      "label": "指标 2 HTML",
+      "default": "+280%"
+    },
+    {
+      "type": "textarea",
+      "id": "dual_note",
+      "label": "注释"
+    },
+    {
+      "type": "header",
+      "content": "模块二：智能肤色识别"
+    },
+    {
+      "type": "image_picker",
+      "id": "sensor_image",
+      "label": "PC 图片"
+    },
+    {
+      "type": "image_picker",
+      "id": "sensor_mobile_image",
+      "label": "M 图片"
+    },
+    {
+      "type": "image_picker",
+      "id": "sensor_icon",
+      "label": "图标"
+    },
+    {
+      "type": "text",
+      "id": "sensor_eyebrow",
+      "label": "标签",
+      "default": "SkinSensor Protection"
+    },
+    {
+      "type": "textarea",
+      "id": "sensor_title",
+      "label": "标题",
+      "default": "Hautsicher mit\nautomatischer Anpassung."
+    },
+    {
+      "type": "textarea",
+      "id": "sensor_text",
+      "label": "正文",
+      "default": "Diese intelligente Hautsensor-Technologie passt die Intensität jedes Lichtimpulses automatisch an deinen Hautton an."
+    },
+    {
+      "type": "video",
+      "id": "sensor_small_video",
+      "label": "小视频"
+    },
+    {
+      "type": "header",
+      "content": "模块三：USHR 脱毛技术"
+    },
+    {
+      "type": "image_picker",
+      "id": "ushr_image",
+      "label": "PC 图片"
+    },
+    {
+      "type": "image_picker",
+      "id": "ushr_mobile_image",
+      "label": "M 图片"
+    },
+    {
+      "type": "image_picker",
+      "id": "ushr_icon",
+      "label": "图标"
+    },
+    {
+      "type": "html",
+      "id": "ushr_eyebrow",
+      "label": "标签 HTML",
+      "default": "USHR-Modus"
+    },
+    {
+      "type": "textarea",
+      "id": "ushr_title",
+      "label": "标题",
+      "default": "Salon-Ergebnisse, dennoch\nnahezu schmerzfrei."
+    },
+    {
+      "type": "textarea",
+      "id": "ushr_text",
+      "label": "正文",
+      "default": "Dieser fortschrittliche Modus liefert eine hohe Gesamtenergie von 26 Joule, um dickes, hartnäckiges und widerstandsfähiges Haar effektiv zu behandeln."
+    },
+    {
+      "type": "image_picker",
+      "id": "ushr_feature_icon_1",
+      "label": "功能图标 1"
+    },
+    {
+      "type": "text",
+      "id": "ushr_feature_text_1",
+      "label": "功能文案 1"
+    },
+    {
+      "type": "image_picker",
+      "id": "ushr_feature_icon_2",
+      "label": "功能图标 2"
+    },
+    {
+      "type": "text",
+      "id": "ushr_feature_text_2",
+      "label": "功能文案 2"
+    },
+    {
+      "type": "image_picker",
+      "id": "ushr_feature_icon_3",
+      "label": "功能图标 3"
+    },
+    {
+      "type": "text",
+      "id": "ushr_feature_text_3",
+      "label": "功能文案 3"
+    },
+    {
+      "type": "textarea",
+      "id": "ushr_note",
+      "label": "注释",
+      "default": "Hinweis: Internationale Patentnummer ZL202040406025.5"
+    }
+  ],
+  "presets": [
+    {
+      "name": "DE 双灯管技术"
+    }
+  ]
+}
+{% endschema %}

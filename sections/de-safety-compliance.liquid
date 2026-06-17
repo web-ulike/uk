@@ -1,0 +1,346 @@
+<style>
+  #shopify-section-{{ section.id }} .de-safety-compliance {
+    padding: 80px 0 80px;
+    background: {{ section.settings.background }};
+  }
+
+  #shopify-section-{{ section.id }} .de-safety-compliance__inner {
+    display: grid;
+    grid-template-columns: 210px minmax(0, 1fr);
+    gap: 108px;
+    max-width: 1400px;
+    margin: 0 auto;
+    align-items: start;
+  }
+
+  #shopify-section-{{ section.id }} .de-safety-compliance__image {
+    display: block;
+    width: 206px;
+    height: auto;
+    margin: 0 auto;
+  }
+
+  #shopify-section-{{ section.id }} .de-safety-compliance__title {
+    margin: 0 0 20px;
+    color: {{ section.settings.heading_color }};
+    font-size: 44px;
+    font-weight: 300;
+    line-height: 1.2;
+  }
+
+  #shopify-section-{{ section.id }} .de-safety-compliance__text {
+    color: {{ section.settings.text_color }};
+    font-size: 18px;
+    line-height: 1.2;
+    font-weight: 300;
+  }
+
+  #shopify-section-{{ section.id }} .de-safety-compliance__text p {
+    margin: 0 0 20px;
+  }
+
+  #shopify-section-{{ section.id }} .de-safety-compliance__badge {
+    display: inline-flex;
+    align-items: center;
+    min-height: 25px;
+    margin: 20px 0;
+    padding: 0 10px;
+    color: {{ section.settings.text_color }};
+    font-size: 14px;
+    line-height: 1;
+    border-radius: 5px;
+    border: 1px solid #190A0A;
+    background: #EEE;
+  }
+
+  #shopify-section-{{ section.id }} .de-safety-compliance__subtitle {
+    margin: 0 0 20px;
+    color: {{ section.settings.heading_color }};
+    font-family: var(--heading-font-family);
+    font-size: 18px;
+    font-weight: normal;
+    line-height: 1.25;
+  }
+
+  #shopify-section-{{ section.id }} .de-safety-compliance__list {
+    margin: 0 0 20px 20px;
+    padding: 0;
+    font-size: 18px;
+    line-height: 1.2;
+    color: #484846;
+  }
+
+  #shopify-section-{{ section.id }} .de-safety-compliance__button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 34px;
+    margin: 0 0 20px;
+    padding: 6px 20px;
+    border-radius: 999px;
+    background: {{ section.settings.button_background }};
+    color: {{ section.settings.button_text_color }};
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  #shopify-section-{{ section.id }} .de-safety-compliance__meta {
+    margin: 0;
+    color: {{ section.settings.text_color }};
+    font-size: 18px;
+    line-height: 1.2;
+  }
+
+  @media (max-width: 991px) {
+    #shopify-section-{{ section.id }} .de-safety-compliance {
+      padding: 50px 0;
+    }
+
+    #shopify-section-{{ section.id }} .de-safety-compliance__inner {
+      display: block;
+      max-width: none;
+    }
+
+    #shopify-section-{{ section.id }} .de-safety-compliance__image {
+      width: 96px;
+      margin: 0 0 34px;
+    }
+
+    #shopify-section-{{ section.id }} .de-safety-compliance__title {
+      display: none;
+    }
+
+    #shopify-section-{{ section.id }} .de-safety-compliance__text,
+    #shopify-section-{{ section.id }} .de-safety-compliance__list,
+    #shopify-section-{{ section.id }} .de-safety-compliance__meta {
+      font-size: 12px;
+      line-height: 1.25;
+    }
+
+    #shopify-section-{{ section.id }} .de-safety-compliance__text p {
+      margin: 0 0 20px;
+    }
+
+    #shopify-section-{{ section.id }} .de-safety-compliance__badge {
+      min-height: 20px;
+      margin-bottom: 28px;
+      padding: 0 10px;
+      font-size: 11px;
+    }
+
+    #shopify-section-{{ section.id }} .de-safety-compliance__subtitle {
+      margin-bottom: 20px;
+      font-size: 12px;
+    }
+
+    #shopify-section-{{ section.id }} .de-safety-compliance__list {
+      margin-bottom: 28px;
+      margin-left: 18px;
+    }
+
+    #shopify-section-{{ section.id }} .de-safety-compliance__button {
+      min-height: 34px;
+      margin-bottom: 24px;
+      padding: 0 20px;
+      font-size: 12px;
+    }
+  }
+</style>
+
+<section class="de-safety-compliance"{% if section.settings.anchor_id != blank %} id="{{ section.settings.anchor_id | escape }}"{% endif %}>
+  <div class="container">
+    <div class="de-safety-compliance__inner">
+      <div class="de-safety-compliance__media">
+        {%- if section.settings.image != blank -%}
+          <img
+            loading="lazy"
+            class="de-safety-compliance__image"
+            width="{{ section.settings.image.width }}"
+            height="{{ section.settings.image.height }}"
+            {% render 'image-attributes', image: section.settings.image %}
+            alt="{{ section.settings.image.alt | default: section.settings.title | escape }}"
+          >
+        {%- endif -%}
+      </div>
+
+      <div class="de-safety-compliance__content "> 
+        {%- if section.settings.title != blank -%}
+          <h2 class="de-safety-compliance__title to-top" style="transition-delay: 0.1s;">{{ section.settings.title }}</h2>
+        {%- endif -%}
+
+        <div class="de-safety-compliance__text to-top" style="transition-delay: 0.2s;"  >
+          {%- if section.settings.text_1 != blank -%}
+            <p>{{ section.settings.text_1 }}</p>
+          {%- endif -%}
+          {%- if section.settings.text_2 != blank -%}
+            <p>{{ section.settings.text_2 }}</p>
+          {%- endif -%}
+        </div>
+
+        {%- if section.settings.badge_text != blank -%}
+          <div class="de-safety-compliance__badge to-top" style="transition-delay: 0.3s;">{{ section.settings.badge_text }}</div>
+        {%- endif -%}
+
+        {%- if section.settings.subtitle != blank -%}
+          <h3 class="de-safety-compliance__subtitle to-top" style="transition-delay: 0.4s;">{{ section.settings.subtitle }}</h3>
+        {%- endif -%}
+
+        {%- if section.blocks.size > 0 -%}
+          <ul class="de-safety-compliance__list to-top" style="transition-delay: 0.5s;">
+            {%- for block in section.blocks -%}
+              <li {{ block.shopify_attributes }}>{{ block.settings.text }}</li>
+            {%- endfor -%}
+          </ul>
+        {%- endif -%}
+
+        {%- if section.settings.button_label != blank -%}
+          <a class="de-safety-compliance__button to-top" style="transition-delay: 0.6s;" target="_blank" download href="{{ section.settings.button_link | default: '#' }}">
+            {{ section.settings.button_label }}
+          </a>
+        {%- endif -%}
+
+        {%- if section.settings.meta != blank -%}
+          <p class="de-safety-compliance__meta to-top" style="transition-delay: 0.7s;">{{ section.settings.meta | newline_to_br }}</p>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "DE safety compliance",
+  "settings": [
+    {
+      "type": "text",
+      "id": "anchor_id",
+      "label": "Anchor ID",
+      "default": "safety"
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background",
+      "default": "#f7f7fb"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Sicherheit & Compliance"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading color",
+      "default": "#190a0a"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#3f3636"
+    },
+    {
+      "type": "textarea",
+      "id": "text_1",
+      "label": "Text 1",
+      "default": "Der Ulike Air 10 Pro wurde in Zusammenarbeit mit Dermatologen entwickelt und entspricht vollständig den europäischen Gesundheitsstandards. Er wurde offiziell mit der CE-Konformitätszertifizierung ausgezeichnet."
+    },
+    {
+      "type": "textarea",
+      "id": "text_2",
+      "label": "Text 2",
+      "default": "Die CE-Zertifizierung bestätigt, dass dieses Produkt die strengen EU-Anforderungen an Sicherheit, Leistung und Qualität gemäß der MDR-CE-Zertifizierung erfüllt."
+    },
+    {
+      "type": "text",
+      "id": "badge_text",
+      "label": "Badge text",
+      "default": "CE-zertifiziert · Klasse IIa"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Was diese Zertifizierung garantiert:"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "Klinische Studie ansehen (PDF)"
+    },
+    {
+      "type": "text",
+      "id": "button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "color",
+      "id": "button_background",
+      "label": "Button background",
+      "default": "#190a0a"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button text color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "textarea",
+      "id": "meta",
+      "label": "Meta text",
+      "default": "CE-gekennzeichnetes Medizinprodukt Klasse IIa\nZertifikatsnummer: IQMS-MDR-0077/05/2026\nZulassungsdatum: 20.05.2026"
+    }
+  ],
+  "blocks": [
+    {
+      "name": "Guarantee",
+      "type": "guarantee",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text",
+          "default": "Vollständige Anwendersicherheit"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "DE safety compliance",
+      "blocks": [
+        {
+          "type": "guarantee",
+          "settings": {
+            "text": "Vollständige Anwendersicherheit"
+          }
+        },
+        {
+          "type": "guarantee",
+          "settings": {
+            "text": "Klinisch nachgewiesene Wirksamkeit mit bestätigten sichtbaren Ergebnissen"
+          }
+        },
+        {
+          "type": "guarantee",
+          "settings": {
+            "text": "Standardisierte Produktion und vollständige Rückverfolgbarkeit des Produkts"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,516 @@
+{% liquid
+  assign anchor_id = section.settings.anchor_id | strip
+  assign button_link = section.settings.button_link | default: '#product-components'
+  assign desktop_image = section.settings.image
+  assign mobile_image = section.settings.mobile_image | default: desktop_image
+%}
+
+<section
+  class="de-cost-compare"
+  {% if anchor_id != blank %}
+    id="{{ anchor_id | escape }}"
+  {% endif %}
+  style="
+    --de-cost-bg: {{ section.settings.background }};
+    --de-cost-card: {{ section.settings.card_background }};
+    --de-cost-text: {{ section.settings.text_color }};
+    --de-cost-muted: #3F3636;
+    --de-cost-button: {{ section.settings.button_background }};
+    --de-cost-button-text: {{ section.settings.button_text_color }};
+  "
+>
+  {% if desktop_image != blank %}
+    <picture class="de-cost-compare__media">
+      <source srcset="{{ mobile_image | image_url: width: 900 }}" media="(max-width: 749px)">
+      {{ desktop_image | image_url: width: 1800 | image_tag: loading: 'lazy', class: 'de-cost-compare__image', alt: section.settings.image_alt }}
+    </picture>
+  {% endif %}
+
+  <div class="container">
+    <div class="de-cost-compare__inner">
+      <div class="de-cost-compare__content">
+        {% if section.settings.title != blank %}
+          <h2 class="de-cost-compare__title">{{ section.settings.title | newline_to_br }}</h2>
+        {% endif %}
+        {% if section.settings.text != blank %}
+          <div class="de-cost-compare__text">{{ section.settings.text | newline_to_br }}</div>
+        {% endif %}
+        {% if section.settings.button_label != blank %}
+          <a class="de-cost-compare__button" href="{{ button_link }}">{{ section.settings.button_label }}</a>
+        {% endif %}
+      </div>
+
+      <div class="de-cost-compare__card">
+        {% if section.settings.card_title != blank %}
+          <h3 class="de-cost-compare__card-title">{{ section.settings.card_title | newline_to_br }}</h3>
+        {% endif %}
+        {% if section.settings.card_subtitle != blank %}
+          <div class="de-cost-compare__vs">{{ section.settings.card_subtitle }}</div>
+        {% endif %}
+
+        <div class="de-cost-compare__rows">
+          {% for block in section.blocks %}
+            <div class="de-cost-compare__row" {{ block.shopify_attributes }}>
+              <span class="de-cost-compare__row-name">{{ block.settings.label }}</span>
+              <span class="de-cost-compare__row-arrow" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" width="15" height="12" viewBox="0 0 15 12" fill="none">
+                  <g clip-path="url(#clip0_{{ section.id | replace: '-', '_' }}_{{ forloop.index }}_arrow)">
+                    <path d="M14.8695 5.7864C14.8695 5.87778 14.8362 5.96841 14.7723 6.03768L9.69493 11.5642L9.16471 11.0617L13.6727 6.15484H0C0 5.74809 0.324954 5.41797 0.725343 5.41797H14.4902C14.6273 5.41797 14.7607 5.48797 14.826 5.61103C14.8557 5.66629 14.8695 5.72672 14.8695 5.7864Z" fill="#3F3636"/>
+                    <path d="M14.11 4.49491C13.8264 4.78229 13.3673 4.78229 13.0844 4.49491L9.17188 0.520968L9.68469 0L14.1093 4.49491H14.11Z" fill="#3F3636"/>
+                  </g>
+                  <defs>
+                    <clipPath id="clip0_{{ section.id | replace: '-', '_' }}_{{ forloop.index }}_arrow">
+                      <rect width="14.8695" height="11.5652" fill="white"/>
+                    </clipPath>
+                  </defs>
+                </svg>
+              </span>
+              <span class="de-cost-compare__row-value">{{ block.settings.value }}</span>
+            </div>
+          {% endfor %}
+        </div>
+
+        {% if section.settings.note != blank %}
+          <div class="de-cost-compare__note">{{ section.settings.note }}</div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .de-cost-compare {
+    position: relative;
+    overflow: hidden;
+    background: var(--de-cost-bg);
+    color: var(--de-cost-text);
+  }
+
+  .de-cost-compare__media {
+    position: relative;
+    z-index: 0;
+    display: block;
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .de-cost-compare__image {
+    display: block;
+    width: 100%;
+  }
+
+  .de-cost-compare:hover .de-cost-compare__image {
+    transform: scale(1.025);
+  }
+
+  .de-cost-compare > .container {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+  }
+
+  .de-cost-compare__inner {
+    position: relative;
+    height: 100%;
+    padding: 0;
+  }
+
+  .de-cost-compare__content {
+    position: absolute;
+    left: 0;
+    top: 13.5%;
+    width: 530px;
+  }
+
+  .de-cost-compare__title {
+    margin: 0 0 30px;
+    font-size: 40px;
+    line-height: 1.2;
+    font-weight: 400;
+    letter-spacing: 0;
+  }
+
+  .de-cost-compare__text {
+    max-width: 520px;
+    color: var(--de-cost-muted);
+    font-size: 18px;
+    line-height: 1.5;
+  }
+
+  .de-cost-compare__button {
+    display: inline-flex;
+    min-width: 200px;
+    min-height: 42px;
+    align-items: center;
+    justify-content: center;
+    margin-top: 30px;
+    padding: 10px 24px;
+    border-radius: 999px;
+    background: var(--de-cost-button);
+    color: var(--de-cost-button-text);
+    font-family: var(--heading-font-family);
+    font-size: 14px;
+    line-height: 1;
+    font-weight: normal;
+    text-decoration: none;
+    transition: transform .2s ease, opacity .2s ease;
+  }
+
+  .de-cost-compare__card {
+    position: absolute;
+    right: 0;
+    bottom: 7%;
+    width: 530px;
+    border-radius: 10px;
+    background: var(--de-cost-card);
+    padding: 50px 38px 40px;
+    text-align: center;
+    box-shadow: 0 14px 34px rgba(25, 10, 10, .08);
+  }
+
+  .de-cost-compare__card-title {
+    margin: 0 0 20px;
+    font-family: var(--heading-font-family);
+    font-size: 24px;
+    line-height: 1.5;
+    font-weight: normal;
+  }
+
+  .de-cost-compare__vs {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 46px;
+    margin: 0 0 36px;
+    color: var(--de-cost-muted);
+    font-family: var(--heading-font-family);
+    font-size: 18px;
+    font-weight: normal;
+    line-height: 1;
+  }
+
+  .de-cost-compare__vs::before,
+  .de-cost-compare__vs::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: rgba(63, 54, 54, 0.28);
+  }
+
+  .de-cost-compare__rows {
+    display: grid;
+    gap: 24px;
+    padding: 0px;
+  }
+
+  .de-cost-compare__row {
+    display: grid;
+    grid-template-columns: minmax(74px, .8fr) 22px 1.55fr;
+    align-items: center;
+    min-height: 60px;
+    gap: 16px;
+    border-radius: 999px;
+    background: #fff;
+    padding: 7px 20px;
+    font-size: 18px;
+    line-height: 1.2;
+  }
+
+  .de-cost-compare__row-name {
+    color: var(--de-cost-text);
+    text-align: left;
+  }
+
+  .de-cost-compare__row-arrow {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 15px;
+    height: 12px;
+    color: var(--de-cost-muted);
+    line-height: 1;
+  }
+
+  .de-cost-compare__row-arrow svg {
+    display: block;
+    width: 15px;
+    height: 12px;
+  }
+
+  .de-cost-compare__row-value {
+    color: var(--de-cost-muted);
+    text-align: left;
+  }
+
+  .de-cost-compare__note {
+    margin: 24px auto 0;
+    color: #3F3636;
+    font-size: 14px;
+    line-height: 1.4;
+    opacity: 0.65;
+  }
+
+  @media (max-width: 749px) {
+    .de-cost-compare {
+      min-height: auto;
+      display: block;
+      padding: 48px 0 20px;
+      background: #fff;
+    }
+    .de-cost-compare > .container {
+      position: inherit;
+      width: 100%;
+      height: 100%;
+    }
+
+    .de-cost-compare__media {
+      display: none;
+    }
+
+    .de-cost-compare__inner {
+      position: relative;
+      min-height: auto;
+      display: block;
+      height: auto;
+      padding: 0;
+    }
+
+    .de-cost-compare__content {
+      position: relative;
+      left: auto;
+      top: auto;
+      width: auto;
+      max-width: none;
+      text-align: center;
+    }
+
+    .de-cost-compare__title {
+      max-width: 90%;
+      margin: 0 auto 20px;
+      font-size: 22px;
+    }
+
+    .de-cost-compare__text {
+      max-width: 90%;
+      margin: 0 auto;
+      font-size: 14px;
+    }
+
+    .de-cost-compare__button {
+      min-width: 130px;
+      min-height: 42px;
+      margin-top: 20px;
+      padding: 10px 22px;
+      font-size: 14px;
+    }
+
+    .de-cost-compare__card {
+      position: relative;
+      right: auto;
+      top: auto;
+      width: 100%;
+      transform: none;
+      margin-top: 20px;
+      padding: 30px 15px 24px;
+      border-radius: 8px;
+      box-shadow: none;
+    }
+
+    .de-cost-compare__card-title {
+      max-width: 100%;
+      margin: 0 auto 14px;
+      font-size: 16px;
+    }
+
+    .de-cost-compare__vs {
+      gap: 10px;
+      margin: 0 0 16px;
+      font-size: 9px;
+    }
+
+    .de-cost-compare__rows {
+      gap: 10px;
+      padding: 0;
+    }
+
+    .de-cost-compare__row {
+      grid-template-columns: 72px 28px minmax(0, 1fr);
+      gap: 16px;
+      padding: 6px 14px;
+      font-size: 11px;
+      min-height: 40px;
+    }
+
+    .de-cost-compare__note {
+      max-width: 90%;
+      margin-top: 16px;
+      font-size: 9px;
+      color: #3F3636;
+      opacity: 0.65;
+      line-height: 1.25;
+    }
+  }
+</style>
+
+<script>
+  (() => {
+    const section = document.currentScript.closest('.shopify-section');
+    if (!section) return;
+
+    section.querySelectorAll('.de-cost-compare__button[href^="#"]').forEach((button) => {
+      button.addEventListener('click', (event) => {
+        const configuredTarget = button.getAttribute('href');
+        const target = document.querySelector(configuredTarget) || document.querySelector('.product-toolbar') || document.querySelector('.product-form');
+        if (!target) return;
+        event.preventDefault();
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "DE Cost Compare",
+  "settings": [
+    {
+      "type": "text",
+      "id": "anchor_id",
+      "label": "Anchor ID",
+      "default": "cost-compare"
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background",
+      "default": "#fbf6ee"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Desktop background image"
+    },
+    {
+      "type": "image_picker",
+      "id": "mobile_image",
+      "label": "Mobile background image"
+    },
+    {
+      "type": "text",
+      "id": "image_alt",
+      "label": "Background image alt",
+      "default": "Woman using Ulike Air 10 Pro"
+    },
+    {
+      "type": "textarea",
+      "id": "title",
+      "label": "Title",
+      "default": "Günstiger als\nLaserbehandlungen im Salon,\nlanganhaltender als Rasieren"
+    },
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "Text",
+      "default": "Verabschiede dich vom endlosen Kreislauf aus Rasieren und teuren Salonbesuchen. Mit dem Air 10 Pro erzielst du laserähnliche Ergebnisse bequem von zu Hause aus.\nFlexible monatliche Ratenzahlung über Klarna verfügbar."
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "JETZT VORBESTELLEN"
+    },
+    {
+      "type": "text",
+      "id": "button_link",
+      "label": "Button link",
+      "default": "#product-components"
+    },
+    {
+      "type": "textarea",
+      "id": "card_title",
+      "label": "Card title",
+      "default": "Air 10 Pro: Professionelle\nHaarentfernung ohne laufende Kosten"
+    },
+    {
+      "type": "text",
+      "id": "card_subtitle",
+      "label": "Card subtitle",
+      "default": "vs"
+    },
+    {
+      "type": "text",
+      "id": "note",
+      "label": "Note",
+      "default": "Hinweis: Schätzungen basieren auf durchschnittlichen langfristigen Ausgaben für Haarentfernung in Deutschland. Tatsächliche Kosten können variieren."
+    },
+    {
+      "type": "color",
+      "id": "card_background",
+      "label": "Card background",
+      "default": "#f4eadf"
+    },
+    {
+      "type": "color",
+      "id": "button_background",
+      "label": "Button background",
+      "default": "#e0004d"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button text color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#190a0a"
+    },
+    {
+      "type": "color",
+      "id": "muted_color",
+      "label": "Muted text color",
+      "default": "#5f595d"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "cost",
+      "name": "Cost row",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "Rasieren"
+        },
+        {
+          "type": "text",
+          "id": "value",
+          "label": "Value",
+          "default": "bis zu 5.000 €+ über die Zeit"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "DE Cost Compare",
+      "blocks": [
+        {
+          "type": "cost"
+        },
+        {
+          "type": "cost"
+        },
+        {
+          "type": "cost"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,371 @@
+{% liquid
+  assign anchor_id = section.settings.anchor_id | strip
+%}
+
+<section
+  class="de-power-modes"
+  {% if anchor_id != blank %}
+    id="{{ anchor_id | escape }}"
+  {% endif %}
+  style="
+    --de-power-bg: {{ section.settings.background }};
+    --de-power-text: {{ section.settings.text_color }};
+    --de-power-muted: {{ section.settings.muted_color }};
+  "
+>
+  <div class="container">
+    <div class="de-power-modes__head">
+      {% if section.settings.title != blank %}
+        <h2 class="de-power-modes__title to-top" style="transition-delay: 0.1s" >{{ section.settings.title }}</h2>
+      {% endif %}
+      <div class="de-power-modes__side">
+        {% if section.settings.text != blank %}
+          <div class="de-power-modes__text" style="transition-delay: 0.2s" >{{ section.settings.text }}</div>
+        {% endif %}
+        <div class="de-power-modes__arrows" aria-hidden="false">
+          <button class="de-power-modes__arrow de-power-modes__arrow--prev" type="button" aria-label="Previous mode">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5 8 12l7 7" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <button class="de-power-modes__arrow de-power-modes__arrow--next" type="button" aria-label="Next mode">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 7 7-7 7" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="de-power-modes__viewport swiper">
+      <div class="de-power-modes__track swiper-wrapper">
+        {% for block in section.blocks %}
+          <article class="de-power-modes__item swiper-slide" {{ block.shopify_attributes }}>
+            {% if block.settings.image != blank %}
+              <div class="de-power-modes__image-wrap">
+                {{ block.settings.image | image_url: width: 900 | image_tag: loading: 'lazy', class: 'de-power-modes__image', alt: block.settings.image.alt }}
+              </div>
+            {% endif %}
+            {% if block.settings.title != blank %}
+              <h3 class="de-power-modes__item-title to-top" style="transition-delay: 0.1s" >{{ block.settings.title }}</h3>
+            {% endif %}
+            {% if block.settings.text != blank %}
+              <div class="de-power-modes__item-text to-top" style="transition-delay: 0.2s" >{{ block.settings.text }}</div>
+            {% endif %}
+          </article>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .de-power-modes {
+    overflow: hidden;
+    padding: 80px 0 80px;
+    background: var(--de-power-bg);
+    color: var(--de-power-text);
+  }
+
+  .de-power-modes__head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 40px;
+    margin-bottom: 74px;
+  }
+
+  .de-power-modes__title {
+    margin: 0;
+    font-size: 40px;
+    line-height: 1.15;
+    font-weight: 400;
+    letter-spacing: -0.02em;
+  }
+
+  .de-power-modes__side {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 32px;
+    width: min(34%, 430px);
+    padding-top: 6px;
+  }
+
+  .de-power-modes__text {
+    max-width: 390px;
+    text-align: right;
+    color: var(--de-power-muted);
+    font-size: 12px;
+    line-height: 1.35;
+  }
+
+  .de-power-modes__arrows {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+    padding-right: 2px;
+  }
+
+  .de-power-modes__arrow {
+    display: inline-flex;
+    width: 32px;
+    height: 32px;
+    align-items: center;
+    justify-content: center;
+    border: 0;
+    border-radius: 999px;
+    background: transparent;
+    color: var(--de-power-text);
+    cursor: pointer;
+    opacity: .65;
+    transition: opacity .2s ease, transform .2s ease;
+  }
+
+  .de-power-modes__arrow:hover {
+    opacity: 1;
+    transform: translateY(-1px);
+  }
+
+  .de-power-modes__viewport {
+    margin-right: calc((100vw - 100%) / -2);
+    overflow: hidden;
+  }
+
+  .de-power-modes__track {
+    display: flex;
+    align-items: stretch;
+  }
+
+  .de-power-modes__item {
+    width: min(31.2vw, 560px);
+    min-width: 410px;
+    flex-shrink: 0;
+  }
+
+  .de-power-modes__image-wrap {
+    overflow: hidden;
+    background: #eee;
+  }
+
+  .de-power-modes__image {
+    display: block;
+    width: 100%;
+    height: auto;
+    transition: transform .45s ease;
+  }
+
+  .de-power-modes__image-wrap:hover .de-power-modes__image {
+    transform: scale(1.035);
+  }
+
+  .de-power-modes__item-title {
+    margin: 30px 0 20px;
+    font-size: 30px;
+    line-height: 1.25;
+    font-weight: 400;
+    letter-spacing: -0.01em;
+  }
+
+  .de-power-modes__item-text {
+    max-width: 500px;
+    color: var(--de-power-muted);
+    font-size: 18px;
+    line-height: 1.5;
+  }
+
+  @media (max-width: 749px) {
+    .de-power-modes {
+      padding: 60px 0 58px;
+    }
+
+    .de-power-modes__head {
+      display: block;
+      margin-bottom: 30px;
+    }
+
+    .de-power-modes__title {
+      font-size: 24px;
+      font-weight: 300;
+    }
+
+    .de-power-modes__side {
+      display: block;
+      width: 100%;
+      padding-top: 10px;
+    }
+
+    .de-power-modes__text {
+      max-width: 280px;
+      text-align: left;
+      font-size: 14px;
+      line-height: 1.45;
+      color: var(--de-power-text);
+    }
+
+    .de-power-modes__arrows {
+      display: none;
+    }
+
+    .de-power-modes__viewport {
+      margin-right: -20px;
+      overflow: visible;
+    }
+
+    .de-power-modes__item {
+      width: 82%;
+      min-width: 0;
+    }
+
+    .de-power-modes__image-wrap {
+      width: 100%;
+    }
+
+    .de-power-modes__item-title {
+      margin: 32px 0 10px;
+      font-size: 14px;
+      line-height: 1.35;
+      letter-spacing: -0.01em;
+    }
+
+    .de-power-modes__item-text {
+      max-width: 100%;
+      font-size: 12px;
+      color: 3F3636;
+    }
+  }
+</style>
+
+<script>
+  (() => {
+    const initPowerModes{{ section.id | replace: '-', '_' }} = () => {
+      const root = document.querySelector('#shopify-section-{{ section.id }} .de-power-modes');
+      if (!root) return;
+      if (root.dataset.powerModesInit === 'true') return;
+      root.dataset.powerModesInit = 'true';
+
+      const viewport = root.querySelector('.de-power-modes__viewport');
+      const prev = root.querySelector('.de-power-modes__arrow--prev');
+      const next = root.querySelector('.de-power-modes__arrow--next');
+      if (!viewport || !window.Swiper) return;
+
+      const swiper = new window.Swiper(viewport, {
+        slidesPerView: 'auto',
+        spaceBetween: 18,
+        speed: 500,
+        watchOverflow: true,
+        navigation: {
+          prevEl: prev,
+          nextEl: next
+        },
+        breakpoints: {
+          0: {
+            spaceBetween: 10
+          },
+          750: {
+            spaceBetween: 18
+          }
+        }
+      });
+
+      root.powerModesSwiper = swiper;
+    };
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initPowerModes{{ section.id | replace: '-', '_' }}, { once: true });
+    } else {
+      initPowerModes{{ section.id | replace: '-', '_' }}();
+    }
+
+    document.addEventListener('shopify:section:load', (event) => {
+      if (!event.target || event.target.id !== 'shopify-section-{{ section.id }}') return;
+      const loadedRoot = event.target.querySelector('.de-power-modes');
+      if (loadedRoot) loadedRoot.dataset.powerModesInit = '';
+      initPowerModes{{ section.id | replace: '-', '_' }}();
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "DE Power Modes",
+  "settings": [
+    {
+      "type": "text",
+      "id": "anchor_id",
+      "label": "Anchor ID",
+      "default": "power-modes"
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background",
+      "default": "#f8f8ff"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "4 Power Modes"
+    },
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Right text",
+      "default": "Full-body sessions and everything in between. 4 modes for customised full-body treatments."
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#190a0a"
+    },
+    {
+      "type": "color",
+      "id": "muted_color",
+      "label": "Muted text color",
+      "default": "#7a7477"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "mode",
+      "name": "Mode",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Fast mode"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Text",
+          "default": "Perfect for quick and small touch-ups and maintenance sessions."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "DE Power Modes",
+      "blocks": [
+        {
+          "type": "mode"
+        },
+        {
+          "type": "mode"
+        },
+        {
+          "type": "mode"
+        },
+        {
+          "type": "mode"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
