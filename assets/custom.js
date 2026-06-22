@@ -177,7 +177,6 @@ function setCookie(cookieName, cookieValue, daysToExpire, endOfDay = false) {
   document.cookie = cookieName + '=' + cookieValue + expires + '; path=/';
 }
 
-var lcpValue = 0; // 用于存储 LCP 的值
 // seo 优化
 if ('scrollRestoration' in history) {
   history.scrollRestoration = 'manual';
@@ -228,64 +227,6 @@ function initGA() {
   $(document).on('click', '.header__logo-link', function () {
     commonGtmEvent('导航-Ulike', 'click', 'logo');
   });
-
-  // $(document).on(
-  //   'click',
-  //   '.header__linklist .header__linklist-link',
-  //   function () {
-  //     let _title = $(this).text();
-  //     commonGtmEvent(`导航-${_title}`, 'click', 'logo');
-  //   }
-  // );
-
-  // 老版本导航埋点
-
-  // $(document).on('click', '.header .j-search', function () {
-  //   commonGtmEvent('导航-search', 'click', '');
-  // });
-  // $(document).on('click', '.header .j-customer', function () {
-  //   commonGtmEvent('导航-login', 'click', '');
-  // });
-  // $(document).on('click', '.header .j-cart', function () {
-  //   commonGtmEvent('导航- cart', 'click', '');
-  // });
-
-  // 移动端老导航
-  // $(document).on('click', '.mobile-product-box .mobile-product-item', function () {
-  //   const index = $(this).index();
-  //   console.log('index', index);
-  //   switch (index) {
-  //     case 0:
-  //       commonGtmEvent('导航-air10', 'click', `index-${index}`);
-  //       break;
-  //     case 1:
-  //       commonGtmEvent('导航-air3', 'click', `index-${index}`);
-  //       break;
-  //     case 2:
-  //       commonGtmEvent('导航-air2', 'click', `index-${index}`);
-  //   }
-  // });
-
-  // $(document).on('click', '#mobile-menu-drawer .header-img-link', function () {
-  //   commonGtmEvent('导航-sale', 'click', '');
-  // });
-
-  // if (isMobile()) {
-  //   // 移动端点击第一个 icon
-  //   $(document).on('click', '.header .header__icon-wrapper:first', function () {
-  //     console.log('导航-expand');
-  //     commonGtmEvent('导航-expand', 'click', '');
-  //   });
-  //   // $('#mobile-menu-drawer .mobile-nav__item')
-  //   $(document).on(
-  //     'click',
-  //     '#mobile-menu-drawer .mobile-nav__item',
-  //     function () {
-  //       let _title = $(this).text();
-  //       commonGtmEvent(`导航-${_title}`, 'click', '');
-  //     }
-  //   );
-  // }
 
     // 新导航添加事件
   $(document).on('click', '#desktop-menu-1 .header-new-operate-btn, #mobile-menu-1 .header-new-operate-btn', function () {
