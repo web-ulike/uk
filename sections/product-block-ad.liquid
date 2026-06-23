@@ -1877,6 +1877,90 @@
         padding-right: 10px;
       }
     }
+
+    #shopify-section-{{ section.id }} .product-block-intro {
+      --intro-bg: {{ section.settings.intro_background | default: '#fff' }};
+      --intro-heading-color: {{ section.settings.intro_heading_color | default: '#190a0a' }};
+      --intro-subheading-color: {{ section.settings.intro_subheading_color | default: '#190a0a' }};
+      --intro-pt: {{ section.settings.intro_padding_top | default: 44 }}px;
+      --intro-pb: {{ section.settings.intro_padding_bottom | default: 32 }}px;
+      --intro-pt-m: {{ section.settings.intro_mobile_padding_top | default: 28 }}px;
+      --intro-pb-m: {{ section.settings.intro_mobile_padding_bottom | default: 20 }}px;
+      background: var(--intro-bg);
+    }
+
+    #shopify-section-{{ section.id }} .product-block-intro__inner {
+      padding-top: var(--intro-pt);
+      padding-bottom: var(--intro-pb);
+    }
+
+    #shopify-section-{{ section.id }} .product-block-intro__heading {
+      margin: 0;
+      font-size: 56px;
+      font-family: "Bodoni-Book";
+      line-height: 1;
+      color: var(--intro-heading-color);
+      font-weight: inherit;
+    }
+
+    #shopify-section-{{ section.id }} .product-block-intro__decor-img {
+      display: inline-block !important;
+      width: 30px;
+      height: auto;
+      margin-left: 4px;
+      vertical-align: top;
+      transform: translateY(2px);
+      float: none !important;
+      position: static !important;
+    }
+
+    #shopify-section-{{ section.id }} .product-block-intro__subheading {
+      margin-top: 20px;
+    }
+
+    #shopify-section-{{ section.id }} .product-block-intro__subheading p {
+      margin: 0;
+      font-size: 18px;
+      line-height: 1.4;
+      color: var(--intro-subheading-color);
+    }
+
+    @media screen and (max-width: 999px) {
+      #shopify-section-{{ section.id }} .product-block-intro__inner {
+        padding-top: var(--intro-pt-m);
+        padding-bottom: var(--intro-pb-m);
+      }
+
+      #shopify-section-{{ section.id }} .product-block-intro__content {
+        max-width: 100%;
+        margin: 0 auto;
+        text-align: center;
+      }
+
+      #shopify-section-{{ section.id }} .product-block-intro__heading {
+        width: 100%;
+        margin: 0 auto;
+        text-align: center;
+        font-size: 28px;
+        line-height: 1.1;
+      }
+
+      #shopify-section-{{ section.id }} .product-block-intro__decor-img {
+        width: 15px;
+        margin-left: 2px;
+        vertical-align: top;
+        transform: translateY(1px);
+      }
+
+      #shopify-section-{{ section.id }} .product-block-intro__subheading {
+        margin-top: 10px;
+      }
+
+      #shopify-section-{{ section.id }} .product-block-intro__subheading p {
+        font-size: 12px;
+        line-height: 1.2;
+      }
+    }
 </style>
 
 {% assign image_found = false %}
@@ -1886,6 +1970,36 @@
     {% break %}
   {% endif %}
 {% endfor %}
+{%- if section.settings.intro_heading != blank or section.settings.intro_subheading != blank -%}
+  <div class="product-block-intro">
+    <div class="product-block-intro__inner container">
+      <div class="product-block-intro__content">
+        {%- if section.settings.intro_heading != blank -%}
+          <h2 class="product-block-intro__heading">
+            <span class="product-block-intro__heading-text">{{ section.settings.intro_heading }}</span>
+            {%- if section.settings.intro_decor_image != blank -%}
+              {{
+                section.settings.intro_decor_image
+                | image_url: width: 80
+                | image_tag:
+                  loading: 'lazy',
+                  widths: '40,60,80',
+                  class: 'product-block-intro__decor-img',
+                  alt: ''
+              }}
+            {%- endif -%}
+          </h2>
+        {%- endif -%}
+
+        {%- if section.settings.intro_subheading != blank -%}
+          <div class="product-block-intro__subheading">
+            <p>{{ section.settings.intro_subheading }}</p>
+          </div>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+{%- endif -%}
 <div
   class="product-cont {{ section.settings.text6 }} {% if section.settings.is_reverse %}is-reverse-box{% endif %} "
   style="background:{{ section.settings.bg_color }}"
@@ -2929,6 +3043,84 @@
       "type": "color_background",
       "id": "bg_color",
       "label": "背景颜色"
+    },
+    {
+      "type": "header",
+      "content": "标题模块"
+    },
+    {
+      "type": "text",
+      "id": "intro_heading",
+      "label": "Intro heading"
+    },
+    {
+      "type": "text",
+      "id": "intro_subheading",
+      "label": "Intro subheading"
+    },
+    {
+      "type": "image_picker",
+      "id": "intro_decor_image",
+      "label": "Intro decor image"
+    },
+    {
+      "type": "text",
+      "id": "intro_background",
+      "label": "Intro background",
+      "info": "Supports color or gradient. Example: #FFFFFF or linear-gradient(180deg, #FFF5F8 0%, #FFFFFF 100%).",
+      "default": "#fff"
+    },
+    {
+      "type": "color",
+      "id": "intro_heading_color",
+      "label": "Intro heading color",
+      "default": "#190a0a"
+    },
+    {
+      "type": "color",
+      "id": "intro_subheading_color",
+      "label": "Intro subheading color",
+      "default": "#190a0a"
+    },
+    {
+      "type": "range",
+      "id": "intro_padding_top",
+      "label": "Intro padding top desktop",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "default": 44
+    },
+    {
+      "type": "range",
+      "id": "intro_padding_bottom",
+      "label": "Intro padding bottom desktop",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "intro_mobile_padding_top",
+      "label": "Intro padding top mobile",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 28
+    },
+    {
+      "type": "range",
+      "id": "intro_mobile_padding_bottom",
+      "label": "Intro padding bottom mobile",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 20
     },
     {
       "type": "checkbox",
