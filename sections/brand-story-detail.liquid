@@ -275,12 +275,14 @@
     <div class="brand-story-top">
       <div class="container">
         <div class="brand-story-cont">
-          <div class="brand-story-play to-top" data-src="https://www.youtube.com/embed/{{ section.settings.video_url.id }}?playsinline=1&autoplay=1&controls=1&mute=1&loop=1&playlist={{ section.settings.video_url.id }}&enablejsapi=1&rel=0&modestbranding=1&origin={{ 'https://' | append: request.host | url_encode }}">
-            <div class="play-btn">
-              <span class="span1"></span>
-              <!-- <span class="span2"></span> -->
+          {% if section.settings.video_url != blank %}
+            <div class="brand-story-play to-top" data-src="https://www.youtube.com/embed/{{ section.settings.video_url.id }}?playsinline=1&autoplay=1&controls=1&mute=1&loop=1&playlist={{ section.settings.video_url.id }}&enablejsapi=1&rel=0&modestbranding=1&origin={{ 'https://' | append: request.host | url_encode }}">
+              <div class="play-btn">
+                <span class="span1"></span>
+                <!-- <span class="span2"></span> -->
+              </div>
             </div>
-          </div>
+          {% endif %}
           <div class="brand-story-txt" style="transition-delay: 0.3s">
             <div class="brand-story-title text-top" style="transition-delay: 0.8s">
               {{ section.settings.title }}
