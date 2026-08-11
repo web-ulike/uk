@@ -2689,7 +2689,7 @@
   {% for variant in product.variants %}
       variantArr{{ section.id | replace: "template--", "" | replace: "__", ""  }}.push({
         variant_title:'{{ variant.metafields.custom["variant_title"] }}',
-        page_price:'{{ variant.metafields.custom["page_price"] }}',
+        page_price:'{{ variant.metafields.custom["page_price"] | times: 100 }}',
         price: '{{ variant.price | money }}'
       });
   {% endfor %}
@@ -2744,7 +2744,7 @@
           vid: {{ variant.id }},
           position: {{ variant.featured_media.position }},
           url: '{{ variant.metafields.custom["3d_url"] }}',
-          page_price: '{{ variant.metafields.custom["page_price"] }}',
+          page_price: '{{ variant.metafields.custom["page_price"] | times: 100 }}',
           original_price: '{{ variant.compare_at_price | money }}',
           price: '{{ variant.price | money }}',
           variantTitle: '{{ variant.metafields.custom["variant_title"] }}',
