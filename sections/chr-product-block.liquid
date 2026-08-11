@@ -1959,7 +1959,11 @@
           <div class="navbar">
             <div class="box-price">
               <div class="dis-price">
-                {{ product.price | money }}
+                {% if product.selected_or_first_available_variant.metafields.custom.page_price != blank %}
+                  {{ product.selected_or_first_available_variant.metafields.custom.page_price | times: 100 | money }}
+                {% else %}
+                  {{ product.price | money }}
+                {% endif %}
                 <span class="price m-show">{{ product.compare_at_price | money }}</span>
               </div>
               <div class="original-price">
