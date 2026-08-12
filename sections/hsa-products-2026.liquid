@@ -1,0 +1,899 @@
+{%- assign se_id = section.id | replace: 'template--', '' -%}
+{%- assign color_swatch_config = settings.color_swatch_config | newline_to_br | split: '<br />' -%}
+
+<style>
+  #hsa-products-2026-{{ se_id }} {
+    padding: 66px 0 100px;
+    overflow: hidden;
+  }
+
+  #hsa-products-2026-{{ se_id }} .hsa-products-2026__title {
+    color: {{ section.settings.title_color | default: '#1a1a1a' }};
+    font-size: 60px;
+    line-height: 1.2;
+    margin: 0 0 60px;
+    text-align: center;
+    font-weight: 400;
+  }
+
+  #hsa-products-2026-{{ se_id }} .hsa-products-2026__list {
+    display: flex;
+    gap: 36px;
+  }
+
+  #hsa-products-2026-{{ se_id }} .hsa-products-2026__item {
+    width: calc(25% - 27px);
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid #000;
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+  }
+
+  #hsa-products-2026-{{ se_id }} .hsa-products-2026__media {
+    position: relative;
+    z-index: 1;
+  }
+
+  #hsa-products-2026-{{ se_id }} .hsa-products-2026__tag {
+    padding: 0 12px;
+    background: #E0004D;
+    color: #fff;
+    font-size: 14px;
+    line-height: 1;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    z-index: 2;
+  }
+
+  #hsa-products-2026-{{ se_id }} .hsa-products-2026__image-wrap {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+  }
+
+  #hsa-products-2026-{{ se_id }} .hsa-products-2026__image {
+    display: block;
+    height: 325px;
+    object-fit: fill;
+    object-position: center;
+  }
+
+  #hsa-products-2026-{{ se_id }} .hsa-products-2026__content {
+    padding: 23px 20px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  #hsa-products-2026-{{ se_id }} .hsa-products-2026__top {
+    display: block;
+    margin-bottom: 10px;
+  }
+
+  #hsa-products-2026-{{ se_id }} .hsa-products-2026__name {
+    color: #000;
+    font-size: 20px;
+    line-height: 1.2;
+    font-weight: normal;
+    font-family: var(--heading-font-family);
+    margin-bottom: 5px;
+  }
+
+  #hsa-products-2026-{{ se_id }} .jdgm-widget {
+    font-size: 12px;
+    flex-shrink: 0;
+  }
+
+  #hsa-products-2026-{{ se_id }} .hsa-products-2026__desc {
+    color: #848484;
+    font-size: 14px;
+    line-height: 1.2;
+    margin-bottom: 7px;
+    min-height: calc(14px * 1.2 * 2);
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+  }
+
+  #hsa-products-2026-{{ se_id }} .hsa-products-2026__bottom-wrap {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  #hsa-products-2026-{{ se_id }} .hsa-products-2026__bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+
+  #hsa-products-2026-{{ se_id }} .hsa-products-2026__price {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 16px;
+    line-height: 1.2;
+    flex-wrap: wrap;
+  }
+
+  #hsa-products-2026-{{ se_id }} .hsa-products-2026__price-current {
+    color: #E0004D;
+    font-family: var(--heading-font-family);
+  }
+
+  #hsa-products-2026-{{ se_id }} .hsa-products-2026__price-original {
+    color: #A4A4A4;
+    text-decoration: line-through;
+  }
+
+  #hsa-products-2026-{{ se_id }} .hsa-products-2026__price-original:empty {
+    display: none;
+  }
+
+  #hsa-products-2026-{{ se_id }} .hsa-products-2026__colors {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+
+  #hsa-products-2026-{{ se_id }} .hsa-products-2026__color {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    cursor: pointer;
+    background-size: 100% 100%;
+    border: 1px solid transparent;
+    box-sizing: border-box;
+  }
+
+  #hsa-products-2026-{{ se_id }} .hsa-products-2026__color.active {
+    border-color: #000;
+  }
+
+  #hsa-products-2026-{{ se_id }} .hsa-products-2026__actions {
+    margin-top: 23px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  #hsa-products-2026-{{ se_id }} .hsa-products-2026__btn {
+    height: 49px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #000;
+    border: 1px solid #000;
+    border-radius: 4px;
+    cursor: pointer;
+    color: #fff;
+    font-size: 20px;
+    line-height: 1;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    width: 100%;
+  }
+
+  #hsa-products-2026-{{ se_id }} .hsa-products-2026__btn:hover {
+    background: #fff;
+    color: #000;
+  }
+
+  #hsa-products-2026-{{ se_id }} .hsa-products-2026__btn.loading {
+    opacity: 0.6;
+    pointer-events: none;
+    cursor: not-allowed;
+  }
+
+  #hsa-products-2026-{{ se_id }} .hsa-products-2026__btn.is-disabled,
+  #hsa-products-2026-{{ se_id }} .hsa-products-2026__btn:disabled {
+    background: #bdbdbd;
+    border-color: #bdbdbd;
+    color: #fff;
+    pointer-events: none;
+    cursor: not-allowed;
+  }
+
+  #hsa-products-2026-{{ se_id }} .hsa-products-2026__link {
+    height: 49px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #000;
+    border-radius: 10px;
+    cursor: pointer;
+    color: #000;
+    font-size: 20px;
+    line-height: 1;
+    margin-top: 15px;
+    transition: all 0.3s ease;
+    text-decoration: none;
+  }
+
+  #hsa-products-2026-{{ se_id }} .hsa-products-2026__link:hover {
+    background: #000;
+    color: #fff;
+  }
+
+  #hsa-products-2026-{{ se_id }} .jdgm-prev-badge__text {
+    color: #000;
+  }
+
+  #hsa-products-2026-{{ se_id }} .hsa-products-2026__check {
+    display: none;
+    gap: 20px;
+    align-items: center;
+    margin-top: 20px;
+  }
+
+  #hsa-products-2026-{{ se_id }} .hsa-products-2026__right {
+    position: relative;
+    flex: 1;
+    --swiper-theme-color: #000;
+  }
+
+  #hsa-products-2026-{{ se_id }} .hsa-products-2026__right .swiper-pagination-progressbar {
+    z-index: 1;
+  }
+
+  #hsa-products-2026-{{ se_id }} .hsa-products-2026__left {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+    color: #000;
+  }
+
+  #hsa-products-2026-{{ se_id }} .hsa-products-2026__left svg.swiper-button-disabled {
+    color: #190A0A;
+    opacity: 0.3;
+  }
+
+  @media (max-width: 1300px) {
+    #hsa-products-2026-{{ se_id }} .hsa-products-2026__list {
+      gap: 24px;
+    }
+
+    #hsa-products-2026-{{ se_id }} .hsa-products-2026__item {
+      width: calc(25% - 18px);
+      border-radius: 6px;
+    }
+
+    #hsa-products-2026-{{ se_id }} .hsa-products-2026__tag {
+      font-size: 12px;
+      padding: 0 10px;
+      height: 22px;
+      top: 10px;
+      left: 10px;
+    }
+
+    #hsa-products-2026-{{ se_id }} .hsa-products-2026__content {
+      padding: 15px 10px;
+    }
+
+    #hsa-products-2026-{{ se_id }} .hsa-products-2026__name {
+      font-size: 16px;
+    }
+
+    #hsa-products-2026-{{ se_id }} .hsa-products-2026__desc {
+      font-size: 12px;
+      min-height: calc(12px * 1.2 * 2);
+    }
+
+    #hsa-products-2026-{{ se_id }} .hsa-products-2026__price {
+      font-size: 14px;
+    }
+
+    #hsa-products-2026-{{ se_id }} .hsa-products-2026__btn,
+    #hsa-products-2026-{{ se_id }} .hsa-products-2026__link {
+      height: 45px;
+      font-size: 14px;
+      border-radius: 6px;
+      margin-top: 15px;
+    }
+  }
+
+  @media (max-width: 991px) {
+    #hsa-products-2026-{{ se_id }} {
+      padding: 50px 0;
+    }
+
+    #hsa-products-2026-{{ se_id }} .hsa-products-2026__title {
+      font-size: 28px;
+      margin-bottom: 30px;
+    }
+
+    #hsa-products-2026-{{ se_id }} .hsa-products-2026__list {
+      gap: 0;
+    }
+
+    #hsa-products-2026-{{ se_id }} .hsa-products-2026__item {
+      width: calc(50% - 12px);
+    }
+
+    #hsa-products-2026-{{ se_id }} .hsa-products-2026__check {
+      display: flex;
+    }
+  }
+
+  @media (max-width: 640px) {
+    #hsa-products-2026-{{ se_id }} .hsa-products-2026__item {
+      width: 100%;
+    }
+
+    #hsa-products-2026-{{ se_id }} .hsa-products-2026__content {
+      padding: 20px 15px;
+    }
+
+    #hsa-products-2026-{{ se_id }} .hsa-products-2026__name {
+      font-size: 20px;
+    }
+
+    #hsa-products-2026-{{ se_id }} .hsa-products-2026__desc {
+      font-size: 14px;
+      min-height: calc(14px * 1.2 * 2);
+    }
+
+    #hsa-products-2026-{{ se_id }} .hsa-products-2026__price {
+      font-size: 16px;
+    }
+  }
+</style>
+
+<section class="section-box">
+  <div id="hsa-products-2026-{{ se_id }}" class="hsa-products-2026">
+    <div class="container">
+      {%- if section.settings.title != blank -%}
+        <h3 class="hsa-products-2026__title">{{ section.settings.title }}</h3>
+      {%- endif -%}
+
+      <custom-swiper-new
+        slides-per-view="1.1"
+        space-between="20"
+        loop="false"
+        centered-slides="false"
+        pagination="true"
+        navigation="true"
+        disable-on="desktop"
+        pagination-type="progressbar"
+        breakpoints='{"991":{"slidesPerView":3,"spaceBetween":40}}'
+      >
+        <div class="swiper-container">
+          <div class="hsa-products-2026__list swiper-wrapper">
+            {%- for block in section.blocks -%}
+              {%- assign product = block.settings.product -%}
+              {%- if product != blank -%}
+                {%- assign current_variant = product.selected_or_first_available_variant -%}
+                {%- assign color_option = blank -%}
+                {%- for option in product.options_with_values -%}
+                  {%- assign option_downcase = option.name | downcase -%}
+                  {%- if option_downcase contains 'color' or option.name contains '颜色' or option.name contains '顏色' -%}
+                    {%- assign color_option = option -%}
+                    {%- break -%}
+                  {%- endif -%}
+                {%- endfor -%}
+
+                {%- assign featured_front_value = block.settings.featured_variant_front | strip -%}
+                {%- if color_option != blank and featured_front_value != blank -%}
+                  {%- assign color_option_position = color_option.position | minus: 1 -%}
+                  {%- for variant in product.variants -%}
+                    {%- assign matched_color_value = '' -%}
+                    {%- case color_option_position -%}
+                      {%- when 0 -%}
+                        {%- assign matched_color_value = variant.option1 | strip -%}
+                      {%- when 1 -%}
+                        {%- assign matched_color_value = variant.option2 | strip -%}
+                      {%- when 2 -%}
+                        {%- assign matched_color_value = variant.option3 | strip -%}
+                    {%- endcase -%}
+
+                    {%- if matched_color_value == featured_front_value -%}
+                      {%- assign current_variant = variant -%}
+                      {%- break -%}
+                    {%- endif -%}
+                  {%- endfor -%}
+                {%- endif -%}
+
+                {%- assign current_flash_sale_price = current_variant.metafields.custom.flash_sale_price.value | default: current_variant.metafields.custom.flash_sale_price -%}
+                {%- assign current_discount_code = current_variant.metafields.custom.flash_sale_discount.value | default: current_variant.metafields.custom.flash_sale_discount -%}
+                {%- assign configured_image = block.settings.image -%}
+                {%- assign current_image = configured_image | default: current_variant.featured_image | default: product.featured_image -%}
+
+                <div class="hsa-products-2026__item swiper-slide" data-se-id="{{ se_id }}" {{ block.shopify_attributes }}>
+                  <div class="hsa-products-2026__media">
+                    {%- if block.settings.tag != blank -%}
+                      <div class="hsa-products-2026__tag">{{ block.settings.tag }}</div>
+                    {%- endif -%}
+
+                    <div class="hsa-products-2026__image-wrap">
+                      {%- if current_image != blank -%}
+                        <img
+                          class="hsa-products-2026__image"
+                          data-configured-image="{% if configured_image != blank %}true{% else %}false{% endif %}"
+                          src="{{ current_image | image_url: width: 800 }}"
+                          alt="{{ current_image.alt | default: product.title | escape }}"
+                          loading="lazy"
+                          width="{{ current_image.width }}"
+                          height="{{ current_image.height }}"
+                        >
+                      {%- endif -%}
+                    </div>
+                  </div>
+
+                  <div
+                    class="hsa-products-2026__content"
+                    data-default-button-text="{{ block.settings.button_text | escape }}"
+                    data-sold-out-text="{{ section.settings.sold_out_text | escape }}"
+                  >
+                    <div class="hsa-products-2026__top">
+                      <h4 class="hsa-products-2026__name">
+                        {{ block.settings.title | default: product.title }}
+                      </h4>
+                      <div class="jdgm-widget jdgm-preview-badge">
+                        {{ product.metafields.judgeme.badge }}
+                      </div>
+                    </div>
+
+                    {%- if block.settings.desc != blank -%}
+                      <div class="hsa-products-2026__desc">{{ block.settings.desc }}</div>
+                    {%- elsif product.description != blank -%}
+                      <div class="hsa-products-2026__desc">{{ product.description | strip_html | truncate: 110 }}</div>
+                    {%- endif -%}
+
+                    <div class="hsa-products-2026__bottom-wrap">
+                      <div class="hsa-products-2026__bottom">
+                        <div class="hsa-products-2026__price">
+                          <span class="hsa-products-2026__price-current">
+                            {%- if current_flash_sale_price != blank -%}
+                              {%- if current_flash_sale_price contains '$' -%}
+                                {{ current_flash_sale_price }}
+                              {%- else -%}
+                                ${{ current_flash_sale_price }}
+                              {%- endif -%}
+                            {%- else -%}
+                              {{ current_variant.price | money }}
+                            {%- endif -%}
+                          </span>
+                          <span class="hsa-products-2026__price-original">
+                            {%- if current_flash_sale_price != blank -%}
+                              {{ current_variant.price | money }}
+                            {%- endif -%}
+                          </span>
+                        </div>
+
+                        {%- if color_option != blank -%}
+                          <div class="hsa-products-2026__colors">
+                            {%- assign current_option_index = color_option.position | minus: 1 -%}
+                            {%- assign current_option_value = current_variant.options[current_option_index] | strip -%}
+
+                            {%- if featured_front_value != blank -%}
+                              {%- assign variant_for_value = blank -%}
+                              {%- for variant in product.variants -%}
+                                {%- assign variant_option_value = '' -%}
+                                {%- case current_option_index -%}
+                                  {%- when 0 -%}
+                                    {%- assign variant_option_value = variant.option1 | strip -%}
+                                  {%- when 1 -%}
+                                    {%- assign variant_option_value = variant.option2 | strip -%}
+                                  {%- when 2 -%}
+                                    {%- assign variant_option_value = variant.option3 | strip -%}
+                                {%- endcase -%}
+
+                                {%- if variant_option_value == featured_front_value -%}
+                                  {%- assign variant_for_value = variant -%}
+                                  {%- break -%}
+                                {%- endif -%}
+                              {%- endfor -%}
+
+                              {%- if variant_for_value != blank -%}
+                                {%- assign variant_flash_sale_price = variant_for_value.metafields.custom.flash_sale_price.value | default: variant_for_value.metafields.custom.flash_sale_price -%}
+                                {%- assign variant_discount_code = variant_for_value.metafields.custom.flash_sale_discount.value | default: variant_for_value.metafields.custom.flash_sale_discount -%}
+                                {%- assign variant_image = variant_for_value.featured_image | default: product.featured_image -%}
+                                <div
+                                  class="hsa-products-2026__color {% if featured_front_value == current_option_value %}active{% endif %}"
+                                  data-variant-id="{{ variant_for_value.id }}"
+                                  data-variant-available="{{ variant_for_value.available }}"
+                                  data-variant-price="{{ variant_for_value.price | money | escape }}"
+                                  data-variant-flash-sale-price="{{ variant_flash_sale_price | escape }}"
+                                  data-variant-discount-code="{{ variant_discount_code | escape }}"
+                                  data-variant-image="{% if variant_image != blank %}{{ variant_image | image_url: width: 800 }}{% endif %}"
+                                  data-variant-image-alt="{{ variant_image.alt | default: product.title | escape }}"
+                                  style="{% render 'color-swatch-style', color_swatch_config: color_swatch_config, value: featured_front_value %}"
+                                  aria-label="{{ featured_front_value | escape }}"
+                                  title="{{ featured_front_value | escape }}"
+                                ></div>
+                              {%- endif -%}
+                            {%- endif -%}
+
+                            {%- for value in color_option.values -%}
+                              {%- assign target_value = value | strip -%}
+                              {%- if featured_front_value != blank and target_value == featured_front_value -%}
+                                {%- continue -%}
+                              {%- endif -%}
+
+                              {%- assign variant_for_value = blank -%}
+                              {%- for variant in product.variants -%}
+                                {%- assign variant_option_value = '' -%}
+                                {%- case current_option_index -%}
+                                  {%- when 0 -%}
+                                    {%- assign variant_option_value = variant.option1 | strip -%}
+                                  {%- when 1 -%}
+                                    {%- assign variant_option_value = variant.option2 | strip -%}
+                                  {%- when 2 -%}
+                                    {%- assign variant_option_value = variant.option3 | strip -%}
+                                {%- endcase -%}
+
+                                {%- if variant_option_value == target_value -%}
+                                  {%- assign variant_for_value = variant -%}
+                                  {%- break -%}
+                                {%- endif -%}
+                              {%- endfor -%}
+
+                              {%- if variant_for_value != blank -%}
+                                {%- assign variant_flash_sale_price = variant_for_value.metafields.custom.flash_sale_price.value | default: variant_for_value.metafields.custom.flash_sale_price -%}
+                                {%- assign variant_discount_code = variant_for_value.metafields.custom.flash_sale_discount.value | default: variant_for_value.metafields.custom.flash_sale_discount -%}
+                                {%- assign variant_image = variant_for_value.featured_image | default: product.featured_image -%}
+                                <div
+                                  class="hsa-products-2026__color {% if target_value == current_option_value %}active{% endif %}"
+                                  data-variant-id="{{ variant_for_value.id }}"
+                                  data-variant-available="{{ variant_for_value.available }}"
+                                  data-variant-price="{{ variant_for_value.price | money | escape }}"
+                                  data-variant-flash-sale-price="{{ variant_flash_sale_price | escape }}"
+                                  data-variant-discount-code="{{ variant_discount_code | escape }}"
+                                  data-variant-image="{% if variant_image != blank %}{{ variant_image | image_url: width: 800 }}{% endif %}"
+                                  data-variant-image-alt="{{ variant_image.alt | default: product.title | escape }}"
+                                  style="{% render 'color-swatch-style', color_swatch_config: color_swatch_config, value: target_value %}"
+                                  aria-label="{{ target_value | escape }}"
+                                  title="{{ target_value | escape }}"
+                                ></div>
+                              {%- endif -%}
+                            {%- endfor -%}
+                          </div>
+                        {%- endif -%}
+                      </div>
+
+                      <div class="hsa-products-2026__actions">
+                        {%- if block.settings.button_text != blank -%}
+                          <button
+                            type="button"
+                            class="hsa-products-2026__btn {% unless current_variant.available %}is-disabled{% endunless %}"
+                            data-variant-id="{{ current_variant.id }}"
+                            data-discount-code="{{ current_discount_code | escape }}"
+                            {% unless current_variant.available %}disabled{% endunless %}
+                          >
+                            {% if current_variant.available %}
+                              {{ block.settings.button_text }}
+                            {% else %}
+                              {{ section.settings.sold_out_text }}
+                            {% endif %}
+                          </button>
+                        {%- endif -%}
+
+                        {%- if block.settings.link_text != blank and block.settings.link != blank -%}
+                          <a href="{{ block.settings.link }}" class="hsa-products-2026__link">{{ block.settings.link_text }}</a>
+                        {%- endif -%}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+
+          <div class="hsa-products-2026__check">
+            <div class="hsa-products-2026__left">
+              <svg xmlns="http://www.w3.org/2000/svg" width="30" height="23" viewBox="0 0 30 23" fill="none" class="swiper-prev">
+                <g clip-path="url(#clip0_prev_{{ se_id }})">
+                  <path d="M1.90735e-06 11.4924C1.90735e-06 11.6739 0.067318 11.8539 0.196098 11.9915L10.44 22.9671L11.5098 21.969L2.41463 12.2242H30C30 11.4164 29.3444 10.7607 28.5366 10.7607H0.765366C0.488781 10.7607 0.219515 10.8998 0.0878067 11.1442C0.0278072 11.2539 1.90735e-06 11.3739 1.90735e-06 11.4924Z" fill="currentColor"/>
+                  <path d="M1.53121 8.92683C2.10341 9.49756 3.02975 9.49756 3.60048 8.92683L11.4941 1.03463L10.4595 0L1.53268 8.92683H1.53121Z" fill="currentColor"/>
+                </g>
+                <defs>
+                  <clipPath id="clip0_prev_{{ se_id }}">
+                    <rect width="30" height="22.9683" fill="white" transform="matrix(-1 0 0 1 30 0)"/>
+                  </clipPath>
+                </defs>
+              </svg>
+
+              <svg xmlns="http://www.w3.org/2000/svg" width="30" height="23" viewBox="0 0 30 23" fill="none" class="swiper-next">
+                <g clip-path="url(#clip0_next_{{ se_id }})">
+                  <path d="M30 11.4924C30 11.6739 29.9327 11.8539 29.8039 11.9915L19.56 22.9671L18.4902 21.969L27.5854 12.2242H0C0 11.4164 0.65561 10.7607 1.46341 10.7607H29.2346C29.5112 10.7607 29.7805 10.8998 29.9122 11.1442C29.9722 11.2539 30 11.3739 30 11.4924Z" fill="currentColor"/>
+                  <path d="M28.4688 8.92683C27.8966 9.49756 26.9702 9.49756 26.3995 8.92683L18.5059 1.03463L19.5405 0L28.4673 8.92683H28.4688Z" fill="currentColor"/>
+                </g>
+                <defs>
+                  <clipPath id="clip0_next_{{ se_id }}">
+                    <rect width="30" height="22.9683" fill="white"/>
+                  </clipPath>
+                </defs>
+              </svg>
+            </div>
+            <div class="hsa-products-2026__right">
+              <div class="swiper-pagination"></div>
+            </div>
+          </div>
+        </div>
+      </custom-swiper-new>
+    </div>
+  </div>
+</section>
+
+<script>
+  function initHsaProducts2026(sectionId) {
+    const root = document.querySelector('#hsa-products-2026-' + sectionId);
+    if (!root) return;
+
+    root.querySelectorAll('.hsa-products-2026__item').forEach((item) => {
+      if (item.dataset.initiated === 'true') return;
+      item.dataset.initiated = 'true';
+
+      const imageEl = item.querySelector('.hsa-products-2026__image');
+      const colorEls = item.querySelectorAll('.hsa-products-2026__color');
+      const btn = item.querySelector('.hsa-products-2026__btn');
+      const currentPriceEl = item.querySelector('.hsa-products-2026__price-current');
+      const originalPriceEl = item.querySelector('.hsa-products-2026__price-original');
+      const contentEl = item.querySelector('.hsa-products-2026__content');
+
+      const defaultButtonText = contentEl?.dataset.defaultButtonText || 'Buy Now';
+      const soldOutText = contentEl?.dataset.soldOutText || 'Sold out';
+
+      function formatFlashSalePrice(flashSalePrice) {
+        if (!flashSalePrice || flashSalePrice === 'null' || flashSalePrice === 'undefined') return '';
+        const trimmedPrice = String(flashSalePrice).trim();
+        if (!trimmedPrice) return '';
+        return trimmedPrice.indexOf('$') === 0 ? trimmedPrice : '$' + trimmedPrice;
+      }
+
+      function updateButtonState(isAvailable, variantId, discountCode) {
+        if (!btn) return;
+
+        btn.dataset.variantId = variantId || '';
+        btn.dataset.discountCode = discountCode || '';
+
+        if (String(isAvailable) === 'true') {
+          btn.disabled = false;
+          btn.classList.remove('is-disabled');
+          btn.textContent = defaultButtonText;
+        } else {
+          btn.disabled = true;
+          btn.classList.add('is-disabled');
+          btn.textContent = soldOutText;
+        }
+      }
+
+      function updatePrice(flashSalePrice, price) {
+        if (!currentPriceEl) return;
+
+        if (flashSalePrice && flashSalePrice !== 'null' && flashSalePrice !== 'undefined') {
+          currentPriceEl.innerHTML = formatFlashSalePrice(flashSalePrice);
+          if (originalPriceEl) {
+            originalPriceEl.innerHTML = price || '';
+          }
+        } else {
+          currentPriceEl.innerHTML = price || '';
+          if (originalPriceEl) {
+            originalPriceEl.innerHTML = '';
+          }
+        }
+      }
+
+      colorEls.forEach((colorEl) => {
+        colorEl.addEventListener('click', () => {
+          colorEls.forEach((el) => el.classList.remove('active'));
+          colorEl.classList.add('active');
+
+          const variantId = colorEl.dataset.variantId || '';
+          const variantAvailable = colorEl.dataset.variantAvailable || 'false';
+          const variantPrice = colorEl.dataset.variantPrice || '';
+          const variantFlashSalePrice = colorEl.dataset.variantFlashSalePrice || '';
+          const variantDiscountCode = colorEl.dataset.variantDiscountCode || '';
+          const variantImage = colorEl.dataset.variantImage || '';
+          const variantImageAlt = colorEl.dataset.variantImageAlt || '';
+
+          updatePrice(variantFlashSalePrice, variantPrice);
+          updateButtonState(variantAvailable, variantId, variantDiscountCode);
+
+          if (imageEl && imageEl.dataset.configuredImage !== 'true' && variantImage) {
+            imageEl.src = variantImage;
+            imageEl.alt = variantImageAlt;
+          }
+        });
+      });
+
+      if (btn) {
+        btn.addEventListener('click', () => {
+          if (btn.disabled || btn.classList.contains('loading')) return;
+
+          const variantId = btn.dataset.variantId;
+          const discountCode = btn.dataset.discountCode || '';
+
+          if (!variantId) return;
+
+          btn.classList.add('loading');
+
+          if (typeof addToCartPromise === 'function') {
+            addToCartPromise(variantId, null, {}, discountCode)
+              .finally(() => {
+                btn.classList.remove('loading');
+              });
+          } else if (window.UlikeCommon && typeof window.UlikeCommon.addToCartPromise === 'function') {
+            window.UlikeCommon.addToCartPromise(variantId, null, {}, discountCode)
+              .finally(() => {
+                btn.classList.remove('loading');
+              });
+          } else {
+            console.error('addToCartPromise is not defined');
+            btn.classList.remove('loading');
+          }
+        });
+      }
+    });
+  }
+
+  class CustomSwiperNew extends HTMLElement {
+    constructor() {
+      super();
+    }
+
+    connectedCallback() {
+      this.initSwiper();
+    }
+
+    initSwiper() {
+      const swiperContainer = this.querySelector('.swiper-container');
+      if (!swiperContainer || typeof Swiper === 'undefined') return;
+
+      const disableOn = this.getAttribute('disable-on');
+      const isMobile = /Mobi|Android/i.test(navigator.userAgent);
+
+      if ((disableOn === 'mobile' && isMobile) || (disableOn === 'desktop' && !isMobile)) {
+        return;
+      }
+
+      if (this.swiper) {
+        this.swiper.destroy(true, true);
+      }
+
+      const slidesPerView = parseFloat(this.getAttribute('slides-per-view')) || 1.1;
+      const spaceBetween = parseFloat(this.getAttribute('space-between')) || 20;
+      const loop = this.getAttribute('loop') === 'true';
+      const centeredSlides = this.getAttribute('centered-slides') === 'true';
+      const navigationEnabled = this.getAttribute('navigation') === 'true';
+
+      let breakpoints = {};
+      try {
+        breakpoints = JSON.parse(this.getAttribute('breakpoints') || '{}');
+      } catch (error) {
+        console.error('Invalid breakpoints format.');
+      }
+
+      const prevButton = navigationEnabled ? this.querySelector('.swiper-prev') : null;
+      const nextButton = navigationEnabled ? this.querySelector('.swiper-next') : null;
+
+      this.swiper = new Swiper(swiperContainer, {
+        slidesPerView,
+        spaceBetween,
+        loop,
+        centeredSlides,
+        breakpoints,
+        preventClicks: false,
+        preventClicksPropagation: false,
+        navigation: navigationEnabled
+          ? {
+              prevEl: prevButton,
+              nextEl: nextButton
+            }
+          : false,
+        pagination: {
+          el: this.querySelector('.swiper-pagination'),
+          type: 'progressbar'
+        }
+      });
+    }
+  }
+
+  window.addEventListener('DOMContentLoaded', function () {
+    if (!window.customElements.get('custom-swiper-new')) {
+      window.customElements.define('custom-swiper-new', CustomSwiperNew);
+    }
+    initHsaProducts2026('{{ se_id }}');
+  });
+
+  document.addEventListener('shopify:section:load', function (event) {
+    const loadedRoot = event.target.querySelector('.hsa-products-2026');
+    if (!loadedRoot) return;
+
+    const loadedId = loadedRoot.id.replace('hsa-products-2026-', '');
+    initHsaProducts2026(loadedId);
+  });
+</script>
+
+{% schema %}
+{
+  "name": "hsa-products-2026",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "标题"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "标题颜色",
+      "default": "#000000"
+    },
+    {
+      "type": "text",
+      "id": "sold_out_text",
+      "label": "无库存文案",
+      "default": "Sold out"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "item",
+      "settings": [
+        {
+          "type": "product",
+          "id": "product",
+          "label": "产品"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "产品图片（留空默认产品图片）"
+        },
+        {
+          "type": "text",
+          "id": "tag",
+          "label": "Tag"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "标题（留空默认产品标题）"
+        },
+        {
+          "type": "text",
+          "id": "desc",
+          "label": "描述（留空默认产品描述摘要）"
+        },
+        {
+          "type": "text",
+          "id": "featured_variant_front",
+          "label": "指定颜色值排最前（需与变体值完全一致）"
+        },
+        {
+          "type": "text",
+          "id": "button_text",
+          "label": "购买按钮文案",
+          "default": "Buy Now"
+        },
+        {
+          "type": "text",
+          "id": "link_text",
+          "label": "次按钮文案"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "次按钮链接"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "hsa-products-2026"
+    }
+  ]
+}
+{% endschema %}

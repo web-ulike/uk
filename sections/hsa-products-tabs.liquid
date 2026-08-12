@@ -1,0 +1,1015 @@
+<style>
+  .hsa-products-tabs-section {
+    padding: 66px 0 100px 0;
+    overflow: hidden;
+  }
+
+  .hsa-products-tabs-section .hsa-products-h3 {
+    color: #000;
+    font-size: 60px;
+    line-height: 1.2;
+    text-align: center;
+    font-weight: normal;
+    margin: 0 0 40px;
+  }
+
+  .hsa-products-tabs-section .hsa-products-tabs {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 30px;
+    margin-bottom: 60px;
+  }
+
+  .hsa-products-tabs-section .hsa-products-tab {
+    min-width: 132px;
+    padding: 16px 30px;
+    border-radius: 999px;
+    border: 1px solid #1a1a1a;
+    background: transparent;
+    color: #2b2b2b;
+    font-size: 30px;
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+  }
+
+  .hsa-products-tabs-section .hsa-products-tab.active {
+    background: #190a0a;
+    border-color: #190a0a;
+    color: #fff;
+  }
+
+  .hsa-products-tabs-section .swiper-container {
+    overflow: hidden;
+  }
+
+  .hsa-products-tabs-section custom-swiper-new {
+    display: block;
+  }
+
+  .hsa-products-tabs-section .swiper-wrapper {
+    align-items: stretch;
+  }
+
+  .hsa-products-tabs-section .hsa-products-list {
+    display: flex;
+  }
+
+  .hsa-products-tabs-section .hsa-products-item {
+    width: calc(25% - 27px);
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid #000;
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    box-sizing: border-box;
+  }
+
+  .hsa-products-tabs-section .hsa-products-item.is-hidden {
+    display: none !important;
+  }
+
+  .hsa-products-tabs-section .hsa-products-item-img {
+    position: relative;
+    z-index: 1;
+    background: #f7f7f7;
+  }
+
+  .hsa-products-tabs-section .hsa-products-tag {
+    padding: 0 12px;
+    border-radius: 24px;
+    background: #e0004d;
+    color: #fff;
+    font-size: 14px;
+    line-height: 1;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    z-index: 2;
+  }
+
+  .hsa-products-tabs-section .img {
+    position: relative;
+    z-index: 1;
+    display: none;
+    width: 100%;
+    height: auto;
+    vertical-align: top;
+  }
+
+  .hsa-products-tabs-section .img.active {
+    display: block;
+  }
+
+  .hsa-products-tabs-section .hsa-products-item-text {
+    padding: 23px 20px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .hsa-products-tabs-section .hsa-products-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 7px;
+  }
+
+  .hsa-products-tabs-section .hsa-products-item-h4 {
+    color: #000;
+    font-size: 20px;
+    line-height: 1.2;
+    font-weight: normal;
+    font-family: var(--heading-font-family);
+    margin: 0;
+    flex: 1;
+  }
+
+  .hsa-products-tabs-section .jdgm-widget {
+    font-size: 12px;
+    flex-shrink: 0;
+  }
+
+  .hsa-products-tabs-section .jdgm-prev-badge__text {
+    color: #000;
+  }
+
+  .hsa-products-tabs-section .hsa-products-sub {
+    color: #848484;
+    font-size: 14px;
+    line-height: 1.2;
+    margin-bottom: 7px;
+    height: calc(14px * 1.2 * 2);
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+  }
+
+  .hsa-products-tabs-section .hsa-products-bottom-cont {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .hsa-products-tabs-section .hsa-products-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .hsa-products-tabs-section .hsa-products-price {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 16px;
+    line-height: 1.2;
+    flex-wrap: wrap;
+  }
+
+  .hsa-products-tabs-section .n-price {
+    color: #e0004d;
+    font-family: var(--heading-font-family);
+  }
+
+  .hsa-products-tabs-section .d-price {
+    color: #a4a4a4;
+    text-decoration: line-through;
+  }
+
+  .hsa-products-tabs-section .hsa-products-colors {
+    display: flex;
+    gap: 10px;
+    flex-shrink: 0;
+  }
+
+  .hsa-products-tabs-section .hsa-products-color {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    cursor: pointer;
+    background-size: 100% 100%;
+    box-sizing: border-box;
+  }
+
+  .hsa-products-tabs-section .hsa-products-color.active {
+    border: 1px solid #000;
+  }
+
+  .hsa-products-tabs-section .hsa-products-btn {
+    height: 49px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #000;
+    border: 1px solid #000;
+    border-radius: 10px;
+    cursor: pointer;
+    color: #fff;
+    font-size: 20px;
+    line-height: 1;
+    margin-top: 23px;
+    transition: all 0.3s ease;
+    text-align: center;
+  }
+
+  .hsa-products-tabs-section .hsa-products-btn:hover {
+    background: #fff;
+    color: #000;
+  }
+
+  .hsa-products-tabs-section .hsa-products-btn.loading {
+    opacity: 0.6;
+    pointer-events: none;
+    cursor: not-allowed;
+  }
+
+  .hsa-products-tabs-section .hsa-products-link {
+    height: 49px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #000;
+    border-radius: 10px;
+    cursor: pointer;
+    color: #000;
+    font-size: 20px;
+    line-height: 1;
+    margin-top: 15px;
+    transition: all 0.3s ease;
+    text-align: center;
+  }
+
+  .hsa-products-tabs-section .hsa-products-link:hover {
+    background: #000;
+    color: #fff;
+  }
+
+  .hsa-products-tabs-section .hsa-products__check {
+    display: none;
+    gap: 20px;
+    align-items: center;
+    margin-top: 20px;
+  }
+
+  .hsa-products-tabs-section .hsa-products__right {
+    position: relative;
+    flex: 1;
+    min-width: 0;
+    --swiper-theme-color: #000;
+  }
+
+  .hsa-products-tabs-section .hsa-products__right .swiper-pagination-progressbar {
+    z-index: 1;
+  }
+
+  .hsa-products-tabs-section .hsa-products__left {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+    color: #000;
+  }
+
+  .hsa-products-tabs-section .hsa-products__left svg {
+    cursor: pointer;
+  }
+
+  .hsa-products-tabs-section .hsa-products__left svg.swiper-button-disabled {
+    color: #190a0a;
+    opacity: 0.3;
+  }
+
+  @media (max-width: 1300px) {
+    .hsa-products-tabs-section .hsa-products-list {
+      gap: 24px;
+    }
+
+    .hsa-products-tabs-section .hsa-products-item {
+      width: calc(25% - 18px);
+      border-radius: 6px;
+      border: 0px;
+    }
+
+    .hsa-products-tabs-section .hsa-products-tag {
+      font-size: 12px;
+      padding: 0 10px;
+      height: 22px;
+      top: 10px;
+      left: 10px;
+    }
+
+    .hsa-products-tabs-section .hsa-products-item-text {
+      padding: 15px 10px;
+    }
+
+    .hsa-products-tabs-section .hsa-products-item-h4 {
+      font-size: 16px;
+    }
+
+    .hsa-products-tabs-section .hsa-products-sub {
+      font-size: 12px;
+      height: calc(12px * 1.2 * 2);
+    }
+
+    .hsa-products-tabs-section .hsa-products-price {
+      font-size: 14px;
+    }
+  }
+
+  @media (max-width: 991px) {
+    .hsa-products-tabs-section {
+      padding: 40px 0;
+    }
+
+    .hsa-products-tabs-section .hsa-products-h3 {
+      font-size: 28px;
+      margin-bottom: 24px;
+      text-align: left;
+    }
+
+    .hsa-products-tabs-section .hsa-products-tabs {
+      justify-content: flex-start;
+      flex-wrap: nowrap;
+      gap: 8px;
+      margin-bottom: 34px;
+      overflow-x: auto;
+      overflow-y: hidden;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+
+    .hsa-products-tabs-section .hsa-products-tabs::-webkit-scrollbar {
+      display: none;
+    }
+
+    .hsa-products-tabs-section .hsa-products-tab {
+      flex: 0 0 auto;
+      min-width: 110px;
+      height: 40px;
+      padding: 0 18px;
+      font-size: 16px;
+    }
+
+    .hsa-products-tabs-section .hsa-products-list {
+      gap: 0;
+    }
+
+    .hsa-products-tabs-section .hsa-products-item {
+      width: calc(50% - 12px);
+    }
+
+    .hsa-products-tabs-section .hsa-products__check {
+      display: flex;
+      gap: 16px;
+    }
+
+    .hsa-products-tabs-section .hsa-products-btn,
+    .hsa-products-tabs-section .hsa-products-link {
+      height: 40px;
+      font-size: 18px;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .hsa-products-tabs-section .hsa-products-item {
+      width: 100%;
+    }
+
+    .hsa-products-tabs-section .hsa-products-item-text {
+      padding: 20px 15px;
+    }
+
+    .hsa-products-tabs-section .hsa-products-item-h4 {
+      font-size: 20px;
+    }
+
+    .hsa-products-tabs-section .hsa-products-sub {
+      font-size: 14px;
+      height: calc(14px * 1.2 * 2);
+    }
+
+    .hsa-products-tabs-section .hsa-products-price {
+      font-size: 16px;
+    }
+  }
+</style>
+
+{%- assign color_swatch_config = settings.color_swatch_config | newline_to_br | split: '<br />' -%}
+
+<section class="section-box">
+  <div class="hsa-products-tabs-section" id="hsa-products-tabs-{{ section.id }}">
+    <div class="container">
+      {%- if section.settings.title != blank -%}
+        <h3 class="hsa-products-h3">{{ section.settings.title }}</h3>
+      {%- endif -%}
+
+      {%- assign has_tabs = false -%}
+      {%- if section.settings.tab_label_1 != blank
+        or section.settings.tab_label_2 != blank
+        or section.settings.tab_label_3 != blank
+        or section.settings.tab_label_4 != blank
+      -%}
+        {%- assign has_tabs = true -%}
+      {%- endif -%}
+
+      {%- assign first_active_tab = '' -%}
+      {%- if section.settings.tab_label_1 != blank -%}
+        {%- assign first_active_tab = section.settings.tab_label_1 | strip -%}
+      {%- elsif section.settings.tab_label_2 != blank -%}
+        {%- assign first_active_tab = section.settings.tab_label_2 | strip -%}
+      {%- elsif section.settings.tab_label_3 != blank -%}
+        {%- assign first_active_tab = section.settings.tab_label_3 | strip -%}
+      {%- elsif section.settings.tab_label_4 != blank -%}
+        {%- assign first_active_tab = section.settings.tab_label_4 | strip -%}
+      {%- endif -%}
+
+      {%- assign tab_label_1_stripped = section.settings.tab_label_1 | strip -%}
+      {%- assign tab_label_2_stripped = section.settings.tab_label_2 | strip -%}
+      {%- assign tab_label_3_stripped = section.settings.tab_label_3 | strip -%}
+      {%- assign tab_label_4_stripped = section.settings.tab_label_4 | strip -%}
+
+      {%- if has_tabs -%}
+        <div class="hsa-products-tabs">
+          {%- if section.settings.tab_label_1 != blank -%}
+            <button
+              type="button"
+              class="hsa-products-tab{% if first_active_tab == tab_label_1_stripped %} active{% endif %}"
+              data-tab="{{ tab_label_1_stripped | escape }}"
+            >
+              {{ section.settings.tab_label_1 }}
+            </button>
+          {%- endif -%}
+
+          {%- if section.settings.tab_label_2 != blank -%}
+            <button
+              type="button"
+              class="hsa-products-tab{% if first_active_tab == tab_label_2_stripped %} active{% endif %}"
+              data-tab="{{ tab_label_2_stripped | escape }}"
+            >
+              {{ section.settings.tab_label_2 }}
+            </button>
+          {%- endif -%}
+
+          {%- if section.settings.tab_label_3 != blank -%}
+            <button
+              type="button"
+              class="hsa-products-tab{% if first_active_tab == tab_label_3_stripped %} active{% endif %}"
+              data-tab="{{ tab_label_3_stripped | escape }}"
+            >
+              {{ section.settings.tab_label_3 }}
+            </button>
+          {%- endif -%}
+
+          {%- if section.settings.tab_label_4 != blank -%}
+            <button
+              type="button"
+              class="hsa-products-tab{% if first_active_tab == tab_label_4_stripped %} active{% endif %}"
+              data-tab="{{ tab_label_4_stripped | escape }}"
+            >
+              {{ section.settings.tab_label_4 }}
+            </button>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+
+      <custom-swiper-new
+        slides-per-view="1.1"
+        space-between="20"
+        loop="false"
+        centered-slides="false"
+        pagination="true"
+        navigation="true"
+        disable-on=""
+        pagination-type="progressbar"
+        breakpoints='{"991":{"slidesPerView":4,"spaceBetween":36}}'
+      >
+        <div class="swiper-container">
+          <div class="hsa-products-list swiper-wrapper">
+            {%- for block in section.blocks -%}
+              {%- liquid
+                assign product = block.settings.product
+                assign display_variant = blank
+                if product != blank
+                  assign display_variant = product.variants.first
+                  assign configured_variant_id = block.settings.variant_id | strip
+                  if configured_variant_id != blank
+                    for variant in product.variants
+                      assign current_variant_id = variant.id | append: ''
+                      if current_variant_id == configured_variant_id
+                        assign display_variant = variant
+                        break
+                      endif
+                    endfor
+                  endif
+                endif
+                assign tab_group = block.settings.tab_group | strip
+                if tab_group == blank
+                  assign tab_group = first_active_tab
+                endif
+              -%}
+
+              <div
+                class="hsa-products-item swiper-slide{% if first_active_tab != blank and tab_group != first_active_tab %} is-hidden{% endif %}"
+                data-tab-group="{{ tab_group }}"
+                {{ block.shopify_attributes }}
+              >
+                <div class="hsa-products-item-img">
+                  {%- if block.settings.tag != blank -%}
+                    <div class="hsa-products-tag">{{ block.settings.tag }}</div>
+                  {%- endif -%}
+
+                  {%- if block.settings.image != blank -%}
+                    <img
+                      src="{{ block.settings.image | image_url }}"
+                      loading="lazy"
+                      width="{{ block.settings.image.width }}"
+                      height="{{ block.settings.image.height }}"
+                      alt="{{ block.settings.text1 | escape }}"
+                      class="img active"
+                    >
+                  {%- endif -%}
+
+                  {%- if block.settings.image1 != blank -%}
+                    <img
+                      src="{{ block.settings.image1 | image_url }}"
+                      loading="lazy"
+                      width="{{ block.settings.image1.width }}"
+                      height="{{ block.settings.image1.height }}"
+                      alt="{{ block.settings.text1 | escape }}"
+                      class="img"
+                    >
+                  {%- endif -%}
+
+                  {%- if block.settings.image2 != blank -%}
+                    <img
+                      src="{{ block.settings.image2 | image_url }}"
+                      loading="lazy"
+                      width="{{ block.settings.image2.width }}"
+                      height="{{ block.settings.image2.height }}"
+                      alt="{{ block.settings.text1 | escape }}"
+                      class="img"
+                    >
+                  {%- endif -%}
+
+                  {%- if block.settings.image3 != blank -%}
+                    <img
+                      src="{{ block.settings.image3 | image_url }}"
+                      loading="lazy"
+                      width="{{ block.settings.image3.width }}"
+                      height="{{ block.settings.image3.height }}"
+                      alt="{{ block.settings.text1 | escape }}"
+                      class="img"
+                    >
+                  {%- endif -%}
+
+                  {%- if block.settings.image == blank
+                    and block.settings.image1 == blank
+                    and block.settings.image2 == blank
+                    and block.settings.image3 == blank
+                    and display_variant != blank
+                  -%}
+                    {%- assign variant_image = display_variant.featured_image | default: product.featured_image -%}
+                    {%- if variant_image != blank -%}
+                      <img
+                        src="{{ variant_image | image_url }}"
+                        loading="lazy"
+                        width="{{ variant_image.width }}"
+                        height="{{ variant_image.height }}"
+                        alt="{{ product.title | escape }}"
+                        class="img active"
+                      >
+                    {%- endif -%}
+                  {%- endif -%}
+                </div>
+
+                <div class="hsa-products-item-text">
+                  <div class="hsa-products-top">
+                    {%- if block.settings.text1 != blank -%}
+                      <h4 class="hsa-products-item-h4">{{ block.settings.text1 }}</h4>
+                    {%- endif -%}
+
+                  </div>
+
+                  {%- if block.settings.text2 != blank -%}
+                    <div class="hsa-products-sub">{{ block.settings.text2 }}</div>
+                  {%- endif -%}
+
+                  <div class="hsa-products-bottom-cont">
+                    <div class="hsa-products-bottom">
+                      <div class="hsa-products-price">
+                        {%- if product != blank -%}
+                          {%- if block.settings.discount_price != blank -%}
+                            <span class="n-price">{{ block.settings.discount_price }}</span>
+                            <span class="d-price">{{ display_variant.price | money }}</span>
+                          {%- else -%}
+                            <span class="n-price">{{ display_variant.price | money }}</span>
+                          {%- endif -%}
+                        {%- elsif block.settings.discount_price != blank -%}
+                          <span class="n-price">{{ block.settings.discount_price }}</span>
+                        {%- endif -%}
+                      </div>
+
+                      {%- if product != blank -%}
+                        {%- for option in product.options_with_values -%}
+                          {%- assign option_name = option.name -%}
+                          {%- if option_name == 'Color' -%}
+                            <div class="hsa-products-colors">
+                              {% for value in option.values %}
+                                {%- assign variant_for_value = product.variants | where: 'option1', value | first -%}
+                                <div
+                                  class="hsa-products-color {% if value == option.selected_value %}active{% endif %}"
+                                  data-id="{{ variant_for_value.id }}"
+                                  style="{% render 'color-swatch-style', color_swatch_config: color_swatch_config, value: value %}"
+                                ></div>
+                              {% endfor %}
+                            </div>
+                          {%- endif -%}
+                        {%- endfor -%}
+                      {%- endif -%}
+                    </div>
+
+                    {%- if block.settings.button_text != blank and product != blank -%}
+                      <div
+                        class="hsa-products-btn"
+                        data-id="{{ display_variant.id }}"
+                        data-code="{{ block.settings.code }}"
+                      >
+                        {{ block.settings.button_text }}
+                      </div>
+                    {%- endif -%}
+
+                    {%- if block.settings.link_text != blank -%}
+                      <a href="{{ block.settings.link }}" class="hsa-products-link">{{ block.settings.link_text }}</a>
+                    {%- endif -%}
+                  </div>
+                </div>
+              </div>
+            {%- endfor -%}
+          </div>
+
+          <div class="hsa-products__check">
+            <div class="hsa-products__left">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="30"
+                height="23"
+                viewBox="0 0 30 23"
+                fill="none"
+                class="swiper-prev"
+              >
+                <g clip-path="url(#clip0_prev_{{ section.id }})">
+                  <path d="M1.90735e-06 11.4924C1.90735e-06 11.6739 0.067318 11.8539 0.196098 11.9915L10.44 22.9671L11.5098 21.969L2.41463 12.2242H30C30 11.4164 29.3444 10.7607 28.5366 10.7607H0.765366C0.488781 10.7607 0.219515 10.8998 0.0878067 11.1442C0.0278072 11.2539 1.90735e-06 11.3739 1.90735e-06 11.4924Z" fill="currentColor"/>
+                  <path d="M1.53121 8.92683C2.10341 9.49756 3.02975 9.49756 3.60048 8.92683L11.4941 1.03463L10.4595 0L1.53268 8.92683H1.53121Z" fill="currentColor"/>
+                </g>
+                <defs>
+                  <clipPath id="clip0_prev_{{ section.id }}">
+                    <rect width="30" height="22.9683" fill="white" transform="matrix(-1 0 0 1 30 0)"/>
+                  </clipPath>
+                </defs>
+              </svg>
+
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="30"
+                height="23"
+                viewBox="0 0 30 23"
+                fill="none"
+                class="swiper-next"
+              >
+                <g clip-path="url(#clip0_next_{{ section.id }})">
+                  <path d="M30 11.4924C30 11.6739 29.9327 11.8539 29.8039 11.9915L19.56 22.9671L18.4902 21.969L27.5854 12.2242H0C0 11.4164 0.65561 10.7607 1.46341 10.7607H29.2346C29.5112 10.7607 29.7805 10.8998 29.9122 11.1442C29.9722 11.2539 30 11.3739 30 11.4924Z" fill="currentColor"/>
+                  <path d="M28.4688 8.92683C27.8966 9.49756 26.9702 9.49756 26.3995 8.92683L18.5059 1.03463L19.5405 0L28.4673 8.92683H28.4688Z" fill="currentColor"/>
+                </g>
+                <defs>
+                  <clipPath id="clip0_next_{{ section.id }}">
+                    <rect width="30" height="22.9683" fill="white"/>
+                  </clipPath>
+                </defs>
+              </svg>
+            </div>
+
+            <div class="hsa-products__right">
+              <div class="swiper-pagination"></div>
+            </div>
+          </div>
+        </div>
+      </custom-swiper-new>
+    </div>
+  </div>
+</section>
+
+<script>
+  function initHsaProductsTabs(root = document) {
+    root.querySelectorAll('.hsa-products-tabs-section').forEach((sectionEl) => {
+      if (sectionEl.dataset.initiated === 'true') return;
+      sectionEl.dataset.initiated = 'true';
+
+      const tabs = sectionEl.querySelectorAll('.hsa-products-tab');
+      const items = sectionEl.querySelectorAll('.hsa-products-item');
+
+      const applyTab = (tabKey) => {
+        if (!tabKey) return;
+
+        tabs.forEach((tab) => {
+          tab.classList.toggle('active', tab.dataset.tab === tabKey);
+        });
+
+        items.forEach((item) => {
+          const isMatch = item.dataset.tabGroup === tabKey;
+          item.style.display = isMatch ? '' : 'none';
+          item.classList.toggle('is-hidden', !isMatch);
+        });
+
+        const swiperHost = sectionEl.querySelector('custom-swiper-new');
+        if (swiperHost && swiperHost.swiper) {
+          requestAnimationFrame(() => {
+            const swiper = swiperHost.swiper;
+            if (!swiper || swiper.destroyed) return;
+
+            swiper.updateSize();
+            swiper.updateSlides();
+            swiper.updateProgress();
+            swiper.updateSlidesClasses();
+            swiper.update();
+
+            if (swiper.navigation) {
+              swiper.navigation.update();
+            }
+
+            if (swiper.pagination) {
+              if (typeof swiper.pagination.render === 'function') swiper.pagination.render();
+              if (typeof swiper.pagination.update === 'function') swiper.pagination.update();
+            }
+
+            swiper.slideTo(0, 0, false);
+            swiper.setTranslate(0);
+          });
+        }
+      };
+
+      tabs.forEach((tab) => {
+        tab.addEventListener('click', () => {
+          applyTab(tab.dataset.tab);
+        });
+      });
+
+      const defaultTab = sectionEl.querySelector('.hsa-products-tab.active')?.dataset.tab || tabs[0]?.dataset.tab;
+
+      if (defaultTab) {
+        applyTab(defaultTab);
+      }
+
+      sectionEl.querySelectorAll('.hsa-products-item').forEach((item) => {
+        if (item.dataset.itemInitiated === 'true') return;
+        item.dataset.itemInitiated = 'true';
+
+        const colorEls = item.querySelectorAll('.hsa-products-color');
+        const imgEls = item.querySelectorAll('.img');
+        const btn = item.querySelector('.hsa-products-btn');
+
+        colorEls.forEach((colorEl, index) => {
+          colorEl.addEventListener('click', () => {
+            colorEls.forEach((el) => el.classList.remove('active'));
+            colorEl.classList.add('active');
+
+            imgEls.forEach((img) => img.classList.remove('active'));
+            if (imgEls[index]) imgEls[index].classList.add('active');
+
+            if (btn) {
+              btn.dataset.id = colorEl.dataset.id;
+            }
+          });
+        });
+
+        if (btn) {
+          btn.addEventListener('click', () => {
+            const productId = btn.dataset.id;
+            const productCode = btn.dataset.code;
+            btn.classList.add('loading');
+            addToCartPromise(productId, null, {}, productCode)
+              .then(() => {})
+              .finally(() => {
+                btn.classList.remove('loading');
+              });
+          });
+        }
+      });
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', function () {
+    class CustomSwiperNew extends HTMLElement {
+      constructor() {
+        super();
+      }
+
+      connectedCallback() {
+        this.initSwiper();
+        initHsaProductsTabs(this);
+      }
+
+      initSwiper() {
+        const swiperContainer = this.querySelector('.swiper-container');
+        if (!swiperContainer || typeof Swiper === 'undefined') return;
+
+        const disableOn = this.getAttribute('disable-on');
+        const isMobile = window.matchMedia('(max-width: 990px)').matches;
+
+        if ((disableOn === 'mobile' && isMobile) || (disableOn === 'desktop' && !isMobile)) {
+          return;
+        }
+
+        const slidesPerView = parseFloat(this.getAttribute('slides-per-view')) || 1.3;
+        const spaceBetween = parseFloat(this.getAttribute('space-between')) || 10;
+        const loop = this.getAttribute('loop') !== 'false';
+        const centeredSlides = this.getAttribute('centered-slides') !== 'false';
+        const navigationEnabled = this.getAttribute('navigation') === 'true';
+
+        let breakpoints = {};
+        try {
+          breakpoints = JSON.parse(this.getAttribute('breakpoints') || '{}');
+        } catch (error) {
+          breakpoints = {};
+        }
+
+        const prevButton = navigationEnabled ? this.querySelector('.swiper-prev') : null;
+        const nextButton = navigationEnabled ? this.querySelector('.swiper-next') : null;
+
+        this.swiper = new Swiper(swiperContainer, {
+          slidesPerView,
+          spaceBetween,
+          loop,
+          centeredSlides,
+          navigation: navigationEnabled ? { prevEl: prevButton, nextEl: nextButton } : false,
+          pagination: {
+            el: this.querySelector('.swiper-pagination'),
+            type: 'progressbar',
+          },
+          breakpoints,
+          allowTouchMove: true,
+          simulateTouch: true,
+          watchOverflow: true,
+          observer: true,
+          observeParents: true,
+          preventClicks: false,
+          preventClicksPropagation: false,
+          watchSlidesProgress: true,
+          watchSlidesVisibility: true,
+          updateOnWindowResize: true,
+        });
+      }
+    }
+
+    initHsaProductsTabs();
+    window.customElements.define('custom-swiper-new', CustomSwiperNew);
+  });
+
+  document.addEventListener('shopify:section:load', function (event) {
+    initHsaProductsTabs(event.target);
+  });
+</script>
+
+{% schema %}
+{
+  "name": "hsa-products-tabs",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "标题",
+      "default": "Skincare and Accessories"
+    },
+    {
+      "type": "text",
+      "id": "tab_label_1",
+      "label": "Tab 1 文案",
+      "default": "Hair removal"
+    },
+    {
+      "type": "text",
+      "id": "tab_label_2",
+      "label": "Tab 2 文案",
+      "default": "Anti-aging"
+    },
+    {
+      "type": "text",
+      "id": "tab_label_3",
+      "label": "Tab 3 文案",
+      "default": "Sensitive skin"
+    },
+    {
+      "type": "text",
+      "id": "tab_label_4",
+      "label": "Tab 4 文案",
+      "default": "Accessories"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "item",
+      "settings": [
+        {
+          "type": "product",
+          "id": "product",
+          "label": "产品"
+        },
+        {
+          "type": "text",
+          "id": "variant_id",
+          "label": "变体 ID",
+          "info": "填写所选产品的 Variant ID；留空时使用第一个变体的图片、价格和加购 ID"
+        },
+        {
+          "type": "text",
+          "id": "tab_group",
+          "label": "所属Tab名称",
+          "info": "直接填写上方Tab文案名称，需完全一致"
+        },
+        {
+          "type": "text",
+          "id": "tag",
+          "label": "标签文案",
+          "default": "BEST SELL"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "图片1"
+        },
+        {
+          "type": "image_picker",
+          "id": "image1",
+          "label": "图片2"
+        },
+        {
+          "type": "image_picker",
+          "id": "image2",
+          "label": "图片3"
+        },
+        {
+          "type": "image_picker",
+          "id": "image3",
+          "label": "图片4"
+        },
+        {
+          "type": "text",
+          "id": "discount_price",
+          "label": "折扣价"
+        },
+        {
+          "type": "text",
+          "id": "text1",
+          "label": "产品标题"
+        },
+        {
+          "type": "text",
+          "id": "text2",
+          "label": "产品描述"
+        },
+        {
+          "type": "text",
+          "id": "button_text",
+          "label": "加购按钮文案",
+          "default": "ADD TO CART"
+        },
+        {
+          "type": "text",
+          "id": "link_text",
+          "label": "次按钮文案"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "链接"
+        },
+        {
+          "type": "text",
+          "id": "code",
+          "label": "Code"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "hsa-products-tabs",
+      "blocks": []
+    }
+  ]
+}
+{% endschema %}

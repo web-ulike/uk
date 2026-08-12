@@ -1,0 +1,146 @@
+<style>
+.start-quiz {
+  padding: 48px 0;
+  background: #F1F2FB;
+}
+
+.start-quiz .start-quiz-cont {
+  max-width: 1230px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+
+.start-quiz .start-quiz-left {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  flex: 1;
+}
+
+.start-quiz .img {
+  width: 68px;
+}
+
+.start-quiz .start-quiz-h3 {
+  color: #000;
+  font-size: 50px;
+  line-height: 1.2;
+  font-weight: normal;
+  margin: 0;
+}
+
+.start-quiz .start-quiz-link {
+  width: 250px;
+  height: 68px;
+  border-radius: 5px;
+  border: 1px solid #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #000;
+  font-size: 20px;
+  line-height: 1;
+  font-family: var(--heading-font-family);
+  transition: all .4s ease;
+}
+
+.start-quiz .start-quiz-link:hover {
+  background: #000;
+  color: #fff;
+}
+
+@media (max-width: 1300px) {
+  .start-quiz .start-quiz-h3 {
+    font-size: 38px;
+  }
+
+  .start-quiz .start-quiz-link {
+    width: 160px;
+    height: 50px;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 991px) {
+  .start-quiz .start-quiz-cont {
+    flex-direction: column;
+  }
+
+  .start-quiz .start-quiz-left {
+    justify-content: center;
+    flex-direction: column;
+    gap: 10px;
+    text-align: center;
+  }
+
+  .start-quiz .img {
+    width: 50px;
+  }
+
+  .start-quiz .start-quiz-h3 {
+    font-size: 28px;
+  }
+}
+</style>
+<section class="section-box">
+  <div class="start-quiz">
+    <div class="container">
+      <div class="start-quiz-cont">
+        <div class="start-quiz-left">
+          {%- if section.settings.image != blank -%}
+            <img
+                loading="lazy"
+                width="{{ section.settings.image.width }}"
+                height="{{ section.settings.image.height }}"
+                class="img"
+                {% render 'image-attributes', image: section.settings.image %}
+                alt="{{ section.settings.image.alt | escape }}"
+              >
+          {%- endif -%}
+          {%- if section.settings.text != blank -%}
+            <h3 class="start-quiz-h3">{{ section.settings.text }}</h3>
+          {%- endif -%}
+        </div>
+        {%- if section.settings.text1 != blank -%}
+          <a href="{{ section.settings.link }}" class="start-quiz-link">{{ section.settings.text1 }}</a>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "start-quiz",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Icon"
+    },
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Title"
+    },
+    {
+      "type": "text",
+      "id": "text1",
+      "label": "按钮文案"
+    },
+    {
+      "type": "url",
+      "id": "link",
+      "label": "链接"
+    }
+  ],
+  "presets": [
+    {
+      "name": "start-quiz",
+      "blocks": []
+    }
+  ]
+}
+{% endschema %}
