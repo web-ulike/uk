@@ -645,6 +645,17 @@ function subscriptionApiNew(email, tag, type) {
   return sendUlikeApi('/user/userSubscribe', data);
 }
 
+window.ULIKE_MESSAGES = window.ULIKE_MESSAGES || {
+  default_error: 'Subscription failed. Please try again.',
+  email_empty: 'Please enter your email address.',
+  email_invalid: 'Please enter a valid email address.',
+  consent_required: 'Please agree to the Terms of Use and Privacy Policy.',
+  user_subscribe_email_repeat: 'This email is already subscribed. Please use a different email.',
+  user_subscribe_phone_repeat: 'This phone number is already subscribed. Please use a different phone number.'
+};
+
+
+
 function sendUlikeApi(url, data) {
   data.siteCode = 'UK'; // Ensure the site code is set to 'UK'
   var _url = 'https://api.ulike.com/eu' + url;
