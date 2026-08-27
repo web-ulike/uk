@@ -1,0 +1,222 @@
+{%- liquid
+  assign st = section.settings
+-%}
+
+<section
+  id="u-treatment-modes-2026-{{ section.id }}"
+  class="u-treatment-modes-2026 {{ st.custom_class }}"
+  style="--utm-bg: {{ st.background_color }}; --utm-text: {{ st.text_color }};"
+>
+  <div class="u-treatment-modes-2026__inner">
+    <div class="u-treatment-modes-2026__grid">
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'card' -%}
+          {%- assign bs = block.settings -%}
+          <article
+            class="u-treatment-modes-2026__card u-treatment-modes-2026__card--{{ forloop.index }}"
+            {% if bs.anchor_id != blank %}id="{{ bs.anchor_id | handleize }}"{% endif %}
+            {{ block.shopify_attributes }}
+          >
+            <div class="u-treatment-modes-2026__copy">
+              {%- if bs.title != blank -%}
+                <h3 class="u-treatment-modes-2026__title to-top">{{ bs.title | escape }}</h3>
+              {%- endif -%}
+              {%- if bs.description != blank -%}
+                <p class="u-treatment-modes-2026__description to-top" style="transition-delay: 0.1s">{{ bs.description | escape | newline_to_br }}</p>
+              {%- endif -%}
+            </div>
+
+            {%- if bs.image != blank or bs.mobile_image != blank -%}
+              <picture class="u-treatment-modes-2026__media">
+                {%- if bs.mobile_image != blank -%}
+                  <source media="(max-width: 768px)" srcset="{{ bs.mobile_image | image_url: width: 900 }}">
+                {%- endif -%}
+                {%- if bs.image != blank -%}
+                  {{ bs.image | image_url: width: 1400 | image_tag: loading: 'lazy', widths: '500,700,1000,1400', alt: bs.image.alt }}
+                {%- else -%}
+                  {{ bs.mobile_image | image_url: width: 900 | image_tag: loading: 'lazy', widths: '450,700,900', alt: bs.mobile_image.alt }}
+                {%- endif -%}
+              </picture>
+            {%- endif -%}
+          </article>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+<style>
+  #u-treatment-modes-2026-{{ section.id }} {
+    background: var(--utm-bg);
+    color: var(--utm-text);
+    padding: 74px 20px;
+  }
+
+  #u-treatment-modes-2026-{{ section.id }} .u-treatment-modes-2026__inner {
+    max-width: 1520px;
+    margin: 0 auto;
+  }
+
+  #u-treatment-modes-2026-{{ section.id }} .u-treatment-modes-2026__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 580fr) minmax(0, 444fr) minmax(0, 444fr);
+    grid-template-rows: 319px 430px;
+    gap: 29px 26px;
+  }
+
+  #u-treatment-modes-2026-{{ section.id }} .u-treatment-modes-2026__card {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    min-width: 0;
+    border-radius: 10px;
+    background: radial-gradient(78% 48% at 50% 118%, #bcc0cc 0%, #dde0e6 48%, #fff 100%);
+    scroll-margin-top: 100px;
+  }
+
+  #u-treatment-modes-2026-{{ section.id }} .u-treatment-modes-2026__card::after {
+    position: absolute;
+    z-index: -1;
+    inset: 0;
+    content: '';
+    background: linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,0) 48%);
+    pointer-events: none;
+  }
+
+  #u-treatment-modes-2026-{{ section.id }} .u-treatment-modes-2026__card--1 { grid-row: 1 / span 2; }
+  #u-treatment-modes-2026-{{ section.id }} .u-treatment-modes-2026__card--2 { grid-column: 2 / span 2; }
+
+  #u-treatment-modes-2026-{{ section.id }} .u-treatment-modes-2026__copy {
+    position: relative;
+    z-index: 2;
+    width: min(100%, 462px);
+    margin: 76px auto 0;
+    padding: 0 20px;
+    text-align: center;
+  }
+
+  #u-treatment-modes-2026-{{ section.id }} .u-treatment-modes-2026__title,
+  #u-treatment-modes-2026-{{ section.id }} .u-treatment-modes-2026__description {
+    margin: 0;
+    color: inherit;
+  }
+
+  #u-treatment-modes-2026-{{ section.id }} .u-treatment-modes-2026__title {
+    font-family: var(--heading-font-family);
+    font-size: 30px;
+    font-weight: 500;
+    line-height: 1.2;
+  }
+
+  #u-treatment-modes-2026-{{ section.id }} .u-treatment-modes-2026__description {
+    margin-top: 12px;
+    font-family: var(--text-font-family);
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 1.4;
+  }
+
+  #u-treatment-modes-2026-{{ section.id }} .u-treatment-modes-2026__media,
+  #u-treatment-modes-2026-{{ section.id }} .u-treatment-modes-2026__media img {
+    position: absolute;
+    z-index: 1;
+    inset: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  #u-treatment-modes-2026-{{ section.id }} .u-treatment-modes-2026__media img {
+    object-fit: cover;
+    object-position: center;
+  }
+
+  #u-treatment-modes-2026-{{ section.id }} .u-treatment-modes-2026__card--1 .u-treatment-modes-2026__copy { margin-top: 76px; }
+  #u-treatment-modes-2026-{{ section.id }} .u-treatment-modes-2026__card--2 .u-treatment-modes-2026__copy { margin-top: 97px; }
+  #u-treatment-modes-2026-{{ section.id }} .u-treatment-modes-2026__card--3 .u-treatment-modes-2026__copy,
+  #u-treatment-modes-2026-{{ section.id }} .u-treatment-modes-2026__card--4 .u-treatment-modes-2026__copy { margin-top: 28px; }
+  #u-treatment-modes-2026-{{ section.id }} .u-treatment-modes-2026__card--3 .u-treatment-modes-2026__title,
+  #u-treatment-modes-2026-{{ section.id }} .u-treatment-modes-2026__card--4 .u-treatment-modes-2026__title { font-size: 26px; }
+  #u-treatment-modes-2026-{{ section.id }} .u-treatment-modes-2026__card--3 .u-treatment-modes-2026__description,
+  #u-treatment-modes-2026-{{ section.id }} .u-treatment-modes-2026__card--4 .u-treatment-modes-2026__description { margin-top: 8px; font-size: 16px; }
+
+  @media (max-width: 768px) {
+    #u-treatment-modes-2026-{{ section.id }} { padding: 21px 14px 23px; }
+
+    #u-treatment-modes-2026-{{ section.id }} .u-treatment-modes-2026__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-rows: none;
+      gap: 7px;
+    }
+
+    #u-treatment-modes-2026-{{ section.id }} .u-treatment-modes-2026__card,
+    #u-treatment-modes-2026-{{ section.id }} .u-treatment-modes-2026__card--1,
+    #u-treatment-modes-2026-{{ section.id }} .u-treatment-modes-2026__card--2 {
+      grid-row: auto;
+      grid-column: auto;
+      min-height: 216px;
+      border-radius: 6px;
+    }
+
+    #u-treatment-modes-2026-{{ section.id }} .u-treatment-modes-2026__copy,
+    #u-treatment-modes-2026-{{ section.id }} .u-treatment-modes-2026__card--1 .u-treatment-modes-2026__copy,
+    #u-treatment-modes-2026-{{ section.id }} .u-treatment-modes-2026__card--2 .u-treatment-modes-2026__copy,
+    #u-treatment-modes-2026-{{ section.id }} .u-treatment-modes-2026__card--3 .u-treatment-modes-2026__copy,
+    #u-treatment-modes-2026-{{ section.id }} .u-treatment-modes-2026__card--4 .u-treatment-modes-2026__copy {
+      width: 100%;
+      margin-top: 16px;
+      padding: 0 8px;
+    }
+
+    #u-treatment-modes-2026-{{ section.id }} .u-treatment-modes-2026__title,
+    #u-treatment-modes-2026-{{ section.id }} .u-treatment-modes-2026__card--3 .u-treatment-modes-2026__title,
+    #u-treatment-modes-2026-{{ section.id }} .u-treatment-modes-2026__card--4 .u-treatment-modes-2026__title {
+      font-size: 12px;
+      line-height: 1.18;
+    }
+
+    #u-treatment-modes-2026-{{ section.id }} .u-treatment-modes-2026__description,
+    #u-treatment-modes-2026-{{ section.id }} .u-treatment-modes-2026__card--3 .u-treatment-modes-2026__description,
+    #u-treatment-modes-2026-{{ section.id }} .u-treatment-modes-2026__card--4 .u-treatment-modes-2026__description {
+      margin-top: 5px;
+      font-size: 8px;
+      line-height: 1.2;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "u-treatment-modes-2026",
+  "max_blocks": 4,
+  "settings": [
+    { "type": "color", "id": "background_color", "label": "模块背景色", "default": "#ffffff" },
+    { "type": "color", "id": "text_color", "label": "文字颜色", "default": "#000000" },
+    { "type": "text", "id": "custom_class", "label": "自定义 class" }
+  ],
+  "blocks": [
+    {
+      "type": "card",
+      "name": "功能卡片",
+      "settings": [
+        { "type": "text", "id": "anchor_id", "label": "锚点 ID（可选）" },
+        { "type": "image_picker", "id": "image", "label": "PC 图片" },
+        { "type": "image_picker", "id": "mobile_image", "label": "M 端图片" },
+        { "type": "text", "id": "title", "label": "标题", "default": "3-IN-1 TECHNOLOGY" },
+        { "type": "textarea", "id": "description", "label": "描述", "default": "Features microcurrent, near-infrared & red LED for rejuvenation and visibly better." }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "u-treatment-modes-2026",
+      "blocks": [
+        { "type": "card", "settings": { "title": "3-IN-1 TECHNOLOGY", "description": "Features microcurrent, near-infrared & red LED for rejuvenation and visibly better." } },
+        { "type": "card", "settings": { "title": "FULL-FACE TREATMENT", "description": "Targets key facial wrinkles, smile lines & jowls for a sculpted youthful look." } },
+        { "type": "card", "settings": { "title": "LIFTS & SCULPTS", "description": "Deeply penetrates to lift, contour & define facial features for firmer, toned skin." } },
+        { "type": "card", "settings": { "title": "SMOOTHS FINE LINES", "description": "Gently refines delicate eye, brow & mouth areas for a more youthful look." } }
+      ]
+    }
+  ]
+}
+{% endschema %}
