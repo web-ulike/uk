@@ -1414,16 +1414,13 @@
     }
 
     function setSuccessMessage(res) {
-      var $msg = $form.find('.pr-form-success-mess');
-      if (!$msg.length) return;
-
-      var channel = getChannel();
-      var isShopifyAmazon = CHANNEL_NO_PROOF.indexOf(channel) >= 0;
-
       if (res.code === 0) {
-        $msg.removeClass('pr-form__error')
-          .html(isShopifyAmazon ? COPY.successShopifyAmazon : COPY.successThirdParty)
-          .fadeIn();
+        openInfoModal(COPY.successTitle, COPY.successBody, $submitBtn);
+        return;
+      }
+
+      if (res.code === 99999) {
+        setErrorForField($form.find('input[name="order_id"]'), COPY.orderNotFound);
         return;
       }
 
@@ -1432,42 +1429,34 @@
 
         if (msgKey === 'user_sys_order_no_invalid') {
           setErrorForField($form.find('input[name="order_id"]'), COPY.orderInvalid);
-          $msg.hide();
           return;
         }
         if (msgKey === 'user_sys_order_no_exist') {
           setErrorForField($form.find('input[name="order_id"]'), COPY.orderExtended);
-          $msg.hide();
           return;
         }
 
         if (msgKey === 'user_sys_product_sn_invalid') {
           setErrorForField($form.find('input[name="serial_number"]'), COPY.snInvalid);
-          $msg.hide();
           return;
         }
 
         if (msgKey === 'user_sys_order_status_invalid') {
           setErrorForField($form.find('input[name="order_id"]'), COPY.orderStatusInvalid);
-          $msg.hide();
           return;
         }
         if (msgKey === 'user_sys_order_expired') {
           setErrorForField($form.find('input[name="order_id"]'), COPY.orderExpired);
-          $msg.hide();
           return;
         }
 
         if (msgKey === 'user_sys_order_no_repeat') {
           setErrorForField($form.find('input[name="order_id"]'), COPY.orderExtended);
-          $msg.hide();
           return;
         }
       }
 
-      $msg.addClass('pr-form__error')
-        .text(res.message || 'Submit failed. Please try again.')
-        .fadeIn();
+      console.warn('[u-product-warranty] Warranty registration failed:', res.message || res.code);
     }
 
     /* Events */
