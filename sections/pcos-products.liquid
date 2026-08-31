@@ -1,0 +1,695 @@
+<style>
+  #shopify-section-{{ section.id }} .pcos-products {
+    padding: {{ section.settings.padding_top }}px 0 {{ section.settings.padding_bottom }}px;
+    background: {{ section.settings.background }};
+    color: {{ section.settings.text_color }};
+    overflow: hidden;
+  }
+
+  #shopify-section-{{ section.id }} .pcos-products__head {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 24px;
+    margin-bottom: 60px;
+  }
+
+  #shopify-section-{{ section.id }} .pcos-products__title {
+    margin: 0 0 10px;
+    font-size: 40px;
+    line-height: 1.15;
+    font-weight: 400;
+  }
+
+  #shopify-section-{{ section.id }} .pcos-products__subtitle {
+    margin: 0;
+    color: #5B5B5B;
+    font-size: 18px;
+    line-height: 1.45;
+  }
+
+  #shopify-section-{{ section.id }} .pcos-products__tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-top: 50px;
+  }
+
+  #shopify-section-{{ section.id }} .pcos-products__tab {
+    border: 0;
+    padding: 15px 20px;
+    border-radius: 999px;
+    background: #f5f5f5;
+    color: #111;
+    font-size: 22px;
+    line-height: 1;
+    white-space: nowrap;
+    cursor: pointer;
+  }
+
+  #shopify-section-{{ section.id }} .pcos-products__tab.is-active {
+    background: #111;
+    color: #fff;
+  }
+
+  #shopify-section-{{ section.id }} .pcos-products__arrows {
+    display: flex;
+    gap: 16px;
+    padding-bottom: 10px;
+  }
+
+  #shopify-section-{{ section.id }} .pcos-products__arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+    height: 56px;
+    border: 0;
+    border-radius: 50%;
+    background: transparent;
+    color: #190A0A;
+    cursor: pointer;
+    transition: opacity .2s ease, color .2s ease;
+  }
+
+  #shopify-section-{{ section.id }} .pcos-products__arrow[disabled] {
+    opacity: .28;
+    cursor: default;
+  }
+
+  #shopify-section-{{ section.id }} .pcos-products__arrow svg {
+    display: block;
+    width: 56px;
+    height: 56px;
+  }
+
+  #shopify-section-{{ section.id }} .pcos-products__arrow:not([disabled]):hover {
+    color: #7B4B3A;
+  }
+
+  #shopify-section-{{ section.id }} .pcos-products__track {
+    overflow: visible;
+  }
+
+  #shopify-section-{{ section.id }} .pcos-products__track .swiper-wrapper {
+    display: flex;
+  }
+
+  #shopify-section-{{ section.id }} .pcos-products__track .swiper-slide {
+    height: auto;
+    flex-shrink: 0;
+  }
+
+  #shopify-section-{{ section.id }} .pcos-products__track .swiper-slide.is-hidden {
+    display: none;
+  }
+
+
+  #shopify-section-{{ section.id }} .pcos-products__card {
+    background: #f7f7f7;
+    text-align: center;
+  }
+
+  #shopify-section-{{ section.id }} .pcos-products__media {
+    position: relative;
+    overflow: hidden;
+    background: #f4f4f4;
+  }
+
+  #shopify-section-{{ section.id }} .pcos-products__image {
+    display: block;
+    width: 100%;
+  }
+
+  #shopify-section-{{ section.id }} .pcos-products__logo {
+    position: absolute;
+    left: 18px;
+    bottom: 18px;
+    z-index: 2;
+    width: auto;
+    max-width: 104px;
+    height: auto;
+  }
+
+  #shopify-section-{{ section.id }} .pcos-products__body {
+    padding: 16px 20px 40px;
+  }
+
+  #shopify-section-{{ section.id }} .pcos-products__name {
+    font-size: 28px;
+    line-height: 1.2;
+    font-weight: 500;
+    color: #1A1A1A;
+  }
+
+  #shopify-section-{{ section.id }} .pcos-products__desc {
+    color: #555;
+    font-size: 20px;
+    line-height: 1.5;
+  }
+
+  #shopify-section-{{ section.id }} .pcos-products__price {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 16px;
+    font-size: 24px;
+    line-height: 1.2;
+    font-weight: 500;
+  }
+
+  #shopify-section-{{ section.id }} .pcos-products__compare {
+    color: #9A9A9A;
+    font-size: 24px;
+    font-weight: inherit;
+    text-decoration: line-through;
+  }
+
+  #shopify-section-{{ section.id }} .pcos-products__actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-top: 30px;
+  }
+
+  #shopify-section-{{ section.id }} .pcos-products__button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    border: 1px solid #1A1A1A;
+    background: #fff;
+    color: #1A1A1A;
+    font-size: 16px;
+    line-height: 1;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  #shopify-section-{{ section.id }} .pcos-products__button--primary {
+    background: #1A1A1A;
+    color: #fff;
+  }
+
+  #shopify-section-{{ section.id }} .pcos-products__button[disabled],
+  #shopify-section-{{ section.id }} .pcos-products__button[aria-busy="true"] {
+    opacity: .7;
+    cursor: default;
+  }
+
+
+  @media (max-width: 749px) {
+    #shopify-section-{{ section.id }} .pcos-products {
+      padding-top: {{ section.settings.mobile_padding_top }}px;
+      padding-bottom: {{ section.settings.mobile_padding_bottom }}px;
+    }
+
+    #shopify-section-{{ section.id }} .pcos-products__head {
+      display: block;
+      margin-bottom: 22px;
+      text-align: center;
+    }
+
+    #shopify-section-{{ section.id }} .pcos-products__title {
+      margin-bottom: 8px;
+      font-size: 24px;
+      line-height: 1.1;
+    }
+
+    #shopify-section-{{ section.id }} .pcos-products__subtitle {
+      max-width: 310px;
+      margin: 0 auto;
+      font-size: 12px;
+      line-height: 1.25;
+    }
+
+    #shopify-section-{{ section.id }} .pcos-products__tabs {
+      justify-content: center;
+      flex-wrap: nowrap;
+      gap: 0;
+      width: 100%;
+      max-width: 340px;
+      margin: 30px auto 0;
+      padding: 4px;
+      border-radius: 999px;
+      background: #F5F5F5;
+    }
+
+    #shopify-section-{{ section.id }} .pcos-products__tab {
+      flex: 1 1 0;
+      min-width: 0;
+      padding: 9px 8px;
+      border-radius: 999px;
+      background: transparent;
+      font-size: 12px;
+      line-height: 1;
+      text-align: center;
+      white-space: nowrap;
+    }
+
+    #shopify-section-{{ section.id }} .pcos-products__arrows {
+      display: none;
+    }
+
+    #shopify-section-{{ section.id }} .pcos-products__track {
+      overflow: visible;
+    }
+
+    #shopify-section-{{ section.id }} .pcos-products__track .swiper-slide {
+      width: auto;
+    }
+
+    #shopify-section-{{ section.id }} .pcos-products__card {
+      overflow: hidden;
+      background: #F7F7F7;
+    }
+
+    #shopify-section-{{ section.id }} .pcos-products__media {
+      aspect-ratio: 1 / 1;
+    }
+
+    #shopify-section-{{ section.id }} .pcos-products__image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    #shopify-section-{{ section.id }} .pcos-products__logo {
+      left: 12px;
+      bottom: 12px;
+      max-width: 82px;
+    }
+
+    #shopify-section-{{ section.id }} .pcos-products__body {
+      padding: 13px 10px 18px;
+    }
+
+    #shopify-section-{{ section.id }} .pcos-products__name {
+      margin: 0;
+      font-size: 16px;
+      line-height: 1.2;
+      font-weight: 600;
+    }
+
+    #shopify-section-{{ section.id }} .pcos-products__desc {
+      margin-top: 8px;
+      font-size: 12px;
+      line-height: 1.35;
+    }
+
+    #shopify-section-{{ section.id }} .pcos-products__price {
+      gap: 6px;
+      margin-top: 12px;
+      font-size: 16px;
+      line-height: 1.2;
+    }
+
+    #shopify-section-{{ section.id }} .pcos-products__compare {
+      font-size: 14px;
+    }
+
+    #shopify-section-{{ section.id }} .pcos-products__actions {
+      grid-template-columns: 1fr;
+      gap: 8px;
+      margin-top: 18px;
+    }
+
+    #shopify-section-{{ section.id }} .pcos-products__button {
+      min-height: 30px;
+      font-size: 12px;
+    }
+  }
+</style>
+
+<section class="pcos-products" id="pcos-products">
+  <div class="pcos-products__inner container">
+    <div class="pcos-products__head">
+      <div>
+        {%- if section.settings.title != blank -%}
+          <h2 class="pcos-products__title to-top">{{ section.settings.title }}</h2>
+        {%- endif -%}
+        {%- if section.settings.subtitle != blank -%}
+          <div class="pcos-products__subtitle to-top">{{ section.settings.subtitle }}</div>
+        {%- endif -%}
+        <div class="pcos-products__tabs">
+          {%- if section.settings.tab_1 != blank -%}
+            <button class="pcos-products__tab is-active" type="button" data-pcos-products-tab="tab_1">{{ section.settings.tab_1 }}</button>
+          {%- endif -%}
+          {%- if section.settings.tab_2 != blank -%}
+            <button class="pcos-products__tab" type="button" data-pcos-products-tab="tab_2">{{ section.settings.tab_2 }}</button>
+          {%- endif -%}
+        </div>
+      </div>
+      <div class="pcos-products__arrows">
+        <button class="pcos-products__arrow" type="button" data-pcos-products-prev aria-label="Previous products">
+            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="41" viewBox="0 0 40 41" fill="none">
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M23.6003 33.9318L24.1054 34.4369L25.1155 33.4267L24.6104 32.9217L19.9992 28.3104L15.6526 23.9638C15.0947 23.406 14.1902 23.406 13.6323 23.9638L18.9891 29.3206L23.6003 33.9318ZM11.1003 20.4217C10.8213 20.7006 10.8213 21.1529 11.1003 21.4318C11.1942 21.5257 11.3078 21.588 11.4278 21.6187L11.4278 21.641L11.6038 21.641L11.6069 21.641L12.1421 21.641L19.4639 21.641L26.7857 21.641L28.5715 21.641C29.3605 21.641 30.0001 21.0014 30.0001 20.2125L26.7857 20.2125L13.3298 20.2125L24.6104 8.93182L25.1155 8.42674L24.1054 7.41659L23.6003 7.92166L11.1003 20.4217Z" fill="#190A0A"></path>
+              <circle cx="20" cy="20.8655" r="19.2857" stroke="#190A0A" stroke-width="1.42857"></circle>
+            </svg>
+        </button>
+        <button class="pcos-products__arrow" type="button" data-pcos-products-next aria-label="Next products">
+           <svg xmlns="http://www.w3.org/2000/svg" width="40" height="41" viewBox="0 0 40 41" fill="none">
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M16.3997 7.79914L15.8946 7.29407L14.8845 8.30422L15.3896 8.8093L20.0008 13.4205L24.3474 17.7671C24.9053 18.325 25.8098 18.325 26.3677 17.7671L21.011 12.4104L16.3997 7.79914ZM28.8997 21.3093C29.1787 21.0303 29.1787 20.5781 28.8997 20.2991C28.8058 20.2052 28.6922 20.1429 28.5722 20.1122V20.0899H28.3962H28.3931H27.8579H20.5361H13.2143H11.4285C10.6395 20.0899 9.99995 20.7295 9.99995 21.5185H13.2143H26.6702L15.3896 32.7991L14.8845 33.3042L15.8946 34.3144L16.3997 33.8093L28.8997 21.3093Z" fill="#190A0A"></path>
+              <circle cx="20" cy="20.8655" r="19.2857" stroke="#190A0A" stroke-width="1.42857"></circle>
+            </svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="pcos-products__track swiper" data-pcos-products-swiper>
+      <div class="swiper-wrapper">
+      {%- for block in section.blocks -%}
+        {%- liquid
+          assign block_product = block.settings.product
+          assign product_variant = blank
+          assign selected_variant_id = block.settings.variant_id | strip
+          assign product_title = block.settings.title
+          assign product_url = block.settings.primary_link
+          assign current_price = blank
+          assign compare_price = blank
+          assign tab_group = block.settings.tab_group | default: 'tab_1'
+          if block_product != blank
+            assign product_variant = block_product.selected_or_first_available_variant
+            if selected_variant_id != blank
+              for variant in block_product.variants
+                assign variant_id_string = variant.id | append: ''
+                if variant_id_string == selected_variant_id
+                  assign product_variant = variant
+                  break
+                endif
+              endfor
+            endif
+            if product_title == blank
+              assign product_title = block_product.title
+            endif
+            if product_url == blank
+              assign product_url = block_product.url
+            endif
+            if product_variant.metafields.custom.page_price != blank
+              assign current_price = product_variant.metafields.custom.page_price | times: 100 | money
+            elsif block.settings.price != blank
+              assign current_price = block.settings.price
+            else
+              assign current_price = product_variant.price | money
+            endif
+            if product_variant.metafields.custom.page_price != blank
+              assign page_price_cents = product_variant.metafields.custom.page_price | times: 100
+              if product_variant.price > page_price_cents
+                assign compare_price = product_variant.price | money
+              elsif product_variant.compare_at_price > page_price_cents
+                assign compare_price = product_variant.compare_at_price | money
+              endif
+            elsif block.settings.compare_price != blank
+              assign compare_price = block.settings.compare_price
+            elsif product_variant.compare_at_price > product_variant.price
+              assign compare_price = product_variant.compare_at_price | money
+            endif
+          else
+            assign current_price = block.settings.price
+            assign compare_price = block.settings.compare_price
+          endif
+        -%}
+        <article class="pcos-products__card swiper-slide{% if tab_group != 'tab_1' %} is-hidden{% endif %}" data-pcos-products-card data-tab-group="{{ tab_group }}" {{ block.shopify_attributes }}>
+          <div class="pcos-products__media">
+            {%- if block.settings.image != blank -%}
+              {{ block.settings.image | image_url: width: 720 | image_tag: class: 'pcos-products__image', loading: 'lazy' }}
+            {%- elsif product_variant.featured_image != blank -%}
+              {{ product_variant.featured_image | image_url: width: 720 | image_tag: class: 'pcos-products__image', loading: 'lazy' }}
+            {%- elsif block_product.featured_image != blank -%}
+              {{ block_product.featured_image | image_url: width: 720 | image_tag: class: 'pcos-products__image', loading: 'lazy' }}
+            {%- else -%}
+              <div class="pcos-products__image"></div>
+            {%- endif -%}
+            {%- if block.settings.logo != blank -%}
+              {{ block.settings.logo | image_url: width: 220 | image_tag: class: 'pcos-products__logo', loading: 'lazy' }}
+            {%- endif -%}
+          </div>
+          <div class="pcos-products__body">
+            {%- if product_title != blank -%}
+            <h3 class="pcos-products__name to-top" style="transition-delay: 0.{{ forloop.index }}s">{{ product_title }}</h3>
+            {%- endif -%}
+            {%- if block.settings.text != blank -%}
+              <div class="pcos-products__desc to-top" style="transition-delay: 0.{{ forloop.index }}s">{{ block.settings.text }}</div>
+            {%- endif -%}
+            <div class="pcos-products__price to-top" style="transition-delay: 0.{{ forloop.index }}s">
+              {%- if current_price != blank -%}
+                <span>{{ current_price }}</span>
+              {%- endif -%}
+              {%- if compare_price != blank -%}
+                <span class="pcos-products__compare">{{ compare_price }}</span>
+              {%- endif -%}
+            </div>
+            <div class="pcos-products__actions">
+              {%- if block.settings.secondary_text != blank -%}
+                <a class="pcos-products__button" href="{{ product_url }}" target="_blank">{{ block.settings.secondary_text }}</a>
+              {%- endif -%}
+              {%- if block.settings.primary_text != blank -%}
+                <button
+                  class="pcos-products__button pcos-products__button--primary"
+                  type="button"
+                  data-pcos-products-atc
+                  data-variant-id="{{ product_variant.id | default: selected_variant_id }}"
+                  data-discount-code="{{ block.settings.discount_code | escape }}"
+                  {% if product_variant == blank or product_variant.available == false %}disabled{% endif %}
+                >
+                  {%- if product_variant.available == false -%}
+                    Sold Out
+                  {%- else -%}
+                    {{ block.settings.primary_text }}
+                  {%- endif -%}
+                </button>
+              {%- endif -%}
+            </div>
+          </div>
+        </article>
+      {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  (() => {
+    const section = document.getElementById('shopify-section-{{ section.id }}');
+    if (!section) return;
+
+    const swiperEl = section.querySelector('[data-pcos-products-swiper]');
+    const prev = section.querySelector('[data-pcos-products-prev]');
+    const next = section.querySelector('[data-pcos-products-next]');
+    const tabs = Array.from(section.querySelectorAll('[data-pcos-products-tab]'));
+    const cards = Array.from(section.querySelectorAll('[data-pcos-products-card]'));
+    let productsSwiper = null;
+    let initTimer = null;
+    let retryCount = 0;
+
+    const setArrowState = () => {
+      if (!productsSwiper) return;
+      if (prev) prev.disabled = productsSwiper.isBeginning;
+      if (next) next.disabled = productsSwiper.isEnd;
+    };
+
+    const initProductsSwiper = () => {
+      if (!swiperEl) return;
+
+      if (typeof window.Swiper === 'undefined') {
+        if (retryCount >= 40) return;
+        retryCount += 1;
+        initTimer = window.setTimeout(initProductsSwiper, 100);
+        return;
+      }
+
+      if (initTimer) {
+        window.clearTimeout(initTimer);
+        initTimer = null;
+      }
+
+      if (productsSwiper) productsSwiper.destroy(true, true);
+
+      productsSwiper = new window.Swiper(swiperEl, {
+        slidesPerView: 1.12,
+        spaceBetween: 10,
+        watchOverflow: true,
+        noSwipingSelector: '.pcos-products__actions, .pcos-products__button',
+        preventClicks: false,
+        preventClicksPropagation: false,
+        observer: true,
+        observeParents: true,
+        navigation: {
+          prevEl: prev,
+          nextEl: next
+        },
+        breakpoints: {
+          750: {
+            slidesPerView: 3.2,
+            spaceBetween: 16
+          }
+        },
+        on: {
+          init: setArrowState,
+          slideChange: setArrowState,
+          resize: setArrowState,
+          update: setArrowState
+        }
+      });
+
+      window.requestAnimationFrame(() => {
+        if (!productsSwiper) return;
+        productsSwiper.update();
+        productsSwiper.slideTo(0, 0);
+        setArrowState();
+      });
+    };
+
+    const updateVisibleCards = (tabName) => {
+      cards.forEach((card) => {
+        card.classList.toggle('is-hidden', card.getAttribute('data-tab-group') !== tabName);
+      });
+    };
+
+    const activateTab = (tabName) => {
+      tabs.forEach((tab) => tab.classList.toggle('is-active', tab.getAttribute('data-pcos-products-tab') === tabName));
+      updateVisibleCards(tabName);
+
+      window.requestAnimationFrame(() => {
+        if (!productsSwiper) {
+          initProductsSwiper();
+          return;
+        }
+        productsSwiper.update();
+        productsSwiper.slideTo(0, 0);
+        setArrowState();
+      });
+    };
+
+    tabs.forEach((tab) => {
+      tab.addEventListener('click', () => activateTab(tab.getAttribute('data-pcos-products-tab')));
+    });
+
+    updateVisibleCards('tab_1');
+    initProductsSwiper();
+
+    document.addEventListener('shopify:section:load', (event) => {
+      if (!event.target || event.target.id !== 'shopify-section-{{ section.id }}') return;
+      initProductsSwiper();
+    });
+
+    section.addEventListener('pointerdown', (event) => {
+      const button = event.target.closest('.pcos-products__button');
+      if (!button) return;
+      event.stopPropagation();
+    }, true);
+
+    section.addEventListener('touchstart', (event) => {
+      const button = event.target.closest('.pcos-products__button');
+      if (!button) return;
+      event.stopPropagation();
+    }, true);
+
+    section.addEventListener('mousedown', (event) => {
+      const button = event.target.closest('.pcos-products__button');
+      if (!button) return;
+      event.stopPropagation();
+    }, true);
+
+    section.addEventListener('click', (event) => {
+      const button = event.target.closest('[data-pcos-products-atc]');
+      if (!button) return;
+      event.preventDefault();
+      event.stopPropagation();
+      event.stopImmediatePropagation();
+      if (button.disabled || button.getAttribute('aria-busy') === 'true') return;
+
+      const variantId = button.getAttribute('data-variant-id');
+      if (!variantId) return;
+
+      const discountCode = button.getAttribute('data-discount-code') || '';
+      button.setAttribute('aria-busy', 'true');
+
+      const reset = () => {
+        button.removeAttribute('aria-busy');
+      };
+
+      if (typeof addToCartPromise === 'function') {
+        addToCartPromise(variantId, null, {}, discountCode).then(reset).catch(reset);
+        return;
+      }
+
+      fetch('/cart/add.js', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({ id: Number(variantId), quantity: 1 })
+      })
+        .then((response) => {
+          if (!response.ok) throw new Error('Cart add failed');
+          return fetch('/cart.js');
+        })
+        .then((response) => response.json())
+        .then((cart) => {
+          document.documentElement.dispatchEvent(new CustomEvent('cart:updated', { bubbles: true, detail: { cart } }));
+          document.documentElement.dispatchEvent(new CustomEvent('cart:refresh', { bubbles: true, detail: { cart, openMiniCart: true } }));
+        })
+        .then(reset)
+        .catch(reset);
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "pcos-products",
+  "settings": [
+    { "type": "text", "id": "title", "label": "Title", "default": "Explore our devices." },
+    { "type": "textarea", "id": "subtitle", "label": "Subtitle", "default": "Technology designed to support confidence, comfort, and everyday care." },
+    { "type": "text", "id": "tab_1", "label": "Tab 1", "default": "IPL Hair Removal Device" },
+    { "type": "text", "id": "tab_2", "label": "Tab 2", "default": "LED Light Therapy Device" },
+    { "type": "color", "id": "background", "label": "Background", "default": "#ffffff" },
+    { "type": "color", "id": "text_color", "label": "Text", "default": "#111111" },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 140, "step": 4, "unit": "px", "label": "Padding top", "default": 72 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 140, "step": 4, "unit": "px", "label": "Padding bottom", "default": 72 },
+    { "type": "range", "id": "mobile_padding_top", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Mobile padding top", "default": 44 },
+    { "type": "range", "id": "mobile_padding_bottom", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Mobile padding bottom", "default": 52 }
+  ],
+  "blocks": [
+    {
+      "type": "product_card",
+      "name": "Product card",
+      "settings": [
+        { "type": "product", "id": "product", "label": "Product" },
+        { "type": "text", "id": "variant_id", "label": "Variant ID for add to cart", "info": "Optional. Fill in a specific variant ID if you do not want to use the selected or first available variant." },
+        {
+          "type": "select",
+          "id": "tab_group",
+          "label": "Product list",
+          "default": "tab_1",
+          "options": [
+            { "value": "tab_1", "label": "Tab 1" },
+            { "value": "tab_2", "label": "Tab 2" }
+          ]
+        },
+        { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "image_picker", "id": "logo", "label": "Small logo" },
+        { "type": "text", "id": "title", "label": "Title" },
+        { "type": "textarea", "id": "text", "label": "Description", "default": "Full-body acne clearing & recovery" },
+        { "type": "text", "id": "price", "label": "Price override" },
+        { "type": "text", "id": "compare_price", "label": "Compare price override" },
+        { "type": "text", "id": "secondary_text", "label": "Learn more text", "default": "Learn more" },
+        { "type": "text", "id": "primary_text", "label": "Add to cart text", "default": "Add to cart" },
+        { "type": "url", "id": "primary_link", "label": "Learn more link override" },
+        { "type": "text", "id": "discount_code", "label": "Discount code" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "pcos-products",
+      "blocks": [
+        { "type": "product_card" },
+        { "type": "product_card" },
+        { "type": "product_card" },
+        { "type": "product_card" }
+      ]
+    }
+  ]
+}
+{% endschema %}

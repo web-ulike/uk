@@ -1,0 +1,824 @@
+<style>
+  #shopify-section-{{ section.id }} .pcos-badge-slider {
+    padding: {{ section.settings.padding_top }}px 0 {{ section.settings.padding_bottom }}px;
+    background: {{ section.settings.background }};
+    color: {{ section.settings.text_color }};
+    overflow: hidden;
+  }
+
+  #shopify-section-{{ section.id }} .pcos-badge-slider__head {
+    max-width: 820px;
+    margin: 0 auto 60px;
+    padding: 0 24px;
+    text-align: center;
+  }
+
+  #shopify-section-{{ section.id }} .pcos-badge-slider__title {
+    margin: 0 0 10px;
+    font-size: 48px;
+    line-height: 1.12;
+    font-weight: 400;
+    letter-spacing: -0.02em;
+  }
+
+  #shopify-section-{{ section.id }} .pcos-badge-slider__text {
+    max-width: 720px;
+    margin: 0 auto;
+    font-size: 16px;
+    line-height: 1.35;
+  }
+
+  #shopify-section-{{ section.id }} .pcos-badge-slider__carousel {
+    position: relative;
+    overflow: visible;
+    cursor: none;
+  }
+
+  #shopify-section-{{ section.id }} .pcos-badge-slider__track {
+    overflow: visible;
+    padding-bottom: 0;
+  }
+
+  #shopify-section-{{ section.id }} .pcos-badge-slider__track.container {
+    box-sizing: border-box;
+  }
+
+  #shopify-section-{{ section.id }} .pcos-badge-slider__track .swiper-wrapper {
+    display: flex;
+    align-items: stretch;
+  }
+
+  #shopify-section-{{ section.id }} .pcos-badge-slider__item-nav {
+    display: none !important;
+  }
+
+  #shopify-section-{{ section.id }} .pcos-badge-slider__floating-nav {
+    position: absolute;
+    z-index: 8;
+    display: none;
+    width: 60px;
+    height: 46px;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: #0DA3AC;
+    cursor: none;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+  }
+
+  #shopify-section-{{ section.id }} .pcos-badge-slider__floating-nav.is-visible {
+    display: flex;
+  }
+
+  #shopify-section-{{ section.id }} .pcos-badge-slider__floating-nav svg {
+    display: none;
+    width: 60px;
+    height: auto;
+  }
+
+  #shopify-section-{{ section.id }} .pcos-badge-slider__floating-nav[data-direction="prev"] .pcos-badge-slider__floating-icon--prev,
+  #shopify-section-{{ section.id }} .pcos-badge-slider__floating-nav[data-direction="next"] .pcos-badge-slider__floating-icon--next {
+    display: block;
+  }
+
+
+  @media screen and (min-width: 1200px) {
+    #shopify-section-{{ section.id }} .pcos-badge-slider__track {
+      padding-left: 40px;
+      padding-right: 0px;
+    }
+  }
+
+  @media screen and (min-width: 768px) {
+    #shopify-section-{{ section.id }} .pcos-badge-slider {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+
+  #shopify-section-{{ section.id }} .pcos-badge-slider__item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: auto;
+    min-height: 532px;
+    min-width: 0;
+    padding: 60px 24px;
+    border-radius: 30px;
+    text-align: center;
+    background: #D4E6E9;
+    cursor: none;
+    transition: background .2s ease;
+  }
+
+  #shopify-section-{{ section.id }} .pcos-badge-slider__item:hover {
+    background: #C7EDF3;
+  }
+
+  #shopify-section-{{ section.id }} .pcos-badge-slider__item.swiper-slide {
+    flex: 0 0 auto;
+    box-sizing: border-box;
+  }
+
+  #shopify-section-{{ section.id }} .pcos-badge-slider__image-wrap {
+    position: relative;
+    width: 100%;
+    max-width: 288px;
+    aspect-ratio: 1;
+    margin: 0 auto;
+  }
+
+  #shopify-section-{{ section.id }} .pcos-badge-slider__image-wrap img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    transition: opacity 0.28s ease;
+  }
+
+  #shopify-section-{{ section.id }} .pcos-badge-slider__image--color {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+  }
+
+  #shopify-section-{{ section.id }} .pcos-badge-slider__image--generated-white {
+    filter: grayscale(1) saturate(0) contrast(0.92) brightness(1.08);
+  }
+
+  #shopify-section-{{ section.id }} .pcos-badge-slider__item:hover .pcos-badge-slider__image--color {
+    opacity: 1;
+  }
+
+  #shopify-section-{{ section.id }} .pcos-badge-slider__item:hover .pcos-badge-slider__image--white {
+    opacity: 0;
+  }
+
+  #shopify-section-{{ section.id }} .pcos-badge-slider__item-title {
+    margin: 50px 0 10px;
+    font-size: 28px;
+    line-height: 1.2;
+    font-weight: 500;
+    transition: color 0.28s ease;
+  }
+
+  #shopify-section-{{ section.id }} .pcos-badge-slider__item:hover .pcos-badge-slider__item-title {
+    color: {{ section.settings.accent_color }};
+  }
+
+  #shopify-section-{{ section.id }} .pcos-badge-slider__item-text {
+    margin: 0 auto;
+    font-size: 18px;
+    line-height: 1.35;
+  }
+
+  @media screen and (max-width: 767px) {
+    #shopify-section-{{ section.id }} .pcos-badge-slider {
+      position: relative;
+      height: 420vh;
+      padding: 0;
+      overflow: visible;
+      background: {{ section.settings.background }};
+    }
+
+    #shopify-section-{{ section.id }} .pcos-badge-slider__mobile-sticky {
+      position: sticky;
+      top: var(--header-height, 0px);
+      display: flex;
+      width: 100%;
+      height: calc(100vh - var(--header-height, 0px));
+      min-height: 500px;
+      flex-direction: column;
+      justify-content: flex-start;
+      overflow: hidden;
+      padding: 0px 0 0px;
+      box-sizing: border-box;
+    }
+
+    #shopify-section-{{ section.id }} .pcos-badge-slider__head {
+      position: relative;
+      z-index: 4;
+      margin: 60px 0px 0px;
+      padding: 0 28px;
+      pointer-events: none;
+    }
+
+    #shopify-section-{{ section.id }} .pcos-badge-slider__title {
+      margin-bottom: 10px;
+      font-size: 24px;
+      line-height: 1.12;
+      font-weight: 400;
+      letter-spacing: -0.03em;
+    }
+
+    #shopify-section-{{ section.id }} .pcos-badge-slider__text {
+      max-width: 304px;
+      margin: 0 auto;
+      font-size: 12px;
+      line-height: 1.18;
+    }
+
+    #shopify-section-{{ section.id }} .pcos-badge-slider__carousel {
+      position: relative;
+      flex: 0 0 286px;
+      height: 286px;
+      min-height: 286px;
+      margin-top: 30%;
+      overflow: visible;
+    }
+
+    #shopify-section-{{ section.id }} .pcos-badge-slider__track {
+      position: absolute;
+      inset: 0;
+      overflow: visible;
+      padding: 0;
+    }
+
+    #shopify-section-{{ section.id }} .pcos-badge-slider__track.container {
+      max-width: none;
+      padding-left: 0;
+      padding-right: 0;
+    }
+
+    #shopify-section-{{ section.id }} .pcos-badge-slider__track .swiper-wrapper {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      display: block !important;
+      width: clamp(168px, 58vw, 204px);
+      height: 286px;
+      transform: translate(-50%, -50%) !important;
+      transition: none !important;
+      perspective: 1200px;
+    }
+
+    #shopify-section-{{ section.id }} .pcos-badge-slider__item {
+      position: absolute;
+      left: 0;
+      top: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: clamp(168px, 58vw, 204px) !important;
+      height: 286px;
+      min-height: 0;
+      margin: 0 !important;
+      padding: 24px 12px 24px;
+      overflow: hidden;
+      border-radius: 12px;
+      background: #D4E6E9;
+      box-shadow: 0 10px 24px rgba(52, 151, 158, .18);
+      opacity: 1;
+      transform: translate3d(0, 0, 0) scale(1);
+      transform-origin: center center;
+      will-change: transform, opacity;
+    }
+
+    #shopify-section-{{ section.id }} .pcos-badge-slider__floating-nav {
+      display: none !important;
+    }
+
+    #shopify-section-{{ section.id }} .pcos-badge-slider__item.is-active {
+      background: #C7EDF3;
+    }
+
+    #shopify-section-{{ section.id }} .pcos-badge-slider__item:nth-child(1) { z-index: 6; transform: translate3d(-12px, 0, 0); }
+    #shopify-section-{{ section.id }} .pcos-badge-slider__item:nth-child(2) { z-index: 5; transform: translate3d(32px, 0, 0); }
+    #shopify-section-{{ section.id }} .pcos-badge-slider__item:nth-child(3) { z-index: 4; transform: translate3d(76px, 0, 0); }
+    #shopify-section-{{ section.id }} .pcos-badge-slider__item:nth-child(4) { z-index: 3; transform: translate3d(120px, 0, 0); }
+    #shopify-section-{{ section.id }} .pcos-badge-slider__item:nth-child(5) { z-index: 2; transform: translate3d(164px, 0, 0); }
+    #shopify-section-{{ section.id }} .pcos-badge-slider__item:nth-child(n+6) { z-index: 1; transform: translate3d(208px, 0, 0); }
+
+    #shopify-section-{{ section.id }} .pcos-badge-slider__image-wrap {
+      position: relative;
+      width: 148px;
+      max-width: 100%;
+      height: auto;
+      margin: 0 auto 22px;
+      aspect-ratio: 1;
+    }
+
+    #shopify-section-{{ section.id }} .pcos-badge-slider__image-wrap img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    #shopify-section-{{ section.id }} .pcos-badge-slider__image--white,
+    #shopify-section-{{ section.id }} .pcos-badge-slider__image--generated-white {
+      display: none !important;
+    }
+
+    #shopify-section-{{ section.id }} .pcos-badge-slider__image--color {
+      position: absolute;
+      inset: 0;
+      opacity: 1;
+    }
+
+    #shopify-section-{{ section.id }} .pcos-badge-slider__item-title {
+      display: block;
+      margin: 0px 0 7px;
+      color: #0DA3AC;
+      font-size: 16.752px;
+      line-height: 1.2;
+      font-weight: 500;
+    }
+
+    #shopify-section-{{ section.id }} .pcos-badge-slider__item-text {
+      display: block;
+      max-width: 100%;
+      color: #555;
+      font-size: 12px;
+      line-height: 1.25;
+    }
+  }
+
+  @media screen and (max-width: 374px) {
+    #shopify-section-{{ section.id }} .pcos-badge-slider__image-wrap {
+      width: 160px;
+    }
+
+    #shopify-section-{{ section.id }} .pcos-badge-slider__track .swiper-wrapper {
+      width: 168px;
+      height: 286px;
+    }
+
+    #shopify-section-{{ section.id }} .pcos-badge-slider__item {
+      width: 168px !important;
+      height: 286px;
+    }
+  }
+
+</style>
+
+<pcos-badge-slider-section>
+<section class="pcos-badge-slider">
+  <div class="pcos-badge-slider__mobile-sticky">
+  <div class="pcos-badge-slider__head">
+    {%- if section.settings.title != blank -%}
+      <h2 class="pcos-badge-slider__title to-top">{{ section.settings.title }}</h2>
+    {%- endif -%}
+    {%- if section.settings.text != blank -%}
+      <div class="pcos-badge-slider__text to-top">{{ section.settings.text }}</div>
+    {%- endif -%}
+  </div>
+  <div class="pcos-badge-slider__carousel" data-pcos-badge-slider>
+    <div class="pcos-badge-slider__track swiper container" data-pcos-badge-swiper>
+      <div class="swiper-wrapper">
+        {%- for block in section.blocks -%}
+          <div class="pcos-badge-slider__item swiper-slide is-active" {{ block.shopify_attributes }}>
+            {%- if block.settings.image != blank or block.settings.white_image != blank -%}
+              <div class="pcos-badge-slider__image-wrap">
+                {%- if block.settings.white_image != blank -%}
+                  {{ block.settings.white_image | image_url: width: 420 | image_tag: loading: 'lazy', class: 'pcos-badge-slider__image--white' }}
+                {%- elsif block.settings.image != blank -%}
+                  {{ block.settings.image | image_url: width: 420 | image_tag: loading: 'lazy', class: 'pcos-badge-slider__image--white pcos-badge-slider__image--generated-white' }}
+                {%- endif -%}
+                {%- if block.settings.image != blank -%}
+                  {{ block.settings.image | image_url: width: 420 | image_tag: loading: 'lazy', class: 'pcos-badge-slider__image--color' }}
+                {%- endif -%}
+              </div>
+            {%- endif -%}
+            {%- if block.settings.title != blank -%}
+              <h3 class="pcos-badge-slider__item-title to-top" style="transition-delay: 0.{{ forloop.index }}s">{{ block.settings.title }}</h3>
+            {%- endif -%}
+            {%- if block.settings.text != blank -%}
+              <div class="pcos-badge-slider__item-text to-top" style="transition-delay: 0.{{ forloop.index }}s">{{ block.settings.text }}</div>
+            {%- endif -%}
+            <button class="pcos-badge-slider__item-nav pcos-badge-slider__item-nav--prev" type="button" aria-label="Previous badge" data-pcos-badge-prev>
+              <svg xmlns="http://www.w3.org/2000/svg" width="80" height="62" viewBox="0 0 80 62" fill="none" aria-hidden="true">
+                <g clip-path="url(#pcos-badge-prev-{{ section.id }}-{{ forloop.index }})">
+                  <path d="M1.70581e-07 30.5969C2.12885e-07 30.113 0.179512 29.633 0.522927 29.2662L27.84 -0.00214143L30.6927 2.65933L6.43903 28.6457L80 28.6457C80 30.7998 78.2517 32.5481 76.0976 32.5481L2.04098 32.5481C1.30341 32.5481 0.585373 32.1774 0.234154 31.5257C0.0741502 31.233 1.42947e-07 30.913 1.70581e-07 30.5969Z" fill="#0DA3AC"/>
+                  <path d="M4.07673 37.4412C5.60258 35.9193 8.07283 35.9193 9.59478 37.4412L30.6445 58.4871L27.8855 61.2461L4.08063 37.4412L4.07673 37.4412Z" fill="#0DA3AC"/>
+                </g>
+                <defs>
+                  <clipPath id="pcos-badge-prev-{{ section.id }}-{{ forloop.index }}">
+                    <rect width="80" height="61.2488" fill="white" transform="translate(80 61.2488) rotate(-180)"/>
+                  </clipPath>
+                </defs>
+              </svg>
+            </button>
+            <button class="pcos-badge-slider__item-nav pcos-badge-slider__item-nav--next" type="button" aria-label="Next badge" data-pcos-badge-next>
+              <svg xmlns="http://www.w3.org/2000/svg" width="80" height="62" viewBox="0 0 80 62" fill="none" aria-hidden="true">
+                <g clip-path="url(#pcos-badge-next-{{ section.id }}-{{ forloop.index }})">
+                  <path d="M80 30.6519C80 31.1358 79.8205 31.6158 79.4771 31.9826L52.16 61.2509L49.3073 58.5895L73.561 32.6031H0C0 30.449 1.74829 28.7007 3.90244 28.7007H77.959C78.6966 28.7007 79.4146 29.0714 79.7658 29.7231C79.9258 30.0158 80 30.3358 80 30.6519Z" fill="#0DA3AC"/>
+                  <path d="M75.9233 23.8076C74.3974 25.3295 71.9272 25.3295 70.4052 23.8076L49.3555 2.76171L52.1145 0.00268555L75.9194 23.8076H75.9233Z" fill="#0DA3AC"/>
+                </g>
+                <defs>
+                  <clipPath id="pcos-badge-next-{{ section.id }}-{{ forloop.index }}">
+                    <rect width="80" height="61.2488" fill="white"/>
+                  </clipPath>
+                </defs>
+              </svg>
+            </button>
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
+    <button class="pcos-badge-slider__floating-nav" type="button" aria-label="Switch badge" data-pcos-badge-floating data-direction="next">
+      <svg class="pcos-badge-slider__floating-icon pcos-badge-slider__floating-icon--prev" xmlns="http://www.w3.org/2000/svg" width="80" height="62" viewBox="0 0 80 62" fill="none" aria-hidden="true">
+        <g clip-path="url(#pcos-badge-floating-prev-{{ section.id }})">
+          <path d="M1.70581e-07 30.5969C2.12885e-07 30.113 0.179512 29.633 0.522927 29.2662L27.84 -0.00214143L30.6927 2.65933L6.43903 28.6457L80 28.6457C80 30.7998 78.2517 32.5481 76.0976 32.5481L2.04098 32.5481C1.30341 32.5481 0.585373 32.1774 0.234154 31.5257C0.0741502 31.233 1.42947e-07 30.913 1.70581e-07 30.5969Z" fill="#0DA3AC"/>
+          <path d="M4.07673 37.4412C5.60258 35.9193 8.07283 35.9193 9.59478 37.4412L30.6445 58.4871L27.8855 61.2461L4.08063 37.4412L4.07673 37.4412Z" fill="#0DA3AC"/>
+        </g>
+        <defs>
+          <clipPath id="pcos-badge-floating-prev-{{ section.id }}">
+            <rect width="80" height="61.2488" fill="white" transform="translate(80 61.2488) rotate(-180)"/>
+          </clipPath>
+        </defs>
+      </svg>
+      <svg class="pcos-badge-slider__floating-icon pcos-badge-slider__floating-icon--next" xmlns="http://www.w3.org/2000/svg" width="80" height="62" viewBox="0 0 80 62" fill="none" aria-hidden="true">
+        <g clip-path="url(#pcos-badge-floating-next-{{ section.id }})">
+          <path d="M80 30.6519C80 31.1358 79.8205 31.6158 79.4771 31.9826L52.16 61.2509L49.3073 58.5895L73.561 32.6031H0C0 30.449 1.74829 28.7007 3.90244 28.7007H77.959C78.6966 28.7007 79.4146 29.0714 79.7658 29.7231C79.9258 30.0158 80 30.3358 80 30.6519Z" fill="#0DA3AC"/>
+          <path d="M75.9233 23.8076C74.3974 25.3295 71.9272 25.3295 70.4052 23.8076L49.3555 2.76171L52.1145 0.00268555L75.9194 23.8076H75.9233Z" fill="#0DA3AC"/>
+        </g>
+        <defs>
+          <clipPath id="pcos-badge-floating-next-{{ section.id }}">
+            <rect width="80" height="61.2488" fill="white"/>
+          </clipPath>
+        </defs>
+      </svg>
+    </button>
+  </div>
+  </div>
+</section>
+</pcos-badge-slider-section>
+
+<script>
+  if (!customElements.get('pcos-badge-slider-section')) {
+    customElements.define('pcos-badge-slider-section', class PcosBadgeSliderSection extends HTMLElement {
+      constructor() {
+        super();
+        this.badgeSwiper = null;
+        this.retryTimer = null;
+        this.mobileTimeline = null;
+        this.mobileQuery = window.matchMedia('(max-width: 767px)');
+        this.handleMediaChange = this.boot.bind(this);
+        this.handleNavClick = this.onNavClick.bind(this);
+        this.handlePointerMove = this.onPointerMove.bind(this);
+        this.handlePointerLeave = this.hideFloatingNav.bind(this);
+      }
+
+      connectedCallback() {
+        this.root = this.querySelector('.pcos-badge-slider');
+        this.slider = this.querySelector('[data-pcos-badge-swiper]');
+        this.items = Array.from(this.querySelectorAll('.pcos-badge-slider__item'));
+        this.carousel = this.querySelector('[data-pcos-badge-slider]');
+        this.floatingNav = this.querySelector('[data-pcos-badge-floating]');
+        this.addEventListener('click', this.handleNavClick);
+        if (this.carousel) {
+          this.carousel.addEventListener('pointermove', this.handlePointerMove);
+          this.carousel.addEventListener('pointerleave', this.handlePointerLeave);
+        }
+        this.boot();
+
+        if (this.mobileQuery.addEventListener) {
+          this.mobileQuery.addEventListener('change', this.handleMediaChange);
+        } else if (this.mobileQuery.addListener) {
+          this.mobileQuery.addListener(this.handleMediaChange);
+        }
+      }
+
+      disconnectedCallback() {
+        this.destroyDesktopSwiper();
+        this.destroyMobileTimeline();
+
+        if (this.retryTimer) {
+          window.clearInterval(this.retryTimer);
+          this.retryTimer = null;
+        }
+
+        if (this.mobileQuery.removeEventListener) {
+          this.mobileQuery.removeEventListener('change', this.handleMediaChange);
+        } else if (this.mobileQuery.removeListener) {
+          this.mobileQuery.removeListener(this.handleMediaChange);
+        }
+
+        this.removeEventListener('click', this.handleNavClick);
+        if (this.carousel) {
+          this.carousel.removeEventListener('pointermove', this.handlePointerMove);
+          this.carousel.removeEventListener('pointerleave', this.handlePointerLeave);
+        }
+      }
+
+      destroyDesktopSwiper() {
+        if (!this.badgeSwiper) return;
+        this.badgeSwiper.destroy(true, true);
+        this.badgeSwiper = null;
+      }
+
+      destroyMobileTimeline() {
+        if (!this.mobileTimeline) return;
+
+        if (this.mobileTimeline.scrollTrigger) this.mobileTimeline.scrollTrigger.kill();
+        this.mobileTimeline.kill();
+        this.mobileTimeline = null;
+        this.items.forEach((item) => {
+          item.style.opacity = '';
+          item.style.visibility = '';
+          item.style.transform = '';
+          item.style.zIndex = '';
+        });
+      }
+
+      setActiveMobileItems() {
+        this.items.forEach((item) => {
+          item.classList.add('is-active');
+        });
+      }
+
+      getMobileStackStep() {
+        if (!this.items.length) return 44;
+        const cardWidth = this.items[0].getBoundingClientRect().width || 180;
+        return Math.min(54, Math.max(40, cardWidth * 0.24));
+      }
+
+      getMobileTargetX(index, visibleCount, stackStep, removedCount = 0) {
+        const stackIndex = Math.max(0, Math.min(index - removedCount, visibleCount - 1));
+        return (stackIndex * stackStep) - 12;
+      }
+
+      initMobileScrollAnimation() {
+        if (!this.root || !this.items.length) return false;
+        if (typeof window.gsap === 'undefined' || typeof window.ScrollTrigger === 'undefined') return false;
+
+        this.destroyDesktopSwiper();
+        this.destroyMobileTimeline();
+
+        window.gsap.registerPlugin(window.ScrollTrigger);
+
+        const stackStep = this.getMobileStackStep();
+        const visibleCount = Math.min(this.items.length, 5);
+        const lastIndex = this.items.length - 1;
+        this.setActiveMobileItems();
+
+        window.gsap.set(this.items, {
+          autoAlpha: 1,
+          y: 0,
+          x: (index) => this.getMobileTargetX(index, visibleCount, stackStep, 0),
+          zIndex: (index) => this.items.length - index,
+          clearProps: 'rotation,scale'
+        });
+
+        this.mobileTimeline = window.gsap.timeline({
+          scrollTrigger: {
+            trigger: this.root,
+            start: 'top top',
+            end: 'bottom bottom',
+            scrub: 0.85,
+            invalidateOnRefresh: true,
+            onUpdate: () => this.setActiveMobileItems()
+          }
+        });
+
+        const slideDuration = 0.78;
+        const shiftDuration = 0.62;
+
+        this.items.forEach((item, index) => {
+          if (index >= lastIndex) return;
+
+          const stepStart = index * 1.08;
+
+          this.mobileTimeline.to(item, {
+            y: () => -(window.innerHeight * 0.72),
+            autoAlpha: 0,
+            duration: slideDuration,
+            ease: 'power2.inOut'
+          }, stepStart);
+
+          this.mobileTimeline.to(this.items.slice(index + 1), {
+            x: (targetIndex) => this.getMobileTargetX(index + 1 + targetIndex, visibleCount, stackStep, index + 1),
+            duration: shiftDuration,
+            ease: 'power2.out'
+          }, stepStart + 0.12);
+        });
+
+        window.ScrollTrigger.refresh();
+        return true;
+      }
+
+      initDesktopSwiper() {
+        if (!this.slider) return false;
+
+        this.destroyMobileTimeline();
+
+        if (this.slider.swiper) {
+          this.badgeSwiper = this.slider.swiper;
+          return true;
+        }
+
+        if (typeof window.Swiper === 'undefined') return false;
+
+        this.badgeSwiper = new window.Swiper(this.slider, {
+          slidesPerView: 3,
+          spaceBetween: 20,
+          watchOverflow: true,
+          observer: true,
+          observeParents: true,
+          breakpoints: {
+            768: {
+              slidesPerView: 3,
+              spaceBetween: 20
+            },
+            1200: {
+              slidesPerView: 4,
+              spaceBetween: 20
+            }
+          }
+        });
+
+        return true;
+      }
+
+      getCurrentMobileIndex() {
+        if (!this.mobileTimeline || !this.mobileTimeline.scrollTrigger || this.items.length <= 1) return 0;
+        const progress = this.mobileTimeline.scrollTrigger.progress || 0;
+        return Math.round(progress * (this.items.length - 1));
+      }
+
+      goToMobileIndex(index) {
+        if (!this.mobileTimeline || !this.mobileTimeline.scrollTrigger || this.items.length <= 1) return;
+        const trigger = this.mobileTimeline.scrollTrigger;
+        const targetIndex = Math.max(0, Math.min(index, this.items.length - 1));
+        const progress = targetIndex / (this.items.length - 1);
+        const top = trigger.start + ((trigger.end - trigger.start) * progress);
+        window.scrollTo({ top, behavior: 'smooth' });
+      }
+
+      goToPrevious() {
+        if (this.mobileQuery.matches) {
+          this.goToMobileIndex(this.getCurrentMobileIndex() - 1);
+          return;
+        }
+
+        if (this.badgeSwiper && this.badgeSwiper.slidePrev) this.badgeSwiper.slidePrev();
+      }
+
+      goToNext() {
+        if (this.mobileQuery.matches) {
+          this.goToMobileIndex(this.getCurrentMobileIndex() + 1);
+          return;
+        }
+
+        if (this.badgeSwiper && this.badgeSwiper.slideNext) this.badgeSwiper.slideNext();
+      }
+
+      canGoPrevious() {
+        if (this.mobileQuery.matches) return this.getCurrentMobileIndex() > 0;
+        if (!this.badgeSwiper) return false;
+        return !this.badgeSwiper.isBeginning;
+      }
+
+      canGoNext() {
+        if (this.mobileQuery.matches) return this.getCurrentMobileIndex() < this.items.length - 1;
+        if (!this.badgeSwiper) return false;
+        return !this.badgeSwiper.isEnd;
+      }
+
+      hideFloatingNav() {
+        if (!this.floatingNav) return;
+        this.floatingNav.classList.remove('is-visible');
+      }
+
+      onPointerMove(event) {
+        if (this.mobileQuery.matches) return;
+        if (!this.carousel || !this.floatingNav) return;
+
+        const item = event.target.closest('.pcos-badge-slider__item');
+        if (!item || !this.carousel.contains(item)) {
+          this.hideFloatingNav();
+          return;
+        }
+
+        const itemRect = item.getBoundingClientRect();
+        const carouselRect = this.carousel.getBoundingClientRect();
+        const prefersNext = event.clientX >= itemRect.left + (itemRect.width / 2);
+        const canPrev = this.canGoPrevious();
+        const canNext = this.canGoNext();
+        let direction = '';
+
+        if (prefersNext && canNext) {
+          direction = 'next';
+        } else if (!prefersNext && canPrev) {
+          direction = 'prev';
+        } else if (canNext) {
+          direction = 'next';
+        } else if (canPrev) {
+          direction = 'prev';
+        }
+
+        if (!direction) {
+          this.hideFloatingNav();
+          return;
+        }
+
+        const x = event.clientX - carouselRect.left;
+        const y = event.clientY - carouselRect.top;
+
+        this.floatingNav.dataset.direction = direction;
+        this.floatingNav.style.left = `${x}px`;
+        this.floatingNav.style.top = `${y}px`;
+        this.floatingNav.classList.add('is-visible');
+      }
+
+      onNavClick(event) {
+        const floatingButton = event.target.closest('[data-pcos-badge-floating]');
+        const carouselItem = event.target.closest('.pcos-badge-slider__item');
+        const shouldUseFloatingDirection = this.floatingNav
+          && !this.mobileQuery.matches
+          && this.floatingNav.classList.contains('is-visible')
+          && carouselItem
+          && this.carousel
+          && this.carousel.contains(carouselItem);
+
+        if (floatingButton || shouldUseFloatingDirection) {
+          event.preventDefault();
+          event.stopPropagation();
+          const direction = floatingButton ? floatingButton.dataset.direction : this.floatingNav.dataset.direction;
+          if (direction === 'prev') {
+            this.goToPrevious();
+          } else {
+            this.goToNext();
+          }
+          return;
+        }
+
+        const prevButton = event.target.closest('[data-pcos-badge-prev]');
+        const nextButton = event.target.closest('[data-pcos-badge-next]');
+        if (!prevButton && !nextButton) return;
+
+        event.preventDefault();
+        event.stopPropagation();
+
+        if (prevButton) {
+          this.goToPrevious();
+          return;
+        }
+
+        this.goToNext();
+      }
+
+      init() {
+        if (this.mobileQuery.matches) {
+          return this.initMobileScrollAnimation();
+        }
+
+        return this.initDesktopSwiper();
+      }
+
+      boot() {
+        if (this.retryTimer) {
+          window.clearInterval(this.retryTimer);
+          this.retryTimer = null;
+        }
+
+        if (this.init()) return;
+
+        let retryCount = 0;
+        this.retryTimer = window.setInterval(() => {
+          retryCount += 1;
+          if (this.init() || retryCount > 40) {
+            window.clearInterval(this.retryTimer);
+            this.retryTimer = null;
+          }
+        }, 150);
+      }
+    });
+  }
+</script>
+
+{% schema %}
+{
+  "name": "pcos-badge-slider",
+  "settings": [
+    { "type": "text", "id": "title", "label": "Title", "default": "Impact Badges" },
+    { "type": "textarea", "id": "text", "label": "Text", "default": "Make a contribution to receive a limited-edition badge commemorating your impact." },
+    { "type": "color", "id": "background", "label": "Background", "default": "#f6f6f6" },
+    { "type": "color", "id": "card_background", "label": "Card background", "default": "#d8f1f4" },
+    { "type": "color", "id": "text_color", "label": "Text", "default": "#111111" },
+    { "type": "color", "id": "accent_color", "label": "Accent", "default": "#00a7b2" },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 140, "step": 4, "unit": "px", "label": "Padding top", "default": 72 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 140, "step": 4, "unit": "px", "label": "Padding bottom", "default": 72 },
+    { "type": "checkbox", "id": "enable_autoplay", "label": "Enable autoplay on desktop", "default": false }
+  ],
+  "blocks": [
+    {
+      "type": "badge",
+      "name": "Badge",
+      "settings": [
+        { "type": "image_picker", "id": "white_image", "label": "Desktop default image" },
+        { "type": "image_picker", "id": "image", "label": "Color image" },
+        { "type": "text", "id": "title", "label": "Title" },
+        { "type": "textarea", "id": "text", "label": "Text" }
+      ]
+    }
+  ],
+  "presets": [
+    { "name": "pcos-badge-slider" }
+  ]
+}
+{% endschema %}

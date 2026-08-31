@@ -1,0 +1,305 @@
+<style>
+  #shopify-section-{{ section.id }} .pcos-card-grid {
+    padding: {{ section.settings.padding_top }}px 24px {{ section.settings.padding_bottom }}px;
+    background: {{ section.settings.background }};
+    color: {{ section.settings.text_color }};
+  }
+
+  #shopify-section-{{ section.id }} .pcos-card-grid__title {
+    margin: 0 0 60px;
+    text-align: center;
+    font-size: 48px;
+    line-height: 1.2;
+    font-weight: 400;
+  }
+
+  #shopify-section-{{ section.id }} .pcos-card-grid__items {
+    display: grid;
+    grid-template-columns: repeat({{ section.settings.columns }}, minmax(0, 1fr));
+    gap: 20px;
+  }
+
+  #shopify-section-{{ section.id }} .pcos-card-grid__item {
+    text-align: center;
+  }
+
+  #shopify-section-{{ section.id }} .pcos-card-grid__media {
+    position: relative;
+    overflow: hidden;
+    border-radius: 10px;
+    background: #D4E6E9;
+  }
+
+  #shopify-section-{{ section.id }} .pcos-card-grid__media img {
+    width: 100%;
+  }
+
+  #shopify-section-{{ section.id }} .pcos-card-grid__arrow {
+    position: absolute;
+    right: 12px;
+    bottom: 12px;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+    height: 56px;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    color: #1a1a1a;
+    box-shadow: none;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+  }
+
+  #shopify-section-{{ section.id }} .pcos-card-grid__arrow svg {
+    display: block;
+    width: 17px;
+    height: auto;
+  }
+
+  #shopify-section-{{ section.id }} .pcos-card-grid__arrow-img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  #shopify-section-{{ section.id }} .pcos-card-grid__inline-text {
+    position: absolute;
+    right: 78px;
+    bottom: 12px;
+    z-index: 3;
+    display: none;
+    width: max-content;
+    max-width: 250px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.94);
+    color: {{ section.settings.text_color }};
+    font-size: 18px;
+    line-height: 1.5;
+    text-align: left;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  }
+
+  #shopify-section-{{ section.id }} .pcos-card-grid__inline-text.is-active {
+    display: block;
+  }
+
+  @media (hover: hover) {
+    #shopify-section-{{ section.id }} .pcos-card-grid__media:has(.pcos-card-grid__arrow:hover) .pcos-card-grid__inline-text {
+      display: block;
+    }
+  }
+
+  #shopify-section-{{ section.id }} .pcos-card-grid__item-title {
+    margin: 20px 0 8px;
+    color: {{ section.settings.accent_color }};
+    font-size: 26px;
+    font-weight: 500;
+    line-height: 1.5;
+  }
+
+  #shopify-section-{{ section.id }} .pcos-card-grid__text {
+    margin: 0 auto;
+    max-width: 320px;
+    font-size: 18px;
+    line-height: 1.5;
+    color: #555;
+  }
+
+  @media (max-width: 991px) {
+    #shopify-section-{{ section.id }} .pcos-card-grid__items {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 549px) {
+    #shopify-section-{{ section.id }} .pcos-card-grid {
+      padding: {{ section.settings.mobile_padding_top }}px 14px {{ section.settings.mobile_padding_bottom }}px;
+    }
+
+    #shopify-section-{{ section.id }} .pcos-card-grid .container {
+      padding-left: 0;
+      padding-right: 0;
+    }
+
+    #shopify-section-{{ section.id }} .pcos-card-grid__title {
+      margin: 0 0 32px;
+      font-size: 24px;
+      font-weight: 400;
+    }
+
+    #shopify-section-{{ section.id }} .pcos-card-grid__items {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 26px 15px;
+    }
+
+    #shopify-section-{{ section.id }} .pcos-card-grid__media {
+    }
+
+    #shopify-section-{{ section.id }} .pcos-card-grid__media img {
+     
+    }
+
+    #shopify-section-{{ section.id }} .pcos-card-grid__arrow {
+      right: 8px;
+      bottom: 8px;
+      width: 30px;
+      height: 30px;
+    }
+
+    #shopify-section-{{ section.id }} .pcos-card-grid__inline-text {
+      right: 44px;
+      bottom: 8px;
+      max-width: calc(100% - 58px);
+      padding: 8px 10px;
+      border-radius: 6px;
+      font-size: 12px;
+    }
+
+    #shopify-section-{{ section.id }} .pcos-card-grid__arrow-img {
+      width: 100%;
+      height: 100%;
+    }
+
+    #shopify-section-{{ section.id }} .pcos-card-grid__item-title {
+      margin: 16px auto 4px;
+      font-size: 16px;
+      width: 85%;
+      line-height: 120%; 
+      min-height: 38px;
+    }
+
+    #shopify-section-{{ section.id }} .pcos-card-grid__text {
+      font-size: 12px;
+      color: #555;
+    }
+  }
+</style>
+
+<section class="pcos-card-grid">
+  <div class="container">
+    {%- if section.settings.title != blank -%}
+      <h2 class="pcos-card-grid__title to-top">{{ section.settings.title }}</h2>
+    {%- endif -%}
+    <div class="pcos-card-grid__items">
+      {%- for block in section.blocks -%}
+        <div class="pcos-card-grid__item" {{ block.shopify_attributes }}>
+          <div class="pcos-card-grid__media">
+            {%- assign mobile_image = block.settings.mobile_image | default: block.settings.image -%}
+            {%- if block.settings.image != blank -%}
+              <picture>
+                {%- if mobile_image != blank -%}
+                  <source media="(max-width: 549px)" srcset="{{ mobile_image | image_url: width: 400 }}">
+                {%- endif -%}
+                {{ block.settings.image | image_url: width: 520 | image_tag: loading: 'lazy' }}
+              </picture>
+            {%- endif -%}
+            {%- assign arrow_image = block.settings.arrow_image -%}
+            {%- assign arrow_link = block.settings.arrow_link -%}
+            {%- assign arrow_popup_text = block.settings.arrow_popup_text -%}
+            {%- if arrow_image != blank -%}
+              {%- if arrow_popup_text != blank -%}
+                <button class="pcos-card-grid__arrow" type="button" data-pcos-card-inline-trigger aria-label="Open details" aria-expanded="false">
+                  {{ arrow_image | image_url: width: 112 | image_tag: loading: 'lazy', class: 'pcos-card-grid__arrow-img' }}
+                </button>
+              {%- elsif arrow_link != blank -%}
+                <a class="pcos-card-grid__arrow" href="{{ arrow_link }}" aria-label="Go to section">
+                  {{ arrow_image | image_url: width: 112 | image_tag: loading: 'lazy', class: 'pcos-card-grid__arrow-img' }}
+                </a>
+              {%- else -%}
+                <span class="pcos-card-grid__arrow" aria-hidden="true">
+                  {{ arrow_image | image_url: width: 112 | image_tag: loading: 'lazy', class: 'pcos-card-grid__arrow-img' }}
+                </span>
+              {%- endif -%}
+            {%- endif -%}
+            {%- if arrow_popup_text != blank -%}
+              <div class="pcos-card-grid__inline-text" data-pcos-card-inline-text>{{ arrow_popup_text }}</div>
+            {%- endif -%}
+          </div>
+          {%- if block.settings.title != blank -%}
+            <h3 class="pcos-card-grid__item-title to-top" style="transition-delay: 0.{{ forloop.index }}s">{{ block.settings.title }}</h3>
+          {%- endif -%}
+          {%- if block.settings.text != blank -%}
+            <div class="pcos-card-grid__text to-top" style="transition-delay: 0.{{ forloop.index }}s">{{ block.settings.text }}</div>
+          {%- endif -%}
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+<script>
+  (() => {
+    const section = document.getElementById('shopify-section-{{ section.id }}');
+    if (!section) return;
+
+    section.addEventListener('click', (event) => {
+      const trigger = event.target.closest('[data-pcos-card-inline-trigger]');
+      if (!trigger || !section.contains(trigger)) return;
+
+      event.preventDefault();
+      const media = trigger.closest('.pcos-card-grid__media');
+      const inlineText = media && media.querySelector('[data-pcos-card-inline-text]');
+      if (!inlineText) return;
+
+      section.querySelectorAll('[data-pcos-card-inline-text].is-active').forEach((item) => {
+        if (item !== inlineText) item.classList.remove('is-active');
+      });
+
+      const isActive = inlineText.classList.toggle('is-active');
+      trigger.setAttribute('aria-expanded', isActive ? 'true' : 'false');
+    });
+
+    section.addEventListener('mouseleave', (event) => {
+      const media = event.target.closest && event.target.closest('.pcos-card-grid__media');
+      if (!media || !section.contains(media)) return;
+
+      const inlineText = media.querySelector('[data-pcos-card-inline-text]');
+      const trigger = media.querySelector('[data-pcos-card-inline-trigger]');
+      if (inlineText) inlineText.classList.remove('is-active');
+      if (trigger) trigger.setAttribute('aria-expanded', 'false');
+    }, true);
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "pcos-card-grid",
+  "settings": [
+    { "type": "text", "id": "title", "label": "Title", "default": "Recognition With Meaning" },
+    { "type": "range", "id": "columns", "min": 2, "max": 5, "step": 1, "label": "Desktop columns", "default": 4 },
+    { "type": "color", "id": "background", "label": "Background", "default": "#f6f6f6" },
+    { "type": "color", "id": "card_background", "label": "Card background", "default": "#d8f1f4" },
+    { "type": "color", "id": "text_color", "label": "Text", "default": "#111111" },
+    { "type": "color", "id": "accent_color", "label": "Accent", "default": "#00a8ad" },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 140, "step": 4, "unit": "px", "label": "Padding top", "default": 56 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 140, "step": 4, "unit": "px", "label": "Padding bottom", "default": 72 },
+    { "type": "range", "id": "mobile_padding_top", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Mobile padding top", "default": 32 },
+    { "type": "range", "id": "mobile_padding_bottom", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Mobile padding bottom", "default": 36 }
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Card",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "image_picker", "id": "mobile_image", "label": "Mobile image" },
+        { "type": "image_picker", "id": "arrow_image", "label": "Arrow image" },
+        { "type": "url", "id": "arrow_link", "label": "Arrow anchor link" },
+        { "type": "textarea", "id": "arrow_popup_text", "label": "Arrow popup text" },
+        { "type": "text", "id": "title", "label": "Title" },
+        { "type": "textarea", "id": "text", "label": "Text" }
+      ]
+    }
+  ],
+  "presets": [
+    { "name": "pcos-card-grid" }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,223 @@
+<style>
+  #shopify-section-{{ section.id }} .pcos-hero {
+    position: relative;
+    overflow: hidden;
+    background: #f4f4f2;
+  }
+
+  #shopify-section-{{ section.id }} .pcos-hero__image {
+    display: block;
+    width: 100%;
+    min-height: 530px;
+    object-fit: cover;
+  }
+
+  #shopify-section-{{ section.id }} .pcos-hero__content {
+    position: absolute;
+    top: 50%;
+    left: 10.5%;
+    z-index: 2;
+    max-width: 530px;
+    transform: translateY(-50%);
+    color: {{ section.settings.text_color }};
+  }
+
+  #shopify-section-{{ section.id }} .pcos-hero__eyebrow {
+    display: block;
+    margin-bottom: 18px;
+  }
+
+  #shopify-section-{{ section.id }} .pcos-hero__eyebrow-image {
+    display: block;
+    width: auto;
+    max-width: 395px;
+    height: auto;
+  }
+
+  #shopify-section-{{ section.id }} .pcos-hero__title {
+    margin: 0 0 16px;
+    font-size: 48px;
+    line-height: 1.2;
+    font-weight: 400;
+  }
+
+  #shopify-section-{{ section.id }} .pcos-hero__text {
+    max-width: 520px;
+    margin-bottom: 60px;
+    font-size: 26px;
+    line-height: 1.35;
+  }
+
+  #shopify-section-{{ section.id }} .pcos-hero__actions {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+
+  #shopify-section-{{ section.id }} .pcos-hero__button {
+    min-width: 230px;
+    padding: 15px 20px;
+    text-align: center;
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 1;
+    text-transform: uppercase;
+    background: {{ section.settings.primary_button_background }};
+    color: {{ section.settings.primary_button_color }};
+  }
+
+  #shopify-section-{{ section.id }} .pcos-hero__actions .pcos-hero__button:first-child:hover {
+    background: #21D8D8;
+  }
+
+  #shopify-section-{{ section.id }} .pcos-hero__button--secondary {
+    background: {{ section.settings.secondary_button_background }};
+    color: {{ section.settings.secondary_button_color }};
+  }
+
+  #shopify-section-{{ section.id }} .pcos-hero__button--secondary:hover {
+    background: #3F3636;
+  }
+
+  @media (max-width: 991px) {
+    #shopify-section-{{ section.id }} .pcos-hero__image {
+      min-height: 0;
+      height: auto;
+      object-fit: contain;
+    }
+
+    #shopify-section-{{ section.id }} .pcos-hero__content {
+      top: 25px;
+      left: 0;
+      right: 0;
+      max-width: none;
+      padding: 0 40px;
+      transform: none;
+      text-align: center;
+    }
+
+    #shopify-section-{{ section.id }} .pcos-hero__eyebrow {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 14px;
+    }
+
+    #shopify-section-{{ section.id }} .pcos-hero__eyebrow-image {
+      max-width: 160px;
+    }
+
+    #shopify-section-{{ section.id }} .pcos-hero__title {
+      margin-bottom: 12px;
+      font-size: 26px;
+      font-weight: 400;
+    }
+
+    #shopify-section-{{ section.id }} .pcos-hero__text {
+      max-width: 270px;
+      margin: 0 auto 20px;
+      font-size: 12px;
+    }
+
+    #shopify-section-{{ section.id }} .pcos-hero__actions {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 13px;
+      max-width: 288px;
+      margin: 0 auto;
+    }
+
+    #shopify-section-{{ section.id }} .pcos-hero__button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 0;
+      width: 100%;
+      min-height: 46px;
+      padding: 0 16px;
+      font-size: 15px;
+      line-height: 1;
+    }
+
+    #shopify-section-{{ section.id }} .pcos-hero__button:not(.pcos-hero__button--secondary) {
+      order: 2;
+    }
+
+    #shopify-section-{{ section.id }} .pcos-hero__button--secondary {
+      order: 1;
+    }
+  }
+
+  @media (max-width: 374px) {
+    #shopify-section-{{ section.id }} .pcos-hero__content {
+      padding: 0 28px;
+    }
+
+    #shopify-section-{{ section.id }} .pcos-hero__title {
+      font-size: 21px;
+    }
+
+    #shopify-section-{{ section.id }} .pcos-hero__actions {
+      max-width: 244px;
+    }
+  }
+</style>
+
+<section class="pcos-hero">
+  {%- if section.settings.image != blank or section.settings.mobile_image != blank -%}
+    <picture class="pcos-hero__picture">
+      {%- if section.settings.mobile_image != blank -%}
+        <source media="(max-width: 991px)" srcset="{{ section.settings.mobile_image | image_url: width: 1000 }}">
+      {%- endif -%}
+      {%- assign hero_image = section.settings.image | default: section.settings.mobile_image -%}
+      {{ hero_image | image_url: width: 2400 | image_tag: class: 'pcos-hero__image', loading: 'eager' }}
+    </picture>
+  {%- endif -%}
+
+  <div class="pcos-hero__content">
+    <div class="pcos-hero__eyebrow">
+      {%- if section.settings.eyebrow_image != blank -%}
+        {{ section.settings.eyebrow_image | image_url: width: 360 | image_tag: class: 'pcos-hero__eyebrow-image', loading: 'eager' }}
+      {%- endif -%}
+    </div>
+    {%- if section.settings.title != blank -%}
+      <h1 class="pcos-hero__title">{{ section.settings.title }}</h1>
+    {%- endif -%}
+    {%- if section.settings.text != blank -%}
+      <div class="pcos-hero__text">{{ section.settings.text }}</div>
+    {%- endif -%}
+    <div class="pcos-hero__actions">
+      {%- if section.settings.primary_button_text != blank -%}
+        <a class="pcos-hero__button" href="{{ section.settings.primary_button_link }}">{{ section.settings.primary_button_text }}</a>
+      {%- endif -%}
+      {%- if section.settings.secondary_button_text != blank -%}
+        <a class="pcos-hero__button pcos-hero__button--secondary" href="{{ section.settings.secondary_button_link }}">{{ section.settings.secondary_button_text }}</a>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "pcos-hero",
+  "settings": [
+    { "type": "image_picker", "id": "image", "label": "Desktop image" },
+    { "type": "image_picker", "id": "mobile_image", "label": "Mobile image" },
+    { "type": "image_picker", "id": "eyebrow_image", "label": "Eyebrow image" },
+    { "type": "text", "id": "title", "label": "Title", "default": "Support Women's Health" },
+    { "type": "textarea", "id": "text", "label": "Text", "default": "Every contribution helps bring greater visibility and support to the PCOS community." },
+    { "type": "text", "id": "primary_button_text", "label": "Primary button text", "default": "Shop Now" },
+    { "type": "url", "id": "primary_button_link", "label": "Primary button link" },
+    { "type": "text", "id": "secondary_button_text", "label": "Secondary button text", "default": "Make A Contribution" },
+    { "type": "url", "id": "secondary_button_link", "label": "Secondary button link" },
+    { "type": "color", "id": "text_color", "label": "Text color", "default": "#111111" },
+    { "type": "color", "id": "primary_button_background", "label": "Primary button background", "default": "#00a8ad" },
+    { "type": "color", "id": "primary_button_color", "label": "Primary button text", "default": "#ffffff" },
+    { "type": "color", "id": "secondary_button_background", "label": "Secondary button background", "default": "#111111" },
+    { "type": "color", "id": "secondary_button_color", "label": "Secondary button text", "default": "#ffffff" }
+  ],
+  "presets": [
+    { "name": "pcos-hero" }
+  ]
+}
+{% endschema %}
