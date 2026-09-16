@@ -423,7 +423,22 @@
           <span>Time</span>
         </div>
         <div class="pcos-impact-gallery__rows-viewport">
-          <div class="pcos-impact-gallery__rows" data-pcos-benefit-list>
+          <div
+            class="pcos-impact-gallery__rows"
+            data-pcos-benefit-list
+            data-pcos-show-placeholder="{{ section.settings.show_placeholder_participants }}"
+          >
+            {%- if section.settings.show_placeholder_participants -%}
+              {%- for block in section.blocks -%}
+                {%- if block.type == 'participant' -%}
+                  <div class="pcos-impact-gallery__row" {{ block.shopify_attributes }}>
+                    <span class="pcos-impact-gallery__name{% if forloop.index <= 2 %} pcos-impact-gallery__name--highlight pcos-impact-gallery__name--dot{% endif %}"{% if block.settings.name != blank %} title="{{ block.settings.name | escape }}"{% endif %}>{{ block.settings.name | default: '—' }}</span>
+                    <span class="pcos-impact-gallery__email"{% if block.settings.email != blank %} title="{{ block.settings.email | escape }}"{% endif %}>{{ block.settings.email | default: '—' }}</span>
+                    <span>{{ block.settings.time | default: '—' }}</span>
+                  </div>
+                {%- endif -%}
+              {%- endfor -%}
+            {%- endif -%}
           </div>
         </div>
       </div>
@@ -441,6 +456,9 @@
     }
 
     root.dataset.apiReady = 'true';
+
+    var list = root.querySelector('[data-pcos-benefit-list]');
+    var showPlaceholderParticipants = list && list.dataset.pcosShowPlaceholder === 'true';
 
     function parseExtend(value) {
       if (!value) {
@@ -626,6 +644,14 @@
 
     function loadImpactData() {
 
+      if (showPlaceholderParticipants) {
+        if (list) {
+          startAutoScroll(list);
+        }
+
+        return;
+      }
+
       window.sendUlikeApi('/promotion/queryActivityInfo', {
         scene: 'PCOS_PAGE',
         activityId: activityId
@@ -663,6 +689,7 @@
     { "type": "text", "id": "stat_1_value", "label": "Stat 1 value", "default": "1,652" },
     { "type": "text", "id": "stat_2_label", "label": "Stat 2 label", "default": "Global Impact" },
     { "type": "text", "id": "stat_2_value", "label": "Stat 2 value", "default": "130,000" },
+    { "type": "checkbox", "id": "show_placeholder_participants", "label": "Show placeholder participant data", "default": false },
     { "type": "color", "id": "background", "label": "Background", "default": "#effcfc" },
     { "type": "color", "id": "card_background", "label": "Card background", "default": "#e5fbfb" },
     { "type": "color", "id": "text_color", "label": "Text", "default": "#111111" },
