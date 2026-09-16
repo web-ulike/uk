@@ -1,0 +1,560 @@
+<style>
+  .investment-comparison {
+    position: relative;
+    width: 100%;
+    padding-top: var(--padding-top);
+    padding-bottom: var(--padding-bottom);
+    background: #1A1A1A;
+  }
+
+
+  .investment-comparison__panel {
+    display: grid;
+    grid-template-columns: 48% minmax(0, 52%);
+    min-height: 540px;
+    overflow: hidden;
+    border-radius: 16px;
+  }
+
+  .investment-comparison__intro {
+    display: flex;
+    align-items: center;
+    padding: 60px 100px 60px 0;
+  }
+
+  .investment-comparison__title {
+    max-width: 550px;
+    margin: 0;
+    color: #FFF;
+    font-size: 48px;
+    font-weight: 400;
+    line-height: 1.2;
+    letter-spacing: 0.48px;
+    font-family: var(--heading-font-family);
+  }
+
+  .investment-comparison__table-wrap {
+    position: relative;
+    min-width: 0;
+   padding: 36px 0; 
+  }
+
+  .investment-comparison__table {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    grid-template-columns: 216fr 230fr 337fr;
+    height: 100%;
+  }
+
+  .investment-comparison__highlight {
+    position: absolute;
+    top: 36px;
+    bottom: 36px;
+     left: 27.59%;
+  z-index: 1;
+  width: 29.37%;
+   background: #FFFFFC;
+    border-radius: 8px;
+   box-shadow: 0 0 13px 0 rgba(0, 0, 0, 0.10);
+    pointer-events: none;
+  }
+
+  .investment-comparison__cell {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    min-width: 0;
+    padding: 17px 16px;
+    color: #FFF;
+  }
+
+  .investment-comparison__cell--head {
+    min-height: 140px;
+    align-items: flex-end;
+    justify-content: center;
+    padding-top: 8px;
+    padding-bottom: 12px;
+    text-align: center;
+  }
+   .investment-comparison__cell.investment-comparison__cell--black{
+color: #1A1A1A;
+}
+
+  .investment-comparison__cell--label {
+    justify-content: flex-start;
+    padding-left: 10px;
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 1.2;
+  }
+
+  .investment-comparison__cell--value {
+    justify-content: center;
+    text-align: center;
+  }
+
+  .investment-comparison__cell--row {
+    min-height: 80px;
+    border-top: 1px dashed #D6D6D6;
+  }
+
+  .investment-comparison__product-head {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+  }
+
+  .investment-comparison__product-image {
+    display: block;
+    width: 80px;
+    height: 80px;
+    margin-bottom: 6px;
+    object-fit: contain;
+  }
+
+  .investment-comparison__salon-image {
+    width: 60px;
+    height: 60px;
+    margin-bottom: 20px;
+  }
+
+  .investment-comparison__product-name {
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.2;
+        font-family: var(--heading-font-family);
+  }
+
+  .investment-comparison__value {
+    max-width: 210px;
+    margin: 0 auto;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1.5;
+  }
+
+  .investment-comparison__value p {
+    margin: 0;
+  }
+
+  .investment-comparison__value strong {
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 1.2;
+       font-family: var(--heading-font-family);
+  }
+
+  .investment-comparison__note {
+    margin-top: 24px;
+    color: #8B8B8B;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1.79;
+  }
+
+  .investment-comparison__note p {
+    margin: 0;
+  }
+
+  @media screen and (max-width: 1199px) {
+    {% comment %} .investment-comparison__panel {
+      grid-template-columns: 30% minmax(0, 70%);
+    }
+
+    .investment-comparison__intro {
+      padding: 50px 40px;
+    }
+
+    .investment-comparison__title {
+      font-size: 32px;
+    }
+
+    .investment-comparison__table-wrap {
+      padding-right: 30px;
+    }
+
+    .investment-comparison__table {
+      grid-template-columns:
+        minmax(130px, 1fr)
+        minmax(190px, 1.35fr)
+        minmax(190px, 1.35fr);
+    } {% endcomment %}
+  }
+
+  @media screen and (max-width: 767px) {
+    .investment-comparison {
+      padding-top: var(--mobile-padding-top);
+      padding-bottom: var(--mobile-padding-bottom);
+    }
+
+
+    .investment-comparison__panel {
+      display: block;
+      min-height: 0;
+      overflow: hidden;
+      border-radius: 12px;
+    }
+
+    .investment-comparison__intro {
+      display: block;
+      padding: 0px 0px 25px;
+    }
+
+    .investment-comparison__title {
+      max-width: 320px;
+      font-size: 24px;
+    }
+
+    .investment-comparison__table-scroll {
+      width: 100%;
+      overflow-x: auto;
+      overflow-y: hidden;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+
+    .investment-comparison__table-scroll::-webkit-scrollbar {
+      display: none;
+    }
+
+    .investment-comparison__table-wrap {
+      width: 720px;
+      padding: 25px 0px 28px;
+      width:100%;
+    }
+
+    .investment-comparison__table {
+      grid-template-columns:150px 255px 255px;
+              grid-template-columns: 75fr 128fr 132fr;
+    }
+
+    .investment-comparison__highlight {
+      {% comment %} top: 20px;
+      bottom: 28px;
+      left: 170px;
+      width: 255px; {% endcomment %}
+
+        top: 25px;
+        bottom: 28px;
+        left: 22%;
+        width: 38%;
+
+    }
+
+    .investment-comparison__cell--head {
+      min-height: 120px;
+    }
+
+    .investment-comparison__cell--label {
+      font-size: 17px;
+      font-size: 12px;
+    }
+
+    .investment-comparison__cell--row {
+      min-height: 80px;
+    }
+
+    .investment-comparison__product-image {
+      width: 52px;
+      height: 52px;
+    }
+
+    .investment-comparison__salon-image {
+      width: 48px;
+      height: 48px;
+          margin-bottom: 8px;
+    }
+    .investment-comparison__product-name {
+    font-size: 12px;
+            min-height: 28px;
+}
+.investment-comparison__value {
+    font-size: 10px;
+}
+.investment-comparison__value strong {
+    font-size: 16px;
+}
+    .investment-comparison__note {
+      margin-top: 20px;
+      font-size: 8px;
+      line-height: 1.2;
+    }
+    .investment-comparison__cell.investment-comparison__cell_pl_mb0{
+    padding-left:0;
+    }
+  }
+</style>
+
+<section
+  class="investment-comparison"
+  style="
+    --padding-top: {{ section.settings.padding_top }}px;
+    --padding-bottom: {{ section.settings.padding_bottom }}px;
+    --mobile-padding-top: {{ section.settings.mobile_padding_top }}px;
+    --mobile-padding-bottom: {{ section.settings.mobile_padding_bottom }}px;
+  "
+>
+  <div class="investment-comparison__container container">
+    <div class="investment-comparison__panel">
+      <div class="investment-comparison__intro js-scroll__header">
+        {% if section.settings.title != blank %}
+          <h2 class="investment-comparison__title">
+            {{ section.settings.title }}
+          </h2>
+        {% endif %}
+      </div>
+
+      <div class="investment-comparison__table-scroll js-scroll__header">
+        <div class="investment-comparison__table-wrap">
+          <div class="investment-comparison__highlight" aria-hidden="true"></div>
+          <div class="investment-comparison__table">
+            <div class="investment-comparison__cell investment-comparison__cell--head investment-comparison__cell_pl_mb0"></div>
+            <div class="investment-comparison__cell investment-comparison__cell--head investment-comparison__cell--black">
+              <div class="investment-comparison__product-head">
+                {% if section.settings.product_image != blank %}
+                  <img
+                    class="investment-comparison__product-image"
+                    src="{{ section.settings.product_image | image_url: width: 300 }}"
+                    alt="{{ section.settings.product_name | escape }}"
+                    width="{{ section.settings.product_image.width }}"
+                    height="{{ section.settings.product_image.height }}"
+                    loading="lazy"
+                  >
+                {% endif %}
+
+                {% if section.settings.product_name != blank %}
+                  <div class="investment-comparison__product-name">
+                    {{ section.settings.product_name }}
+                  </div>
+                {% endif %}
+              </div>
+            </div>
+
+            <div
+              class="investment-comparison__cell investment-comparison__cell--head">
+              <div class="investment-comparison__product-head">
+                {% if section.settings.competitor_image != blank %}
+                  <img
+                    class="investment-comparison__product-image investment-comparison__salon-image"
+                    src="{{ section.settings.competitor_image | image_url: width: 300 }}"
+                    alt="{{ section.settings.competitor_name | escape }}"
+                    width="{{ section.settings.competitor_image.width }}"
+                    height="{{ section.settings.competitor_image.height }}"
+                    loading="lazy"
+                  >
+                {% endif %}
+
+                {% if section.settings.competitor_name != blank %}
+                  <div class="investment-comparison__product-name">
+                    {{ section.settings.competitor_name }}
+                  </div>
+                {% endif %}
+              </div>
+            </div>
+
+            {% for block in section.blocks %}
+              <div class="investment-comparison__cell investment-comparison__cell--label investment-comparison__cell--row investment-comparison__cell_pl_mb0" {{ block.shopify_attributes }}>
+                {{ block.settings.label }}
+              </div>
+
+              <div class="investment-comparison__cell investment-comparison__cell--value investment-comparison__cell--row  investment-comparison__cell--black">
+                <div class="investment-comparison__value">
+                  {{ block.settings.product_value }}
+                </div>
+              </div>
+
+              <div
+                class="investment-comparison__cell investment-comparison__cell--value investment-comparison__cell--row">
+                <div class="investment-comparison__value">
+                  {{ block.settings.competitor_value }}
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {% if section.settings.note != blank %}
+      <div class="investment-comparison__note js-scroll__header">
+        {{ section.settings.note }}
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Investment Comparison",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "A Smarter Way to Invest in Smooth Skin"
+    },
+
+    {
+      "type": "header",
+      "content": "Ulike Product"
+    },
+    {
+      "type": "image_picker",
+      "id": "product_image",
+      "label": "Product Image"
+    },
+    {
+      "type": "text",
+      "id": "product_name",
+      "label": "Product Name",
+      "default": "Ulike Air 10"
+    },
+
+    {
+      "type": "header",
+      "content": "Comparison Product"
+    },
+    {
+      "type": "image_picker",
+      "id": "competitor_image",
+      "label": "Comparison Image"
+    },
+    {
+      "type": "text",
+      "id": "competitor_name",
+      "label": "Comparison Name",
+      "default": "Traditional Salon Laser"
+    },
+
+    {
+      "type": "header",
+      "content": "Footnote"
+    },
+    {
+      "type": "richtext",
+      "id": "note",
+      "label": "Footnote",
+      "default": "<p>* Based on CVC test report GJW2024-1748-1. The skin-contact surface measured 60°F after 30 minutes of continuous use. Performance may vary depending on environment and usage conditions.</p><p>** Hair reduction results are based on SGS test reports. Individual results may vary.</p>"
+    },
+
+    {
+      "type": "header",
+      "content": "Desktop Layout"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding Top",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding Bottom",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 80
+    },
+
+    {
+      "type": "header",
+      "content": "Mobile"
+    },
+    {
+      "type": "range",
+      "id": "mobile_padding_top",
+      "label": "Padding Top",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "mobile_padding_bottom",
+      "label": "Padding Bottom",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 40
+    }
+  ],
+  "blocks": [
+    {
+      "type": "comparison_row",
+      "name": "Comparison Row",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "Cost"
+        },
+        {
+          "type": "richtext",
+          "id": "product_value",
+          "label": "Ulike Value",
+          "default": "<p><strong>$349</strong></p><p>One-time purchase</p>"
+        },
+        {
+          "type": "richtext",
+          "id": "competitor_value",
+          "label": "Comparison Value",
+          "default": "<p><strong>$1000+ per session</strong></p><p>Thousands over multiple sessions</p>"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 8,
+  "presets": [
+    {
+      "name": "Investment Comparison",
+      "blocks": [
+        {
+          "type": "comparison_row",
+          "settings": {
+            "label": "Cost",
+            "product_value": "<p><strong>$349</strong></p><p>One-time purchase</p>",
+            "competitor_value": "<p><strong>$1000+ per session</strong></p><p>Thousands over multiple sessions</p>"
+          }
+        },
+        {
+          "type": "comparison_row",
+          "settings": {
+            "label": "Safety",
+            "product_value": "<p>60°F* Cooling Comfort<br>Smart Skin-Tone Detection</p>",
+            "competitor_value": "<p>Heat & discomfort<br>Higher risk of pigmentation</p>"
+          }
+        },
+        {
+          "type": "comparison_row",
+          "settings": {
+            "label": "Experience",
+            "product_value": "<p>Gentle on skin<br>Private & at home<br>No appointments</p>",
+            "competitor_value": "<p>Time-consuming<br>Appointments required<br>Limited privacy</p>"
+          }
+        },
+        {
+          "type": "comparison_row",
+          "settings": {
+            "label": "Results",
+            "product_value": "<p>26J energy<br>Up to 96.52% Hair Reduction<br>in 2 Weeks**</p>",
+            "competitor_value": "<p>Effective, but requires<br>repeated sessions</p>"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

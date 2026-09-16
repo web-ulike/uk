@@ -1,0 +1,947 @@
+<style>
+  .people-love {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    padding-top: var(--padding-top);
+    padding-bottom: var(--padding-bottom);
+    background: var(--background);
+  }
+
+  .people-love__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 41px;
+  }
+
+  .people-love__title {
+    margin: 0;
+    color: #191919;
+    font-family: var(--heading-font-family);
+    font-size: 48px;
+    font-weight: 400;
+    line-height: 1.2;
+  }
+    .people-love__title p{
+    margin:0;
+    }
+
+  .people-love__navigation {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+  }
+
+  .people-love__arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    color: #191919;
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+    transition:
+      opacity 0.3s ease,
+      transform 0.3s ease;
+  }
+
+  .people-love__arrow:hover {
+    transform: scale(1.08);
+  }
+
+  .people-love__arrow.swiper-button-disabled {
+    opacity: 0.3;
+    pointer-events: none;
+  }
+
+  .people-love__arrow svg {
+    display: block;
+    width: 32px;
+    height: auto;
+  }
+
+  .people-love custom-swiper {
+    display: block;
+    width: 100%;
+  }
+
+  .people-love .swiper-container {
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .people-love .swiper-wrapper {
+    align-items: stretch;
+  }
+
+  .people-love .swiper-slide {
+    width: 376px;
+    height: auto;
+    flex-shrink: 0;
+  }
+
+  .people-love__card {
+    position: relative;
+    width: 376px;
+    height: 460px;
+    overflow: hidden;
+    border-radius: 8px;
+  }
+
+  .people-love__review {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 24px;
+    color: #000;
+    text-align: center;
+    background: var(--card-background);
+  }
+
+  .people-love__stars {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    margin-bottom: 60px;
+    color: var(--star-color);
+  }
+
+  .people-love__star {
+    display: block;
+    width: 19px;
+    height: 19px;
+  }
+
+  .people-love__review-title {
+    margin: 0;
+    font-size: 30px;
+    font-weight: 400;
+    line-height: 1.2;
+  }
+
+  .people-love__review-text {
+    max-width: 320px;
+    margin: 24px auto 0;
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 1.2;
+  }
+
+  .people-love__review-text p {
+    margin: 0;
+  }
+
+  .people-love__review-author {
+    margin-top: auto;
+    padding-top: 28px;
+  }
+
+  .people-love__review-name {
+    margin: 0;
+    font-family: var(--heading-font-family);
+    font-size: 24px;
+    font-weight: 400;
+    line-height: 1.2;
+  }
+
+  .people-love__review-meta {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 4px;
+    color: #8b8b8b;
+    font-size: 16px;
+    line-height: 1.2;
+  }
+
+  .people-love__verified {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    color: #8b8b8b;
+  }
+
+  .people-love__verified svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .people-love__video-card {
+    position: relative;
+    background: #ddd;
+  }
+
+  .people-love__video-media {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .people-love__video-cover,
+  .people-love__video,
+  .people-love__video-media > svg {
+    position: absolute;
+    inset: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .people-love__video-cover {
+    z-index: 1;
+    opacity: 1;
+    visibility: visible;
+    transition:
+      opacity 0.4s ease,
+      visibility 0.4s ease,
+      transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .people-love__video {
+    z-index: 2;
+    opacity: 0;
+    visibility: hidden;
+    background: #000;
+    transition:
+      opacity 0.4s ease,
+      visibility 0.4s ease;
+  }
+
+  .people-love__video-card:hover .people-love__video-cover {
+    transform: scale(1.025);
+  }
+
+  .people-love__video-card.is-playing .people-love__video-cover {
+    opacity: 0;
+    visibility: hidden;
+    transform: scale(1);
+  }
+
+  .people-love__video-card.is-playing .people-love__video {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .people-love__video-card::after {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 3;
+    height: 42%;
+    content: '';
+    pointer-events: none;
+    background: linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0) 0%,
+      rgba(0, 0, 0, 0.58) 100%
+    );
+    transition: opacity 0.3s ease;
+  }
+
+  .people-love__video-card.is-playing::after {
+    opacity: 0;
+  }
+
+  .people-love__video-info {
+    position: absolute;
+    right: 24px;
+    bottom: 34px;
+    left: 24px;
+    z-index: 4;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 16px;
+    color: #fff;
+    transition:
+      opacity 0.3s ease,
+      visibility 0.3s ease;
+  }
+
+  .people-love__video-card.is-playing .people-love__video-info {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  .people-love__video-person {
+    min-width: 0;
+  }
+
+  .people-love__video-name {
+    margin: 0;
+    font-family: var(--heading-font-family);
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 1.2;
+  }
+
+  .people-love__video-position {
+    margin-top: 4px;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1.2;
+  }
+
+  .people-love__play {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    color: #fff;
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.55);
+    border-radius: 50%;
+    cursor: pointer;
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+    transition:
+      transform 0.3s ease,
+      background 0.3s ease;
+  }
+
+  .people-love__play:hover {
+    background: rgba(255, 255, 255, 0.32);
+    transform: scale(1.08);
+  }
+
+  .people-love__play svg {
+    display: block;
+    width: 13px;
+    height: 15px;
+    margin-left: 2px;
+    fill: currentColor;
+  }
+
+  @media screen and (max-width: 1023px) {
+    .people-love {
+      padding-top: var(--mobile-padding-top);
+      padding-bottom: var(--mobile-padding-bottom);
+    }
+
+    .people-love__title {
+      font-size: 40px;
+    }
+
+    .people-love__card {
+      height: 420px;
+    }
+
+    .people-love__stars {
+      margin-bottom: 42px;
+    }
+
+    .people-love__review-title {
+      font-size: 25px;
+    }
+
+    .people-love__review-text {
+      font-size: 16px;
+    }
+  }
+
+  @media screen and (max-width: 767px) {
+    .people-love {
+      padding-top: var(--mobile-padding-top);
+      padding-bottom: var(--mobile-padding-bottom);
+    }
+
+    .people-love__header {
+      margin-bottom: 32px;
+              gap: 40px;
+    }
+
+    .people-love__title {
+      max-width: 340px;
+      font-size: 24px;
+    }
+
+    .people-love__navigation {
+      gap: 20px;
+    }
+
+    .people-love__arrow {
+      width: 28px;
+      height: 28px;
+    }
+
+    .people-love__arrow svg {
+      width: 21px;
+    }
+
+    .people-love .swiper-slide {
+      width: 257px;
+    }
+
+    .people-love__card {
+      width: 257px;
+      height: 314px;
+    }
+
+    .people-love__review {
+      padding: 41px 16px;
+    }
+
+    .people-love__stars {
+      gap: 4px;
+      margin-bottom: 40px;
+    }
+
+    .people-love__star {
+      width: 17px;
+      height: 17px;
+    }
+
+    .people-love__review-title {
+      font-size: 24px;
+    }
+
+    .people-love__review-text {
+      max-width: 280px;
+      margin-top: 16px;
+      font-size: 12px;
+    }
+
+    .people-love__review-name {
+      font-size: 16px;
+    }
+
+    .people-love__review-meta {
+      font-size: 10px;
+      gap:4px;
+    }
+
+    .people-love__video-info {
+      right: 18px;
+      bottom: 20px;
+      left: 18px;
+      gap:24px;
+    }
+
+    .people-love__video-name {
+      font-size: 14px;
+    }
+
+    .people-love__video-position {
+      font-size: 12px;
+          margin-top: 3px;
+    }
+
+    .people-love__play {
+      width: 32px;
+      height: 32px;
+    }
+    .people-love__review-author {
+    padding-top: 40px;
+    }
+    .people-love__verified {
+    width: 10px;
+    height: 10px;
+}
+    .people-love .swiper-container {
+    padding-left: var(--container-gutter);
+    padding-right: var(--container-gutter);
+    overflow: clip;
+}
+
+
+
+
+    .people-love custom-swiper {
+     display: flex;
+    flex-direction: column;
+}
+.people-love custom-swiper .container{
+display: contents;
+}
+.people-love__header {
+  display: contents;
+}
+
+.people-love__title {
+  order: 1;
+  margin-bottom: 32px;
+  max-width: 100%;
+   padding-left: var(--container-gutter);
+    padding-right: var(--container-gutter);
+}
+
+.people-love .swiper-container{
+  order: 2;
+}
+
+.people-love__navigation {
+  order: 3;
+     justify-content: flex-end;
+     margin-top: 28px;
+        padding-right: 34px;
+}
+
+
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .people-love__arrow,
+    .people-love__play,
+    .people-love__video-cover,
+    .people-love__video {
+      transition: none;
+    }
+  }
+</style>
+
+<section class="people-love" data-people-love="{{ section.id }}" style="--padding-top:{{ section.settings.padding_top }}px;--padding-bottom:{{ section.settings.padding_bottom }}px;--mobile-padding-top:{{ section.settings.mobile_padding_top }}px;--mobile-padding-bottom:{{ section.settings.mobile_padding_bottom }}px;--background:{{ section.settings.background }};--card-background:{{ section.settings.card_background }};--star-color:{{ section.settings.star_color }};">
+  <custom-swiper slides-per-view="auto" space-between="16" loop="{{ section.settings.loop }}" centered-slides="true" navigation="true" pagination="false"
+      breakpoints='{"768":{"slidesPerView":"auto","spaceBetween":24}}'
+     autoplay="true"
+    autoplay-delay="2000"
+  autoplay-disable-on-interaction="false"
+  autoplay-pause-on-mouse-enter="true"
+  >
+
+    <div class="container">
+      <div class="people-love__header js-scroll__header">
+        {% if section.settings.title != blank %}<h2 class="people-love__title">{{ section.settings.title }}</h2>{% endif %}
+        {% if section.settings.rich_title != blank %}<h2 class="people-love__title">{{ section.settings.rich_title }}</h2>{% endif %}
+        
+        {% if section.blocks.size > 1 %}
+          <div class="people-love__navigation">
+            <button class="people-love__arrow people-love__arrow--prev swiper-prev" type="button" aria-label="Previous"><svg viewBox="0 0 32 20" fill="none" aria-hidden="true"><path d="M10 1L1 10M1 10L10 19M1 10H31" stroke="currentColor" stroke-width="1.3"/></svg></button>
+            <button class="people-love__arrow people-love__arrow--next swiper-next" type="button" aria-label="Next"><svg viewBox="0 0 32 20" fill="none" aria-hidden="true"><path d="M22 1L31 10M31 10L22 19M31 10H1" stroke="currentColor" stroke-width="1.3"/></svg></button>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="swiper-container js-scroll__group">
+      <div class="swiper-wrapper">
+        {% for block in section.blocks %}
+          <div class="swiper-slide" {{ block.shopify_attributes }} style="--reveal-index:{{ forloop.index0 }};">
+            {% if block.settings.card_type == 'review' %}
+              <div class="people-love__card people-love__review js-scroll__card">
+                <div class="people-love__stars">
+                  {% for i in (1..5) %}
+                    <svg class="people-love__star" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 1.8l3.09 6.26 6.91 1-5 4.87 1.18 6.88L12 17.56l-6.18 3.25L7 13.93 2 9.06l6.91-1L12 1.8z"/></svg>
+                  {% endfor %}
+                </div>
+
+                {% if block.settings.review_title != blank %}<h3 class="people-love__review-title">{{ block.settings.review_title }}</h3>{% endif %}
+                {% if block.settings.review_text != blank %}<div class="people-love__review-text">{{ block.settings.review_text }}</div>{% endif %}
+
+                <div class="people-love__review-author">
+                  {% if block.settings.reviewer_name != blank %}<div class="people-love__review-name">{{ block.settings.reviewer_name }}</div>{% endif %}
+
+                  {% if block.settings.reviewer_meta != blank %}
+                    <div class="people-love__review-meta">
+                      <span>{{ block.settings.reviewer_meta }}</span>
+                      {% if block.settings.show_verified %}
+                        <span class="people-love__verified" aria-label="Verified">
+                          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                            <path d="M12 2.4L14.15 4.3L17 3.95L18.25 6.55L20.85 7.8L20.5 10.65L22.4 12.8L20.5 14.95L20.85 17.8L18.25 19.05L17 21.65L14.15 21.3L12 23.2L9.85 21.3L7 21.65L5.75 19.05L3.15 17.8L3.5 14.95L1.6 12.8L3.5 10.65L3.15 7.8L5.75 6.55L7 3.95L9.85 4.3L12 2.4Z" fill="currentColor"/>
+                            <path d="M8.5 12.6L10.7 14.7L15.7 9.7" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                          </svg>
+                        </span>
+                      {% endif %}
+                    </div>
+                  {% endif %}
+                </div>
+              </div>
+            {% else %}
+              {% liquid
+                assign card_image = block.settings.image
+                if card_image == blank and block.settings.video != blank
+                  assign card_image = block.settings.video.preview_image
+                endif
+              %}
+
+              <div class="people-love__card people-love__video-card js-scroll__card" data-inline-video-card>
+                <div class="people-love__video-media">
+                  {% if card_image != blank %}
+                    <img class="people-love__video-cover" src="{{ card_image | image_url: width: 900 }}" srcset="{{ card_image | image_url: width: 400 }} 400w, {{ card_image | image_url: width: 600 }} 600w, {{ card_image | image_url: width: 900 }} 900w" sizes="376px" alt="{{ block.settings.expert_name | escape }}" width="{{ card_image.width }}" height="{{ card_image.height }}" loading="lazy">
+                  {% else %}
+                    {{ 'image' | placeholder_svg_tag: 'people-love__video-cover' }}
+                  {% endif %}
+
+                  {% if block.settings.video != blank %}
+                    {{ block.settings.video | video_tag: autoplay: false, loop: false, muted: false, controls: true, playsinline: true, preload: 'metadata', class: 'people-love__video' }}
+                  {% elsif block.settings.video_url != blank %}
+                    <video class="people-love__video" src="{{ block.settings.video_url }}" controls playsinline preload="metadata"></video>
+                  {% endif %}
+                </div>
+
+                <div class="people-love__video-info">
+                  <div class="people-love__video-person">
+                    {% if block.settings.expert_name != blank %}<div class="people-love__video-name">{{ block.settings.expert_name }}</div>{% endif %}
+                    {% if block.settings.expert_position != blank %}<div class="people-love__video-position">{{ block.settings.expert_position }}</div>{% endif %}
+                  </div>
+
+                  {% if block.settings.video != blank or block.settings.video_url != blank %}
+                    <button class="people-love__play" type="button" aria-label="Play video" data-inline-video-play><svg viewBox="0 0 14 16" aria-hidden="true"><path d="M13 8L1 15V1L13 8Z"/></svg></button>
+                  {% endif %}
+                </div>
+              </div>
+            {% endif %}
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+
+  </custom-swiper>
+</section>
+
+<script>
+(() => {
+  const sectionId = '{{ section.id }}';
+  const init = () => {
+    const section = document.querySelector(`[data-people-love="${sectionId}"]`);
+    if (!section || section.dataset.inlineVideoInitialized === 'true') return;
+
+    section.dataset.inlineVideoInitialized = 'true';
+
+    const customSwiper = section.querySelector('custom-swiper');
+    const cards = [...section.querySelectorAll('[data-inline-video-card]')];
+    const getVideo = card => card?.querySelector('.people-love__video');
+
+    const resetCard = (card, resetTime = false) => {
+      const video = getVideo(card);
+      if (!video) return;
+      video.pause();
+
+      if (resetTime) {
+        try {
+          video.currentTime = 0;
+        } catch (error) {}
+      }
+
+      card.classList.remove('is-playing');
+    };
+
+    const pauseOtherCards = activeCard => {
+      cards.forEach(card => {
+        if (card !== activeCard) resetCard(card);
+      });
+    };
+
+    const playCard = card => {
+      const video = getVideo(card);
+      if (!video) return;
+
+      pauseOtherCards(card);
+      card.classList.add('is-playing');
+
+      const playPromise = video.play();
+      if (playPromise && typeof playPromise.catch === 'function') {
+        playPromise.catch(() => card.classList.remove('is-playing'));
+      }
+    };
+
+    cards.forEach(card => {
+      const button = card.querySelector('[data-inline-video-play]');
+      const video = getVideo(card);
+      if (!button || !video) return;
+
+      button.addEventListener('click', event => {
+        event.preventDefault();
+        event.stopPropagation();
+        playCard(card);
+      });
+
+      video.addEventListener('ended', () => resetCard(card, true));
+    });
+
+    const bindSwiperEvents = () => {
+      const swiper = customSwiper?.swiper;
+      if (!swiper) {
+        requestAnimationFrame(bindSwiperEvents);
+        return;
+      }
+
+      if (customSwiper.dataset.inlineVideoBound === 'true') return;
+      customSwiper.dataset.inlineVideoBound = 'true';
+
+      swiper.on('slideChangeTransitionStart', () => {
+        cards.forEach(card => resetCard(card));
+      });
+    };
+
+    bindSwiperEvents();
+
+    section.inlineVideoCleanup = () => {
+      cards.forEach(card => resetCard(card, true));
+    };
+  };
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+
+  document.addEventListener('shopify:section:load', event => {
+    const section = event.target.querySelector?.(`[data-people-love="${sectionId}"]`);
+    if (!section) return;
+    section.dataset.inlineVideoInitialized = 'false';
+    init();
+  });
+
+  document.addEventListener('shopify:section:unload', event => {
+    const section = event.target.querySelector?.(`[data-people-love="${sectionId}"]`);
+    section?.inlineVideoCleanup?.();
+  });
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Loved by 10M+ People",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Loved by 10M+ People"
+    },
+        {
+      "type": "richtext",
+      "id": "rich_title",
+      "label": "RichTitle"
+    },
+    {
+      "type": "checkbox",
+      "id": "loop",
+      "label": "Loop",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "card_background",
+      "label": "Review Card Background",
+      "default": "#f5f4ef"
+    },
+    {
+      "type": "color",
+      "id": "star_color",
+      "label": "Star Color",
+      "default": "#e50046"
+    },
+    {
+      "type": "header",
+      "content": "Desktop Layout"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding Top",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding Bottom",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "header",
+      "content": "Mobile"
+    },
+    {
+      "type": "range",
+      "id": "mobile_padding_top",
+      "label": "Padding Top",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "mobile_padding_bottom",
+      "label": "Padding Bottom",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 40
+    }
+  ],
+  "blocks": [
+    {
+      "type": "card",
+      "name": "Card",
+      "settings": [
+        {
+          "type": "select",
+          "id": "card_type",
+          "label": "Card Type",
+          "options": [
+            {
+              "value": "review",
+              "label": "Review"
+            },
+            {
+              "value": "video",
+              "label": "Video"
+            }
+          ],
+          "default": "review"
+        },
+        {
+          "type": "header",
+          "content": "Review"
+        },
+        {
+          "type": "text",
+          "id": "review_title",
+          "label": "Review Title",
+          "default": "“I'm obsessed.”"
+        },
+        {
+          "type": "richtext",
+          "id": "review_text",
+          "label": "Review Text",
+          "default": "<p>\"This has been a game-changer for me! I used to get salon treatments, but this is so much more convenient. Not to mention it's saving me a ton of money!\"</p>"
+        },
+        {
+          "type": "text",
+          "id": "reviewer_name",
+          "label": "Reviewer Name",
+          "default": "Swetha P."
+        },
+        {
+          "type": "text",
+          "id": "reviewer_meta",
+          "label": "Reviewer Meta",
+          "default": "Air 10 Buyer"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_verified",
+          "label": "Show Verified",
+          "default": true
+        },
+        {
+          "type": "header",
+          "content": "Video"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Video Cover Image"
+        },
+        {
+          "type": "video",
+          "id": "video",
+          "label": "Shopify Video"
+        },
+        {
+          "type": "text",
+          "id": "video_url",
+          "label": "External MP4 URL"
+        },
+        {
+          "type": "text",
+          "id": "expert_name",
+          "label": "Expert Name",
+          "default": "Cassandra Bankson"
+        },
+        {
+          "type": "text",
+          "id": "expert_position",
+          "label": "Expert Position",
+          "default": "A board-certified dermatologist"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 12,
+  "presets": [
+    {
+      "name": "Loved by 10M+ People",
+      "blocks": [
+        {
+          "type": "card",
+          "settings": {
+            "card_type": "review",
+            "review_title": "“I'm obsessed.”",
+            "reviewer_name": "Swetha P.",
+            "reviewer_meta": "Air 10 Buyer"
+          }
+        },
+        {
+          "type": "card",
+          "settings": {
+            "card_type": "video",
+            "expert_name": "Cassandra Bankson",
+            "expert_position": "A board-certified dermatologist"
+          }
+        },
+        {
+          "type": "card",
+          "settings": {
+            "card_type": "review",
+            "review_title": "“I'm obsessed.”",
+            "reviewer_name": "Swetha P.",
+            "reviewer_meta": "Air 10 Buyer"
+          }
+        },
+        {
+          "type": "card",
+          "settings": {
+            "card_type": "video",
+            "expert_name": "Cassandra Bankson",
+            "expert_position": "A board-certified dermatologist"
+          }
+        },
+        {
+          "type": "card",
+          "settings": {
+            "card_type": "review",
+            "review_title": "“I'm obsessed.”",
+            "reviewer_name": "Swetha P.",
+            "reviewer_meta": "Air 10 Buyer"
+          }
+        },
+        {
+          "type": "card",
+          "settings": {
+            "card_type": "video",
+            "expert_name": "Cassandra Bankson",
+            "expert_position": "A board-certified dermatologist"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

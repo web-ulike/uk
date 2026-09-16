@@ -1,0 +1,684 @@
+<style>
+   #shopify-section-{{ section.id }} {
+    --background: {{ section.settings.background }};
+    --text-color: {{ section.settings.text_color }};
+    --date-color: {{ section.settings.date_color }};
+    --padding-top: {{ section.settings.padding_top }}px;
+    --padding-bottom: {{ section.settings.padding_bottom }}px;
+    --mobile-padding-top: {{ section.settings.mobile_padding_top }}px;
+    --mobile-padding-bottom: {{ section.settings.mobile_padding_bottom }}px;
+
+    --image-radius: {{ section.settings.image_radius }}px;
+    --mobile-image-radius: {{ section.settings.mobile_image_radius }}px;
+  }
+
+  .beauty-guide {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    padding-top: var(--padding-top);
+    padding-bottom: var(--padding-bottom);
+    background: var(--background);
+  }
+
+  .beauty-guide__header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 40px;
+    margin-bottom: 54px;
+  }
+
+  .beauty-guide__heading {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .beauty-guide__title {
+    margin: 0;
+    color: var(--text-color);
+    font-size: 48px;
+    font-weight: 400;
+    line-height: 1.2;
+    font-family: var(--heading-font-family);
+  }
+
+  .beauty-guide__subtitle {
+    max-width: 780px;
+    margin: 16px 0 0;
+    color: var(--text-color);
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 1.5;
+  }
+
+  .beauty-guide__header-right {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+    gap: 56px;
+    padding-bottom: 5px;
+  }
+
+  .beauty-guide__all-link {
+    color: var(--text-color);
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.2;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .beauty-guide__all-link:hover {
+    opacity: 0.65;
+  }
+
+  .beauty-guide__navigation {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+  }
+
+  .beauty-guide__arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    padding: 0;
+    color: var(--text-color);
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+    transition:
+      opacity 0.3s ease,
+      transform 0.3s ease;
+  }
+
+  .beauty-guide__arrow:hover {
+    transform: scale(1.08);
+  }
+
+  .beauty-guide__arrow.swiper-button-disabled {
+    opacity: 0.3;
+    pointer-events: none;
+  }
+
+  .beauty-guide__arrow svg {
+    display: block;
+    width: 32px;
+    height: auto;
+  }
+
+  .beauty-guide custom-swiper {
+    display: block;
+    width: 100%;
+  }
+
+  .beauty-guide .swiper-container {
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .beauty-guide .swiper-wrapper {
+    align-items: stretch;
+  }
+
+  .beauty-guide .swiper-slide {
+    height: auto;
+  }
+
+  .beauty-guide__card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .beauty-guide__image-link {
+    display: block;
+    width: 100%;
+    text-decoration: none;
+  }
+
+  .beauty-guide__image-wrapper {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1.38;
+    overflow: hidden;
+    background: #eee;
+    border-radius: var(--image-radius);
+  }
+
+  .beauty-guide__image,
+  .beauty-guide__image-wrapper > svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .beauty-guide__card:hover .beauty-guide__image {
+    transform: scale(1.035);
+  }
+
+  .beauty-guide__date {
+    margin-top: 28px;
+    color: var(--date-color);
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.2;
+  }
+
+  .beauty-guide__card-title {
+    margin: 24px 0 0;
+    color: var(--text-color);
+    font-size: 24px;
+    font-weight: 400;
+    line-height: 1.2;
+    min-height:100px;
+  }
+
+  .beauty-guide__card-title a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .beauty-guide__card-title a:hover {
+    opacity: 0.7;
+  }
+
+  .beauty-guide__card-link {
+    display: inline-block;
+    align-self: flex-start;
+    margin-top: 16px;
+    color: var(--text-color);
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.2;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .beauty-guide__card-link:hover {
+    opacity: 0.65;
+  }
+
+  @media screen and (max-width: 1023px) {
+    .beauty-guide__header {
+      margin-bottom: 40px;
+    }
+
+    .beauty-guide__header-right {
+      gap: 24px;
+    }
+
+    .beauty-guide__card-link {
+      margin-top: 36px;
+    }
+  }
+
+  @media screen and (max-width: 767px) {
+    .beauty-guide {
+      padding-top: var(--mobile-padding-top);
+      padding-bottom: var(--mobile-padding-bottom);
+    }
+
+    .beauty-guide__header {
+             align-items: flex-start;
+        gap: 24px;
+        margin-bottom: 19px;
+        flex-direction: column;
+    }
+
+    .beauty-guide__title {
+      font-size: 24px;
+    }
+
+    .beauty-guide__subtitle {
+      margin-top: 8px;
+      font-size: 12px;
+    }
+
+    .beauty-guide__header-right {
+             gap: 12px;
+        padding-bottom: 0;
+        justify-content: space-between;
+        width: 100%;
+    }
+
+    .beauty-guide__header-right .beauty-guide__all-link {
+     font-size: 12px;
+
+    }
+
+    .beauty-guide__navigation {
+      gap: 8px;
+    }
+
+    .beauty-guide__arrow {
+      width: 26px;
+      height: 26px;
+    }
+
+    .beauty-guide__arrow svg {
+      width: 21px;
+    }
+
+    .beauty-guide__date {
+      margin-top: 20px;
+      font-size: 12px;
+    }
+
+    .beauty-guide__card-title {
+      margin-top: 17px;
+      font-size: 18px;
+      min-height:71px;
+    }
+
+    .beauty-guide__card-link {
+      margin-top: 12px;
+      font-size: 12px;
+    }
+
+    .beauty-guide__image-wrapper {
+      border-radius: var(--mobile-image-radius);
+    }
+
+    .beauty-guide custom-swiper {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .beauty-guide__header,
+  .beauty-guide__header-right {
+    display: contents;
+  }
+
+  .beauty-guide__heading {
+    order: 1;
+  }
+
+  .beauty-guide__all-link {
+    order: 2;
+  }
+
+  .beauty-guide .swiper-container {
+    order: 3;
+  }
+
+  .beauty-guide__navigation {
+    order: 4;
+     justify-content: flex-end;
+     margin-top: 28px;
+        padding-right: 34px;
+  }
+    .beauty-guide__header-right .beauty-guide__all-link {
+        margin: 24px 0 20px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .beauty-guide__image,
+    .beauty-guide__arrow {
+      transition: none;
+    }
+  }
+</style>
+
+{% liquid
+  assign selected_blog = section.settings.blog
+
+  if selected_blog != blank
+    assign item_count = selected_blog.articles.size
+    assign view_all_link = selected_blog.url
+  else
+    assign item_count = section.blocks.size
+    assign view_all_link = section.settings.all_link
+  endif
+%}
+
+<section class="beauty-guide">
+  <div class="container beauty-guide-container">
+    <custom-swiper
+      slides-per-view="4"
+      space-between="24"
+      loop="{{ section.settings.loop }}"
+      centered-slides="false"
+      navigation="true"
+      pagination="false"
+      breakpoints='{"0":{"slidesPerView":1.15,"spaceBetween":14},"480":{"slidesPerView":1.4,"spaceBetween":16},"768":{"slidesPerView":2.2,"spaceBetween":20},"1024":{"slidesPerView":3,"spaceBetween":22},"1440":{"slidesPerView":4,"spaceBetween":24}}'
+    >
+      <div class="beauty-guide__header js-scroll__header">
+        <div class="beauty-guide__heading">
+          {% if section.settings.title != blank %}
+            <h2 class="beauty-guide__title">{{ section.settings.title }}</h2>
+          {% endif %}
+          {% if section.settings.subtitle != blank %}
+            <div class="beauty-guide__subtitle">{{ section.settings.subtitle }}</div>
+          {% endif %}
+        </div>
+
+        <div class="beauty-guide__header-right">
+          {% if view_all_link != blank %}
+            <a class="beauty-guide__all-link" href="{{ view_all_link }}">{{ section.settings.all_text }}</a>
+          {% endif %}
+
+          {% if item_count > 1 %}
+            <div class="beauty-guide__navigation">
+              <button
+                class="beauty-guide__arrow beauty-guide__arrow--prev swiper-prev"
+                type="button"
+                aria-label="Previous"
+              >
+                <svg viewBox="0 0 32 20" fill="none" aria-hidden="true">
+                  <path d="M10 1L1 10M1 10L10 19M1 10H31" stroke="currentColor" stroke-width="1.3"/>
+                </svg>
+              </button>
+
+              <button class="beauty-guide__arrow beauty-guide__arrow--next swiper-next" type="button" aria-label="Next">
+                <svg viewBox="0 0 32 20" fill="none" aria-hidden="true">
+                  <path d="M22 1L31 10M31 10L22 19M31 10H1" stroke="currentColor" stroke-width="1.3"/>
+                </svg>
+              </button>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="swiper-container js-scroll__group">
+        <div class="swiper-wrapper">
+          {% if selected_blog != blank %}
+            {% for article in selected_blog.articles limit: 5 %}
+              <div class="swiper-slide" style="--reveal-index:{{ forloop.index0 }};">
+                <article class="beauty-guide__card js-scroll__card">
+                  <a class="beauty-guide__image-link" href="{{ article.url }}">
+                    <div class="beauty-guide__image-wrapper">
+                      {% if article.image != blank %}
+                        <img
+                          class="beauty-guide__image"
+                          src="{{ article.image | image_url: width: 900 }}"
+                          srcset="{{ article.image | image_url: width: 400 }} 400w, {{ article.image | image_url: width: 600 }} 600w, {{ article.image | image_url: width: 900 }} 900w"
+                          sizes="(max-width:767px) 80vw,(max-width:1023px) 45vw,25vw"
+                          alt="{{ article.image.alt | default: article.title | escape }}"
+                          width="{{ article.image.width }}"
+                          height="{{ article.image.height }}"
+                          loading="lazy"
+                        >
+                      {% else %}
+                        {{ 'image' | placeholder_svg_tag: 'beauty-guide__image' }}
+                      {% endif %}
+                    </div>
+                  </a>
+
+                  <div class="beauty-guide__date">{{ article.published_at | date: '%B %d, %Y' }}</div>
+
+                  <h3 class="beauty-guide__card-title">
+                    <a href="{{ article.url }}">{{ article.title }}</a>
+                  </h3>
+
+                  <a class="beauty-guide__card-link" href="{{ article.url }}">Read Article</a>
+                </article>
+              </div>
+            {% endfor %}
+
+          {% else %}
+            {% for block in section.blocks %}
+              <div class="swiper-slide" {{ block.shopify_attributes }} style="--reveal-index:{{ forloop.index0 }};">
+                <article class="beauty-guide__card js-scroll__card">
+                  {% if block.settings.link != blank -%}
+                    <a class="beauty-guide__image-link" href="{{ block.settings.link }}">
+                  {%- else %}
+                    <div class="beauty-guide__image-link">
+                  {% endif %}
+                  <div class="beauty-guide__image-wrapper">
+                    {% if block.settings.image != blank %}
+                      <img
+                        class="beauty-guide__image"
+                        src="{{ block.settings.image | image_url: width: 900 }}"
+                        srcset="{{ block.settings.image | image_url: width: 400 }} 400w, {{ block.settings.image | image_url: width: 600 }} 600w, {{ block.settings.image | image_url: width: 900 }} 900w"
+                        sizes="(max-width:767px) 80vw,(max-width:1023px) 45vw,25vw"
+                        alt="{{ block.settings.image.alt | escape }}"
+                        width="{{ block.settings.image.width }}"
+                        height="{{ block.settings.image.height }}"
+                        loading="lazy"
+                      >
+                    {% else %}
+                      {{ 'image' | placeholder_svg_tag: 'beauty-guide__image' }}
+                    {% endif %}
+                  </div>
+                  {% if block.settings.link != blank %}</a>{% else %}</div>{% endif %}
+
+                  {% if block.settings.date != blank %}
+                    <div class="beauty-guide__date">{{ block.settings.date }}</div>
+                  {% endif %}
+
+                  {% if block.settings.title != blank %}
+                    <h3 class="beauty-guide__card-title">
+                      {% if block.settings.link != blank -%}
+                        <a href="{{ block.settings.link }}">{{ block.settings.title }}</a>
+                      {%- else -%}
+                        {{- block.settings.title -}}
+                      {%- endif %}
+                    </h3>
+                  {% endif %}
+
+                  {% if block.settings.link != blank -%}
+                    <a class="beauty-guide__card-link" href="{{ block.settings.link }}">
+                      {{- block.settings.link_text -}}
+                    </a>
+                  {%- endif %}
+                </article>
+              </div>
+            {% endfor %}
+          {% endif %}
+        </div>
+      </div>
+    </custom-swiper>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Beauty Guide",
+  "settings": [
+    {
+      "type": "blog",
+      "id": "blog",
+      "label": "Blog"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Your Beauty Guide"
+    },
+    {
+      "type": "richtext",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "<p>Expert insights and practical advice on hair removal, skin care, and at-home beauty.</p>"
+    },
+    {
+      "type": "text",
+      "id": "all_text",
+      "label": "Read All Text",
+      "default": "Read All Articles"
+    },
+    {
+      "type": "url",
+      "id": "all_link",
+      "label": "Read All Link"
+    },
+    {
+      "type": "checkbox",
+      "id": "loop",
+      "label": "Loop",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background",
+      "default": "#fbfaf6"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#1b1b1b"
+    },
+    {
+      "type": "color",
+      "id": "date_color",
+      "label": "Date Color",
+      "default": "#929292"
+    },
+    {
+      "type": "header",
+      "content": "Desktop Layout"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding Top",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding Bottom",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "image_radius",
+      "label": "Image Radius",
+      "min": 0,
+      "max": 30,
+      "step": 1,
+      "unit": "px",
+      "default": 7
+    },
+    {
+      "type": "header",
+      "content": "Mobile"
+    },
+    {
+      "type": "range",
+      "id": "mobile_padding_top",
+      "label": "Padding Top",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "mobile_padding_bottom",
+      "label": "Padding Bottom",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "mobile_image_radius",
+      "label": "Image Radius",
+      "min": 0,
+      "max": 30,
+      "step": 1,
+      "unit": "px",
+      "default": 6
+    }
+  ],
+  "blocks": [
+    {
+      "type": "article",
+      "name": "Article",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "date",
+          "label": "Date",
+          "default": "August 21, 2026"
+        },
+        {
+          "type": "textarea",
+          "id": "title",
+          "label": "Article Title",
+          "default": "Although IPL hair removal devices are completely safe"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Article Link"
+        },
+        {
+          "type": "text",
+          "id": "link_text",
+          "label": "Link Text",
+          "default": "Read All Articles"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 10,
+  "presets": [
+    {
+      "name": "Beauty Guide",
+      "blocks": [
+        {
+          "type": "article",
+          "settings": {
+            "date": "August 21, 2026",
+            "title": "Although IPL hair removal devices are completely safe"
+          }
+        },
+        {
+          "type": "article",
+          "settings": {
+            "date": "August 21, 2026",
+            "title": "Although IPL hair removal devices are completely safe"
+          }
+        },
+        {
+          "type": "article",
+          "settings": {
+            "date": "August 21, 2026",
+            "title": "Although IPL hair removal devices are completely safe"
+          }
+        },
+        {
+          "type": "article",
+          "settings": {
+            "date": "August 21, 2026",
+            "title": "Although IPL hair removal devices are completely safe"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

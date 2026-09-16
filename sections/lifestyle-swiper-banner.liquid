@@ -1,0 +1,1062 @@
+<style>
+  #shopify-section-{{ section.id }} {
+   --desktop-height: {{ section.settings.desktop_height }}px;
+    --mobile-height: {{ section.settings.mobile_height }}px;
+    --panel-width: {{ section.settings.panel_width }}px;
+    --panel-bottom: {{ section.settings.panel_bottom }}px;
+    --mobile-panel-bottom: {{ section.settings.mobile_panel_bottom }}px;
+    --panel-radius: {{ section.settings.panel_radius }}px;
+    --mobile-panel-radius: {{ section.settings.mobile_panel_radius }}px;
+    --panel-blur: {{ section.settings.panel_blur }}px;
+    --panel-background: {{ section.settings.panel_background }};
+    --text-color: {{ section.settings.text_color }};
+    --tab-size: {{ section.settings.tab_size }}px;
+    --mobile-tab-size: {{ section.settings.mobile_tab_size }}px;
+    --description-size: {{ section.settings.description_size }}px;
+    --mobile-description-size: {{ section.settings.mobile_description_size }}px;
+    --overlay-opacity: {{ section.settings.overlay_opacity | divided_by: 100.0 }};
+    --slide-count: {{ section.blocks.size }};
+  }
+  .lifestyle-banner {
+    position: relative;
+    width: 100%;
+    height: var(--desktop-height);
+    overflow: hidden;
+    background: #111;
+  }
+
+  .lifestyle-banner__swiper {
+    width: 100%;
+    height: 100%;
+  }
+
+  .lifestyle-banner .swiper-wrapper {
+    height: 100%;
+  }
+
+  .lifestyle-banner__slide {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  .lifestyle-banner__picture {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .lifestyle-banner__image,
+  .lifestyle-banner__picture > svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .lifestyle-banner__overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: rgba(0, 0, 0, var(--overlay-opacity));
+    pointer-events: none;
+  }
+
+  /* Arrow */
+  .lifestyle-banner__arrow {
+    position: absolute;
+    top: 50%;
+    z-index: 5;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 64px;
+    height: 64px;
+    padding: 0;
+
+    color: #fff;
+
+    background: transparent;
+    border: 0;
+
+    cursor: pointer;
+
+    transform: translateY(-50%);
+
+    transition:
+      opacity 0.3s ease,
+      transform 0.3s ease;
+  }
+
+  .lifestyle-banner__arrow:hover {
+    transform:
+      translateY(-50%)
+      scale(1.08);
+  }
+
+  .lifestyle-banner__arrow--prev {
+    left: 72px;
+  }
+
+  .lifestyle-banner__arrow--next {
+    right: 72px;
+  }
+
+  .lifestyle-banner__arrow svg {
+    display: block;
+    width: 48px;
+    height: auto;
+  }
+
+  .lifestyle-banner__arrow.swiper-button-disabled {
+    opacity: 0.3;
+    pointer-events: none;
+  }
+
+  /* Bottom panel sex name */
+  .lifestyle-banner__panel {
+    position: absolute;
+    bottom: var(--panel-bottom);
+    left: 50%;
+    z-index: 6;
+
+    width: min(
+      calc(100% - 48px),
+      var(--panel-width)
+    );
+
+    padding: 14px 54px 16px;
+
+    color: var(--text-color);
+
+    background: var(--panel-background);
+
+    border: 1px solid rgba(255, 255, 255, 0.24);
+    border-radius: var(--panel-radius);
+
+    -webkit-backdrop-filter:
+      blur(var(--panel-blur));
+
+    backdrop-filter:
+      blur(var(--panel-blur));
+
+    transform: translateX(-50%);
+  }
+
+  /* Tabs */
+  .lifestyle-banner__tabs {
+    position: relative;
+
+    display: grid;
+    grid-template-columns:
+      repeat(
+        var(--slide-count),
+        minmax(0, 1fr)
+      );
+
+    width: 100%;
+
+    border-bottom:
+      1px solid rgba(255, 255, 255, 0.72);
+  }
+
+  .lifestyle-banner__tab {
+    position: relative;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    min-width: 0;
+    padding: 0 12px 14px;
+
+    color: inherit;
+
+    font-size: var(--tab-size);
+    font-weight: 400;
+    line-height: 1.2;
+
+    white-space: nowrap;
+
+    background: transparent;
+    border: 0;
+
+    opacity: 0.55;
+
+    cursor: pointer;
+
+    transition:
+      opacity 0.35s ease;
+  }
+
+  .lifestyle-banner__tab:hover {
+    opacity: 0.8;
+  }
+
+    .lifestyle-banner__tab {
+    opacity: 1;
+   color: #A9A9A9;
+  }
+
+  .lifestyle-banner__tab.is-active {
+    opacity: 1;
+     color: #fff;
+    font-family: var(--heading-font-family);
+  }
+
+  .lifestyle-banner__tab::after {
+    position: absolute;
+    right: 0;
+    bottom: -1px;
+    left: 0;
+
+    width: 100%;
+    height: 2px;
+
+    content: '';
+
+    background: #fff;
+
+    transform: scaleX(0);
+    transform-origin: left center;
+
+    transition:
+      transform 0.4s ease;
+  }
+
+  .lifestyle-banner__tab.is-active::after {
+    transform: scaleX(1);
+  }
+
+  /* Description */
+  .lifestyle-banner__descriptions {
+    position: relative;
+
+    min-height: 22px;
+    margin-top: 16px;
+  }
+
+  .lifestyle-banner__description {
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    margin: 0;
+
+    color: inherit;
+
+    font-size: var(--description-size);
+    font-weight: 400;
+    line-height: 1.4;
+
+    text-align: center;
+
+    opacity: 0;
+    pointer-events: none;
+
+    transform: translateY(5px);
+
+    transition:
+      opacity 0.35s ease,
+      transform 0.35s ease;
+  }
+
+  .lifestyle-banner__description.is-active {
+    position: relative;
+
+    opacity: 1;
+    pointer-events: auto;
+
+    transform: translateY(0);
+  }
+  .lifestyle-banner__link{
+      position: absolute;
+          right: 1%;
+    top: 6%;
+    z-index: 2;
+    color: #fff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    font-size: 18px;
+    text-decoration: underline;
+  }
+
+  @media screen and (max-width: 1023px) {
+    .lifestyle-banner__arrow--prev {
+      left: 24px;
+    }
+
+    .lifestyle-banner__arrow--next {
+      right: 24px;
+    }
+
+    .lifestyle-banner__panel {
+      padding-right: 30px;
+      padding-left: 30px;
+    }
+  }
+
+  @media screen and (max-width: 767px) {
+    .lifestyle-banner {
+      height: var(--mobile-height);
+    }
+
+    .lifestyle-banner__arrow {
+      top: 45%;
+
+      width: 44px;
+      height: 44px;
+    }
+
+    .lifestyle-banner__arrow--prev {
+      left: 6px;
+    }
+
+    .lifestyle-banner__arrow--next {
+      right: 6px;
+    }
+
+    .lifestyle-banner__arrow svg {
+      width: 32px;
+    }
+
+    .lifestyle-banner__panel {
+      bottom: var(--mobile-panel-bottom);
+
+      width: calc(100% - 32px);
+
+      padding: 12px 16px 14px;
+
+      border-radius:
+        var(--mobile-panel-radius);
+    }
+
+    .lifestyle-banner__tabs {
+      display: flex;
+
+      overflow-x: auto;
+      overflow-y: hidden;
+
+      scrollbar-width: none;
+
+      scroll-behavior: smooth;
+    }
+
+    .lifestyle-banner__tabs::-webkit-scrollbar {
+      display: none;
+    }
+
+    .lifestyle-banner__tab {
+      flex: 0 0 auto;
+
+      min-width: 140px;
+
+      padding: 0 10px 12px;
+
+      font-size:
+        var(--mobile-tab-size);
+    }
+
+    .lifestyle-banner__descriptions {
+      min-height: 38px;
+      margin-top: 12px;
+    }
+
+    .lifestyle-banner__description {
+      font-size:
+        var(--mobile-description-size);
+
+      line-height: 1.4;
+    }
+    .lifestyle-banner__link {
+    font-size: 14px;
+           left: 50%;
+        top: 7%;
+        transform: translateX(-50%);
+}
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .lifestyle-banner__arrow,
+    .lifestyle-banner__tab,
+    .lifestyle-banner__tab::after,
+    .lifestyle-banner__description {
+      transition: none !important;
+    }
+  }
+</style>
+
+<section class="lifestyle-banner" data-lifestyle-banner="{{ section.id }}">
+  <div
+    class="swiper lifestyle-banner__swiper"
+  >
+    <div class="swiper-wrapper">
+      {% for block in section.blocks %}
+        <div
+          class="swiper-slide lifestyle-banner__slide"
+          data-slide-index="{{ forloop.index0 }}"
+          {{ block.shopify_attributes }}
+        >
+          {% if  block.settings.button_text != blank %}
+            <a href="{{ block.settings.button_link }}" class="lifestyle-banner__link">{{ block.settings.button_text }}</a>
+          {% endif %}
+          {% if block.settings.image != blank %}
+            <picture
+              class="lifestyle-banner__picture"
+            >
+              {% if block.settings.mobile_image != blank %}
+                <source
+                  media="(max-width: 767px)"
+                  srcset="{{ block.settings.mobile_image | image_url: width: 1200 }}"
+                >
+              {% endif %}
+
+              <img
+                class="lifestyle-banner__image"
+                src="{{ block.settings.image | image_url: width: 2400 }}"
+                srcset="
+                  {{ block.settings.image | image_url: width: 800 }} 800w,
+                  {{ block.settings.image | image_url: width: 1200 }} 1200w,
+                  {{ block.settings.image | image_url: width: 1600 }} 1600w,
+                  {{ block.settings.image | image_url: width: 2000 }} 2000w,
+                  {{ block.settings.image | image_url: width: 2400 }} 2400w
+                "
+                sizes="100vw"
+                alt="{{ block.settings.image.alt | escape }}"
+                width="{{ block.settings.image.width }}"
+                height="{{ block.settings.image.height }}"
+                loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
+              >
+            </picture>
+          {% else %}
+            {{
+              'lifestyle-1'
+              | placeholder_svg_tag:
+                'lifestyle-banner__image'
+            }}
+          {% endif %}
+
+          {% if section.settings.overlay_opacity > 0 %}
+            <div
+              class="lifestyle-banner__overlay"
+            ></div>
+          {% endif %}
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  {% if section.blocks.size > 100 %}
+    <button
+      class="
+        lifestyle-banner__arrow
+        lifestyle-banner__arrow--prev
+      "
+      type="button"
+      aria-label="Previous slide"
+    >
+      <svg
+        viewBox="0 0 48 40"
+        fill="none"
+        aria-hidden="true"
+      >
+        <path
+          d="M20 1L1 20M1 20L20 39M1 20H47"
+          stroke="currentColor"
+          stroke-width="2"
+        />
+      </svg>
+    </button>
+
+    <button
+      class="
+        lifestyle-banner__arrow
+        lifestyle-banner__arrow--next
+      "
+      type="button"
+      aria-label="Next slide"
+    >
+      <svg
+        viewBox="0 0 48 40"
+        fill="none"
+        aria-hidden="true"
+      >
+        <path
+          d="M28 1L47 20M47 20L28 39M47 20H1"
+          stroke="currentColor"
+          stroke-width="2"
+        />
+      </svg>
+    </button>
+  {% endif %}
+
+  {% if section.blocks.size > 0 %}
+    <div
+      class="lifestyle-banner__panel"
+    >
+      <div
+        class="lifestyle-banner__tabs"
+      >
+        {% for block in section.blocks %}
+          <button
+            class="
+              lifestyle-banner__tab
+              {% if forloop.first %}
+                is-active
+              {% endif %}
+            "
+            type="button"
+            data-tab-index="{{ forloop.index0 }}"
+            {% if forloop.first %}
+              aria-current="true"
+            {% endif %}
+          >
+            {{ block.settings.title }}
+          </button>
+        {% endfor %}
+      </div>
+
+      <div
+        class="lifestyle-banner__descriptions"
+      >
+        {% for block in section.blocks %}
+          <div
+            class="
+              lifestyle-banner__description
+              {% if forloop.first %}
+                is-active
+              {% endif %}
+            "
+            data-description-index="{{ forloop.index0 }}"
+          >
+            {{ block.settings.description }}
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  {% endif %}
+</section>
+
+<script>
+(() => {
+  const sectionId = '{{ section.id }}';
+
+  const getSection = () => {
+    return document.querySelector(
+      `[data-lifestyle-banner="${sectionId}"]`
+    );
+  };
+
+  const init = () => {
+    const section = getSection();
+
+    if (!section) return;
+
+    if (typeof Swiper === 'undefined') {
+      console.warn(
+        'Lifestyle Banner: Swiper is not loaded.'
+      );
+      return;
+    }
+
+    if (
+      section.dataset.initialized === 'true'
+    ) {
+      return;
+    }
+
+    section.dataset.initialized = 'true';
+
+    const swiperEl = section.querySelector(
+      '.lifestyle-banner__swiper'
+    );
+
+    const prevBtn = section.querySelector(
+      '.lifestyle-banner__arrow--prev'
+    );
+
+    const nextBtn = section.querySelector(
+      '.lifestyle-banner__arrow--next'
+    );
+
+    const tabs = [
+      ...section.querySelectorAll(
+        '.lifestyle-banner__tab'
+      ),
+    ];
+
+    const descriptions = [
+      ...section.querySelectorAll(
+        '.lifestyle-banner__description'
+      ),
+    ];
+
+    const tabsContainer = section.querySelector(
+      '.lifestyle-banner__tabs'
+    );
+
+    if (!swiperEl) return;
+
+    const updateContent = index => {
+      tabs.forEach((tab, tabIndex) => {
+        const isActive =
+          tabIndex === index;
+
+        tab.classList.toggle(
+          'is-active',
+          isActive
+        );
+
+        if (isActive) {
+          tab.setAttribute(
+            'aria-current',
+            'true'
+          );
+
+          {% comment %} if (
+            window.innerWidth <= 767
+          ) {
+            tab.scrollIntoView({
+              behavior: 'smooth',
+              block: 'nearest',
+              inline: 'center',
+            });
+          } {% endcomment %}
+
+if (
+  window.innerWidth <= 767 &&
+  tabsContainer
+) {
+  const left =
+    tab.offsetLeft -
+    tabsContainer.clientWidth / 2 +
+    tab.offsetWidth / 2;
+
+  tabsContainer.scrollTo({
+    left,
+    behavior: 'smooth',
+  });
+}
+
+
+        } else {
+          tab.removeAttribute(
+            'aria-current'
+          );
+        }
+      });
+
+      descriptions.forEach(
+        (
+          description,
+          descriptionIndex
+        ) => {
+          description.classList.toggle(
+            'is-active',
+            descriptionIndex === index
+          );
+        }
+      );
+    };
+
+    const swiper = new Swiper(
+      swiperEl,
+      {
+        slidesPerView: 1,
+
+        speed:
+          {{ section.settings.transition_speed }},
+
+        loop:
+          {{ section.settings.loop | json }},
+
+        {% if section.settings.autoplay %}
+          autoplay: {
+            delay:
+              {{ section.settings.autoplay_speed | times: 1000 }},
+
+            disableOnInteraction: false,
+
+            pauseOnMouseEnter: false,
+          },
+        {% endif %}
+
+        navigation: {
+          prevEl: prevBtn,
+          nextEl: nextBtn,
+        },
+
+        on: {
+          init(instance) {
+            updateContent(
+              instance.realIndex
+            );
+          },
+
+          slideChange(instance) {
+            updateContent(
+              instance.realIndex
+            );
+          },
+        },
+      }
+    );
+
+    section.swiperInstance = swiper;
+
+    tabs.forEach(
+      (tab, index) => {
+        tab.addEventListener(
+          'click',
+          () => {
+            if (swiper.params.loop) {
+              swiper.slideToLoop(
+                index
+              );
+            } else {
+              swiper.slideTo(
+                index
+              );
+            }
+          }
+        );
+      }
+    );
+
+    section.lifestyleBannerCleanup =
+      () => {
+        if (
+          section.swiperInstance &&
+          !section.swiperInstance.destroyed
+        ) {
+          section.swiperInstance.destroy(
+            true,
+            true
+          );
+        }
+
+        section.swiperInstance = null;
+      };
+  };
+
+  if (
+    document.readyState === 'loading'
+  ) {
+    document.addEventListener(
+      'DOMContentLoaded',
+      init,
+      {
+        once: true,
+      }
+    );
+  } else {
+    init();
+  }
+
+  document.addEventListener(
+    'shopify:section:load',
+    event => {
+      const section =
+        event.target.querySelector?.(
+          `[data-lifestyle-banner="${sectionId}"]`
+        );
+
+      if (!section) return;
+
+      section.dataset.initialized =
+        'false';
+
+      init();
+    }
+  );
+
+  document.addEventListener(
+    'shopify:section:unload',
+    event => {
+      const section =
+        event.target.querySelector?.(
+          `[data-lifestyle-banner="${sectionId}"]`
+        );
+
+      if (!section) return;
+
+      section
+        .lifestyleBannerCleanup
+        ?.();
+    }
+  );
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Lifestyle Swiper Banner",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "autoplay",
+      "label": "Autoplay",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "autoplay_speed",
+      "label": "Autoplay Speed",
+      "min": 3,
+      "max": 12,
+      "step": 1,
+      "unit": "s",
+      "default": 5
+    },
+    {
+      "type": "checkbox",
+      "id": "loop",
+      "label": "Loop",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "transition_speed",
+      "label": "Transition Speed",
+      "min": 300,
+      "max": 1500,
+      "step": 50,
+      "unit": "ms",
+      "default": 800
+    },
+    {
+      "type": "header",
+      "content": "Desktop"
+    },
+    {
+      "type": "range",
+      "id": "desktop_height",
+      "label": "Banner Height",
+      "min": 400,
+      "max": 1000,
+      "step": 20,
+      "unit": "px",
+      "default": 800
+    },
+    {
+      "type": "range",
+      "id": "panel_width",
+      "label": "Panel Width",
+      "min": 600,
+      "max": 1400,
+      "step": 20,
+      "unit": "px",
+      "default": 1120
+    },
+    {
+      "type": "range",
+      "id": "panel_bottom",
+      "label": "Panel Bottom",
+      "min": 10,
+      "max": 200,
+      "step": 2,
+      "unit": "px",
+      "default": 34
+    },
+    {
+      "type": "range",
+      "id": "panel_radius",
+      "label": "Panel Radius",
+      "min": 0,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "default": 6
+    },
+    {
+      "type": "range",
+      "id": "panel_blur",
+      "label": "Panel Blur",
+      "min": 0,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "color_background",
+      "id": "panel_background",
+      "label": "Panel Background",
+      "default": "rgba(20, 20, 20, 0.58)"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "tab_size",
+      "label": "Tab Font Size",
+      "min": 14,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "default": 23
+    },
+    {
+      "type": "range",
+      "id": "description_size",
+      "label": "Description Font Size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "label": "Image Overlay",
+      "min": 0,
+      "max": 60,
+      "step": 5,
+      "unit": "%",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Mobile"
+    },
+    {
+      "type": "range",
+      "id": "mobile_height",
+      "label": "Banner Height",
+      "min": 400,
+      "max": 900,
+      "step": 20,
+      "unit": "px",
+      "default": 620
+    },
+    {
+      "type": "range",
+      "id": "mobile_panel_bottom",
+      "label": "Panel Bottom",
+      "min": 8,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "mobile_panel_radius",
+      "label": "Panel Radius",
+      "min": 0,
+      "max": 30,
+      "step": 1,
+      "unit": "px",
+      "default": 6
+    },
+    {
+      "type": "range",
+      "id": "mobile_tab_size",
+      "label": "Tab Font Size",
+      "min": 12,
+      "max": 22,
+      "step": 1,
+      "unit": "px",
+      "default": 15
+    },
+    {
+      "type": "range",
+      "id": "mobile_description_size",
+      "label": "Description Font Size",
+      "min": 11,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "default": 13
+    }
+  ],
+  "blocks": [
+    {
+      "type": "slide",
+      "name": "Slide",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Desktop Image"
+        },
+        {
+          "type": "image_picker",
+          "id": "mobile_image",
+          "label": "Mobile Image"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Tab Title",
+          "default": "Intimate Moments"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description",
+          "default": "A gentle skin-smoothing mode for soft, touchably smooth skin without discomfort."
+        },
+
+            {
+          "type": "text",
+          "id": "button_text",
+          "label": "Button  text"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Button  link",
+        },
+      ]
+    }
+  ],
+  "max_blocks": 6,
+  "presets": [
+    {
+      "name": "Lifestyle Swiper Banner",
+      "blocks": [
+        {
+          "type": "slide",
+          "settings": {
+            "title": "Intimate Moments",
+            "description": "A gentle skin-smoothing mode for soft, touchably smooth skin without discomfort."
+          }
+        },
+        {
+          "type": "slide",
+          "settings": {
+            "title": "Special Occasion Ready",
+            "description": "Get smooth, confident skin ready for every special occasion."
+          }
+        },
+        {
+          "type": "slide",
+          "settings": {
+            "title": "Beach Getaway",
+            "description": "Enjoy smooth skin and effortless confidence for your next escape."
+          }
+        },
+        {
+          "type": "slide",
+          "settings": {
+            "title": "Business Ready",
+            "description": "Stay polished and confident from meetings to business travel."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

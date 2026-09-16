@@ -1,0 +1,1006 @@
+<style>
+  #shopify-section-{{ section.id }} {
+  --background: {{ section.settings.background }};
+    --text-color: {{ section.settings.text_color }};
+
+    --media-width: {{ section.settings.media_width }}px;
+
+    --padding-top: {{ section.settings.padding_top }}px;
+    --padding-bottom: {{ section.settings.padding_bottom }}px;
+
+
+
+    --tabs-width: {{ section.settings.tabs_width }}px;
+
+    --media-ratio: {{ section.settings.media_ratio_width }} / {{ section.settings.media_ratio_height }};
+
+    --mobile-padding-top: {{ section.settings.mobile_padding_top }}px;
+    --mobile-padding-bottom: {{ section.settings.mobile_padding_bottom }}px;
+
+
+    --mobile-media-ratio: {{ section.settings.mobile_media_ratio_width }} / {{ section.settings.mobile_media_ratio_height }};
+  }
+  .real-results {
+    position: relative;
+    width: 100%;
+    padding-top: var(--padding-top);
+    padding-bottom: var(--padding-bottom);
+    background: var(--background);
+  }
+
+
+  .real-results__grid {
+    display: grid;
+    grid-template-columns:
+      minmax(360px, 1fr)
+      minmax(0, var(--media-width));
+    align-items: stretch;
+    gap: 100px;
+  }
+
+  /* Left content */
+  .real-results__content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-width: 0;
+  }
+
+  .real-results__heading {
+    {% comment %} max-width: 480px; {% endcomment %}
+  }
+
+  .real-results__title {
+    margin: 0;
+    color: var(--text-color);
+    font-size: 48px;
+    font-weight: 400;
+    line-height: 1.2;
+        font-family: var(--heading-font-family);
+  }
+
+  .real-results__description {
+    max-width: 460px;
+    margin: 16px 0 0;
+    color: var(--text-color);
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 1.5;
+  }
+
+  /* Tabs */
+  .real-results__tabs {
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+    width: 100%;
+    max-width: var(--tabs-width);
+    border-bottom: 2px solid #C0C0C0;
+        justify-content: space-between;
+  }
+
+  .real-results__tab {
+    position: relative;
+    {% comment %} flex: 1 1 0; {% endcomment %}
+    min-width: 0;
+    padding: 0 0px 18px;
+    color:#C0C0C0;
+    font-size: 24px;
+    font-weight: 400;
+    line-height: 1.2;
+    text-align: left;
+    white-space: nowrap;
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+    transition:
+      opacity 0.35s ease,
+      color 0.35s ease;
+  }
+
+  .real-results__tab:hover {
+    opacity: 0.65;
+  }
+
+  .real-results__tab.is-active {
+     color: #3F3636;
+       font-family: var(--heading-font-family);
+  }
+
+  .real-results__indicator {
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    z-index: 2;
+    display: block;
+    width: 0;
+    height: 2px;
+    background: var(--text-color);
+    pointer-events: none;
+    transform: translate3d(0, 0, 0);
+    transition:
+      transform 0.5s cubic-bezier(0.65, 0, 0.35, 1),
+      width 0.5s cubic-bezier(0.65, 0, 0.35, 1);
+    will-change: transform, width;
+  }
+
+  /* Right video */
+  .real-results__media {
+    position: relative;
+    width: 100%;
+    aspect-ratio: var(--media-ratio);
+    overflow: hidden;
+    background: #E1E1E1;
+    aspect-ratio: 885 / 540;
+    border-radius: 8px;
+  }
+
+  .real-results__video-item {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition:
+      opacity 0.55s ease,
+      visibility 0.55s ease;
+  }
+
+  .real-results__video-item.is-active {
+    z-index: 2;
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+
+  .real-results__video {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .real-results__placeholder {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+.real-results__eyebrow{
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    color:  #6C6AB4;
+    font-size: 24px;
+    font-weight: 400;
+    line-height: 1.2;
+    margin-bottom:12px;
+}
+.real-results__eyebrow-icon {
+    display: block;
+    flex: 0 0 auto;
+}
+.real-results__info{
+    margin: 62px 0 24px;
+}
+  @media screen and (max-width: 1550px) {
+    .real-results__grid {
+      grid-template-columns:minmax(300px, 0.75fr) minmax(0, 1.1fr);
+      gap: 60px;
+    }
+    .feature-showcase__info-image {
+    max-width: 85%;
+}
+.real-results__info {
+    margin: 40px 0 15px;
+}
+  }
+  @media screen and (max-width: 1250px) {
+      .real-results__grid {
+        grid-template-columns: minmax(300px, 1fr) minmax(0, 1.3fr);
+        gap: 20px;
+    }
+  }
+  @media screen and (max-width: 767px) {
+    .real-results {
+      padding-top: var(--mobile-padding-top);
+      padding-bottom: var(--mobile-padding-bottom);
+    }
+
+    .real-results__eyebrow{
+    gap: 8px;
+    font-size: 12px;
+    margin-bottom: 8px;
+    }
+    .real-results__eyebrow-icon{
+    width:19px;
+    }
+
+    .real-results__grid {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .real-results__content {
+      display: contents;
+    }
+
+    .real-results__heading {
+      order: 1;
+      max-width: none;
+      margin-bottom: 32px;
+    }
+
+    .real-results__media {
+      order: 2;
+      width: 100%;
+      aspect-ratio: var(--mobile-media-ratio);
+        aspect-ratio: 336/200;
+    }
+
+    .real-results__tabs {
+      order: 3;
+      max-width: none;
+      margin-top: 24px;
+      {% comment %} overflow-x: auto;
+      overflow-y: hidden;
+      scrollbar-width: none;
+      scroll-behavior: smooth; {% endcomment %}
+    }
+
+    .real-results__tabs::-webkit-scrollbar {
+      display: none;
+    }
+
+    .real-results__title {
+      font-size: 24px;
+    }
+        .real-results__info {
+        margin: 32px 0 15px;
+    }
+        .feature-showcase__info-image {
+        max-width: 550px;
+        width:100%;
+    }
+
+    .real-results__description {
+      max-width: none;
+      margin-top: 15px;
+      font-size: 12px;
+    }
+
+    .real-results__tab {
+      flex: 1 0 auto;
+      min-width: 110px;
+      padding: 0 14px 12px;
+      font-size: 12px;
+      text-align: center;
+    }
+    .real-results__tab:hover {
+  opacity: 1;
+}
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .real-results__video-item,
+    .real-results__tab,
+    .real-results__indicator {
+      transition: none !important;
+    }
+  }
+</style>
+
+<section class="real-results" data-real-results="{{ section.id }}">
+  <div class="container">
+    <div class="real-results__grid">
+
+      <div class="real-results__content to-top">
+
+        <div class="real-results__heading">
+          {% if section.settings.eyebrow != blank %}
+              <div class="real-results__eyebrow">
+                {% if section.settings.eyebrow_icon != blank %}<img class="real-results__eyebrow-icon" src="{{ section.settings.eyebrow_icon | image_url: width: 80 }}" alt="" width="{{ section.settings.eyebrow_icon.width }}" height="{{ section.settings.eyebrow_icon.height }}" loading="lazy">{% endif %}
+                <span>{{ section.settings.eyebrow }}</span>
+              </div>
+            {% endif %}
+          {% if section.settings.title != blank %}
+            <h2 class="real-results__title">
+              {{ section.settings.title }}
+            </h2>
+          {% endif %}
+
+           {% if section.settings.info_image != blank %}
+              <div class="real-results__info">
+                {% if section.settings.info_image != blank %}<img class="feature-showcase__info-image" src="{{ section.settings.info_image | image_url}}" alt="" width="{{ section.settings.info_image.width }}" height="{{ section.settings.info_image.height }}" loading="lazy">{% endif %}
+              </div>
+            {% endif %}
+
+
+
+          {% if section.settings.description != blank %}
+            <div class="real-results__description">
+              {{ section.settings.description }}
+            </div>
+          {% endif %}
+        </div>
+
+        {% if section.blocks.size > 0 %}
+          <div
+            class="real-results__tabs"
+            role="tablist"
+          >
+            {% for block in section.blocks %}
+              <button
+                class="
+                  real-results__tab
+                  {% if forloop.first %}
+                    is-active
+                  {% endif %}
+                "
+                type="button"
+                role="tab"
+                data-real-results-tab="{{ forloop.index0 }}"
+                aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
+              >
+                {{ block.settings.title }}
+              </button>
+            {% endfor %}
+
+            <span
+              class="real-results__indicator"
+              aria-hidden="true"
+            ></span>
+          </div>
+        {% endif %}
+
+      </div>
+
+      <div class="real-results__media to-top">
+        {% for block in section.blocks %}
+          <div
+            class="
+              real-results__video-item
+              {% if forloop.first %}
+                is-active
+              {% endif %}
+            "
+            data-real-results-video="{{ forloop.index0 }}"
+            {{ block.shopify_attributes }}
+          >
+            {% if block.settings.video != blank %}
+              {{
+                block.settings.video
+                | video_tag:
+                  autoplay: true,
+                  loop: true,
+                  muted: true,
+                  controls: false,
+                  playsinline: true,
+                  preload: 'metadata',
+                  class: 'real-results__video'
+              }}
+
+            {% elsif block.settings.video_url != blank %}
+              <video
+                class="real-results__video"
+                src="{{ block.settings.video_url }}"
+                autoplay
+                muted
+                loop
+                playsinline
+                preload="metadata"
+              ></video>
+
+              {% elsif block.settings.image != blank %}
+              <img
+                class="feature-showcase__image"
+                src="{{ block.settings.image | image_url: width: 1800 }}"
+                srcset="
+                  {{ block.settings.image | image_url: width: 700 }} 700w,
+                  {{ block.settings.image | image_url: width: 1100 }} 1100w,
+                  {{ block.settings.image | image_url: width: 1400 }} 1400w,
+                  {{ block.settings.image | image_url: width: 1800 }} 1800w
+                "
+                sizes="(max-width: 1023px) 100vw, 60vw"
+                alt="{{ block.settings.image_alt | default: block.settings.title | escape }}"
+                width="{{ block.settings.image.width }}"
+                height="{{ block.settings.image.height }}"
+                loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
+              >
+
+            {% else %}
+              {{
+                'lifestyle-1'
+                | placeholder_svg_tag:
+                  'real-results__placeholder'
+              }}
+            {% endif %}
+          </div>
+        {% endfor %}
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<script>
+(() => {
+  const sectionId =
+    '{{ section.id }}';
+
+  const init = () => {
+    const section =
+      document.querySelector(
+        `[data-real-results="${sectionId}"]`
+      );
+
+    if (
+      !section ||
+      section.dataset.initialized ===
+        'true'
+    ) {
+      return;
+    }
+
+    section.dataset.initialized =
+      'true';
+
+    const tabsWrapper =
+      section.querySelector(
+        '.real-results__tabs'
+      );
+
+    const indicator =
+      section.querySelector(
+        '.real-results__indicator'
+      );
+
+    const tabs = [
+      ...section.querySelectorAll(
+        '[data-real-results-tab]'
+      ),
+    ];
+
+    const videoItems = [
+      ...section.querySelectorAll(
+        '[data-real-results-video]'
+      ),
+    ];
+
+    let currentIndex = 0;
+    let switchTimer = null;
+    let resizeTimer = null;
+
+    const playVideo = item => {
+      const video =
+        item?.querySelector('video');
+
+      if (!video) return;
+
+      const playPromise =
+        video.play();
+
+      if (
+        playPromise &&
+        typeof playPromise.catch ===
+          'function'
+      ) {
+        playPromise.catch(() => {});
+      }
+    };
+
+    const pauseVideo = item => {
+      const video =
+        item?.querySelector('video');
+
+      if (!video) return;
+
+      video.pause();
+    };
+
+    /*
+     * 更新下面活动线位置
+     */
+    const updateIndicator = (
+      index,
+      animate = true
+    ) => {
+      if (
+        !tabsWrapper ||
+        !indicator ||
+        !tabs[index]
+      ) {
+        return;
+      }
+
+      const tab =
+        tabs[index];
+
+      if (!animate) {
+        indicator.style.transition =
+          'none';
+      }
+
+      indicator.style.width =
+        `${tab.offsetWidth}px`;
+
+      indicator.style.transform =
+        `translate3d(${tab.offsetLeft}px, 0, 0)`;
+
+      if (!animate) {
+        void indicator.offsetWidth;
+
+        indicator.style.removeProperty(
+          'transition'
+        );
+      }
+    };
+
+    const updateTab = (
+      index,
+      animateIndicator = true
+    ) => {
+      tabs.forEach(
+        (tab, tabIndex) => {
+          const isActive =
+            tabIndex === index;
+
+          tab.classList.toggle(
+            'is-active',
+            isActive
+          );
+
+          tab.setAttribute(
+            'aria-selected',
+            isActive
+              ? 'true'
+              : 'false'
+          );
+        }
+      );
+
+      updateIndicator(
+        index,
+        animateIndicator
+      );
+
+      if (
+        window.innerWidth <= 767 &&
+        tabs[index]
+      ) {
+        const activeTab =
+          tabs[index];
+
+        const wrapperRect =
+          tabsWrapper.getBoundingClientRect();
+
+        const tabRect =
+          activeTab.getBoundingClientRect();
+
+        const targetScroll =
+          tabsWrapper.scrollLeft +
+          (
+            tabRect.left -
+            wrapperRect.left
+          ) -
+          (
+            wrapperRect.width -
+            tabRect.width
+          ) / 2;
+
+        tabsWrapper.scrollTo({
+          left: targetScroll,
+          behavior:
+            animateIndicator
+              ? 'smooth'
+              : 'auto',
+        });
+      }
+    };
+
+    const goTo = index => {
+      if (
+        index === currentIndex ||
+        !videoItems[index]
+      ) {
+        return;
+      }
+
+      clearTimeout(
+        switchTimer
+      );
+
+      const oldItem =
+        videoItems[currentIndex];
+
+      const newItem =
+        videoItems[index];
+
+      currentIndex = index;
+
+      updateTab(index);
+
+      /*
+       * 新视频先播放，再进行淡入。
+       */
+      playVideo(newItem);
+
+      newItem.classList.add(
+        'is-active'
+      );
+
+      switchTimer =
+        setTimeout(() => {
+          videoItems.forEach(
+            (item, itemIndex) => {
+              if (
+                itemIndex !==
+                currentIndex
+              ) {
+                item.classList.remove(
+                  'is-active'
+                );
+
+                pauseVideo(item);
+              }
+            }
+          );
+        }, 550);
+    };
+
+    tabs.forEach(
+      (tab, index) => {
+        tab.addEventListener(
+          'click',
+          () => {
+            goTo(index);
+          }
+        );
+      }
+    );
+
+    /*
+     * 初始化视频
+     */
+    videoItems.forEach(
+      (item, index) => {
+        if (index === 0) {
+          playVideo(item);
+        } else {
+          pauseVideo(item);
+        }
+      }
+    );
+
+    /*
+     * 初始化 Tab + 指示线。
+     * 第一次不执行过渡动画。
+     */
+    currentIndex = 0;
+
+    updateTab(
+      0,
+      false
+    );
+
+    /*
+     * 图片/字体等布局稳定后
+     * 再重新计算一次指示线。
+     */
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        updateIndicator(
+          currentIndex,
+          false
+        );
+      });
+    });
+
+    /*
+     * resize 后重新计算线的位置和宽度
+     */
+    const handleResize = () => {
+      clearTimeout(
+        resizeTimer
+      );
+
+      resizeTimer =
+        setTimeout(() => {
+          updateIndicator(
+            currentIndex,
+            false
+          );
+        }, 100);
+    };
+
+    window.addEventListener(
+      'resize',
+      handleResize
+    );
+
+    /*
+     * 保存 cleanup
+     */
+    section.realResultsCleanup =
+      () => {
+        clearTimeout(
+          switchTimer
+        );
+
+        clearTimeout(
+          resizeTimer
+        );
+
+        window.removeEventListener(
+          'resize',
+          handleResize
+        );
+
+        videoItems.forEach(
+          item => {
+            pauseVideo(item);
+          }
+        );
+      };
+  };
+
+  if (
+    document.readyState ===
+    'loading'
+  ) {
+    document.addEventListener(
+      'DOMContentLoaded',
+      init
+    );
+  } else {
+    init();
+  }
+
+  document.addEventListener(
+    'shopify:section:load',
+    event => {
+      const section =
+        event.target.querySelector?.(
+          `[data-real-results="${sectionId}"]`
+        );
+
+      if (!section) return;
+
+      section.dataset.initialized =
+        'false';
+
+      init();
+    }
+  );
+
+  document.addEventListener(
+    'shopify:section:unload',
+    event => {
+      const section =
+        event.target.querySelector?.(
+          `[data-real-results="${sectionId}"]`
+        );
+
+      if (!section) return;
+
+      section
+        .realResultsCleanup
+        ?.();
+    }
+  );
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Real Results Video Tabs",
+  "settings": [
+      {
+          "type": "image_picker",
+          "id": "eyebrow_icon",
+          "label": "Result Icon"
+        },
+        {
+          "type": "text",
+          "id": "eyebrow",
+          "label": "Result Label",
+          "default": "Clinical Timeline & Proven Results"
+        },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Real Results from Your Real Routine"
+    },
+
+        {
+          "type": "image_picker",
+          "id": "info_image",
+          "label": "Info Image"
+        },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description",
+      "default": "<p>See visible hair reduction and smoother-looking skin with continued use.</p>"
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background",
+      "default": "#fbfaf6"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#191919"
+    },
+    {
+      "type": "header",
+      "content": "Desktop Layout"
+    },
+    {
+      "type": "range",
+      "id": "media_width",
+      "label": "Video Width",
+      "min": 600,
+      "max": 1200,
+      "step": 20,
+      "unit": "px",
+      "default": 940
+    },
+
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding Top",
+      "min": 0,
+      "max": 200,
+      "step": 10,
+      "unit": "px",
+      "default": 90
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding Bottom",
+      "min": 0,
+      "max": 200,
+      "step": 10,
+      "unit": "px",
+      "default": 90
+    },
+
+    {
+      "type": "range",
+      "id": "tabs_width",
+      "label": "Tabs Width",
+      "min": 300,
+      "max": 700,
+      "step": 20,
+      "unit": "px",
+      "default": 400
+    },
+    {
+      "type": "range",
+      "id": "media_ratio_width",
+      "label": "Video Ratio Width",
+      "min": 4,
+      "max": 24,
+      "step": 1,
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "media_ratio_height",
+      "label": "Video Ratio Height",
+      "min": 4,
+      "max": 20,
+      "step": 1,
+      "default": 9
+    },
+    {
+      "type": "header",
+      "content": "Mobile"
+    },
+    {
+      "type": "range",
+      "id": "mobile_padding_top",
+      "label": "Padding Top",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "mobile_padding_bottom",
+      "label": "Padding Bottom",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "mobile_media_ratio_width",
+      "label": "Video Ratio Width",
+      "min": 4,
+      "max": 20,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "mobile_media_ratio_height",
+      "label": "Video Ratio Height",
+      "min": 4,
+      "max": 20,
+      "step": 1,
+      "default": 5
+    }
+  ],
+  "blocks": [
+    {
+      "type": "result",
+      "name": "Result",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Tab Title",
+          "default": "Armpits"
+        },
+          {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "video",
+          "id": "video",
+          "label": "Shopify Video"
+        },
+        {
+          "type": "text",
+          "id": "video_url",
+          "label": "External MP4 URL",
+          "info": "Used only when Shopify Video is empty."
+        }
+      ]
+    }
+  ],
+  "max_blocks": 5,
+  "presets": [
+    {
+      "name": "Real Results Video Tabs",
+      "blocks": [
+        {
+          "type": "result",
+          "settings": {
+            "title": "Armpits"
+          }
+        },
+        {
+          "type": "result",
+          "settings": {
+            "title": "Bikini Line"
+          }
+        },
+        {
+          "type": "result",
+          "settings": {
+            "title": "Legs"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

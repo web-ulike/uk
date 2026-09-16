@@ -1,0 +1,666 @@
+<style>
+   #shopify-section-{{ section.id }} {
+    --section-background: {{ section.settings.background }};
+    --card-background: {{ section.settings.card_background }};
+    --text-color: {{ section.settings.text_color }};
+    --quote-color: {{ section.settings.quote_color }};
+    --accent-color: {{ section.settings.accent_color }};
+    --section-padding-top: {{ section.settings.padding_top }}px;
+    --section-padding-bottom: {{ section.settings.padding_bottom }}px;
+
+    --mobile-padding-top: {{ section.settings.mobile_padding_top }}px;
+    --mobile-padding-bottom: {{ section.settings.mobile_padding_bottom }}px;
+  }
+
+  .expert-recommend {
+    position: relative;
+    overflow: hidden;
+    padding-top: var(--section-padding-top);
+    padding-bottom: var(--section-padding-bottom);
+    background: var(--section-background);
+  }
+
+  .expert-recommend__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 48px;
+  }
+
+  .expert-recommend__title {
+    margin: 0;
+    font-family: var(--heading-font-family);
+    color: var(--text-color);
+    font-size: 48px;
+    font-weight: 400;
+    line-height: 1.2;
+  }
+
+  .expert-recommend__navigation {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+  }
+
+  .expert-recommend__arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    padding: 0;
+    color: var(--text-color);
+    background: transparent;
+    border: 0;
+    opacity: 0.75;
+    cursor: pointer;
+    transition:
+      opacity 0.3s ease,
+      transform 0.3s ease;
+  }
+
+  .expert-recommend__arrow:hover {
+    opacity: 1;
+  }
+
+  .expert-recommend__arrow:active {
+    transform: scale(0.92);
+  }
+
+  .expert-recommend__arrow svg {
+    display: block;
+    width: 32px;
+    height: auto;
+  }
+
+  .expert-recommend__arrow.swiper-button-disabled {
+    opacity: 0.25;
+    pointer-events: none;
+  }
+
+  .expert-recommend custom-swiper {
+    display: block;
+    width: 100%;
+  }
+
+  .expert-recommend .swiper-container {
+    width: 100%;
+    overflow: visible;
+  }
+
+  .expert-recommend .swiper-wrapper {
+    align-items: stretch;
+  }
+
+  .expert-recommend .swiper-slide {
+    height: auto;
+  }
+
+  .expert-recommend__card {
+    display: grid;
+    grid-template-columns: 280px minmax(0, 1fr);
+    gap: 32px;
+    height: 100%;
+    min-height: 400px;
+    padding: 32px 40px;
+    background: var(--card-background);
+    border-radius: 10px;
+  }
+
+  .expert-recommend__image-wrap {
+    position: relative;
+    width: 100%;
+    height: auto;
+    overflow: hidden;
+    background: #fff;
+    border-radius: 10px;
+  }
+
+  .expert-recommend__image,
+  .expert-recommend__image-wrap > svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .expert-recommend__content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-width: 0;
+  }
+
+  .expert-recommend__name-row {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+  }
+
+  .expert-recommend__name {
+    margin: 0;
+    color: var(--text-color);
+    font-size: 30px;
+    font-weight: 400;
+    line-height: 1.2;
+        font-family: var(--heading-font-family);
+  }
+
+  .expert-recommend__verified {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    width: 27px;
+    height: 27px;
+    color: #41A5F5;
+  }
+
+  .expert-recommend__verified svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .expert-recommend__position {
+    margin-top: 8px;
+    color: var(--accent-color);
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 1.2;
+  }
+
+  .expert-recommend__quote {
+    margin-top: 24px;
+    color: var(--quote-color);
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 1.5;
+  }
+
+  .expert-recommend__quote p {
+    margin: 0;
+  }
+
+  @media screen and (max-width: 1199px) {
+    {% comment %} .expert-recommend__card {
+      grid-template-columns: 160px minmax(0, 1fr);
+      min-height: 250px;
+      padding: 18px;
+    }
+
+    .expert-recommend__image-wrap {
+      height: 214px;
+    }
+
+    .expert-recommend__quote {
+      margin-top: 18px;
+    } {% endcomment %}
+  }
+
+  @media screen and (max-width: 767px) {
+    .expert-recommend {
+      padding-top: var(--mobile-padding-top);
+      padding-bottom: var(--mobile-padding-bottom);
+    }
+
+    .expert-recommend__header {
+      margin-bottom: 32px;
+    }
+
+    .expert-recommend__title {
+      font-size: 24px;
+    }
+
+    .expert-recommend__navigation {
+      gap: 20px;
+    }
+
+    .expert-recommend__arrow {
+      width: 26px;
+      height: 26px;
+    }
+
+    .expert-recommend__arrow svg {
+      width: 22px;
+    }
+
+    .expert-recommend__card {
+      grid-template-columns: 1fr;
+      gap: 24px;
+      min-height: 200px;
+      padding: 20px;
+              grid-template-rows: 260px auto;
+    }
+.expert-recommend__content {
+    justify-content: flex-start;
+}
+    .expert-recommend__image-wrap {
+      height: 260px;
+      border-radius: 4px;
+    }
+    .expert-recommend__name-row {
+    gap: 12px;
+}
+
+    .expert-recommend__name {
+      font-size: 16px;
+    }
+
+    .expert-recommend__verified {
+      width: 16px;
+      height: 16px;
+    }
+
+    .expert-recommend__position {
+      margin-top: 8px;
+      font-size: 12px;
+    }
+
+    .expert-recommend__quote {
+      margin-top: 12px;
+      font-size: 12px;
+    }
+
+        .expert-recommend custom-swiper {
+     display: flex;
+    flex-direction: column;
+}
+.expert-recommend__header {
+  display: contents;
+}
+
+.expert-recommend__title {
+  order: 1;
+  margin-bottom: 32px;
+}
+
+.expert-recommend .swiper-container {
+  order: 2;
+       
+     
+}
+
+.expert-recommend__navigation {
+  order: 3;
+     justify-content: flex-end;
+     margin-top: 28px;
+        padding-right: 34px;
+}
+  }
+
+</style>
+
+<section class="expert-recommend">
+  <div class="container">
+    <custom-swiper
+      slides-per-view="1"
+      space-between="16"
+      loop="{{ section.settings.loop }}"
+      centered-slides="false"
+      navigation="true"
+      pagination="false"
+      autoplay="{{ section.settings.auto_play }}"
+        autoplay-delay="3000"
+  autoplay-disable-on-interaction="false"
+  autoplay-pause-on-mouse-enter="true"
+      breakpoints='{
+        "0": {
+          "slidesPerView": 1.08,
+          "spaceBetween": 12
+        },
+        "600": {
+          "slidesPerView": 1.25,
+          "spaceBetween": 14
+        },
+        "768": {
+          "slidesPerView": 1.4,
+          "spaceBetween": 16
+        },
+        "1024": {
+          "slidesPerView": 1.4,
+          "spaceBetween": 16
+        },
+        "1280": {
+          "slidesPerView": 1.6,
+          "spaceBetween": 20
+        },
+        "1600": {
+          "slidesPerView": 1.6,
+          "spaceBetween": 24
+        }
+      }'
+    >
+      <div class="expert-recommend__header js-scroll__header">
+        {% if section.settings.title != blank %}
+          <h2 class="expert-recommend__title">
+            {{ section.settings.title }}
+          </h2>
+        {% endif %}
+
+        {% if section.blocks.size > 1 %}
+          <div class="expert-recommend__navigation">
+            <button
+              class="
+                expert-recommend__arrow
+                expert-recommend__arrow--prev
+                swiper-prev
+              "
+              type="button"
+              aria-label="Previous"
+            >
+              <svg
+                viewBox="0 0 32 20"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M10 1L1 10M1 10L10 19M1 10H31"
+                  stroke="currentColor"
+                  stroke-width="1.3"
+                />
+              </svg>
+            </button>
+
+            <button
+              class="
+                expert-recommend__arrow
+                expert-recommend__arrow--next
+                swiper-next
+              "
+              type="button"
+              aria-label="Next"
+            >
+              <svg
+                viewBox="0 0 32 20"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M22 1L31 10M31 10L22 19M31 10H1"
+                  stroke="currentColor"
+                  stroke-width="1.3"
+                />
+              </svg>
+            </button>
+          </div>
+        {% endif %}
+      </div>
+
+      <div class="swiper-container js-scroll__group">
+        <div class="swiper-wrapper">
+          {% for block in section.blocks %}
+            <div
+              class="swiper-slide"
+              {{ block.shopify_attributes }}
+              style="--reveal-index:{{ forloop.index0 }};"
+            >
+              <div class="expert-recommend__card js-scroll__card">
+                <div class="expert-recommend__image-wrap">
+                  {% if block.settings.image != blank %}
+                    <img
+                      class="expert-recommend__image"
+                      src="{{ block.settings.image | image_url: width: 600 }}"
+                      srcset="
+                        {{ block.settings.image | image_url: width: 300 }} 300w,
+                        {{ block.settings.image | image_url: width: 400 }} 400w,
+                        {{ block.settings.image | image_url: width: 600 }} 600w
+                      "
+                      sizes="200px"
+                      alt="{{ block.settings.name | escape }}"
+                      width="{{ block.settings.image.width }}"
+                      height="{{ block.settings.image.height }}"
+                      loading="lazy"
+                    >
+                  {% else %}
+                    {{
+                      'lifestyle-1'
+                      | placeholder_svg_tag:
+                        'real-results__placeholder'
+                    }}
+                  {% endif %}
+                </div>
+
+                <div class="expert-recommend__content">
+                  <div class="expert-recommend__name-row">
+                    {% if block.settings.name != blank %}
+                      <h3 class="expert-recommend__name">
+                        {{ block.settings.name }}
+                      </h3>
+                    {% endif %}
+
+                    {% if block.settings.show_verified %}
+                      <span
+                        class="expert-recommend__verified"
+                        aria-label="Verified"
+                      >
+                        <svg
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                          aria-hidden="true"
+                        >
+                          <path
+                            d="M12 2.2L14.1 4.25L17 3.85L18.25 6.5L20.9 7.75L20.5 10.65L22.55 12.75L20.5 14.85L20.9 17.75L18.25 19L17 21.65L14.1 21.25L12 23.3L9.9 21.25L7 21.65L5.75 19L3.1 17.75L3.5 14.85L1.45 12.75L3.5 10.65L3.1 7.75L5.75 6.5L7 3.85L9.9 4.25L12 2.2Z"
+                            fill="currentColor"
+                          />
+
+                          <path
+                            d="M8.5 12.3L10.65 14.45L15.65 9.45"
+                            stroke="#fff"
+                            stroke-width="1.8"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          />
+                        </svg>
+                      </span>
+                    {% endif %}
+                  </div>
+
+                  {% if block.settings.position != blank %}
+                    <div class="expert-recommend__position">
+                      {{ block.settings.position }}
+                    </div>
+                  {% endif %}
+
+                  {% if block.settings.quote != blank %}
+                    <div class="expert-recommend__quote">
+                      {{ block.settings.quote }}
+                    </div>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+
+      {% if section.settings.pagination %}
+        <div class="swiper-pagination"></div>
+      {% endif %}
+    </custom-swiper>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Recommended Experts",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Recommended by experts."
+    },
+    {
+      "type": "checkbox",
+      "id": "loop",
+      "label": "Loop",
+      "default": false
+    },
+     {
+      "type": "checkbox",
+      "id": "auto_play",
+      "label": "Auto Play",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "pagination",
+      "label": "Show Pagination",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "card_background",
+      "label": "Card Background",
+      "default": "#f4f2ec"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#1c1c1c"
+    },
+    {
+      "type": "color",
+      "id": "quote_color",
+      "label": "Quote Color",
+      "default": "#4c4846"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Position Color",
+      "default": "#f00046"
+    },
+    {
+      "type": "header",
+      "content": "Desktop Layout"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding Top",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding Bottom",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 52
+    },
+    {
+      "type": "header",
+      "content": "Mobile"
+    },
+    {
+      "type": "range",
+      "id": "mobile_padding_top",
+      "label": "Padding Top",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "mobile_padding_bottom",
+      "label": "Padding Bottom",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 40
+    }
+  ],
+  "blocks": [
+    {
+      "type": "expert",
+      "name": "Expert",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Expert Image"
+        },
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Name",
+          "default": "Dr. Adam Rubinstein"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_verified",
+          "label": "Show Verified Icon",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "position",
+          "label": "Position",
+          "default": "Award-Winning Aesthetic Surgeon"
+        },
+        {
+          "type": "richtext",
+          "id": "quote",
+          "label": "Quote",
+          "default": "<p>\"Ulike has developed an exceptional IPL technology that empowers people to take control of their skin health with confidence, bridging the gap between clinical procedures and everyday care.\"</p>"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 8,
+  "presets": [
+    {
+      "name": "Recommended Experts",
+      "blocks": [
+        {
+          "type": "expert",
+          "settings": {
+            "name": "Dr. Adam Rubinstein",
+            "position": "Award-Winning Aesthetic Surgeon",
+            "quote": "<p>\"Ulike has developed an exceptional IPL technology that empowers people to take control of their skin health with confidence, bridging the gap between clinical procedures and everyday care.\"</p>"
+          }
+        },
+        {
+          "type": "expert",
+          "settings": {
+            "name": "Tiffany Moon",
+            "position": "Associate Professor of Anesthesiology",
+            "quote": "<p>A board-certified anesthesiologist, entrepreneur, TV personality, mom of twins, and national bestselling author who helps women get visible and confident.</p>"
+          }
+        },
+        {
+          "type": "expert",
+          "settings": {
+            "name": "Dr. Davin Lim",
+            "position": "Board-Certified Dermatologist",
+            "quote": "<p>\"What was only possible in a clinic a few years ago has become an effective and safe option for patients to undertake at the convenience and privacy of their own home\"</p>"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
