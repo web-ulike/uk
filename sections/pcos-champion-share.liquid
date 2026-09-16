@@ -1,0 +1,1553 @@
+{%- liquid
+  assign card_bg = section.settings.card_background
+  assign share_bg = section.settings.share_background
+  assign logo_image = section.settings.logo_image
+  assign spark_image = section.settings.spark_image
+  assign divider_image = section.settings.divider_image
+  assign facebook_icon = section.settings.facebook_icon
+  assign x_icon = section.settings.x_icon
+  assign whatsapp_icon = section.settings.whatsapp_icon
+  assign instagram_icon = section.settings.instagram_icon
+  assign sms_icon = section.settings.sms_icon
+  assign download_icon = section.settings.download_icon
+  assign copy_icon = section.settings.copy_icon
+-%}
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
+<link rel="dns-prefetch" href="//api.ulike.com">
+<link rel="preconnect" href="https://api.ulike.com" crossorigin>
+
+<style>
+  @font-face {
+    font-family: 'Cloister Black';
+    src: url({{ 'CloisterBlack.ttf' | asset_url }}) format('truetype');
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: "Saans";
+    src: url('{{ "Saans-Regular.otf" | asset_url }}') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: "Saans";
+    src: url('{{ "Saans-Medium.otf" | asset_url }}') format('opentype');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  #shopify-section-{{ section.id }}{
+    font-family: 'Saans', Arial, Helvetica, sans-serif;
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+  }
+
+  #shopify-section-{{ section.id }} .pcos-champion-share {
+    display: flex;
+    justify-content: center;
+    background: #ffffff;
+    padding: 2px;
+    box-sizing: border-box;
+  }
+
+  #shopify-section-{{ section.id }} .pcos-champion-share__frame {
+    position: relative;
+    width: 100%;
+    max-width: 750px;
+  }
+
+  #shopify-section-{{ section.id }} .pcos-champion-share__frame[data-loading] .pcos-champion-share__content,
+  #shopify-section-{{ section.id }} .pcos-champion-share__frame[data-loading] .pcos-champion-share__actions-inner {
+    visibility: hidden;
+  }
+
+  #shopify-section-{{ section.id }} .pcos-champion-share__certificate,
+  #shopify-section-{{ section.id }} .pcos-champion-share__actions {
+    position: relative;
+    overflow: hidden;
+    background: #f8f7f4;
+  }
+
+  #shopify-section-{{ section.id }} .pcos-champion-share__certificate {
+    min-height: 0;
+  }
+
+  #shopify-section-{{ section.id }} .pcos-champion-share__actions {
+    margin-top: {{ section.settings.panel_gap }}px;
+  }
+
+  #shopify-section-{{ section.id }} .pcos-champion-share__bg {
+    position: relative;
+    z-index: 0;
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  #shopify-section-{{ section.id }} .pcos-champion-share__content {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 110px 70px 42px;
+    text-align: center;
+  }
+
+  #shopify-section-{{ section.id }} .pcos-champion-share__content[hidden] {
+    display: flex !important;
+    visibility: hidden;
+  }
+
+  #shopify-section-{{ section.id }} .pcos-champion-share__skeleton {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    pointer-events: none;
+  }
+
+  #shopify-section-{{ section.id }} .pcos-champion-share__frame[data-loading] .pcos-champion-share__skeleton {
+    display: flex;
+  }
+
+  #shopify-section-{{ section.id }} .pcos-champion-share__skeleton--certificate {
+    padding: 110px 70px 42px;
+  }
+
+  #shopify-section-{{ section.id }} .pcos-champion-share__skeleton--actions {
+    padding: 70px 62px 40px;
+  }
+
+  #shopify-section-{{ section.id }} .pcos-champion-share__skeleton-item {
+    position: relative;
+    overflow: hidden;
+    background: rgba(47, 149, 160, .12);
+  }
+
+  #shopify-section-{{ section.id }} .pcos-champion-share__skeleton-item::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    transform: translateX(-100%);
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, .65), transparent);
+    animation: pcos-champion-share-skeleton 1.25s ease-in-out infinite;
+  }
+
+  #shopify-section-{{ section.id }} .pcos-champion-share__skeleton-logo {
+    width: 330px;
+    max-width: 58%;
+    height: 36px;
+    margin-bottom: 42px;
+  }
+
+  #shopify-section-{{ section.id }} .pcos-champion-share__skeleton-badge {
+    width: 390px;
+    max-width: 58%;
+    height: 390px;
+    margin-bottom: 26px;
+    border-radius: 50%;
+  }
+
+  #shopify-section-{{ section.id }} .pcos-champion-share__skeleton-spark {
+    width: 42px;
+    height: 42px;
+    margin-bottom: 18px;
+    transform: rotate(45deg);
+  }
+
+  #shopify-section-{{ section.id }} .pcos-champion-share__skeleton-title {
+    width: 470px;
+    max-width: 74%;
+    height: 34px;
+    margin-bottom: 14px;
+  }
+
+  #shopify-section-{{ section.id }} .pcos-champion-share__skeleton-number {
+    width: 250px;
+    height: 64px;
+    margin-bottom: 18px;
+  }
+
+  #shopify-section-{{ section.id }} .pcos-champion-share__skeleton-name {
+    width: 160px;
+    height: 24px;
+    margin-bottom: 16px;
+  }
+
+  #shopify-section-{{ section.id }} .pcos-champion-share__skeleton-quote {
+    width: 360px;
+    max-width: 68%;
+    height: 18px;
+    margin-bottom: 34px;
+  }
+
+  #shopify-section-{{ section.id }} .pcos-champion-share__skeleton-date {
+    width: 150px;
+    height: 16px;
+  }
+
+  #shopify-section-{{ section.id }} .pcos-champion-share__skeleton-share-title {
+    width: 110px;
+    height: 24px;
+    margin-bottom: 32px;
+  }
+
+  #shopify-section-{{ section.id }} .pcos-champion-share__skeleton-row {
+    display: grid;
+    width: 100%;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 22px;
+  }
+
+  #shopify-section-{{ section.id }} .pcos-champion-share__skeleton-button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+
+  #shopify-section-{{ section.id }} .pcos-champion-share__skeleton-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+  }
+
+  #shopify-section-{{ section.id }} .pcos-champion-share__skeleton-label {
+    width: 54px;
+    height: 12px;
+  }
+
+  #shopify-section-{{ section.id }} .pcos-champion-share__skeleton-line {
+    width: 100%;
+    height: 2px;
+    margin: 40px 0 34px;
+  }
+
+  #shopify-section-{{ section.id }} .pcos-champion-share__skeleton-row--utility {
+    width: 46%;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  @keyframes pcos-champion-share-skeleton {
+    to {
+      transform: translateX(100%);
+    }
+  }
+
+  #shopify-section-{{ section.id }} .pcos-champion-share__logos {
+    display: grid;
+    width: 100%;
+    min-height: 36px;
+    place-items: center;
+    margin-bottom: 26px;
+    text-align: center;
+    line-height: 0;
+  }
+
+  #shopify-section-{{ section.id }} .pcos-champion-share__logo {
+    display: block;
+    width: auto;
+    max-width: 330px;
+    height: auto;
+    max-height: 64px;
+    margin: 0 auto;
+    justify-self: center;
+    object-fit: contain;
+    object-position: center;
+  }
+
+  #shopify-section-{{ section.id }} .pcos-champion-share__badge {
+    display: flex;
+    width: 390px;
+    max-width: 100%;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+
+  #shopify-section-{{ section.id }} .pcos-champion-share__badge[hidden] {
+    display: flex !important;
+    visibility: hidden;
+  }
+
+  #shopify-section-{{ section.id }} .pcos-champion-share__badge img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border: 0;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  #shopify-section-{{ section.id }} .pcos-champion-share__spark {
+    display: flex;
+    justify-content: center;
+    min-height: 76px;
+    margin: 0 0 14px;
+  }
+
+  #shopify-section-{{ section.id }} .pcos-champion-share__spark img {
+    display: block;
+    width: 76px;
+    max-width: 100%;
+    height: auto;
+    object-fit: contain;
+  }
+
+  #shopify-section-{{ section.id }} .pcos-champion-share__title {
+    color: #2E2E2E;
+    margin: 0 0 8px;
+    font-size: 44px;
+    line-height: 1.2;
+    text-transform: uppercase;
+    font-family: 'Abhaya Libre', serif;
+    font-weight: 500;
+  }
+
+  #shopify-section-{{ section.id }} .pcos-champion-share__number {
+    color: #2F95A0;
+    width: 100%;
+    margin: 0;
+    text-align: center;
+    text-shadow: 0 1px 2.4px rgba(0, 0, 0, 0.25);
+    font-family: 'Cloister Black', Georgia, 'Times New Roman', serif;
+    font-size: 104px;
+    font-style: normal;
+    font-weight: 300;
+    line-height: 1.25;
+    font-variant-numeric: lining-nums tabular-nums;
+    font-feature-settings: "lnum" 1, "tnum" 1;
+  }
+
+
+  #shopify-section-{{ section.id }} .pcos-champion-share__name {
+    min-height: 1.2em;
+    margin-bottom: 12px;
+    color: #2E2E2E;
+    text-align: center;
+    font-size: 22px;
+    line-height: 1.2;
+  }
+
+  #shopify-section-{{ section.id }} .pcos-champion-share__quote {
+    margin-bottom: 20px;
+    color: #2E2E2E;
+    font-size: 16px;
+    line-height: 1.35;
+  }
+
+  #shopify-section-{{ section.id }} .pcos-champion-share__date {
+    min-height: 1.2em;
+    color: #2E2E2E;
+    font-family: 'Saans', Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    line-height: 1.2;
+  }
+
+  #shopify-section-{{ section.id }} .pcos-champion-share__actions-inner {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 46px 62px 40px;
+  }
+
+  #shopify-section-{{ section.id }} .pcos-champion-share__share-title {
+    margin: 0 0 30px;
+    color: #2E2E2E;
+    font-family: 'Abhaya Libre', serif;
+    font-size: 22px;
+    line-height: 1;
+    font-weight: 500;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+  }
+
+  #shopify-section-{{ section.id }} .pcos-champion-share__button-row {
+    display: grid;
+    width: 100%;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 22px;
+  }
+
+  #shopify-section-{{ section.id }} .pcos-champion-share__button-row--utility {
+    width: 46%;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  #shopify-section-{{ section.id }} .pcos-champion-share__button {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    align-items: center;
+    gap: 9px;
+    border: 0;
+    background: transparent;
+    color: #2b2623;
+    font: inherit;
+    cursor: pointer;
+  }
+
+  #shopify-section-{{ section.id }} .pcos-champion-share__icon {
+    display: flex;
+    width: 80px;
+    height: 80px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background-color: #2F95A0;
+    transition: background-color .2s ease, transform .2s ease;
+  }
+
+  #shopify-section-{{ section.id }} .pcos-champion-share__button:hover .pcos-champion-share__icon,
+  #shopify-section-{{ section.id }} .pcos-champion-share__button .pcos-champion-share__icon:hover,
+  #shopify-section-{{ section.id }} .pcos-champion-share__button:focus-visible .pcos-champion-share__icon {
+    background-color: #21D8D8;
+  }
+
+  #shopify-section-{{ section.id }} .pcos-champion-share__button--dark .pcos-champion-share__icon {
+    background-color: #2E2E2E;
+  }
+
+  #shopify-section-{{ section.id }} .pcos-champion-share__button--dark:hover .pcos-champion-share__icon,
+  #shopify-section-{{ section.id }} .pcos-champion-share__button--dark .pcos-champion-share__icon:hover,
+  #shopify-section-{{ section.id }} .pcos-champion-share__button--dark:focus-visible .pcos-champion-share__icon {
+    background-color: #515151;
+  }
+
+  #shopify-section-{{ section.id }} .pcos-champion-share__icon img {
+    display: block;
+    width: auto;
+    max-width: 22px;
+    height: auto;
+    object-fit: contain;
+  }
+
+  #shopify-section-{{ section.id }} .pcos-champion-share__button:first-child .pcos-champion-share__icon img {
+    width: 14px;
+    max-width: 14px;
+  }
+
+  #shopify-section-{{ section.id }} .pcos-champion-share__label {
+    overflow-wrap: anywhere;
+    font-size: 13px;
+    line-height: 1.15;
+  }
+
+  #shopify-section-{{ section.id }} .pcos-champion-share__line {
+    display: block;
+    flex-shrink: 0;
+    width: 100%;
+    margin: 34px 0 24px;
+    text-align: center;
+    line-height: 0;
+  }
+
+  #shopify-section-{{ section.id }} .pcos-champion-share__line img {
+    display: block;
+    width: 100%;
+    max-width: none;
+    height: auto;
+    min-height: 1px;
+    object-fit: contain;
+  }
+
+  @media (min-width: 768px) {
+    #shopify-section-{{ section.id }} .pcos-champion-share {
+      padding: 32px 16px;
+    }
+
+    #shopify-section-{{ section.id }} .pcos-champion-share__frame {
+      max-width: 750px;
+    }
+
+    #shopify-section-{{ section.id }} .pcos-champion-share__content {
+      padding: 86px 20px 30px;
+    }
+
+    #shopify-section-{{ section.id }} .pcos-champion-share__logos {
+      margin-bottom: 60px;
+    }
+
+    #shopify-section-{{ section.id }} .pcos-champion-share__logo {
+      max-width: 406px;
+    }
+
+    #shopify-section-{{ section.id }} .pcos-champion-share__badge {
+      width: 464px;
+      margin-bottom: 10px;
+    }
+
+    #shopify-section-{{ section.id }} .pcos-champion-share__spark {
+      min-height: 91px;
+      margin-bottom: 17px;
+    }
+
+    #shopify-section-{{ section.id }} .pcos-champion-share__spark img {
+      width: 80px;
+    }
+
+    #shopify-section-{{ section.id }} .pcos-champion-share__title {
+      margin-bottom: 10px;
+      font-size: 52px;
+       width: 80%;
+    }
+
+    #shopify-section-{{ section.id }} .pcos-champion-share__number {
+      font-size: 104px;
+    }
+
+    #shopify-section-{{ section.id }} .pcos-champion-share__name {
+      margin-bottom: 18px;
+      font-size: 40px;
+    }
+
+    #shopify-section-{{ section.id }} .pcos-champion-share__quote {
+      margin-bottom: 20px;
+      font-size: 28px;
+      min-height: 60px;
+    }
+
+    #shopify-section-{{ section.id }} .pcos-champion-share__date {
+      font-size: 24px;
+    }
+
+    #shopify-section-{{ section.id }} .pcos-champion-share__actions-inner {
+      padding: 87px 60px 20px;
+    }
+
+    #shopify-section-{{ section.id }} .pcos-champion-share__share-title {
+      margin-bottom: 24px;
+      font-size: 36px;
+    }
+
+    #shopify-section-{{ section.id }} .pcos-champion-share__button-row {
+      gap: 0px;
+    }
+
+    #shopify-section-{{ section.id }} .pcos-champion-share__button {
+      gap: 10px;
+    }
+
+    #shopify-section-{{ section.id }} .pcos-champion-share__icon {
+      width: 80px;
+    }
+
+    #shopify-section-{{ section.id }} .pcos-champion-share__icon img {
+      max-width: 40px;
+    }
+
+    #shopify-section-{{ section.id }} .pcos-champion-share__button:first-child .pcos-champion-share__icon img {
+      width: 26px;
+      max-width: 26px;
+    }
+
+    #shopify-section-{{ section.id }} .pcos-champion-share__label {
+      font-size: 18px;
+    }
+
+    #shopify-section-{{ section.id }} .pcos-champion-share__line {
+      margin: 41px 0 29px;
+    }
+  }
+
+  @media (max-width: 767px) {
+    #shopify-section-{{ section.id }} .pcos-champion-share {
+      width: 100vw;
+      max-width: 100vw;
+    }
+
+    #shopify-section-{{ section.id }} .pcos-champion-share__frame {
+      width: 100%;
+      max-width: none;
+    }
+
+    #shopify-section-{{ section.id }} .pcos-champion-share__bg {
+      width: 100% !important;
+      max-width: none !important;
+    }
+
+    #shopify-section-{{ section.id }} .pcos-champion-share__logo {
+      max-width: 46vw;
+      max-height: 9vw;
+    }
+
+    #shopify-section-{{ section.id }} .pcos-champion-share__content {
+      padding: 10vw 10vw 6vw;
+    }
+
+    #shopify-section-{{ section.id }} .pcos-champion-share__skeleton--certificate {
+      padding: 10vw 10vw 6vw;
+    }
+
+    #shopify-section-{{ section.id }} .pcos-champion-share__skeleton-logo {
+      width: 46vw;
+      height: 9vw;
+      margin-bottom: 4vw;
+    }
+
+    #shopify-section-{{ section.id }} .pcos-champion-share__skeleton-badge {
+      width: 58vw;
+      height: 58vw;
+      margin-bottom: 0;
+    }
+
+    #shopify-section-{{ section.id }} .pcos-champion-share__skeleton-spark {
+      width: 8vw;
+      height: 8vw;
+      margin-bottom: 2vw;
+    }
+
+    #shopify-section-{{ section.id }} .pcos-champion-share__skeleton-title {
+      width: 68vw;
+      height: 7vw;
+      margin-bottom: 2vw;
+    }
+
+    #shopify-section-{{ section.id }} .pcos-champion-share__skeleton-number {
+      width: 34vw;
+      height: 12vw;
+      margin-bottom: 4vw;
+    }
+
+    #shopify-section-{{ section.id }} .pcos-champion-share__skeleton-name {
+      width: 28vw;
+      height: 5vw;
+      margin-bottom: 3vw;
+    }
+
+    #shopify-section-{{ section.id }} .pcos-champion-share__skeleton-quote {
+      width: 58vw;
+      height: 14px;
+      margin-bottom: 6vw;
+    }
+
+    #shopify-section-{{ section.id }} .pcos-champion-share__skeleton-date {
+      width: 26vw;
+      height: 12px;
+    }
+
+    #shopify-section-{{ section.id }} .pcos-champion-share__logos {
+      min-height: 9vw;
+      margin-bottom: 4vw;
+    }
+
+    #shopify-section-{{ section.id }} .pcos-champion-share__badge {
+      width: 58vw;
+      margin-bottom: 0vw;
+    }
+
+    #shopify-section-{{ section.id }} .pcos-champion-share__spark {
+      min-height: 12vw;
+      margin-bottom: 0vw;
+    }
+
+    #shopify-section-{{ section.id }} .pcos-champion-share__spark img {
+      width: 12vw;
+    }
+
+    #shopify-section-{{ section.id }} .pcos-champion-share__title {
+      margin-bottom: 2vw;
+      font-size: 7vw;
+    }
+
+    #shopify-section-{{ section.id }} .pcos-champion-share__number {
+      font-size: 12vw;
+      line-height: 1.2;
+    }
+
+    #shopify-section-{{ section.id }} .pcos-champion-share__name {
+      margin: 5vw 0px 3vw;
+      font-size: 5vw;
+    }
+
+    #shopify-section-{{ section.id }} .pcos-champion-share__quote {
+      margin-bottom: 6vw;
+      font-size: 14px;
+      min-height: 40px;
+    }
+
+    #shopify-section-{{ section.id }} .pcos-champion-share__date {
+      {% comment %} font-size: 3vw; {% endcomment %}
+    }
+
+    #shopify-section-{{ section.id }} .pcos-champion-share__actions-inner {
+      padding: 9vw 6vw 7vw;
+    }
+
+    #shopify-section-{{ section.id }} .pcos-champion-share__skeleton--actions {
+      padding: 9vw 6vw 7vw;
+    }
+
+    #shopify-section-{{ section.id }} .pcos-champion-share__skeleton-share-title {
+      width: 22vw;
+      height: 6vw;
+      margin-bottom: 4vw;
+    }
+
+    #shopify-section-{{ section.id }} .pcos-champion-share__skeleton-row {
+      gap: 0;
+    }
+
+    #shopify-section-{{ section.id }} .pcos-champion-share__skeleton-icon {
+      width: 13vw;
+      height: 13vw;
+    }
+
+    #shopify-section-{{ section.id }} .pcos-champion-share__skeleton-label {
+      width: 12vw;
+      height: 12px;
+    }
+
+    #shopify-section-{{ section.id }} .pcos-champion-share__skeleton-line {
+      margin: 4px 0;
+    }
+
+    #shopify-section-{{ section.id }} .pcos-champion-share__skeleton-row--utility {
+      width: 50%;
+    }
+
+    #shopify-section-{{ section.id }} .pcos-champion-share__share-title {
+      margin-bottom: 4vw;
+      font-size: 6vw;
+    }
+
+    #shopify-section-{{ section.id }} .pcos-champion-share__button-row {
+      gap: 0px;
+    }
+
+    #shopify-section-{{ section.id }} .pcos-champion-share__button-row--utility {
+      width: 50%;
+    }
+
+    #shopify-section-{{ section.id }} .pcos-champion-share__button {
+      gap: 8px;
+    }
+
+    #shopify-section-{{ section.id }} .pcos-champion-share__icon {
+      width: 13vw;
+      height: 13vw;
+    }
+
+    #shopify-section-{{ section.id }} .pcos-champion-share__label {
+      font-size: 12px;
+    }
+
+    #shopify-section-{{ section.id }} .pcos-champion-share__line {
+      display: block;
+      flex-shrink: 0;
+      width: 100%;
+      margin: 4px 0;
+    }
+
+    #shopify-section-{{ section.id }} .pcos-champion-share__line img {
+      display: block;
+      width: 100%;
+      max-width: none;
+      height: auto;
+    }
+
+  }
+</style>
+
+
+
+<section
+  class="pcos-champion-share"
+  data-section-id="{{ section.id }}"
+  data-activity-id="{{ section.settings.activity_id | escape }}"
+  data-default-pcos-type="{{ section.settings.default_pcos_type | escape }}"
+>
+  <div class="pcos-champion-share__medal-configs" hidden>
+    <span
+      data-medal-config
+      data-pcos-type="PCOS1"
+      data-description="{{ section.settings.pcos1_description | escape }}"
+      {%- if section.settings.pcos1_image != blank -%}
+        data-image-url="{{ section.settings.pcos1_image | image_url: width: 700 }}"
+      {%- endif -%}
+    ></span>
+    <span
+      data-medal-config
+      data-pcos-type="PCOS2"
+      data-description="{{ section.settings.pcos2_description | escape }}"
+      {%- if section.settings.pcos2_image != blank -%}
+        data-image-url="{{ section.settings.pcos2_image | image_url: width: 700 }}"
+      {%- endif -%}
+    ></span>
+    <span
+      data-medal-config
+      data-pcos-type="PCOS3"
+      data-description="{{ section.settings.pcos3_description | escape }}"
+      {%- if section.settings.pcos3_image != blank -%}
+        data-image-url="{{ section.settings.pcos3_image | image_url: width: 700 }}"
+      {%- endif -%}
+    ></span>
+    <span
+      data-medal-config
+      data-pcos-type="PCOS4"
+      data-description="{{ section.settings.pcos4_description | escape }}"
+      {%- if section.settings.pcos4_image != blank -%}
+        data-image-url="{{ section.settings.pcos4_image | image_url: width: 700 }}"
+      {%- endif -%}
+    ></span>
+    <span
+      data-medal-config
+      data-pcos-type="PCOS5"
+      data-description="{{ section.settings.pcos5_description | escape }}"
+      {%- if section.settings.pcos5_image != blank -%}
+        data-image-url="{{ section.settings.pcos5_image | image_url: width: 700 }}"
+      {%- endif -%}
+    ></span>
+  </div>
+
+  <div class="pcos-champion-share__frame" data-share-frame data-loading="true">
+    <div class="pcos-champion-share__certificate" data-share-capture>
+      {%- if card_bg != blank -%}
+        {{ card_bg | image_url: width: 800 | image_tag: class: 'pcos-champion-share__bg', loading: 'eager', crossorigin: 'anonymous' }}
+      {%- endif -%}
+
+      <div class="pcos-champion-share__skeleton pcos-champion-share__skeleton--certificate" aria-hidden="true">
+        <div class="pcos-champion-share__skeleton-item pcos-champion-share__skeleton-logo"></div>
+        <div class="pcos-champion-share__skeleton-item pcos-champion-share__skeleton-badge"></div>
+        <div class="pcos-champion-share__skeleton-item pcos-champion-share__skeleton-spark"></div>
+        <div class="pcos-champion-share__skeleton-item pcos-champion-share__skeleton-title"></div>
+        <div class="pcos-champion-share__skeleton-item pcos-champion-share__skeleton-number"></div>
+        <div class="pcos-champion-share__skeleton-item pcos-champion-share__skeleton-name"></div>
+        <div class="pcos-champion-share__skeleton-item pcos-champion-share__skeleton-quote"></div>
+        <div class="pcos-champion-share__skeleton-item pcos-champion-share__skeleton-date"></div>
+      </div>
+
+      <div class="pcos-champion-share__content" data-certificate-content hidden>
+        {%- if logo_image != blank -%}
+          <div class="pcos-champion-share__logos">
+            {{ logo_image | image_url: width: 760 | image_tag: class: 'pcos-champion-share__logo', loading: 'eager', crossorigin: 'anonymous' }}
+          </div>
+        {%- endif -%}
+
+        <div class="pcos-champion-share__badge" data-medal-badge hidden>
+          <img data-medal-image alt="" width="520" height="520" loading="eager">
+        </div>
+
+        {%- if spark_image != blank -%}
+          <div class="pcos-champion-share__spark" aria-hidden="true">
+            {{ spark_image | image_url: width: 240 | image_tag: loading: 'eager', crossorigin: 'anonymous' }}
+          </div>
+        {%- endif -%}
+        <h2 class="pcos-champion-share__title">{{ section.settings.title }}</h2>
+        <div class="pcos-champion-share__number" data-dynamic-field="number">0</div>
+        <div class="pcos-champion-share__name" data-dynamic-field="name">{{ section.settings.default_name }}</div>
+        <div class="pcos-champion-share__quote" data-dynamic-field="quote">{{ section.settings.default_quote }}</div>
+        <div class="pcos-champion-share__date" data-dynamic-field="date">{{ section.settings.default_date }}</div>
+      </div>
+    </div>
+
+    <div class="pcos-champion-share__actions">
+      {%- if share_bg != blank -%}
+        {{ share_bg | image_url: width: 1500 | image_tag: class: 'pcos-champion-share__bg', loading: 'lazy' }}
+      {%- endif -%}
+
+      <div class="pcos-champion-share__skeleton pcos-champion-share__skeleton--actions" aria-hidden="true">
+        <div class="pcos-champion-share__skeleton-item pcos-champion-share__skeleton-share-title"></div>
+        <div class="pcos-champion-share__skeleton-row">
+          {%- for index in (1..5) -%}
+            <div class="pcos-champion-share__skeleton-button">
+              <div class="pcos-champion-share__skeleton-item pcos-champion-share__skeleton-icon"></div>
+              <div class="pcos-champion-share__skeleton-item pcos-champion-share__skeleton-label"></div>
+            </div>
+          {%- endfor -%}
+        </div>
+        <div class="pcos-champion-share__skeleton-item pcos-champion-share__skeleton-line"></div>
+        <div class="pcos-champion-share__skeleton-row pcos-champion-share__skeleton-row--utility">
+          {%- for index in (1..2) -%}
+            <div class="pcos-champion-share__skeleton-button">
+              <div class="pcos-champion-share__skeleton-item pcos-champion-share__skeleton-icon"></div>
+              <div class="pcos-champion-share__skeleton-item pcos-champion-share__skeleton-label"></div>
+            </div>
+          {%- endfor -%}
+        </div>
+      </div>
+
+      <div class="pcos-champion-share__actions-inner">
+        <h3 class="pcos-champion-share__share-title">Share</h3>
+
+        <div class="pcos-champion-share__button-row">
+          <button class="pcos-champion-share__button" type="button" data-share-platform="facebook">
+            {%- if facebook_icon != blank -%}
+              <span class="pcos-champion-share__icon">
+                {{ facebook_icon | image_url: width: 50 | image_tag: loading: 'lazy' }}
+              </span>
+            {%- endif -%}
+            <span class="pcos-champion-share__label">Facebook</span>
+          </button>
+          <button class="pcos-champion-share__button" type="button" data-share-platform="x">
+            {%- if x_icon != blank -%}
+              <span class="pcos-champion-share__icon">
+                {{ x_icon | image_url: width: 50 | image_tag: loading: 'lazy' }}
+              </span>
+            {%- endif -%}
+            <span class="pcos-champion-share__label">X</span>
+          </button>
+          <button class="pcos-champion-share__button" type="button" data-share-platform="whatsapp">
+            {%- if whatsapp_icon != blank -%}
+              <span class="pcos-champion-share__icon">
+                {{ whatsapp_icon | image_url: width: 50 | image_tag: loading: 'lazy' }}
+              </span>
+            {%- endif -%}
+            <span class="pcos-champion-share__label">Whatsapp</span>
+          </button>
+          <button class="pcos-champion-share__button" type="button" data-share-platform="instagram">
+            {%- if instagram_icon != blank -%}
+              <span class="pcos-champion-share__icon">
+                {{ instagram_icon | image_url: width: 50 | image_tag: loading: 'lazy' }}
+              </span>
+            {%- endif -%}
+            <span class="pcos-champion-share__label">Instagram</span>
+          </button>
+          <button class="pcos-champion-share__button" type="button" data-share-platform="sms">
+            {%- if sms_icon != blank -%}
+              <span class="pcos-champion-share__icon">
+                {{ sms_icon | image_url: width: 50 | image_tag: loading: 'lazy' }}
+              </span>
+            {%- endif -%}
+            <span class="pcos-champion-share__label">SMS</span>
+          </button>
+        </div>
+        {%- if divider_image != blank -%}
+          <div class="pcos-champion-share__line" aria-hidden="true">
+            {{ divider_image | image_url: width: 750 | image_tag: loading: 'lazy' }}
+          </div>
+        {%- endif -%}
+
+        <div class="pcos-champion-share__button-row pcos-champion-share__button-row--utility">
+          <button class="pcos-champion-share__button pcos-champion-share__button--dark" type="button" data-share-download>
+            {%- if download_icon != blank -%}
+              <span class="pcos-champion-share__icon" aria-hidden="true">
+                {{ download_icon | image_url: width: 180 | image_tag: loading: 'lazy' }}
+              </span>
+            {%- endif -%}
+            <span class="pcos-champion-share__label">Download</span>
+          </button>
+          <button class="pcos-champion-share__button pcos-champion-share__button--dark" type="button" data-share-copy>
+            {%- if copy_icon != blank -%}
+              <span class="pcos-champion-share__icon" aria-hidden="true">
+                {{ copy_icon | image_url: width: 180 | image_tag: loading: 'lazy' }}
+              </span>
+            {%- endif -%}
+            <span class="pcos-champion-share__label">Copy link</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  (function () {
+    var root = document.querySelector('#shopify-section-{{ section.id }} .pcos-champion-share');
+    if (!root || root.dataset.ready === 'true') {
+      return;
+    }
+
+    root.dataset.ready = 'true';
+
+    var frameNode = root.querySelector('[data-share-frame]');
+    var captureNode = root.querySelector('[data-share-capture]');
+    var certificateContentNode = root.querySelector('[data-certificate-content]');
+    var medalBadgeNode = root.querySelector('[data-medal-badge]');
+    var medalImageNode = root.querySelector('[data-medal-image]');
+    var apiHost = 'https://api.ulike.com';
+    var claimEndpoint = '/promotion/sendBenefit';
+    var queryEndpoint = '/promotion/queryBenefitInfoList';
+    var claimActivityId = '301870633984196609';
+    var shareTitle = "I joined Ulike's PCOS campaign as a supporter and unlocked this medal! View here:";
+    var fileName = 'pcos-awareness-champion.png';
+    var medalConfigs = {};
+    var dynamicDataPromise = null;
+    var html2CanvasPromise = null;
+
+    root.querySelectorAll('[data-medal-config]').forEach(function (node) {
+      medalConfigs[node.dataset.pcosType] = {
+        imageUrl: node.dataset.imageUrl || '',
+        description: node.dataset.description || ''
+      };
+    });
+
+    function setField(name, value) {
+      var node = root.querySelector('[data-dynamic-field="' + name + '"]');
+      if (node && value !== null && value !== undefined && value !== '') {
+        node.textContent = value;
+      }
+    }
+
+    function normalizePcosType(value) {
+      var type = String(value || '').toUpperCase();
+      return /^PCOS[1-5]$/.test(type) ? type : 'PCOS1';
+    }
+
+    function parseExtend(value) {
+      if (!value) {
+        return {};
+      }
+
+      if (typeof value === 'object') {
+        return value;
+      }
+
+      try {
+        return JSON.parse(value);
+      } catch (error) {
+        return {};
+      }
+    }
+
+    function generateGUID() {
+      if (window.crypto && window.crypto.randomUUID) {
+        return window.crypto.randomUUID();
+      }
+
+      return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (character) {
+        var random = Math.random() * 16 | 0;
+        var value = character === 'x' ? random : (random & 0x3 | 0x8);
+
+        return value.toString(16);
+      });
+    }
+
+    function sendUlikeApi(url, data) {
+      var payload = Object.assign({}, data, {
+        siteCode: 'US',
+        language: window.Shopify && window.Shopify.locale ? window.Shopify.locale : 'en',
+        requestId: generateGUID()
+      });
+
+      return fetch(apiHost + url, {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+      }).then(function (response) {
+        if (!response.ok) {
+          throw new Error('Request failed');
+        }
+
+        return response.json();
+      });
+    }
+
+    function getQueryParams() {
+      return new URLSearchParams(window.location.search);
+    }
+
+    function getClaimParams() {
+      var params = getQueryParams();
+      var orderId = params.get('order_id') || params.get('orderId') || params.get('resourceId');
+      var email = params.get('email') || params.get('userEmail');
+
+      return {
+        orderId: orderId ? orderId.trim() : '',
+        email: email ? email.trim() : ''
+      };
+    }
+
+    function formatDate(timestamp) {
+      var seconds = Number(timestamp);
+      if (!seconds) {
+        return '';
+      }
+
+      return new Intl.DateTimeFormat('en-US', {
+        month: 'long',
+        day: 'numeric',
+        year: 'numeric'
+      }).format(new Date(seconds * 1000));
+    }
+
+    function applyMedal(type) {
+      var medal = medalConfigs[normalizePcosType(type)] || {};
+      if (medal.description) {
+        setField('quote', medal.description);
+      }
+
+      if (medal.imageUrl && medalBadgeNode && medalImageNode) {
+        medalImageNode.crossOrigin = 'anonymous';
+        medalImageNode.src = medal.imageUrl;
+        medalBadgeNode.hidden = false;
+      } else if (medalBadgeNode) {
+        medalBadgeNode.hidden = true;
+      }
+    }
+
+    function applyBenefit(benefit) {
+      if (!benefit) {
+        return;
+      }
+
+      var extend = parseExtend(benefit.extend);
+      var type = normalizePcosType(extend.pcosType || getRequestedPcosType());
+
+      applyMedal(type);
+      setField('number', benefit.instanceId);
+      setField('name', extend.userName);
+      setField('date', formatDate(benefit.createTime));
+
+      if (certificateContentNode) {
+        certificateContentNode.hidden = false;
+      }
+
+      if (frameNode) {
+        delete frameNode.dataset.loading;
+      }
+    }
+
+    function getRequestedPcosType() {
+      var params = getQueryParams();
+      return normalizePcosType(params.get('pcosType') || root.dataset.defaultPcosType);
+    }
+
+    function getBenefitByType(items, type) {
+      if (!Array.isArray(items) || !items.length) {
+        return null;
+      }
+
+      return items.find(function (item) {
+        return normalizePcosType(parseExtend(item.extend).pcosType) === type;
+      }) || items[0];
+    }
+
+    function loadDynamicData() {
+      var pcosType = getRequestedPcosType();
+      var claimParams = getClaimParams();
+
+      if (claimParams.orderId && claimParams.email) {
+        dynamicDataPromise = sendUlikeApi(claimEndpoint, {
+          merchantCode: 'ULIKE',
+          scene: 'PCOS',
+          activityId: claimActivityId,
+          userEmail: claimParams.email,
+          extend: {
+            resourceId: claimParams.orderId
+          }
+        })
+        .then(function (payload) {
+          if (!payload || payload.code !== 0 || payload.success === false) {
+            throw new Error('Invalid response');
+          }
+
+          var benefit = payload.data;
+          if (!benefit) {
+            return;
+          }
+
+          applyBenefit(benefit);
+        })
+        .catch(function () {});
+
+        return dynamicDataPromise;
+      }
+
+      var queryData = {
+        pageIndex: 1,
+        pageSize: 20,
+        includeCount: false,
+        scene: 'PCOS',
+        activityId: claimActivityId,
+        extend: {
+          pcosType: pcosType
+        }
+      };
+
+      if (claimParams.email) {
+        queryData.userEmail = claimParams.email;
+      }
+
+      dynamicDataPromise = sendUlikeApi(queryEndpoint, queryData)
+      .then(function (payload) {
+        if (!payload || payload.code !== 0 || payload.success === false) {
+          throw new Error('Invalid response');
+        }
+
+        var benefit = Array.isArray(payload.data) ? getBenefitByType(payload.data, pcosType) : payload.data;
+        if (!benefit) {
+          return;
+        }
+
+        applyBenefit(benefit);
+      })
+      .catch(function () {});
+
+      return dynamicDataPromise;
+    }
+
+    loadDynamicData();
+
+    function getHtml2Canvas() {
+      return new Promise(function (resolve, reject) {
+        if (window.html2canvas) {
+          resolve(window.html2canvas);
+          return;
+        }
+
+        if (!html2CanvasPromise) {
+          html2CanvasPromise = new Promise(function (scriptResolve, scriptReject) {
+            var script = document.querySelector('[data-html2canvas-script]');
+            if (!script) {
+              scriptReject(new Error('html2canvas missing'));
+              return;
+            }
+
+            script.onload = function () {
+              scriptResolve(window.html2canvas);
+            };
+            script.onerror = scriptReject;
+          });
+        }
+
+        html2CanvasPromise.then(resolve).catch(reject);
+      });
+    }
+
+    function waitForFonts() {
+      if (document.fonts && document.fonts.ready) {
+        return document.fonts.ready.catch(function () {});
+      }
+
+      return Promise.resolve();
+    }
+
+    function waitForImages(node) {
+      var images = Array.prototype.slice.call(node.querySelectorAll('img'));
+      return Promise.all(images.map(function (image) {
+        if (image.complete && image.naturalWidth > 0) {
+          return Promise.resolve();
+        }
+
+        return new Promise(function (resolve) {
+          image.addEventListener('load', resolve, { once: true });
+          image.addEventListener('error', resolve, { once: true });
+        });
+      }));
+    }
+
+    function imageToDataUrl(image) {
+      var url = image.currentSrc || image.src;
+      if (!url || url.indexOf('data:') === 0) {
+        return Promise.resolve(null);
+      }
+
+      return fetch(url, { mode: 'cors', credentials: 'omit' })
+        .then(function (response) {
+          if (!response.ok) {
+            throw new Error('Image request failed');
+          }
+
+          return response.blob();
+        })
+        .then(function (blob) {
+          return new Promise(function (resolve, reject) {
+            var reader = new FileReader();
+            reader.onload = function () {
+              resolve({
+                image: image,
+                src: image.getAttribute('src'),
+                srcset: image.getAttribute('srcset'),
+                sizes: image.getAttribute('sizes'),
+                dataUrl: reader.result
+              });
+            };
+            reader.onerror = reject;
+            reader.readAsDataURL(blob);
+          });
+        })
+        .catch(function () {
+          return null;
+        });
+    }
+
+    function inlineCaptureImages() {
+      var images = Array.prototype.slice.call(captureNode.querySelectorAll('img'));
+      return Promise.all(images.map(imageToDataUrl)).then(function (items) {
+        var restoreItems = items.filter(Boolean);
+
+        restoreItems.forEach(function (item) {
+          item.image.removeAttribute('srcset');
+          item.image.removeAttribute('sizes');
+          item.image.setAttribute('src', item.dataUrl);
+        });
+
+        return function restoreImages() {
+          restoreItems.forEach(function (item) {
+            if (item.srcset) {
+              item.image.setAttribute('srcset', item.srcset);
+            }
+
+            if (item.sizes) {
+              item.image.setAttribute('sizes', item.sizes);
+            }
+
+            if (item.src) {
+              item.image.setAttribute('src', item.src);
+            }
+          });
+        };
+      });
+    }
+
+    function prepareCaptureLayout() {
+      var logoWrap = captureNode.querySelector('.pcos-champion-share__logos');
+      var logo = captureNode.querySelector('.pcos-champion-share__logo');
+
+      if (logoWrap) {
+        logoWrap.style.display = 'grid';
+        logoWrap.style.width = '100%';
+        logoWrap.style.placeItems = 'center';
+        logoWrap.style.textAlign = 'center';
+      }
+
+      if (logo) {
+        logo.style.display = 'block';
+        logo.style.marginLeft = 'auto';
+        logo.style.marginRight = 'auto';
+        logo.style.justifySelf = 'center';
+      }
+    }
+
+    function buildCanvas() {
+      prepareCaptureLayout();
+
+      if (!dynamicDataPromise) {
+        dynamicDataPromise = Promise.resolve();
+      }
+
+      return Promise.all([dynamicDataPromise, getHtml2Canvas(), waitForFonts()]).then(function (results) {
+        var html2canvas = results[1];
+        return waitForImages(captureNode).then(function () {
+          return html2canvas;
+        });
+      }).then(function (html2canvas) {
+        var restoreImages = function () {};
+
+        return inlineCaptureImages().then(function (restore) {
+          restoreImages = restore;
+          return waitForImages(captureNode);
+        }).then(function () {
+          return html2canvas(captureNode, {
+            backgroundColor: null,
+            scale: Math.max(2, window.devicePixelRatio || 1),
+            useCORS: true,
+            allowTaint: false,
+            logging: false
+          });
+        }).then(function (canvas) {
+          restoreImages();
+
+          return canvas;
+        }).catch(function (error) {
+          restoreImages();
+
+          throw error;
+        });
+      });
+    }
+
+    function canvasToBlob(canvas) {
+      return new Promise(function (resolve) {
+        canvas.toBlob(resolve, 'image/png', 0.96);
+      });
+    }
+
+    function downloadBlob(blob) {
+      var link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = fileName;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.setTimeout(function () {
+        URL.revokeObjectURL(link.href);
+      }, 1000);
+    }
+
+    function getShareUrl(platform) {
+      var url = encodeURIComponent(window.location.href);
+      var text = encodeURIComponent(shareTitle);
+
+      if (platform === 'facebook') {
+        return 'https://m.facebook.com/sharer/sharer.php?u=' + url + '&quote=' + text;
+      }
+
+      if (platform === 'x') {
+        return 'https://twitter.com/intent/tweet?url=' + url + '&text=' + text;
+      }
+
+      if (platform === 'whatsapp') {
+        return 'https://api.whatsapp.com/send?text=' + text + '%20' + url;
+      }
+
+      if (platform === 'sms') {
+        return 'sms:?&body=' + text + '%20' + url;
+      }
+
+      if (platform === 'instagram') {
+        return 'https://www.instagram.com/';
+      }
+
+      return '';
+    }
+
+    function copyShareLink() {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        return navigator.clipboard.writeText(window.location.href).catch(function () {});
+      }
+
+      return Promise.resolve();
+    }
+
+    function isMobileDevice() {
+      return /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
+    }
+
+    function sharePage(platform) {
+      if (platform === 'instagram') {
+        copyShareLink();
+        window.open(getShareUrl(platform), '_blank', 'noopener,noreferrer');
+        return;
+      }
+
+      var shareUrl = getShareUrl(platform);
+      if (shareUrl) {
+        if (platform === 'facebook' && isMobileDevice()) {
+          window.location.href = shareUrl;
+          return;
+        }
+
+        window.open(shareUrl, '_blank', 'noopener,noreferrer');
+        return;
+      }
+
+      copyShareLink();
+    }
+
+    root.querySelectorAll('[data-share-platform]').forEach(function (button) {
+      button.addEventListener('click', function () {
+        sharePage(button.dataset.sharePlatform);
+      });
+    });
+
+    var downloadButton = root.querySelector('[data-share-download]');
+    if (downloadButton) {
+      downloadButton.addEventListener('click', function () {
+        buildCanvas()
+          .then(canvasToBlob)
+          .then(function (blob) {
+            downloadBlob(blob);
+          })
+          .catch(function () {});
+      });
+    }
+
+    var copyButton = root.querySelector('[data-share-copy]');
+    if (copyButton) {
+      copyButton.addEventListener('click', function () {
+        copyShareLink();
+      });
+    }
+
+  })();
+</script>
+
+<link href="https://fonts.googleapis.com/css2?family=Abhaya+Libre:wght@500&display=swap" rel="stylesheet">
+
+{% comment %} {%- if section.settings.pcos1_image != blank -%}
+  <link rel="preload" as="image" href="{{ section.settings.pcos1_image | image_url: width: 700 }}">
+{%- endif -%}
+{%- if section.settings.pcos2_image != blank -%}
+  <link rel="preload" as="image" href="{{ section.settings.pcos2_image | image_url: width: 700 }}">
+{%- endif -%}
+{%- if section.settings.pcos3_image != blank -%}
+  <link rel="preload" as="image" href="{{ section.settings.pcos3_image | image_url: width: 700 }}">
+{%- endif -%}
+{%- if section.settings.pcos4_image != blank -%}
+  <link rel="preload" as="image" href="{{ section.settings.pcos4_image | image_url: width: 700 }}">
+{%- endif -%}
+{%- if section.settings.pcos5_image != blank -%}
+  <link rel="preload" as="image" href="{{ section.settings.pcos5_image | image_url: width: 700 }}">
+{%- endif -%} {% endcomment %}
+<script async data-html2canvas-script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+
+{% schema %}
+{
+  "name": "PCOS champion share",
+  "settings": [
+    { "type": "header", "content": "Images" },
+    { "type": "image_picker", "id": "card_background", "label": "Top certificate background" },
+    { "type": "image_picker", "id": "share_background", "label": "Bottom share background" },
+    { "type": "image_picker", "id": "logo_image", "label": "Logo image" },
+    { "type": "image_picker", "id": "spark_image", "label": "Spark image" },
+    { "type": "image_picker", "id": "divider_image", "label": "Divider image" },
+    { "type": "image_picker", "id": "facebook_icon", "label": "Facebook icon" },
+    { "type": "image_picker", "id": "x_icon", "label": "X icon" },
+    { "type": "image_picker", "id": "whatsapp_icon", "label": "Whatsapp icon" },
+    { "type": "image_picker", "id": "instagram_icon", "label": "Instagram icon" },
+    { "type": "image_picker", "id": "sms_icon", "label": "SMS icon" },
+    { "type": "image_picker", "id": "download_icon", "label": "Download icon" },
+    { "type": "image_picker", "id": "copy_icon", "label": "Copy link icon" },
+    { "type": "header", "content": "Certificate content" },
+    { "type": "text", "id": "title", "label": "Title", "default": "PMOS Awareness Champion" },
+    { "type": "text", "id": "default_number", "label": "Default number", "default": "0" },
+    { "type": "text", "id": "default_name", "label": "Default name", "default": "Anna.S" },
+    { "type": "text", "id": "default_quote", "label": "Default quote", "default": "\"You've sparked a new beginning.\"" },
+    { "type": "text", "id": "default_date", "label": "Default date", "default": "June 12, 2026" },
+    { "type": "header", "content": "Benefit API" },
+    { "type": "text", "id": "activity_id", "label": "Activity ID" },
+    {
+      "type": "select",
+      "id": "default_pcos_type",
+      "label": "Default PCOS type",
+      "default": "PCOS1",
+      "options": [
+        { "value": "PCOS1", "label": "PCOS1" },
+        { "value": "PCOS2", "label": "PCOS2" },
+        { "value": "PCOS3", "label": "PCOS3" },
+        { "value": "PCOS4", "label": "PCOS4" },
+        { "value": "PCOS5", "label": "PCOS5" }
+      ]
+    },
+    { "type": "header", "content": "PCOS1 medal" },
+    { "type": "image_picker", "id": "pcos1_image", "label": "PCOS1 image" },
+    { "type": "textarea", "id": "pcos1_description", "label": "PCOS1 description", "default": "\"You've sparked a new beginning.\"" },
+    { "type": "header", "content": "PCOS2 medal" },
+    { "type": "image_picker", "id": "pcos2_image", "label": "PCOS2 image" },
+    { "type": "textarea", "id": "pcos2_description", "label": "PCOS2 description", "default": "\"You've sparked a new beginning.\"" },
+    { "type": "header", "content": "PCOS3 medal" },
+    { "type": "image_picker", "id": "pcos3_image", "label": "PCOS3 image" },
+    { "type": "textarea", "id": "pcos3_description", "label": "PCOS3 description", "default": "\"You've sparked a new beginning.\"" },
+    { "type": "header", "content": "PCOS4 medal" },
+    { "type": "image_picker", "id": "pcos4_image", "label": "PCOS4 image" },
+    { "type": "textarea", "id": "pcos4_description", "label": "PCOS4 description", "default": "\"You've sparked a new beginning.\"" },
+    { "type": "header", "content": "PCOS5 medal" },
+    { "type": "image_picker", "id": "pcos5_image", "label": "PCOS5 image" },
+    { "type": "textarea", "id": "pcos5_description", "label": "PCOS5 description", "default": "\"You've sparked a new beginning.\"" },
+    { "type": "header", "content": "Layout" },
+    { "type": "range", "id": "panel_gap", "min": 0, "max": 20, "step": 1, "unit": "px", "label": "Gap between panels", "default": 3 }
+  ],
+  "presets": [
+    { "name": "PCOS champion share" }
+  ]
+}
+{% endschema %}
