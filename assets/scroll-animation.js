@@ -240,3 +240,65 @@ function throttleUlike(func, limit) {
     }
   };
 }
+
+(() => {
+  const selector = '.js-scroll__header,.js-scroll__group';
+  const elements = document.querySelectorAll(selector);
+  if (!elements.length) return;
+
+  const shakeTimers = new WeakMap();
+
+  const addAppear = el => {
+    if (!el || el.classList.contains('appear')) return;
+    requestAnimationFrame(() => {
+      if (el.isConnected) el.classList.add('appear');
+    });
+  };
+
+  const startShake = el => {
+    if (!el || shakeTimers.has(el)) return;
+
+    el.classList.add('appear');
+
+    const timer = setInterval(() => {
+      if (!el.isConnected) {
+        clearInterval(timer);
+        shakeTimers.delete(el);
+        return;
+      }
+
+      el.classList.remove('appear');
+      void el.offsetWidth;
+      el.classList.add('appear');
+    }, 3000);
+
+    shakeTimers.set(el, timer);
+  };
+
+  const observer = new IntersectionObserver(
+    entries => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+
+        const el = entry.target;
+
+        if (el.classList.contains('js-scroll__group')) {
+          el.querySelectorAll('.js-scroll__card').forEach(addAppear);
+        } else if (el.classList.contains('shake-once')) {
+          startShake(el);
+        } else {
+          addAppear(el);
+        }
+
+        observer.unobserve(el);
+      });
+    },
+    {
+      root: null,
+      rootMargin: '0px 0px 50px 0px',
+      threshold: 0.1,
+    }
+  );
+
+  elements.forEach(el => observer.observe(el));
+})();
