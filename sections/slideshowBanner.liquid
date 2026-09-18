@@ -61,6 +61,7 @@
           --title-logo-text-color-mobile: {{ block.settings.title_logo_text_color_mobile }};
           --tag-border-radius-pc:{{ block.settings.tag_size_pc }}px;
           --tag-border-radius-mb:{{ block.settings.tag_size_mb }}px;
+           --content-padding-mobile:{{ block.settings.content_padding_mobile}}px;
       }
     {%- endfor -%}
      .slide-show__title p{
@@ -206,6 +207,12 @@ native-video video{display:block;width:100%;height:100%}
    @media screen and (max-width: 740px) {
       .slideshow__text-wrapper--mobile-top.vertical-breather {
           padding-block-start: max(var(--vertical-breather), calc((var(--header-height) + 20px) * var(--enable-transparent-header)));
+      }
+        .slideshow__text-wrapper--mobile-top.vertical-breather.vertical-breather__custom {
+          padding-block-start: var(--content-padding-mobile);
+      }
+      .slideshow__text-wrapper--mobile-bottom.vertical-breather.vertical-breather__custom {
+          padding-block-end: var(--content-padding-mobile);
       }
      [dir="ltr"] .content-box--mobile-left {
       margin-right: auto;
@@ -379,6 +386,10 @@ flex-basis: 45px;
 }
 .slideshow .slideshow-tag {
     border-radius: var(--tag-border-radius-mb);
+}
+.slideshow__slide-inner.slideshow__slide-inner_cus_container .container{
+padding-left:0;
+padding-right:0;
 }
   }
 </style>
@@ -561,7 +572,7 @@ flex-basis: 45px;
               {%- assign text_position = block.settings.text_position | split: '_' | last -%}
               {%- assign mobile_text_alignment = block.settings.mobile_text_position | split: '_' | first -%}
               {%- assign mobile_text_position = block.settings.mobile_text_position | split: '_' | last -%}
-              <div class="slideshow__text-wrapper slideshow__text-wrapper--{{ text_alignment }}  slideshow__text-wrapper--mobile-{{ mobile_text_alignment }} vertical-breather">
+              <div class="slideshow__text-wrapper slideshow__text-wrapper--{{ text_alignment }}  slideshow__text-wrapper--mobile-{{ mobile_text_alignment }} vertical-breather {% if block.settings.is_custom_content_padding == true %} vertical-breather__custom{% endif %}">
                 <div class="content-box content-box--medium content-box--text-{{ text_position }} content-box--{{ text_position }}  content-box--mobile-text-{{ mobile_text_position }} content-box--mobile-{{ mobile_text_position }} text-container">
                   {{- section_content -}}
                 </div>
@@ -595,11 +606,11 @@ flex-basis: 45px;
             and block.settings.button_1_text == blank
             and block.settings.button_2_text == blank
           -%}
-            <a class="slideshow__slide-inner" href="{{ block.settings.button_1_link }}">
+            <a class="slideshow__slide-inner {%  if block.settings.is_custom_container_padding_mb == true %}  slideshow__slide-inner_cus_container{% endif %}" href="{{ block.settings.button_1_link }}">
               {{- slide_content -}}
             </a>
           {%- else -%}
-            <div class="slideshow__slide-inner">
+            <div class="slideshow__slide-inner {%  if block.settings.is_custom_container_padding_mb == true %}  slideshow__slide-inner_cus_container{% endif %}">
               {{- slide_content -}}
             </div>
           {%- endif -%}
@@ -1043,6 +1054,29 @@ flex-basis: 45px;
           "type": "header",
           "content": "Font - Mobile"
         },
+                  {
+            "type": "checkbox",
+            "id": "is_custom_content_padding",
+            "label": "Enable Content Padding Mobile",
+            "default": false
+          },
+             {
+          "type": "range",
+          "id": "content_padding_mobile",
+          "label": "Content Padding - Mobile",
+          "min": 1,
+          "max": 100,
+          "step": 1,
+          "unit": "px",
+          "default": 40
+        },
+
+            {
+            "type": "checkbox",
+            "id": "is_custom_container_padding_mb",
+            "label": "Enable Container Padding Mobile",
+            "default": false
+          },
         {
           "type": "range",
           "id": "title_logo_width_mobile",
