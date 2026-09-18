@@ -1,0 +1,543 @@
+<style>
+  #shopify-section-{{ section.id }} {
+    --newsletter-bg: {{ section.settings.background }};
+    --newsletter-text: {{ section.settings.text_color }};
+    --newsletter-button-bg: {{ section.settings.button_background }};
+    --newsletter-button-color: {{ section.settings.button_color }};
+    --newsletter-height: {{ section.settings.desktop_height }}px;
+     --newsletter-mb-height: {{ section.settings.mobile_height }}px;
+    
+
+    --newsletter-mobile-padding-top: {{ section.settings.mobile_padding_top }}px;
+  }
+
+  .newsletter-banner-custom {
+    position: relative;
+    width: 100%;
+    min-height: var(--newsletter-height);
+    overflow: hidden;
+    background: var(--newsletter-bg);
+    color: var(--newsletter-text);
+  }
+
+  .newsletter-banner-custom .newsletter-banner__image {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .newsletter-banner-custom .newsletter-banner__image img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  .newsletter-banner-custom .newsletter-banner__container {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    min-height: var(--newsletter-height);
+    align-items: center;
+  }
+
+  .newsletter-banner-custom .newsletter-banner__content {
+    width: 100%;
+    max-width: {{ section.settings.content_width }}px;
+  }
+
+  .newsletter-banner-custom .newsletter-banner__title {
+    margin: 0;
+    color: var(--newsletter-text);
+    font-family: var(--heading-font-family);
+    font-size: 44px;
+    font-weight: 400;
+    line-height: 1.15;
+  }
+
+  .newsletter-banner-custom .newsletter-banner__subtitle {
+    margin: 8px 0 0;
+    color: var(--newsletter-text);
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 1.5;
+  }
+
+  .newsletter-banner-custom .newsletter-banner__form {
+    margin-top: 30px;
+  }
+
+  .newsletter-banner-custom .newsletter-banner__form-box {
+    display: flex;
+    width: 100%;
+    height: 60px;
+    padding: 9px;
+    background: #fff;
+    border: 1px solid #7F8185;
+    border-radius: 4px;
+  }
+
+  .newsletter-banner-custom .newsletter-banner__input {
+    flex: 1 1 auto;
+    min-width: 0;
+    height: 100%;
+    padding: 0 16px;
+    color: #1a1a1a;
+    font-family: inherit;
+    font-size: 14px;
+    background: transparent;
+    border: 0;
+    outline: 0;
+  }
+
+  .newsletter-banner-custom .newsletter-banner__input::placeholder {
+    color: #9a9694;
+  }
+
+  .newsletter-banner-custom .newsletter-banner__submit {
+    display: flex;
+    flex: 0 0 auto;
+    min-width: 130px;
+    align-items: center;
+    justify-content: center;
+    padding: 0 24px;
+    color: var(--newsletter-button-color);
+    font-family: var(--heading-font-family);
+    font-size: 14px;
+    font-weight: 400;
+    background: var(--newsletter-button-bg);
+    border: 0;
+    border-radius: 4px;
+    cursor: pointer;
+    transition:
+      opacity 0.25s ease,
+      transform 0.25s ease;
+  }
+
+  .newsletter-banner-custom .newsletter-banner__submit:hover {
+    opacity: 0.88;
+  }
+
+  .newsletter-banner-custom .newsletter-banner__submit:active {
+    transform: scale(0.98);
+  }
+
+  .newsletter-banner-custom .newsletter-banner__consent {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    margin-top: 10px;
+    color: var(--newsletter-text);
+    font-size: 14px;
+    line-height: 1.5;
+    cursor: pointer;
+  }
+
+  .newsletter-banner-custom .newsletter-banner__checkbox {
+    position: relative;
+    flex: 0 0 auto;
+    width: 11px;
+    height: 11px;
+    margin-top: 5px;
+  }
+
+  .newsletter-banner-custom .newsletter-banner__checkbox input {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    opacity: 0;
+    cursor: pointer;
+  }
+
+  .newsletter-banner-custom .newsletter-banner__checkbox-ui {
+    display: block;
+    width: 11px;
+    height: 11px;
+    border: 1px solid #7F8185;
+    background: transparent;
+  }
+
+.newsletter-banner-custom
+  .newsletter-banner__checkbox
+  input:checked + .newsletter-banner__checkbox-ui{
+ border: 1px solid #3F3636;
+ color:#3F3636;
+}
+
+   .newsletter-banner-custom
+  .newsletter-banner__checkbox
+  input:checked + .newsletter-banner__checkbox-ui::after {
+    content: "✓";
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: currentColor;
+    font-size: 12px;
+}
+
+  .newsletter-banner-custom .newsletter-banner__consent-text {
+    flex: 1 1 auto;
+  }
+
+  .newsletter-banner-custom .newsletter-banner__consent-text p {
+    margin: 0;
+  }
+
+  .newsletter-banner-custom .newsletter-banner__consent-text a {
+    color: inherit;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .newsletter-banner-custom .newsletter-banner__message {
+    margin-top: 12px;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  .newsletter-banner-custom .newsletter-banner__message--success {
+    color: #E0004D;
+  }
+
+  .newsletter-banner-custom .newsletter-banner__message--error {
+    color: #E0004D;
+  }
+
+  @media screen and (max-width: 767px) {
+    .newsletter-banner-custom {
+      min-height: 0;
+    }
+
+    .newsletter-banner-custom .newsletter-banner__container {
+      min-height: var(--newsletter-mb-height);
+      padding-top: var(--newsletter-mobile-padding-top);
+      padding-bottom: 32px;
+              align-items: flex-start;
+    }
+
+    .newsletter-banner-custom .newsletter-banner__content {
+      max-width: none;
+      text-align: center;
+    }
+
+    .newsletter-banner-custom .newsletter-banner__title {
+      font-size: 24px;
+    }
+
+    .newsletter-banner-custom .newsletter-banner__subtitle {
+      max-width: 350px;
+      margin: 8px auto 0;
+      font-size: 12px;
+    }
+
+    .newsletter-banner-custom .newsletter-banner__form {
+      margin-top: 22px;
+    }
+
+    .newsletter-banner-custom .newsletter-banner__form-box {
+      display: block;
+      height: auto;
+      padding: 0;
+      background: transparent;
+      border: 0;
+    }
+
+    .newsletter-banner-custom .newsletter-banner__input {
+      display: block;
+      width: 100%;
+      height: 50px;
+      padding: 0 18px;
+      text-align: center;
+      background: #fff;
+      border: 1px solid #7d7976;
+      border-radius: 4px;
+    }
+
+    .newsletter-banner-custom .newsletter-banner__submit {
+      width: 100%;
+      min-width: 0;
+      height: 50px;
+      margin-top: 10px;
+      font-size: 14px;
+    }
+
+    .newsletter-banner-custom .newsletter-banner__consent {
+      gap: 8px;
+      margin-top: 17px;
+      font-size: 10px;
+      text-align: left;
+    }
+
+    .newsletter-banner-custom .newsletter-banner__checkbox {
+      {% comment %} width: 11px;
+      height: 11px; {% endcomment %}
+    }
+
+    .newsletter-banner-custom .newsletter-banner__checkbox-ui {
+      {% comment %} width: 11px;
+      height: 11px; {% endcomment %}
+    }
+
+    .newsletter-banner-custom .newsletter-banner__image {
+    }
+
+    .newsletter-banner-custom .newsletter-banner__image img {
+    }
+  }
+</style>
+
+<section class="newsletter-banner-{{ section.id }} newsletter-banner-custom">
+  <div class="newsletter-banner__container container">
+    <div class="newsletter-banner__content">
+
+      {% if section.settings.title != blank %}
+        <h2 class="newsletter-banner__title">
+          {{ section.settings.title }}
+        </h2>
+      {% endif %}
+
+      {% if section.settings.subtitle != blank %}
+        <div class="newsletter-banner__subtitle">
+          {{ section.settings.subtitle }}
+        </div>
+      {% endif %}
+
+      {% form 'customer', class: 'newsletter-banner__form' %}
+        <input
+          type="hidden"
+          name="contact[tags]"
+          value="newsletter"
+        >
+
+        <div class="newsletter-banner__form-box">
+          <input
+            type="email"
+            name="contact[email]"
+            class="newsletter-banner__input"
+            placeholder="{{ section.settings.placeholder | escape }}"
+            autocomplete="email"
+            required
+          >
+
+          <button
+            type="submit"
+            class="newsletter-banner__submit"
+          >
+            {{ section.settings.button_text }}
+          </button>
+        </div>
+
+        {% if section.settings.consent_text != blank %}
+          <label class="newsletter-banner__consent">
+            <span class="newsletter-banner__checkbox">
+              <input
+                type="checkbox"
+                required
+              >
+              <span class="newsletter-banner__checkbox-ui"></span>
+            </span>
+
+            <span class="newsletter-banner__consent-text">
+              {{ section.settings.consent_text }}
+            </span>
+          </label>
+        {% endif %}
+
+        {% if form.posted_successfully? %}
+          <div class="newsletter-banner__message newsletter-banner__message--success">
+            {{ section.settings.success_text }}
+          </div>
+        {% endif %}
+
+        {% if form.errors %}
+          <div class="newsletter-banner__message newsletter-banner__message--error">
+            {{ form.errors | default_errors }}
+          </div>
+        {% endif %}
+      {% endform %}
+
+    </div>
+  </div>
+
+  <picture class="newsletter-banner__image">
+    {% if section.settings.mobile_image != blank %}
+      <source
+        media="(max-width: 767px)"
+        srcset="
+          {{ section.settings.mobile_image | image_url: width: 400 }} 400w,
+          {{ section.settings.mobile_image | image_url: width: 600 }} 600w,
+          {{ section.settings.mobile_image | image_url: width: 800 }} 800w
+        "
+        sizes="100vw"
+      >
+    {% endif %}
+
+    {% if section.settings.desktop_image != blank %}
+      {{
+        section.settings.desktop_image
+        | image_url: width: 2400
+        | image_tag:
+          loading: 'lazy',
+          widths: '800, 1200, 1600, 1920, 2400',
+          sizes: '100vw',
+          alt: section.settings.desktop_image.alt
+      }}
+    {% elsif section.settings.mobile_image != blank %}
+      {{
+        section.settings.mobile_image
+        | image_url: width: 1200
+        | image_tag:
+          loading: 'lazy',
+          widths: '400, 600, 800, 1200',
+          sizes: '100vw',
+          alt: section.settings.mobile_image.alt
+      }}
+    {% endif %}
+  </picture>
+</section>
+
+{% schema %}
+{
+  "name": "Newsletter Image Banner",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Unlock Your Smoothest Skin Yet"
+    },
+    {
+      "type": "richtext",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "<p>Join Ulike to enjoy an extra £10 OFF, exclusive offers, and early access to new launches.</p>"
+    },
+    {
+      "type": "image_picker",
+      "id": "desktop_image",
+      "label": "Desktop Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "mobile_image",
+      "label": "Mobile Image"
+    },
+    {
+      "type": "text",
+      "id": "placeholder",
+      "label": "Email Placeholder",
+      "default": "Enter your e-mail"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button Text",
+      "default": "SUBSCRIBE"
+    },
+    {
+      "type": "richtext",
+      "id": "consent_text",
+      "label": "Consent Text",
+      "default": "<p>By entering your email, you agree to receive the latest product offers, promotions, and product information from Ulike. Click to read Ulike's Terms & Conditions and Privacy Policy.</p>"
+    },
+    {
+      "type": "text",
+      "id": "success_text",
+      "label": "Success Message",
+      "default": "Thanks for subscribing!"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "desktop_height",
+      "label": "Desktop Height",
+      "min": 350,
+      "max": 800,
+      "step": 10,
+      "unit": "px",
+      "default": 540
+    },
+      {
+      "type": "range",
+      "id": "mobile_height",
+      "label": "Mobile Height",
+      "min": 300,
+      "max": 800,
+      "step": 10,
+      "unit": "px",
+      "default": 380
+    },
+    {
+      "type": "range",
+      "id": "content_width",
+      "label": "Desktop Content Width",
+      "min": 400,
+      "max": 800,
+      "step": 10,
+      "unit": "px",
+      "default": 500
+    },
+    {
+      "type": "text",
+      "id": "mobile_image_ratio",
+      "label": "Mobile Image Aspect Ratio",
+      "default": "375 / 260",
+      "info": "Example: 375 / 260"
+    },
+    {
+      "type": "range",
+      "id": "mobile_padding_top",
+      "label": "Mobile Padding Top",
+      "min": 20,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "default": 58
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background",
+      "default": "#D0AD92"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#190A0A"
+    },
+    {
+      "type": "color",
+      "id": "button_background",
+      "label": "Button Background",
+      "default": "#190A0A"
+    },
+    {
+      "type": "color",
+      "id": "button_color",
+      "label": "Button Text",
+      "default": "#FFFFFF"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Newsletter Image Banner"
+    }
+  ]
+}
+{% endschema %}
