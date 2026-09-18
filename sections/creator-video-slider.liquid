@@ -1,0 +1,942 @@
+{% style %}
+  #shopify-section-{{ section.id }} {
+    --creator-section-bg: {{ section.settings.background }};
+    --creator-section-color: {{ section.settings.text_color }};
+    --creator-card-radius: {{ section.settings.card_radius }}px;
+  }
+  .media-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+  }
+
+
+  @media screen and (max-width: 768px){
+    .media-{{ section.id }}-padding {
+      padding-top: {{ section.settings.mobile_padding_top }}px;
+      padding-bottom: {{ section.settings.mobile_padding_bottom }}px;
+    }
+  }
+  .creator-video-slider {
+    width: 100%;
+    overflow: hidden;
+    color: var(--creator-section-color);
+    background: var(--creator-section-bg);
+  }
+  .creator-video-slider__top {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 40px;
+    margin-bottom: 50px;
+  }
+
+  .creator-video-slider__heading {
+    margin: 0;
+    font-size: 48px;
+    font-weight: 400;
+    line-height: 119.167%;
+    letter-spacing: -0.64px;
+        font-family: var(--heading-font-family);
+  }
+
+  .creator-video-slider__description {
+    margin: 16px 0 0;
+    font-size: 20px;
+    line-height:normal;
+  }
+
+  .creator-video-slider__arrows {
+    display: flex;
+    align-items: center;
+    gap: 36px;
+  }
+
+  .creator-video-slider__arrow {
+    display: flex;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    align-items: center;
+    justify-content: center;
+
+    border: 0;
+
+    color: currentColor;
+    background: transparent;
+
+    cursor: pointer;
+
+    transition:
+      opacity 0.3s ease,
+      transform 0.3s ease;
+  }
+
+  .creator-video-slider__arrow svg {
+    display: block;
+    width: 31px;
+    height: auto;
+  }
+
+  .creator-video-slider__arrow--prev:hover {
+    transform: translateX(-3px);
+  }
+
+  .creator-video-slider__arrow--next:hover {
+    transform: translateX(3px);
+  }
+
+  .creator-video-slider__arrow.swiper-button-disabled {
+    opacity: 0.25;
+    pointer-events: none;
+  }
+
+  .creator-video-slider__swiper {
+    display:block;
+    width: 100%;
+  }
+
+  .creator-video-slider__swiper .swiper-container {
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .creator-video-slider__swiper .swiper-wrapper {
+    align-items: stretch;
+  }
+
+  .creator-video-slider__swiper .swiper-slide {
+    height: auto;
+  }
+
+  .creator-video-card {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 366 / 549;
+    overflow: hidden;
+    border-radius: var(--creator-card-radius);
+    background: #190A0A;
+  }
+
+  .creator-video-card__media {
+    position: absolute;
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+  }
+
+  .creator-video-card__image,
+  .creator-video-card__video {
+    position: absolute;
+    inset: 0;
+
+    display: block;
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+  }
+
+  .creator-video-card__video {
+    z-index: 1;
+  }
+
+  .creator-video-card__poster {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+
+    transition:
+      opacity 0.35s ease,
+      visibility 0.35s ease;
+  }
+
+  .creator-video-card.is-playing
+    .creator-video-card__poster {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  .creator-video-card__shade {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    pointer-events: none;
+   background: linear-gradient(180deg, rgba(0, 0, 0, 0.01) 64.17%, #190A0A 100%);
+   opacity: 0.5;
+    transition: opacity 0.3s ease;
+  }
+
+  .creator-video-card.is-playing
+    .creator-video-card__shade {
+    opacity: 0;
+  }
+
+
+  .creator-video-card__play {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: 6;
+    display: flex;
+    width: 50px;
+    height: 50px;
+    padding: 0;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(255, 255, 255, 0.95);
+    border-radius: 50%;
+    color: #fff;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    cursor: pointer;
+    transform: translate(-50%, -50%);
+    transition:opacity 0.3s ease,visibility 0.3s ease,transform 0.3s ease,background 0.3s ease;
+  }
+  .creator-video-card__play:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform:translate(-50%, -50%) scale(1.05);
+  }
+
+  .creator-video-card.is-playing
+    .creator-video-card__play {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  .creator-video-card__play svg {
+    display: block;
+
+    width: 18px;
+    height: 18px;
+
+    margin-left: 2px;
+  }
+
+  .creator-video-card__content {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 5;
+    color: #fff;
+    transition:opacity 0.3s ease,visibility 0.3s ease;
+  }
+
+  .creator-video-card.is-playing
+    .creator-video-card__content {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  .creator-video-card__creator {
+    padding: 0 19px 16px;
+    font-size: 18px;
+    line-height: 1.2;
+  }
+
+  .creator-video-card__creator a {
+    color: inherit;
+    text-decoration: none;
+  }
+  .creator-video-card__product {
+    display: flex;
+    min-height: 92px;
+    padding: 14px 18px;
+    align-items: center;
+    gap: 11px;
+    border-top: 1px solid rgba(255, 255, 255, 0.55);
+    color: #fff;
+    text-decoration: none;
+    background: rgba(30, 20, 15, 0.22);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+  }
+
+  .creator-video-card__product-image {
+    display: flex;
+    flex: 0 0 55px;
+    width: 55px;
+    height: 62px;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border-radius: 4px;
+    background: #fff;
+  }
+
+  .creator-video-card__product-image img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .creator-video-card__product-info {
+    min-width: 0;
+  }
+
+  .creator-video-card__product-title {
+    display: block;
+    margin-bottom: 7px;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 117.728%;
+    letter-spacing: 0.33px;
+    font-family: var(--heading-font-family);
+  }
+
+  .creator-video-card__product-more {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 12px;
+    line-height: 137.349%;
+    text-transform: uppercase;
+        position: relative;
+  }
+
+  .creator-video-card__product-more::after {
+    width: 100%;
+    height: 1px;
+    background: currentColor;
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left:0;
+  }
+  .creator-video-card__pause-hit {
+    position: absolute;
+    inset: 0;
+    z-index: 4;
+
+    display: none;
+
+    width: 100%;
+    height: 100%;
+    padding: 0;
+
+    border: 0;
+
+    background: transparent;
+
+    cursor: pointer;
+  }
+
+  .creator-video-card.is-playing
+    .creator-video-card__pause-hit {
+    display: block;
+  }
+
+  @media screen and (max-width: 767px) {
+
+    .creator-video-slider__swiper .swiper-container{
+          overflow: visible;
+    }
+
+    .creator-video-slider__container {
+      width: 100%;
+    }
+
+    .creator-video-slider__top {
+      margin-bottom: 45px;
+    }
+
+    .creator-video-slider__heading {
+      font-size: 24px;
+      line-height: 125%;
+      letter-spacing: normal;
+    }
+
+    .creator-video-slider__description {
+      margin-top: 10px;
+        line-height: 125%;
+      font-size: 12px;
+    }
+
+    .creator-video-slider__arrows {
+      display: none;
+    }
+
+
+    .creator-video-card__play {
+      width: 50px;
+      height: 50px;
+    }
+
+    .creator-video-card__play svg {
+      width: 24px;
+      height: 24px;
+    }
+
+    .creator-video-card__creator {
+      padding: 0 12px 11px;
+      font-size: 12px;
+    }
+
+    .creator-video-card__product {
+      min-height: 58px;
+      padding: 11px 11px;
+    }
+
+    .creator-video-card__product-image {
+      flex-basis: 34px;
+
+      width: 34px;
+      height: 39px;
+    }
+
+    .creator-video-card__product-title {
+      font-size: 12px;
+          margin-bottom: 4px;
+    line-height: 85.75%;
+    letter-spacing: 0.206px;
+    }
+
+    .creator-video-card__product-more {
+      font-size: 9px;
+      line-height: 114.333%;
+letter-spacing: 0.206px;
+    }
+  }
+{% endstyle %}
+
+<section
+  id="CreatorVideoSlider-{{ section.id }}"
+  class="creator-video-slider media-{{ section.id }}-padding"
+>
+  <custom-swiper
+    class="creator-video-slider__swiper"
+    slides-per-view="4"
+    space-between="16"
+    loop="false"
+    centered-slides="false"
+    navigation="true"
+    pagination="false"
+    breakpoints='
+      {
+        "0": {
+          "slidesPerView": 1.45,
+          "spaceBetween": 14
+        },
+        "480": {
+          "slidesPerView": 1.6,
+          "spaceBetween": 14
+        },
+        "768": {
+          "slidesPerView": 2.4,
+          "spaceBetween": 16
+        },
+        "1024": {
+          "slidesPerView": 3,
+          "spaceBetween": 18
+        },
+        "1200": {
+          "slidesPerView": 4,
+          "spaceBetween": 18
+        }
+      }
+    '
+  >
+    <div class="container">
+      <div class="creator-video-slider__top js-scroll__header">
+        <div class="creator-video-slider__header">
+          {% if section.settings.title != blank %}
+            <h2 class="creator-video-slider__heading">
+              {{ section.settings.title }}
+            </h2>
+          {% endif %}
+
+          {% if section.settings.description != blank %}
+            <div class="creator-video-slider__description">
+              {{ section.settings.description }}
+            </div>
+          {% endif %}
+        </div>
+
+        {% if section.blocks.size > 1 %}
+          <div class="creator-video-slider__arrows">
+            <button
+              type="button"
+              class="
+                creator-video-slider__arrow
+                creator-video-slider__arrow--prev
+                swiper-prev
+              "
+              aria-label="Previous"
+            >
+              <svg
+                viewBox="0 0 32 20"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M10 1L1 10M1 10L10 19M1 10H31"
+                  stroke="currentColor"
+                  stroke-width="1.3"
+                />
+              </svg>
+            </button>
+
+            <button
+              type="button"
+              class="
+                creator-video-slider__arrow
+                creator-video-slider__arrow--next
+                swiper-next
+              "
+              aria-label="Next"
+            >
+              <svg
+                viewBox="0 0 32 20"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M22 1L31 10M31 10L22 19M31 10H1"
+                  stroke="currentColor"
+                  stroke-width="1.3"
+                />
+              </svg>
+            </button>
+          </div>
+        {% endif %}
+      </div>
+
+      <div class="swiper-container js-scroll__group">
+        <div class="swiper-wrapper">
+          {% for block in section.blocks %}
+            {% assign video = block.settings.video %}
+            {% assign cover = block.settings.cover_image %}
+
+            <div
+              class="swiper-slide"
+              style="--reveal-index:{{ forloop.index0 }};"
+              {{ block.shopify_attributes }}
+            >
+              <article class="creator-video-card js-scroll__card">
+                <div class="creator-video-card__media">
+                  {% if video != blank %}
+                    <video
+                      class="creator-video-card__video"
+                      playsinline
+                      preload="metadata"
+                    >
+                      {% for source in video.sources %}
+                        <source
+                          src="{{ source.url }}"
+                          type="{{ source.mime_type }}"
+                        >
+                      {% endfor %}
+                    </video>
+                  {% endif %}
+
+                  {% if cover != blank %}
+                    <div class="creator-video-card__poster">
+                      {{
+                        cover
+                        | image_url: width: 900
+                        | image_tag:
+                          loading: 'lazy',
+                          class: 'creator-video-card__image',
+                          widths: '300,400,500,600,700,800,900',
+                          sizes: '(max-width: 767px) 80vw, 25vw'
+                      }}
+                    </div>
+
+                  {% elsif video.preview_image != blank %}
+                    <div class="creator-video-card__poster">
+                      {{
+                        video.preview_image
+                        | image_url: width: 900
+                        | image_tag:
+                          loading: 'lazy',
+                          class: 'creator-video-card__image',
+                          widths: '300,400,500,600,700,800,900',
+                          sizes: '(max-width: 767px) 80vw, 25vw'
+                      }}
+                    </div>
+                  {% endif %}
+
+                  <div class="creator-video-card__shade"></div>
+
+                  {% if video != blank %}
+                    <button
+                      type="button"
+                      class="creator-video-card__play"
+                      aria-label="Play video"
+                    >
+                      <svg
+                        viewBox="0 0 32 36"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M30 14.536C32.6667 16.0756 32.6667 19.9244 30 21.464L6 35.3205C3.33333 36.8601 0 34.9357 0 31.8564V4.14359C0 1.06439 3.33333 -0.860007 6 0.679594L30 14.536Z"
+                          fill="currentColor"
+                        />
+                      </svg>
+                    </button>
+
+                    <button
+                      type="button"
+                      class="creator-video-card__pause-hit"
+                      aria-label="Pause video"
+                    ></button>
+                  {% endif %}
+
+                  <div class="creator-video-card__content">
+                    {% if block.settings.creator != blank %}
+                      <div class="creator-video-card__creator">
+                        {% if block.settings.creator_link != blank %}
+                          <a
+                            href="{{ block.settings.creator_link }}"
+                            target="_blank"
+                            rel="noopener"
+                          >
+                            {{ block.settings.creator }}
+                          </a>
+
+                        {% else %}
+                          {{ block.settings.creator }}
+                        {% endif %}
+                      </div>
+                    {% endif %}
+
+                    {% if block.settings.product_link != blank %}
+                      <a
+                        href="{{ block.settings.product_link }}"
+                        class="creator-video-card__product"
+                      >
+                        {% if block.settings.product_image != blank %}
+                          <span class="creator-video-card__product-image">
+                            {{
+                              block.settings.product_image
+                              | image_url: width: 150
+                              | image_tag: loading: 'lazy', widths: '60,90,120,150'
+                            }}
+                          </span>
+                        {% endif %}
+
+                        <span class="creator-video-card__product-info">
+                          {% if block.settings.product_title != blank %}
+                            <span class="creator-video-card__product-title">
+                              {{ block.settings.product_title }}
+                            </span>
+                          {% endif %}
+
+                          <span class="creator-video-card__product-more">
+                            {{ block.settings.link_text }}
+                            <svg xmlns="http://www.w3.org/2000/svg" width="13" height="11" viewBox="0 0 13 11" fill="none">
+                              <path d="M0.000976562 5.03669L11.9842 5.03613" stroke="currentColor" stroke-width="0.55736"/>
+                              <path d="M9.47656 2.52832L12.4116 5.037L9.47656 7.48213" stroke="currentColor" stroke-width="0.55736" stroke-linejoin="round"/>
+                            </svg>
+                          </span>
+                        </span>
+                      </a>
+
+                    {% elsif block.settings.product_title != blank %}
+                      <div class="creator-video-card__product">
+                        {% if block.settings.product_image != blank %}
+                          <span class="creator-video-card__product-image">
+                            {{ block.settings.product_image | image_url: width: 150 | image_tag: loading: 'lazy' }}
+                          </span>
+                        {% endif %}
+
+                        <span class="creator-video-card__product-info">
+                          <span class="creator-video-card__product-title">
+                            {{ block.settings.product_title }}
+                          </span>
+
+                          <span class="creator-video-card__product-more">
+                            {{ block.settings.link_text }}
+                             <svg xmlns="http://www.w3.org/2000/svg" width="13" height="11" viewBox="0 0 13 11" fill="none">
+                              <path d="M0.000976562 5.03669L11.9842 5.03613" stroke="currentColor" stroke-width="0.55736"/>
+                              <path d="M9.47656 2.52832L12.4116 5.037L9.47656 7.48213" stroke="currentColor" stroke-width="0.55736" stroke-linejoin="round"/>
+                            </svg>
+                          </span>
+                        </span>
+                      </div>
+                    {% endif %}
+                  </div>
+                </div>
+              </article>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </custom-swiper>
+</section>
+
+<script>
+  (() => {
+    const section = document.querySelector('#CreatorVideoSlider-{{ section.id }}');
+
+    if (!section) return;
+
+    const cards = Array.from(section.querySelectorAll('.creator-video-card'));
+
+    const pauseCard = (card) => {
+      if (!card) return;
+
+      const video = card.querySelector('.creator-video-card__video');
+
+      if (!video) return;
+
+      video.pause();
+
+      card.classList.remove('is-playing');
+    };
+
+    const pauseOtherVideos = (activeCard) => {
+      cards.forEach((card) => {
+        if (card !== activeCard) {
+          pauseCard(card);
+        }
+      });
+    };
+
+    cards.forEach((card) => {
+      const video = card.querySelector('.creator-video-card__video');
+
+      const playButton = card.querySelector('.creator-video-card__play');
+
+      const pauseButton = card.querySelector('.creator-video-card__pause-hit');
+
+      if (!video || !playButton) return;
+
+      playButton.addEventListener('click', async (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+
+        pauseOtherVideos(card);
+
+        try {
+          await video.play();
+
+          card.classList.add('is-playing');
+        } catch (error) {
+          console.warn('Creator video play failed:', error);
+        }
+      });
+
+      pauseButton?.addEventListener('click', (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+
+        pauseCard(card);
+      });
+
+      
+
+      video.addEventListener('play', () => {
+        pauseOtherVideos(card);
+
+        card.classList.add('is-playing');
+      });
+
+      video.addEventListener('pause', () => {
+        card.classList.remove('is-playing');
+      });
+
+      video.addEventListener('ended', () => {
+        card.classList.remove('is-playing');
+
+        video.currentTime = 0;
+      });
+
+{% comment %} 
+      if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+        card.addEventListener('mouseenter', async () => {
+          pauseOtherVideos(card);
+
+          try {
+            await video.play();
+            card.classList.add('is-playing');
+          } catch (error) {
+            console.warn('Creator video hover play failed:', error);
+          }
+        });
+
+        card.addEventListener('mouseleave', () => {
+          pauseCard(card);
+        });
+      } {% endcomment %}
+
+
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Creator video slider",
+  "tag": "section",
+  "class": "section-creator-video-slider",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Loved by Creators Worldwide"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description",
+      "default": "<p>See how real creators make Ulike part of their beauty routine.</p>"
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#1b1212"
+    },
+    {
+      "type": "range",
+      "id": "card_radius",
+      "label": "Card radius",
+      "min": 0,
+      "max": 30,
+      "step": 1,
+      "unit": "px",
+      "default": 7
+    },
+    {
+      "type": "header",
+      "content": "🖥 Desktop Settings"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 40
+    },
+    {
+      "type": "header",
+      "content": "📱 Mobile Settings"
+    },
+    {
+      "type": "range",
+      "id": "mobile_padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "mobile_padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 24
+    }
+  ],
+  "blocks": [
+    {
+      "type": "video",
+      "name": "Creator video",
+      "settings": [
+        {
+          "type": "video",
+          "id": "video",
+          "label": "Video"
+        },
+        {
+          "type": "image_picker",
+          "id": "cover_image",
+          "label": "Cover image",
+          "info": "Optional. Video preview image will be used if empty."
+        },
+        {
+          "type": "text",
+          "id": "creator",
+          "label": "Creator",
+          "default": "@notyourbasicmama"
+        },
+        {
+          "type": "url",
+          "id": "creator_link",
+          "label": "Creator link"
+        },
+        {
+          "type": "header",
+          "content": "Product"
+        },
+        {
+          "type": "image_picker",
+          "id": "product_image",
+          "label": "Product image"
+        },
+        {
+          "type": "text",
+          "id": "product_title",
+          "label": "Product title",
+          "default": "Air 10"
+        },
+        {
+          "type": "text",
+          "id": "link_text",
+          "label": "Link text",
+          "default": "Learn more"
+        },
+        {
+          "type": "url",
+          "id": "product_link",
+          "label": "Product link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Creator video slider",
+      "blocks": [
+        {
+          "type": "video"
+        },
+        {
+          "type": "video"
+        },
+        {
+          "type": "video"
+        },
+        {
+          "type": "video"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
