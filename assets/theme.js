@@ -3383,6 +3383,14 @@
         this.addEventListener("swipeleft", this.next.bind(this));
         this.addEventListener("page-dots:changed", (event) => this.select(event.detail.index));
         this._blockVerticalScroll();
+        this.prevButton = this.querySelector('.slideshow__arrow--prev');
+        this.nextButton = this.querySelector('.slideshow__arrow--next');
+        if (this.prevButton) {
+          this.prevButton.addEventListener('click', this.previous.bind(this));
+        }
+        if (this.nextButton) {
+          this.nextButton.addEventListener('click', this.next.bind(this));
+        }
       }
       this._setupVisibility();
     }
