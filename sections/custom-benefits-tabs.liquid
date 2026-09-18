@@ -1,0 +1,1154 @@
+<style>
+  .benefits-section-{{ section.id }} {
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+    background-color: {{ section.settings.bg_color }};
+  }
+
+  .benefits-container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  .benefits-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 60px;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .benefits-title {
+        font-family: var(--heading-font-family);
+    font-size: 44px;
+    font-weight: 400;
+    color: #000;
+    margin: 0;
+    line-height:1.2;
+  }
+
+  .benefits-tabs {
+    position: relative;
+    display: inline-flex;
+    background-color: #EBEBEB;
+    padding: 5px;
+    border-radius: 8px;
+    gap: 10px;
+    align-items: center;
+  }
+
+  .benefits-tab-glider {
+    position: absolute;
+    top: 5px;
+    left: 0;
+    height: calc(100% - 10px);
+    background-color: #ffffff;
+    border-radius: 6px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), 
+                width 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .benefits-tab-btn {
+    position: relative;
+    z-index: 2;
+    border: none;
+    background: transparent !important;
+    padding: 8px 18px;
+    font-size: 14px;
+  
+     color: rgba(25, 10, 10, 0.5);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: color 0.3s ease;
+    font-weight: 400;
+    outline: none;
+    white-space: nowrap;
+    font-family: var(--heading-font-family);
+  }
+
+  .benefits-tab-btn.active {
+     color: #3F3636;
+  }
+
+  .benefits-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+  }
+
+  .benefit-card {
+    position: relative;
+    border-radius: 6px;
+    overflow: hidden;
+    height: 100%;
+    min-height: 480px;
+    {% comment %} background-color: #f8f8f8; {% endcomment %}
+    display: flex;
+    flex-direction: column;
+    opacity: 0;
+  }
+
+  .benefit-card[data-active="false"] {
+    display: none !important;
+  }
+
+  @keyframes cardTabIn {
+    0% {
+      opacity: 0;
+      transform: translateY(20px) scale(0.98);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  .benefit-card[data-active="true"] {
+    display: flex;
+    animation: cardTabIn 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+.banner-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 480px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  overflow: hidden;
+  padding: 24px 20px;
+  text-decoration: none;
+}
+
+.benefits-banner-picture {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.benefits-banner-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+  .banner-card-inner::after {
+    content: "";
+    position: absolute;
+    {% comment %} inset: 0; {% endcomment %}
+  border-radius: 0 0 6px 6px;
+background: linear-gradient(0deg, rgba(29, 29, 29, 0.30) 0%, rgba(29, 29, 29, 0.08) 100%);
+backdrop-filter: blur(6px);
+    z-index: 1;
+    transition: background 0.3s ease;
+        height: 20%;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+  }
+
+  .banner-card-inner:hover::after {
+    {% comment %} background: linear-gradient(to top, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.2) 50%, rgba(0,0,0,0) 100%); {% endcomment %}
+  }
+
+  .banner-content {
+    position: relative;
+    z-index: 2;
+    color: #ffffff;
+    text-align: center;
+  }
+
+  .banner-title {
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 1.3;
+    margin: 0 0 8px 0;
+    color: #ffffff;
+        font-family: var(--heading-font-family);
+  }
+
+  .banner-link {
+    font-size: 12px;
+    color: #ffffff;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    letter-spacing: 0.5px;
+    font-weight: 400;
+    text-transform: uppercase;
+  }
+
+  .product-card-inner {
+    {% comment %} padding: 16px; {% endcomment %}
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    {% comment %} background-color: #f8f8f8; {% endcomment %}
+  }
+
+  .card-badge {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    font-size: 10px;
+    border: 1px solid #ff4d73;
+    color: #ff4d73;
+    padding: 2px 8px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.9);
+    z-index: 3;
+  }
+
+  .card-img-wrapper {
+    position: relative;
+    width: 100%;
+    {% comment %} height: 220px; {% endcomment %}
+    {% comment %} margin-top: 12px; {% endcomment %}
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .card-img-wrapper img {
+    max-height: 100%;
+    max-width: 100%;
+    object-fit: contain;
+    transition: opacity 0.4s ease, transform 0.4s ease;
+  }
+
+  .card-img-wrapper img.img-hover {
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    opacity: 0;
+  }
+
+  .benefit-card:hover .card-img-wrapper img.img-hover {
+    opacity: 1;
+  }
+
+  .benefit-card:hover .card-img-wrapper img.img-default.has-hover {
+    opacity: 0;
+  }
+
+  .benefit-card:hover .card-img-wrapper img:not(.has-hover) {
+    transform: scale(1.05);
+  }
+
+  .card-info {
+    padding: 16px;
+    background: #F1F1F7;
+  }
+
+  .card-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 4px;
+  }
+
+  .card-title {
+    font-size: 20px;
+    font-weight: 400;
+    color: #1A1A1A;
+    margin: 0;
+    font-family: var(--heading-font-family);
+    line-height:1.2;
+  }
+
+  .card-rating {
+    font-size: 12px;
+    color: #333;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+  }
+
+  .card-rating span.star {
+    color: #E0004D;
+  }
+
+  .card-subtitle {
+    font-size: 16px;
+    color: #3F3636;
+    margin: 1px 0 12px 0;
+    line-height:  1.46;
+  }
+
+  .card-features {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 19px 0;
+    font-size: 12px;
+    color: #3F3636;
+    line-height: 1.3;
+  }
+
+  .card-features li {
+    margin-bottom: 2px;
+  }
+
+  .card-btn {
+    width: 100%;
+    padding: 12px 0;
+    background-color: #1A1A1A;
+    border:1px solid #1A1A1A;
+    color: #ffffff;
+    text-align: center;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 400;
+    font-family: var(--heading-font-family);
+    border-radius: 3px;
+    display: block;
+    transition: background-color 0.2s ease;
+  }
+
+  .card-btn:hover {
+    background-color: #FFF;
+      color: #1A1A1A;
+  }
+  .benefits-mobile {
+    display: none;
+  }
+
+  @media screen and (max-width: 1024px) {
+    .benefits-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media screen and (max-width: 640px) {
+    .benefits-section-{{ section.id }} {
+      padding-top: 72px;
+      padding-bottom: 32px;
+      overflow: hidden;
+    }
+
+    .benefits-section-{{ section.id }} > .container {
+      padding-left: 20px;
+      padding-right: 20px;
+    }
+
+    .benefits-header {
+      display: block;
+      margin-bottom: 18px;
+    }
+
+    .benefits-title {
+      margin: 0 0 24px;
+      font-size: 28px;
+      text-align: center;
+    }
+
+    .benefits-tabs {
+      display: flex;
+      width: 100%;
+      padding: 4px;
+      gap: 0;
+      border-radius: 7px;
+    }
+
+    .benefits-tab-glider {
+      top: 4px;
+      height: calc(100% - 8px);
+      border-radius: 7px;
+    }
+
+    .benefits-tab-btn {
+      flex: 1 1 50%;
+      min-width: 0;
+      padding: 7px 8px;
+      font-size: 12px;
+      text-align: center;
+    }
+
+    .benefits-grid {
+      display: none;
+    }
+
+    .benefits-mobile {
+      display: block;
+    }
+
+    .benefits-mobile-panel[hidden] {
+      display: none !important;
+    }
+
+    .benefits-mobile-banner-wrap {
+      width: 100%;
+    }
+
+    .benefits-mobile-banner {
+      min-height: 0;
+      aspect-ratio: 335 / 400;
+      padding: 20px;
+      border-radius: 8px;
+    }
+
+    .benefits-mobile-banner::after {
+    }
+
+    .benefits-mobile-banner .banner-content {
+      width: 100%;
+      text-align: center;
+    }
+
+    .benefits-mobile-banner .banner-title {
+      margin: 0 0 2px;
+      font-size: 14px;
+      line-height: 1.25;
+    }
+
+    .benefits-mobile-banner .banner-link {
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 1.2;
+      letter-spacing: 0;
+      text-underline-offset: 3px;
+    }
+
+    .benefits-mobile-products {
+      margin-top: 50px;
+    }
+
+    .benefits-mobile-products custom-swiper,
+    .benefits-mobile-products .swiper-container {
+      display: block;
+      width: 100%;
+    }
+
+    .benefits-mobile-products .swiper-container {
+      overflow: visible;
+    }
+
+    .benefits-mobile-products .swiper-wrapper {
+      align-items: stretch;
+    }
+
+    .benefits-mobile-products .swiper-slide {
+      height: auto;
+    }
+
+    .benefits-mobile-product-card {
+      display: flex !important;
+      width: 100%;
+      min-height: 0;
+      height: 100%;
+      overflow: hidden;
+      border-radius: 8px;
+      opacity: 1 !important;
+      animation: none !important;
+      background: #fff;
+    }
+
+    .benefits-mobile-product-card .product-card-inner {
+      width: 100%;
+      height: 100%;
+    }
+
+    .benefits-mobile-product-card .card-badge {
+      top: 10px;
+      left: 10px;
+      padding: 3px 8px;
+      font-size: 9px;
+      line-height: 1.1;
+    }
+
+    .benefits-mobile-product-card .card-img-wrapper {
+      width: 100%;
+      aspect-ratio: 335 / 296;
+      background: #fff;
+    }
+
+    .benefits-mobile-product-card .card-img-wrapper img {
+      width: 100%;
+      height: 100%;
+      max-width: none;
+      max-height: none;
+      object-fit: contain;
+    }
+
+    .benefits-mobile-product-card .card-img-wrapper .img-hover {
+      display: none;
+    }
+
+    .benefits-mobile-product-card:hover .card-img-wrapper img.img-default.has-hover {
+      opacity: 1;
+    }
+
+    .benefits-mobile-product-card .card-info {
+      display: flex;
+      flex: 1 1 auto;
+      flex-direction: column;
+      min-height: 200px;
+      padding: 24px 20px 20px;
+    }
+
+    .benefits-mobile-product-card .card-header-row {
+      align-items: center;
+      margin-bottom: 6px;
+    }
+
+    .benefits-mobile-product-card .card-title {
+      font-size: 16px;
+    }
+
+    .benefits-mobile-product-card .card-rating {
+      font-size: 9px;
+    }
+
+    .benefits-mobile-product-card .card-subtitle {
+      margin: 0 0 11px;
+      font-size: 12px;
+    }
+
+    .benefits-mobile-product-card .card-features {
+      margin: 0 0 21px;
+      font-size: 10px;
+    }
+
+    .benefits-mobile-product-card .card-features li {
+      margin-bottom: 1px;
+    }
+
+    .benefits-mobile-product-card .card-btn {
+      margin-top: auto;
+      padding: 9px 0;
+      font-size: 12px;
+    }
+
+    .benefits-mobile-products .swiper-pagination {
+      position: relative !important;
+      inset: auto !important;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      width: 100%;
+      margin-top: 20px;
+      transform: none !important;
+    }
+
+    .benefits-mobile-products .swiper-pagination-bullet {
+      width: 9px;
+      height: 9px;
+      margin: 0 !important;
+      border-radius: 50%;
+      background: #CDC6C7;
+      opacity: 1;
+    }
+
+    .benefits-mobile-products .swiper-pagination-bullet-active {
+      background: #190A0A;
+    }
+  }
+</style>
+
+<div class="benefits-section-{{ section.id }}">
+  <div class="container">
+    <div class="benefits-header js-scroll__header">
+      {% if section.settings.title != blank %}
+        <h2 class="benefits-title">{{ section.settings.title }}</h2>
+      {% endif %}
+
+      <div class="benefits-tabs">
+        <span class="benefits-tab-glider"></span>
+
+        {% if section.settings.tab1_label != blank %}
+          <button class="benefits-tab-btn active" data-tab="tab-1">{{ section.settings.tab1_label }}</button>
+        {% endif %}
+        {% if section.settings.tab2_label != blank %}
+          <button class="benefits-tab-btn" data-tab="tab-2">{{ section.settings.tab2_label }}</button>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="benefits-grid js-scroll__group">
+      {% for block in section.blocks %}
+        <div class="benefit-card" 
+             data-tab-category="{{ block.settings.tab_category }}" 
+             data-active="{% if block.settings.tab_category == 'tab-1' %}true{% else %}false{% endif %}"
+             {{ block.shopify_attributes }}>
+
+          {% case block.type %}
+            
+            {% when 'banner_card' %}
+              <a
+                href="{{ block.settings.link_url | default: '#' }}"
+                class="banner-card-inner js-scroll__card"
+                style="--reveal-index: {{ forloop.index0 }};"
+              >
+                <picture class="benefits-banner-picture">
+
+                  {% if block.settings.mobile_image != blank %}
+                    <source
+                      media="(max-width: 640px)"
+                      srcset="{{ block.settings.mobile_image | image_url: width: 900 }}"
+                    >
+                  {% endif %}
+
+                  {% if block.settings.image != blank %}
+                    {{
+                      block.settings.image
+                      | image_url: width: 1600
+                      | image_tag:
+                        class: 'benefits-banner-image',
+                        loading: 'lazy',
+                        widths: '400, 600, 800, 1000, 1200, 1600',
+                        sizes: '(max-width: 640px) 100vw, 25vw'
+                    }}
+                  {% endif %}
+
+                </picture>
+
+                <div class="banner-content">
+                  {% if block.settings.title != blank %}
+                    <h3 class="banner-title">
+                      {{ block.settings.title }}
+                    </h3>
+                  {% endif %}
+
+                  {% if block.settings.link_text != blank %}
+                    <span class="banner-link">
+                      {{ block.settings.link_text }}
+                    </span>
+                  {% endif %}
+                </div>
+              </a>
+            {% when 'product_card' %}
+              {% assign product = block.settings.product %}
+              {% assign card_title = block.settings.title | default: product.title | default: "Product Name" %}
+              {% assign default_img = block.settings.image_default | default: product.featured_media %}
+              {% assign hover_img = block.settings.image_hover | default: product.media[1] %}
+              {% assign card_url = block.settings.button_url | default: product.url | default: "#" %}
+
+              <div class="product-card-inner js-scroll__card" style="--reveal-index: {{ forloop.index0 }};">
+                {% if block.settings.badge_text != blank %}
+                  <span class="card-badge">{{ block.settings.badge_text }}</span>
+                {% endif %}
+
+                <!-- Image Area with Hover Swap -->
+                <div class="card-img-wrapper">
+                  {% if default_img != blank %}
+                    <img class="img-default {% if hover_img != blank %}has-hover{% endif %}" 
+                         src="{{ default_img | image_url: width: 400 }}" 
+                         alt="{{ card_title | escape }}" 
+                         loading="lazy">
+                  {% else %}
+                    {{ 'product-1' | placeholder_svg_tag }}
+                  {% endif %}
+
+                  {% if hover_img != blank %}
+                    <img class="img-hover" 
+                         src="{{ hover_img | image_url: width: 400 }}" 
+                         alt="{{ card_title | escape }} Hover" 
+                         loading="lazy">
+                  {% endif %}
+                </div>
+
+                <!-- Info Area -->
+                <div class="card-info">
+                  <div class="card-header-row">
+                    <h3 class="card-title">{{ card_title }}</h3>
+                    {% if block.settings.rating_text != blank %}
+                      <div class="card-rating">
+                        <span class="star">★</span>
+                        <span>{{ block.settings.rating_text }}</span>
+                      </div>
+                    {% endif %}
+                  </div>
+
+                  {% if block.settings.subtitle != blank %}
+                    <div class="card-subtitle">{{ block.settings.subtitle }}</div>
+                  {% endif %}
+
+                  {% if block.settings.features_text != blank %}
+                    <ul class="card-features">
+                      {% assign features = block.settings.features_text | newline_to_br | split: '<br />' %}
+                      {% for feature in features %}
+                        {% assign clean_feature = feature | strip %}
+                        {% if clean_feature != blank %}
+                          <li>{{ clean_feature }}</li>
+                        {% endif %}
+                      {% endfor %}
+                    </ul>
+                  {% endif %}
+
+                  <a href="{{ card_url }}" class="card-btn">
+                    {{ block.settings.button_text | default: "SHOP NOW" }}
+                  </a>
+                </div>
+              </div>
+
+          {% endcase %}
+        </div>
+      {% endfor %}
+    </div>
+
+    <div class="benefits-mobile">
+      {% for tab_index in (1..2) %}
+        {% capture tab_id %}tab-{{ tab_index }}{% endcapture %}
+
+        <div
+          class="benefits-mobile-panel js-scroll__group"
+          data-benefits-mobile-panel="{{ tab_id }}"
+          {% unless tab_index == 1 %}hidden{% endunless %}
+        >
+          <div class="benefits-mobile-banner-wrap">
+            {% for block in section.blocks %}
+              {% if block.type == 'banner_card' and block.settings.tab_category == tab_id %}
+                <a
+                  href="{{ block.settings.link_url | default: '#' }}"
+                  class="banner-card-inner benefits-mobile-banner js-scroll__card"
+                  style="--reveal-index: 0;"
+                >
+                  <picture class="benefits-banner-picture">
+
+                    {% if block.settings.mobile_image != blank %}
+                      <source
+                        media="(max-width: 640px)"
+                        srcset="{{ block.settings.mobile_image | image_url: width: 900 }}"
+                      >
+                    {% endif %}
+
+                    {% if block.settings.image != blank %}
+                      {{
+                        block.settings.image
+                        | image_url: width: 1200
+                        | image_tag:
+                          class: 'benefits-banner-image',
+                          loading: 'lazy',
+                          widths: '400, 600, 800, 900, 1200',
+                          sizes: '(max-width: 640px) calc(100vw - 40px), 25vw'
+                      }}
+                    {% endif %}
+
+                  </picture>
+
+                  <div class="banner-content">
+                    {% if block.settings.title != blank %}
+                      <h3 class="banner-title">
+                        {{ block.settings.title }}
+                      </h3>
+                    {% endif %}
+
+                    {% if block.settings.link_text != blank %}
+                      <span class="banner-link">
+                        {{ block.settings.link_text }}
+                      </span>
+                    {% endif %}
+                  </div>
+                </a>
+                {% break %}
+              {% endif %}
+            {% endfor %}
+          </div>
+
+          <div class="benefits-mobile-products">
+            <custom-swiper
+              slides-per-view="1.15"
+              space-between="16"
+              loop="false"
+              centered-slides="false"
+              navigation="false"
+              pagination="true"
+              breakpoints='{
+                "0": {"slidesPerView": 1.15, "spaceBetween": 16},
+                "480": {"slidesPerView": 1.25, "spaceBetween": 18}
+              }'
+            >
+              <div class="swiper-container">
+                <div class="swiper-wrapper">
+                  {% for block in section.blocks %}
+                    {% if block.type == 'product_card' and block.settings.tab_category == tab_id %}
+                      {% assign product = block.settings.product %}
+                      {% assign card_title = block.settings.title | default: product.title | default: 'Product Name' %}
+                      {% assign default_img = block.settings.image_default | default: product.featured_media %}
+                      {% assign hover_img = block.settings.image_hover | default: product.media[1] %}
+                      {% assign card_url = block.settings.button_url | default: product.url | default: '#' %}
+
+                      <div class="swiper-slide">
+                        <div class="benefit-card benefits-mobile-product-card">
+                          <div class="product-card-inner js-scroll__card" style="--reveal-index: {{ forloop.index0 | plus: 1 }};">
+                            {% if block.settings.badge_text != blank %}
+                              <span class="card-badge">{{ block.settings.badge_text }}</span>
+                            {% endif %}
+
+                            <div class="card-img-wrapper">
+                              {% if default_img != blank %}
+                                <img
+                                  class="img-default {% if hover_img != blank %}has-hover{% endif %}"
+                                  src="{{ default_img | image_url: width: 700 }}"
+                                  alt="{{ card_title | escape }}"
+                                  loading="lazy"
+                                  width="{{ default_img.width }}"
+                                  height="{{ default_img.height }}"
+                                >
+                              {% else %}
+                                {{ 'product-1' | placeholder_svg_tag }}
+                              {% endif %}
+                            </div>
+
+                            <div class="card-info">
+                              <div class="card-header-row">
+                                <h3 class="card-title">{{ card_title }}</h3>
+                                {% if block.settings.rating_text != blank %}
+                                  <div class="card-rating">
+                                    <span class="star">★</span>
+                                    <span>{{ block.settings.rating_text }}</span>
+                                  </div>
+                                {% endif %}
+                              </div>
+
+                              {% if block.settings.subtitle != blank %}
+                                <div class="card-subtitle">{{ block.settings.subtitle }}</div>
+                              {% endif %}
+
+                              {% if block.settings.features_text != blank %}
+                                <ul class="card-features">
+                                  {% assign features = block.settings.features_text | newline_to_br | split: '<br />' %}
+                                  {% for feature in features %}
+                                    {% assign clean_feature = feature | strip %}
+                                    {% if clean_feature != blank %}
+                                      <li>{{ clean_feature }}</li>
+                                    {% endif %}
+                                  {% endfor %}
+                                </ul>
+                              {% endif %}
+
+                              <a href="{{ card_url }}" class="card-btn">
+                                {{ block.settings.button_text | default: 'SHOP NOW' }}
+                              </a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    {% endif %}
+                  {% endfor %}
+                </div>
+              </div>
+
+              <div class="swiper-pagination"></div>
+            </custom-swiper>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const sectionContainer = document.querySelector('.benefits-section-{{ section.id }}');
+  if (!sectionContainer) return;
+
+  const tabButtons = sectionContainer.querySelectorAll('.benefits-tab-btn');
+  const glider = sectionContainer.querySelector('.benefits-tab-glider');
+  const cards = sectionContainer.querySelectorAll('.benefits-grid > .benefit-card');
+  const mobilePanels = sectionContainer.querySelectorAll('[data-benefits-mobile-panel]');
+
+  function moveGlider(activeBtn) {
+    if (!activeBtn || !glider) return;
+    glider.style.width = `${activeBtn.offsetWidth}px`;
+    glider.style.transform = `translateX(${activeBtn.offsetLeft}px)`;
+  }
+
+  function refreshMobileSwiper(panel, reset = false) {
+    if (!panel || window.innerWidth > 640) return;
+    const customSwiper = panel.querySelector('custom-swiper');
+    if (!customSwiper) return;
+
+    let attempts = 0;
+    const refresh = () => {
+      const swiper = customSwiper.swiper;
+      if (swiper) {
+        swiper.update();
+        if (reset) swiper.slideTo(0, 0);
+        return;
+      }
+      if (attempts < 20) {
+        attempts += 1;
+        requestAnimationFrame(refresh);
+      }
+    };
+    refresh();
+  }
+
+  function showMobilePanel(selectedTab, reset = false) {
+    mobilePanels.forEach(panel => {
+      const active = panel.dataset.benefitsMobilePanel === selectedTab;
+      panel.hidden = !active;
+      if (active) requestAnimationFrame(() => refreshMobileSwiper(panel, reset));
+    });
+  }
+
+  const activeBtn = sectionContainer.querySelector('.benefits-tab-btn.active');
+  if (activeBtn) {
+    moveGlider(activeBtn);
+    showMobilePanel(activeBtn.dataset.tab);
+  }
+
+  let initialIndex = 0;
+  cards.forEach(card => {
+    if (card.getAttribute('data-active') === 'true') {
+      card.style.animationDelay = `${initialIndex * 0.08}s`;
+      initialIndex += 1;
+    }
+  });
+
+  tabButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      if (btn.classList.contains('active')) return;
+
+      const selectedTab = btn.dataset.tab;
+
+      tabButtons.forEach(item => item.classList.remove('active'));
+      btn.classList.add('active');
+      moveGlider(btn);
+      showMobilePanel(selectedTab, true);
+
+      let visibleIndex = 0;
+      cards.forEach(card => {
+        const cardTab = card.dataset.tabCategory;
+
+        if (cardTab === selectedTab) {
+          card.setAttribute('data-active', 'false');
+          card.style.animationDelay = `${visibleIndex * 0.08}s`;
+          requestAnimationFrame(() => card.setAttribute('data-active', 'true'));
+          visibleIndex += 1;
+        } else {
+          card.setAttribute('data-active', 'false');
+          card.style.animationDelay = '0s';
+        }
+      });
+    });
+  });
+
+  window.addEventListener('resize', () => {
+    const currentActiveBtn = sectionContainer.querySelector('.benefits-tab-btn.active');
+    if (!currentActiveBtn) return;
+
+    moveGlider(currentActiveBtn);
+
+    const activePanel = sectionContainer.querySelector(
+      `[data-benefits-mobile-panel="${currentActiveBtn.dataset.tab}"]`
+    );
+    refreshMobileSwiper(activePanel);
+  });
+});
+</script>
+
+{% schema %}
+{
+  "name": "Enjoy Your Benefits Tabs",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "大标题",
+      "default": "Enjoy your Benefits"
+    },
+    {
+      "type": "text",
+      "id": "tab1_label",
+      "label": "Tab 1 标签文案",
+      "default": "IPL Hair Removal Device"
+    },
+    {
+      "type": "text",
+      "id": "tab2_label",
+      "label": "Tab 2 标签文案",
+      "default": "LED Light Therapy Device"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "背景颜色",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "PC端 Padding Top",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "PC端 Padding Bottom",
+      "default": 40
+    }
+  ],
+  "blocks": [
+    {
+      "type": "banner_card",
+      "name": "宣发海报卡片 (第一张)",
+      "settings": [
+        {
+          "type": "select",
+          "id": "tab_category",
+          "label": "归属 Tab",
+          "options": [
+            { "value": "tab-1", "label": "Tab 1" },
+            { "value": "tab-2", "label": "Tab 2" }
+          ],
+          "default": "tab-1"
+        },
+     {
+      "type": "image_picker",
+      "id": "image",
+      "label": "海报图片 - PC"
+    },
+    {
+      "type": "image_picker",
+      "id": "mobile_image",
+      "label": "海报图片 - Mobile"
+    },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "海报底部标题",
+          "default": "Full Body Use. Convenience."
+        },
+        {
+          "type": "text",
+          "id": "link_text",
+          "label": "链接文字",
+          "default": "SHOP ALL IPL DEVICES"
+        },
+        {
+          "type": "url",
+          "id": "link_url",
+          "label": "点击跳转链接"
+        }
+      ]
+    },
+    {
+      "type": "product_card",
+      "name": "常规产品卡片",
+      "settings": [
+        {
+          "type": "select",
+          "id": "tab_category",
+          "label": "归属 Tab",
+          "options": [
+            { "value": "tab-1", "label": "Tab 1" },
+            { "value": "tab-2", "label": "Tab 2" }
+          ],
+          "default": "tab-1"
+        },
+        {
+          "type": "product",
+          "id": "product",
+          "label": "关联 Shopify 产品"
+        },
+        {
+          "type": "text",
+          "id": "badge_text",
+          "label": "左上角标签",
+          "default": "2024 New Release"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_default",
+          "label": "产品默认图 (不选自动取产品首图)"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_hover",
+          "label": "鼠标悬浮替换图 (不选自动取产品第2张图)"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "自定义标题 (不填则取产品名)"
+        },
+        {
+          "type": "text",
+          "id": "rating_text",
+          "label": "评分/评论数",
+          "default": "320 Reviews"
+        },
+        {
+          "type": "text",
+          "id": "subtitle",
+          "label": "副标题描述",
+          "default": "Full-body acne clearing & recovery"
+        },
+        {
+          "type": "textarea",
+          "id": "features_text",
+          "label": "特点列表 (每行一条)",
+          "default": "- Great for jawline contouring and jowls prevention.\n- Snatch chalala\n- Ice-cooling blah blah"
+        },
+        {
+          "type": "text",
+          "id": "button_text",
+          "label": "按钮文字",
+          "default": "SHOP NOW"
+        },
+        {
+          "type": "url",
+          "id": "button_url",
+          "label": "按钮链接 (不填则取产品详情页)"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Enjoy Your Benefits Tabs",
+      "blocks": [
+        {
+          "type": "banner_card",
+          "settings": {
+            "tab_category": "tab-1",
+            "title": "Full Body Use. Convenience.",
+            "link_text": "SHOP ALL IPL DEVICES"
+          }
+        },
+        {
+          "type": "product_card",
+          "settings": {
+            "tab_category": "tab-1",
+            "title": "Ulike Air 10"
+          }
+        },
+        {
+          "type": "product_card",
+          "settings": {
+            "tab_category": "tab-1",
+            "title": "Ulike Air 4"
+          }
+        },
+        {
+          "type": "product_card",
+          "settings": {
+            "tab_category": "tab-1",
+            "title": "Ulike X"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
