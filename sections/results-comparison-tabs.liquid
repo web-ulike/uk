@@ -1,0 +1,917 @@
+<style>
+  #shopify-section-{{ section.id }} {
+    --results-bg: {{ section.settings.background }};
+    --results-text: {{ section.settings.text_color }};
+    --results-tab-bg: {{ section.settings.tab_background }};
+    --results-tab-active-bg: {{ section.settings.tab_active_background }};
+    --results-padding-top: {{ section.settings.padding_top }}px;
+    --results-padding-bottom: {{ section.settings.padding_bottom }}px;
+    --results-mobile-padding-top: {{ section.settings.mobile_padding_top }}px;
+    --results-mobile-padding-bottom: {{ section.settings.mobile_padding_bottom }}px;
+  }
+
+  .results-comparison-section {
+    overflow: hidden;
+    padding-top: var(--results-padding-top);
+    padding-bottom: var(--results-padding-bottom);
+    color: var(--results-text);
+    background: var(--results-bg);
+  }
+
+  .results-comparison-section__container {
+    position: relative;
+  }
+
+  .results-comparison-section__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 40px;
+    margin-bottom: 76px;
+  }
+
+  .results-comparison-section__title {
+    margin: 0;
+    color: var(--results-text);
+    font-family: var(--heading-font-family);
+    font-size: 44px;
+    font-weight: 400;
+    line-height: 1.2;
+  }
+
+  .results-comparison-section__title-mobile {
+    display: none;
+  }
+
+  .results-comparison-tabs {
+    position: relative;
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    gap: 10px;
+    padding: 5px;
+    background: var(--results-tab-bg);
+    border-radius: 8px;
+  }
+
+  .results-comparison-tabs__glider {
+    position: absolute;
+    top: 5px;
+    left: 0;
+    z-index: 0;
+    height: calc(100% - 10px);
+    background: var(--results-tab-active-bg);
+    border-radius: 8px;
+   box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.09);
+    pointer-events: none;
+    transition:
+      width 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+      transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .results-comparison-tabs__button {
+    position: relative;
+    z-index: 1;
+    padding: 17px 18px;
+    color: rgba(25, 10, 10, 0.5);
+    font-family: var(--heading-font-family);
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1;
+    white-space: nowrap;
+    background: transparent;
+    border: 0;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+
+  .results-comparison-tabs__button.active {
+    color: var(--results-text);
+  }
+
+  .results-comparison-panel[hidden] {
+    display: none !important;
+  }
+
+  .results-comparison-slider {
+    position: relative;
+  }
+
+  .results-comparison-slider custom-swiper,
+  .results-comparison-slider .swiper-container {
+    display: block;
+    width: 100%;
+  }
+
+  .results-comparison-slider .swiper-container {
+    overflow: hidden;
+  }
+
+  .results-comparison-slider .swiper-wrapper {
+    align-items: stretch;
+  }
+
+  .results-comparison-slider .swiper-slide {
+    height: auto;
+  }
+
+  .results-comparison-card {
+    height: 100%;
+  }
+
+  .results-comparison-card__media {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    aspect-ratio: 4 / 3;
+    border-radius: 6px;
+    background: #eee;
+  }
+
+  image-comparison-newf.results-image-comparison {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: pan-y;
+  }
+
+  .results-image-comparison .user-reviews-img-item {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+
+  .results-image-comparison .user-reviews-img-item:first-child {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 3;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  .results-image-comparison__picture,
+  .results-image-comparison__image {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .results-image-comparison__image {
+    object-fit: cover;
+  }
+
+  .results-image-comparison .btn-l {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    z-index: 5;
+    width: 1px;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.95);
+   
+    transform: translateX(-50%);
+    pointer-events: none;
+  }
+
+  .results-image-comparison .btn-l__button {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    display: flex;
+    width: 66px;
+    height: 32px;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    color: #fff;
+   background: rgba(217, 217, 217, 0.20);
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    border-radius: 20px;
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+     pointer-events: auto;
+  cursor: col-resize;
+  touch-action: none;
+  }
+
+  .results-image-comparison .btn-l__button svg {
+    display: block;
+    width: 9px;
+    height: 14px;
+  }
+
+  .results-image-comparison__label {
+    position: absolute;
+    bottom: 16px;
+    z-index: 4;
+       min-width: 95px;
+    padding: 6px 18px;
+    color: #fff;
+    font-size: 16px;
+    line-height: 1;
+    text-align: center;
+   background: rgba(0, 0, 0, 0.10);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: 74px;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    pointer-events: none;
+    background: rgba(217, 217, 217, 0.20);
+  }
+
+  .results-image-comparison__label--before {
+    left: 18px;
+  }
+
+  .results-image-comparison__label--after {
+    right: 18px;
+  }
+
+  .results-comparison-card__content {
+    padding-top: 20px;
+  }
+
+  .results-comparison-card__title {
+    margin: 0;
+    color: var(--results-text);
+    font-size: 28px;
+    font-weight: 400;
+        font-family: var(--heading-font-family);
+  }
+
+  .results-comparison-card__description {
+    margin: 10px 0 0;
+    color: var(--results-text);
+    font-size: 18px;
+  }
+
+  .results-comparison-slider__arrow {
+    position: absolute;
+    top: calc((100% - 82px) * 0.465);
+    z-index: 10;
+    display: flex;
+    width: 35px;
+    height: 35px;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    color: #190A0A;
+    background: #fff;
+    border: 1px solid #190A0A;
+    border-radius: 4px;
+    cursor: pointer;
+    transform: translateY(-50%);
+  }
+
+  .results-comparison-slider__arrow--prev {
+    left: 30px;
+  }
+
+  .results-comparison-slider__arrow--next {
+    right: 30px;
+  }
+
+  .results-comparison-slider__arrow.swiper-button-disabled {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .results-comparison-slider__arrow svg {
+    width: 16px;
+    height: auto;
+  }
+
+  .results-comparison-section__more {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 39px;
+    color: #3F3636;
+    font-size: 18px;
+  }
+
+  .results-comparison-section__more-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: inherit;
+    font-size: 14px;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    text-transform: uppercase;
+  }
+
+  .results-comparison-section__more-link svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  @media screen and (max-width: 767px) {
+    .results-comparison-section {
+      padding-top: var(--results-mobile-padding-top);
+      padding-bottom: var(--results-mobile-padding-bottom);
+    }
+
+    .results-comparison-section__header {
+      display: block;
+      margin-bottom: 24px;
+    }
+
+    .results-comparison-section__title {
+      max-width: 330px;
+      margin: 0 auto 24px;
+      font-size: 28px;
+      text-align: center;
+    }
+
+    .results-comparison-section__title-desktop {
+      display: none;
+    }
+
+    .results-comparison-section__title-mobile {
+      display: inline;
+    }
+
+    .results-comparison-tabs {
+      display: flex;
+      width: 100%;
+      gap: 0;
+      padding: 4px;
+      border-radius: 6px;
+    }
+
+    .results-comparison-tabs__glider {
+      top: 4px;
+      height: calc(100% - 8px);
+    }
+
+    .results-comparison-tabs__button {
+      flex: 1 1 50%;
+      min-width: 0;
+      padding: 11px 8px;
+      font-size: 12px;
+      text-align: center;
+    }
+
+    .results-comparison-slider .swiper-container {
+      overflow: visible;
+    }
+
+    .results-comparison-card__media {
+      aspect-ratio: 1 / 1;
+      border-radius: 7px;
+    }
+
+    .results-image-comparison__label {
+      top: 13px;
+      bottom: auto;
+      min-width: 76px;
+      padding: 6px 14px;
+      font-size: 14px;
+    }
+
+    .results-image-comparison__label--before {
+      left: 13px;
+    }
+
+    .results-image-comparison__label--after {
+      right: 13px;
+    }
+
+    .results-image-comparison .btn-l__button {
+      width: 67px;
+      height: 38px;
+      border-radius: 8px;
+    }
+
+    .results-comparison-card__content {
+      padding-top: 20px;
+    }
+
+    .results-comparison-card__title {
+      font-size: 22px;
+    }
+
+    .results-comparison-card__description {
+      margin-top: 10px;
+      font-size: 12px;
+    }
+
+    .results-comparison-slider__arrow {
+      display: none;
+    }
+
+    .results-comparison-section__more {
+      display: none;
+    }
+  }
+</style>
+
+<section
+  class="results-comparison-section"
+  data-results-comparison="{{ section.id }}"
+>
+  <div class="results-comparison-section__container container">
+    <div class="results-comparison-section__header js-scroll__header">
+      {% if section.settings.title != blank or section.settings.mobile_title != blank %}
+        <h2 class="results-comparison-section__title">
+          <span class="results-comparison-section__title-desktop">
+            {{ section.settings.title }}
+          </span>
+          <span class="results-comparison-section__title-mobile">
+            {{ section.settings.mobile_title | default: section.settings.title }}
+          </span>
+        </h2>
+      {% endif %}
+
+      <div class="results-comparison-tabs">
+        <span class="results-comparison-tabs__glider"></span>
+
+        {% if section.settings.tab_1_label != blank %}
+          <button
+            type="button"
+            class="results-comparison-tabs__button active"
+            data-results-tab="tab-1"
+          >
+            {{ section.settings.tab_1_label }}
+          </button>
+        {% endif %}
+
+        {% if section.settings.tab_2_label != blank %}
+          <button
+            type="button"
+            class="results-comparison-tabs__button"
+            data-results-tab="tab-2"
+          >
+            {{ section.settings.tab_2_label }}
+          </button>
+        {% endif %}
+      </div>
+    </div>
+
+    {% for tab_index in (1..2) %}
+      {% capture tab_id %}tab-{{ tab_index }}{% endcapture %}
+
+      <div
+        class="results-comparison-panel js-scroll__group"
+        data-results-panel="{{ tab_id }}"
+        {% unless tab_index == 1 %}hidden{% endunless %}
+         style="--reveal-index: {{ forloop.index0 }};"
+      >
+        <div class="results-comparison-slider">
+          <custom-swiper
+            slides-per-view="3"
+            space-between="16"
+            loop="false"
+            centered-slides="false"
+            navigation="true"
+            pagination="false"
+            breakpoints='{
+              "0": {"slidesPerView": 1, "spaceBetween": 16},
+              "768": {"slidesPerView": 2, "spaceBetween": 16},
+              "1024": {"slidesPerView": 3, "spaceBetween": 16}
+            }'
+          >
+            <div class="swiper-container">
+              <div class="swiper-wrapper">
+                {% for block in section.blocks %}
+                  {% if block.settings.tab_category == tab_id %}
+                    <div class="swiper-slide" {{ block.shopify_attributes }}>
+                      <article class="results-comparison-card js-scroll__card">
+                        <div class="results-comparison-card__media">
+                          <image-comparison-newf class="results-image-comparison">
+                            <div class="user-reviews-img-item results-image-comparison__item results-image-comparison__item--before">
+                              {% if block.settings.before_image != blank %}
+                                <picture class="results-image-comparison__picture">
+                                  {{
+                                    block.settings.before_image
+                                    | image_url: width: 1200
+                                    | image_tag:
+                                      class: 'results-image-comparison__image',
+                                      loading: 'lazy',
+                                      widths: '400, 600, 800, 1000, 1200',
+                                      sizes: '(max-width: 767px) calc(100vw - 40px), 33vw',
+                                      alt: block.settings.before_image.alt
+                                  }}
+                                </picture>
+                              {% else %}
+                                {{ 'image' | placeholder_svg_tag: 'results-image-comparison__image' }}
+                              {% endif %}
+
+                              {% if block.settings.before_label != blank %}
+                                <span class="results-image-comparison__label results-image-comparison__label--before">
+                                  {{ block.settings.before_label }}
+                                </span>
+                              {% endif %}
+                            </div>
+
+                            <div class="user-reviews-img-item results-image-comparison__item results-image-comparison__item--after">
+                              {% if block.settings.after_image != blank %}
+                                <picture class="results-image-comparison__picture">
+                                  {{
+                                    block.settings.after_image
+                                    | image_url: width: 1200
+                                    | image_tag:
+                                      class: 'results-image-comparison__image',
+                                      loading: 'lazy',
+                                      widths: '400, 600, 800, 1000, 1200',
+                                      sizes: '(max-width: 767px) calc(100vw - 40px), 33vw',
+                                      alt: block.settings.after_image.alt
+                                  }}
+                                </picture>
+                              {% else %}
+                                {{ 'image' | placeholder_svg_tag: 'results-image-comparison__image' }}
+                              {% endif %}
+
+                              {% if block.settings.after_label != blank %}
+                                <span class="results-image-comparison__label results-image-comparison__label--after">
+                                  {{ block.settings.after_label }}
+                                </span>
+                              {% endif %}
+                            </div>
+
+                            <div class="btn-l" aria-hidden="true">
+                              <span class="btn-l__button">
+                                <svg viewBox="0 0 9 14" fill="none" aria-hidden="true">
+                                  <path d="M7.5 1L1.5 7L7.5 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                                <svg viewBox="0 0 9 14" fill="none" aria-hidden="true">
+                                  <path d="M1.5 1L7.5 7L1.5 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                              </span>
+                            </div>
+                          </image-comparison-newf>
+                        </div>
+
+                        <div class="results-comparison-card__content">
+                          {% if block.settings.title != blank %}
+                            <h3 class="results-comparison-card__title">
+                              {{ block.settings.title }}
+                            </h3>
+                          {% endif %}
+
+                          {% if block.settings.description != blank %}
+                            <p class="results-comparison-card__description">
+                              {{ block.settings.description }}
+                            </p>
+                          {% endif %}
+                        </div>
+                      </article>
+                    </div>
+                  {% endif %}
+                {% endfor %}
+              </div>
+            </div>
+
+            <button type="button" class="results-comparison-slider__arrow results-comparison-slider__arrow--prev swiper-prev" aria-label="Previous">
+              <svg viewBox="0 0 14 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M5 1L1 5M1 5L5 9M1 5H13" stroke="currentColor"/>
+            </svg>
+            </button>
+            <button type="button" class="results-comparison-slider__arrow results-comparison-slider__arrow--next swiper-next" aria-label="Next">
+               <svg viewBox="0 0 14 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M9 1L13 5M13 5L9 9M13 5H1" stroke="currentColor"/>
+            </svg>
+            </button>
+          </custom-swiper>
+        </div>
+      </div>
+    {% endfor %}
+
+    {% if section.settings.more_text != blank or section.settings.more_link_text != blank %}
+      <div class="results-comparison-section__more js-scroll__header">
+        {% if section.settings.more_text != blank %}
+          <span>{{ section.settings.more_text }}</span>
+        {% endif %}
+
+        {% if section.settings.more_link_text != blank %}
+          <a
+            href="{{ section.settings.more_link | default: '#' }}"
+            class="results-comparison-section__more-link"
+          >
+            {{ section.settings.more_link_text }}
+            <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+              <path d="M4 10H16M11.5 5.5L16 10L11.5 14.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </a>
+        {% endif %}
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+<script>
+(() => {
+  const init = () => {
+    const section = document.querySelector('[data-results-comparison="{{ section.id }}"]');
+    if (!section || section.dataset.initialized === 'true') return;
+    section.dataset.initialized = 'true';
+
+    const tabs = [...section.querySelectorAll('[data-results-tab]')];
+    const panels = [...section.querySelectorAll('[data-results-panel]')];
+    const glider = section.querySelector('.results-comparison-tabs__glider');
+
+    const moveGlider = button => {
+      if (!button || !glider) return;
+      glider.style.width = `${button.offsetWidth}px`;
+      glider.style.transform = `translateX(${button.offsetLeft}px)`;
+    };
+
+    const refreshSwiper = (panel, reset = false) => {
+      const customSwiper = panel?.querySelector('custom-swiper');
+      if (!customSwiper) return;
+
+      let attempts = 0;
+
+      const refresh = () => {
+        const swiper = customSwiper.swiper;
+
+        if (swiper) {
+          swiper.update();
+          if (reset) swiper.slideTo(0, 0);
+          return;
+        }
+
+        if (attempts < 30) {
+          attempts += 1;
+          requestAnimationFrame(refresh);
+        }
+      };
+
+      refresh();
+    };
+
+    const showPanel = (tab, reset = false) => {
+      panels.forEach(panel => {
+        const active = panel.dataset.resultsPanel === tab;
+        panel.hidden = !active;
+
+        if (active) {
+          requestAnimationFrame(() => refreshSwiper(panel, reset));
+        }
+      });
+    };
+
+    const activeTab = section.querySelector('[data-results-tab].active');
+
+    if (activeTab) {
+      moveGlider(activeTab);
+      showPanel(activeTab.dataset.resultsTab);
+    }
+
+    tabs.forEach(button => {
+      button.addEventListener('click', () => {
+        if (button.classList.contains('active')) return;
+
+        tabs.forEach(item => item.classList.remove('active'));
+        button.classList.add('active');
+
+        moveGlider(button);
+        showPanel(button.dataset.resultsTab, true);
+      });
+    });
+
+    const onResize = () => {
+      const current = section.querySelector('[data-results-tab].active');
+      if (!current) return;
+
+      moveGlider(current);
+
+      const activePanel = section.querySelector(
+        `[data-results-panel="${current.dataset.resultsTab}"]`
+      );
+
+      refreshSwiper(activePanel);
+    };
+
+    window.addEventListener('resize', onResize);
+  };
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init, { once: true });
+  } else {
+    init();
+  }
+
+  document.addEventListener('shopify:section:load', event => {
+    if (event.detail.sectionId === '{{ section.id }}') init();
+  });
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Results Comparison Tabs",
+  "max_blocks": 12,
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Desktop Title",
+      "default": "Light that adapts to you. Results you can see."
+    },
+    {
+      "type": "text",
+      "id": "mobile_title",
+      "label": "Mobile Title",
+      "default": "Clinically proven. User-approved."
+    },
+    {
+      "type": "text",
+      "id": "tab_1_label",
+      "label": "Tab 1 Label",
+      "default": "IPL Hair Removal Device"
+    },
+    {
+      "type": "text",
+      "id": "tab_2_label",
+      "label": "Tab 2 Label",
+      "default": "LED Light Therapy Device"
+    },
+    {
+      "type": "text",
+      "id": "more_text",
+      "label": "Bottom Text",
+      "default": "View more usage comparison effects."
+    },
+    {
+      "type": "text",
+      "id": "more_link_text",
+      "label": "Bottom Link Text",
+      "default": "LEARN MORE"
+    },
+    {
+      "type": "url",
+      "id": "more_link",
+      "label": "Bottom Link"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#1A1A1A"
+    },
+    {
+      "type": "color",
+      "id": "tab_background",
+      "label": "Tab Background",
+      "default": "#EBEBEB"
+    },
+    {
+      "type": "color",
+      "id": "tab_active_background",
+      "label": "Active Tab Background",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Desktop Padding Top",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 88
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Desktop Padding Bottom",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "mobile_padding_top",
+      "label": "Mobile Padding Top",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "mobile_padding_bottom",
+      "label": "Mobile Padding Bottom",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 56
+    }
+  ],
+  "blocks": [
+    {
+      "type": "comparison",
+      "name": "Comparison Card",
+      "settings": [
+        {
+          "type": "select",
+          "id": "tab_category",
+          "label": "Tab",
+          "options": [
+            { "value": "tab-1", "label": "Tab 1" },
+            { "value": "tab-2", "label": "Tab 2" }
+          ],
+          "default": "tab-1"
+        },
+        {
+          "type": "image_picker",
+          "id": "before_image",
+          "label": "Before Image"
+        },
+        {
+          "type": "image_picker",
+          "id": "after_image",
+          "label": "After Image"
+        },
+        {
+          "type": "text",
+          "id": "before_label",
+          "label": "Before Label",
+          "default": "Day 1"
+        },
+        {
+          "type": "text",
+          "id": "after_label",
+          "label": "After Label",
+          "default": "Day 28"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Firmness"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description",
+          "default": "Reduce blemishes and support clearer-looking skin."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Results Comparison Tabs",
+      "blocks": [
+        {
+          "type": "comparison",
+          "settings": {
+            "tab_category": "tab-1",
+            "title": "Firmness"
+          }
+        },
+        {
+          "type": "comparison",
+          "settings": {
+            "tab_category": "tab-1",
+            "title": "Fine Lines"
+          }
+        },
+        {
+          "type": "comparison",
+          "settings": {
+            "tab_category": "tab-1",
+            "title": "Anti-Aging"
+          }
+        },
+        {
+          "type": "comparison",
+          "settings": {
+            "tab_category": "tab-2",
+            "title": "Acne and breakouts"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
