@@ -1,0 +1,1316 @@
+<style>
+.experts-section {
+  position: relative;
+  overflow: hidden;
+  padding-top: {{ section.settings.padding_top }}px;
+  padding-bottom: {{ section.settings.padding_bottom }}px;
+  background: {{ section.settings.bg_color }};
+}
+
+.experts-section .experts-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 60px;
+}
+
+.experts-section .experts-title {
+  margin: 0;
+  color: #111;
+  font-size: 44px;
+  font-weight: 400;
+  line-height: 1.2;
+      font-family: var(--heading-font-family);
+}
+
+.experts-section .experts-nav-arrows {
+  display: flex;
+  align-items: center;
+  gap: 36px;
+}
+
+.experts-section .experts-nav-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  color: #190a0a;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.experts-section .experts-nav-btn:hover {
+  transform: scale(1.08);
+}
+
+.experts-section .experts-nav-btn svg {
+  width: 31px;
+}
+
+.experts-section .experts-grid {
+  display: grid;
+  grid-template-columns: 444px 1fr;
+  align-items: center;
+  gap: 160px;
+}
+
+.experts-section .experts-media-wrap {
+  width: 100%;
+  min-width: 0;
+}
+
+.experts-section .experts-media-stage {
+  width: 100%;
+  overflow: hidden;
+}
+
+.experts-section .experts-media-col {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1;
+  overflow: hidden;
+}
+
+.experts-section .experts-media-item {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translate3d(100%, 0, 0);
+  will-change: transform;
+}
+
+.experts-section .experts-media-item.active {
+  z-index: 2;
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translate3d(0, 0, 0);
+}
+
+.experts-section .experts-media-item.is-entering,
+.experts-section .experts-media-item.is-leaving {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: none;
+  transition: transform 0.65s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.experts-section .experts-media-item.is-entering {
+  z-index: 3;
+}
+
+.experts-section .experts-media-item.is-leaving {
+  z-index: 2;
+}
+
+.experts-section .experts-media-item img,
+.experts-section .experts-media-item > svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.experts-section .experts-play-btn {
+  position: absolute;
+  right: 22px;
+  bottom: 22px;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  padding: 0;
+  background: rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 50%;
+  cursor: pointer;
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.experts-section .experts-play-btn:hover {
+  background: #fff;
+  transform: scale(1.12);
+}
+
+.experts-section .experts-play-btn svg {
+  width: 18px;
+  height: 18px;
+  margin-left: 2px;
+  fill: #111;
+}
+
+.experts-section .experts-dots {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 23px;
+}
+
+.experts-section .experts-dot {
+  position: relative;
+  width: 15px;
+  height: 15px;
+  padding: 0;
+  background: #cdc6c7;
+  border: 0;
+  border-radius: 50%;
+  cursor: pointer;
+  transition:
+    width 0.3s ease,
+    opacity 0.3s ease,
+    transform 0.3s ease;
+}
+
+.experts-section .experts-dot.active {
+  opacity: 1;
+  background: #190a0a;
+}
+
+.experts-section .experts-content-col {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0;
+}
+
+.experts-section .experts-avatars-row {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 42px;
+}
+
+.experts-section .experts-avatar-item {
+  position: relative;
+  width: 88px;
+  height: 88px;
+  padding: 0;
+  background: none;
+  border: 0;
+  outline: none;
+  cursor: pointer;
+  opacity: 0.5;
+  transition:
+    opacity 0.35s ease,
+    transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.experts-section .experts-avatar-item.active {
+  opacity: 1;
+}
+
+.experts-section .experts-avatar-img {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  width: 76px;
+  height: 76px;
+  object-fit: cover;
+  border-radius: 50%;
+  transition: box-shadow 0.3s ease;
+}
+
+.experts-section .experts-progress-ring {
+  position: absolute;
+  inset: 0;
+  width: 88px;
+  height: 88px;
+  pointer-events: none;
+}
+
+.experts-section .experts-progress-ring circle.bg {
+  fill: none;
+  stroke: #3f3636;
+  stroke-width: 2;
+  opacity: 0.2;
+}
+
+.experts-section .experts-progress-ring circle.progress {
+  fill: none;
+  stroke: {{ section.settings.accent_color }};
+  stroke-width: 2.5;
+  stroke-dasharray: 264;
+  stroke-dashoffset: 264;
+  stroke-linecap: round;
+  transform: rotate(-90deg);
+  transform-origin: 50% 50%;
+}
+
+.experts-section .experts-avatar-item.active .experts-progress-ring circle.progress {
+  animation: expertsRingProgress-{{ section.id }} var(--duration, 5s) linear forwards;
+}
+
+@keyframes expertsRingProgress-{{ section.id }} {
+  from {
+    stroke-dashoffset: 264;
+  }
+
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.experts-section .experts-quotes-wrapper {
+  position: relative;
+}
+
+.experts-section .experts-quote-item {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateX(-40px);
+  transition:
+    opacity 0.4s ease,
+    transform 0.4s ease;
+}
+
+.experts-section .experts-quote-item.active {
+  position: relative;
+  pointer-events: auto;
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.experts-section .experts-quote-item.is-leaving {
+  position: relative;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateX(-40px);
+}
+
+.experts-section .experts-quote-text {
+  margin: 0 0 30px;
+  color: #3f3636;
+  font-size: 26px;
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+.experts-section .experts-divider-line {
+  width: 281px;
+  height: 1px;
+  margin-bottom: 30px;
+  background: #3f3636;
+  opacity: 0.2;
+}
+
+.experts-section .experts-author-name {
+  margin: 0 0 10px;
+  color: #3f3636;
+  font-family: var(--heading-font-family);
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 1.2;
+}
+
+.experts-section .experts-author-title {
+  margin: 0;
+  color: #3f3636;
+  font-size: 16px;
+  line-height: 1.2;
+}
+
+@media screen and (max-width: 990px) {
+  .experts-section .experts-grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  .experts-section .experts-media-wrap {
+    width: 100%;
+  }
+
+  .experts-section .experts-media-stage {
+    max-width: 380px;
+    margin: 0 auto;
+  }
+
+  .experts-section .experts-content-col {
+    max-width: 100%;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .experts-section {
+    padding-top: {{ section.settings.mobile_padding_top }}px;
+    padding-bottom: {{ section.settings.mobile_padding_bottom }}px;
+  }
+
+
+  .experts-section .experts-header {
+    margin-bottom: 28px;
+  }
+
+  .experts-section .experts-title {
+    font-size: 26px;
+  }
+
+  .experts-section .experts-nav-arrows {
+    gap: 8px;
+  }
+
+  .experts-section .experts-nav-btn {
+    width: 40px;
+    height: 40px;
+  }
+
+  .experts-section .experts-nav-btn svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .experts-section .experts-grid {
+    gap: 20px;
+  }
+
+  .experts-section .experts-media-stage {
+    max-width: none;
+  }
+
+  .experts-section .experts-media-col {
+  }
+
+  .experts-section .experts-play-btn {
+    right: 20px;
+    bottom: 20px;
+    width: 50px;
+    height: 50px;
+  }
+
+  .experts-section .experts-dots {
+    display: flex;
+    gap: 8px;
+  }
+
+  .experts-section .experts-dot {
+    width: 10px;
+    height: 10px;
+  }
+
+  .experts-section .experts-dot.active {
+    opacity: 1;
+  }
+
+  .experts-section .experts-avatars-row {
+    gap: 12px;
+    margin-bottom: 15px;
+  }
+
+  .experts-section .experts-avatar-item {
+    width: 50px;
+    height: 50px;
+  }
+
+  .experts-section .experts-avatar-img {
+    top: 4px;
+    left: 4px;
+    width: 42px;
+    height: 42px;
+  }
+
+  .experts-section .experts-progress-ring {
+    width: 50px;
+    height: 50px;
+  }
+
+  .experts-section .experts-quote-text {
+    font-size: 14px;
+    line-height: 1.5;
+    order: 2;
+    margin: 30px 0 0;
+  }
+
+  .experts-section .experts-divider-line {
+    width: 100%;
+    order: 1;
+        margin-bottom: 15px;
+        margin-top:15px;
+  }
+
+  .experts-section .experts-quote-item {
+    display: flex;
+    flex-direction: column;
+}
+.experts-author-info{
+    order: 0;
+}
+.experts-section .experts-author-name{
+font-size: 14px;
+    margin: 0 0 6px;
+}
+.experts-section .experts-author-title {
+    margin: 0;
+    font-size: 12px;
+}
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .experts-section .experts-media-item,
+  .experts-section .experts-quote-item,
+  .experts-section .experts-nav-btn,
+  .experts-section .experts-dot {
+    transition: none !important;
+  }
+}
+</style>
+
+<section class="experts-section" data-experts-section>
+  <div class="container">
+    <div class="experts-header">
+      {% if section.settings.title != blank %}
+        <h2 class="experts-title">
+          {{ section.settings.title }}
+        </h2>
+      {% endif %}
+
+      <div class="experts-nav-arrows">
+        <button
+          class="experts-nav-btn prev-btn"
+          type="button"
+          aria-label="Previous Slide"
+        >
+          <svg
+            viewBox="0 0 32 20"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M10 1L1 10M1 10L10 19M1 10H31"
+              stroke="currentColor"
+              stroke-width="1.3"
+            ></path>
+          </svg>
+        </button>
+
+        <button
+          class="experts-nav-btn next-btn"
+          type="button"
+          aria-label="Next Slide"
+        >
+          <svg
+            viewBox="0 0 32 20"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M22 1L31 10M31 10L22 19M31 10H1"
+              stroke="currentColor"
+              stroke-width="1.3"
+            ></path>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="experts-grid">
+      <div class="experts-media-wrap">
+        <div class="experts-media-stage">
+          <div class="experts-media-col">
+            {% for block in section.blocks %}
+              <div
+                class="experts-media-item {% if forloop.first %}active{% endif %}"
+                data-index="{{ forloop.index0 }}"
+                {{ block.shopify_attributes }}
+              >
+                {% if block.settings.main_image != blank %}
+                  <img
+                    src="{{ block.settings.main_image | image_url: width: 1000 }}"
+                    alt="{{ block.settings.author_name | escape }}"
+                    width="{{ block.settings.main_image.width }}"
+                    height="{{ block.settings.main_image.height }}"
+                    loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
+                  >
+                {% else %}
+                  {{ 'image' | placeholder_svg_tag }}
+                {% endif %}
+
+                {% if block.settings.video_url != blank or block.settings.html5_video != blank %}
+                  {% liquid
+                    assign video_src = ''
+
+                    if block.settings.html5_video != blank
+                      for source in block.settings.html5_video.sources
+                        if source.format == 'mp4'
+                          assign video_src = source.url
+                          break
+                        endif
+                      endfor
+
+                      if video_src == blank and block.settings.html5_video.sources.size > 0
+                        assign video_src = block.settings.html5_video.sources[0].url
+                      endif
+                    else
+                      assign video_src = block.settings.video_url
+                    endif
+                  %}
+
+                  {% if video_src != blank %}
+                    <button
+                      class="experts-play-btn js-play-button-dialog"
+                      type="button"
+                      data-video="{{ video_src }}"
+                      aria-label="Play Video"
+                    >
+                      <svg viewBox="0 0 24 24">
+                        <path d="M8 5v14l11-7z"/>
+                      </svg>
+                    </button>
+                  {% endif %}
+                {% endif %}
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+
+      <div class="experts-content-col">
+        <div class="experts-avatars-row">
+          {% for block in section.blocks %}
+            <button
+              class="experts-avatar-item {% if forloop.first %}active{% endif %}"
+              type="button"
+              data-index="{{ forloop.index0 }}"
+              aria-label="Show {{ block.settings.author_name | escape }}"
+            >
+              <svg
+                class="experts-progress-ring"
+                viewBox="0 0 88 88"
+              >
+                <circle
+                  class="bg"
+                  cx="44"
+                  cy="44"
+                  r="42"
+                ></circle>
+
+                <circle
+                  class="progress"
+                  cx="44"
+                  cy="44"
+                  r="42"
+                ></circle>
+              </svg>
+
+              {% if block.settings.avatar != blank %}
+                <img
+                  class="experts-avatar-img"
+                  src="{{ block.settings.avatar | image_url: width: 160 }}"
+                  alt="{{ block.settings.author_name | escape }}"
+                  width="76"
+                  height="76"
+                  loading="lazy"
+                >
+              {% else %}
+                {{ 'image' | placeholder_svg_tag: 'experts-avatar-img' }}
+              {% endif %}
+            </button>
+          {% endfor %}
+        </div>
+
+        <div class="experts-quotes-wrapper">
+          {% for block in section.blocks %}
+            <div
+              class="experts-quote-item {% if forloop.first %}active{% endif %}"
+              data-index="{{ forloop.index0 }}"
+            >
+              {% if block.settings.quote != blank %}
+                <p class="experts-quote-text">
+                  {{ block.settings.quote }}
+                </p>
+              {% endif %}
+
+              <div class="experts-divider-line"></div>
+
+              <div class="experts-author-info">
+                {% if block.settings.author_name != blank %}
+                  <div class="experts-author-name">
+                    {{ block.settings.author_name }}
+                  </div>
+                {% endif %}
+
+                {% if block.settings.author_title != blank %}
+                  <div class="experts-author-title">
+                    {{ block.settings.author_title }}
+                  </div>
+                {% endif %}
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+
+    <div class="experts-dots">
+      {% for block in section.blocks %}
+        <button
+          class="experts-dot {% if forloop.first %}active{% endif %}"
+          type="button"
+          data-index="{{ forloop.index0 }}"
+          aria-label="Go to slide {{ forloop.index }}"
+          {% if forloop.first %}
+            aria-current="true"
+          {% endif %}
+        ></button>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<script>
+(() => {
+  const init = () => {
+    const shopifySection = document.getElementById(
+      'shopify-section-{{ section.id }}'
+    );
+
+    const section = shopifySection?.querySelector(
+      '.experts-section'
+    );
+
+    if (
+      !section ||
+      section.dataset.initialized === 'true'
+    ) {
+      return;
+    }
+
+    section.dataset.initialized = 'true';
+
+    const duration =
+      {{ section.settings.autoplay_speed }} * 1000;
+
+    const imageDuration = 650;
+    const quoteSwitchDelay = 300;
+
+    const avatarBtns = [
+      ...section.querySelectorAll(
+        '.experts-avatar-item'
+      ),
+    ];
+
+    const mediaItems = [
+      ...section.querySelectorAll(
+        '.experts-media-item'
+      ),
+    ];
+
+    const quoteItems = [
+      ...section.querySelectorAll(
+        '.experts-quote-item'
+      ),
+    ];
+
+    const dotBtns = [
+      ...section.querySelectorAll(
+        '.experts-dot'
+      ),
+    ];
+
+    const playBtns = [
+      ...section.querySelectorAll(
+        '.js-play-button-dialog[data-video]'
+      ),
+    ];
+
+    const prevBtn =
+      section.querySelector('.prev-btn');
+
+    const nextBtn =
+      section.querySelector('.next-btn');
+
+    let currentIndex = 0;
+    let timer = null;
+    let imageTimer = null;
+    let quoteTimer = null;
+    let isAnimating = false;
+
+    section.style.setProperty(
+      '--duration',
+      `${duration}ms`
+    );
+
+    const updateDots = index => {
+      dotBtns.forEach((dot, idx) => {
+        const isActive =
+          idx === index;
+
+        dot.classList.toggle(
+          'active',
+          isActive
+        );
+
+        if (isActive) {
+          dot.setAttribute(
+            'aria-current',
+            'true'
+          );
+        } else {
+          dot.removeAttribute(
+            'aria-current'
+          );
+        }
+      });
+    };
+
+    const restartProgress = index => {
+      avatarBtns.forEach(btn => {
+        btn.classList.remove(
+          'active'
+        );
+      });
+
+      if (avatarBtns[index]) {
+        void avatarBtns[index].offsetWidth;
+
+        avatarBtns[index].classList.add(
+          'active'
+        );
+      }
+
+      updateDots(index);
+    };
+
+    const switchQuote = index => {
+      clearTimeout(quoteTimer);
+
+      const currentQuote =
+        quoteItems.find(item =>
+          item.classList.contains(
+            'active'
+          )
+        );
+
+      const nextQuote =
+        quoteItems[index];
+
+      if (
+        !nextQuote ||
+        currentQuote === nextQuote
+      ) {
+        return;
+      }
+
+      if (currentQuote) {
+        currentQuote.classList.remove(
+          'active'
+        );
+
+        currentQuote.classList.add(
+          'is-leaving'
+        );
+      }
+
+      quoteTimer = setTimeout(() => {
+        currentQuote?.classList.remove(
+          'is-leaving'
+        );
+
+        nextQuote.classList.add(
+          'active'
+        );
+      }, quoteSwitchDelay);
+    };
+
+    const scheduleNext = () => {
+      clearTimeout(timer);
+
+      if (mediaItems.length <= 1) {
+        return;
+      }
+
+      timer = setTimeout(() => {
+        goToSlide(
+          (currentIndex + 1) %
+            mediaItems.length,
+          1
+        );
+      }, duration);
+    };
+
+    const cleanupMediaItem = item => {
+      if (!item) return;
+
+      item.classList.remove(
+        'active',
+        'is-entering',
+        'is-leaving'
+      );
+
+      item.style.removeProperty(
+        'transform'
+      );
+
+      item.style.removeProperty(
+        'transition'
+      );
+    };
+
+    const goToSlide = (
+      index,
+      direction = 1
+    ) => {
+      if (
+        !mediaItems.length ||
+        isAnimating
+      ) {
+        return;
+      }
+
+      index =
+        (index + mediaItems.length) %
+        mediaItems.length;
+
+      if (index === currentIndex) {
+        restartProgress(index);
+        scheduleNext();
+        return;
+      }
+
+      clearTimeout(timer);
+      clearTimeout(imageTimer);
+
+      isAnimating = true;
+
+      const oldIndex =
+        currentIndex;
+
+      const oldItem =
+        mediaItems[oldIndex];
+
+      const newItem =
+        mediaItems[index];
+
+      currentIndex = index;
+
+      newItem.classList.remove(
+        'active',
+        'is-leaving'
+      );
+
+      newItem.classList.add(
+        'is-entering'
+      );
+
+      newItem.style.transition =
+        'none';
+
+      newItem.style.transform =
+        `translate3d(${direction * 100}%, 0, 0)`;
+
+      oldItem.classList.add(
+        'is-leaving'
+      );
+
+      oldItem.style.transform =
+        'translate3d(0, 0, 0)';
+
+      restartProgress(index);
+      switchQuote(index);
+
+      void newItem.offsetWidth;
+
+      newItem.style.removeProperty(
+        'transition'
+      );
+
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          oldItem.style.transform =
+            `translate3d(${direction * -100}%, 0, 0)`;
+
+          newItem.style.transform =
+            'translate3d(0, 0, 0)';
+        });
+      });
+
+      imageTimer = setTimeout(() => {
+        cleanupMediaItem(
+          oldItem
+        );
+
+        newItem.classList.remove(
+          'is-entering'
+        );
+
+        newItem.classList.add(
+          'active'
+        );
+
+        newItem.style.removeProperty(
+          'transform'
+        );
+
+        newItem.style.removeProperty(
+          'transition'
+        );
+
+        isAnimating = false;
+
+        scheduleNext();
+      }, imageDuration);
+    };
+
+    avatarBtns.forEach(
+      (btn, index) => {
+        btn.addEventListener(
+          'click',
+          () => {
+            if (isAnimating) {
+              return;
+            }
+
+            if (
+              index === currentIndex
+            ) {
+              restartProgress(
+                index
+              );
+
+              scheduleNext();
+
+              return;
+            }
+
+            goToSlide(
+              index,
+              index > currentIndex
+                ? 1
+                : -1
+            );
+          }
+        );
+      }
+    );
+
+    dotBtns.forEach(
+      (dot, index) => {
+        dot.addEventListener(
+          'click',
+          () => {
+            if (isAnimating) {
+              return;
+            }
+
+            if (
+              index === currentIndex
+            ) {
+              restartProgress(
+                index
+              );
+
+              scheduleNext();
+
+              return;
+            }
+
+            goToSlide(
+              index,
+              index > currentIndex
+                ? 1
+                : -1
+            );
+          }
+        );
+      }
+    );
+
+    prevBtn?.addEventListener(
+      'click',
+      () => {
+        if (
+          isAnimating ||
+          !mediaItems.length
+        ) {
+          return;
+        }
+
+        const index =
+          (
+            currentIndex -
+            1 +
+            mediaItems.length
+          ) %
+          mediaItems.length;
+
+        goToSlide(
+          index,
+          -1
+        );
+      }
+    );
+
+    nextBtn?.addEventListener(
+      'click',
+      () => {
+        if (
+          isAnimating ||
+          !mediaItems.length
+        ) {
+          return;
+        }
+
+        const index =
+          (
+            currentIndex + 1
+          ) %
+          mediaItems.length;
+
+        goToSlide(
+          index,
+          1
+        );
+      }
+    );
+
+    /*
+     * 视频弹窗由全局
+     * luxury-video-modal-new 接管。
+     *
+     * 这里只暂停当前 section 的自动轮播。
+     */
+    playBtns.forEach(btn => {
+      btn.addEventListener(
+        'click',
+        () => {
+          clearTimeout(timer);
+        }
+      );
+    });
+
+    mediaItems.forEach(
+      (item, index) => {
+        item.classList.remove(
+          'is-entering',
+          'is-leaving'
+        );
+
+        item.classList.toggle(
+          'active',
+          index === 0
+        );
+
+        item.style.removeProperty(
+          'transform'
+        );
+
+        item.style.removeProperty(
+          'transition'
+        );
+      }
+    );
+
+    quoteItems.forEach(
+      (item, index) => {
+        item.classList.remove(
+          'is-leaving'
+        );
+
+        item.classList.toggle(
+          'active',
+          index === 0
+        );
+      }
+    );
+
+    currentIndex = 0;
+
+    restartProgress(0);
+    scheduleNext();
+  };
+
+  if (
+    document.readyState ===
+    'loading'
+  ) {
+    document.addEventListener(
+      'DOMContentLoaded',
+      init
+    );
+  } else {
+    init();
+  }
+
+  document.addEventListener(
+    'shopify:section:load',
+    event => {
+      if (
+        event.target.id ===
+        'shopify-section-{{ section.id }}'
+      ) {
+        init();
+      }
+    }
+  );
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Recommended by experts",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "大标题",
+      "default": "Recommended by experts."
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "主题强调色",
+      "default": "#E52E61"
+    },
+    {
+      "type": "range",
+      "id": "autoplay_speed",
+      "min": 3,
+      "max": 12,
+      "step": 1,
+      "unit": "s",
+      "label": "自动切换速度 (秒)",
+      "default": 5
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "背景颜色",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 60
+    },
+    {
+      "type": "header",
+      "content": "Mobile Settings"
+    },
+    {
+      "type": "range",
+      "id": "mobile_padding_top",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "mobile_padding_bottom",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 40
+    }
+  ],
+  "blocks": [
+    {
+      "type": "expert_card",
+      "name": "专家卡片",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "avatar",
+          "label": "专家头像"
+        },
+        {
+          "type": "image_picker",
+          "id": "main_image",
+          "label": "左侧大图"
+        },
+        {
+          "type": "video",
+          "id": "html5_video",
+          "label": "本地视频 "
+        },
+        {
+          "type": "text",
+          "id": "video_url",
+          "label": "外部视频链接 (YouTube/Vimeo)"
+        },
+        {
+          "type": "textarea",
+          "id": "quote",
+          "label": "推荐评价语",
+          "default": "Ulike IPL is backed by over 30+ safety certifications, ensuring your skin is protected from harmful UV light, and delivering you a comfortable and reliable hair removal experience."
+        },
+        {
+          "type": "text",
+          "id": "author_name",
+          "label": "专家姓名",
+          "default": "Cassandra Bankson"
+        },
+        {
+          "type": "text",
+          "id": "author_title",
+          "label": "专家头衔/职位",
+          "default": "A board-certified dermatologist"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Recommended by experts",
+      "blocks": [
+        {
+          "type": "expert_card",
+          "settings": {
+            "author_name": "Cassandra Bankson",
+            "author_title": "A board-certified dermatologist"
+          }
+        },
+        {
+          "type": "expert_card",
+          "settings": {
+            "author_name": "Dr. Evan Rieder",
+            "author_title": "Dermatologist & Psychiatrist"
+          }
+        },
+        {
+          "type": "expert_card",
+          "settings": {
+            "author_name": "Dr. Zain Husain",
+            "author_title": "Board-Certified Dermatologist"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
