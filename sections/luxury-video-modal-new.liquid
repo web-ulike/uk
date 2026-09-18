@@ -1,0 +1,697 @@
+<script>
+  class LuxuryVideoModalNew extends HTMLElement {
+    constructor() {
+      super();
+
+      this.closeTimer = null;
+      this.lastActiveElement = null;
+
+      this.handleClose = this.handleClose.bind(this);
+      this.handleKeyDown = this.handleKeyDown.bind(this);
+    }
+
+    connectedCallback() {
+      if (this.initialized) return;
+
+      this.initialized = true;
+
+      this.innerHTML = `
+        <div
+          class="luxury-video-overlay"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Video player"
+          aria-hidden="true"
+        >
+          <div
+            class="luxury-video-bg"
+            data-video-close
+          ></div>
+
+          <div class="luxury-video-content">
+            <button
+              class="luxury-video-close"
+              type="button"
+              aria-label="Close video"
+              data-video-close
+            >
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                aria-hidden="true"
+              >
+                <line
+                  x1="18"
+                  y1="6"
+                  x2="6"
+                  y2="18"
+                ></line>
+
+                <line
+                  x1="6"
+                  y1="6"
+                  x2="18"
+                  y2="18"
+                ></line>
+              </svg>
+            </button>
+
+            <div class="luxury-video-wrapper"></div>
+          </div>
+        </div>
+      `;
+
+      this.overlay = this.querySelector(
+        '.luxury-video-overlay'
+      );
+
+      this.videoWrapper = this.querySelector(
+        '.luxury-video-wrapper'
+      );
+
+      this.closeBtn = this.querySelector(
+        '.luxury-video-close'
+      );
+
+      this.addEventListener(
+        'click',
+        this.handleClose
+      );
+    }
+
+    disconnectedCallback() {
+      this.removeEventListener(
+        'click',
+        this.handleClose
+      );
+
+      document.removeEventListener(
+        'keydown',
+        this.handleKeyDown
+      );
+
+      clearTimeout(this.closeTimer);
+
+      this.resetVideo();
+    }
+
+    handleClose(event) {
+      if (
+        !event.target.closest(
+          '[data-video-close]'
+        )
+      ) {
+        return;
+      }
+
+      this.close();
+    }
+
+    handleKeyDown(event) {
+      if (event.key === 'Escape') {
+        this.close();
+      }
+    }
+
+    getVideoType(videoUrl) {
+      if (!videoUrl) return 'video';
+
+      const url = videoUrl.toLowerCase();
+
+      if (
+        url.includes('youtube.com') ||
+        url.includes('youtu.be')
+      ) {
+        return 'youtube';
+      }
+
+      if (
+        url.includes('vimeo.com')
+      ) {
+        return 'vimeo';
+      }
+
+      return 'video';
+    }
+
+    getYouTubeEmbedUrl(videoUrl) {
+      try {
+        const url = new URL(
+          videoUrl,
+          window.location.origin
+        );
+
+        let videoId = '';
+
+        if (
+          url.hostname.includes(
+            'youtu.be'
+          )
+        ) {
+          videoId = url.pathname
+            .replace(/^\/+/, '')
+            .split('/')[0];
+        } else if (
+          url.pathname.includes(
+            '/shorts/'
+          )
+        ) {
+          videoId = url.pathname
+            .split('/shorts/')[1]
+            ?.split('/')[0];
+        } else if (
+          url.pathname.includes(
+            '/embed/'
+          )
+        ) {
+          videoId = url.pathname
+            .split('/embed/')[1]
+            ?.split('/')[0];
+        } else {
+          videoId =
+            url.searchParams.get('v');
+        }
+
+        if (!videoId) return '';
+
+        const params =
+          new URLSearchParams({
+            autoplay: '1',
+            playsinline: '1',
+            rel: '0',
+          });
+
+        return `https://www.youtube.com/embed/${videoId}?${params.toString()}`;
+      } catch (error) {
+        return '';
+      }
+    }
+
+    getVimeoEmbedUrl(videoUrl) {
+      try {
+        const url = new URL(
+          videoUrl,
+          window.location.origin
+        );
+
+        if (
+          url.hostname.includes(
+            'player.vimeo.com'
+          ) &&
+          url.pathname.includes(
+            '/video/'
+          )
+        ) {
+          const separator =
+            videoUrl.includes('?')
+              ? '&'
+              : '?';
+
+          return `${videoUrl}${separator}autoplay=1`;
+        }
+
+        const segments =
+          url.pathname
+            .split('/')
+            .filter(Boolean);
+
+        const videoId =
+          segments.find(segment =>
+            /^\d+$/.test(segment)
+          );
+
+        if (!videoId) return '';
+
+        return `https://player.vimeo.com/video/${videoId}?autoplay=1`;
+      } catch (error) {
+        return '';
+      }
+    }
+
+    createVideo(videoUrl) {
+      const video =
+        document.createElement('video');
+
+      video.src = videoUrl;
+
+      video.controls = true;
+      video.autoplay = true;
+      video.playsInline = true;
+      video.preload = 'metadata';
+
+      return video;
+    }
+
+    createIframe(src, title) {
+      const iframe =
+        document.createElement('iframe');
+
+      iframe.src = src;
+      iframe.title = title;
+
+      iframe.setAttribute(
+        'allow',
+        'autoplay; encrypted-media; fullscreen; picture-in-picture'
+      );
+
+      iframe.setAttribute(
+        'allowfullscreen',
+        ''
+      );
+
+      return iframe;
+    }
+
+    renderVideo(videoUrl) {
+      if (
+        !videoUrl ||
+        !this.videoWrapper
+      ) {
+        return false;
+      }
+
+      this.videoWrapper.innerHTML = '';
+
+      const type =
+        this.getVideoType(videoUrl);
+
+      if (type === 'youtube') {
+        const embedUrl =
+          this.getYouTubeEmbedUrl(
+            videoUrl
+          );
+
+        if (!embedUrl) return false;
+
+        const iframe =
+          this.createIframe(
+            embedUrl,
+            'YouTube video player'
+          );
+
+        this.videoWrapper.appendChild(
+          iframe
+        );
+
+        return true;
+      }
+
+      if (type === 'vimeo') {
+        const embedUrl =
+          this.getVimeoEmbedUrl(
+            videoUrl
+          );
+
+        if (!embedUrl) return false;
+
+        const iframe =
+          this.createIframe(
+            embedUrl,
+            'Vimeo video player'
+          );
+
+        this.videoWrapper.appendChild(
+          iframe
+        );
+
+        return true;
+      }
+
+      const video =
+        this.createVideo(videoUrl);
+
+      this.videoWrapper.appendChild(
+        video
+      );
+
+      const playPromise =
+        video.play();
+
+      if (
+        playPromise &&
+        typeof playPromise.catch ===
+          'function'
+      ) {
+        playPromise.catch(() => {});
+      }
+
+      return true;
+    }
+
+    open(videoUrl) {
+      if (
+        !videoUrl ||
+        !this.overlay ||
+        !this.videoWrapper
+      ) {
+        return;
+      }
+
+      clearTimeout(this.closeTimer);
+
+      this.lastActiveElement =
+        document.activeElement;
+
+      this.resetVideo();
+
+      const rendered =
+        this.renderVideo(videoUrl);
+
+      if (!rendered) return;
+
+      document.addEventListener(
+        'keydown',
+        this.handleKeyDown
+      );
+
+      document.documentElement.classList.add(
+        'video-modal-open'
+      );
+
+      document.body.classList.add(
+        'video-modal-open'
+      );
+
+      this.overlay.setAttribute(
+        'aria-hidden',
+        'false'
+      );
+
+      requestAnimationFrame(() => {
+        this.overlay.classList.add(
+          'is-active'
+        );
+
+        this.closeBtn?.focus();
+      });
+    }
+
+    close() {
+      if (
+        !this.overlay ||
+        !this.overlay.classList.contains(
+          'is-active'
+        )
+      ) {
+        return;
+      }
+
+      document.removeEventListener(
+        'keydown',
+        this.handleKeyDown
+      );
+
+      this.overlay.classList.remove(
+        'is-active'
+      );
+
+      this.overlay.setAttribute(
+        'aria-hidden',
+        'true'
+      );
+
+      document.documentElement.classList.remove(
+        'video-modal-open'
+      );
+
+      document.body.classList.remove(
+        'video-modal-open'
+      );
+
+      const video =
+        this.videoWrapper?.querySelector(
+          'video'
+        );
+
+      video?.pause();
+
+      clearTimeout(this.closeTimer);
+
+      this.closeTimer = setTimeout(() => {
+        this.resetVideo();
+
+        if (
+          this.lastActiveElement &&
+          typeof this.lastActiveElement.focus ===
+            'function'
+        ) {
+          this.lastActiveElement.focus();
+        }
+
+        this.lastActiveElement = null;
+      }, 400);
+    }
+
+    resetVideo() {
+      if (!this.videoWrapper) return;
+
+      const video =
+        this.videoWrapper.querySelector(
+          'video'
+        );
+
+      if (video) {
+        video.pause();
+        video.removeAttribute('src');
+        video.load();
+      }
+
+      this.videoWrapper.innerHTML = '';
+    }
+  }
+
+  if (
+    !customElements.get(
+      'luxury-video-modal-new'
+    )
+  ) {
+    customElements.define(
+      'luxury-video-modal-new',
+      LuxuryVideoModalNew
+    );
+  }
+
+  if (
+    !window.luxuryVideoModalNewInitialized
+  ) {
+    window.luxuryVideoModalNewInitialized = true;
+
+    document.addEventListener(
+      'click',
+      event => {
+        const playButton =
+          event.target.closest(
+            '.js-play-button-dialog[data-video]'
+          );
+
+        if (!playButton) return;
+
+        const videoUrl =
+          playButton.getAttribute(
+            'data-video'
+          );
+
+        if (!videoUrl) return;
+
+        event.preventDefault();
+
+        const modal =
+          document.getElementById(
+            'globalVideoModal'
+          );
+
+        modal?.open(videoUrl);
+      }
+    );
+  }
+</script>
+
+<style>
+.luxury-video-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+  height: 100vh;
+  height: 100dvh;
+
+  padding: 60px 24px 24px;
+
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+
+  transition:
+    opacity 0.4s ease,
+    visibility 0.4s ease;
+}
+
+.luxury-video-overlay.is-active {
+  visibility: visible;
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.luxury-video-bg {
+  position: absolute;
+  inset: 0;
+
+  background: rgba(0, 0, 0, 0.8);
+
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+}
+
+.luxury-video-content {
+  position: relative;
+  z-index: 1;
+
+  width: min(90vw, 1000px);
+
+  background: #000;
+  border-radius: 4px;
+
+  opacity: 0;
+
+  transform:
+    scale(0.94)
+    translateY(10px);
+
+  transition:
+    transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.3s ease;
+}
+
+.luxury-video-overlay.is-active
+  .luxury-video-content {
+  opacity: 1;
+
+  transform:
+    scale(1)
+    translateY(0);
+}
+
+.luxury-video-wrapper {
+  position: relative;
+
+  width: 100%;
+  aspect-ratio: 16 / 9;
+
+  overflow: hidden;
+
+  background: #000;
+  border-radius: 4px;
+}
+
+.luxury-video-wrapper video,
+.luxury-video-wrapper iframe {
+  display: block;
+
+  width: 100%;
+  height: 100%;
+
+  border: 0;
+  outline: none;
+}
+
+.luxury-video-wrapper video {
+  object-fit: contain;
+}
+
+.luxury-video-close {
+  position: absolute;
+  top: -48px;
+  right: -10px;
+  z-index: 2;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 44px;
+  height: 44px;
+
+  padding: 0;
+
+  color: #fff;
+
+  background: transparent;
+  border: 0;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.3s ease,
+    opacity 0.3s ease;
+}
+
+.luxury-video-close:hover {
+  transform: rotate(90deg);
+}
+
+.luxury-video-close:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+}
+
+html.video-modal-open,
+body.video-modal-open {
+  overflow: hidden !important;
+}
+
+@media screen and (max-width: 767px) {
+  .luxury-video-overlay {
+    padding:
+      max(56px, env(safe-area-inset-top))
+      16px
+      max(16px, env(safe-area-inset-bottom));
+  }
+
+  .luxury-video-content {
+    width: 100%;
+  }
+
+  .luxury-video-close {
+    top: -48px;
+    right: -8px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .luxury-video-overlay,
+  .luxury-video-content,
+  .luxury-video-close {
+    transition: none;
+  }
+}
+</style>
+
+<section>
+  <luxury-video-modal-new
+    id="globalVideoModal"
+  ></luxury-video-modal-new>
+</section>
+
+{% schema %}
+{
+  "name": "luxury-video-modal-new",
+  "settings": [],
+  "blocks": [],
+  "presets": [
+    {
+      "name": "luxury-video-modal-new",
+      "settings": {},
+      "blocks": []
+    }
+  ]
+}
+{% endschema %}
