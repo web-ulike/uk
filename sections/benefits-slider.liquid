@@ -1,0 +1,509 @@
+{% style %}
+.benefits-box-cus {
+  width: 100%;
+  padding-top: var(--benefits-padding-top);
+  padding-bottom: var(--benefits-padding-bottom);
+  overflow: hidden;
+  color: var(--benefits-text-color);
+  background: var(--benefits-bg);
+}
+
+.benefits-box-cus custom-swiper { display: block; width: 100%; }
+
+.benefits-box-cus .benefits-slider__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 40px;
+  margin-bottom: 51px;
+}
+
+.benefits-box-cus .benefits-slider__title {
+  margin: 0;
+  color: inherit;
+  font-size: 48px;
+  font-weight: 400;
+  line-height: 119.167%;
+  letter-spacing: -.64px;
+      font-family: var(--heading-font-family);
+}
+
+.benefits-box-cus .benefits-slider__arrows {
+  display: flex;
+  align-items: center;
+  gap: 36px;
+}
+
+.benefits-box-cus .benefits-slider__arrow {
+  display: flex;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  color: inherit;
+  background: transparent;
+  cursor: pointer;
+  transition: opacity .3s ease, transform .3s ease;
+}
+
+.benefits-box-cus .benefits-slider__arrow svg { display: block; width: 31px; height: auto; }
+.benefits-box-cus .benefits-slider__arrow.swiper-prev:hover { transform: translateX(-3px); }
+.benefits-box-cus .benefits-slider__arrow.swiper-next:hover { transform: translateX(3px); }
+.benefits-box-cus .benefits-slider__arrow.swiper-button-disabled { opacity: .25; pointer-events: none; }
+
+.benefits-box-cus .swiper-container { width: 100%; overflow: visible; }
+.benefits-box-cus .swiper-wrapper { align-items: stretch; }
+.benefits-box-cus .swiper-slide { height: auto; }
+
+.benefits-box-cus .benefits-card {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  border-radius: var(--benefits-card-radius);
+  color: var(--benefits-card-text-color);
+  text-decoration: none;
+  background-color: var(--benefits-card-background);
+  background-image: var(--card-bg-image, none);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.benefits-box-cus .benefits-card__content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  padding: 40px 30px 30px 40px;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.benefits-box-cus .benefits-card__title {
+  margin: 0;
+  color: inherit;
+  font-family: var(--heading-font-family);
+  font-size: 28px;
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+.benefits-box-cus .benefits-card__description {
+  color: inherit;
+  font-size: 18px;
+  line-height: 150%;
+}
+
+.benefits-box-cus .benefits-card__description p { margin: 0; }
+
+.benefits-box-cus .benefits-card__link {
+  display: inline-flex;
+  margin-top: 20px;
+  align-items: center;
+  gap: 10px;
+  color: inherit;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.benefits-box-cus .benefits-card__link-text { position: relative; }
+
+.benefits-box-cus .benefits-card__link-text::after {
+  position: absolute;
+  right: 0;
+  bottom: -3px;
+  left: 0;
+  height: 1px;
+  background: currentColor;
+  content: '';
+  transform-origin: left;
+  transition: transform .3s ease;
+}
+
+.benefits-box-cus .benefits-card:hover .benefits-card__link-text::after { transform: scaleX(0); }
+
+.benefits-box-cus .benefits-card__link svg {
+  width: 11px;
+  height: auto;
+  transition: transform .3s ease;
+}
+
+.benefits-box-cus .benefits-card:hover .benefits-card__link svg { transform: translateX(3px); }
+
+.benefits-box-cus .benefits-card__logo-wrapper { margin-top: 30px; }
+.benefits-box-cus .benefits-card__logo { display: block; width: var(--logo-width, 80px); height: auto; margin: 0; }
+
+.benefits-box-cus .benefits-slider-pagination {
+  position: relative;
+  display: none;
+  margin-top: 15px;
+  --swiper-pagination-bullet-width: 10px;
+  --swiper-pagination-bullet-height: 10px;
+  --swiper-pagination-bullet-inactive-color: #CDC6C7;
+  --swiper-pagination-bullet-inactive-opacity: 1;
+  --swiper-pagination-color: #190A0A;
+}
+
+.benefits-box-cus .benefits-slider-pagination .swiper-pagination { position: static; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .js-scroll__header {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity .7s ease, transform .8s cubic-bezier(.22,1,.36,1);
+  }
+
+  .js-scroll__card {
+    opacity: 0;
+    transform: translateY(42px) scale(.985);
+    transition: opacity .7s ease, transform .85s cubic-bezier(.22,1,.36,1);
+    transition-delay: calc(var(--reveal-index, 0) * 80ms + 120ms);
+  }
+
+  .js-scroll__header.appear {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .js-scroll__card.appear {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .benefits-box-cus {
+    padding-top: var(--benefits-mobile-padding-top);
+    padding-bottom: var(--benefits-mobile-padding-bottom);
+  }
+
+  .benefits-box-cus .benefits-slider__header { margin-bottom: 37px; }
+  .benefits-box-cus .benefits-slider__title { font-size: 24px; line-height: 125%; letter-spacing: normal; }
+  .benefits-box-cus .benefits-slider__arrows { display: none; }
+
+  .benefits-box-cus .benefits-card {
+    background-image: var(--card-mobile-bg-image, var(--card-bg-image, none));
+  }
+
+  .benefits-box-cus .benefits-card__content { padding: 23px; }
+  .benefits-box-cus .benefits-card__title { font-size: 16px; }
+  .benefits-box-cus .benefits-card__description { font-size: 12px; }
+  .benefits-box-cus .benefits-card__link { margin-top: 11px; font-size: 14px; }
+  .benefits-box-cus .benefits-card__logo-wrapper { margin-top: 25px; }
+  .benefits-box-cus .benefits-card__logo { width: var(--mobile-logo-width, 40px); }
+  .benefits-box-cus .benefits-slider-pagination { display: block; }
+}
+
+@media screen and (max-width: 767px) and (prefers-reduced-motion: no-preference) {
+  .benefits-box-cus .benefits-card.benefits-reveal { transform: translateY(28px) scale(.99); }
+  .benefits-box-cus .benefits-card.benefits-reveal.appear { transform: translateY(0) scale(1); }
+}
+{% endstyle %}
+
+<section
+  class="benefits-slider benefits-box-cus"
+  style="
+    --benefits-bg:{{ section.settings.background }};
+    --benefits-text-color:{{ section.settings.text_color }};
+    --benefits-card-background:{{ section.settings.card_background }};
+    --benefits-card-text-color:{{ section.settings.card_text_color }};
+    --benefits-card-radius:{{ section.settings.card_radius }}px;
+    --benefits-padding-top:{{ section.settings.padding_top }}px;
+    --benefits-padding-bottom:{{ section.settings.padding_bottom }}px;
+    --benefits-mobile-padding-top:{{ section.settings.mobile_padding_top }}px;
+    --benefits-mobile-padding-bottom:{{ section.settings.mobile_padding_bottom }}px;
+  "
+>
+  <div class="container">
+    <custom-swiper
+      slides-per-view="4"
+      space-between="20"
+      loop="false"
+      centered-slides="false"
+      navigation="true"
+      pagination="true"
+      breakpoints='{
+        "0":{"slidesPerView":1.25,"spaceBetween":14},
+        "480":{"slidesPerView":1.6,"spaceBetween":14},
+        "768":{"slidesPerView":2.35,"spaceBetween":16},
+        "1024":{"slidesPerView":3.2,"spaceBetween":18},
+        "1280":{"slidesPerView":3.2,"spaceBetween":20},
+        "1600":{"slidesPerView":3.2,"spaceBetween":30},
+        "1900":{"slidesPerView":3.2,"spaceBetween":30}
+      }'
+    >
+      <div class="benefits-slider__header benefits-reveal js-scroll__header">
+        {% if section.settings.title != blank %}
+          <h2 class="benefits-slider__title">{{ section.settings.title }}</h2>
+        {% endif %}
+
+        {% if section.blocks.size > 1 %}
+          <div class="benefits-slider__arrows">
+            <button type="button" class="benefits-slider__arrow swiper-prev" aria-label="Previous">
+              <svg viewBox="0 0 26 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M8 1L1 8M1 8L8 15M1 8H25" stroke="currentColor" stroke-width="1"/>
+              </svg>
+            </button>
+            <button type="button" class="benefits-slider__arrow swiper-next" aria-label="Next">
+              <svg viewBox="0 0 26 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M18 1L25 8M25 8L18 15M25 8H1" stroke="currentColor" stroke-width="1"/>
+              </svg>
+            </button>
+          </div>
+        {% endif %}
+      </div>
+
+      <div class="swiper-container js-scroll__group">
+        <div class="swiper-wrapper">
+          {% for block in section.blocks %}
+            {% liquid
+              assign card_image = block.settings.image
+              assign mobile_card_image = block.settings.mobile_image | default: card_image
+              assign card_link = block.settings.link
+            %}
+
+            <div class="swiper-slide" style="--reveal-index:{{ forloop.index0 }};" {{ block.shopify_attributes }}>
+              {% if card_link != blank %}
+                <a href="{{ card_link }}" class="benefits-card benefits-reveal js-scroll__card" style="{% if card_image != blank %}--card-bg-image:url('{{ card_image | image_url: width: 1200 }}');{% endif %}{% if mobile_card_image != blank %}--card-mobile-bg-image:url('{{ mobile_card_image | image_url: width: 800 }}');{% endif %}">
+              {% else %}
+                <div class="benefits-card benefits-reveal js-scroll__card" style="{% if card_image != blank %}--card-bg-image:url('{{ card_image | image_url: width: 1200 }}');{% endif %}{% if mobile_card_image != blank %}--card-mobile-bg-image:url('{{ mobile_card_image | image_url: width: 800 }}');{% endif %}">
+              {% endif %}
+
+                <div class="benefits-card__content">
+                  {% if block.settings.title != blank %}
+                    <h3 class="benefits-card__title">{{ block.settings.title }}</h3>
+                  {% endif %}
+
+                  {% if block.settings.description != blank %}
+                    <div class="benefits-card__description">{{ block.settings.description }}</div>
+                  {% endif %}
+
+                  {% if block.settings.link_text != blank %}
+                    <span class="benefits-card__link">
+                      <span class="benefits-card__link-text">{{ block.settings.link_text }}</span>
+                      <svg viewBox="0 0 14 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M10 1L13 4M13 4L10 7M13 4H1" stroke="currentColor" stroke-width=".8"/>
+                      </svg>
+                    </span>
+                  {% endif %}
+
+                  {% if block.settings.logo != blank %}
+                    <div class="benefits-card__logo-wrapper" style="--logo-width:{{ block.settings.logo_width }}px;--mobile-logo-width:{{ block.settings.mobile_logo_width }}px;">
+                      {{ block.settings.logo | image_url: width: 300 | image_tag: loading: 'lazy', class: 'benefits-card__logo', widths: '40,60,80,100,120,160,200,300' }}
+                    </div>
+                  {% endif %}
+                </div>
+
+              {% if card_link != blank %}
+                </a>
+              {% else %}
+                </div>
+              {% endif %}
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+
+      <div class="benefits-slider-pagination">
+        <div class="swiper-pagination"></div>
+      </div>
+    </custom-swiper>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Benefits slider",
+  "tag": "section",
+  "class": "section-benefits-slider",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Enjoy your Benefits"
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Title color",
+      "default": "#1b1515"
+    },
+    {
+      "type": "color",
+      "id": "card_background",
+      "label": "Card background",
+      "default": "#f3f3f8"
+    },
+    {
+      "type": "color",
+      "id": "card_text_color",
+      "label": "Card text color",
+      "default": "#1b1515"
+    },
+    {
+      "type": "range",
+      "id": "card_radius",
+      "label": "Card radius",
+      "min": 0,
+      "max": 30,
+      "step": 1,
+      "unit": "px",
+      "default": 6
+    },
+    {
+      "type": "header",
+      "content": "🖥 Desktop Settings"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 40
+    },
+    {
+      "type": "header",
+      "content": "📱 Mobile Settings"
+    },
+    {
+      "type": "range",
+      "id": "mobile_padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "mobile_padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 24
+    }
+  ],
+  "blocks": [
+    {
+      "type": "benefit",
+      "name": "Benefit",
+      "settings": [
+        {
+          "type": "header",
+          "content": "Images"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Background image"
+        },
+        {
+          "type": "image_picker",
+          "id": "mobile_image",
+          "label": "Mobile Background image",
+          "info": "If empty, the desktop background image will be used."
+        },
+        {
+          "type": "header",
+          "content": "Content"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Student Discount"
+        },
+        {
+          "type": "richtext",
+          "id": "description",
+          "label": "Description",
+          "default": "<p>Exclusive savings for verified students.</p>"
+        },
+        {
+          "type": "text",
+          "id": "link_text",
+          "label": "Link text",
+          "default": "Learn more"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        },
+        {
+          "type": "header",
+          "content": "Small logo"
+        },
+        {
+          "type": "image_picker",
+          "id": "logo",
+          "label": "Logo"
+        },
+        {
+          "type": "range",
+          "id": "logo_width",
+          "label": "Logo width",
+          "min": 30,
+          "max": 200,
+          "step": 5,
+          "unit": "px",
+          "default": 80
+        },
+        {
+          "type": "range",
+          "id": "mobile_logo_width",
+          "label": "Mobile Logo width",
+          "min": 20,
+          "max": 200,
+          "step": 2,
+          "unit": "px",
+          "default": 40
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Benefits slider",
+      "blocks": [
+        { "type": "benefit", "settings": { "title": "Student Discount" } },
+        { "type": "benefit", "settings": { "title": "Key Worker Discount" } },
+        { "type": "benefit", "settings": { "title": "We See You" } },
+        { "type": "benefit", "settings": { "title": "Trade-In Programme" } },
+        { "type": "benefit", "settings": { "title": "Refer a Friend" } },
+        { "type": "benefit", "settings": { "title": "Hair Removal Planner" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
