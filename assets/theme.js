@@ -3249,7 +3249,7 @@
       }
       this._pendingAnimations.forEach((animation2) => animation2.cancel());
       this._pendingAnimations = [];
-      let animation = null, textElements = await resolveAsyncIterator(this.querySelectorAll("split-lines, .button-group, .button-wrapper")), imageElements = Array.from(this.querySelectorAll(".slideshow__image-wrapper"));
+      let animation = null, textElements = await resolveAsyncIterator(this.querySelectorAll("split-lines, .button-group, .button-wrapper, .js-slide-show__title, .js-slide-show__txt,.img_reveal_animate")), imageElements = Array.from(this.querySelectorAll(".slideshow__image-wrapper"));
       switch (transitionType) {
         case "sweep":
           animation = new CustomAnimation(new SequenceEffect([
@@ -3285,7 +3285,7 @@
     async transitionToEnter(transitionType, shouldAnimate = true, reverseDirection = false) {
       this.removeAttribute("hidden");
       await this._untilReady();
-      let animation = null, textElements = await resolveAsyncIterator(this.querySelectorAll("split-lines, .button-group, .button-wrapper")), imageElements = Array.from(this.querySelectorAll(".slideshow__image-wrapper"));
+      let animation = null, textElements = await resolveAsyncIterator(this.querySelectorAll("split-lines, .button-group, .button-wrapper, .js-slide-show__title, .js-slide-show__txt,.img_reveal_animate")), imageElements = Array.from(this.querySelectorAll(".slideshow__image-wrapper"));
       switch (transitionType) {
         case "sweep":
           animation = new CustomAnimation(new SequenceEffect([
