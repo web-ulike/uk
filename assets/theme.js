@@ -3386,18 +3386,6 @@
       }
       this._setupVisibility();
     }
-    // get selectedIndex() {
-    //   if(this.items.length>1){
-    //     setTimeout(() => {
-    //         if(document.querySelector('.slideshow__progress-bar[aria-current="true"]').getAttribute('data-color')=='true'){
-    //           document.querySelector('.shopify-section--header').classList.add('dark-diy')
-    //         }else{
-    //           document.querySelector('.shopify-section--header').classList.remove('dark-diy')
-    //         }
-    //     }, 50);
-    //   }
-    //   return this.items.findIndex((item) => item.selected);
-    // }
     get selectedIndex(){
       if(this.items.length>1){
         setTimeout(()=>{
