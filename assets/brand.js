@@ -243,3 +243,61 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 });
+
+
+class CustomSwiper extends HTMLElement {
+  constructor() {
+    super();
+  }
+
+  connectedCallback() {
+    this.initSwiper();
+  }
+
+  initSwiper() {
+    const swiperContainer = this.querySelector('.swiper-container');
+    if (!swiperContainer) {
+      console.error('Swiper container not found');
+      return;
+    }
+
+    // **设备判断：是否禁用 Swiper**
+    const disableOn = this.getAttribute('disable-on'); // 'mobile' 或 'desktop'
+    const isMobile = /Mobi|Android/i.test(navigator.userAgent);
+    if ((disableOn === 'mobile' && isMobile) || (disableOn === 'desktop' && !isMobile)) {
+      console.log(`Swiper disabled on ${disableOn}`);
+      return;
+    }
+
+    // **Swiper 组件参数**
+    const slidesPerView = parseFloat(this.getAttribute('slides-per-view')) || 1.3;
+    const spaceBetween = parseFloat(this.getAttribute('space-between')) || 10;
+    const loop = this.getAttribute('loop') !== 'false'; // 默认为 true
+    const centeredSlides = this.getAttribute('centered-slides') !== 'false'; // 默认为 true
+    const paginationEnabled = this.getAttribute('pagination') === 'true'; // 是否启用分页
+    const navigationEnabled = this.getAttribute('navigation') === 'true'; // 是否启用导航按钮
+    let breakpoints = {};
+    try {
+      breakpoints = JSON.parse(this.getAttribute('breakpoints') || '{}');
+    } catch (error) {
+      console.error('Invalid breakpoints format. Expected JSON.');
+    }
+
+    // **动态控制 navigation 和 pagination**
+    const prevButton = navigationEnabled ? this.querySelector('.swiper-prev') : null;
+    const nextButton = navigationEnabled ? this.querySelector('.swiper-next') : null;
+    const paginationEl = paginationEnabled ? { el: this.querySelector('.swiper-pagination'), clickable: true } : false;
+
+    this.swiper = new Swiper(swiperContainer, {
+      slidesPerView,
+      spaceBetween,
+      loop,
+      centeredSlides,
+      navigation: navigationEnabled ? { prevEl: prevButton, nextEl: nextButton } : false,
+      pagination: paginationEl,
+      breakpoints
+    });
+  }
+}
+
+window.customElements.define('custom-swiper', CustomSwiper);
