@@ -3400,8 +3400,8 @@
           const el=document.querySelector('.slideshow__progress-bar[aria-current="true"]');
           const header=document.querySelector('.shopify-section--header');
           if(!el||!header)return;
-          const reverse=(window.innerWidth<=740?el.dataset.mbColor:el.dataset.color)==='true';
-          header.classList.toggle('dark-diy',reverse);
+          const color=window.innerWidth<=740?(el.dataset.mbColor??el.dataset.color):el.dataset.color;
+          header.classList.toggle('dark-diy',color==='true');
         },50);
       }
       return this.items.findIndex(item=>item.selected);
