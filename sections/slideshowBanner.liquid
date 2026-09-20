@@ -61,7 +61,7 @@
           --title-logo-text-color-mobile: {{ block.settings.title_logo_text_color_mobile }};
           --tag-border-radius-pc:{{ block.settings.tag_size_pc }}px;
           --tag-border-radius-mb:{{ block.settings.tag_size_mb }}px;
-           --content-padding-mobile:{{ block.settings.content_padding_mobile}}px;
+          --content-padding-mobile:{{ block.settings.content_padding_mobile}}px;
       }
     {%- endfor -%}
      .slide-show__title p{
@@ -80,6 +80,8 @@
         color: var(--title-logo-title-color-mobile);
         margin: 10px 0;
          line-height: 1.2;
+         font-weight: 400;
+             font-family: var(--heading-font-family);
       }
       .slide-show__txt{
        font-size: var(--title-logo-text-size-mobile);
@@ -98,8 +100,6 @@
       }
       .slideshow-button{
           display: inline-flex;
-          {% comment %} width: 155px;
-          height: 48px; {% endcomment %}
           padding: 13px 25px;
           justify-content: center;
           align-items: center;
@@ -109,7 +109,6 @@
           text-align: center;
           font-size: 12px;
           font-style: normal;
-          font-family: var(--heading-font-family);
           line-height: 1;
           background:var(--primary-button-background);
           transition: all 0.4s ease;
@@ -118,20 +117,19 @@
        .slideshow-button.slideshow-button--primary{
           color: var(--button-text-color-second);
           background:var(--button-background-color-second);
+          border: 1px solid var(--button-text-color-second);
       }
    .slideshow-button:hover{
-  opacity:0.6;
+  background: var(--primary-button-text-color);
+   color:var(--primary-button-background);
   }
-  .slideshow__progress-bar:before, .slideshow__progress-bar:after{
-  background:#FBFAF4;
-  }
-  .slideshow__progress-bar:after {
-      background: #190A0A;
-  }
-  .slideshow {
-  --progress-bar-color:#190A0A;
-  }
+         .slideshow-button.slideshow-button--primary:hover{
+          background: var(--primary-button-text-color);
+   color:var(--primary-button-background);
+          border-color: var(--primary-button-text-color);
+      }
 
+      
   .slide-show-title_logo {
             display: block;
       width: var(--title-logo-width-mobile);
@@ -140,12 +138,18 @@
       max-width: 100%;
       height: auto;
   }
+    .slide-show-title_logo.slide-show-title_logo1{
+     margin-top: 15px;
+    }
   .slideshow .slide-show-title_logo img {
       display: block;
       margin: 0;
       width: 100%;
       height: 100%;
   }
+
+
+
   .content-box--text-center .slide-show-title_logo  {
               margin-left: auto;
           margin-right: auto;
@@ -158,18 +162,21 @@
       margin-left: 0;
          margin-right: auto;
   }
+  .slideshow__nav {
+    bottom: 15px;
+}
+  native-video{display:block}
+  native-video video{display:block;width:100%;height:100%}
          .js #shopify-section-header.dark-diy .header--transparent {
-         --header-text-color: 0, 0, 0;
-       }
+           --header-text-color: 0, 0, 0;
+         }
 
-     .js .dark-diy .header--transparent .header__logo-image--transparent{
-       opacity: 0;
-     }
-     .js .dark-diy .header--transparent .header__logo-image:not(:last-child){
-       opacity: 1;
-     }
-native-video{display:block}
-native-video video{display:block;width:100%;height:100%}
+       .js .dark-diy .header--transparent .header__logo-image--transparent{
+         opacity: 0;
+       }
+       .js .dark-diy .header--transparent .header__logo-image:not(:last-child){
+         opacity: 1;
+       }
     @media screen and (min-width: 741px) {
       .slide-show__sub{
         font-size: var(--title-logo-subtitle-size-pc);
@@ -180,35 +187,40 @@ native-video video{display:block;width:100%;height:100%}
         font-size: var(--title-logo-title-size-pc);
         color: var(--title-logo-title-color-pc);
         line-height: 1.1;
-        margin: 16px 0;
+        margin: 16px 0 24px;
       }
       .slide-show__txt{
        font-size: var(--title-logo-text-size-pc);
         color: var(--title-logo-text-color-pc);
       }
-      .slideshow__slide .button-group, .slideshow__slide .button-wrapper{
-       margin-top:40px;
+        .slideshow__slide .button-group, .slideshow__slide .button-wrapper{
+       margin-top:32px;
       }
             .slideshow__slide .button-group__wrapper {
           gap: 32px;
       }
           .slideshow-button{
-          padding: 17px 40px;
+          padding: 15px 15px;
           gap: 10px;
           border-radius: 4px;
-          font-size: 14px;
+          font-size: 16px;
+          min-width:193px;
+          min-height:50px;
       }
       .slide-show-title_logo {
       margin-bottom: 25px;
       margin-top: 25px;
       width: var(--title-logo-width-pc);
   }
+        .slide-show-title_logo.slide-show-title_logo1 {
+      margin-top: 32px;
+  }
    }
    @media screen and (max-width: 740px) {
       .slideshow__text-wrapper--mobile-top.vertical-breather {
           padding-block-start: max(var(--vertical-breather), calc((var(--header-height) + 20px) * var(--enable-transparent-header)));
       }
-        .slideshow__text-wrapper--mobile-top.vertical-breather.vertical-breather__custom {
+       .slideshow__text-wrapper--mobile-top.vertical-breather.vertical-breather__custom {
           padding-block-start: var(--content-padding-mobile);
       }
       .slideshow__text-wrapper--mobile-bottom.vertical-breather.vertical-breather__custom {
@@ -278,62 +290,39 @@ native-video video{display:block;width:100%;height:100%}
       margin-right: 0;
           margin-left: auto;
   }
-
-
+ .button-group__wrapper .slideshow-button{
+    padding: 13px 13px;
+        font-size: 11px;
+}
   }
 
-
-  .slideshow__controls {
-      position: absolute;
-      left: 50%;
-      display: flex;
-      transform: translateX(-50%);
-      padding: 0 24px;
-      z-index: 2;
-      pointer-events: none;
-      bottom: 34px;
-             width: 284px;
-             gap:26px;
-  }
-
-  .slideshow__controls .slideshow__arrow {
-    pointer-events: auto;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    border: none;
-    color: #190A0A;
-    transition: background 0.3s ease, transform 0.3s ease;
-  }
-
-  .slideshow__controls .slideshow__arrow:hover {
-    transform: scale(1.05);
-  }
-  .slideshow__controls .slideshow__nav{
-  position: static;
-      transform: translateX(0%);
-      padding: 0;
-      align-items: center;
-  }
-.slideshow__progress-bar{
-  margin: 0 4px;
-flex-basis: 24px;
-    overflow: hidden;
-    display: block;
+  .slideshow__progress-bar:before, .slideshow__progress-bar:after{
+  background:#FBFAF4;
+  height: 6px;
+    width: 100%;
+    top: calc(50% - 3px);
     border-radius: 23px;
-    transition: all .4s;
-        padding: 0;
-        height: 6px;
+  }
+  .slideshow__progress-bar:after {
+      background: #190A0A;
+  }
+  .slideshow {
+  --progress-bar-color:#190A0A;
+  }
+
+.slideshow__progress-bar{
+    display:block;
+flex-basis: 24px;
+ height: 6px;
+  border-radius: 23px;
+ transition: all .4s;
+ padding:0;
+     overflow: hidden;
 }
 .slideshow__progress-bar[aria-current="true"]{
 flex-basis: 60px;
 }
-.slideshow__progress-bar:before, .slideshow__progress-bar:after {
-    height: 6px;
-    top: calc(50% - 3px);
-    border-radius: 23px;
-}
+
 .slideshow .slideshow-tag {
     display: inline-flex;
     font-size: 14px;
@@ -363,28 +352,11 @@ flex-basis: 60px;
             transform: translate(50%, 50%);
         }
     }
-  @media screen and (max-width: 740px) {
-    .slideshow__controls {
-      padding: 0 12px;
-          bottom: 15px;
-    }
 
-     .slideshow__controls .slideshow__arrow { display: none; }
-     .slideshow__progress-bar{
-      margin: 0 4px;
-flex-basis: 18px;
-    border-radius: 17px;
-            height: 5px;
-    }
-    .slideshow__progress-bar[aria-current="true"]{
-flex-basis: 45px;
-}
-.slideshow__progress-bar:before, .slideshow__progress-bar:after {
-    height: 5px;
-    top: calc(50% - 2.5px);
-    border-radius: 17px;
-}
+    
+  @media screen and (max-width: 740px) {
 .slideshow .slideshow-tag {
+     font-size: 12px;
     border-radius: var(--tag-border-radius-mb);
 }
 .slideshow__slide-inner.slideshow__slide-inner_cus_container .container{
@@ -436,6 +408,38 @@ padding-right:0;
           {%- assign loading_attribute_value = 'eager' -%}
         {%- endif -%}
 
+        {% comment %}
+          {%- capture slide_content -%}
+          <div class="slideshow__image-wrapper {% if mobile_image != blank %}hidden-pocket{% endif %}" {% if section.settings.transition_type == 'reveal' and section.settings.show_initial_transition or forloop.first == false %}reveal-visibility{% endif %}>
+            {%- if image != blank -%}
+              {%- capture sizes_attributes -%}{% if split_image != blank %}(min-width: 1000px) 50vw{% else %}100vw{% endif %}{%- endcapture -%}
+              {{- image | image_url: width: 3000 | image_tag: loading: loading_attribute_value, draggable: false, class: 'slideshow__image', sizes: sizes_attributes, widths: '600,700,800,1000,1200,1400,1600,1800,2000,2200,2400,2600,2800,3000' -}}
+            {%- else -%}
+              {% capture image_name %}lifestyle-{% cycle '1', '2' %}{%- endcapture -%}
+              {{- image_name | placeholder_svg_tag: 'slideshow__image slideshow__image--placeholder' -}}
+            {%- endif -%}
+          </div>
+
+          {%- comment -%}If a second image (split image) is uploaded, we use it. Note that we use the same ratio as the first image (to have equal column height){% endcomment %}
+          {%- if image != blank and split_image != blank -%}
+            <div class="slideshow__image-wrapper slideshow__image-wrapper--secondary hidden-pocket" {% if section.settings.transition_type == 'reveal' and section.settings.show_initial_transition or forloop.first == false %}reveal-visibility{% endif %}>
+              {{- split_image | image_url: width: 3000 | image_tag: loading: loading_attribute_value, draggable: false, class: 'slideshow__image', sizes: '50vw', widths: '600,700,800,1000,1200,1400,1600,1800,2000,2200,2400,2600,2800,3000' -}}
+            </div>
+          {%- endif -%}
+
+          {%- if mobile_image != blank -%}
+            <div class="slideshow__image-wrapper hidden-lap-and-up" {% if section.settings.transition_type == 'reveal' and section.settings.show_initial_transition or forloop.first == false %}reveal-visibility{% endif %}>
+              {{- mobile_image | image_url: width: 3000 | image_tag: loading: loading_attribute_value, draggable: false, class: 'slideshow__image', sizes: '100vw', widths: '600,700,800,1000,1200,1400,1600,1800,2000,2200,2400,2600,2800,3000' -}}
+            </div>
+          {%- endif -%}
+
+          {%- comment -%}
+          ----------------------------------------------------------------------------------------------------------------
+          CONTENT PART
+          ----------------------------------------------------------------------------------------------------------------
+          {%- endcomment -%}
+        {% endcomment %}
+
         {%- capture slide_content -%}
             <div class="slideshow__image-wrapper {% if mobile_image != blank or mobile_video != blank %}hidden-pocket{% endif %}" {% if section.settings.transition_type == 'reveal' and section.settings.show_initial_transition or forloop.first == false %}reveal-visibility{% endif %}>
               {%- if video != blank -%}
@@ -485,7 +489,7 @@ padding-right:0;
 
 
               {%- if block.settings.title_logo_image != blank -%}
-               <picture class="slide-show-title_logo img_reveal_animate" reveal>
+               <picture class="slide-show-title_logo img_reveal_animate">
                      {%- if block.settings.mobile_title_logo_image -%}
               <source media="(max-width: 767px)" srcset="{{ block.settings.mobile_title_logo_image | image_url}}">
                 {%- endif -%}
@@ -507,6 +511,25 @@ padding-right:0;
               </div>
             {%- endif -%}
 
+
+
+             {%- if block.settings.title_logo_image1 != blank -%}
+                  <picture class="slide-show-title_logo slide-show-title_logo1 img_reveal_animate">
+                     {%- if block.settings.mobile_title_logo_image1 -%}
+              <source media="(max-width: 767px)" srcset="{{ block.settings.mobile_title_logo_image1 | image_url}}">
+                {%- endif -%}
+              {%- if block.settings.title_logo_image1 -%}
+              <img class="slide-show-title_logo_img1" src="{{ block.settings.title_logo_image1 | image_url }}" alt="{{ block.settings.title_logo_image1.alt }}">
+              {%- endif -%}
+                </picture>
+              {%- endif -%}
+
+
+            {%- assign button_count = 0 -%}
+            {%- if block.settings.button_1_text != blank -%}{%- assign button_count = button_count | plus: 1 -%}{%- endif -%}
+            {%- if block.settings.button_2_text != blank -%}{%- assign button_count = button_count | plus: 1 -%}{%- endif -%}
+            {%- if block.settings.show_quiz_button -%}{%- assign button_count = button_count | plus: 1 -%}{%- endif -%}
+
             
 
 
@@ -519,9 +542,16 @@ padding-right:0;
                 <a href="{{ block.settings.button_2_link }}" class="slideshow-button slideshow-button--primary">{{ block.settings.button_2_text | escape }}</a>
               {%- endif -%}
 
+              {%- if block.settings.show_quiz_button -%}
+                <button type="button" class="slideshow-button" data-ulike-quiz-open>
+                  {{ block.settings.quiz_button_text | default: 'Find My Perfect IPL' | escape }}
+                </button>
+              {%- endif -%}
+
             {%- endcapture -%}
 
-            {%- if block.settings.button_1_text != blank and block.settings.button_2_text != blank -%}
+            {% comment %} {%- if block.settings.button_1_text != blank and block.settings.button_2_text != blank -%} {% endcomment %}
+              {%- if button_count > 1 -%}
               <div class="button-group" {% if section.settings.transition_type != 'fade' and section.settings.show_initial_transition or forloop.first == false %}reveal{% endif %}>
                 <div class="button-group__wrapper">
                   {{- buttons -}}
@@ -587,20 +617,6 @@ padding-right:0;
     </div>
 
     {%- if section.blocks.size > 1 -%}
-      <div class="slideshow__controls">
-        <button type="button" class="slideshow__arrow slideshow__arrow--prev" aria-label="Previous slide">
-          <svg xmlns="http://www.w3.org/2000/svg" width="30" height="23" viewBox="0 0 30 23" fill="none">
-            <g clip-path="url(#clip0_3221_3000)">
-              <path d="M1.90735e-06 11.4924C1.90735e-06 11.6739 0.067318 11.8539 0.196098 11.9915L10.44 22.9671L11.5098 21.969L2.41463 12.2242H30C30 11.4164 29.3444 10.7607 28.5366 10.7607H0.765366C0.488781 10.7607 0.219515 10.8998 0.0878067 11.1442C0.0278072 11.2539 1.90735e-06 11.3739 1.90735e-06 11.4924Z" fill="#190A0A"/>
-              <path d="M1.53121 8.92683C2.10341 9.49756 3.02975 9.49756 3.60048 8.92683L11.4941 1.03463L10.4595 0L1.53268 8.92683H1.53121Z" fill="#190A0A"/>
-            </g>
-            <defs>
-              <clipPath id="clip0_3221_3000">
-                <rect width="30" height="22.9683" fill="white" transform="matrix(-1 0 0 1 30 0)"/>
-              </clipPath>
-            </defs>
-          </svg>
-        </button>
         <page-dots
           {% if section.settings.autoplay %}
             animation-timer
@@ -621,21 +637,6 @@ padding-right:0;
             </button>
           {%- endfor -%}
         </page-dots>
-
-        <button type="button" class="slideshow__arrow slideshow__arrow--next" aria-label="Next slide">
-          <svg xmlns="http://www.w3.org/2000/svg" width="30" height="23" viewBox="0 0 30 23" fill="none">
-            <g clip-path="url(#clip0_3221_3004)">
-              <path d="M30 11.4924C30 11.6739 29.9327 11.8539 29.8039 11.9915L19.56 22.9671L18.4902 21.969L27.5854 12.2242H0C0 11.4164 0.65561 10.7607 1.46341 10.7607H29.2346C29.5112 10.7607 29.7805 10.8998 29.9122 11.1442C29.9722 11.2539 30 11.3739 30 11.4924Z" fill="#190A0A"/>
-              <path d="M28.4688 8.92683C27.8966 9.49756 26.9702 9.49756 26.3995 8.92683L18.5059 1.03463L19.5405 0L28.4673 8.92683H28.4688Z" fill="#190A0A"/>
-            </g>
-            <defs>
-              <clipPath id="clip0_3221_3004">
-                <rect width="30" height="22.9683" fill="white"/>
-              </clipPath>
-            </defs>
-          </svg>
-        </button>
-      </div>
     {%- endif -%}
   </slide-show>
 </section>
@@ -740,7 +741,7 @@ padding-right:0;
           "label": "Header text color reverse",
           "default": false
         },
-         {
+          {
           "type": "checkbox",
           "id": "mb_color_reverse",
           "label": "Mobile Header text color reverse",
@@ -919,6 +920,19 @@ padding-right:0;
           "id": "button_2_link",
           "label": "Button 2 link"
         },
+          {
+          "type": "checkbox",
+          "id": "show_quiz_button",
+          "label": "Show Quiz Button",
+          "default": false
+        },
+        {
+          "type": "text",
+          "id": "quiz_button_text",
+          "label": "Quiz Button Text",
+          "default": "Find My Perfect IPL",
+          "visible_if": "{{ block.settings.show_quiz_button }}"
+        },
 
        {
           "type": "header",
@@ -961,6 +975,18 @@ padding-right:0;
           "id": "tag_text_color",
           "label": "Tag Text Color",
           "default": "#ffffff"
+        },
+           {
+          "type": "image_picker",
+          "id": "title_logo_image1",
+          "label": "Title image1",
+          "info": "Title Logo1"
+        },
+        {
+          "type": "image_picker",
+          "id": "mobile_title_logo_image1",
+          "label": "Mobile Title image1",
+          "info": "Mobile Title Logo1"
         },
         {
           "type": "header",
@@ -1029,7 +1055,7 @@ padding-right:0;
           "type": "header",
           "content": "Font - Mobile"
         },
-                  {
+          {
             "type": "checkbox",
             "id": "is_custom_content_padding",
             "label": "Enable Content Padding Mobile",
@@ -1052,6 +1078,7 @@ padding-right:0;
             "label": "Enable Container Padding Mobile",
             "default": false
           },
+
         {
           "type": "range",
           "id": "title_logo_width_mobile",
