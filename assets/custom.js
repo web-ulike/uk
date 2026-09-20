@@ -101,88 +101,88 @@ class ImageComparison extends HTMLElement {
 }
 customElements.define('image-comparison', ImageComparison);
 
-  class ImageComparisonNewF extends HTMLElement {
-    constructor() {
-      super();
-      this.handleMove = this.handleMove.bind(this);
-      this.stopMove = this.stopMove.bind(this);
-      this.startMove = this.startMove.bind(this);
-      this.preventTouch = this.preventTouch.bind(this);
-    }
-  
-    connectedCallback() {
-      this.before = this.querySelectorAll('.user-reviews-img-item')[0];
-      this.after = this.querySelectorAll('.user-reviews-img-item')[1];
-      this.handle = this.querySelector('.btn-l');
-  
-      // 初始化样式
-      this.handle.style.left = '100%';
-      this.before.style.clipPath = `inset(0 0% 0 0)`;
-  
-      requestAnimationFrame(() => {
-        this.handle.style.left = '50%';
-        this.before.style.clipPath = `inset(0 50% 0 0)`;
-      });
-  
-      this.handle.addEventListener('pointerdown', this.startMove);
-      this.handle.addEventListener('touchstart', this.startMove, { passive: false });
-    }
-  
-    disconnectedCallback() {
-      this.handle.removeEventListener('pointerdown', this.startMove);
-      this.handle.removeEventListener('touchstart', this.startMove);
-      this.stopMove();
-    }
-  
-    startMove(e) {
-      e.preventDefault();
-      e.stopPropagation();
-      this.isDragging = true;
-      this.containerRect = this.getBoundingClientRect();
-  
-      // 禁用 swiper 滑动
-      if (this.swiper) this.swiper.allowTouchMove = false;
-  
-      // 添加拖动监听
-      document.addEventListener('pointermove', this.handleMove);
-      document.addEventListener('pointerup', this.stopMove);
-  
-      // 核心关键：阻止整个页面的 touchmove 默认行为，防止 swiper 接管事件
-      document.addEventListener('touchmove', this.preventTouch, { passive: false });
-      document.addEventListener('touchstart', this.preventTouch, { passive: false });
-    }
-  
-    handleMove(e) {
-      if (!this.isDragging) return;
-      const clientX = e.clientX || (e.touches && e.touches[0].clientX);
-      const rect = this.containerRect;
-      let x = clientX - rect.left;
-  
-      x = Math.max(0, Math.min(x, rect.width));
-      const percentage = (x / rect.width) * 100;
-  
-      this.handle.style.left = `${percentage}%`;
-      this.before.style.clipPath = `inset(0 ${100 - percentage}% 0 0)`;
-    }
-  
-    stopMove() {
-      if (!this.isDragging) return;
-      this.isDragging = false;
-  
-      if (this.swiper) this.swiper.allowTouchMove = true;
-  
-      document.removeEventListener('pointermove', this.handleMove);
-      document.removeEventListener('pointerup', this.stopMove);
-      document.removeEventListener('touchmove', this.preventTouch, { passive: false });
-      document.removeEventListener('touchstart', this.preventTouch, { passive: false });
-    }
-  
-    preventTouch(e) {
-      e.preventDefault(); // ✅ 阻止 swiper 拖动或页面滚动
-    }
+class ImageComparisonNewF extends HTMLElement {
+  constructor() {
+    super();
+    this.handleMove = this.handleMove.bind(this);
+    this.stopMove = this.stopMove.bind(this);
+    this.startMove = this.startMove.bind(this);
+    this.preventTouch = this.preventTouch.bind(this);
   }
-  
-  customElements.define('image-comparison-newf', ImageComparisonNewF);
+
+  connectedCallback() {
+    this.before = this.querySelectorAll('.user-reviews-img-item')[0];
+    this.after = this.querySelectorAll('.user-reviews-img-item')[1];
+    this.handle = this.querySelector('.btn-l');
+
+    // 初始化样式
+    this.handle.style.left = '100%';
+    this.before.style.clipPath = `inset(0 0% 0 0)`;
+
+    requestAnimationFrame(() => {
+      this.handle.style.left = '50%';
+      this.before.style.clipPath = `inset(0 50% 0 0)`;
+    });
+
+    this.handle.addEventListener('pointerdown', this.startMove);
+    this.handle.addEventListener('touchstart', this.startMove, { passive: false });
+  }
+
+  disconnectedCallback() {
+    this.handle.removeEventListener('pointerdown', this.startMove);
+    this.handle.removeEventListener('touchstart', this.startMove);
+    this.stopMove();
+  }
+
+  startMove(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    this.isDragging = true;
+    this.containerRect = this.getBoundingClientRect();
+
+    // 禁用 swiper 滑动
+    if (this.swiper) this.swiper.allowTouchMove = false;
+
+    // 添加拖动监听
+    document.addEventListener('pointermove', this.handleMove);
+    document.addEventListener('pointerup', this.stopMove);
+
+    // 核心关键：阻止整个页面的 touchmove 默认行为，防止 swiper 接管事件
+    document.addEventListener('touchmove', this.preventTouch, { passive: false });
+    document.addEventListener('touchstart', this.preventTouch, { passive: false });
+  }
+
+  handleMove(e) {
+    if (!this.isDragging) return;
+    const clientX = e.clientX || (e.touches && e.touches[0].clientX);
+    const rect = this.containerRect;
+    let x = clientX - rect.left;
+
+    x = Math.max(0, Math.min(x, rect.width));
+    const percentage = (x / rect.width) * 100;
+
+    this.handle.style.left = `${percentage}%`;
+    this.before.style.clipPath = `inset(0 ${100 - percentage}% 0 0)`;
+  }
+
+  stopMove() {
+    if (!this.isDragging) return;
+    this.isDragging = false;
+
+    if (this.swiper) this.swiper.allowTouchMove = true;
+
+    document.removeEventListener('pointermove', this.handleMove);
+    document.removeEventListener('pointerup', this.stopMove);
+    document.removeEventListener('touchmove', this.preventTouch, { passive: false });
+    document.removeEventListener('touchstart', this.preventTouch, { passive: false });
+  }
+
+  preventTouch(e) {
+    e.preventDefault(); // ✅ 阻止 swiper 拖动或页面滚动
+  }
+}
+
+customElements.define('image-comparison-newf', ImageComparisonNewF);
 
 
 class CustomSwiper extends HTMLElement {
@@ -240,7 +240,7 @@ class CustomSwiper extends HTMLElement {
   }
 }
 
-window.customElements.define('custom-swiper', CustomSwiper);
+customElements.define('custom-swiper', CustomSwiper);
 
 
 // 用户自定义js公共库
