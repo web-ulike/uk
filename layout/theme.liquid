@@ -9,7 +9,13 @@
     {%- comment -%}Few prefech to increase performance on commonly used third-parties{%- endcomment -%}
     <link rel="preconnect" href="https://cdn.shopify.com">
     <link rel="dns-prefetch" href="https://cdn.shopify.com">
-
+    {% if request.page_type == 'index' %}
+      {% if template.suffix == blank or template.suffix == 'new' %}
+        <!-- Ptengine Tag -->
+         <script src="https://js.ptengine.com/76k8uemq.js"></script>
+        <!-- End Ptengine Tag -->
+      {% endif %}
+   {% endif %} 
      {%- comment -%}Preload important resources{%- endcomment -%}
      <script src="{{ 'jquery.min.js' | asset_url }}"></script>
      <link rel="preload" as="style" href="{{ 'theme.css' | asset_url }}">
@@ -22,13 +28,7 @@
     {% render 'gcm-integration-script' %}
     {% render 'g-site-seo' %}
 
-    {% if request.page_type == 'index' %}
-      {% if template.suffix == blank or template.suffix == 'new' %}
-        <!-- Ptengine Tag -->
-         <script src="https://js.ptengine.com/76k8uemq.js"></script>
-        <!-- End Ptengine Tag -->
-      {% endif %}
-   {% endif %} 
+
 
     <!-- end Pinterest Tag -->
     <meta name="google-site-verification" content="7KQBy-K0xvi4A40MnKJwiMeOGqfli8b5ZhPqHHinHlE">
