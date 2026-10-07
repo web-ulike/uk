@@ -10,7 +10,7 @@
   	{
   		return htmlString.replace(/<[^>]+>/g, '');
   	}
-  	{% assign shopurl = shop.url | append: '/products/'' %}
+  	{% assign shopurl = shop.url | append: '/products/' %}
   	{% assign shopurlnew = shopurl | append: product.handle%}
 
   	var url2 = '{{ shopurlnew  }}';
@@ -73,7 +73,7 @@
     {
     	return htmlString.replace(/<[^>]+>/g, '');
     }
-    {% assign shopurl = shop.url | append: '/products/'' %}
+    {% assign shopurl = shop.url | append: '/products/' %}
     {% assign shopurlnew = shopurl | append: product.handle%}
 
     var url2 = '{{ shopurlnew  }}';
@@ -171,7 +171,7 @@
       '{% for item in cart.items %}{% assign newvar =  item.product_id %}{% if forloop.last == true %}{{ newvar }}{% else %}{{ newvar | append: ' |
       '}}{% endif %}{% endfor %}';
     var cartcolltitle =
-      '{% for item in cart.items %}{% for collection in item.product.collections %} {% assign newvar =   escape(collection.title|escape) %}{% if forloop.last == true %}{{ newvar }}{% else %}{{ newvar | append: ' |
+      '{% for item in cart.items %}{% for collection in item.product.collections %} {% assign newvar = escape.collection.title | escape %}{% if forloop.last == true %}{{ newvar }}{% else %}{{ newvar | append: ' |
       '}}{% endif %}{% endfor %}{% endfor %}';
     var cartsku =
       '{% for item in cart.items %}{% assign newvar =  item.sku %}{% if forloop.last == true %}{{ newvar }}{% else %}{{ newvar | append: ' |
@@ -233,3 +233,19 @@
 
   <!-- -------------------------Home Pixel END---------------------------------- -->
 {% endif %}
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "{% assign shopurl = shop.url | append: '/products/'' %}"
+  to: "{% assign shopurl = shop.url | append: '/products/' %}"
+  position: 659..713
+- from: "{% assign shopurl = shop.url | append: '/products/'' %}"
+  to: "{% assign shopurl = shop.url | append: '/products/' %}"
+  position: 3142..3196
+- from: "{% assign newvar =   escape(collection.title|escape) %}"
+  to: "{% assign newvar = escape.collection.title | escape %}"
+  position: 7177..7231
+{% endcomment %}
