@@ -463,18 +463,18 @@ padding-right:0;
         {%- capture slide_content -%}
             <div class="slideshow__image-wrapper {% if mobile_image != blank or mobile_video != blank %}hidden-pocket{% endif %}" {% if section.settings.transition_type == 'reveal' and section.settings.show_initial_transition or forloop.first == false %}reveal-visibility{% endif %}>
               {%- if video != blank -%}
-               <native-video autoplay class="slideshow__image-wrapper{% if mobile_video != blank or mobile_image != blank %} hidden-pocket{% endif %}" data-device="{% if mobile_video != blank or mobile_image != blank %}desktop{% else %}all{% endif %}">
+               {% comment %} <native-video autoplay class="slideshow__image-wrapper{% if mobile_video != blank or mobile_image != blank %} hidden-pocket{% endif %}" data-device="{% if mobile_video != blank or mobile_image != blank %}desktop{% else %}all{% endif %}">
                   <template>
                     {{- video | video_tag: controls: false, autoplay: true, muted: true, playsinline: true, loop: true, preload: 'none', class: 'slideshow__image slideshow__video' -}}
                   </template>
-                </native-video> 
-                {% comment %} {%- assign video_cover = image | default: video.preview_image -%}
+                </native-video>  {% endcomment %}
+                 {%- assign video_cover = image | default: video.preview_image -%}
                 {%- assign video_cover_url = video_cover | image_url: width: 3000 -%}
                 <native-video autoplay class="slideshow__image-wrapper{% if mobile_video != blank or mobile_image != blank %} hidden-pocket{% endif %}" data-device="{% if mobile_video != blank or mobile_image != blank %}desktop{% else %}all{% endif %}">
                 <template>
                     {{- video | video_tag: poster: video_cover_url, controls: false, autoplay: true, muted: true, playsinline: true, loop: true, preload: 'none', class: 'slideshow__image slideshow__video' -}}
                 </template> 
-                </native-video>{% endcomment %}
+                </native-video>
                   {% comment %} <native-video autoplay class="video-wrapper video-wrapper--native" style="--aspect-ratio: {{ image_aspect_ratio }}">
                   {{- video_poster -}} 
                   <template>
