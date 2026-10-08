@@ -1,0 +1,459 @@
+<ulike-feature-showcase class="ulike-feature-showcase" {% if section.settings.enable_carousel %}data-carousel{% endif %} style="--feature-background: {{ section.settings.background }}; --feature-text: {{ section.settings.text_color }};">
+  <div class="container">
+    <div class="ulike-feature-showcase__list"{% if section.settings.enable_carousel and section.blocks.size > 1 %} data-ulike-drag-switch{% endif %}>
+      {%- for block in section.blocks -%}
+        <article class="ulike-feature-showcase__item" {{ block.shopify_attributes }}>
+          <div class="ulike-feature-showcase__content">
+            {%- if block.settings.icon != blank or block.settings.eyebrow != blank -%}
+              <div class="ulike-feature-showcase__eyebrow">
+                {%- if block.settings.icon != blank -%}
+                  {{- block.settings.icon | image_url: width: 80 | image_tag: loading: 'lazy', sizes: '40px', widths: '40,60,80', class: 'ulike-feature-showcase__icon' -}}
+                {%- endif -%}
+                {%- if block.settings.eyebrow != blank -%}
+                  <span>{{ block.settings.eyebrow | escape }}</span>
+                {%- endif -%}
+              </div>
+            {%- endif -%}
+
+            {%- if block.settings.heading_lines != blank -%}
+              <h2 class="ulike-feature-showcase__heading ulike-feature-showcase__heading--lines">{{ block.settings.heading_lines | escape }}</h2>
+            {%- elsif block.settings.heading != blank -%}
+              <h2 class="ulike-feature-showcase__heading">{{ block.settings.heading | escape }}</h2>
+            {%- endif -%}
+
+            {%- if block.settings.text != blank -%}
+              <div class="ulike-feature-showcase__text">{{ block.settings.text }}</div>
+            {%- endif -%}
+
+            {%- if block.settings.stat_value != blank -%}
+              <div class="ulike-feature-showcase__stat-group">
+                {%- if block.settings.stat_label != blank -%}
+                  <p class="ulike-feature-showcase__stat-label">{{ block.settings.stat_label | escape }}</p>
+                {%- endif -%}
+                <p class="ulike-feature-showcase__stat-value">{{ block.settings.stat_value | escape }}</p>
+              </div>
+            {%- elsif block.settings.stat != blank -%}
+              <p class="ulike-feature-showcase__stat">{{ block.settings.stat | escape }}</p>
+            {%- endif -%}
+
+            {%- if block.settings.info_label != blank -%}
+              <p class="ulike-feature-showcase__info-label">{{ block.settings.info_label | escape }}</p>
+            {%- endif -%}
+
+            {%- if block.settings.info_image != blank -%}
+              {{- block.settings.info_image | image_url: width: 1100 | image_tag: loading: 'lazy', sizes: '(max-width: 740px) 100vw, 520px', widths: '400,700,900,1100', class: 'ulike-feature-showcase__info-image' -}}
+            {%- endif -%}
+
+            {%- if block.settings.footnote != blank -%}
+              <div class="ulike-feature-showcase__footnote">{{ block.settings.footnote }}</div>
+            {%- endif -%}
+          </div>
+
+          <div class="ulike-feature-showcase__media">
+            {%- if block.settings.video != blank -%}
+              {{- block.settings.video | video_tag: autoplay: false, loop: true, muted: true, controls: false, playsinline: true, preload: 'none', class: 'ulike-feature-showcase__asset', data_deferred_video: '' -}}
+            {%- elsif block.settings.video_url != blank -%}
+              <video
+                class="ulike-feature-showcase__asset"
+                loop
+                muted
+                playsinline
+                preload="none"
+                data-deferred-video
+                {% if block.settings.poster_url != blank %}poster="{{ block.settings.poster_url | escape }}"{% endif %}
+              >
+                <source data-src="{{ block.settings.video_url | escape }}" type="video/mp4">
+              </video>
+            {%- elsif block.settings.image != blank -%}
+              {{- block.settings.image | image_url: width: 1800 | image_tag: loading: 'lazy', sizes: '(max-width: 999px) 100vw, 58vw', widths: '600,900,1200,1500,1800', class: 'ulike-feature-showcase__asset' -}}
+            {%- else -%}
+              {{- 'lifestyle-1' | placeholder_svg_tag: 'ulike-feature-showcase__asset ulike-feature-showcase__placeholder' -}}
+            {%- endif -%}
+          </div>
+        </article>
+      {%- endfor -%}
+    </div>
+    {%- if section.settings.enable_carousel and section.blocks.size > 1 -%}
+      <div class="ulike-feature-showcase__navigation" hidden>
+        <button type="button" data-feature-prev aria-label="{{ 'general.accessibility.previous' | t | escape }}"><svg viewBox="0 0 32 20" fill="none" aria-hidden="true"><path d="M10 1L1 10M1 10L10 19M1 10H31" stroke="currentColor" stroke-width="1.3"/></svg></button>
+        <span class="visually-hidden" data-feature-status aria-live="polite" aria-atomic="true"></span>
+        <button type="button" data-feature-next aria-label="{{ 'general.accessibility.next' | t | escape }}"><svg viewBox="0 0 32 20" fill="none" aria-hidden="true"><path d="M22 1L31 10M31 10L22 19M31 10H1" stroke="currentColor" stroke-width="1.3"/></svg></button>
+      </div>
+    {%- endif -%}
+  </div>
+</ulike-feature-showcase>
+
+{% stylesheet %}
+  .ulike-feature-showcase {
+    display: block;
+    color: var(--feature-text);
+    background: var(--feature-background);
+  }
+
+  .ulike-feature-showcase__list {
+    display: grid;
+    gap: clamp(4rem, 8vw, 8rem);
+    padding-block: clamp(4rem, 8vw, 8rem);
+  }
+
+  .ulike-feature-showcase__item {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+    gap: clamp(2rem, 6vw, 7rem);
+    align-items: center;
+  }
+
+  .ulike-feature-showcase__item:nth-child(even) .ulike-feature-showcase__content {
+    order: 2;
+  }
+
+  .ulike-feature-showcase__eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    margin-bottom: 1.25rem;
+    font-weight: 600;
+  }
+
+  .ulike-feature-showcase__icon {
+    width: auto;
+    height: 2rem;
+    object-fit: contain;
+  }
+
+  .ulike-feature-showcase__heading {
+    margin: 0;
+    font-size: clamp(2rem, 4vw, 4.5rem);
+    line-height: 1.02;
+    letter-spacing: -0.035em;
+  }
+
+  .ulike-feature-showcase__text {
+    margin-top: 1.5rem;
+    font-size: clamp(1rem, 1.25vw, 1.2rem);
+    line-height: 1.65;
+  }
+
+  .ulike-feature-showcase__text p,
+  .ulike-feature-showcase__footnote p {
+    margin: 0;
+  }
+
+  .ulike-feature-showcase__stat {
+    margin: 2rem 0 0;
+    font-size: clamp(1.5rem, 3vw, 3rem);
+    line-height: 1.1;
+  }
+
+  .ulike-feature-showcase__footnote {
+    margin-top: 1rem;
+    font-size: 0.75rem;
+    line-height: 1.5;
+    opacity: 0.72;
+  }
+
+  .ulike-feature-showcase__info-image {
+    width: min(100%, 33rem);
+    height: auto;
+    margin-top: 1.5rem;
+  }
+
+  .ulike-feature-showcase__media {
+    overflow: hidden;
+    border-radius: 1.25rem;
+    background: #ececec;
+    aspect-ratio: 1.7;
+  }
+
+  .ulike-feature-showcase__asset {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .ulike-feature-showcase[data-enhanced] .ulike-feature-showcase__item {
+    grid-area: 1 / 1;
+    min-width: 0;
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 200ms ease;
+  }
+
+  .ulike-feature-showcase[data-enhanced] .ulike-feature-showcase__item[aria-hidden="false"] {
+    visibility: visible;
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .ulike-feature-showcase[data-enhanced] .ulike-feature-showcase__content {
+    order: initial;
+  }
+
+  .ulike-feature-showcase[data-enhanced] .ulike-feature-showcase__list {
+    padding-bottom: 2rem;
+    touch-action: pan-y pinch-zoom;
+  }
+
+  .ulike-feature-showcase__navigation:not([hidden]) {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 1.5rem;
+    padding-bottom: 3rem;
+  }
+
+  .ulike-feature-showcase__navigation button {
+    width: 48px;
+    height: 48px;
+    border: 1px solid currentColor;
+    border-radius: 50%;
+    font-size: 28px;
+  }
+
+  .ulike-feature-showcase__navigation button:disabled { opacity: 0.35; cursor: default; }
+  .ulike-feature-showcase__navigation button:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
+
+  .ulike-feature-showcase__heading--lines { white-space: pre-line; }
+  .ulike-feature-showcase__stat-group { margin-top: 36px; color: #6c6ab4; }
+  .ulike-feature-showcase__stat-label { margin: 0; font-size: 16px; line-height: 1.4; }
+  .ulike-feature-showcase__stat-value { margin: 0; font-size: 48px; font-weight: 400; line-height: 1; background: linear-gradient(180deg, #bcbbff 0%, #5b5a92 100%); background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+  .ulike-feature-showcase[data-carousel] .ulike-feature-showcase__list { padding-block: 148px 0; }
+  .ulike-feature-showcase[data-carousel] { padding-bottom: 136px; }
+  .ulike-feature-showcase[data-carousel] .ulike-feature-showcase__item {
+    grid-template-columns: minmax(0, 557px) minmax(0, 1fr);
+    gap: 78px;
+    align-items: start;
+  }
+  .ulike-feature-showcase[data-carousel] .ulike-feature-showcase__content { min-width: 0; order: initial; }
+  .ulike-feature-showcase[data-carousel] .ulike-feature-showcase__eyebrow {
+    gap: 16px;
+    margin-bottom: 24px;
+    color: #6c6ab4;
+    font-size: 24px;
+    font-weight: 400;
+    line-height: 1.2;
+  }
+  .ulike-feature-showcase[data-carousel] .ulike-feature-showcase__heading { font-size: 48px; font-weight: 400; line-height: 1.25; letter-spacing: normal; }
+  .ulike-feature-showcase[data-carousel] .ulike-feature-showcase__text { margin-top: 0; font-size: 20px; line-height: 1.6; }
+  .ulike-feature-showcase[data-carousel] .ulike-feature-showcase__text::before {
+    content: '';
+    display: block;
+    width: 124px;
+    height: 2px;
+    margin-block: 24px;
+    background: #7c7abc;
+  }
+  .ulike-feature-showcase[data-carousel] .ulike-feature-showcase__info-label { margin: 8px 0 16px; color: #6c6ab4; font-size: 16px; line-height: 1.5; }
+  .ulike-feature-showcase[data-carousel] .ulike-feature-showcase__text + .ulike-feature-showcase__info-label { margin-top: 16px; }
+  .ulike-feature-showcase[data-carousel] .ulike-feature-showcase__info-image { display: block; margin-top: 0; }
+  .ulike-feature-showcase[data-carousel] .ulike-feature-showcase__footnote { max-width: 636px; margin-top: 18px; color: #8b8b8b; font-size: 12px; font-weight: 400; line-height: 1.2; opacity: 1; }
+  .ulike-feature-showcase[data-carousel] .ulike-feature-showcase__media { border-radius: 8px; background: #f3f3f1; }
+  .ulike-feature-showcase[data-carousel] .ulike-feature-showcase__navigation:not([hidden]) { margin-top: 40px; padding-bottom: 0; gap: 28px; }
+
+  @media (max-width: 1450px) and (min-width: 1024px) {
+    .ulike-feature-showcase[data-carousel] .ulike-feature-showcase__item { grid-template-columns: minmax(0, 490px) minmax(0, 1fr); gap: 64px; }
+  }
+  @media (max-width: 1023px) {
+    .ulike-feature-showcase[data-carousel] { padding-bottom: 24px; }
+    .ulike-feature-showcase[data-carousel] .ulike-feature-showcase__list { padding-top: 40px; }
+    .ulike-feature-showcase[data-carousel] .ulike-feature-showcase__item { grid-template-columns: minmax(0, 1fr); gap: 41px; }
+    .ulike-feature-showcase[data-carousel] .ulike-feature-showcase__media { aspect-ratio: 1.6; }
+    .ulike-feature-showcase[data-carousel] .ulike-feature-showcase__navigation:not([hidden]) { margin-top: 34px; }
+  }
+  @media (max-width: 767px) {
+    .ulike-feature-showcase[data-carousel] .ulike-feature-showcase__eyebrow { gap: 8px; margin-bottom: 14px; font-size: 12px; }
+    .ulike-feature-showcase[data-carousel] .ulike-feature-showcase__icon { width: 19px; height: auto; }
+    .ulike-feature-showcase[data-carousel] .ulike-feature-showcase__heading { font-size: 24px; line-height: 1.2; }
+    .ulike-feature-showcase[data-carousel] .ulike-feature-showcase__text { font-size: 14px; line-height: 1.5; }
+    .ulike-feature-showcase[data-carousel] .ulike-feature-showcase__text::before { margin-block: 14px; }
+    .ulike-feature-showcase[data-carousel] .ulike-feature-showcase__stat-group { margin-top: 28px; }
+    .ulike-feature-showcase[data-carousel] .ulike-feature-showcase__stat-value { font-size: 32px; }
+    .ulike-feature-showcase[data-carousel] .ulike-feature-showcase__info-label { margin-top: 4px; margin-bottom: 8px; font-size: 10px; }
+    .ulike-feature-showcase[data-carousel] .ulike-feature-showcase__footnote { margin-top: 22px; font-size: 8px; }
+    .ulike-feature-showcase[data-carousel] .ulike-feature-showcase__media { aspect-ratio: 1.68; border-radius: 4px; }
+    .ulike-feature-showcase[data-carousel] .ulike-feature-showcase__navigation:not([hidden]) { justify-content: center; margin-top: 32px; gap: 20px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ulike-feature-showcase[data-enhanced] .ulike-feature-showcase__item { transition: none; }
+  }
+
+  @media screen and (max-width: 999px) {
+    .ulike-feature-showcase__item {
+      grid-template-columns: 1fr;
+    }
+
+    .ulike-feature-showcase__item:nth-child(even) .ulike-feature-showcase__content {
+      order: initial;
+    }
+  }
+
+  /* Match the production homepage carousel arrows. */
+  .ulike-feature-showcase__navigation { gap: 28px; }
+  .ulike-feature-showcase__navigation button { display: flex; align-items: center; justify-content: center; flex: 0 0 auto; width: 34px; height: 34px; padding: 0; border: 0; border-radius: 0; background: transparent; color: inherit; cursor: pointer; }
+  .ulike-feature-showcase__navigation button svg { display: block; width: 32px; height: auto; pointer-events: none; }
+  .ulike-feature-showcase__navigation button:disabled { opacity: .3; pointer-events: none; }
+  .ulike-feature-showcase__navigation button:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
+  @media screen and (max-width: 767px) {
+    .ulike-feature-showcase__navigation { gap: 20px; }
+    .ulike-feature-showcase__navigation button { width: 22px; height: 22px; }
+    .ulike-feature-showcase__navigation button svg { width: 20px; }
+  }
+{% endstylesheet %}
+
+{% javascript %}
+  if (!customElements.get('ulike-feature-showcase')) {
+    customElements.define('ulike-feature-showcase', class extends HTMLElement {
+      connectedCallback() {
+        this.controller?.abort();
+        this.controller = new AbortController();
+        const options = { signal: this.controller.signal };
+        this.slides = [...this.querySelectorAll('.ulike-feature-showcase__item')];
+        this.videos = [...this.querySelectorAll('[data-deferred-video]')];
+        this.visibleVideos = new Set();
+        this.motion = matchMedia('(prefers-reduced-motion: reduce)');
+        this.carousel = this.hasAttribute('data-carousel') && this.slides.length > 1;
+        this.activeIndex = 0;
+        this.prev = this.querySelector('[data-feature-prev]');
+        this.next = this.querySelector('[data-feature-next]');
+        this.status = this.querySelector('[data-feature-status]');
+        if (this.carousel) {
+          this.prev.addEventListener('click', () => this.select(this.activeIndex - 1), options);
+          this.next.addEventListener('click', () => this.select(this.activeIndex + 1), options);
+          this.addEventListener('keydown', (event) => {
+            if (event.target !== this.prev && event.target !== this.next) return;
+            if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
+            event.preventDefault();
+            const index = event.key === 'Home' ? 0 : event.key === 'End' ? this.slides.length - 1 : this.activeIndex + (event.key === 'ArrowRight' ? 1 : -1);
+            this.select(index);
+          }, options);
+          const stage = this.querySelector('.ulike-feature-showcase__list');
+          stage.addEventListener('touchstart', (event) => {
+            this.touch = event.touches.length === 1 ? { x: event.touches[0].clientX, y: event.touches[0].clientY, time: Date.now() } : null;
+          }, { ...options, passive: true });
+          stage.addEventListener('touchcancel', () => { this.touch = null; }, options);
+          stage.addEventListener('touchend', (event) => {
+            const start = this.touch;
+            this.touch = null;
+            if (!start || !event.changedTouches.length || event.touches.length) return;
+            const dx = event.changedTouches[0].clientX - start.x;
+            const dy = event.changedTouches[0].clientY - start.y;
+            if (Math.abs(dx) < 45 || Math.abs(dx) < Math.abs(dy) * 1.2 || Date.now() - start.time > 800) return;
+            this.select(this.activeIndex + (dx < 0 ? 1 : -1));
+          }, { ...options, passive: true });
+          stage.addEventListener('ulike:drag-switch', (event) => {
+            this.select(this.activeIndex + event.detail.direction);
+          }, options);
+          this.addEventListener('shopify:block:select', (event) => {
+            const index = this.slides.indexOf(event.target.closest('.ulike-feature-showcase__item'));
+            if (index >= 0) this.select(index);
+          }, options);
+          this.setAttribute('data-enhanced', '');
+          this.querySelector('.ulike-feature-showcase__navigation').hidden = false;
+          this.select(0);
+        }
+        document.addEventListener('visibilitychange', () => this.updateVideos(), options);
+        this.motion.addEventListener('change', () => this.updateVideos(), options);
+        navigator.connection?.addEventListener('change', () => this.updateVideos(), options);
+        if ('IntersectionObserver' in window) {
+          this.observer = new IntersectionObserver((entries) => {
+            entries.forEach(({ target, isIntersecting }) => {
+              if (isIntersecting) this.visibleVideos.add(target);
+              else this.visibleVideos.delete(target);
+            });
+            this.updateVideos();
+          });
+          this.videos.forEach((video) => this.observer.observe(video));
+        } else {
+          this.videos.forEach((video) => { video.controls = true; });
+        }
+      }
+
+      select(index) {
+        this.activeIndex = Math.max(0, Math.min(index, this.slides.length - 1));
+        this.slides.forEach((slide, i) => {
+          slide.setAttribute('aria-hidden', String(i !== this.activeIndex));
+          slide.inert = i !== this.activeIndex;
+        });
+        this.prev.disabled = this.activeIndex === 0;
+        this.next.disabled = this.activeIndex === this.slides.length - 1;
+        this.status.textContent = `${this.activeIndex + 1} / ${this.slides.length}`;
+        if (document.activeElement === this.prev && this.prev.disabled) this.next.focus();
+        if (document.activeElement === this.next && this.next.disabled) this.prev.focus();
+        this.updateVideos();
+      }
+
+      updateVideos() {
+        this.videos.forEach((video) => {
+          const active = !this.carousel || this.slides[this.activeIndex].contains(video);
+          if (!active || !this.visibleVideos.has(video) || document.hidden || this.motion.matches || navigator.connection?.saveData) {
+            video.pause();
+            return;
+          }
+          const sources = [...video.querySelectorAll('source[data-src]')];
+          sources.forEach((source) => {
+            source.src = source.dataset.src;
+            source.removeAttribute('data-src');
+          });
+          if (sources.length) video.load();
+          video.play().catch(() => {});
+        });
+      }
+
+      disconnectedCallback() {
+        this.controller?.abort();
+        this.observer?.disconnect();
+        this.videos?.forEach((video) => video.pause());
+      }
+    });
+  }
+{% endjavascript %}
+
+{% schema %}
+{
+  "name": "ULIKE feature showcase",
+  "tag": "section",
+  "class": "shopify-section--ulike-feature-showcase",
+  "max_blocks": 6,
+  "settings": [
+    { "type": "checkbox", "id": "enable_carousel", "label": "Enable feature navigation", "default": false },
+    { "type": "color", "id": "background", "label": "Background", "default": "#ffffff" },
+    { "type": "color", "id": "text_color", "label": "Text color", "default": "#171717" }
+  ],
+  "blocks": [
+    {
+      "type": "feature",
+      "name": "Feature",
+      "settings": [
+        { "type": "image_picker", "id": "icon", "label": "Eyebrow icon" },
+        { "type": "text", "id": "eyebrow", "label": "Eyebrow" },
+        { "type": "text", "id": "heading", "label": "Heading" },
+        { "type": "textarea", "id": "heading_lines", "label": "Heading with line breaks", "info": "Optional. Replaces the heading above when filled." },
+        { "type": "richtext", "id": "text", "label": "Text" },
+        { "type": "text", "id": "stat", "label": "Statistic" },
+        { "type": "text", "id": "stat_label", "label": "Statistic prefix" },
+        { "type": "text", "id": "stat_value", "label": "Statistic value", "info": "Optional. Replaces the combined statistic when filled." },
+        { "type": "text", "id": "info_label", "label": "Information label" },
+        { "type": "richtext", "id": "footnote", "label": "Footnote" },
+        { "type": "video", "id": "video", "label": "Shopify-hosted video" },
+        { "type": "url", "id": "video_url", "label": "Fallback MP4 URL" },
+        { "type": "url", "id": "poster_url", "label": "Fallback poster URL" },
+        { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "image_picker", "id": "info_image", "label": "Information image" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "ULIKE feature showcase",
+      "blocks": [
+        { "type": "feature" },
+        { "type": "feature" },
+        { "type": "feature" }
+      ]
+    }
+  ]
+}
+{% endschema %}
