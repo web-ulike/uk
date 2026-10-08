@@ -443,10 +443,17 @@ padding-right:0;
         {%- capture slide_content -%}
             <div class="slideshow__image-wrapper {% if mobile_image != blank or mobile_video != blank %}hidden-pocket{% endif %}" {% if section.settings.transition_type == 'reveal' and section.settings.show_initial_transition or forloop.first == false %}reveal-visibility{% endif %}>
               {%- if video != blank -%}
-                <native-video autoplay class="slideshow__image-wrapper{% if mobile_video != blank or mobile_image != blank %} hidden-pocket{% endif %}" data-device="{% if mobile_video != blank or mobile_image != blank %}desktop{% else %}all{% endif %}">
+                {% comment %} <native-video autoplay class="slideshow__image-wrapper{% if mobile_video != blank or mobile_image != blank %} hidden-pocket{% endif %}" data-device="{% if mobile_video != blank or mobile_image != blank %}desktop{% else %}all{% endif %}">
                   <template>
                     {{- video | video_tag: controls: false, autoplay: true, muted: true, playsinline: true, loop: true, preload: 'none', class: 'slideshow__image slideshow__video' -}}
                   </template>
+                </native-video> {% endcomment %}
+                {%- assign video_cover = image | default: video.preview_image -%}
+                {%- assign video_cover_url = video_cover | image_url: width: 3000 -%}
+                <native-video autoplay class="slideshow__image-wrapper{% if mobile_video != blank or mobile_image != blank %} hidden-pocket{% endif %}" data-device="{% if mobile_video != blank or mobile_image != blank %}desktop{% else %}all{% endif %}">
+                <template>
+                    {{- video | video_tag: poster: video_cover_url, controls: false, autoplay: true, muted: true, playsinline: true, loop: true, preload: 'none', class: 'slideshow__image slideshow__video' -}}
+                </template>
                 </native-video>
               {%- elsif image != blank -%}
                 {%- capture sizes_attributes -%}{% if split_image != blank %}(min-width: 1000px) 50vw{% else %}100vw{% endif %}{%- endcapture -%}
@@ -464,10 +471,17 @@ padding-right:0;
             {%- if mobile_video != blank or mobile_image != blank -%}
             <div class="slideshow__image-wrapper hidden-lap-and-up" {% if section.settings.transition_type == 'reveal' and section.settings.show_initial_transition or forloop.first == false %}reveal-visibility{% endif %}>
               {%- if mobile_video != blank -%}
-                <native-video autoplay class="slideshow__image-wrapper hidden-lap-and-up" data-device="mobile">
+                {% comment %} <native-video autoplay class="slideshow__image-wrapper hidden-lap-and-up" data-device="mobile">
                   <template>
                     {{- mobile_video | video_tag: controls: false, autoplay: true, muted: true, playsinline: true, loop: true, preload: 'none', class: 'slideshow__image slideshow__video' -}}
                   </template>
+                </native-video> {% endcomment %}
+                 {%- assign mobile_video_cover = mobile_image | default: mobile_video.preview_image -%}
+                {%- assign mobile_video_cover_url = mobile_video_cover | image_url: width: 1500 -%}
+                <native-video autoplay class="slideshow__image-wrapper hidden-lap-and-up" data-device="mobile">
+                <template>
+                    {{- mobile_video | video_tag: poster: mobile_video_cover_url, controls: false, autoplay: true, muted: true, playsinline: true, loop: true, preload: 'none', class: 'slideshow__image slideshow__video' -}}
+                </template>
                 </native-video>
               {%- elsif mobile_image != blank -%}
                 {{ mobile_image | image_url: width: 3000 | image_tag: loading: loading_attribute_value, draggable: false, class: 'slideshow__image', sizes: '100vw', widths: '600,700,800,1000,1200,1400,1600,1800,2000,2200,2400,2600,2800,3000' }}
