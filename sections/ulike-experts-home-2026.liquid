@@ -231,16 +231,7 @@
       <h2 class="ulike-experts-home__heading">{{ section.settings.heading | escape }}</h2>
     {% endif %}
 
-    <custom-swiper
-      class="ulike-experts-home__swiper"
-      slides-per-view="3"
-      space-between="20"
-      loop="false"
-      centered-slides="false"
-      navigation="true"
-      pagination="false"
-      breakpoints='{"0":{"slidesPerView":1.14,"spaceBetween":16},"768":{"slidesPerView":2,"spaceBetween":20},"1200":{"slidesPerView":3,"spaceBetween":20}}'
-    >
+    <div class="ulike-experts-home__swiper">
       <div class="swiper-container">
         <div class="swiper-wrapper">
           {% for block in section.blocks %}
@@ -293,7 +284,7 @@
           </button>
         </div>
       {% endif %}
-    </custom-swiper>
+    </div>
   </div>
 </section>
 
@@ -301,33 +292,99 @@
   (() => {
     const section = document.getElementById('UlikeExpertsHome-{{ section.id }}');
     if (!section) return;
-    const cards = section.querySelectorAll('.ulike-experts-home__card');
+    const wrapper = section.querySelector('.swiper-wrapper');
+    const originalSlides = [...wrapper.children];
+    let swiper;
+
+    // Repeat the editable cards so three visible desktop cards can still move.
+    if (originalSlides.length > 1) {
+      while (wrapper.children.length < Math.max(6, originalSlides.length * 2)) {
+        originalSlides.forEach((slide) => {
+          const clone = slide.cloneNode(true);
+          clone.removeAttribute('data-shopify-editor-block');
+          wrapper.appendChild(clone);
+        });
+      }
+    }
+
     const pause = (card) => {
       const video = card.querySelector('video');
       if (!video) return;
-      video.pause();
-      video.controls = false;
       card.classList.remove('is-playing');
+      if (!video.paused) video.pause();
+      video.controls = false;
     };
-    cards.forEach((card) => {
-      const video = card.querySelector('video');
-      const button = card.querySelector('.ulike-experts-home__play');
-      if (!video || !button) return;
-      button.addEventListener('click', async () => {
-        cards.forEach((other) => { if (other !== card) pause(other); });
-        try {
-          video.controls = true;
-          await video.play();
-          card.classList.add('is-playing');
-        } catch (error) {
-          video.controls = false;
+    const pausePlaying = () => {
+      section.querySelectorAll('.ulike-experts-home__card.is-playing').forEach(pause);
+    };
+    const resumeAutoplay = () => {
+      if (swiper?.autoplay && originalSlides.length > 1) swiper.autoplay.start();
+    };
+
+    section.addEventListener('click', async (event) => {
+      const button = event.target.closest('.ulike-experts-home__play');
+      if (!button) return;
+      const card = button.closest('.ulike-experts-home__card');
+      const video = card?.querySelector('video');
+      if (!video) return;
+      pausePlaying();
+      swiper?.autoplay?.stop();
+      try {
+        video.controls = true;
+        await video.play();
+        card.classList.add('is-playing');
+      } catch (error) {
+        video.controls = false;
+        resumeAutoplay();
+      }
+    });
+
+    section.addEventListener('ended', (event) => {
+      const card = event.target.closest('.ulike-experts-home__card');
+      if (card) pause(card);
+      resumeAutoplay();
+    }, true);
+    section.addEventListener('pause', (event) => {
+      const card = event.target.closest('.ulike-experts-home__card');
+      if (card?.classList.contains('is-playing')) {
+        pause(card);
+        resumeAutoplay();
+      }
+    }, true);
+
+    const init = () => {
+      if (section.dataset.swiperReady === 'true') return;
+      if (typeof window.Swiper === 'undefined') {
+        window.setTimeout(init, 100);
+        return;
+      }
+      section.dataset.swiperReady = 'true';
+      swiper = new window.Swiper(section.querySelector('.swiper-container'), {
+        slidesPerView: 3,
+        spaceBetween: 20,
+        loop: originalSlides.length > 1,
+        centeredSlides: false,
+        speed: 600,
+        autoplay: originalSlides.length > 1 ? {
+          delay: 5000,
+          disableOnInteraction: false,
+          pauseOnMouseEnter: true
+        } : false,
+        navigation: {
+          prevEl: section.querySelector('.swiper-prev'),
+          nextEl: section.querySelector('.swiper-next')
+        },
+        breakpoints: {
+          0: { slidesPerView: 1.14, spaceBetween: 16 },
+          768: { slidesPerView: 2, spaceBetween: 20 },
+          1200: { slidesPerView: 3, spaceBetween: 20 }
+        },
+        on: {
+          slideChangeTransitionStart: pausePlaying
         }
       });
-      video.addEventListener('ended', () => pause(card));
-    });
-    section.querySelectorAll('.ulike-experts-home__arrow').forEach((button) => {
-      button.addEventListener('click', () => cards.forEach(pause));
-    });
+    };
+    init();
   })();
 </script>
 
