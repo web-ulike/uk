@@ -352,10 +352,11 @@
       }
     }, true);
 
+    let retries = 0;
     const init = () => {
       if (section.dataset.swiperReady === 'true') return;
       if (typeof window.Swiper === 'undefined') {
-        window.setTimeout(init, 100);
+        if (retries++ < 40) window.setTimeout(init, 100);
         return;
       }
       section.dataset.swiperReady = 'true';
@@ -380,7 +381,10 @@
           1200: { slidesPerView: 3, spaceBetween: 20 }
         },
         on: {
-          slideChangeTransitionStart: pausePlaying
+          slideChangeTransitionStart: () => {
+            pausePlaying();
+            resumeAutoplay();
+          }
         }
       });
     };
