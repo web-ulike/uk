@@ -2679,6 +2679,60 @@
   };
   window.customElements.define("native-video", NativeVideo);
 
+
+
+    var NativeVideoNew = class extends HTMLElement {
+    constructor() {
+      super();
+      this.hasLoaded = false;
+      if (this.autoPlay) {
+        this.play();
+      } else {
+        this.addEventListener("click", this.play.bind(this), { once: true });
+      }
+    }
+    get autoPlay() {
+      return this.hasAttribute("autoplay");
+    }
+    play() {
+      if (!this.hasLoaded) {
+        this._replaceContent();
+      }
+      this.querySelector("video").play();
+    }
+    pause() {
+      if (this.hasLoaded) {
+        this.querySelector("video").pause();
+      }
+    }
+    _replaceContent() {
+      const template = this.querySelector("template");
+      if (!template?.content.firstElementChild) return;
+
+      const node = template.content.firstElementChild.cloneNode(true);
+      const video = node.matches("video") ? node : node.querySelector("video");
+      if (!video) return;
+
+      if (!this.autoPlay) this.innerHTML = "";
+
+      video.addEventListener("playing", () => {
+        this.classList.add("is-playing");
+      }, { once: true });
+
+      video.addEventListener("play", () => {
+        this.dispatchEvent(new CustomEvent("video:played", { bubbles: true }));
+      });
+
+      video.addEventListener("pause", () => {
+        this.dispatchEvent(new CustomEvent("video:paused", { bubbles: true }));
+      });
+
+      this.appendChild(node);
+      this.hasLoaded = true;
+    }
+  };
+  window.customElements.define("native-video-new", NativeVideoNew);
+
   // js/custom-element/ui/combo-box.js
   var ComboBox = class extends OpenableElement {
     connectedCallback() {
