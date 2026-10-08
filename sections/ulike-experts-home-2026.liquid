@@ -295,6 +295,7 @@
     const wrapper = section.querySelector('.swiper-wrapper');
     const originalSlides = [...wrapper.children];
     let swiper;
+    let hovered = false;
 
     // Repeat the editable cards so three visible desktop cards can still move.
     if (originalSlides.length > 1) {
@@ -318,7 +319,7 @@
       section.querySelectorAll('.ulike-experts-home__card.is-playing').forEach(pause);
     };
     const resumeAutoplay = () => {
-      if (swiper?.autoplay && originalSlides.length > 1) swiper.autoplay.start();
+      if (swiper?.autoplay && originalSlides.length > 1 && !hovered) swiper.autoplay.start();
     };
 
     section.addEventListener('click', async (event) => {
@@ -351,8 +352,13 @@
         resumeAutoplay();
       }
     }, true);
-    section.addEventListener('mouseenter', () => swiper?.autoplay?.stop());
+    section.addEventListener('mouseenter', () => {
+      if (!window.matchMedia('(hover: hover)').matches) return;
+      hovered = true;
+      swiper?.autoplay?.stop();
+    });
     section.addEventListener('mouseleave', () => {
+      hovered = false;
       if (!section.querySelector('.ulike-experts-home__card.is-playing')) resumeAutoplay();
     });
 
@@ -374,10 +380,10 @@
           delay: 5000,
           disableOnInteraction: false
         } : false,
-        navigation: {
+        navigation: originalSlides.length > 1 ? {
           prevEl: section.querySelector('.swiper-prev'),
           nextEl: section.querySelector('.swiper-next')
-        },
+        } : false,
         breakpoints: {
           0: { slidesPerView: 1.14, spaceBetween: 16 },
           768: { slidesPerView: 2, spaceBetween: 20 },
