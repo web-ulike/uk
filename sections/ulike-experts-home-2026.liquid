@@ -351,6 +351,10 @@
         resumeAutoplay();
       }
     }, true);
+    section.addEventListener('mouseenter', () => swiper?.autoplay?.stop());
+    section.addEventListener('mouseleave', () => {
+      if (!section.querySelector('.ulike-experts-home__card.is-playing')) resumeAutoplay();
+    });
 
     let retries = 0;
     const init = () => {
@@ -368,8 +372,7 @@
         speed: 600,
         autoplay: originalSlides.length > 1 ? {
           delay: 5000,
-          disableOnInteraction: false,
-          pauseOnMouseEnter: true
+          disableOnInteraction: false
         } : false,
         navigation: {
           prevEl: section.querySelector('.swiper-prev'),
