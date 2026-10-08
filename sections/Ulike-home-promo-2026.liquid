@@ -1,0 +1,145 @@
+<section id="ulike-home-promo-{{ section.id }}" class="ulike-home-promo" aria-label="{{ section.settings.aria_label | escape }}">
+  {% for block in section.blocks %}
+    <article class="ulike-home-promo__slide{% if forloop.first %} is-active{% endif %}" data-slide-index="{{ forloop.index0 }}" {% unless forloop.first %}hidden{% endunless %} {{ block.shopify_attributes }}>
+      {% if block.settings.image_desktop != blank or block.settings.image_mobile != blank or block.settings.use_default_image %}
+        <div class="ulike-home-promo__art" aria-hidden="true">
+          <picture>
+            {% if block.settings.image_mobile != blank %}<source media="(max-width: 767px)" srcset="{{ block.settings.image_mobile | image_url: width: 1200 }}">{% endif %}
+            {% if block.settings.image_desktop != blank %}
+              {{ block.settings.image_desktop | image_url: width: 2400 | image_tag: class: 'ulike-home-promo__art-image', loading: 'lazy', widths: '1200,1600,2000,2400', sizes: '(max-width: 767px) 200vw, 95vw', alt: '' }}
+            {% elsif block.settings.image_mobile != blank %}
+              {{ block.settings.image_mobile | image_url: width: 1200 | image_tag: class: 'ulike-home-promo__art-image', loading: 'lazy', widths: '600,900,1200', sizes: '200vw', alt: '' }}
+            {% else %}
+              <img class="ulike-home-promo__art-image" src="{{ 'ulike-home-promo-student.png' | asset_url }}" width="4096" height="2001" alt="" loading="lazy">
+            {% endif %}
+          </picture>
+        </div>
+      {% endif %}
+      <div class="ulike-home-promo__content">
+        {% if block.settings.title != blank %}<h2 class="ulike-home-promo__title">{{ block.settings.title | escape }}</h2>{% endif %}
+        {% if block.settings.description_desktop != blank %}<div class="ulike-home-promo__description ulike-home-promo__description--desktop">{{ block.settings.description_desktop }}</div>{% endif %}
+        {% if block.settings.description_mobile != blank or block.settings.description_desktop != blank %}<div class="ulike-home-promo__description ulike-home-promo__description--mobile">{{ block.settings.description_mobile | default: block.settings.description_desktop }}</div>{% endif %}
+        {% if section.blocks.size > 0 %}
+          <div class="ulike-home-promo__pagination" role="group" aria-label="Choose slide">
+            {% for dot_block in section.blocks %}<button class="ulike-home-promo__dot{% if forloop.parentloop.index0 == forloop.index0 %} is-active{% endif %}" type="button" data-dot-index="{{ forloop.index0 }}" aria-label="Go to slide {{ forloop.index }}" aria-current="{% if forloop.parentloop.index0 == forloop.index0 %}true{% else %}false{% endif %}"></button>{% endfor %}
+          </div>
+        {% endif %}
+        {% if block.settings.button_label != blank %}
+          {% if block.settings.button_link != blank %}<a class="ulike-home-promo__button" href="{{ block.settings.button_link }}">{{ block.settings.button_label | escape }}</a>
+          {% else %}<span class="ulike-home-promo__button">{{ block.settings.button_label | escape }}</span>{% endif %}
+        {% endif %}
+      </div>
+    </article>
+  {% endfor %}
+  {% if section.blocks.size > 1 %}<button class="ulike-home-promo__next" type="button" aria-label="Next slide"><img src="{{ 'ulike-home-promo-arrow.svg' | asset_url }}" width="20" height="15" alt=""></button>{% endif %}
+</section>
+
+<style>
+  @font-face { font-family: 'Ulike Promo Saans'; src: url('{{ 'Saans-Regular.otf' | asset_url }}') format('opentype'); font-weight: 400; font-display: swap; }
+  @font-face { font-family: 'Ulike Promo Saans'; src: url('{{ 'Saans-Medium.otf' | asset_url }}') format('opentype'); font-weight: 500; font-display: swap; }
+  #ulike-home-promo-{{ section.id }} { position: relative; overflow: hidden; width: 100%; background: #f8f8f8; color: #190a0a; font-family: 'Ulike Promo Saans', sans-serif; }
+  #ulike-home-promo-{{ section.id }} .ulike-home-promo__slide { position: relative; width: 100%; min-height: 360px; aspect-ratio: 32 / 9; overflow: hidden; }
+  #ulike-home-promo-{{ section.id }} .ulike-home-promo__slide[hidden] { display: none; }
+  #ulike-home-promo-{{ section.id }} .ulike-home-promo__art { position: absolute; top: -16.57%; right: 0; bottom: -47.5%; left: 5.52%; pointer-events: none; }
+  #ulike-home-promo-{{ section.id }} .ulike-home-promo__art picture,
+  #ulike-home-promo-{{ section.id }} .ulike-home-promo__art-image { display: block; width: 100%; height: 100%; }
+  #ulike-home-promo-{{ section.id }} .ulike-home-promo__art-image { object-fit: fill; }
+  #ulike-home-promo-{{ section.id }} .ulike-home-promo__content { position: absolute; z-index: 1; top: 50%; left: clamp(32px, 10.4167vw, 200px); width: min(668px, 46vw); transform: translateY(-50%); }
+  #ulike-home-promo-{{ section.id }} .ulike-home-promo__title { margin: 0 0 16px; color: #1a1a1a; font-size: 48px; font-weight: 500; line-height: 1.2; }
+  #ulike-home-promo-{{ section.id }} .ulike-home-promo__description { font-size: 20px; font-weight: 400; line-height: 1.5; }
+  #ulike-home-promo-{{ section.id }} .ulike-home-promo__description p { margin: 0; }
+  #ulike-home-promo-{{ section.id }} .ulike-home-promo__description--mobile { display: none; }
+  /* PC dots follow the description in the left text column, above the CTA. */
+  #ulike-home-promo-{{ section.id }} .ulike-home-promo__pagination { display: flex; align-items: center; gap: 6px; min-height: 6px; margin: 40px 0 70px; }
+  #ulike-home-promo-{{ section.id }} .ulike-home-promo__dot { display: block; flex: none; width: 10px; height: 6px; padding: 0; border: 0; border-radius: 23px; background: #cacaca; cursor: pointer; }
+  #ulike-home-promo-{{ section.id }} .ulike-home-promo__dot.is-active { width: 24px; background: #190a0a; }
+  #ulike-home-promo-{{ section.id }} .ulike-home-promo__button { display: inline-flex; align-items: center; justify-content: center; min-width: 155px; min-height: 48px; padding: 6px 20px; border: .5px solid #3f3636; border-radius: 4px; background: #fff; color: #190a0a; font-size: 15px; font-weight: 500; line-height: 1; text-align: center; text-decoration: none; }
+  #ulike-home-promo-{{ section.id }} .ulike-home-promo__next { position: absolute; z-index: 2; top: 50%; right: 60px; display: grid; width: 40px; height: 40px; place-items: center; padding: 0; border: .6px solid #190a0a; border-radius: 4px; background: #fff; cursor: pointer; transform: translateY(-50%); }
+  #ulike-home-promo-{{ section.id }} .ulike-home-promo__next img { display: block; width: 20px; height: 15px; }
+  #ulike-home-promo-{{ section.id }} .ulike-home-promo__dot:focus-visible,
+  #ulike-home-promo-{{ section.id }} .ulike-home-promo__next:focus-visible,
+  #ulike-home-promo-{{ section.id }} .ulike-home-promo__button:focus-visible { outline: 2px solid #190a0a; outline-offset: 3px; }
+  @media (max-width: 767px) {
+    #ulike-home-promo-{{ section.id }} .ulike-home-promo__slide { height: 500px; min-height: 0; aspect-ratio: auto; }
+    #ulike-home-promo-{{ section.id }} .ulike-home-promo__art { top: 22.74%; right: -14.4%; bottom: -4.06%; left: -85.33%; }
+    #ulike-home-promo-{{ section.id }} .ulike-home-promo__art-image { object-fit: cover; }
+    #ulike-home-promo-{{ section.id }} .ulike-home-promo__content { top: 40px; right: 20px; left: 19px; width: auto; transform: none; }
+    #ulike-home-promo-{{ section.id }} .ulike-home-promo__title { max-width: 245px; margin-bottom: 8px; font-size: 24px; }
+    #ulike-home-promo-{{ section.id }} .ulike-home-promo__description { font-size: 12px; line-height: 1.5; }
+    #ulike-home-promo-{{ section.id }} .ulike-home-promo__description--desktop { display: none; }
+    #ulike-home-promo-{{ section.id }} .ulike-home-promo__description--mobile { display: block; }
+    #ulike-home-promo-{{ section.id }} .ulike-home-promo__button { min-width: 108px; min-height: 34px; margin-top: 24px; padding: 5px 15px; border-width: .25px; font-size: 12px; }
+    #ulike-home-promo-{{ section.id }} .ulike-home-promo__pagination { position: absolute; top: 434px; left: calc(50vw - 19px); margin: 0; transform: translateX(-50%); }
+    #ulike-home-promo-{{ section.id }} .ulike-home-promo__next { display: none; }
+  }
+</style>
+
+<script>
+  (() => {
+    const root = document.getElementById('ulike-home-promo-{{ section.id }}');
+    if (!root) return;
+    const slides = Array.from(root.querySelectorAll('.ulike-home-promo__slide'));
+    if (slides.length < 2) return;
+    let active = 0;
+    const show = (index) => {
+      active = (index + slides.length) % slides.length;
+      slides.forEach((slide, slideIndex) => {
+        const selected = slideIndex === active;
+        slide.hidden = !selected;
+        slide.classList.toggle('is-active', selected);
+        slide.querySelectorAll('[data-dot-index]').forEach((dot) => {
+          const current = Number(dot.dataset.dotIndex) === active;
+          dot.classList.toggle('is-active', current);
+          dot.setAttribute('aria-current', String(current));
+        });
+      });
+    };
+    root.addEventListener('click', (event) => {
+      const dot = event.target.closest('[data-dot-index]');
+      if (dot && root.contains(dot)) show(Number(dot.dataset.dotIndex));
+      else if (event.target.closest('.ulike-home-promo__next')) show(active + 1);
+    });
+    let touchX = null;
+    root.addEventListener('touchstart', (event) => { touchX = event.changedTouches[0].clientX; }, { passive: true });
+    root.addEventListener('touchend', (event) => {
+      if (touchX === null) return;
+      const distance = event.changedTouches[0].clientX - touchX;
+      touchX = null;
+      if (Math.abs(distance) > 40) show(active + (distance < 0 ? 1 : -1));
+    }, { passive: true });
+    root.addEventListener('keydown', (event) => {
+      if (event.key === 'ArrowRight') show(active + 1);
+      if (event.key === 'ArrowLeft') show(active - 1);
+    });
+    document.addEventListener('shopify:block:select', (event) => {
+      if (!root.contains(event.target)) return;
+      const slide = event.target.closest('[data-slide-index]');
+      if (slide) show(Number(slide.dataset.slideIndex));
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Ulike home promo slider",
+  "tag": "section",
+  "class": "section-ulike-home-promo",
+  "settings": [{ "type": "text", "id": "aria_label", "label": "Carousel label", "default": "Featured promotions" }],
+  "blocks": [{
+    "type": "slide",
+    "name": "Slide",
+    "settings": [
+      { "type": "checkbox", "id": "use_default_image", "label": "Use the Student Discount image", "default": false },
+      { "type": "image_picker", "id": "image_desktop", "label": "Desktop image (transparent artwork)" },
+      { "type": "image_picker", "id": "image_mobile", "label": "Mobile image (optional)" },
+      { "type": "text", "id": "title", "label": "Title", "default": "Student Discount" },
+      { "type": "richtext", "id": "description_desktop", "label": "Desktop description", "default": "<p>Save on your self-care routine. Use your HSA/FSA funds to shop eligible Ulike products with pre-tax dollars. It's your money. Invest it in you.</p>" },
+      { "type": "richtext", "id": "description_mobile", "label": "Mobile description", "default": "<p>Exclusive savings for verified students.</p>" },
+      { "type": "text", "id": "button_label", "label": "Button text", "default": "LEARN MORE" },
+      { "type": "url", "id": "button_link", "label": "Button link" }
+    ]
+  }],
+  "max_blocks": 8,
+  "presets": [{ "name": "Ulike home promo slider", "blocks": [{ "type": "slide", "settings": { "use_default_image": true } }] }]
+}
+{% endschema %}
