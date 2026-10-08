@@ -1,0 +1,533 @@
+<style>
+  #shopify-section-{{ section.id }} .ulike-home-comparison {
+    display: block;
+    color: #fff;
+    background: #1a1a1a;
+    font-family: Saans, sans-serif;
+  }
+
+  #shopify-section-{{ section.id }} .ulike-home-comparison__inner {
+    display: grid;
+    grid-template-columns: minmax(0, 36%) minmax(0, 1fr);
+    gap: clamp(48px, 9.32vw, 179px);
+    width: min(1520px, calc(100% - 80px));
+    min-height: 662px;
+    margin: 0 auto;
+    padding: 110px 0 80px;
+    box-sizing: border-box;
+  }
+
+  #shopify-section-{{ section.id }} .ulike-home-comparison__intro {
+    position: relative;
+    min-width: 0;
+  }
+
+  #shopify-section-{{ section.id }} .ulike-home-comparison__title {
+    margin: 0;
+    font-family: var(--heading-font-family);
+    font-size: 48px;
+    font-weight: 400;
+    line-height: 1.2;
+    letter-spacing: .01em;
+  }
+
+  #shopify-section-{{ section.id }} .ulike-home-comparison__title-mobile {
+    display: none;
+  }
+
+  #shopify-section-{{ section.id }} .ulike-home-comparison__more {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    margin-top: 21px;
+    font-size: 18px;
+    font-family: saans-light, sans-serif;
+    line-height: 1.35;
+  }
+
+  #shopify-section-{{ section.id }} .ulike-home-comparison__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding-bottom: 4px;
+    border-bottom: .5px solid currentColor;
+    color: inherit;
+    font-size: 14px;
+    font-family: Saans, sans-serif;
+    line-height: 1;
+    text-decoration: none;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  #shopify-section-{{ section.id }} .ulike-home-comparison__link img {
+    display: block;
+    width: 14px;
+    height: auto;
+  }
+
+  #shopify-section-{{ section.id }} .ulike-home-comparison__notes {
+    max-width: 476px;
+    margin: 212px 0 0;
+    color: #8b8b8b;
+    font-size: 12px;
+    font-family: saans-light, sans-serif;
+    line-height: 1.79;
+    letter-spacing: .01em;
+  }
+
+  #shopify-section-{{ section.id }} .ulike-home-comparison__notes p {
+    margin: 0;
+  }
+
+  #shopify-section-{{ section.id }} .ulike-home-comparison__comparison {
+    min-width: 0;
+  }
+
+  #shopify-section-{{ section.id }} .ulike-home-comparison__track {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 40px;
+  }
+
+  #shopify-section-{{ section.id }} .ulike-home-comparison__card {
+    position: relative;
+    min-width: 0;
+  }
+
+  #shopify-section-{{ section.id }} .ulike-home-comparison__card + .ulike-home-comparison__card::before {
+    position: absolute;
+    top: 0;
+    left: -20px;
+    width: 455px;
+    height: .5px;
+    background: url({{ 'ulike-home-comparison-desktop-divider.svg' | asset_url }}) center / 100% 100% no-repeat;
+    content: '';
+    transform: rotate(90deg);
+    transform-origin: left top;
+  }
+
+  #shopify-section-{{ section.id }} .ulike-home-comparison__media {
+    position: relative;
+    height: 213px;
+    overflow: hidden;
+    border-radius: 4px;
+    background: #555;
+  }
+
+  #shopify-section-{{ section.id }} .ulike-home-comparison__image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  #shopify-section-{{ section.id }} .ulike-home-comparison__card--ulike .ulike-home-comparison__image {
+    position: absolute;
+    left: -2.4%;
+    width: 102.4%;
+    max-width: none;
+  }
+
+  #shopify-section-{{ section.id }} .ulike-home-comparison__card--salon .ulike-home-comparison__image {
+    position: absolute;
+    top: -19.5%;
+    left: -10%;
+    width: 171%;
+    height: 203%;
+    max-width: none;
+  }
+
+  #shopify-section-{{ section.id }} .ulike-home-comparison__name {
+    margin: 17px 0 15px;
+    font-family: var(--heading-font-family);
+    font-size: 26px;
+    font-weight: 400;
+    line-height: 28px;
+    text-align: center;
+  }
+
+  #shopify-section-{{ section.id }} .ulike-home-comparison__list {
+    display: grid;
+    gap: 0;
+    margin: 0;
+    padding: 0 0 0 10px;
+    list-style: none;
+  }
+
+  #shopify-section-{{ section.id }} .ulike-home-comparison__row {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    min-height: 46px;
+    white-space: nowrap;
+  }
+
+  #shopify-section-{{ section.id }} .ulike-home-comparison__row img {
+    display: block;
+    flex: 0 0 auto;
+    width: 19.8644px;
+    height: 19.8644px;
+  }
+
+  #shopify-section-{{ section.id }} .ulike-home-comparison__row picture {
+    display: block;
+    flex: 0 0 auto;
+  }
+
+  #shopify-section-{{ section.id }} .ulike-home-comparison__row-text {
+    font-size: 18px;
+    line-height: 1.3;
+    letter-spacing: .01em;
+  }
+
+  #shopify-section-{{ section.id }} .ulike-home-comparison__card--ulike .ulike-home-comparison__row-text {
+    font-family: var(--heading-font-family);
+    font-size: 20px;
+  }
+
+  #shopify-section-{{ section.id }} .ulike-home-comparison__row-text strong {
+    color: #c5c4ff;
+    font-weight: inherit;
+  }
+
+  #shopify-section-{{ section.id }} .ulike-home-comparison__card--ulike .ulike-home-comparison__row:last-child strong {
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  #shopify-section-{{ section.id }} .ulike-home-comparison__arrows,
+  #shopify-section-{{ section.id }} .ulike-home-comparison__notes--mobile {
+    display: none;
+  }
+
+  @media (max-width: 1199px) and (min-width: 768px) {
+    #shopify-section-{{ section.id }} .ulike-home-comparison__inner {
+      grid-template-columns: minmax(0, 33%) minmax(0, 1fr);
+      gap: 30px;
+      width: calc(100% - 48px);
+    }
+    #shopify-section-{{ section.id }} .ulike-home-comparison__title { font-size: 36px; }
+    #shopify-section-{{ section.id }} .ulike-home-comparison__track { gap: 20px; }
+    #shopify-section-{{ section.id }} .ulike-home-comparison__card + .ulike-home-comparison__card::before { left: -10px; }
+    #shopify-section-{{ section.id }} .ulike-home-comparison__row { gap: 9px; }
+    #shopify-section-{{ section.id }} .ulike-home-comparison__row-text,
+    #shopify-section-{{ section.id }} .ulike-home-comparison__card--ulike .ulike-home-comparison__row-text { font-size: 13px; }
+  }
+
+  @media (max-width: 767px) {
+    #shopify-section-{{ section.id }} .ulike-home-comparison__inner {
+      display: block;
+      width: 100%;
+      min-height: 706px;
+      padding: 60px 0 38px;
+    }
+    #shopify-section-{{ section.id }} .ulike-home-comparison__intro { padding: 0 16px; }
+    #shopify-section-{{ section.id }} .ulike-home-comparison__title {
+      font-size: 24px;
+      line-height: 24px;
+      letter-spacing: -.26px;
+      text-align: center;
+      white-space: nowrap;
+    }
+    #shopify-section-{{ section.id }} .ulike-home-comparison__title-desktop { display: none; }
+    #shopify-section-{{ section.id }} .ulike-home-comparison__title-mobile { display: inline; }
+    #shopify-section-{{ section.id }} .ulike-home-comparison__more {
+      justify-content: center;
+      gap: 8px;
+      margin-top: 20px;
+      font-size: 12px;
+      white-space: nowrap;
+    }
+    #shopify-section-{{ section.id }} .ulike-home-comparison__link {
+      gap: 5px;
+      padding-bottom: 4px;
+      font-size: 12px;
+    }
+    #shopify-section-{{ section.id }} .ulike-home-comparison__link img { width: 11.3333px; }
+    #shopify-section-{{ section.id }} .ulike-home-comparison__notes--desktop { display: none; }
+    #shopify-section-{{ section.id }} .ulike-home-comparison__comparison {
+      width: 100%;
+      margin-top: 34px;
+      overflow-x: auto;
+      overflow-y: hidden;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+      scroll-snap-type: x proximity;
+    }
+    #shopify-section-{{ section.id }} .ulike-home-comparison__comparison::-webkit-scrollbar { display: none; }
+    #shopify-section-{{ section.id }} .ulike-home-comparison__track {
+      display: flex;
+      gap: 14px;
+      width: max-content;
+      padding: 0 16px;
+    }
+    #shopify-section-{{ section.id }} .ulike-home-comparison__card {
+      flex: 0 0 230px;
+      width: 230px;
+      scroll-snap-align: start;
+    }
+    #shopify-section-{{ section.id }} .ulike-home-comparison__card + .ulike-home-comparison__card::before {
+      top: 0;
+      left: -7px;
+      width: 354px;
+      background-image: url({{ 'ulike-home-comparison-mobile-divider.svg' | asset_url }});
+    }
+    #shopify-section-{{ section.id }} .ulike-home-comparison__media {
+      width: 230px;
+      height: 200px;
+      border-radius: 4px;
+    }
+    #shopify-section-{{ section.id }} .ulike-home-comparison__card--ulike .ulike-home-comparison__image {
+      top: -1%;
+      left: -1.7%;
+      width: 109.6%;
+      height: 101.5%;
+    }
+    #shopify-section-{{ section.id }} .ulike-home-comparison__card--salon .ulike-home-comparison__image {
+      top: -8.5%;
+      left: -17.4%;
+      width: 146.5%;
+      height: 112.5%;
+    }
+    #shopify-section-{{ section.id }} .ulike-home-comparison__name {
+      margin: 10px 0 4px;
+      font-size: 14px;
+      line-height: 28px;
+    }
+    #shopify-section-{{ section.id }} .ulike-home-comparison__list { padding-left: 15px; }
+    #shopify-section-{{ section.id }} .ulike-home-comparison__row {
+      gap: 9px;
+      min-height: 30px;
+    }
+    #shopify-section-{{ section.id }} .ulike-home-comparison__row img {
+      width: 13.2424px;
+      height: 13.2424px;
+    }
+    #shopify-section-{{ section.id }} .ulike-home-comparison__card--salon .ulike-home-comparison__row img {
+      width: 14.375px;
+      height: 14.375px;
+    }
+    #shopify-section-{{ section.id }} .ulike-home-comparison__row-text,
+    #shopify-section-{{ section.id }} .ulike-home-comparison__card--ulike .ulike-home-comparison__row-text {
+      font-size: 12px;
+      line-height: 1.2;
+    }
+    #shopify-section-{{ section.id }} .ulike-home-comparison__card--ulike .ulike-home-comparison__row:last-child strong { text-decoration: none; }
+    #shopify-section-{{ section.id }} .ulike-home-comparison__arrows {
+      position: relative;
+      display: block;
+      width: 62.6992px;
+      height: 24px;
+      margin: 35px 0 0 16px;
+    }
+    #shopify-section-{{ section.id }} .ulike-home-comparison__arrows img {
+      position: absolute;
+      top: 4px;
+      left: 0;
+      display: block;
+      width: 62.6992px;
+      height: 16px;
+      pointer-events: none;
+    }
+    #shopify-section-{{ section.id }} .ulike-home-comparison__arrow {
+      position: absolute;
+      top: 0;
+      width: 23px;
+      height: 24px;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      cursor: pointer;
+    }
+    #shopify-section-{{ section.id }} .ulike-home-comparison__arrow--previous { left: 0; }
+    #shopify-section-{{ section.id }} .ulike-home-comparison__arrow--next { right: 0; }
+    #shopify-section-{{ section.id }} .ulike-home-comparison__arrow:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+    #shopify-section-{{ section.id }} .ulike-home-comparison__notes--mobile {
+      display: block;
+      max-width: none;
+      margin: 30px 16px 0;
+      font-size: 9px;
+      line-height: 1.79;
+      letter-spacing: .01em;
+    }
+  }
+</style>
+
+<ulike-home-comparison class="ulike-home-comparison">
+  <div class="ulike-home-comparison__inner">
+    <div class="ulike-home-comparison__intro">
+      <h2 class="ulike-home-comparison__title">
+        <span class="ulike-home-comparison__title-desktop">{{ section.settings.title_desktop | escape | newline_to_br }}</span>
+        <span class="ulike-home-comparison__title-mobile">{{ section.settings.title_mobile | escape }}</span>
+      </h2>
+      <div class="ulike-home-comparison__more">
+        {% if section.settings.subtitle != blank %}<span>{{ section.settings.subtitle | escape }}</span>{% endif %}
+        {% if section.settings.link_text != blank %}
+          {% if section.settings.link != blank %}<a class="ulike-home-comparison__link" href="{{ section.settings.link }}">{% else %}<span class="ulike-home-comparison__link">{% endif %}
+            {{ section.settings.link_text | escape }}
+            <picture aria-hidden="true">
+              <source media="(max-width: 767px)" srcset="{{ 'ulike-home-comparison-mobile-arrow.svg' | asset_url }}">
+              <img src="{{ 'ulike-home-comparison-desktop-arrow.svg' | asset_url }}" alt="" width="14" height="11">
+            </picture>
+          {% if section.settings.link != blank %}</a>{% else %}</span>{% endif %}
+        {% endif %}
+      </div>
+      {% if section.settings.note_1 != blank or section.settings.note_2 != blank %}
+        <div class="ulike-home-comparison__notes ulike-home-comparison__notes--desktop">
+          {% if section.settings.note_1 != blank %}<p>{{ section.settings.note_1 | escape }}</p>{% endif %}
+          {% if section.settings.note_2 != blank %}<p>{{ section.settings.note_2 | escape }}</p>{% endif %}
+        </div>
+      {% endif %}
+    </div>
+
+    <div class="ulike-home-comparison__comparison" data-comparison-scroll>
+      <div class="ulike-home-comparison__track">
+        {% for block in section.blocks %}
+          {% assign kind = block.settings.kind %}
+          {% if kind == 'salon' %}
+            {% assign desktop_fallback = 'ulike-home-comparison-desktop-salon.png' %}
+            {% assign mobile_fallback = 'ulike-home-comparison-mobile-salon.png' %}
+          {% else %}
+            {% assign desktop_fallback = 'ulike-home-comparison-desktop-ulike.jpg' %}
+            {% assign mobile_fallback = 'ulike-home-comparison-desktop-ulike.jpg' %}
+          {% endif %}
+          <div class="ulike-home-comparison__card ulike-home-comparison__card--{{ kind }}" {{ block.shopify_attributes }}>
+            <div class="ulike-home-comparison__media">
+              <picture>
+                {% if block.settings.image_mobile != blank %}
+                  <source media="(max-width: 767px)" srcset="{{ block.settings.image_mobile | image_url: width: 700 }}">
+                {% else %}
+                  <source media="(max-width: 767px)" srcset="{{ mobile_fallback | asset_url }}">
+                {% endif %}
+                {% if block.settings.image_desktop != blank %}
+                  <img class="ulike-home-comparison__image" src="{{ block.settings.image_desktop | image_url: width: 1000 }}" alt="{{ block.settings.image_alt | default: block.settings.title | escape }}" width="379" height="213" loading="lazy">
+                {% else %}
+                  <img class="ulike-home-comparison__image" src="{{ desktop_fallback | asset_url }}" alt="{{ block.settings.image_alt | default: block.settings.title | escape }}" width="379" height="213" loading="lazy">
+                {% endif %}
+              </picture>
+            </div>
+            {% if block.settings.title != blank %}<h3 class="ulike-home-comparison__name">{{ block.settings.title | escape }}</h3>{% endif %}
+            <ul class="ulike-home-comparison__list">
+              {% for i in (1..4) %}
+                {% assign text_key = 'text_' | append: i %}
+                {% assign row_text = block.settings[text_key] %}
+                {% if row_text != blank %}
+                  {% if kind == 'salon' %}
+                    {% case i %}
+                      {% when 1 %}{% assign icon_pc = 'desktop-frame457393924.svg' %}{% assign icon_m = 'mobile-frame457393924.svg' %}
+                      {% when 2 %}{% assign icon_pc = 'desktop-frame457393923.svg' %}{% assign icon_m = 'mobile-frame457393923.svg' %}
+                      {% when 3 %}{% assign icon_pc = 'desktop-frame457393923.svg' %}{% assign icon_m = 'mobile-frame457393922.svg' %}
+                      {% when 4 %}{% assign icon_pc = 'desktop-frame457393921.svg' %}{% assign icon_m = 'mobile-frame457393921.svg' %}
+                    {% endcase %}
+                  {% else %}
+                    {% case i %}
+                      {% when 1 %}{% assign icon_pc = 'desktop-frame457393928.svg' %}{% assign icon_m = 'mobile-frame457393928.svg' %}
+                      {% when 2 %}{% assign icon_pc = 'desktop-frame457393928.svg' %}{% assign icon_m = 'mobile-frame457393927.svg' %}
+                      {% when 3 %}{% assign icon_pc = 'desktop-frame457393926.svg' %}{% assign icon_m = 'mobile-frame457393926.svg' %}
+                      {% when 4 %}{% assign icon_pc = 'desktop-frame457393926.svg' %}{% assign icon_m = 'mobile-frame457393925.svg' %}
+                    {% endcase %}
+                  {% endif %}
+                  {% assign icon_pc_path = 'ulike-home-comparison-' | append: icon_pc %}
+                  {% assign icon_m_path = 'ulike-home-comparison-' | append: icon_m %}
+                  <li class="ulike-home-comparison__row">
+                    <picture aria-hidden="true">
+                      <source media="(max-width: 767px)" srcset="{{ icon_m_path | asset_url }}">
+                      <img src="{{ icon_pc_path | asset_url }}" alt="" width="20" height="20">
+                    </picture>
+                    <span class="ulike-home-comparison__row-text">{{ row_text }}</span>
+                  </li>
+                {% endif %}
+              {% endfor %}
+            </ul>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="ulike-home-comparison__arrows">
+      <img src="{{ 'ulike-home-comparison-mobile-navigation.svg' | asset_url }}" alt="" width="63" height="16" aria-hidden="true">
+      <button class="ulike-home-comparison__arrow ulike-home-comparison__arrow--previous" type="button" aria-label="Previous comparison" data-comparison-previous></button>
+      <button class="ulike-home-comparison__arrow ulike-home-comparison__arrow--next" type="button" aria-label="Next comparison" data-comparison-next></button>
+    </div>
+
+    {% if section.settings.note_1 != blank or section.settings.note_2 != blank %}
+      <div class="ulike-home-comparison__notes ulike-home-comparison__notes--mobile">
+        {% if section.settings.note_1 != blank %}<p>{{ section.settings.note_1 | escape }}</p>{% endif %}
+        {% if section.settings.note_2 != blank %}<p>{{ section.settings.note_2 | escape }}</p>{% endif %}
+      </div>
+    {% endif %}
+  </div>
+</ulike-home-comparison>
+
+<script>
+  if (!customElements.get('ulike-home-comparison')) {
+    customElements.define('ulike-home-comparison', class extends HTMLElement {
+      connectedCallback() {
+        const scroll = this.querySelector('[data-comparison-scroll]');
+        const previous = this.querySelector('[data-comparison-previous]');
+        const next = this.querySelector('[data-comparison-next]');
+        if (!scroll || !previous || !next) return;
+        this._comparisonEvents = new AbortController();
+        const signal = this._comparisonEvents.signal;
+        const update = () => {
+          const max = Math.max(0, scroll.scrollWidth - scroll.clientWidth);
+          previous.disabled = scroll.scrollLeft <= 1;
+          next.disabled = scroll.scrollLeft >= max - 1;
+        };
+        const behavior = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
+        previous.addEventListener('click', () => scroll.scrollBy({ left: -244, behavior }), { signal });
+        next.addEventListener('click', () => scroll.scrollBy({ left: 244, behavior }), { signal });
+        scroll.addEventListener('scroll', update, { passive: true, signal });
+        window.addEventListener('resize', update, { passive: true, signal });
+        update();
+      }
+      disconnectedCallback() {
+        this._comparisonEvents?.abort();
+      }
+    });
+  }
+</script>
+
+{% schema %}
+{
+  "name": "Ulike Home Comparison",
+  "settings": [
+    { "type": "textarea", "id": "title_desktop", "label": "Desktop title", "default": "A smarter investment.\nA smoother you." },
+    { "type": "text", "id": "title_mobile", "label": "Mobile title", "default": "Air 10 vs. Long-term options" },
+    { "type": "text", "id": "subtitle", "label": "Subtitle", "default": "Compare More Hair Removal Methods." },
+    { "type": "text", "id": "link_text", "label": "Link label", "default": "Learn more" },
+    { "type": "url", "id": "link", "label": "Link URL" },
+    { "type": "textarea", "id": "note_1", "label": "Footnote 1", "default": "¹ Based on CVC test report GJW2024-1748-1. The skin-contact surface measured 60°F after 30 minutes of continuous use. Performance may vary depending on environment and usage conditions." },
+    { "type": "textarea", "id": "note_2", "label": "Footnote 2", "default": "² Hair reduction results are based on SGS test reports. Individual results may vary." }
+  ],
+  "blocks": [
+    {
+      "type": "comparison",
+      "name": "Comparison column",
+      "settings": [
+        { "type": "select", "id": "kind", "label": "Column style", "options": [{ "value": "ulike", "label": "Ulike" }, { "value": "salon", "label": "Salon" }], "default": "ulike" },
+        { "type": "text", "id": "title", "label": "Column title", "default": "Ulike IPL" },
+        { "type": "image_picker", "id": "image_desktop", "label": "Desktop image" },
+        { "type": "image_picker", "id": "image_mobile", "label": "Mobile image" },
+        { "type": "text", "id": "image_alt", "label": "Image alt text" },
+        { "type": "inline_richtext", "id": "text_1", "label": "Row 1", "default": "Long-lasting hair reduction" },
+        { "type": "inline_richtext", "id": "text_2", "label": "Row 2", "default": "Comfortable 10-minute sessions" },
+        { "type": "inline_richtext", "id": "text_3", "label": "Row 3", "default": "Convenient at-home use" },
+        { "type": "inline_richtext", "id": "text_4", "label": "Row 4", "default": "One-time investment of <strong>£399.99</strong>" }
+      ]
+    }
+  ],
+  "max_blocks": 2,
+  "presets": [
+    {
+      "name": "Ulike Home Comparison",
+      "blocks": [
+        { "type": "comparison" },
+        { "type": "comparison", "settings": { "kind": "salon", "title": "Salon", "text_1": "Require 1–2 years of regular treatments", "text_2": "Longer treatment sessions", "text_3": "Repeated salon visits required", "text_4": "Higher long-term costs (around £XXX)" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
