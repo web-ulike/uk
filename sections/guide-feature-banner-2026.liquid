@@ -45,6 +45,12 @@
     object-fit: cover;
   }
 
+  #shopify-section-{{ section.id }} .guide-feature-banner__slide--uploaded .guide-feature-banner__art {
+    top: 0;
+    height: 100%;
+    object-fit: cover;
+  }
+
   #shopify-section-{{ section.id }} .guide-feature-banner__mobile-image {
     display: none;
   }
@@ -229,6 +235,25 @@
       transform: none;
     }
 
+    #shopify-section-{{ section.id }} .guide-feature-banner__slide--ipl::after {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      background: rgba(0, 0, 0, .1);
+      content: '';
+      pointer-events: none;
+    }
+
+    #shopify-section-{{ section.id }} .guide-feature-banner__slide--uploaded .guide-feature-banner__art {
+      top: 0;
+      bottom: auto;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transform: none;
+    }
+
     #shopify-section-{{ section.id }} .guide-feature-banner__slide--custom-mobile .guide-feature-banner__art {
       display: none;
     }
@@ -250,7 +275,7 @@
     }
 
     #shopify-section-{{ section.id }} .guide-feature-banner__description {
-      max-width: 215px;
+      max-width: 196px;
       margin-top: 8px;
       font-size: 12px;
       font-weight: 400;
@@ -301,7 +326,7 @@
     %}
     <div
       id="guide-feature-slide-{{ section.id }}-{{ block.id }}"
-      class="guide-feature-banner__slide{% if block.settings.default_visual == 'ipl' %} guide-feature-banner__slide--ipl{% endif %}{% if mobile_image != blank %} guide-feature-banner__slide--custom-mobile{% endif %}{% if forloop.first %} is-active{% endif %}"
+      class="guide-feature-banner__slide{% if block.settings.default_visual == 'ipl' and desktop_image == blank %} guide-feature-banner__slide--ipl{% endif %}{% if desktop_image != blank %} guide-feature-banner__slide--uploaded{% endif %}{% if mobile_image != blank %} guide-feature-banner__slide--custom-mobile{% endif %}{% if forloop.first %} is-active{% endif %}"
       data-guide-feature-slide
       {% unless forloop.first %}aria-hidden="true" inert{% endunless %}
       {{ block.shopify_attributes }}
