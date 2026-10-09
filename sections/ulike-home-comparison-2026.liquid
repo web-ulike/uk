@@ -431,10 +431,20 @@
                   {% endif %}
                   {% assign icon_pc_path = 'ulike-home-comparison-' | append: icon_pc %}
                   {% assign icon_m_path = 'ulike-home-comparison-' | append: icon_m %}
+                  {% if kind == 'salon' %}
+                    {% assign icon_image = section.settings.icon_wrong %}
+                  {% else %}
+                    {% assign icon_image = section.settings.icon_correct %}
+                  {% endif %}
                   <li class="ulike-home-comparison__row">
                     <picture aria-hidden="true">
-                      <source media="(max-width: 767px)" srcset="{{ icon_m_path | asset_url }}">
-                      <img src="{{ icon_pc_path | asset_url }}" alt="" width="20" height="20">
+                      {% if icon_image != blank %}
+                        <source media="(max-width: 767px)" srcset="{{ icon_image | image_url: width: 40 }}">
+                        <img src="{{ icon_image | image_url: width: 40 }}" alt="" width="20" height="20">
+                      {% else %}
+                        <source media="(max-width: 767px)" srcset="{{ icon_m_path | asset_url }}">
+                        <img src="{{ icon_pc_path | asset_url }}" alt="" width="20" height="20">
+                      {% endif %}
                     </picture>
                     <span class="ulike-home-comparison__row-text">{{ row_text }}</span>
                   </li>
@@ -499,6 +509,8 @@
     { "type": "text", "id": "subtitle", "label": "Subtitle", "default": "Compare More Hair Removal Methods." },
     { "type": "text", "id": "link_text", "label": "Link label", "default": "Learn more" },
     { "type": "url", "id": "link", "label": "Link URL" },
+    { "type": "image_picker", "id": "icon_correct", "label": "Correct icon (Ulike rows)" },
+    { "type": "image_picker", "id": "icon_wrong", "label": "Wrong icon (Salon rows)" },
     { "type": "textarea", "id": "note_1", "label": "Footnote 1", "default": "¹ Based on CVC test report GJW2024-1748-1. The skin-contact surface measured 60°F after 30 minutes of continuous use. Performance may vary depending on environment and usage conditions." },
     { "type": "textarea", "id": "note_2", "label": "Footnote 2", "default": "² Hair reduction results are based on SGS test reports. Individual results may vary." }
   ],
