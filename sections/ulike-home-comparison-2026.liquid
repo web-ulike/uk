@@ -272,21 +272,23 @@
     #shopify-section-{{ section.id }} .ulike-home-comparison__card + .ulike-home-comparison__card::before {
       top: 0;
       left: -7px;
-      width: 354px;
-      background-image: url({{ 'ulike-home-comparison-mobile-divider.svg' | asset_url }});
+      width: 1px;
+      height: 354px;
+      background: repeating-linear-gradient(to bottom, #fff 0 3px, transparent 3px 6px) left / .5px 100% no-repeat;
+      transform: none;
     }
     #shopify-section-{{ section.id }} .ulike-home-comparison__media {
       width: 230px;
       height: 200px;
       border-radius: 4px;
     }
-    #shopify-section-{{ section.id }} .ulike-home-comparison__card--ulike .ulike-home-comparison__image {
+    #shopify-section-{{ section.id }} .ulike-home-comparison__card--ulike:not(.ulike-home-comparison__card--custom-desktop) .ulike-home-comparison__image {
       top: -1%;
       left: -1.7%;
       width: 109.6%;
       height: 101.5%;
     }
-    #shopify-section-{{ section.id }} .ulike-home-comparison__card--salon .ulike-home-comparison__image {
+    #shopify-section-{{ section.id }} .ulike-home-comparison__card--salon:not(.ulike-home-comparison__card--custom-desktop) .ulike-home-comparison__image {
       top: -8.5%;
       left: -17.4%;
       width: 146.5%;
@@ -405,16 +407,18 @@
             {% assign desktop_fallback = 'ulike-home-comparison-desktop-ulike.jpg' %}
             {% assign mobile_fallback = 'ulike-home-comparison-desktop-ulike.jpg' %}
           {% endif %}
-          <div class="ulike-home-comparison__card ulike-home-comparison__card--{{ kind }}" {{ block.shopify_attributes }}>
+          {% assign desktop_image = block.settings.image_desktop %}
+          {% assign mobile_image = block.settings.image_mobile | default: desktop_image %}
+          <div class="ulike-home-comparison__card ulike-home-comparison__card--{{ kind }}{% if desktop_image != blank %} ulike-home-comparison__card--custom-desktop{% endif %}{% if mobile_image != blank %} ulike-home-comparison__card--custom-mobile{% endif %}" {{ block.shopify_attributes }}>
             <div class="ulike-home-comparison__media">
               <picture>
-                {% if block.settings.image_desktop != blank %}
-                  <source media="(max-width: 767px)" srcset="{{ block.settings.image_desktop | image_url: width: 700 }}">
+                {% if mobile_image != blank %}
+                  <source media="(max-width: 767px)" srcset="{{ mobile_image | image_url: width: 700 }}">
                 {% else %}
                   <source media="(max-width: 767px)" srcset="{{ mobile_fallback | asset_url }}">
                 {% endif %}
-                {% if block.settings.image_desktop != blank %}
-                  <img class="ulike-home-comparison__image" src="{{ block.settings.image_desktop | image_url: width: 1000 }}" alt="{{ block.settings.image_alt | default: block.settings.title | escape }}" width="379" height="213" loading="lazy">
+                {% if desktop_image != blank %}
+                  <img class="ulike-home-comparison__image" src="{{ desktop_image | image_url: width: 1000 }}" alt="{{ block.settings.image_alt | default: block.settings.title | escape }}" width="379" height="213" loading="lazy">
                 {% else %}
                   <img class="ulike-home-comparison__image" src="{{ desktop_fallback | asset_url }}" alt="{{ block.settings.image_alt | default: block.settings.title | escape }}" width="379" height="213" loading="lazy">
                 {% endif %}
@@ -569,7 +573,8 @@
       "settings": [
         { "type": "select", "id": "kind", "label": "Column style", "options": [{ "value": "ulike", "label": "Ulike" }, { "value": "salon", "label": "Salon" }], "default": "ulike" },
         { "type": "text", "id": "title", "label": "Column title", "default": "Ulike IPL" },
-        { "type": "image_picker", "id": "image_desktop", "label": "Image (desktop and mobile)" },
+        { "type": "image_picker", "id": "image_desktop", "label": "Desktop image" },
+        { "type": "image_picker", "id": "image_mobile", "label": "Mobile image" },
         { "type": "text", "id": "image_alt", "label": "Image alt text" },
         { "type": "inline_richtext", "id": "text_1", "label": "Row 1", "default": "Long-lasting hair reduction" },
         { "type": "inline_richtext", "id": "text_2", "label": "Row 2", "default": "Comfortable 10-minute sessions" },
