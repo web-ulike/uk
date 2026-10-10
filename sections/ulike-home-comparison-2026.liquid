@@ -255,6 +255,7 @@
       scrollbar-width: none;
       -webkit-overflow-scrolling: touch;
       scroll-snap-type: x proximity;
+      scroll-padding-inline: 16px;
     }
     #shopify-section-{{ section.id }} .ulike-home-comparison__comparison::-webkit-scrollbar { display: none; }
     #shopify-section-{{ section.id }} .ulike-home-comparison__track {
@@ -322,27 +323,37 @@
       height: 24px;
       margin: 35px 0 0 16px;
     }
-    #shopify-section-{{ section.id }} .ulike-home-comparison__arrows img {
-      position: absolute;
-      top: 4px;
-      left: 0;
-      display: block;
-      width: 62.6992px;
-      height: 16px;
-      pointer-events: none;
-    }
     #shopify-section-{{ section.id }} .ulike-home-comparison__arrow {
       position: absolute;
       top: 0;
       width: 23px;
       height: 24px;
       padding: 0;
+      overflow: hidden;
       border: 0;
+      border-radius: 0;
       background: transparent;
       cursor: pointer;
+      appearance: none;
+    }
+    #shopify-section-{{ section.id }} .ulike-home-comparison__arrow img {
+      position: absolute;
+      top: 4px;
+      display: block;
+      width: 62.6992px;
+      max-width: none;
+      height: 16px;
+      filter: brightness(0) invert(1);
+      pointer-events: none;
     }
     #shopify-section-{{ section.id }} .ulike-home-comparison__arrow--previous { left: 0; }
     #shopify-section-{{ section.id }} .ulike-home-comparison__arrow--next { right: 0; }
+    #shopify-section-{{ section.id }} .ulike-home-comparison__arrow--previous img { left: 0; }
+    #shopify-section-{{ section.id }} .ulike-home-comparison__arrow--next img { right: 0; }
+    #shopify-section-{{ section.id }} .ulike-home-comparison__arrow:disabled {
+      opacity: .35;
+      cursor: default;
+    }
     #shopify-section-{{ section.id }} .ulike-home-comparison__arrow:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
     #shopify-section-{{ section.id }} .ulike-home-comparison__notes--mobile {
       display: block;
@@ -457,9 +468,12 @@
     </div>
 
     <div class="ulike-home-comparison__arrows">
-      <img src="{{ 'ulike-home-comparison-mobile-navigation.svg' | asset_url }}" alt="" width="63" height="16" aria-hidden="true">
-      <button class="ulike-home-comparison__arrow ulike-home-comparison__arrow--previous" type="button" aria-label="Previous comparison" data-comparison-previous></button>
-      <button class="ulike-home-comparison__arrow ulike-home-comparison__arrow--next" type="button" aria-label="Next comparison" data-comparison-next></button>
+      <button class="ulike-home-comparison__arrow ulike-home-comparison__arrow--previous" type="button" aria-label="Previous comparison" data-comparison-previous disabled>
+        <img src="{{ 'ulike-home-comparison-mobile-navigation.svg' | asset_url }}" alt="" width="63" height="16" aria-hidden="true">
+      </button>
+      <button class="ulike-home-comparison__arrow ulike-home-comparison__arrow--next" type="button" aria-label="Next comparison" data-comparison-next>
+        <img src="{{ 'ulike-home-comparison-mobile-navigation.svg' | asset_url }}" alt="" width="63" height="16" aria-hidden="true">
+      </button>
     </div>
 
     {% if section.settings.note_1 != blank or section.settings.note_2 != blank %}
@@ -479,6 +493,8 @@
         const previous = this.querySelector('[data-comparison-previous]');
         const next = this.querySelector('[data-comparison-next]');
         if (!scroll || !previous || !next) return;
+        this._comparisonEvents?.abort();
+        this._comparisonResize?.disconnect();
         this._comparisonEvents = new AbortController();
         const signal = this._comparisonEvents.signal;
         const update = () => {
@@ -487,14 +503,28 @@
           next.disabled = scroll.scrollLeft >= max - 1;
         };
         const behavior = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
-        previous.addEventListener('click', () => scroll.scrollBy({ left: -244, behavior }), { signal });
-        next.addEventListener('click', () => scroll.scrollBy({ left: 244, behavior }), { signal });
+        const move = (direction) => {
+          const cards = scroll.querySelectorAll('.ulike-home-comparison__card');
+          const step = cards.length > 1
+            ? cards[1].getBoundingClientRect().left - cards[0].getBoundingClientRect().left
+            : scroll.clientWidth;
+          scroll.scrollBy({ left: direction * step, behavior });
+        };
+        previous.addEventListener('click', () => move(-1), { signal });
+        next.addEventListener('click', () => move(1), { signal });
         scroll.addEventListener('scroll', update, { passive: true, signal });
         window.addEventListener('resize', update, { passive: true, signal });
+        this._comparisonResize = new ResizeObserver(update);
+        this._comparisonResize.observe(scroll);
+        const track = scroll.querySelector('.ulike-home-comparison__track');
+        if (track) this._comparisonResize.observe(track);
+        this._comparisonFrame = requestAnimationFrame(update);
         update();
       }
       disconnectedCallback() {
         this._comparisonEvents?.abort();
+        this._comparisonResize?.disconnect();
+        cancelAnimationFrame(this._comparisonFrame);
       }
     });
   }
