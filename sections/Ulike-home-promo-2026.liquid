@@ -32,7 +32,7 @@
     </article>
   {% endfor %}
   {% if section.blocks.size > 1 %}
-    <button class="ulike-home-promo__prev" type="button" aria-label="Previous slide">
+    <button class="ulike-home-promo__prev" type="button" aria-label="Previous slide" hidden>
       <svg xmlns="http://www.w3.org/2000/svg" width="20" height="16" viewBox="0 0 20 16" fill="none" aria-hidden="true" focusable="false">
         <path d="M15.8984 7.46869C15.8984 7.55731 15.8672 7.64523 15.8075 7.71241L11.0577 13.0728L10.5617 12.5854L14.7788 7.82605H1.98828C1.98828 7.43152 2.29227 7.11133 2.66683 7.11133H15.5436C15.6718 7.11133 15.7967 7.17923 15.8577 7.29859C15.8856 7.35219 15.8984 7.4108 15.8984 7.46869Z" fill="#1A1A1A"/>
         <path d="M15.8976 6.88367C15.6123 7.18675 15.1504 7.18675 14.8658 6.88367L10.9297 2.69251L11.4456 2.14307L15.8969 6.88367H15.8976Z" fill="#1A1A1A"/>
@@ -74,6 +74,8 @@
   #ulike-home-promo-{{ section.id }} .ulike-home-promo__button { display: inline-flex; align-items: center; justify-content: center; min-width: 155px; min-height: 48px; padding: 6px 20px; border: .5px solid #3f3636; border-radius: 4px; background: #fff; color: #190a0a; font-size: 15px; font-weight: 500; line-height: 1; text-align: center; text-decoration: none; }
   #ulike-home-promo-{{ section.id }} .ulike-home-promo__prev,
   #ulike-home-promo-{{ section.id }} .ulike-home-promo__next { position: absolute; z-index: 2; top: 50%; display: grid; width: 40px; height: 40px; place-items: center; padding: 0; border: .6px solid #190a0a; border-radius: 4px; background: #fff; cursor: pointer; transform: translateY(-50%); }
+  #ulike-home-promo-{{ section.id }} .ulike-home-promo__prev[hidden],
+  #ulike-home-promo-{{ section.id }} .ulike-home-promo__next[hidden] { display: none; }
   #ulike-home-promo-{{ section.id }} .ulike-home-promo__prev { left: clamp(12px, 3.125vw, 60px); }
   #ulike-home-promo-{{ section.id }} .ulike-home-promo__next { right: clamp(12px, 3.125vw, 60px); }
   #ulike-home-promo-{{ section.id }} .ulike-home-promo__prev svg,
@@ -112,12 +114,16 @@
     if (!root) return;
     const slides = Array.from(root.querySelectorAll('.ulike-home-promo__slide'));
     if (slides.length < 2) return;
+    const prevButton = root.querySelector('.ulike-home-promo__prev');
+    const nextButton = root.querySelector('.ulike-home-promo__next');
     let active = 0;
     const show = (index) => {
-      const next = (index + slides.length) % slides.length;
+      const next = Math.max(0, Math.min(index, slides.length - 1));
       if (next === active) return;
       root.dataset.direction = index < active ? 'prev' : 'next';
       active = next;
+      prevButton.hidden = active === 0;
+      nextButton.hidden = active === slides.length - 1;
       slides.forEach((slide, slideIndex) => {
         const selected = slideIndex === active;
         slide.classList.toggle('is-active', selected);
