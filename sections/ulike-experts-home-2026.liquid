@@ -80,10 +80,11 @@
     z-index: 2;
     opacity: 0;
   }
-  #shopify-section-{{ section.id }} .ulike-experts-home__card.is-playing .ulike-experts-home__video {
+  #shopify-section-{{ section.id }} .ulike-experts-home__card.is-started .ulike-experts-home__video {
     opacity: 1;
   }
-  #shopify-section-{{ section.id }} .ulike-experts-home__play {
+  #shopify-section-{{ section.id }} .ulike-experts-home__play,
+  #shopify-section-{{ section.id }} .ulike-experts-home__pause {
     position: absolute;
     right: 20px;
     bottom: 20px;
@@ -96,12 +97,15 @@
     background: transparent;
     cursor: pointer;
   }
-  #shopify-section-{{ section.id }} .ulike-experts-home__play svg {
+  #shopify-section-{{ section.id }} .ulike-experts-home__play svg,
+  #shopify-section-{{ section.id }} .ulike-experts-home__pause svg {
     display: block;
   }
   #shopify-section-{{ section.id }} .ulike-experts-home__card.is-playing .ulike-experts-home__play {
     display: none;
   }
+  #shopify-section-{{ section.id }} .ulike-experts-home__pause { display: none; }
+  #shopify-section-{{ section.id }} .ulike-experts-home__card.is-playing .ulike-experts-home__pause { display: block; }
   #shopify-section-{{ section.id }} .ulike-experts-home__details {
     margin-top: 30px;
   }
@@ -273,6 +277,13 @@
                         </defs>
                       </svg>
                     </button>
+                    <button class="ulike-experts-home__pause" type="button" aria-label="Pause {{ block.settings.name | escape }} video">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 50 50" fill="none" aria-hidden="true" focusable="false">
+                        <rect x="0.531915" y="0.531915" width="48.9362" height="48.9362" rx="24.4681" fill="white" stroke="white" stroke-width="1.06383"/>
+                        <rect x="18" y="17" width="5" height="16" rx="1" fill="#3F3636"/>
+                        <rect x="27" y="17" width="5" height="16" rx="1" fill="#3F3636"/>
+                      </svg>
+                    </button>
                   {% endif %}
                 </div>
                 <div class="ulike-experts-home__details">
@@ -333,22 +344,34 @@
     };
 
     section.addEventListener('click', async (event) => {
-      const button = event.target.closest('.ulike-experts-home__play');
+      const button = event.target.closest('.ulike-experts-home__play, .ulike-experts-home__pause');
       if (!button) return;
       const card = button.closest('.ulike-experts-home__card');
       const video = card?.querySelector('video');
       if (!video) return;
+      if (button.classList.contains('ulike-experts-home__pause')) {
+        pause(card);
+        card.querySelector('.ulike-experts-home__play')?.focus({ preventScroll: true });
+        resumeAutoplay();
+        return;
+      }
       pausePlaying();
       swiper?.autoplay?.stop();
       try {
-        video.controls = true;
+        video.controls = false;
         await video.play();
-        card.classList.add('is-playing');
+        if (!video.paused) card.querySelector('.ulike-experts-home__pause')?.focus({ preventScroll: true });
       } catch (error) {
         video.controls = false;
         resumeAutoplay();
       }
     });
+
+    section.addEventListener('play', (event) => {
+      if (!event.target.matches('.ulike-experts-home__video')) return;
+      event.target.controls = false;
+      event.target.closest('.ulike-experts-home__card')?.classList.add('is-started', 'is-playing');
+    }, true);
 
     section.addEventListener('ended', (event) => {
       const card = event.target.closest('.ulike-experts-home__card');
