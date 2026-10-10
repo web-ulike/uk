@@ -131,7 +131,7 @@
   }
   #shopify-section-{{ section.id }} .ulike-experts-home__navigation {
     position: absolute;
-    top: 5px;
+    top: 17px;
     right: 0;
     width: 94px;
     height: 24px;
@@ -139,26 +139,28 @@
   #shopify-section-{{ section.id }} .ulike-experts-home__arrow {
     position: absolute;
     top: 0;
-    width: 47px;
+    width: 32px;
     height: 24px;
     padding: 0;
     border: 0;
     background: transparent;
-    background-image: url('{{ 'ulike-experts-arrows.svg' | asset_url }}');
-    background-repeat: no-repeat;
-    background-size: 94px 24px;
+    color: #1a1a1a;
     cursor: pointer;
   }
   #shopify-section-{{ section.id }} .ulike-experts-home__arrow.swiper-prev {
     left: 0;
-    background-position: left center;
+
   }
   #shopify-section-{{ section.id }} .ulike-experts-home__arrow.swiper-next {
     right: 0;
-    background-position: right center;
+
   }
+  #shopify-section-{{ section.id }} .ulike-experts-home__arrow svg { display: block; }
+  #shopify-section-{{ section.id }} .ulike-experts-home__arrow.swiper-button-lock { display: block; }
+  #shopify-section-{{ section.id }} .ulike-experts-home__arrow:disabled,
   #shopify-section-{{ section.id }} .ulike-experts-home__arrow.swiper-button-disabled {
-    opacity: .3;
+    color: #929292;
+    opacity: 1;
     cursor: default;
   }
   @media (max-width: 767px) {
@@ -222,9 +224,12 @@
       margin-top: 24px;
     }
     #shopify-section-{{ section.id }} .ulike-experts-home__arrow {
-      width: 31.5px;
+      width: 21px;
       height: 16px;
-      background-size: 63px 16px;
+    }
+    #shopify-section-{{ section.id }} .ulike-experts-home__arrow svg {
+      width: 21px;
+      height: 16px;
     }
   }
 {% endstyle %}
@@ -300,8 +305,10 @@
       {% if section.blocks.size > 1 %}
         <div class="ulike-experts-home__navigation">
           <button class="ulike-experts-home__arrow swiper-prev" type="button" aria-label="Previous experts">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="24" viewBox="0 0 32 24" fill="none" aria-hidden="true" focusable="false"><path d="M29.8213 11.2451C30.6652 11.2454 31.3496 11.9304 31.3496 12.7744H2.52344L12.0283 22.957L10.9102 24L0.205078 12.5312C0.070577 12.3876 6.6209e-05 12.1993 0 12.0098C0 11.886 0.0291602 11.7602 0.0917969 11.6455C0.229353 11.3903 0.510945 11.2453 0.799805 11.2451H29.8213ZM12.0117 1.08105L3.76367 9.32812C3.16726 9.92453 2.19852 9.92453 1.60059 9.32812H1.60254L10.9307 0L12.0117 1.08105Z" fill="currentColor"/></svg>
           </button>
           <button class="ulike-experts-home__arrow swiper-next" type="button" aria-label="Next experts">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="24" viewBox="0 0 32 24" fill="none" aria-hidden="true" focusable="false"><path d="M30.5498 11.2451C30.8388 11.2451 31.1202 11.3902 31.2578 11.6455C31.3205 11.7602 31.3496 11.8859 31.3496 12.0098C31.3495 12.1993 31.279 12.3876 31.1445 12.5312L20.4404 24L19.3223 22.957L28.8262 12.7744H0C0 11.9303 0.685241 11.2452 1.5293 11.2451H30.5498ZM29.748 9.32812H29.749C29.1511 9.92444 28.1833 9.9245 27.5869 9.32812L19.3379 1.08105L20.4199 0L29.748 9.32812Z" fill="currentColor"/></svg>
           </button>
         </div>
       {% endif %}
@@ -318,16 +325,16 @@
     let swiper;
     let hovered = false;
 
-    // Repeat the editable cards so three visible desktop cards can still move.
-    if (originalSlides.length > 1) {
-      while (wrapper.children.length < Math.max(6, originalSlides.length * 2)) {
-        originalSlides.forEach((slide) => {
-          const clone = slide.cloneNode(true);
-          clone.removeAttribute('data-shopify-editor-block');
-          wrapper.appendChild(clone);
-        });
-      }
-    }
+    const updateNavigation = (instance) => {
+      const locked = instance.isLocked || instance.snapGrid.length <= 1;
+      [['.swiper-prev', locked || instance.isBeginning], ['.swiper-next', locked || instance.isEnd]].forEach(([selector, disabled]) => {
+        const button = section.querySelector(selector);
+        if (!button) return;
+        button.disabled = disabled;
+        button.setAttribute('aria-disabled', String(disabled));
+        button.classList.toggle('swiper-button-disabled', disabled);
+      });
+    };
 
     const pause = (card) => {
       const video = card.querySelector('video');
@@ -406,12 +413,14 @@
       swiper = new window.Swiper(section.querySelector('.swiper-container'), {
         slidesPerView: 3,
         spaceBetween: 20,
-        loop: originalSlides.length > 1,
+        loop: false,
+        watchOverflow: true,
         centeredSlides: false,
         speed: 600,
         autoplay: originalSlides.length > 1 ? {
           delay: 5000,
-          disableOnInteraction: false
+          disableOnInteraction: false,
+          stopOnLastSlide: true
         } : false,
         navigation: originalSlides.length > 1 ? {
           prevEl: section.querySelector('.swiper-prev'),
@@ -423,12 +432,19 @@
           1200: { slidesPerView: 3, spaceBetween: 20 }
         },
         on: {
+          init: function () { updateNavigation(this); },
+          slideChange: function () { updateNavigation(this); },
+          resize: function () { updateNavigation(this); },
+          update: function () { updateNavigation(this); },
+          lock: function () { updateNavigation(this); },
+          unlock: function () { updateNavigation(this); },
           slideChangeTransitionStart: () => {
             pausePlaying();
             resumeAutoplay();
           }
         }
       });
+      updateNavigation(swiper);
     };
     init();
   })();
