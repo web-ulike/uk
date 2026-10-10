@@ -318,14 +318,17 @@
     #shopify-section-{{ section.id }} .ulike-home-comparison__card--ulike .ulike-home-comparison__row:last-child strong { text-decoration: none; }
     #shopify-section-{{ section.id }} .ulike-home-comparison__arrows {
       position: relative;
-      display: block;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
       width: 62.6992px;
       height: 24px;
       margin: 35px 0 0 16px;
     }
     #shopify-section-{{ section.id }} .ulike-home-comparison__arrow {
-      position: absolute;
-      top: 0;
+      position: relative;
+      display: block;
+      flex: 0 0 23px;
       width: 23px;
       height: 24px;
       padding: 0;
@@ -336,22 +339,20 @@
       cursor: pointer;
       appearance: none;
     }
-    #shopify-section-{{ section.id }} .ulike-home-comparison__arrow img {
+    #shopify-section-{{ section.id }} .ulike-home-comparison__arrow svg {
       position: absolute;
       top: 4px;
       display: block;
       width: 62.6992px;
       max-width: none;
       height: 16px;
-      filter: brightness(0) invert(1);
       pointer-events: none;
     }
-    #shopify-section-{{ section.id }} .ulike-home-comparison__arrow--previous { left: 0; }
-    #shopify-section-{{ section.id }} .ulike-home-comparison__arrow--next { right: 0; }
-    #shopify-section-{{ section.id }} .ulike-home-comparison__arrow--previous img { left: 0; }
-    #shopify-section-{{ section.id }} .ulike-home-comparison__arrow--next img { right: 0; }
+    #shopify-section-{{ section.id }} .ulike-home-comparison__arrow--previous svg { left: 0; }
+    #shopify-section-{{ section.id }} .ulike-home-comparison__arrow--next svg { right: 0; }
+    #shopify-section-{{ section.id }} .ulike-home-comparison__arrow svg path { opacity: 1; }
     #shopify-section-{{ section.id }} .ulike-home-comparison__arrow:disabled {
-      opacity: .35;
+      opacity: .5;
       cursor: default;
     }
     #shopify-section-{{ section.id }} .ulike-home-comparison__arrow:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
@@ -469,10 +470,20 @@
 
     <div class="ulike-home-comparison__arrows">
       <button class="ulike-home-comparison__arrow ulike-home-comparison__arrow--previous" type="button" aria-label="Previous comparison" data-comparison-previous disabled>
-        <img src="{{ 'ulike-home-comparison-mobile-navigation.svg' | asset_url }}" alt="" width="63" height="16" aria-hidden="true">
+        <svg aria-hidden="true" focusable="false" preserveAspectRatio="none" overflow="visible" style="display: block;" width="62.6992" height="16.001" viewBox="0 0 62.6992 16.001" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g>
+<path opacity="0.5" d="M19.8799 7.49707C20.4426 7.49707 20.8994 7.95384 20.8994 8.5166H1.68262L8.01855 15.3057L7.27344 16.001L0.136719 8.35449C0.0470439 8.2587 4.29153e-05 8.13319 0 8.00684C0 7.92426 0.019724 7.84013 0.0615234 7.76367C0.15336 7.59368 0.340676 7.49707 0.533203 7.49707H19.8799ZM8.00684 0.720703L2.50781 6.21875C2.11021 6.61635 1.46503 6.61635 1.06641 6.21875H1.06738L7.28613 0L8.00684 0.720703Z" fill="white"/>
+<path d="M61.2666 7.49756C61.4591 7.49767 61.6465 7.5941 61.7383 7.76416C61.7801 7.84062 61.7998 7.92474 61.7998 8.00732C61.7997 8.13363 61.7527 8.25923 61.6631 8.35498L54.5264 16.0005L53.7812 15.3052L60.1172 8.51709H40.8994C40.8994 7.95442 41.3563 7.49772 41.9189 7.49756H61.2666ZM60.7324 6.21924H60.7334C60.3348 6.61684 59.6886 6.61684 59.291 6.21924L53.792 0.721191L54.5127 0.000488281L60.7324 6.21924Z" fill="white"/>
+</g>
+</svg>
       </button>
       <button class="ulike-home-comparison__arrow ulike-home-comparison__arrow--next" type="button" aria-label="Next comparison" data-comparison-next>
-        <img src="{{ 'ulike-home-comparison-mobile-navigation.svg' | asset_url }}" alt="" width="63" height="16" aria-hidden="true">
+        <svg aria-hidden="true" focusable="false" preserveAspectRatio="none" overflow="visible" style="display: block;" width="62.6992" height="16.001" viewBox="0 0 62.6992 16.001" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g>
+<path opacity="0.5" d="M19.8799 7.49707C20.4426 7.49707 20.8994 7.95384 20.8994 8.5166H1.68262L8.01855 15.3057L7.27344 16.001L0.136719 8.35449C0.0470439 8.2587 4.29153e-05 8.13319 0 8.00684C0 7.92426 0.019724 7.84013 0.0615234 7.76367C0.15336 7.59368 0.340676 7.49707 0.533203 7.49707H19.8799ZM8.00684 0.720703L2.50781 6.21875C2.11021 6.61635 1.46503 6.61635 1.06641 6.21875H1.06738L7.28613 0L8.00684 0.720703Z" fill="white"/>
+<path d="M61.2666 7.49756C61.4591 7.49767 61.6465 7.5941 61.7383 7.76416C61.7801 7.84062 61.7998 7.92474 61.7998 8.00732C61.7997 8.13363 61.7527 8.25923 61.6631 8.35498L54.5264 16.0005L53.7812 15.3052L60.1172 8.51709H40.8994C40.8994 7.95442 41.3563 7.49772 41.9189 7.49756H61.2666ZM60.7324 6.21924H60.7334C60.3348 6.61684 59.6886 6.61684 59.291 6.21924L53.792 0.721191L54.5127 0.000488281L60.7324 6.21924Z" fill="white"/>
+</g>
+</svg>
       </button>
     </div>
 
