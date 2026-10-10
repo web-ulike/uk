@@ -61,7 +61,7 @@
     white-space: nowrap;
   }
 
-  #shopify-section-{{ section.id }} .ulike-home-comparison__link img {
+  #shopify-section-{{ section.id }} .ulike-home-comparison__link svg {
     display: block;
     width: 14px;
     height: auto;
@@ -250,7 +250,7 @@
       padding-bottom: 4px;
       font-size: 12px;
     }
-    #shopify-section-{{ section.id }} .ulike-home-comparison__link img { width: 11.3333px; }
+    #shopify-section-{{ section.id }} .ulike-home-comparison__link svg { width: 11.3333px; }
     #shopify-section-{{ section.id }} .ulike-home-comparison__notes--desktop { display: none; }
     #shopify-section-{{ section.id }} .ulike-home-comparison__comparison {
       width: 100%;
@@ -393,10 +393,17 @@
         {% if section.settings.link_text != blank %}
           {% if section.settings.link != blank %}<a class="ulike-home-comparison__link" href="{{ section.settings.link }}">{% else %}<span class="ulike-home-comparison__link">{% endif %}
             {{ section.settings.link_text | escape }}
-            <picture aria-hidden="true">
-              <source media="(max-width: 767px)" srcset="{{ 'ulike-home-comparison-mobile-arrow.svg' | asset_url }}">
-              <img src="{{ 'ulike-home-comparison-desktop-arrow.svg' | asset_url }}" alt="" width="14" height="11">
-            </picture>
+            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="9" viewBox="0 0 12 9" fill="none" aria-hidden="true" focusable="false">
+              <g clip-path="url(#ulike-comparison-link-arrow-{{ section.id }})">
+                <path d="M11.3333 4.34185C11.3333 4.41041 11.3079 4.47841 11.2593 4.53037L7.38933 8.67671L6.9852 8.29967L10.4211 4.61828H0C0 4.3131 0.247675 4.06543 0.552846 4.06543H11.0442C11.1487 4.06543 11.2504 4.11795 11.3002 4.21028C11.3228 4.25174 11.3333 4.29707 11.3333 4.34185Z" fill="white"/>
+                <path d="M10.756 3.37236C10.5398 3.58797 10.1898 3.58797 9.97424 3.37236L6.99219 0.390862L7.38305 0L10.7554 3.37236H10.756Z" fill="white"/>
+              </g>
+              <defs>
+                <clipPath id="ulike-comparison-link-arrow-{{ section.id }}">
+                  <rect width="11.3333" height="8.67691" fill="white"/>
+                </clipPath>
+              </defs>
+            </svg>
           {% if section.settings.link != blank %}</a>{% else %}</span>{% endif %}
         {% endif %}
       </div>
