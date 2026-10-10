@@ -1,6 +1,6 @@
 <section id="ulike-home-promo-{{ section.id }}" class="ulike-home-promo" aria-label="{{ section.settings.aria_label | escape }}">
   {% for block in section.blocks %}
-    <article class="ulike-home-promo__slide{% if forloop.first %} is-active{% endif %}" data-slide-index="{{ forloop.index0 }}" {% unless forloop.first %}hidden{% endunless %} {{ block.shopify_attributes }}>
+    <article class="ulike-home-promo__slide{% if forloop.first %} is-active{% endif %}" data-slide-index="{{ forloop.index0 }}" aria-hidden="{% if forloop.first %}false{% else %}true{% endif %}" {% unless forloop.first %}inert{% endunless %} {{ block.shopify_attributes }}>
       {% if block.settings.image_desktop != blank or block.settings.image_mobile != blank or block.settings.use_default_image %}
         <div class="ulike-home-promo__art" aria-hidden="true">
           <picture>
@@ -32,6 +32,12 @@
     </article>
   {% endfor %}
   {% if section.blocks.size > 1 %}
+    <button class="ulike-home-promo__prev" type="button" aria-label="Previous slide">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="16" viewBox="0 0 20 16" fill="none" aria-hidden="true" focusable="false">
+        <path d="M15.8984 7.46869C15.8984 7.55731 15.8672 7.64523 15.8075 7.71241L11.0577 13.0728L10.5617 12.5854L14.7788 7.82605H1.98828C1.98828 7.43152 2.29227 7.11133 2.66683 7.11133H15.5436C15.6718 7.11133 15.7967 7.17923 15.8577 7.29859C15.8856 7.35219 15.8984 7.4108 15.8984 7.46869Z" fill="#1A1A1A"/>
+        <path d="M15.8976 6.88367C15.6123 7.18675 15.1504 7.18675 14.8658 6.88367L10.9297 2.69251L11.4456 2.14307L15.8969 6.88367H15.8976Z" fill="#1A1A1A"/>
+      </svg>
+    </button>
     <button class="ulike-home-promo__next" type="button" aria-label="Next slide">
       <svg xmlns="http://www.w3.org/2000/svg" width="20" height="16" viewBox="0 0 20 16" fill="none" aria-hidden="true" focusable="false">
         <path d="M15.8984 7.46869C15.8984 7.55731 15.8672 7.64523 15.8075 7.71241L11.0577 13.0728L10.5617 12.5854L14.7788 7.82605H1.98828C1.98828 7.43152 2.29227 7.11133 2.66683 7.11133H15.5436C15.6718 7.11133 15.7967 7.17923 15.8577 7.29859C15.8856 7.35219 15.8984 7.4108 15.8984 7.46869Z" fill="#1A1A1A"/>
@@ -44,9 +50,12 @@
 <style>
   @font-face { font-family: 'Ulike Promo Saans'; src: url('{{ 'Saans-Regular.otf' | asset_url }}') format('opentype'); font-weight: 400; font-display: swap; }
   @font-face { font-family: 'Ulike Promo Saans'; src: url('{{ 'Saans-Medium.otf' | asset_url }}') format('opentype'); font-weight: 500; font-display: swap; }
-  #ulike-home-promo-{{ section.id }} { position: relative; overflow: hidden; width: 100%; background: #f8f8f8; color: #190a0a; font-family: 'Ulike Promo Saans', sans-serif; }
-  #ulike-home-promo-{{ section.id }} .ulike-home-promo__slide { position: relative; width: 100%; height: max(360px, 28.125vw); overflow: hidden; }
-  #ulike-home-promo-{{ section.id }} .ulike-home-promo__slide[hidden] { display: none; }
+  #ulike-home-promo-{{ section.id }} { position: relative; overflow: hidden; width: 100%; height: max(360px, 28.125vw); background: #f8f8f8; color: #190a0a; font-family: 'Ulike Promo Saans', sans-serif; --promo-enter-x: 32px; }
+  #ulike-home-promo-{{ section.id }}[data-direction="prev"] { --promo-enter-x: -32px; }
+  #ulike-home-promo-{{ section.id }} .ulike-home-promo__slide { position: absolute; inset: 0; width: 100%; height: 100%; overflow: hidden; visibility: hidden; opacity: 0; pointer-events: none; transition: opacity .5s ease, visibility 0s linear .5s; }
+  #ulike-home-promo-{{ section.id }} .ulike-home-promo__slide.is-active { visibility: visible; opacity: 1; pointer-events: auto; transition: none; animation: ulike-home-promo-slide-in .6s cubic-bezier(.22, 1, .36, 1) both; }
+  @keyframes ulike-home-promo-slide-in { from { opacity: 0; transform: translateX(var(--promo-enter-x)); } to { opacity: 1; transform: translateX(0); } }
+  @keyframes ulike-home-promo-copy-in { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
   #ulike-home-promo-{{ section.id }} .ulike-home-promo__art { width: 100%; height: 100%; pointer-events: none; }
   #ulike-home-promo-{{ section.id }} .ulike-home-promo__art picture { display: block; width: 100%; height: 100%; }
   #ulike-home-promo-{{ section.id }} .ulike-home-promo__art-image { display: block; width: 100%; height: 100%; max-width: none; object-fit: cover; }
@@ -55,18 +64,27 @@
   #ulike-home-promo-{{ section.id }} .ulike-home-promo__description { font-size: 20px; font-weight: 400; line-height: 1.5; }
   #ulike-home-promo-{{ section.id }} .ulike-home-promo__description p { margin: 0; }
   #ulike-home-promo-{{ section.id }} .ulike-home-promo__description--mobile { display: none; }
+  #ulike-home-promo-{{ section.id }} .is-active .ulike-home-promo__title { animation: ulike-home-promo-copy-in .55s .1s both; }
+  #ulike-home-promo-{{ section.id }} .is-active .ulike-home-promo__description { animation: ulike-home-promo-copy-in .55s .2s both; }
+  #ulike-home-promo-{{ section.id }} .is-active .ulike-home-promo__button { animation: ulike-home-promo-copy-in .55s .3s both; }
   /* PC dots follow the description in the left text column, above the CTA. */
   #ulike-home-promo-{{ section.id }} .ulike-home-promo__pagination { display: flex; align-items: center; gap: 6px; min-height: 6px; margin: 40px 0 70px; }
   #ulike-home-promo-{{ section.id }} .ulike-home-promo__dot { display: block; flex: none; width: 10px; height: 6px; padding: 0; border: 0; border-radius: 23px; background: #cacaca; cursor: pointer; }
   #ulike-home-promo-{{ section.id }} .ulike-home-promo__dot.is-active { width: 24px; background: #190a0a; }
   #ulike-home-promo-{{ section.id }} .ulike-home-promo__button { display: inline-flex; align-items: center; justify-content: center; min-width: 155px; min-height: 48px; padding: 6px 20px; border: .5px solid #3f3636; border-radius: 4px; background: #fff; color: #190a0a; font-size: 15px; font-weight: 500; line-height: 1; text-align: center; text-decoration: none; }
-  #ulike-home-promo-{{ section.id }} .ulike-home-promo__next { position: absolute; z-index: 2; top: 50%; right: 60px; display: grid; width: 40px; height: 40px; place-items: center; padding: 0; border: .6px solid #190a0a; border-radius: 4px; background: #fff; cursor: pointer; transform: translateY(-50%); }
+  #ulike-home-promo-{{ section.id }} .ulike-home-promo__prev,
+  #ulike-home-promo-{{ section.id }} .ulike-home-promo__next { position: absolute; z-index: 2; top: 50%; display: grid; width: 40px; height: 40px; place-items: center; padding: 0; border: .6px solid #190a0a; border-radius: 4px; background: #fff; cursor: pointer; transform: translateY(-50%); }
+  #ulike-home-promo-{{ section.id }} .ulike-home-promo__prev { left: clamp(12px, 3.125vw, 60px); }
+  #ulike-home-promo-{{ section.id }} .ulike-home-promo__next { right: clamp(12px, 3.125vw, 60px); }
+  #ulike-home-promo-{{ section.id }} .ulike-home-promo__prev svg,
   #ulike-home-promo-{{ section.id }} .ulike-home-promo__next svg { display: block; width: 20px; height: 16px; }
+  #ulike-home-promo-{{ section.id }} .ulike-home-promo__prev svg { transform: rotate(180deg); }
   #ulike-home-promo-{{ section.id }} .ulike-home-promo__dot:focus-visible,
+  #ulike-home-promo-{{ section.id }} .ulike-home-promo__prev:focus-visible,
   #ulike-home-promo-{{ section.id }} .ulike-home-promo__next:focus-visible,
   #ulike-home-promo-{{ section.id }} .ulike-home-promo__button:focus-visible { outline: 2px solid #190a0a; outline-offset: 3px; }
   @media (max-width: 767px) {
-    #ulike-home-promo-{{ section.id }} .ulike-home-promo__slide { height: 500px; }
+    #ulike-home-promo-{{ section.id }} { height: 500px; }
     #ulike-home-promo-{{ section.id }} .ulike-home-promo__content { top: 40px; right: 20px; left: 19px; width: auto; transform: none; }
     #ulike-home-promo-{{ section.id }} .ulike-home-promo__title { max-width: 245px; margin-bottom: 8px; font-size: 24px; }
     #ulike-home-promo-{{ section.id }} .ulike-home-promo__description { font-size: 12px; line-height: 1.5; }
@@ -74,7 +92,17 @@
     #ulike-home-promo-{{ section.id }} .ulike-home-promo__description--mobile { display: block; }
     #ulike-home-promo-{{ section.id }} .ulike-home-promo__button { min-width: 108px; min-height: 34px; margin-top: 24px; padding: 5px 15px; border-width: .25px; font-size: 12px; }
     #ulike-home-promo-{{ section.id }} .ulike-home-promo__pagination { position: absolute; top: 434px; left: calc(50vw - 19px); margin: 0; transform: translateX(-50%); }
-    #ulike-home-promo-{{ section.id }} .ulike-home-promo__next { display: none; }
+    #ulike-home-promo-{{ section.id }} .ulike-home-promo__prev,
+    #ulike-home-promo-{{ section.id }} .ulike-home-promo__next { top: 54%; width: 36px; height: 36px; }
+    #ulike-home-promo-{{ section.id }} .ulike-home-promo__prev { left: 12px; }
+    #ulike-home-promo-{{ section.id }} .ulike-home-promo__next { right: 12px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    #ulike-home-promo-{{ section.id }} .ulike-home-promo__slide,
+    #ulike-home-promo-{{ section.id }} .ulike-home-promo__slide.is-active { transition: none; animation: none; }
+    #ulike-home-promo-{{ section.id }} .is-active .ulike-home-promo__title,
+    #ulike-home-promo-{{ section.id }} .is-active .ulike-home-promo__description,
+    #ulike-home-promo-{{ section.id }} .is-active .ulike-home-promo__button { animation: none; }
   }
 </style>
 
@@ -86,11 +114,15 @@
     if (slides.length < 2) return;
     let active = 0;
     const show = (index) => {
-      active = (index + slides.length) % slides.length;
+      const next = (index + slides.length) % slides.length;
+      if (next === active) return;
+      root.dataset.direction = index < active ? 'prev' : 'next';
+      active = next;
       slides.forEach((slide, slideIndex) => {
         const selected = slideIndex === active;
-        slide.hidden = !selected;
         slide.classList.toggle('is-active', selected);
+        slide.setAttribute('aria-hidden', String(!selected));
+        slide.inert = !selected;
         slide.querySelectorAll('[data-dot-index]').forEach((dot) => {
           const current = Number(dot.dataset.dotIndex) === active;
           dot.classList.toggle('is-active', current);
@@ -100,7 +132,12 @@
     };
     root.addEventListener('click', (event) => {
       const dot = event.target.closest('[data-dot-index]');
-      if (dot && root.contains(dot)) show(Number(dot.dataset.dotIndex));
+      if (dot && root.contains(dot)) {
+        const index = Number(dot.dataset.dotIndex);
+        show(index);
+        slides[active].querySelector(`[data-dot-index="${active}"]`)?.focus();
+      }
+      else if (event.target.closest('.ulike-home-promo__prev')) show(active - 1);
       else if (event.target.closest('.ulike-home-promo__next')) show(active + 1);
     });
     let touchX = null;
