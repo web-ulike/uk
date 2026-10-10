@@ -505,10 +505,17 @@
         const behavior = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
         const move = (direction) => {
           const cards = scroll.querySelectorAll('.ulike-home-comparison__card');
-          const step = cards.length > 1
-            ? cards[1].getBoundingClientRect().left - cards[0].getBoundingClientRect().left
-            : scroll.clientWidth;
-          scroll.scrollBy({ left: direction * step, behavior });
+          const max = Math.max(0, scroll.scrollWidth - scroll.clientWidth);
+          const firstLeft = cards[0]?.getBoundingClientRect().left || 0;
+          const positions = Array.from(cards, (card, index) => {
+            if (index === 0) return 0;
+            if (index === cards.length - 1) return max;
+            return Math.min(max, card.getBoundingClientRect().left - firstLeft);
+          });
+          const target = direction > 0
+            ? positions.find((position) => position > scroll.scrollLeft + 1) ?? max
+            : positions.reverse().find((position) => position < scroll.scrollLeft - 1) ?? 0;
+          scroll.scrollTo({ left: target, behavior });
         };
         previous.addEventListener('click', () => move(-1), { signal });
         next.addEventListener('click', () => move(1), { signal });
