@@ -16,7 +16,14 @@
         </div>
       {% endif %}
       <div class="ulike-home-promo__content">
-        {% if block.settings.title != blank %}<h2 class="ulike-home-promo__title to-top">{{ block.settings.title | escape }}</h2>{% endif %}
+        {% if block.settings.title_image != blank %}
+          <div class="ulike-home-promo__heading to-top">
+            {% if block.settings.title != blank %}<h2 class="ulike-home-promo__title">{{ block.settings.title | escape }}</h2>{% endif %}
+            {{ block.settings.title_image | image_url: width: 588 | image_tag: class: 'ulike-home-promo__title-image', loading: 'lazy', widths: '91,147,182,294,441,588', sizes: '(max-width: 767px) 91px, 147px' }}
+          </div>
+        {% elsif block.settings.title != blank %}
+          <h2 class="ulike-home-promo__title to-top">{{ block.settings.title | escape }}</h2>
+        {% endif %}
         {% if block.settings.description_desktop != blank %}<div class="ulike-home-promo__description ulike-home-promo__description--desktop to-top">{{ block.settings.description_desktop }}</div>{% endif %}
         {% if block.settings.description_mobile != blank or block.settings.description_desktop != blank %}<div class="ulike-home-promo__description ulike-home-promo__description--mobile to-top">{{ block.settings.description_mobile | default: block.settings.description_desktop }}</div>{% endif %}
         {% if section.blocks.size > 0 %}
@@ -60,6 +67,9 @@
   #ulike-home-promo-{{ section.id }} .ulike-home-promo__art-image { display: block; width: 100%; height: 100%; max-width: none; object-fit: cover; }
   #ulike-home-promo-{{ section.id }} .ulike-home-promo__content { position: absolute; z-index: 1; top: 50%; left: clamp(32px, 10.4167vw, 200px); width: min(668px, 46vw); transform: translateY(-50%); }
   #ulike-home-promo-{{ section.id }} .ulike-home-promo__title { margin: 0 0 16px; color: #1a1a1a; font-size: 48px; font-weight: 500; line-height: 1.2; }
+  #ulike-home-promo-{{ section.id }} .ulike-home-promo__heading { display: flex; align-items: center; gap: 20px; margin-bottom: 16px; }
+  #ulike-home-promo-{{ section.id }} .ulike-home-promo__heading .ulike-home-promo__title { min-width: 0; margin: 0; }
+  #ulike-home-promo-{{ section.id }} .ulike-home-promo__title-image { display: block; flex: none; width: 147px; max-width: 100%; height: auto; }
   #ulike-home-promo-{{ section.id }} .ulike-home-promo__description { font-size: 20px; font-weight: 400; line-height: 1.5; }
   #ulike-home-promo-{{ section.id }} .ulike-home-promo__description p { margin: 0; }
   #ulike-home-promo-{{ section.id }} .ulike-home-promo__description--mobile { display: none; }
@@ -87,6 +97,8 @@
     #ulike-home-promo-{{ section.id }} { height: 500px; }
     #ulike-home-promo-{{ section.id }} .ulike-home-promo__content { top: 40px; right: 20px; left: 19px; width: auto; transform: none; }
     #ulike-home-promo-{{ section.id }} .ulike-home-promo__title { max-width: 245px; margin-bottom: 8px; font-size: 24px; }
+    #ulike-home-promo-{{ section.id }} .ulike-home-promo__heading { justify-content: space-between; align-items: flex-start; gap: 12px; margin-bottom: 8px; }
+    #ulike-home-promo-{{ section.id }} .ulike-home-promo__title-image { width: 90.84px; }
     #ulike-home-promo-{{ section.id }} .ulike-home-promo__description { font-size: 12px; line-height: 1.5; }
     #ulike-home-promo-{{ section.id }} .ulike-home-promo__description--desktop { display: none; }
     #ulike-home-promo-{{ section.id }} .ulike-home-promo__description--mobile { display: block; }
@@ -187,6 +199,7 @@
       { "type": "image_picker", "id": "image_desktop", "label": "Desktop image (transparent artwork)" },
       { "type": "image_picker", "id": "image_mobile", "label": "Mobile image (optional)" },
       { "type": "text", "id": "title", "label": "Title", "default": "Student Discount" },
+      { "type": "image_picker", "id": "title_image", "label": "Title image (after title)", "info": "Shown beside the title: 147px wide on desktop and 91px on mobile. Upload a tightly cropped image; its aspect ratio is preserved." },
       { "type": "richtext", "id": "description_desktop", "label": "Desktop description", "default": "<p>Save on your self-care routine. Use your HSA/FSA funds to shop eligible Ulike products with pre-tax dollars. It's your money. Invest it in you.</p>" },
       { "type": "richtext", "id": "description_mobile", "label": "Mobile description", "default": "<p>Exclusive savings for verified students.</p>" },
       { "type": "text", "id": "button_label", "label": "Button text", "default": "LEARN MORE" },
