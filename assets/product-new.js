@@ -377,7 +377,7 @@ var ProductNewPage = (() => {
       updatePrice(variant);
       updateTitle(variant.variantTitle || variant.title);
       updateAddToCartText(variant);
-      document.querySelectorAll('luke-variant-discounts').forEach((element) => {
+      document.querySelectorAll('ulike-variant-discounts').forEach((element) => {
         if (element.querySelector(`template[data-variant-discounts="${variant.vid}"]`)) element.updateDiscounts(variant.vid);
       });
     }, 10);
@@ -492,8 +492,8 @@ function formatMoney(cents, format = "") {
   return formatString.replace(placeholderRegex, value);
 }
 // Luke 产品页：变体折扣提示和折扣值，空值回退到组件配置。
-if (!customElements.get('luke-variant-discounts')) {
-  customElements.define('luke-variant-discounts', class extends HTMLElement {
+if (!customElements.get('ulike-variant-discounts')) {
+  customElements.define('ulike-variant-discounts', class extends HTMLElement {
     connectedCallback() {
       this.onVariantChanged = (event) => {
         if (event.target.id === this.getAttribute('form-id')) {
