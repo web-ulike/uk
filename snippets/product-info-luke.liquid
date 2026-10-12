@@ -14,6 +14,7 @@
     <template data-variant-discounts="{{ variant.id }}">
       <div data-discount-information>{{ variant.metafields.custom.discount_information.value }}</div>
       <div data-discount-text>{{ variant.metafields.custom.discount_text.value | escape }}</div>
+      <div data-discount-code>{{ variant.metafields.custom.discount_code.value | escape }}</div>
     </template>
   {%- endfor -%}
   <product-meta form-id="{{ product_form_id }}" price-class="price--large" class="product-meta">
@@ -669,10 +670,13 @@
           {% assign flag = true %}
           
         {%- when 'discountCode' -%}
+          {%- assign variant_discount_code = product.selected_or_first_available_variant.metafields.custom.discount_code.value -%}
           <div
             class="p-box-discount-code"
             auto-apply="{{ block.settings.is_auto_apply }}"
-            auto-code="{{ block.settings.code }}"
+            auto-code="{{ variant_discount_code | default: block.settings.code | escape }}"
+            data-variant-auto-code
+            data-default-auto-code="{{ block.settings.code | escape }}"
           >
             <div class="warp-width">
               <div class="bg-image">
@@ -696,7 +700,7 @@
                 <div class="right-block">
                   <div class="btn-copy-block">
                     <div class="name">{{ block.settings.copy_text }}</div>
-                    <div class="code">{{ block.settings.code_text }}</div>
+                    <div class="code" data-variant-discount-code data-default="{{ block.settings.code_text | escape }}">{{ variant_discount_code | default: block.settings.code_text | escape }}</div>
                   </div>
                   <div class="copy-success">
                     <img

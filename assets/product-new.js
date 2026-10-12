@@ -31,6 +31,9 @@ var ProductNewPage = (() => {
     $(document)
       .off('.productNew')
       .on('variant:changed.productNew', onVariantChanged)
+      .on('product:discount-code-changed.productNew', (event) => {
+        if (state.discountCode) state.discountCode = event.detail.code;
+      })
       .on('cart:refresh.productNew', () => autoDiscountCode(state.discountCode))
       .on('click.productNew', '.product-info-new .btn-copy-block', onCopyDiscount)
       .on('click.productNew', '.product-detail-recommend-item', onRecommendationSelected)
@@ -491,7 +494,7 @@ function formatMoney(cents, format = "") {
   }
   return formatString.replace(placeholderRegex, value);
 }
-// Luke 产品页：变体折扣提示和折扣值，空值回退到组件配置。
+// 产品页：变体折扣提示、折扣值和优惠码，空值回退到组件配置。
 if (!customElements.get('ulike-variant-discounts')) {
   customElements.define('ulike-variant-discounts', class extends HTMLElement {
     connectedCallback() {
@@ -508,6 +511,7 @@ if (!customElements.get('ulike-variant-discounts')) {
         .find((item) => item.dataset.variantDiscounts === String(variantId));
       const information = template?.content.querySelector('[data-discount-information]')?.innerHTML || '';
       const discountText = template?.content.querySelector('[data-discount-text]')?.textContent || '';
+      const discountCode = template?.content.querySelector('[data-discount-code]')?.textContent.trim() || '';
       this.querySelectorAll('[data-variant-discount-information]').forEach((element) => {
         const value = information.trim() ? information : element.dataset.default || '';
         element.innerHTML = value;
@@ -516,6 +520,19 @@ if (!customElements.get('ulike-variant-discounts')) {
       this.querySelectorAll('[data-variant-discount-text]').forEach((element) => {
         element.textContent = discountText.trim() ? discountText : element.dataset.default || '';
       });
+      this.querySelectorAll('[data-variant-discount-code]').forEach((element) => {
+        element.textContent = discountCode || element.dataset.default || '';
+      });
+      this.querySelectorAll('[data-variant-auto-code]').forEach((element) => {
+        element.setAttribute('auto-code', discountCode || element.dataset.defaultAutoCode || '');
+      });
+      const codeElement = this.querySelector('[data-variant-discount-code]');
+      if (codeElement) {
+        this.dispatchEvent(new CustomEvent('product:discount-code-changed', {
+          bubbles: true,
+          detail: { code: codeElement.textContent },
+        }));
+      }
     }
 
     disconnectedCallback() {
