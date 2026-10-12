@@ -9,7 +9,13 @@
 {% comment %} 捆绑变量 {% endcomment %}
 {% assign flag = false %}
 
-<div class="product-info-new">
+<luke-variant-discounts class="product-info-new" form-id="{{ product_form_id }}" style="display: block;">
+  {%- for variant in product.variants -%}
+    <template data-variant-discounts="{{ variant.id }}">
+      <div data-discount-information>{{ variant.metafields.custom.discount_information.value }}</div>
+      <div data-discount-text>{{ variant.metafields.custom.discount_text.value | escape }}</div>
+    </template>
+  {%- endfor -%}
   <product-meta form-id="{{ product_form_id }}" price-class="price--large" class="product-meta">
     {% comment %} 标题 {% endcomment %}
     <h1
@@ -646,9 +652,13 @@
               </div>
             {% endif %}
 
-            {% if block.settings.discount_information != '' %}
-              <div class="information">{{ block.settings.discount_information }}</div>
-            {% endif %}
+            {%- assign discount_information = product.selected_or_first_available_variant.metafields.custom.discount_information.value | default: block.settings.discount_information -%}
+            <div
+              class="information"
+              data-variant-discount-information
+              data-default="{{ block.settings.discount_information | escape }}"
+              {% if discount_information == blank %}style="display: none;"{% endif %}
+            >{{ discount_information }}</div>
           </div>
         {%- when 'installment' -%}
           {% render 'p-accordion-item', p_product: product, p_block: block %}
@@ -681,7 +691,8 @@
                 </picture>
               </div>
               <div class="abs-discount-detail">
-                <div class="left-block">{{ block.settings.discount_text }}</div>
+                {%- assign discount_text = product.selected_or_first_available_variant.metafields.custom.discount_text.value | default: block.settings.discount_text -%}
+                <div class="left-block" data-variant-discount-text data-default="{{ block.settings.discount_text | escape }}">{{ discount_text | escape }}</div>
                 <div class="right-block">
                   <div class="btn-copy-block">
                     <div class="name">{{ block.settings.copy_text }}</div>
@@ -764,4 +775,4 @@
       {%- endform -%}
     {%- endif -%}
   </div>
-</div>
+</luke-variant-discounts>
