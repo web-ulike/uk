@@ -20,8 +20,11 @@
   }
 
   #shopify-section-{{ section.id }} .ulike-moments__track {
+    position: relative;
     display: flex;
     gap: 16px;
+    box-sizing: border-box;
+    padding-inline: max(20px, calc((100% - 880px) / 2));
     overflow-x: auto;
     overscroll-behavior-x: contain;
     scrollbar-width: none;
@@ -32,15 +35,10 @@
     display: none;
   }
 
-  #shopify-section-{{ section.id }} .ulike-moments__track::before,
-  #shopify-section-{{ section.id }} .ulike-moments__track::after {
-    content: '';
-    flex: 0 0 max(20px, calc((100vw - 880px) / 2));
-  }
-
   #shopify-section-{{ section.id }} .ulike-moments__card {
     position: relative;
-    flex: 0 0 880px;
+    flex: 0 0 100%;
+    min-width: 0;
     height: 460px;
     overflow: hidden;
     border-radius: 8px;
@@ -146,6 +144,14 @@
     color: #190a0a;
     cursor: pointer;
     pointer-events: auto;
+    transition: background-color .4s ease, color .4s ease, border-color .4s ease;
+  }
+
+  @media (hover: hover) and (min-width: 768px) {
+    #shopify-section-{{ section.id }} .ulike-moments__arrow:not(:disabled):hover {
+      background: #190a0a;
+      color: #fff;
+    }
   }
 
   #shopify-section-{{ section.id }} .ulike-moments__arrow svg {
@@ -175,19 +181,13 @@
     }
 
     #shopify-section-{{ section.id }} .ulike-moments__track {
+      padding-inline: 19px max(19px, calc(100% - 276px));
       scroll-padding-inline: 19px;
-    }
-
-    #shopify-section-{{ section.id }} .ulike-moments__track::before {
-      flex-basis: 19px;
-    }
-
-    #shopify-section-{{ section.id }} .ulike-moments__track::after {
-      flex-basis: calc(100vw - 276px);
     }
 
     #shopify-section-{{ section.id }} .ulike-moments__card {
       flex-basis: 257px;
+      max-width: calc(100vw - 38px);
       height: 314px;
       border-radius: 4px;
       scroll-snap-align: start;
@@ -348,13 +348,17 @@
       const prev = section.querySelector('[data-moments-prev]');
       const next = section.querySelector('[data-moments-next]');
       const isMobile = () => window.matchMedia('(max-width: 767px)').matches;
-      const position = (card) => isMobile()
-        ? card.offsetLeft - 19
-        : card.offsetLeft + card.offsetWidth / 2 - track.clientWidth / 2;
+      const position = (card) => {
+        const left = card.getBoundingClientRect().left - track.getBoundingClientRect().left + track.scrollLeft;
+        const target = isMobile() ? left - 19 : left + card.offsetWidth / 2 - track.clientWidth / 2;
+        return Math.max(0, Math.min(target, track.scrollWidth - track.clientWidth));
+      };
+      let activeIndex = 0;
       const currentIndex = () => cards.reduce((closest, card, index) =>
         Math.abs(position(card) - track.scrollLeft) < Math.abs(position(cards[closest]) - track.scrollLeft) ? index : closest, 0);
       const update = () => {
         const index = currentIndex();
+        activeIndex = index;
         if (prev) prev.disabled = index === 0;
         if (next) next.disabled = index === cards.length - 1;
       };
@@ -366,9 +370,21 @@
       prev?.addEventListener('click', () => goTo(Math.max(0, currentIndex() - 1)));
       next?.addEventListener('click', () => goTo(Math.min(cards.length - 1, currentIndex() + 1)));
       track.addEventListener('scroll', update, { passive: true });
-      window.addEventListener('resize', update, { passive: true });
-      if (!isMobile() && cards.length > 2) goTo(1, 'auto');
-      else update();
+      track.addEventListener('keydown', event => {
+        if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
+        event.preventDefault();
+        goTo(Math.max(0, Math.min(cards.length - 1, currentIndex() + (event.key === 'ArrowRight' ? 1 : -1))));
+      });
+      const resizeObserver = new ResizeObserver(() => goTo(activeIndex, 'auto'));
+      resizeObserver.observe(track);
+      section.addEventListener('shopify:block:select', event => {
+        const index = cards.indexOf(event.target.closest('.ulike-moments__card'));
+        if (index !== -1) goTo(index, 'auto');
+      });
+      document.addEventListener('shopify:section:unload', event => {
+        if (event.target.contains(section)) resizeObserver.disconnect();
+      });
+      goTo(0, 'auto');
     };
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init, { once: true });
     else init();
