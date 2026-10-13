@@ -169,7 +169,8 @@
   }
 
   #shopify-section-{{ section.id }} .ulike-moments__arrow:disabled {
-    visibility: hidden;
+    opacity: .45;
+    cursor: default;
     pointer-events: none;
   }
 
@@ -271,6 +272,10 @@
       transform: none;
     }
 
+    #shopify-section-{{ section.id }} .ulike-moments__arrow:disabled {
+      opacity: 1;
+    }
+
     #shopify-section-{{ section.id }} .ulike-moments__arrow img {
       width: 21px;
       height: 16px;
@@ -347,13 +352,13 @@
         <div class="ulike-moments__navigation">
           <button class="ulike-moments__arrow" type="button" data-moments-prev aria-label="Previous card">
             <picture>
-              <source media="(max-width: 767px)" srcset="{{ 'ulike-moments-mobile-prev.svg' | asset_url }}">
+              <source media="(max-width: 767px)" srcset="{{ 'ulike-moments-mobile-prev.svg' | asset_url }}" data-enabled-src="{{ 'ulike-moments-mobile-prev.svg' | asset_url }}" data-disabled-src="{{ 'ulike-moments-mobile-prev-disabled.svg' | asset_url }}">
               <img src="{{ 'ulike-moments-arrow.svg' | asset_url }}" alt="" width="19.8717" height="15.2139">
             </picture>
           </button>
           <button class="ulike-moments__arrow" type="button" data-moments-next aria-label="Next card">
             <picture>
-              <source media="(max-width: 767px)" srcset="{{ 'ulike-moments-mobile-next.svg' | asset_url }}">
+              <source media="(max-width: 767px)" srcset="{{ 'ulike-moments-mobile-next.svg' | asset_url }}" data-enabled-src="{{ 'ulike-moments-mobile-next.svg' | asset_url }}" data-disabled-src="{{ 'ulike-moments-mobile-next-disabled.svg' | asset_url }}">
               <img src="{{ 'ulike-moments-arrow.svg' | asset_url }}" alt="" width="19.8717" height="15.2139">
             </picture>
           </button>
@@ -379,6 +384,13 @@
       }
       const count = {{ section.blocks.size | json }};
       const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const updateNavigation = (disabled) => {
+        section.querySelectorAll('.ulike-moments__arrow').forEach(button => {
+          button.disabled = disabled;
+          const source = button.querySelector('source');
+          if (source) source.srcset = disabled ? source.dataset.disabledSrc : source.dataset.enabledSrc;
+        });
+      };
       const swiper = new window.Swiper(viewport, {
         slidesPerView: 'auto',
         spaceBetween: 16,
@@ -402,6 +414,11 @@
         },
         breakpoints: {
           768: { centeredSlides: true, slidesOffsetBefore: 14, slidesOffsetAfter: 14 }
+        },
+        on: {
+          init: () => updateNavigation(count < 2),
+          transitionStart: (instance) => updateNavigation(count < 2 || instance.params.speed > 0),
+          transitionEnd: () => updateNavigation(count < 2)
         }
       });
       section.momentsSwiper = swiper;
