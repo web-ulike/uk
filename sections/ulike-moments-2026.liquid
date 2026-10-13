@@ -265,10 +265,10 @@
     #shopify-section-{{ section.id }} .ulike-moments__navigation {
       position: relative;
       top: auto;
-      left: calc(78.13% - 38.97px);
-      right: auto;
+      left: auto;
+      right: 32px;
       width: 62.699px;
-      margin: 31.5px 0 0;
+      margin: 31.5px 0 0 auto;
       transform: none;
     }
 
@@ -406,7 +406,7 @@
         centeredSlides: false,
         slidesOffsetBefore: 19,
         slidesOffsetAfter: () => Math.max(19, viewport.clientWidth - 276),
-        autoplay: {{ section.settings.autoplay | default: true, allow_false: true | json }} && !reducedMotion && count > 1 ? {
+        autoplay: desktop.matches && {{ section.settings.autoplay | default: true, allow_false: true | json }} && !reducedMotion && count > 1 ? {
           delay: {{ section.settings.autoplay_interval | default: 5 | times: 1000 | json }},
           disableOnInteraction: false,
           pauseOnMouseEnter: true,
