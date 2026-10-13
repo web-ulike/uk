@@ -254,7 +254,7 @@
     }
 
     .beauty-guide__navigation {
-      gap: 8px;
+      gap: 15px;
     }
 
     .beauty-guide__arrow {
@@ -312,7 +312,7 @@
     order: 4;
      justify-content: flex-end;
      margin-top: 28px;
-        padding-right: 34px;
+        padding-right: 0;
   }
     .beauty-guide__header-right .beauty-guide__all-link {
         margin: 24px 0 20px;
@@ -323,6 +323,22 @@
     .beauty-guide__image,
     .beauty-guide__arrow {
       transition: none;
+    }
+  }
+  @media screen and (max-width: 767px) {
+    .beauty-guide__arrow {
+      color: #191919;
+      opacity: 1;
+    }
+
+    .beauty-guide__arrow.swiper-button-disabled,
+    .beauty-guide__arrow.swiper-button-lock,
+    .beauty-guide__arrow:disabled {
+      display: flex;
+      color: #c9c9c9;
+      opacity: 1;
+      pointer-events: none;
+      transform: none;
     }
   }
 </style>
@@ -341,7 +357,7 @@
 
 <section class="beauty-guide">
   <div class="container beauty-guide-container">
-    <custom-swiper
+    <custom-swiper watch-overflow="true"
       slides-per-view="4"
       space-between="24"
       loop="{{ section.settings.loop }}"

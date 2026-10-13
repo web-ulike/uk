@@ -1,0 +1,762 @@
+<style>
+  .routine-products {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    padding-top: var(--padding-top);
+    padding-bottom: var(--padding-bottom);
+    background: #fff;
+  }
+
+  .routine-products__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 40px;
+    margin-bottom: 48px;
+  }
+
+  .routine-products__title {
+    margin: 0;
+    color: #1A1A1A;
+    font-size: 48px;
+    font-weight: 400;
+    line-height: 1.2;
+    font-family: var(--heading-font-family);
+  }
+
+  .routine-products__navigation {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+    gap: 30px;
+  }
+
+  .routine-products__arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 39px;
+    height: 39px;
+    padding: 0;
+    color: #191919;
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+    transition:
+      opacity 0.3s ease,
+      transform 0.3s ease;
+  }
+
+  .routine-products__arrow:hover {
+    transform: scale(1.08);
+  }
+
+  .routine-products__arrow.swiper-button-disabled {
+    opacity: 0.3;
+    pointer-events: none;
+  }
+
+  .routine-products__arrow svg {
+    display: block;
+    width: 31px;
+    height: auto;
+  }
+
+  .routine-products custom-swiper {
+    display: block;
+    width: 100%;
+  }
+
+  .routine-products .swiper-container {
+    width: 100%;
+  }
+
+  .routine-products .swiper-wrapper {
+    align-items: stretch;
+  }
+
+  .routine-products .swiper-slide {
+    height: auto;
+  }
+
+  .routine-products__card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .routine-products__media {
+    position: relative;
+    display: block;
+    width: 100%;
+    aspect-ratio: 1 / 1.25;
+    overflow: hidden;
+    background: #F8F8F8;
+    border-radius: 8px;
+  }
+
+  .routine-products__image,
+  .routine-products__media > svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .routine-products__card:hover .routine-products__image {
+    transform: scale(1.025);
+  }
+
+  .routine-products__content {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    padding-top: 16px;
+  }
+
+  .routine-products__top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 9px;
+  }
+
+  .routine-products__product-title {
+    margin: 0;
+    color: #191919;
+   font-size: 18px;
+    font-weight: 400;
+    line-height: 118.056%;
+    letter-spacing: 0.043px;
+     font-family: var(--heading-font-family);
+  }
+
+  .routine-products__product-title a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .routine-products__rating {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+    gap: 6px;
+    color: #1A1A1A;
+    font-size: 14px;
+    line-height: 214.286%;
+    white-space: nowrap;
+  }
+
+  .routine-products__rating svg {
+    display: block;
+    width: 15px;
+    height: 15px;
+    fill: currentColor;
+  }
+
+  .routine-products__description {
+    min-height: 22px;
+    margin-top: 4px;
+    color: #1A1A1A;
+    font-size: 11px;
+    font-weight: 400;
+    line-height: 177.083%;
+  }
+
+  .routine-products__description p {
+    margin: 0;
+  }
+
+  .routine-products__price {
+    margin-top: 4px;
+    color: #1A1A1A;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 177.083%;
+    font-family: var(--heading-font-family);
+  }
+
+  .routine-products__compare-price {
+    margin-left: 5px;
+    color: #8d8d8d;
+    font-weight: 400;
+    text-decoration: line-through;
+  }
+
+  .routine-products__actions {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+    margin-top: 12px;
+  }
+
+  .routine-products__form {
+    display: block;
+    width: 100%;
+    margin: 0;
+  }
+
+  .routine-products__actions .routine-products__button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: 36px;
+    padding: 6px 12px;
+    color: #fff;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1;
+    text-align: center;
+    text-decoration: none;
+    text-transform: uppercase;
+    background: #1A1A1A;
+    border: 1px solid #1A1A1A;
+    border-radius: 4px;
+    cursor: pointer;
+    transition:
+      color 0.25s ease,
+      background 0.25s ease,
+      opacity 0.25s ease;
+  }
+
+  .routine-products__actions .routine-products__button:hover {
+    color: #1A1A1A;
+    background: #fff;
+  }
+
+  .routine-products__actions .routine-products__button--secondary {
+    color: #1A1A1A;
+    background: transparent;
+  }
+
+  .routine-products__actions .routine-products__button--secondary:hover {
+    color: #fff;
+    background: #1A1A1A;
+  }
+
+ .routine-products__actions .routine-products__button:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  @media screen and (max-width: 1199px) {
+    {% comment %} .routine-products__header {
+      margin-bottom: 32px;
+    }
+
+    .routine-products__title {
+      font-size: 30px;
+    } {% endcomment %}
+  }
+
+  @media screen and (max-width: 767px) {
+    .routine-products {
+      padding-top: var(--mobile-padding-top);
+      padding-bottom: var(--mobile-padding-bottom);
+    }
+
+    .routine-products__header {
+      gap: 20px;
+      margin-bottom: 32px;
+    }
+
+    .routine-products__title {
+      max-width: 260px;
+      font-size: 24px;
+    }
+
+    .routine-products__navigation {
+      gap: 15px;
+    }
+
+    .routine-products__arrow {
+      width: 26px;
+      height: 26px;
+    }
+
+    .routine-products__arrow svg {
+      width: 21px;
+    }
+
+    .routine-products__content {
+      padding-top: 12px;
+    }
+
+    .routine-products__product-title {
+      font-size: 14px;
+    }
+
+    .routine-products__rating {
+      font-size: 10px;
+    }
+
+    .routine-products__rating svg {
+      width: 12px;
+      height: 12px;
+    }
+
+    .routine-products__description {
+      min-height: 0;
+      margin-top: 8px;
+      font-size: 12px;
+    }
+
+    .routine-products__price {
+      margin-top: 8px;
+      font-size: 12px;
+    }
+
+    .routine-products__actions {
+      margin-top: 16px;
+    }
+
+   .routine-products__actions .routine-products__button {
+      min-height: 34px;
+      font-size: 10px;
+    }
+
+
+
+
+        .routine-products custom-swiper {
+     display: flex;
+    flex-direction: column;
+}
+.routine-products__header {
+  display: contents;
+}
+
+.routine-products__title {
+  order: 1;
+  margin-bottom: 32px;
+}
+
+.routine-products .swiper-container{
+  order: 2;
+}
+
+.routine-products__navigation {
+  order: 3;
+     justify-content: flex-end;
+     margin-top: 28px;
+        padding-right: 0;
+}
+
+  }
+  @media screen and (max-width: 767px) {
+    .routine-products__arrow {
+      color: #191919;
+      opacity: 1;
+    }
+
+    .routine-products__arrow.swiper-button-disabled,
+    .routine-products__arrow.swiper-button-lock,
+    .routine-products__arrow:disabled {
+      display: flex;
+      color: #c9c9c9;
+      opacity: 1;
+      pointer-events: none;
+      transform: none;
+    }
+  }
+</style>
+
+<section class="routine-products"  data-routine-products="{{ section.id }}" style="--padding-top:{{ section.settings.padding_top }}px;--padding-bottom:{{ section.settings.padding_bottom }}px;--mobile-padding-top:{{ section.settings.mobile_padding_top }}px;--mobile-padding-bottom:{{ section.settings.mobile_padding_bottom }}px;">
+  <div class="routine-products__container container">
+    <custom-swiper watch-overflow="true" slides-per-view="4.8" space-between="16" loop="{{ section.settings.loop }}" centered-slides="false" navigation="true" pagination="false" breakpoints='{"0":{"slidesPerView":1.2,"spaceBetween":12},"480":{"slidesPerView":1.6,"spaceBetween":20},"768":{"slidesPerView":2.5,"spaceBetween":24},"1024":{"slidesPerView":3.5,"spaceBetween":24},"1280":{"slidesPerView":4.2,"spaceBetween":24},"1600":{"slidesPerView":4.8,"spaceBetween":24}}'>
+
+      <div class="routine-products__header js-scroll__header">
+        {% if section.settings.title != blank %}<h2 class="routine-products__title">{{ section.settings.title }}</h2>{% endif %}
+        {% if section.blocks.size > 1 %}
+          <div class="routine-products__navigation">
+            <button class="routine-products__arrow routine-products__arrow--prev swiper-prev" type="button" aria-label="Previous"><svg viewBox="0 0 32 20" fill="none" aria-hidden="true"><path d="M10 1L1 10M1 10L10 19M1 10H31" stroke="currentColor" stroke-width="1.3"/></svg></button>
+            <button class="routine-products__arrow routine-products__arrow--next swiper-next" type="button" aria-label="Next"><svg viewBox="0 0 32 20" fill="none" aria-hidden="true"><path d="M22 1L31 10M31 10L22 19M31 10H1" stroke="currentColor" stroke-width="1.3"/></svg></button>
+          </div>
+        {% endif %}
+      </div>
+
+      <div class="swiper-container js-scroll__group">
+        <div class="swiper-wrapper">
+          {% for block in section.blocks %}
+            {% liquid
+              assign product = block.settings.product
+              assign product_image = block.settings.image
+              if product_image == blank and product != blank
+                assign product_image = product.featured_image
+              endif
+              assign product_title = block.settings.custom_title
+              if product_title == blank and product != blank
+                assign product_title = product.title
+              endif
+              assign product_url = block.settings.custom_link
+              if product_url == blank and product != blank
+                assign product_url = product.url
+              endif
+            
+              assign variant = nil
+              if product != blank
+                if block.settings.variant_id != blank
+                  assign target_variant_id = block.settings.variant_id | plus: 0
+
+                  for product_variant in product.variants
+                    if product_variant.id == target_variant_id
+                      assign variant = product_variant
+                      break
+                    endif
+                  endfor
+                endif
+                if variant == nil
+                  assign variant = product.selected_or_first_available_variant
+                endif
+              endif
+
+
+            %}
+
+            <div class="swiper-slide" {{ block.shopify_attributes }} style="--reveal-index:{{ forloop.index0 }};">
+              <article class="routine-products__card js-scroll__card">
+                {% if product_url != blank %}<a class="routine-products__media" href="{{ product_url }}">{% else %}<div class="routine-products__media">{% endif %}
+                  {% if product_image != blank %}
+                    <img class="routine-products__image" src="{{ product_image | image_url: width: 800 }}" srcset="{{ product_image | image_url: width: 300 }} 300w, {{ product_image | image_url: width: 500 }} 500w, {{ product_image | image_url: width: 800 }} 800w" sizes="(max-width:767px) 80vw,(max-width:1023px) 40vw,22vw" alt="{{ product_title | escape }}" width="{{ product_image.width }}" height="{{ product_image.height }}" loading="lazy">
+                  {% else %}
+                    {{ 'product-1' | placeholder_svg_tag: 'routine-products__image' }}
+                  {% endif %}
+                {% if product_url != blank %}</a>{% else %}</div>{% endif %}
+
+                <div class="routine-products__content">
+                  <div class="routine-products__top">
+                    {% if product_title != blank %}
+                      <h3 class="routine-products__product-title">{% if product_url != blank %}<a href="{{ product_url }}">{{ product_title }}</a>{% else %}{{ product_title }}{% endif %}</h3>
+                    {% endif %}
+
+                    {% if block.settings.show_rating %}
+                      <div class="routine-products__rating"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 1.8l3.09 6.26 6.91 1-5 4.87 1.18 6.88L12 17.56l-6.18 3.25L7 13.93 2 9.06l6.91-1L12 1.8z"/></svg><span>{{ block.settings.rating }} ({{ block.settings.review_count }})</span></div>
+                    {% endif %}
+                  </div>
+
+                  {% if block.settings.description != blank %}
+                    <div class="routine-products__description">{{ block.settings.description }}</div>
+                  {% elsif product != blank and product.description != blank %}
+                    <div class="routine-products__description">{{ product.description | strip_html | truncate: 80 }}</div>
+                  {% endif %}
+
+                  {% if product != blank and block.settings.manual_price == blank %}
+                    <div class="routine-products__price">{{ variant.price | money }}{% if variant.compare_at_price > variant.price %}<span class="routine-products__compare-price">{{ variant.compare_at_price | money }}</span>{% endif %}</div>
+                  {% elsif block.settings.manual_price != blank %}
+                    <div class="routine-products__price">{{ block.settings.manual_price }}</div>
+                  {% endif %}
+
+                  {% comment %} <div class="routine-products__actions">
+                    {% if product != blank and variant != blank %}
+                      <form class="routine-products__form" method="post" action="{{ routes.cart_add_url }}">
+                        <input type="hidden" name="id" value="{{ variant.id }}">
+                        <input type="hidden" name="quantity" value="1">
+                        <button class="routine-products__button routine-products__button--primary" type="submit" {% unless variant.available %}disabled{% endunless %}>{% if variant.available %}{{ section.settings.add_to_cart_text }}{% else %}Sold Out{% endif %}</button>
+                      </form>
+                    {% elsif block.settings.custom_link != blank %}
+                      <a class="routine-products__button routine-products__button--primary" href="{{ block.settings.custom_link }}">{{ section.settings.add_to_cart_text }}</a>
+                    {% endif %}
+
+                    {% if product_url != blank %}
+                      <a class="routine-products__button routine-products__button--secondary" href="{{ product_url }}">{{ section.settings.learn_more_text }}</a>
+                    {% endif %}
+                  </div> {% endcomment %}
+
+
+                  <div class="routine-products__actions">
+                    {% if product != blank and variant != blank %}
+                        {% assign product_form_id = 'routine-product-form-' | append: section.id | append: '-' | append: block.id %}
+
+                        <div data-block-type="buy-buttons" data-block-id="{{ block.id }}" class="product-form__buy-buttons routine-products__buy-buttons">
+                        {%- form 'product', product, is: 'product-form', id: product_form_id, class: 'routine-products__form' -%}
+                            <input type="hidden" name="id" value="{{ variant.id }}">
+                            <input type="hidden" name="quantity" value="1">
+
+                            <product-payment-container class="product-form__payment-container routine-products__payment-container">
+                            <button
+                                id="AddToCart-{{ section.id }}-{{ block.id }}"
+                                type="submit"
+                                is="loader-button"
+                                data-use-primary
+                                data-product-add-to-cart-button
+                                 data-discount-code="{{ block.settings.discount_code | escape }}"
+                                data-button-content="{% if product.template_suffix == 'pre-order' %}{{ 'product.form.pre_order' | t | escape }}{% else %}{{ 'product.form.add_to_cart' | t | escape }}{% endif %}"
+                                class="routine-products__button routine-products__button--primary product-form__add-button button {% unless variant.available %}button--ternary{% else %}button--primary{% endunless %} button--full"
+                                {% unless variant.available %}disabled{% endunless %}
+                            >
+                                {%- if variant == nil -%}
+                                {{- 'product.form.unavailable' | t -}}
+                                {%- elsif variant.available -%}
+                                {%- if product.template_suffix == 'pre-order' -%}
+                                    {{- 'product.form.pre_order' | t -}}
+                                {%- else -%}
+                                    {{- section.settings.add_to_cart_text -}}
+                                {%- endif -%}
+                                {%- else -%}
+                                {{- 'product.form.sold_out' | t -}}
+                                {%- endif -%}
+                            </button>
+                            </product-payment-container>
+                        {%- endform -%}
+                        </div>
+                    {% elsif block.settings.custom_link != blank %}
+                        <a class="routine-products__button routine-products__button--primary" href="{{ block.settings.custom_link }}">{{ section.settings.add_to_cart_text }}</a>
+                    {% endif %}
+
+                    {% if product_url != blank %}
+                        <a class="routine-products__button routine-products__button--secondary" href="{{ product_url }}">{{ section.settings.learn_more_text }}</a>
+                    {% endif %}
+                    </div>
+
+
+
+                </div>
+              </article>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+
+    </custom-swiper>
+  </div>
+</section>
+
+<script>
+(() => {
+  const section = document.querySelector(
+    '[data-routine-products="{{ section.id }}"]'
+  );
+
+  if (!section || section.dataset.discountInitialized) return;
+
+  section.dataset.discountInitialized = 'true';
+
+  section.addEventListener('click', event => {
+    const button = event.target.closest(
+      '[data-product-add-to-cart-button]'
+    );
+
+    if (!button || !section.contains(button)) return;
+
+    const code = button.dataset.discountCode?.trim();
+
+    if (!code) return;
+
+    if (typeof window.autoDiscountCode === 'function') {
+      window.autoDiscountCode(code);
+    }
+  });
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Routine Products",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Get More from Your Ulike Routine and Save More"
+    },
+    {
+      "type": "text",
+      "id": "add_to_cart_text",
+      "label": "Add To Cart Text",
+      "default": "ADD TO CART"
+    },
+    {
+      "type": "text",
+      "id": "learn_more_text",
+      "label": "Learn More Text",
+      "default": "LEARN MORE"
+    },
+    {
+      "type": "checkbox",
+      "id": "loop",
+      "label": "Loop",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Desktop Layout"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding Top",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 64
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding Bottom",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 64
+    },
+    {
+      "type": "header",
+      "content": "Mobile"
+    },
+    {
+      "type": "range",
+      "id": "mobile_padding_top",
+      "label": "Padding Top",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "mobile_padding_bottom",
+      "label": "Padding Bottom",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 40
+    }
+  ],
+  "blocks": [
+    {
+      "type": "product",
+      "name": "Product",
+      "settings": [
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Product"
+        },
+        {
+          "type": "text",
+          "id": "variant_id",
+          "label": "Variant ID",
+          "info": "Leave blank to use the first available variant."
+        },
+
+          {
+          "type": "text",
+          "id": "discount_code",
+          "label": "Discount Code"
+        },
+
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Custom Image"
+        },
+        {
+          "type": "text",
+          "id": "custom_title",
+          "label": "Custom Title"
+        },
+        {
+          "type": "richtext",
+          "id": "description",
+          "label": "Description"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_rating",
+          "label": "Show Rating",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "rating",
+          "label": "Rating",
+          "default": "4.8"
+        },
+        {
+          "type": "text",
+          "id": "review_count",
+          "label": "Review Count",
+          "default": "1184"
+        },
+        {
+          "type": "url",
+          "id": "custom_link",
+          "label": "Custom Link"
+        },
+        {
+          "type": "text",
+          "id": "manual_price",
+          "label": "Manual Price",
+          "info": "Used only when no Shopify product is selected."
+        }
+      ]
+    }
+  ],
+  "max_blocks": 12,
+  "presets": [
+    {
+      "name": "Routine Products",
+      "blocks": [
+        {
+          "type": "product",
+          "settings": {
+            "custom_title": "Ulike Air 10",
+            "description": "<p>IPL Laser Hair Removal Device</p>",
+            "rating": "4.8",
+            "review_count": "1184",
+            "manual_price": "$329"
+          }
+        },
+        {
+          "type": "product",
+          "settings": {
+            "custom_title": "Ulike Air 10 Bundle",
+            "description": "<p>IPL Laser Hair Removal Device</p>",
+            "rating": "4.8",
+            "review_count": "1184",
+            "manual_price": "$329"
+          }
+        },
+        {
+          "type": "product",
+          "settings": {
+            "custom_title": "Aloe Vera Gel",
+            "description": "<p>Deeply moisturizes and soothes the skin</p>",
+            "rating": "4.8",
+            "review_count": "1184",
+            "manual_price": "$329"
+          }
+        },
+        {
+          "type": "product",
+          "settings": {
+            "custom_title": "Protection Goggle",
+            "description": "<p>Comfortable Eye Protection for Safe Light Therapy Sessions</p>",
+            "rating": "4.8",
+            "review_count": "1184",
+            "manual_price": "$329"
+          }
+        },
+        {
+          "type": "product",
+          "settings": {
+            "custom_title": "Aftercare Hydrating Mask",
+            "description": "<p>Soothes light-induced redness and sensitivity</p>",
+            "rating": "4.8",
+            "review_count": "1184",
+            "manual_price": "$329"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

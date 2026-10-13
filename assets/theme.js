@@ -6515,7 +6515,9 @@ class CustomSwiper extends HTMLElement {
     }
 
     // **Swiper 组件参数**
-    const slidesPerView = parseFloat(this.getAttribute('slides-per-view')) || 1.3;
+    const slidesPerView = this.getAttribute('slides-per-view') === 'auto'
+      ? 'auto'
+      : parseFloat(this.getAttribute('slides-per-view')) || 1.3;
     const spaceBetween = parseFloat(this.getAttribute('space-between')) || 10;
     const loop = this.getAttribute('loop') !== 'false'; // 默认为 true
     const centeredSlides = this.getAttribute('centered-slides') !== 'false'; // 默认为 true
@@ -6538,6 +6540,7 @@ class CustomSwiper extends HTMLElement {
       spaceBetween,
       loop,
       centeredSlides,
+      watchOverflow: this.getAttribute('watch-overflow') === 'true',
       navigation: navigationEnabled ? { prevEl: prevButton, nextEl: nextButton } : false,
       pagination: paginationEl,
       breakpoints
