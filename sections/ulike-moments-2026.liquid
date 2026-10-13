@@ -384,29 +384,33 @@
       }
       const count = {{ section.blocks.size | json }};
       const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      const updateNavigation = (disabled) => {
+      const desktop = window.matchMedia('(min-width: 768px)');
+      const updateNavigation = (instance, transitioning = false) => {
         section.querySelectorAll('.ulike-moments__arrow').forEach(button => {
+          const boundary = !instance.params.loop && (button.hasAttribute('data-moments-prev') ? instance.isBeginning : instance.isEnd);
+          const disabled = count < 2 || transitioning || boundary;
           button.disabled = disabled;
           const source = button.querySelector('source');
           if (source) source.srcset = disabled ? source.dataset.disabledSrc : source.dataset.enabledSrc;
         });
       };
-      const swiper = new window.Swiper(viewport, {
+      const createSwiper = (initialSlide) => new window.Swiper(viewport, {
         slidesPerView: 'auto',
         spaceBetween: 16,
-        loop: count > 1,
+        loop: desktop.matches && count > 1,
         loopedSlides: count,
-        initialSlide: window.matchMedia('(min-width: 768px)').matches && count > 1 ? 1 : 0,
+        initialSlide,
         speed: reducedMotion ? 0 : 600,
         grabCursor: count > 1,
         mousewheel: { forceToAxis: true },
         centeredSlides: false,
         slidesOffsetBefore: 19,
-        slidesOffsetAfter: 19,
+        slidesOffsetAfter: () => Math.max(19, viewport.clientWidth - 276),
         autoplay: {{ section.settings.autoplay | default: true, allow_false: true | json }} && !reducedMotion && count > 1 ? {
           delay: {{ section.settings.autoplay_interval | default: 5 | times: 1000 | json }},
           disableOnInteraction: false,
-          pauseOnMouseEnter: true
+          pauseOnMouseEnter: true,
+          stopOnLastSlide: true
         } : false,
         navigation: {
           prevEl: section.querySelector('[data-moments-prev]'),
@@ -416,12 +420,23 @@
           768: { centeredSlides: true, slidesOffsetBefore: 14, slidesOffsetAfter: 14 }
         },
         on: {
-          init: () => updateNavigation(count < 2),
-          transitionStart: (instance) => updateNavigation(count < 2 || instance.params.speed > 0),
-          transitionEnd: () => updateNavigation(count < 2)
+          init: (instance) => updateNavigation(instance),
+          slideChange: (instance) => updateNavigation(instance),
+          resize: (instance) => updateNavigation(instance),
+          transitionStart: (instance) => updateNavigation(instance, instance.params.speed > 0),
+          transitionEnd: (instance) => updateNavigation(instance)
         }
       });
+      let swiper = createSwiper(desktop.matches && count > 1 ? 1 : 0);
       section.momentsSwiper = swiper;
+      const changeMode = () => {
+        const index = swiper.realIndex;
+        swiper.destroy(true, true);
+        swiper = createSwiper(index);
+        section.momentsSwiper = swiper;
+      };
+      desktop.addEventListener('change', changeMode);
+      section.momentsCleanup = () => desktop.removeEventListener('change', changeMode);
       viewport.addEventListener('keydown', event => {
         if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
         event.preventDefault();
@@ -447,6 +462,7 @@
       const section = event.target.querySelector?.(selector);
       if (!section) return;
       window.clearTimeout(retry);
+      section.momentsCleanup?.();
       section.momentsSwiper?.destroy(true, true);
     });
   })();
