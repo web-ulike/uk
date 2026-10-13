@@ -271,6 +271,15 @@
       transform: none;
     }
 
+    #shopify-section-{{ section.id }} .ulike-moments__arrow img {
+      width: 21px;
+      height: 16px;
+    }
+
+    #shopify-section-{{ section.id }} [data-moments-prev] img {
+      transform: none;
+    }
+
     #shopify-section-{{ section.id }} .ulike-moments__arrow {
       width: 21px;
       height: 16px;
@@ -337,10 +346,16 @@
       {% if section.blocks.size > 1 %}
         <div class="ulike-moments__navigation">
           <button class="ulike-moments__arrow" type="button" data-moments-prev aria-label="Previous card">
-            <img src="{{ 'ulike-moments-arrow.svg' | asset_url }}" alt="" width="19.8717" height="15.2139">
+            <picture>
+              <source media="(max-width: 767px)" srcset="{{ 'ulike-moments-mobile-prev.svg' | asset_url }}">
+              <img src="{{ 'ulike-moments-arrow.svg' | asset_url }}" alt="" width="19.8717" height="15.2139">
+            </picture>
           </button>
           <button class="ulike-moments__arrow" type="button" data-moments-next aria-label="Next card">
-            <img src="{{ 'ulike-moments-arrow.svg' | asset_url }}" alt="" width="19.8717" height="15.2139">
+            <picture>
+              <source media="(max-width: 767px)" srcset="{{ 'ulike-moments-mobile-next.svg' | asset_url }}">
+              <img src="{{ 'ulike-moments-arrow.svg' | asset_url }}" alt="" width="19.8717" height="15.2139">
+            </picture>
           </button>
         </div>
       {% endif %}
