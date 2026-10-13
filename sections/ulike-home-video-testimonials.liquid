@@ -1,0 +1,424 @@
+<ulike-testimonial-scroller class="ulike-video-testimonials" style="--video-testimonials-background: {{ section.settings.background }}; --video-testimonials-text: {{ section.settings.text_color }};">
+  <div class="container">
+    <div class="ulike-video-testimonials__header">
+      {%- if section.settings.heading != blank -%}
+        <h2>{{ section.settings.heading | escape }}</h2>
+      {%- endif -%}
+      {%- if section.blocks.size > 1 -%}
+        <div class="ulike-video-testimonials__controls">
+          <button type="button" data-previous aria-controls="VideoTestimonialTrack-{{ section.id }}" aria-label="{{ 'general.accessibility.previous' | t | escape }}" disabled>
+            <svg viewBox="0 0 32 20" fill="none" aria-hidden="true"><path d="M10 1L1 10M1 10L10 19M1 10H31" stroke="currentColor" stroke-width="1.3"/></svg>
+          </button>
+          <button type="button" data-next aria-controls="VideoTestimonialTrack-{{ section.id }}" aria-label="{{ 'general.accessibility.next' | t | escape }}">
+            <svg viewBox="0 0 32 20" fill="none" aria-hidden="true"><path d="M22 1L31 10M31 10L22 19M31 10H1" stroke="currentColor" stroke-width="1.3"/></svg>
+          </button>
+        </div>
+      {%- endif -%}
+    </div>
+
+    <div id="VideoTestimonialTrack-{{ section.id }}" class="ulike-video-testimonials__track" data-track data-ulike-drag-scroll tabindex="0">
+      {%- for block in section.blocks -%}
+        <article class="ulike-video-testimonials__card ulike-video-testimonials__card--{{ block.settings.card_kind | default: 'combined' }}" data-slide {{ block.shopify_attributes }}>
+          {%- unless block.settings.card_kind == 'review' -%}
+          <div class="ulike-video-testimonials__media">
+            {%- if block.settings.video != blank -%}
+              {{- block.settings.video | video_tag: autoplay: false, loop: false, muted: false, controls: true, playsinline: true, preload: 'none', class: 'ulike-video-testimonials__video' -}}
+            {%- elsif block.settings.video_url != blank -%}
+              <video
+                class="ulike-video-testimonials__video"
+                controls
+                playsinline
+                preload="none"
+                {% if block.settings.poster_url != blank %}poster="{{ block.settings.poster_url | escape }}"{% endif %}
+              >
+                <source src="{{ block.settings.video_url | escape }}" type="video/mp4">
+              </video>
+            {%- endif -%}
+          </div>
+          {%- endunless -%}
+          <div class="ulike-video-testimonials__content">
+            {%- unless block.settings.card_kind == 'review' -%}
+            {%- if block.settings.name != blank -%}<h3>{{ block.settings.name | escape }}</h3>{%- endif -%}
+            {%- if block.settings.role != blank -%}<p class="ulike-video-testimonials__role">{{ block.settings.role | escape }}</p>{%- endif -%}
+            {%- endunless -%}
+            {%- unless block.settings.card_kind == 'video' -%}
+            <div class="ulike-video-testimonials__stars" role="img" aria-label="{{ 'general.accessibility.star_reviews_info' | t: rating_value: 5, rating_max: 5 | escape }}">
+              {%- for star in (1..5) -%}
+                <svg viewBox="0 0 24 24" width="19" height="19" aria-hidden="true" focusable="false"><path fill="currentColor" d="M12 1.8l3.09 6.26 6.91 1-5 4.87 1.18 6.88L12 17.56l-6.18 3.25L7 13.93 2 9.06l6.91-1L12 1.8z"/></svg>
+              {%- endfor -%}
+            </div>
+            {%- if block.settings.headline != blank -%}<p class="ulike-video-testimonials__headline">{{ block.settings.headline | escape }}</p>{%- endif -%}
+            {%- if block.settings.quote != blank -%}<blockquote>{{ block.settings.quote }}</blockquote>{%- endif -%}
+            {%- if block.settings.author != blank -%}<p class="ulike-video-testimonials__author">{{ block.settings.author | escape }}</p>{%- endif -%}
+            {%- if block.settings.product != blank -%}
+              <p class="ulike-video-testimonials__product">
+                <span>{{ block.settings.product | escape }}</span>
+                {%- unless block.settings.show_verified == false -%}
+                  <span class="ulike-video-testimonials__verified" role="img" aria-label="{{ 'general.accessibility.verified_reviewer' | t | escape }}">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" aria-hidden="true" focusable="false">
+                      <path d="M12 2.4L14.15 4.3L17 3.95L18.25 6.55L20.85 7.8L20.5 10.65L22.4 12.8L20.5 14.95L20.85 17.8L18.25 19.05L17 21.65L14.15 21.3L12 23.2L9.85 21.3L7 21.65L5.75 19.05L3.15 17.8L3.5 14.95L1.6 12.8L3.5 10.65L3.15 7.8L5.75 6.55L7 3.95L9.85 4.3L12 2.4Z" fill="currentColor"/>
+                      <path d="M8.5 12.6L10.7 14.7L15.7 9.7" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </span>
+                {%- endunless -%}
+              </p>
+            {%- endif -%}
+            {%- endunless -%}
+          </div>
+        </article>
+      {%- endfor -%}
+    </div>
+  </div>
+</ulike-testimonial-scroller>
+
+{% stylesheet %}
+  .ulike-video-testimonials {
+    display: block;
+    padding-block: clamp(4rem, 8vw, 8rem);
+    color: var(--video-testimonials-text);
+    background: var(--video-testimonials-background);
+  }
+
+  .ulike-video-testimonials__header {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 2rem;
+    margin-bottom: 2rem;
+  }
+
+  .ulike-video-testimonials__header h2 {
+    max-width: 24ch;
+    margin: 0;
+    font-size: clamp(2.25rem, 5vw, 5rem);
+    line-height: 1;
+    letter-spacing: -0.04em;
+  }
+
+  .ulike-video-testimonials__controls {
+    display: flex;
+    gap: 0.75rem;
+  }
+
+  .ulike-video-testimonials__controls button {
+    display: grid;
+    width: 3.25rem;
+    height: 3.25rem;
+    place-items: center;
+    border: 1px solid currentColor;
+    border-radius: 50%;
+  }
+
+  .ulike-video-testimonials__controls button:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+  }
+
+  .ulike-video-testimonials__track {
+    display: flex;
+    gap: 1.25rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    overscroll-behavior-inline: contain;
+  }
+
+  .ulike-video-testimonials__track::-webkit-scrollbar {
+    display: none;
+  }
+
+  .ulike-video-testimonials__card {
+    display: grid;
+    flex: 0 0 calc((100% - 1.25rem) / 2);
+    min-width: 0;
+    overflow: hidden;
+    scroll-snap-align: start;
+    border-radius: 1.25rem;
+    background: #fff;
+  }
+
+  .ulike-video-testimonials__media {
+    background: #111;
+    aspect-ratio: 9 / 16;
+  }
+
+  .ulike-video-testimonials__video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .ulike-video-testimonials__content {
+    padding: 1.5rem;
+  }
+
+  .ulike-video-testimonials__stars { display: flex; align-items: center; justify-content: center; gap: 6px; margin-bottom: 24px; color: #e0004d; flex-shrink: 0; }
+  .ulike-video-testimonials__stars svg { display: block; width: 19px; height: 19px; flex-shrink: 0; }
+  .ulike-video-testimonials__product { display: flex; align-items: center; justify-content: center; gap: 8px; }
+  .ulike-video-testimonials__verified { display: inline-flex; width: 16px; height: 16px; flex: 0 0 16px; color: #8b8b8b; }
+  .ulike-video-testimonials__verified svg { display: block; width: 100%; height: 100%; }
+
+  .ulike-video-testimonials__content h3 {
+    margin: 0;
+    font-size: 1.4rem;
+  }
+
+  .ulike-video-testimonials__role,
+  .ulike-video-testimonials__author,
+  .ulike-video-testimonials__product {
+    margin: 0.35rem 0 0;
+    color: #707070;
+  }
+
+  .ulike-video-testimonials__headline {
+    margin: 1.25rem 0 0;
+    font-size: 1.4rem;
+    font-weight: 600;
+  }
+
+  .ulike-video-testimonials__content blockquote {
+    margin: 1rem 0 0;
+    color: #555;
+    line-height: 1.55;
+  }
+
+  .ulike-video-testimonials__content blockquote p {
+    margin: 0;
+  }
+
+  .ulike-video-testimonials__card--video,
+  .ulike-video-testimonials__card--review {
+    flex-basis: 376px;
+    border-radius: 8px;
+    align-content: start;
+  }
+
+  .ulike-video-testimonials__card--video .ulike-video-testimonials__media { aspect-ratio: 376 / 460; }
+  .ulike-video-testimonials__card--review { background: #f8f8f8; }
+  .ulike-video-testimonials__card--review .ulike-video-testimonials__content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 460px;
+    padding: 40px 24px;
+    text-align: center;
+  }
+  .ulike-video-testimonials__card--review .ulike-video-testimonials__headline { margin-top: 0; font-size: 30px; font-weight: 400; line-height: 1.2; }
+  .ulike-video-testimonials__card--review blockquote { font-size: 18px; line-height: 1.4; }
+  .ulike-video-testimonials__card--review .ulike-video-testimonials__author { margin-top: 28px; font-size: 24px; color: #171717; }
+  .ulike-video-testimonials__controls button:focus-visible { outline: 2px solid currentColor; outline-offset: 3px; }
+
+  @media screen and (max-width: 740px) {
+    .ulike-video-testimonials {
+      padding-block: 40px;
+    }
+
+    .ulike-video-testimonials .container {
+      display: flex;
+      flex-direction: column;
+      padding-inline: 0;
+    }
+
+    .ulike-video-testimonials__header {
+      display: contents;
+    }
+
+    .ulike-video-testimonials__header h2 {
+      order: 1;
+      max-width: none;
+      margin: 0 0 32px;
+      padding-inline: var(--container-gutter);
+      font-size: 24px;
+      line-height: 1.2;
+      letter-spacing: 0;
+    }
+
+    .ulike-video-testimonials__track {
+      order: 2;
+      gap: 16px;
+      padding-inline: var(--container-gutter);
+      scroll-padding-inline: var(--container-gutter);
+    }
+
+    .ulike-video-testimonials__card--video,
+    .ulike-video-testimonials__card--review {
+      flex: 0 0 257px;
+      width: 257px;
+      height: 314px;
+    }
+
+    .ulike-video-testimonials__card--video {
+      position: relative;
+      display: block;
+      color: #fff;
+      background: #ddd;
+    }
+
+    .ulike-video-testimonials__card--video::after {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      z-index: 1;
+      height: 42%;
+      content: '';
+      pointer-events: none;
+      background: linear-gradient(180deg, rgba(0, 0, 0, 0), rgba(0, 0, 0, .58));
+    }
+
+    .ulike-video-testimonials__card--video .ulike-video-testimonials__media {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      aspect-ratio: auto;
+    }
+
+    .ulike-video-testimonials__card--video .ulike-video-testimonials__content {
+      position: absolute;
+      right: 18px;
+      bottom: 20px;
+      left: 18px;
+      z-index: 2;
+      padding: 0;
+    }
+
+    .ulike-video-testimonials__card--video .ulike-video-testimonials__content h3 {
+      color: inherit;
+      font-size: 14px;
+      line-height: 1.2;
+    }
+
+    .ulike-video-testimonials__card--video .ulike-video-testimonials__role {
+      margin-top: 3px;
+      color: inherit;
+      font-size: 12px;
+      line-height: 1.2;
+    }
+
+    .ulike-video-testimonials__card--review { height: auto; min-height: 314px; }
+    .ulike-video-testimonials__card--review .ulike-video-testimonials__content { min-height: 314px; padding: 28px 16px; }
+    .ulike-video-testimonials__stars { gap: 4px; margin-bottom: 20px; }
+    .ulike-video-testimonials__stars svg { width: 17px; height: 17px; }
+    .ulike-video-testimonials__product { gap: 4px; }
+    .ulike-video-testimonials__verified { width: 10px; height: 10px; flex-basis: 10px; }
+    .ulike-video-testimonials__card--review .ulike-video-testimonials__headline { font-size: 24px; }
+    .ulike-video-testimonials__card--review blockquote { font-size: 14px; }
+    .ulike-video-testimonials__card--review .ulike-video-testimonials__author { font-size: 16px; }
+
+    .ulike-video-testimonials__controls {
+      order: 3;
+      align-self: flex-end;
+      margin-top: 28px;
+      padding-right: 34px;
+    }
+  }
+
+  /* Match the production homepage carousel arrows. */
+  .ulike-video-testimonials__controls { gap: 30px; }
+  .ulike-video-testimonials__controls button { display: flex; align-items: center; justify-content: center; flex: 0 0 auto; width: 40px; height: 40px; padding: 0; border: 0; border-radius: 0; background: transparent; color: inherit; cursor: pointer; }
+  .ulike-video-testimonials__controls button svg { display: block; width: 32px; height: auto; pointer-events: none; }
+  .ulike-video-testimonials__controls button:disabled { opacity: .3; pointer-events: none; }
+  .ulike-video-testimonials__controls button:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
+  @media screen and (max-width: 767px) {
+    .ulike-video-testimonials__controls { gap: 20px; }
+    .ulike-video-testimonials__controls button { width: 28px; height: 28px; }
+    .ulike-video-testimonials__controls button svg { width: 21px; }
+  }
+{% endstylesheet %}
+
+{% javascript %}
+  if (!customElements.get('ulike-testimonial-scroller')) {
+    customElements.define('ulike-testimonial-scroller', class extends HTMLElement {
+      connectedCallback() {
+        this.controller?.abort();
+        this.controller = new AbortController();
+        const options = { signal: this.controller.signal };
+        this.track = this.querySelector('[data-track]');
+        this.previousButtons = this.querySelectorAll('[data-previous]');
+        this.nextButtons = this.querySelectorAll('[data-next]');
+        if (!this.track) return;
+        this.previousButtons.forEach((button) => button.addEventListener('click', () => this.move(-1), options));
+        this.nextButtons.forEach((button) => button.addEventListener('click', () => this.move(1), options));
+        this.track.addEventListener('scroll', () => this.update(), { ...options, passive: true });
+        this.track.addEventListener('keydown', (event) => {
+          if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
+          event.preventDefault();
+          if (event.key === 'Home') this.track.scrollTo({ left: 0, behavior: 'auto' });
+          else if (event.key === 'End') this.track.scrollTo({ left: this.track.scrollWidth, behavior: 'auto' });
+          else this.move(event.key === 'ArrowRight' ? 1 : -1);
+        }, options);
+        if ('ResizeObserver' in window) {
+          this.observer = new ResizeObserver(() => this.update());
+          this.observer.observe(this.track);
+        }
+        this.update();
+      }
+
+      move(direction) {
+        const slide = this.track.querySelector('[data-slide]');
+        if (!slide) return;
+        const gap = Number.parseFloat(getComputedStyle(this.track).columnGap) || 0;
+        const behavior = matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
+        this.track.scrollBy({ left: direction * (slide.getBoundingClientRect().width + gap), behavior });
+      }
+
+      update() {
+        const max = Math.max(0, this.track.scrollWidth - this.track.clientWidth);
+        const start = this.track.scrollLeft <= 2;
+        const end = this.track.scrollLeft >= max - 2;
+        this.previousButtons.forEach((button) => { button.disabled = start; });
+        this.nextButtons.forEach((button) => { button.disabled = end; });
+      }
+
+      disconnectedCallback() {
+        this.controller?.abort();
+        this.observer?.disconnect();
+      }
+    });
+  }
+{% endjavascript %}
+
+{% schema %}
+{
+  "name": "ULIKE video testimonials",
+  "tag": "section",
+  "class": "shopify-section--ulike-video-testimonials",
+  "max_blocks": 12,
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading" },
+    { "type": "color", "id": "background", "label": "Background", "default": "#f5f5f5" },
+    { "type": "color", "id": "text_color", "label": "Text color", "default": "#171717" }
+  ],
+  "blocks": [
+    {
+      "type": "testimonial",
+      "name": "Video testimonial",
+      "settings": [
+        { "type": "select", "id": "card_kind", "label": "Card content", "default": "combined", "options": [{ "value": "combined", "label": "Video and review" }, { "value": "video", "label": "Video only" }, { "value": "review", "label": "Review only" }] },
+        { "type": "video", "id": "video", "label": "Shopify-hosted video" },
+        { "type": "url", "id": "video_url", "label": "Fallback MP4 URL" },
+        { "type": "url", "id": "poster_url", "label": "Fallback poster URL" },
+        { "type": "text", "id": "name", "label": "Name" },
+        { "type": "text", "id": "role", "label": "Role" },
+        { "type": "text", "id": "headline", "label": "Headline" },
+        { "type": "richtext", "id": "quote", "label": "Quote" },
+        { "type": "text", "id": "author", "label": "Reviewer" },
+        { "type": "checkbox", "id": "show_verified", "label": "Show verified reviewer icon", "default": true },
+        { "type": "text", "id": "product", "label": "Product" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "ULIKE video testimonials",
+      "blocks": [
+        { "type": "testimonial" },
+        { "type": "testimonial" },
+        { "type": "testimonial" }
+      ]
+    }
+  ]
+}
+{% endschema %}
+
