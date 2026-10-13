@@ -19,31 +19,28 @@
     position: relative;
   }
 
+  #shopify-section-{{ section.id }} .ulike-moments__viewport {
+    overflow: hidden;
+    touch-action: pan-y;
+  }
+
   #shopify-section-{{ section.id }} .ulike-moments__track {
     position: relative;
     display: flex;
-    gap: 16px;
-    box-sizing: border-box;
-    padding-inline: max(20px, calc((100% - 880px) / 2));
-    overflow-x: auto;
-    overscroll-behavior-x: contain;
-    scrollbar-width: none;
-    scroll-snap-type: x mandatory;
-  }
-
-  #shopify-section-{{ section.id }} .ulike-moments__track::-webkit-scrollbar {
-    display: none;
+    box-sizing: content-box;
+    width: 100%;
+    padding: 0;
   }
 
   #shopify-section-{{ section.id }} .ulike-moments__card {
     position: relative;
-    flex: 0 0 100%;
+    flex: 0 0 auto;
+    width: min(880px, calc(100% - 40px));
     min-width: 0;
     height: 460px;
     overflow: hidden;
     border-radius: 8px;
     background: #faf6f1;
-    scroll-snap-align: center;
   }
 
   #shopify-section-{{ section.id }} .ulike-moments__image {
@@ -138,8 +135,8 @@
     height: 40px;
     place-items: center;
     padding: 0;
-    border: 1px solid #190a0a;
-    border-radius: 5px;
+    border: .571px solid #190a0a;
+    border-radius: 4.571px;
     background: #fff;
     color: #190a0a;
     cursor: pointer;
@@ -154,9 +151,19 @@
     }
   }
 
-  #shopify-section-{{ section.id }} .ulike-moments__arrow svg {
-    width: 21px;
-    height: 16px;
+  #shopify-section-{{ section.id }} .ulike-moments__arrow img {
+    display: block;
+    transition: filter .4s ease;
+  }
+
+  #shopify-section-{{ section.id }} [data-moments-prev] img {
+    transform: rotate(180deg);
+  }
+
+  @media (hover: hover) and (min-width: 768px) {
+    #shopify-section-{{ section.id }} .ulike-moments__arrow:hover img {
+      filter: brightness(0) invert(1);
+    }
   }
 
   #shopify-section-{{ section.id }} .ulike-moments__arrow:disabled {
@@ -180,17 +187,11 @@
       text-align: left;
     }
 
-    #shopify-section-{{ section.id }} .ulike-moments__track {
-      padding-inline: 19px max(19px, calc(100% - 276px));
-      scroll-padding-inline: 19px;
-    }
-
     #shopify-section-{{ section.id }} .ulike-moments__card {
-      flex-basis: 257px;
+      width: 257px;
       max-width: calc(100vw - 38px);
       height: 314px;
       border-radius: 4px;
-      scroll-snap-align: start;
     }
 
     #shopify-section-{{ section.id }} .ulike-moments__card--intimate .ulike-moments__image {
@@ -278,7 +279,8 @@
 
   {% if section.blocks.size > 0 %}
     <div class="ulike-moments__slider">
-      <div class="ulike-moments__track" data-moments-track tabindex="0" aria-label="{{ section.settings.title | escape }}">
+      <div class="ulike-moments__viewport swiper-container" data-moments-viewport tabindex="0" aria-label="{{ section.settings.title | escape }}">
+      <div class="ulike-moments__track swiper-wrapper" data-moments-track>
         {% for block in section.blocks %}
           {% liquid
             assign default_image_filename = blank
@@ -298,7 +300,7 @@
             assign desktop_image = block.settings.desktop_image
             assign mobile_image = block.settings.mobile_image
           %}
-          <article class="ulike-moments__card ulike-moments__card--{% if desktop_image != blank %}custom{% else %}{{ block.settings.default_image }}{% endif %}{% if mobile_image != blank %} ulike-moments__card--mobile-custom{% endif %}" {{ block.shopify_attributes }}>
+          <article class="ulike-moments__card swiper-slide ulike-moments__card--{% if desktop_image != blank %}custom{% else %}{{ block.settings.default_image }}{% endif %}{% if mobile_image != blank %} ulike-moments__card--mobile-custom{% endif %}" {{ block.shopify_attributes }}>
             {% if desktop_image != blank %}
               <picture>
                 {% if mobile_image != blank %}
@@ -321,13 +323,14 @@
           </article>
         {% endfor %}
       </div>
+      </div>
       {% if section.blocks.size > 1 %}
         <div class="ulike-moments__navigation">
           <button class="ulike-moments__arrow" type="button" data-moments-prev aria-label="Previous card">
-            <svg viewBox="0 0 21 16" fill="none" aria-hidden="true"><path d="M8 1 1 8l7 7M1 8h20" stroke="currentColor" stroke-width="1"/></svg>
+            <img src="{{ 'ulike-moments-arrow.svg' | asset_url }}" alt="" width="20" height="16">
           </button>
           <button class="ulike-moments__arrow" type="button" data-moments-next aria-label="Next card">
-            <svg viewBox="0 0 21 16" fill="none" aria-hidden="true"><path d="m13 1 7 7-7 7M20 8H0" stroke="currentColor" stroke-width="1"/></svg>
+            <img src="{{ 'ulike-moments-arrow.svg' | asset_url }}" alt="" width="20" height="16">
           </button>
         </div>
       {% endif %}
@@ -338,58 +341,70 @@
 <script>
   (() => {
     const id = {{ section.id | json }};
+    const selector = `[data-ulike-moments="${id}"]`;
+    let retry;
     const init = () => {
-      const section = document.querySelector(`[data-ulike-moments="${id}"]`);
-      if (!section || section.dataset.momentsReady === 'true') return;
-      const track = section.querySelector('[data-moments-track]');
-      const cards = Array.from(section.querySelectorAll('.ulike-moments__card'));
-      if (!track || cards.length < 2) return;
-      section.dataset.momentsReady = 'true';
-      const prev = section.querySelector('[data-moments-prev]');
-      const next = section.querySelector('[data-moments-next]');
-      const isMobile = () => window.matchMedia('(max-width: 767px)').matches;
-      const position = (card) => {
-        const left = card.getBoundingClientRect().left - track.getBoundingClientRect().left + track.scrollLeft;
-        const target = isMobile() ? left - 19 : left + card.offsetWidth / 2 - track.clientWidth / 2;
-        return Math.max(0, Math.min(target, track.scrollWidth - track.clientWidth));
-      };
-      let activeIndex = 0;
-      const currentIndex = () => cards.reduce((closest, card, index) =>
-        Math.abs(position(card) - track.scrollLeft) < Math.abs(position(cards[closest]) - track.scrollLeft) ? index : closest, 0);
-      const update = () => {
-        const index = currentIndex();
-        activeIndex = index;
-        if (prev) prev.disabled = index === 0;
-        if (next) next.disabled = index === cards.length - 1;
-      };
-      const goTo = (index, behavior = 'smooth') => {
-        const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        track.scrollTo({ left: position(cards[index]), behavior: reducedMotion ? 'auto' : behavior });
-        window.setTimeout(update, behavior === 'smooth' && !reducedMotion ? 400 : 0);
-      };
-      prev?.addEventListener('click', () => goTo(Math.max(0, currentIndex() - 1)));
-      next?.addEventListener('click', () => goTo(Math.min(cards.length - 1, currentIndex() + 1)));
-      track.addEventListener('scroll', update, { passive: true });
-      track.addEventListener('keydown', event => {
+      const section = document.querySelector(selector);
+      if (!section || section.momentsSwiper) return;
+      const viewport = section.querySelector('[data-moments-viewport]');
+      if (!viewport) return;
+      if (typeof window.Swiper === 'undefined') {
+        retry = window.setTimeout(init, 100);
+        return;
+      }
+      const count = {{ section.blocks.size | json }};
+      const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const swiper = new window.Swiper(viewport, {
+        slidesPerView: 'auto',
+        spaceBetween: 16,
+        loop: count > 1,
+        loopedSlides: count,
+        initialSlide: window.matchMedia('(min-width: 768px)').matches && count > 1 ? 1 : 0,
+        speed: reducedMotion ? 0 : 600,
+        grabCursor: count > 1,
+        centeredSlides: false,
+        slidesOffsetBefore: 19,
+        slidesOffsetAfter: 19,
+        autoplay: {{ section.settings.autoplay | default: true, allow_false: true | json }} && !reducedMotion && count > 1 ? {
+          delay: {{ section.settings.autoplay_interval | default: 5 | times: 1000 | json }},
+          disableOnInteraction: false,
+          pauseOnMouseEnter: true
+        } : false,
+        navigation: {
+          prevEl: section.querySelector('[data-moments-prev]'),
+          nextEl: section.querySelector('[data-moments-next]')
+        },
+        breakpoints: {
+          768: { centeredSlides: true, slidesOffsetBefore: 14, slidesOffsetAfter: 14 }
+        }
+      });
+      section.momentsSwiper = swiper;
+      viewport.addEventListener('keydown', event => {
         if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
         event.preventDefault();
-        goTo(Math.max(0, Math.min(cards.length - 1, currentIndex() + (event.key === 'ArrowRight' ? 1 : -1))));
+        event.key === 'ArrowRight' ? swiper.slideNext() : swiper.slidePrev();
       });
-      const resizeObserver = new ResizeObserver(() => goTo(activeIndex, 'auto'));
-      resizeObserver.observe(track);
       section.addEventListener('shopify:block:select', event => {
-        const index = cards.indexOf(event.target.closest('.ulike-moments__card'));
-        if (index !== -1) goTo(index, 'auto');
+        const card = event.target.closest('.ulike-moments__card');
+        if (!card) return;
+        swiper.autoplay?.stop();
+        const index = Number(card.dataset.swiperSlideIndex ?? Array.from(card.parentNode.children).indexOf(card));
+        swiper.params.loop ? swiper.slideToLoop(index) : swiper.slideTo(index);
       });
-      document.addEventListener('shopify:section:unload', event => {
-        if (event.target.contains(section)) resizeObserver.disconnect();
+      section.addEventListener('shopify:block:deselect', () => {
+        if (swiper.params.autoplay) swiper.autoplay?.start();
       });
-      goTo(0, 'auto');
     };
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init, { once: true });
     else init();
     document.addEventListener('shopify:section:load', event => {
-      if (event.target.querySelector?.(`[data-ulike-moments="${id}"]`)) init();
+      if (event.target.querySelector?.(selector)) init();
+    });
+    document.addEventListener('shopify:section:unload', event => {
+      const section = event.target.querySelector?.(selector);
+      if (!section) return;
+      window.clearTimeout(retry);
+      section.momentsSwiper?.destroy(true, true);
     });
   })();
 </script>
@@ -400,7 +415,9 @@
   "tag": "section",
   "class": "section-ulike-moments",
   "settings": [
-    { "type": "text", "id": "title", "label": "Heading", "default": "Built for Every Moment" }
+    { "type": "text", "id": "title", "label": "Heading", "default": "Built for Every Moment" },
+    { "type": "checkbox", "id": "autoplay", "label": "Auto rotate cards", "default": true },
+    { "type": "range", "id": "autoplay_interval", "label": "Change cards every", "min": 3, "max": 10, "step": 1, "unit": "s", "default": 5 }
   ],
   "blocks": [
     {
