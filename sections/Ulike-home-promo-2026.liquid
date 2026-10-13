@@ -1,14 +1,14 @@
 <section id="ulike-home-promo-{{ section.id }}" class="ulike-home-promo" aria-label="{{ section.settings.aria_label | escape }}">
   {% for block in section.blocks %}
-    <article class="ulike-home-promo__slide{% if forloop.first %} is-active{% endif %}" data-slide-index="{{ forloop.index0 }}" aria-hidden="{% if forloop.first %}false{% else %}true{% endif %}" {% unless forloop.first %}inert{% endunless %} {{ block.shopify_attributes }}>
+    <article class="ulike-home-promo__slide{% if block.settings.image_desktop != blank or block.settings.image_mobile != blank or block.settings.use_default_image %} ulike-home-promo__slide--has-image{% endif %}{% if forloop.first %} is-active{% endif %}" data-slide-index="{{ forloop.index0 }}" aria-hidden="{% if forloop.first %}false{% else %}true{% endif %}" {% unless forloop.first %}inert{% endunless %} {{ block.shopify_attributes }}>
       {% if block.settings.image_desktop != blank or block.settings.image_mobile != blank or block.settings.use_default_image %}
         <div class="ulike-home-promo__art" aria-hidden="true">
           <picture>
-            {% if block.settings.image_mobile != blank %}<source media="(max-width: 767px)" srcset="{{ block.settings.image_mobile | image_url: width: 1200 }}">{% endif %}
+            {% if block.settings.image_mobile != blank %}<source media="(max-width: 767px)" srcset="{{ block.settings.image_mobile | image_url: width: 1200 }}" width="{{ block.settings.image_mobile.width }}" height="{{ block.settings.image_mobile.height }}">{% endif %}
             {% if block.settings.image_desktop != blank %}
-              {{ block.settings.image_desktop | image_url: width: 2400 | image_tag: class: 'ulike-home-promo__art-image', loading: 'lazy', widths: '1200,1600,2000,2400', sizes: '(max-width: 767px) 200vw, 95vw', alt: '' }}
+              {{ block.settings.image_desktop | image_url: width: 2400 | image_tag: class: 'ulike-home-promo__art-image', loading: 'lazy', widths: '1200,1600,2000,2400', sizes: '(max-width: 767px) 100vw, 95vw', alt: '' }}
             {% elsif block.settings.image_mobile != blank %}
-              {{ block.settings.image_mobile | image_url: width: 1200 | image_tag: class: 'ulike-home-promo__art-image', loading: 'lazy', widths: '600,900,1200', sizes: '200vw', alt: '' }}
+              {{ block.settings.image_mobile | image_url: width: 1200 | image_tag: class: 'ulike-home-promo__art-image', loading: 'lazy', widths: '600,900,1200', sizes: '100vw', alt: '' }}
             {% else %}
               <img class="ulike-home-promo__art-image" src="{{ 'ulike-home-promo-student.png' | asset_url }}" width="4096" height="2001" alt="" loading="lazy">
             {% endif %}
@@ -107,8 +107,14 @@
     }
   }
   @media (max-width: 767px) {
-    #ulike-home-promo-{{ section.id }} { height: 500px; }
-    #ulike-home-promo-{{ section.id }} .ulike-home-promo__content { top: 40px; right: 20px; left: 19px; width: auto; transform: none; }
+    #ulike-home-promo-{{ section.id }} { height: auto; }
+    #ulike-home-promo-{{ section.id }} .ulike-home-promo__slide.is-active { position: relative; height: auto; }
+    #ulike-home-promo-{{ section.id }} .ulike-home-promo__art,
+    #ulike-home-promo-{{ section.id }} .ulike-home-promo__art picture { height: auto; }
+    #ulike-home-promo-{{ section.id }} .ulike-home-promo__art-image { height: auto; object-fit: contain; }
+    #ulike-home-promo-{{ section.id }} .ulike-home-promo__slide:not(.ulike-home-promo__slide--has-image) .ulike-home-promo__content { position: relative; top: auto; right: auto; bottom: auto; left: auto; padding: 40px 19px 72px; }
+    #ulike-home-promo-{{ section.id }} .ulike-home-promo__slide:not(.ulike-home-promo__slide--has-image) .ulike-home-promo__pagination { bottom: 26px; left: 50%; }
+    #ulike-home-promo-{{ section.id }} .ulike-home-promo__content { top: 40px; bottom: 26px; right: 20px; left: 19px; width: auto; transform: none; }
     #ulike-home-promo-{{ section.id }} .ulike-home-promo__title { max-width: 245px; margin-bottom: 8px; font-size: 24px; }
     #ulike-home-promo-{{ section.id }} .ulike-home-promo__heading { justify-content: space-between; align-items: flex-start; gap: 12px; margin-bottom: 8px; }
     #ulike-home-promo-{{ section.id }} .ulike-home-promo__title-image { width: 90.84px; }
@@ -116,7 +122,7 @@
     #ulike-home-promo-{{ section.id }} .ulike-home-promo__description--desktop { display: none; }
     #ulike-home-promo-{{ section.id }} .ulike-home-promo__description--mobile { display: block; }
     #ulike-home-promo-{{ section.id }} .ulike-home-promo__button { min-width: 108px; min-height: 34px; margin-top: 24px; padding: 5px 15px; border-width: .25px; font-size: 12px; }
-    #ulike-home-promo-{{ section.id }} .ulike-home-promo__pagination { position: absolute; top: 434px; left: calc(50vw - 19px); margin: 0; transform: translateX(-50%); }
+    #ulike-home-promo-{{ section.id }} .ulike-home-promo__pagination { position: absolute; top: auto; bottom: 0; left: calc(50vw - 19px); margin: 0; transform: translateX(-50%); }
     #ulike-home-promo-{{ section.id }} .ulike-home-promo__prev,
     #ulike-home-promo-{{ section.id }} .ulike-home-promo__next { display: none; }
   }
