@@ -71,7 +71,7 @@
   </div>
 </ulike-testimonial-scroller>
 
-{% stylesheet %}
+<style>
   .ulike-video-testimonials {
     display: block;
     padding-block: clamp(4rem, 8vw, 8rem);
@@ -116,6 +116,7 @@
 
   .ulike-video-testimonials__track {
     display: flex;
+    align-items: flex-start;
     gap: 1.25rem;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
@@ -129,7 +130,9 @@
 
   .ulike-video-testimonials__card {
     display: grid;
-    flex: 0 0 calc((100% - 1.25rem) / 2);
+    flex: 0 0 376px;
+    grid-template-rows: auto auto;
+    align-content: start;
     min-width: 0;
     overflow: hidden;
     scroll-snap-align: start;
@@ -139,10 +142,13 @@
 
   .ulike-video-testimonials__media {
     background: #111;
-    aspect-ratio: 9 / 16;
+    aspect-ratio: 376 / 460;
+    min-height: 0;
+    overflow: hidden;
   }
 
   .ulike-video-testimonials__video {
+    display: block;
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -240,6 +246,11 @@
       scroll-padding-inline: var(--container-gutter);
     }
 
+    .ulike-video-testimonials__card {
+      flex: 0 0 257px;
+      width: 257px;
+    }
+
     .ulike-video-testimonials__card--video,
     .ulike-video-testimonials__card--review {
       flex: 0 0 257px;
@@ -325,13 +336,23 @@
     .ulike-video-testimonials__controls button { width: 28px; height: 28px; }
     .ulike-video-testimonials__controls button svg { width: 21px; }
   }
-{% endstylesheet %}
+</style>
 
-{% javascript %}
+<script>
+(() => {
   if (!customElements.get('ulike-testimonial-scroller')) {
     customElements.define('ulike-testimonial-scroller', class extends HTMLElement {
       connectedCallback() {
+        // Wait for child markup when the element is defined before it is parsed.
+        cancelAnimationFrame(this.initializationFrame);
+        this.initializationFrame = requestAnimationFrame(() => {
+          if (this.isConnected) this.initialize();
+        });
+      }
+
+      initialize() {
         this.controller?.abort();
+        this.observer?.disconnect();
         this.controller = new AbortController();
         const options = { signal: this.controller.signal };
         this.track = this.querySelector('[data-track]');
@@ -372,12 +393,14 @@
       }
 
       disconnectedCallback() {
+        cancelAnimationFrame(this.initializationFrame);
         this.controller?.abort();
         this.observer?.disconnect();
       }
     });
   }
-{% endjavascript %}
+})();
+</script>
 
 {% schema %}
 {
