@@ -78,7 +78,7 @@
 <section class="people-love-2026" data-people-love-2026="{{ section.id }}" style="--padding-top:{{ section.settings.padding_top }}px;--padding-bottom:{{ section.settings.padding_bottom }}px;--mobile-padding-top:{{ section.settings.mobile_padding_top }}px;--mobile-padding-bottom:{{ section.settings.mobile_padding_bottom }}px;--background:{{ section.settings.background }};--card-background:{{ section.settings.card_background }};--star-color:{{ section.settings.star_color }};">
   <div data-people-love-slider data-loop="{{ section.settings.loop }}">
     <div class="people-love-2026__container">
-      <div class="people-love-2026__header ">
+      <div class="people-love-2026__header">
         {% if section.settings.rich_title != blank %}
           <div class="people-love-2026__title" role="heading" aria-level="2">{{ section.settings.rich_title }}</div>
         {% elsif section.settings.title != blank %}
@@ -94,26 +94,26 @@
       </div>
     </div>
 
-    <div class="swiper-container ">
+    <div class="swiper-container">
       <div class="swiper-wrapper">
         {% for block in section.blocks %}
           <div class="swiper-slide" {{ block.shopify_attributes }} style="--reveal-index:{{ forloop.index0 }};">
             {% if block.settings.card_type == 'review' %}
-              <div class="people-love-2026__card people-love-2026__review ">
+              <div class="people-love-2026__card people-love-2026__review">
                 <div class="people-love-2026__stars" aria-label="5 out of 5 stars"><picture><source media="(max-width: 767px)" srcset="{{ 'people-love-2026-mobile-group457395058.svg' | asset_url }}"><img src="{{ 'people-love-2026-desktop-group457395058.svg' | asset_url }}" width="121" height="21.718" alt="" loading="lazy"></picture></div>
 
-                {% if block.settings.review_title != blank %}<h3 class="people-love-2026__review-title">{{ block.settings.review_title }}</h3>{% endif %}
+                {% if block.settings.review_title != blank %}<h3 class="people-love-2026__review-title">{{ block.settings.review_title | escape }}</h3>{% endif %}
                 {% if block.settings.review_text != blank %}<div class="people-love-2026__review-text">{{ block.settings.review_text }}</div>{% endif %}
 
                 <div class="people-love-2026__review-author">
-                  {% if block.settings.reviewer_name != blank %}<div class="people-love-2026__review-name">{{ block.settings.reviewer_name }}</div>{% endif %}
+                  {% if block.settings.reviewer_name != blank %}<div class="people-love-2026__review-name">{{ block.settings.reviewer_name | escape }}</div>{% endif %}
 
                   {% if block.settings.reviewer_meta != blank %}
                     <div class="people-love-2026__review-meta">
-                      <span>{{ block.settings.reviewer_meta }}</span>
+                      <span>{{ block.settings.reviewer_meta | escape }}</span>
                       {% if block.settings.show_verified %}
                         <span class="people-love-2026__verified" aria-label="Verified">
-                          <img src="{{ 'people-love-2026-desktop-group2085663725.svg' | asset_url }}" width="16" height="16" alt="" loading="lazy">
+                          <picture><source media="(max-width: 767px)" srcset="{{ 'people-love-2026-mobile-group2085663725.svg' | asset_url }}"><img src="{{ 'people-love-2026-desktop-group2085663725.svg' | asset_url }}" width="16" height="16" alt="" loading="lazy"></picture>
                         </span>
                       {% endif %}
                     </div>
@@ -137,7 +137,7 @@
                 endif
               %}
 
-              <div class="people-love-2026__card people-love-2026__video-card " data-inline-video-card>
+              <div class="people-love-2026__card people-love-2026__video-card" data-inline-video-card>
                 <div class="people-love-2026__video-media">
                   {% if card_image != blank %}
                     <img class="people-love-2026__video-cover" src="{{ card_image | image_url: width: 900 }}" srcset="{{ card_image | image_url: width: 400 }} 400w, {{ card_image | image_url: width: 600 }} 600w, {{ card_image | image_url: width: 900 }} 900w" sizes="(max-width: 767px) 257px, 376px" alt="{{ block.settings.expert_name | escape }}" width="{{ card_image.width }}" height="{{ card_image.height }}" loading="lazy">
@@ -154,12 +154,12 @@
 
                 <div class="people-love-2026__video-info">
                   <div class="people-love-2026__video-person">
-                    {% if block.settings.expert_name != blank %}<div class="people-love-2026__video-name">{{ block.settings.expert_name }}</div>{% endif %}
-                    {% if block.settings.expert_position != blank %}<div class="people-love-2026__video-position">{{ block.settings.expert_position }}</div>{% endif %}
+                    {% if block.settings.expert_name != blank %}<div class="people-love-2026__video-name">{{ block.settings.expert_name | escape }}</div>{% endif %}
+                    {% if block.settings.expert_position != blank %}<div class="people-love-2026__video-position">{{ block.settings.expert_position | escape }}</div>{% endif %}
                   </div>
 
                   {% if block.settings.video != blank or block.settings.video_url != blank %}
-                    <button class="people-love-2026__play" type="button" aria-label="Play video" data-inline-video-play><img src="{{ 'people-love-2026-desktop-frame2147223910.svg' | asset_url }}" width="40" height="40" alt=""></button>
+                    <button class="people-love-2026__play" type="button" aria-label="Play video" data-inline-video-play><picture><source media="(max-width: 767px)" srcset="{{ 'people-love-2026-mobile-frame2147223910.svg' | asset_url }}"><img src="{{ 'people-love-2026-desktop-frame2147223910.svg' | asset_url }}" width="40" height="40" alt=""></picture></button>
                   {% endif %}
                 </div>
               </div>
