@@ -225,6 +225,8 @@
         slidesPerView: 'auto',
         spaceBetween: mobile ? 16 : 24,
         centeredSlides: false,
+        watchSlidesProgress: true,
+        noSwipingSelector: '[data-inline-video-play], .people-love-2026__video',
         slidesOffsetBefore: mobile ? 19 : desktopOffset(),
         slidesOffsetAfter: mobile ? 20 : desktopOffset(),
         initialSlide: mobile || count < 6 ? 0 : 2,
@@ -266,7 +268,10 @@
       const video = card.querySelector('video');
       const button = card.querySelector('[data-inline-video-play]');
       if (!video || !button) return;
-      button.addEventListener('click', () => {
+      button.addEventListener('mousedown', event => event.preventDefault(), { signal: controller.signal });
+      button.addEventListener('click', event => {
+        event.preventDefault();
+        event.stopPropagation();
         cards.filter(other => other !== card).forEach(reset);
         card.classList.add('is-playing');
         video.play()?.catch(() => reset(card));
