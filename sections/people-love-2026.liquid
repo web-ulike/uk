@@ -5,7 +5,7 @@
 .people-love-2026__header { display:flex; align-items:flex-end; justify-content:space-between; gap:32px; margin-bottom:60px; }
 .people-love-2026__title { margin:0; color:inherit; font-family:Saans, sans-serif; font-size:48px; font-weight:500; line-height:58px; }
 .people-love-2026__title p { margin:0; }
-.people-love-2026__navigation { display:flex; flex-shrink:0; gap:30px; padding:0 3px 13px 0; }
+.people-love-2026__navigation { position:relative; z-index:2; display:flex; flex-shrink:0; gap:30px; padding:0 3px 13px 0; }
 .people-love-2026__arrow { position:relative; display:flex; align-items:center; justify-content:center; flex:0 0 31.35px; width:31.35px; height:24px; padding:0; border:0; background:transparent; cursor:pointer; }
 .people-love-2026__arrow::before { position:absolute; inset:-10px; content:''; }
 .people-love-2026__arrow:focus-visible, .people-love-2026__play:focus-visible { outline:2px solid #1a1a1a; outline-offset:5px; }
@@ -90,8 +90,8 @@
 
         {% if section.blocks.size > 1 %}
           <div class="people-love-2026__navigation">
-            <button class="people-love-2026__arrow people-love-2026__arrow--prev swiper-prev" type="button" aria-label="Previous"><span class="people-love-2026__arrow-icon" aria-hidden="true"><img class="people-love-2026__arrow-desktop" src="{{ 'people-love-2026-desktop-frame2147223561.svg' | asset_url }}" width="94.049" height="24" alt=""><img class="people-love-2026__arrow-mobile" src="{{ 'people-love-2026-mobile-frame2147223561.svg' | asset_url }}" width="62.699" height="16" alt=""></span></button>
-            <button class="people-love-2026__arrow people-love-2026__arrow--next swiper-next" type="button" aria-label="Next"><span class="people-love-2026__arrow-icon" aria-hidden="true"><img class="people-love-2026__arrow-desktop" src="{{ 'people-love-2026-desktop-frame2147223561.svg' | asset_url }}" width="94.049" height="24" alt=""><img class="people-love-2026__arrow-mobile" src="{{ 'people-love-2026-mobile-frame2147223561.svg' | asset_url }}" width="62.699" height="16" alt=""></span></button>
+            <button class="people-love-2026__arrow people-love-2026__arrow--prev" type="button" aria-label="Previous"><span class="people-love-2026__arrow-icon" aria-hidden="true"><img class="people-love-2026__arrow-desktop" src="{{ 'people-love-2026-desktop-frame2147223561.svg' | asset_url }}" width="94.049" height="24" alt=""><img class="people-love-2026__arrow-mobile" src="{{ 'people-love-2026-mobile-frame2147223561.svg' | asset_url }}" width="62.699" height="16" alt=""></span></button>
+            <button class="people-love-2026__arrow people-love-2026__arrow--next" type="button" aria-label="Next"><span class="people-love-2026__arrow-icon" aria-hidden="true"><img class="people-love-2026__arrow-desktop" src="{{ 'people-love-2026-desktop-frame2147223561.svg' | asset_url }}" width="94.049" height="24" alt=""><img class="people-love-2026__arrow-mobile" src="{{ 'people-love-2026-mobile-frame2147223561.svg' | asset_url }}" width="62.699" height="16" alt=""></span></button>
           </div>
         {% endif %}
       </div>
@@ -184,25 +184,38 @@
     if (!section || section.peopleLoveCleanup) return;
     const host = section.querySelector('[data-people-love-slider]');
     const container = host.querySelector('.swiper-container');
-    const prev = host.querySelector('.swiper-prev');
-    const next = host.querySelector('.swiper-next');
+    const prev = host.querySelector('.people-love-2026__arrow--prev');
+    const next = host.querySelector('.people-love-2026__arrow--next');
     const cards = [...host.querySelectorAll('[data-inline-video-card]')];
     const media = window.matchMedia('(max-width: 767px)');
     const controller = new AbortController();
     let swiper, frame, stopped = false;
+    container.id = `people-love-2026-slider-${sectionId}`;
+    [prev, next].filter(Boolean).forEach(button => button.setAttribute('aria-controls', container.id));
+    const hasOverflow = () => {
+      const slides = [...container.querySelectorAll('.swiper-slide:not(.swiper-slide-duplicate)')];
+      const gap = media.matches ? 16 : 24;
+      const contentWidth = slides.reduce((width, slide) => width + slide.getBoundingClientRect().width, 0)
+        + Math.max(0, slides.length - 1) * gap;
+      return contentWidth > container.clientWidth + 1;
+    };
     const reset = card => {
       card.querySelector('video')?.pause();
       card.classList.remove('is-playing');
     };
     const updateButtons = () => {
       if (!swiper?.params) return;
-      if (prev) prev.disabled = swiper.isLocked || (!swiper.params.loop && swiper.isBeginning);
-      if (next) next.disabled = swiper.isLocked || (!swiper.params.loop && swiper.isEnd);
+      const overflow = hasOverflow();
+      if (prev) prev.disabled = !overflow || (!swiper.params.loop && swiper.isBeginning);
+      if (next) next.disabled = !overflow || (!swiper.params.loop && swiper.isEnd);
+      [prev, next].filter(Boolean).forEach(button => {
+        button.setAttribute('aria-disabled', String(button.disabled));
+      });
     };
     const desktopOffset = () => Math.max(20, (container.clientWidth - 1520) / 2 - 28);
     const createSwiper = () => {
       if (stopped) return;
-      if (typeof Swiper === 'undefined') { frame = requestAnimationFrame(createSwiper); return; }
+      if (typeof Swiper === 'undefined' || container.clientWidth === 0) { frame = requestAnimationFrame(createSwiper); return; }
       cards.forEach(reset);
       swiper?.destroy(true, true);
       swiper = undefined;
@@ -216,8 +229,8 @@
         slidesOffsetAfter: mobile ? 20 : desktopOffset(),
         initialSlide: mobile || count < 6 ? 0 : 2,
         loop: host.dataset.loop === 'true',
-        watchOverflow: true,
-        navigation: prev && next ? { prevEl: prev, nextEl: next } : false,
+        watchOverflow: false,
+        navigation: false,
         on: {
           slideChangeTransitionStart: () => cards.forEach(reset),
           slideChange: updateButtons,
@@ -235,6 +248,20 @@
       });
       updateButtons();
     };
+    const navigate = direction => {
+      if (!swiper?.params || !hasOverflow()) return;
+      if (direction === 'prev') swiper.slidePrev();
+      else swiper.slideNext();
+      updateButtons();
+    };
+    prev?.addEventListener('click', () => navigate('prev'), { signal: controller.signal });
+    next?.addEventListener('click', () => navigate('next'), { signal: controller.signal });
+    const resizeObserver = new ResizeObserver(() => {
+      if (!swiper?.params || !container.clientWidth) return;
+      swiper.update();
+      updateButtons();
+    });
+    resizeObserver.observe(container);
     cards.forEach(card => {
       const video = card.querySelector('video');
       const button = card.querySelector('[data-inline-video-play]');
@@ -251,6 +278,7 @@
       stopped = true;
       cancelAnimationFrame(frame);
       controller.abort();
+      resizeObserver.disconnect();
       media.removeEventListener('change', createSwiper);
       cards.forEach(reset);
       swiper?.destroy(true, true);
