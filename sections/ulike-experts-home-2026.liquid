@@ -320,6 +320,7 @@
     if (!section) return;
     const wrapper = section.querySelector('.swiper-wrapper');
     const originalSlides = [...wrapper.children];
+    const autoplayEnabled = {{ section.settings.enable_autoplay | json }};
     let swiper;
     let hovered = false;
 
@@ -345,7 +346,7 @@
       section.querySelectorAll('.ulike-experts-home__card.is-playing').forEach(pause);
     };
     const resumeAutoplay = () => {
-      if (swiper?.autoplay && originalSlides.length > 1 && !hovered) swiper.autoplay.start();
+      if (autoplayEnabled && swiper?.autoplay && originalSlides.length > 1 && !hovered) swiper.autoplay.start();
     };
 
     section.addEventListener('click', async (event) => {
@@ -415,10 +416,10 @@
         watchOverflow: true,
         centeredSlides: false,
         speed: 600,
-        autoplay: originalSlides.length > 1 ? {
+        autoplay: autoplayEnabled && originalSlides.length > 1 ? {
           delay: 5000,
           disableOnInteraction: false,
-          stopOnLastSlide: true
+          stopOnLastSlide: false
         } : false,
         navigation: originalSlides.length > 1 ? {
           prevEl: section.querySelector('.swiper-prev'),
@@ -454,7 +455,8 @@
   "name": "Ulike experts home",
   "tag": "section",
   "settings": [
-    { "type": "text", "id": "heading", "label": "Heading", "default": "Backed by experts." }
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Backed by experts." },
+    { "type": "checkbox", "id": "enable_autoplay", "label": "Enable autoplay", "default": true, "info": "Automatically advances every 5 seconds. Pauses while hovering or playing a video." }
   ],
   "blocks": [
     {
