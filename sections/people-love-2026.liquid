@@ -186,7 +186,7 @@
     const container = host.querySelector('.swiper-container');
     const prev = host.querySelector('.people-love-2026__arrow--prev');
     const next = host.querySelector('.people-love-2026__arrow--next');
-    const cards = [...host.querySelectorAll('[data-inline-video-card]')];
+    const getCards = () => [...host.querySelectorAll('[data-inline-video-card]')];
     const media = window.matchMedia('(max-width: 767px)');
     const controller = new AbortController();
     let swiper, frame, stopped = false;
@@ -216,7 +216,7 @@
     const createSwiper = () => {
       if (stopped) return;
       if (typeof Swiper === 'undefined' || container.clientWidth === 0) { frame = requestAnimationFrame(createSwiper); return; }
-      cards.forEach(reset);
+      getCards().forEach(reset);
       swiper?.destroy(true, true);
       swiper = undefined;
       const mobile = media.matches;
@@ -234,7 +234,7 @@
         watchOverflow: false,
         navigation: false,
         on: {
-          slideChangeTransitionStart: () => cards.forEach(reset),
+          slideChangeTransitionStart: () => getCards().forEach(reset),
           slideChange: updateButtons,
           reachBeginning: updateButtons,
           reachEnd: updateButtons,
@@ -264,20 +264,27 @@
       updateButtons();
     });
     resizeObserver.observe(container);
-    cards.forEach(card => {
-      const video = card.querySelector('video');
-      const button = card.querySelector('[data-inline-video-play]');
-      if (!video || !button) return;
-      button.addEventListener('mousedown', event => event.preventDefault(), { signal: controller.signal });
-      button.addEventListener('click', event => {
-        event.preventDefault();
-        event.stopPropagation();
-        cards.filter(other => other !== card).forEach(reset);
-        card.classList.add('is-playing');
-        video.play()?.catch(() => reset(card));
-      }, { signal: controller.signal });
-      video.addEventListener('ended', () => { reset(card); video.currentTime = 0; }, { signal: controller.signal });
-    });
+    host.addEventListener('mousedown', event => {
+      if (event.target.closest('[data-inline-video-play]')) event.preventDefault();
+    }, { signal: controller.signal });
+    host.addEventListener('click', event => {
+      const button = event.target.closest('[data-inline-video-play]');
+      if (!button) return;
+      event.preventDefault();
+      event.stopPropagation();
+      const card = button.closest('[data-inline-video-card]');
+      const video = card?.querySelector('video');
+      if (!video) return;
+      getCards().filter(other => other !== card).forEach(reset);
+      card.classList.add('is-playing');
+      video.play()?.catch(() => reset(card));
+    }, { signal: controller.signal });
+    host.addEventListener('ended', event => {
+      const video = event.target;
+      if (!video.matches('.people-love-2026__video')) return;
+      reset(video.closest('[data-inline-video-card]'));
+      video.currentTime = 0;
+    }, { capture: true, signal: controller.signal });
     media.addEventListener('change', createSwiper);
     section.peopleLoveCleanup = () => {
       stopped = true;
@@ -285,7 +292,7 @@
       controller.abort();
       resizeObserver.disconnect();
       media.removeEventListener('change', createSwiper);
-      cards.forEach(reset);
+      getCards().forEach(reset);
       swiper?.destroy(true, true);
       delete section.peopleLoveCleanup;
     };
