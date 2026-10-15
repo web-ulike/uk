@@ -314,7 +314,7 @@
 
            {% if section.settings.info_image != blank %}
               <div class="real-results__info">
-                {% if section.settings.info_image != blank %}<img class="feature-showcase__info-image" src="{{ section.settings.info_image | image_url}}" alt="" width="{{ section.settings.info_image.width }}" height="{{ section.settings.info_image.height }}" loading="lazy">{% endif %}
+                {% if section.settings.info_image != blank %}<img class="feature-showcase__info-image" src="{{ section.settings.info_image | image_url: width: 1100 }}" srcset="{{ section.settings.info_image | image_url: width: 400 }} 400w, {{ section.settings.info_image | image_url: width: 700 }} 700w, {{ section.settings.info_image | image_url: width: 1100 }} 1100w" sizes="(max-width: 1023px) calc(100vw - 40px), 35vw" alt="" width="{{ section.settings.info_image.width }}" height="{{ section.settings.info_image.height }}" loading="lazy">{% endif %}
               </div>
             {% endif %}
 
@@ -408,7 +408,7 @@
                 alt="{{ block.settings.image_alt | default: block.settings.title | escape }}"
                 width="{{ block.settings.image.width }}"
                 height="{{ block.settings.image.height }}"
-                loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
+                loading="lazy"
               >
 
             {% else %}

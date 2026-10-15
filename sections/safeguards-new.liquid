@@ -225,9 +225,11 @@
               <img
                 loading="lazy"
                 class="img"
-                width=""
-                height=""
-                {% render 'image-attributes', image: block.settings.image %}
+                width="{{ block.settings.image.width }}"
+                height="{{ block.settings.image.height }}"
+                src="{{ block.settings.image | image_url: width: 100 }}"
+                srcset="{{ block.settings.image | image_url: width: 32 }} 32w, {{ block.settings.image | image_url: width: 50 }} 50w, {{ block.settings.image | image_url: width: 100 }} 100w, {{ block.settings.image | image_url: width: 150 }} 150w"
+                sizes="(max-width: 640px) 32px, 50px"
                 alt="{{ block.settings.image.alt | escape }}"
               >
             {%- endif -%}

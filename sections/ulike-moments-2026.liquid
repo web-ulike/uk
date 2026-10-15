@@ -328,14 +328,14 @@
             {% if desktop_image != blank %}
               <picture>
                 {% if mobile_image != blank %}
-                  <source media="(max-width: 767px)" srcset="{{ mobile_image | image_url: width: 750 }}">
+                  <source media="(max-width: 767px)" srcset="{{ mobile_image | image_url: width: 300 }} 300w, {{ mobile_image | image_url: width: 550 }} 550w, {{ mobile_image | image_url: width: 800 }} 800w" sizes="257px">
                 {% endif %}
-                <img class="ulike-moments__image" src="{{ desktop_image | image_url: width: 1800 }}" alt="" width="{{ desktop_image.width }}" height="{{ desktop_image.height }}" loading="lazy">
+                <img class="ulike-moments__image" src="{{ desktop_image | image_url: width: 1200 }}" srcset="{{ desktop_image | image_url: width: 400 }} 400w, {{ desktop_image | image_url: width: 600 }} 600w, {{ desktop_image | image_url: width: 900 }} 900w, {{ desktop_image | image_url: width: 1200 }} 1200w, {{ desktop_image | image_url: width: 1800 }} 1800w" sizes="(max-width: 767px) 257px, (max-width: 920px) calc(100vw - 40px), 880px" alt="" width="{{ desktop_image.width }}" height="{{ desktop_image.height }}" loading="lazy">
               </picture>
             {% elsif default_image_filename != blank %}
               <picture>
                 {% if mobile_image != blank %}
-                  <source media="(max-width: 767px)" srcset="{{ mobile_image | image_url: width: 750 }}">
+                  <source media="(max-width: 767px)" srcset="{{ mobile_image | image_url: width: 300 }} 300w, {{ mobile_image | image_url: width: 550 }} 550w, {{ mobile_image | image_url: width: 800 }} 800w" sizes="257px">
                 {% endif %}
                 <img class="ulike-moments__image" src="{{ default_image_filename | asset_url }}" alt="" width="1760" height="{{ default_image_height }}" loading="lazy">
               </picture>

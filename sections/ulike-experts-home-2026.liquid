@@ -220,12 +220,14 @@
             %}
             <div class="swiper-slide" {{ block.shopify_attributes }}>
               <article class="ulike-experts-home__card">
-                <div class="ulike-experts-home__media{% if mobile_image != blank %} ulike-experts-home__media--has-mobile{% endif %}">
+                <div class="ulike-experts-home__media">
                   {% if poster != blank %}
-                    {{ poster | image_url: width: 1100 | image_tag: loading: 'lazy', class: 'ulike-experts-home__uploaded-image ulike-experts-home__desktop-image', widths: '400,600,800,1100', sizes: '(max-width: 767px) 301px, (max-width: 1199px) 50vw, 33vw' }}
-                  {% endif %}
-                  {% if mobile_image != blank %}
-                    {{ mobile_image | image_url: width: 700 | image_tag: loading: 'lazy', class: 'ulike-experts-home__uploaded-image ulike-experts-home__mobile-image', widths: '350,500,700', sizes: '301px' }}
+                    <picture>
+                      {% if mobile_image != blank %}
+                        <source media="(max-width: 767px)" srcset="{{ mobile_image | image_url: width: 350 }} 350w, {{ mobile_image | image_url: width: 600 }} 600w, {{ mobile_image | image_url: width: 900 }} 900w" sizes="301px">
+                      {% endif %}
+                      {{ poster | image_url: width: 1100 | image_tag: loading: 'lazy', class: 'ulike-experts-home__uploaded-image', widths: '350,600,800,1100', sizes: '(max-width: 767px) 301px, (max-width: 1199px) 50vw, (max-width: 1600px) 33vw, 493px' }}
+                    </picture>
                   {% endif %}
                   {% if video != blank %}
                     {{ video | video_tag: class: 'ulike-experts-home__video', controls: false, autoplay: false, loop: false, muted: false, playsinline: true, preload: 'none' }}

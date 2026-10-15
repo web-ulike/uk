@@ -262,7 +262,7 @@
       transform: none;
     }
 
-    #shopify-section-{{ section.id }} .guide-feature-banner__slide--custom-mobile .guide-feature-banner__art {
+    #shopify-section-{{ section.id }} .guide-feature-banner__slide--custom-mobile .guide-feature-banner__art:not(.guide-feature-banner__responsive-image) {
       display: none;
     }
 
@@ -341,7 +341,12 @@
       {{ block.shopify_attributes }}
     >
       {% if desktop_image != blank %}
-        {{ desktop_image | image_url: width: 2400 | image_tag: class: 'guide-feature-banner__image guide-feature-banner__art', loading: 'lazy', sizes: '100vw', widths: '750,1100,1500,1920,2400' }}
+        <picture>
+          {% if mobile_image != blank %}
+            <source media="(max-width: 767px)" srcset="{{ mobile_image | image_url: width: 375 }} 375w, {{ mobile_image | image_url: width: 550 }} 550w, {{ mobile_image | image_url: width: 750 }} 750w, {{ mobile_image | image_url: width: 1100 }} 1100w, {{ mobile_image | image_url: width: 1500 }} 1500w" sizes="100vw">
+          {% endif %}
+          {{ desktop_image | image_url: width: 2400 | image_tag: class: 'guide-feature-banner__image guide-feature-banner__art guide-feature-banner__responsive-image', loading: 'lazy', sizes: '100vw', widths: '375,550,750,1100,1500,1920,2400' }}
+        </picture>
       {% elsif block.settings.default_visual == 'ipl' %}
         <img
           class="guide-feature-banner__image guide-feature-banner__art"
@@ -369,7 +374,7 @@
             loading="lazy"
           >
       {% endif %}
-      {% if mobile_image != blank %}
+      {% if mobile_image != blank and desktop_image == blank %}
         {{ mobile_image | image_url: width: 1200 | image_tag: class: 'guide-feature-banner__image guide-feature-banner__mobile-image', loading: 'lazy', sizes: '100vw', widths: '375,550,750,1000,1200' }}
       {% endif %}
 
