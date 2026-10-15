@@ -520,10 +520,8 @@
                   </template>
                 </native-video> {% endcomment %}
                   {%- assign video_cover = image | default: video.preview_image -%}
-                  {%- assign video_poster = video_cover | image_url: width: 1600 -%}
 
                   {%- assign mobile_video_cover = mobile_image | default: mobile_video.preview_image | default: video_cover -%}
-                  {%- assign mobile_video_poster = mobile_video_cover | image_url: width: 550 -%}
                 <native-video-new autoplay class="slideshow__image-wrapper{% if mobile_video != blank or mobile_image != blank %} hidden-pocket{% endif %}" data-device="{% if mobile_video != blank or mobile_image != blank %}desktop{% else %}all{% endif %}">
                   <picture class="native-video-cover">
                     <!-- 桌面 -->
@@ -578,10 +576,8 @@
                   </template>
                    </native-video> {% endcomment %}
                     {%- assign video_cover = image | default: video.preview_image -%}
-                  {%- assign video_poster = video_cover | image_url: width: 1600 -%}
 
                   {%- assign mobile_video_cover = mobile_image | default: mobile_video.preview_image | default: video_cover -%}
-                  {%- assign mobile_video_poster = mobile_video_cover | image_url: width: 550 -%}
                 <native-video-new autoplay class="slideshow__image-wrapper  hidden-lap-and-up" data-device="{% if mobile_video != blank or mobile_image != blank %}desktop{% else %}all{% endif %}">
                   <picture class="native-video-cover">
                     <!-- 桌面 -->
@@ -615,13 +611,14 @@
               {%- endif -%}
 
 
+              {%- capture logo_sizes -%}(max-width: 767px) {{ block.settings.title_logo_width_mobile }}px, {{ block.settings.title_logo_width_pc }}px{%- endcapture -%}
               {%- if block.settings.title_logo_image != blank -%}
                <picture class="slide-show-title_logo img_reveal_animate">
                      {%- if block.settings.mobile_title_logo_image -%}
-              <source media="(max-width: 767px)" srcset="{{ block.settings.mobile_title_logo_image | image_url}}">
+              <source media="(max-width: 767px)" srcset="{{ block.settings.mobile_title_logo_image | image_url: width: 200 }} 200w, {{ block.settings.mobile_title_logo_image | image_url: width: 400 }} 400w, {{ block.settings.mobile_title_logo_image | image_url: width: 800 }} 800w, {{ block.settings.mobile_title_logo_image | image_url: width: 1200 }} 1200w" sizes="{{ block.settings.title_logo_width_mobile }}px">
                 {%- endif -%}
               {%- if block.settings.title_logo_image -%}
-              <img class="slide-show-title_logo_img" src="{{ block.settings.title_logo_image | image_url }}" alt="{{ block.settings.title_logo_image.alt }}">
+              {{ block.settings.title_logo_image | image_url: width: 1600 | image_tag: class: 'slide-show-title_logo_img', loading: loading_attribute_value, widths: '100,200,400,600,800,1200,1600', sizes: logo_sizes }}
               {%- endif -%}
                 </picture>
               {%- endif -%}
@@ -643,10 +640,10 @@
              {%- if block.settings.title_logo_image1 != blank -%}
                   <picture class="slide-show-title_logo slide-show-title_logo1 img_reveal_animate">
                      {%- if block.settings.mobile_title_logo_image1 -%}
-              <source media="(max-width: 767px)" srcset="{{ block.settings.mobile_title_logo_image1 | image_url}}">
+              <source media="(max-width: 767px)" srcset="{{ block.settings.mobile_title_logo_image1 | image_url: width: 200 }} 200w, {{ block.settings.mobile_title_logo_image1 | image_url: width: 400 }} 400w, {{ block.settings.mobile_title_logo_image1 | image_url: width: 800 }} 800w, {{ block.settings.mobile_title_logo_image1 | image_url: width: 1200 }} 1200w" sizes="{{ block.settings.title_logo_width_mobile }}px">
                 {%- endif -%}
               {%- if block.settings.title_logo_image1 -%}
-              <img class="slide-show-title_logo_img1" src="{{ block.settings.title_logo_image1 | image_url }}" alt="{{ block.settings.title_logo_image1.alt }}">
+              {{ block.settings.title_logo_image1 | image_url: width: 1600 | image_tag: class: 'slide-show-title_logo_img1', loading: loading_attribute_value, widths: '100,200,400,600,800,1200,1600', sizes: logo_sizes }}
               {%- endif -%}
                 </picture>
               {%- endif -%}
