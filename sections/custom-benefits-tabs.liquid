@@ -601,7 +601,8 @@ backdrop-filter: blur(6px);
                   {% if block.settings.mobile_image != blank %}
                     <source
                       media="(max-width: 640px)"
-                      srcset="{{ block.settings.mobile_image | image_url: width: 900 }}"
+                      srcset="{{ block.settings.mobile_image | image_url: width: 375 }} 375w, {{ block.settings.mobile_image | image_url: width: 550 }} 550w, {{ block.settings.mobile_image | image_url: width: 750 }} 750w, {{ block.settings.mobile_image | image_url: width: 1100 }} 1100w"
+                      sizes="calc(100vw - 40px)"
                     >
                   {% endif %}
 
@@ -652,7 +653,10 @@ backdrop-filter: blur(6px);
                 <div class="card-img-wrapper">
                   {% if default_img != blank %}
                     <img class="img-default {% if hover_img != blank %}has-hover{% endif %}" 
-                         src="{{ default_img | image_url: width: 400 }}" 
+                         src="{{ default_img | image_url: width: 400 }}"
+                         srcset="{{ default_img | image_url: width: 200 }} 200w, {{ default_img | image_url: width: 400 }} 400w, {{ default_img | image_url: width: 600 }} 600w"
+                         sizes="(max-width: 1024px) 45vw, (max-width: 1280px) 22vw, 295px"
+                         width="{{ default_img.width }}" height="{{ default_img.height }}" 
                          alt="{{ card_title | escape }}" 
                          loading="lazy">
                   {% else %}
@@ -661,7 +665,10 @@ backdrop-filter: blur(6px);
 
                   {% if hover_img != blank %}
                     <img class="img-hover" 
-                         src="{{ hover_img | image_url: width: 400 }}" 
+                         src="{{ hover_img | image_url: width: 400 }}"
+                         srcset="{{ hover_img | image_url: width: 200 }} 200w, {{ hover_img | image_url: width: 400 }} 400w, {{ hover_img | image_url: width: 600 }} 600w"
+                         sizes="(max-width: 1024px) 45vw, (max-width: 1280px) 22vw, 295px"
+                         width="{{ hover_img.width }}" height="{{ hover_img.height }}" 
                          alt="{{ card_title | escape }} Hover" 
                          loading="lazy">
                   {% endif %}
@@ -728,7 +735,8 @@ backdrop-filter: blur(6px);
                     {% if block.settings.mobile_image != blank %}
                       <source
                         media="(max-width: 640px)"
-                        srcset="{{ block.settings.mobile_image | image_url: width: 900 }}"
+                        srcset="{{ block.settings.mobile_image | image_url: width: 375 }} 375w, {{ block.settings.mobile_image | image_url: width: 550 }} 550w, {{ block.settings.mobile_image | image_url: width: 750 }} 750w, {{ block.settings.mobile_image | image_url: width: 1100 }} 1100w"
+                      sizes="calc(100vw - 40px)"
                       >
                     {% endif %}
 
@@ -803,6 +811,8 @@ backdrop-filter: blur(6px);
                                 <img
                                   class="img-default {% if hover_img != blank %}has-hover{% endif %}"
                                   src="{{ default_img | image_url: width: 700 }}"
+                                  srcset="{{ default_img | image_url: width: 300 }} 300w, {{ default_img | image_url: width: 500 }} 500w, {{ default_img | image_url: width: 700 }} 700w"
+                                  sizes="(max-width: 640px) 46vw, 300px"
                                   alt="{{ card_title | escape }}"
                                   loading="lazy"
                                   width="{{ default_img.width }}"
