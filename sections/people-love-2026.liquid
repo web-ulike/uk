@@ -32,8 +32,6 @@
 .people-love-2026__video-card { background:#f8f8f8; }
 .people-love-2026__video-media, .people-love-2026__video-cover, .people-love-2026__video { position:absolute; inset:0; display:block; width:100%; height:100%; }
 .people-love-2026__video-cover, .people-love-2026__video { object-fit:cover; }
-.people-love-2026__fallback-cover--portrait { transform:scaleX(-1); }
-.people-love-2026__fallback-cover--treatment { height:144.71%; top:-11.92%; }
 .people-love-2026__video { z-index:2; opacity:0; visibility:hidden; background:#000; }
 .people-love-2026__video-card.is-playing .people-love-2026__video-cover { visibility:hidden; }
 .people-love-2026__video-card.is-playing .people-love-2026__video { visibility:visible; opacity:1; }
@@ -125,15 +123,6 @@
               </div>
             {% else %}
               {% liquid
-                assign fallback_cover = 'people-love-2026-desktop-frame2147223909.png'
-                case block.settings.default_cover
-                  when 'mask'
-                    assign fallback_cover = 'people-love-2026-desktop-frame2147223911.png'
-                  when 'device'
-                    assign fallback_cover = 'people-love-2026-desktop-frame2147223913.png'
-                  when 'treatment'
-                    assign fallback_cover = 'people-love-2026-desktop-frame2147223914.png'
-                endcase
                 assign card_image = block.settings.image
                 if card_image == blank and block.settings.video != blank
                   assign card_image = block.settings.video.preview_image
@@ -144,8 +133,6 @@
                 <div class="people-love-2026__video-media">
                   {% if card_image != blank %}
                     <img class="people-love-2026__video-cover" src="{{ card_image | image_url: width: 900 }}" srcset="{{ card_image | image_url: width: 400 }} 400w, {{ card_image | image_url: width: 600 }} 600w, {{ card_image | image_url: width: 900 }} 900w" sizes="(max-width: 767px) 257px, 376px" alt="{{ block.settings.expert_name | escape }}" width="{{ card_image.width }}" height="{{ card_image.height }}" loading="lazy">
-                  {% else %}
-                    <img class="people-love-2026__video-cover people-love-2026__fallback-cover people-love-2026__fallback-cover--{{ block.settings.default_cover | default: 'portrait' }}" src="{{ fallback_cover | asset_url }}" width="376" height="460" alt="{{ block.settings.expert_name | escape }}" loading="lazy">
                   {% endif %}
 
                   {% if block.settings.video != blank %}
@@ -480,30 +467,6 @@
           "id": "expert_position",
           "label": "Expert Position",
           "default": "A board-certified dermatologist"
-        },
-        {
-          "type": "select",
-          "id": "default_cover",
-          "label": "Default design cover",
-          "options": [
-            {
-              "value": "portrait",
-              "label": "Portrait"
-            },
-            {
-              "value": "mask",
-              "label": "LED mask"
-            },
-            {
-              "value": "device",
-              "label": "IPL device"
-            },
-            {
-              "value": "treatment",
-              "label": "Treatment"
-            }
-          ],
-          "default": "portrait"
         }
       ]
     }
@@ -515,10 +478,7 @@
       "blocks": [
         {
           "type": "card",
-          "settings": {
-            "card_type": "video",
-            "default_cover": "portrait"
-          }
+          "settings": { "card_type": "video" }
         },
         {
           "type": "card",
@@ -528,10 +488,7 @@
         },
         {
           "type": "card",
-          "settings": {
-            "card_type": "video",
-            "default_cover": "mask"
-          }
+          "settings": { "card_type": "video" }
         },
         {
           "type": "card",
@@ -541,10 +498,7 @@
         },
         {
           "type": "card",
-          "settings": {
-            "card_type": "video",
-            "default_cover": "device"
-          }
+          "settings": { "card_type": "video" }
         },
         {
           "type": "card",
@@ -554,10 +508,7 @@
         },
         {
           "type": "card",
-          "settings": {
-            "card_type": "video",
-            "default_cover": "treatment"
-          }
+          "settings": { "card_type": "video" }
         },
         {
           "type": "card",
