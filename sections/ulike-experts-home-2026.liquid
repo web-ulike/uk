@@ -43,7 +43,6 @@
     border-radius: 10px;
     background: #f2f2fa;
   }
-  #shopify-section-{{ section.id }} .ulike-experts-home__portrait,
   #shopify-section-{{ section.id }} .ulike-experts-home__uploaded-image,
   #shopify-section-{{ section.id }} .ulike-experts-home__video {
     display: block;
@@ -53,23 +52,6 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-  }
-  #shopify-section-{{ section.id }} .ulike-experts-home__portrait {
-    position: absolute;
-    left: 50%;
-    max-width: none;
-    width: 130%;
-    height: auto;
-    top: 0;
-    transform: translateX(-50%);
-  }
-  #shopify-section-{{ section.id }} .ulike-experts-home__portrait--adam {
-    width: 90%;
-    top: 8%;
-  }
-  #shopify-section-{{ section.id }} .ulike-experts-home__portrait--davin {
-    width: 90%;
-    top: -10%;
   }
   #shopify-section-{{ section.id }} .ulike-experts-home__mobile-image {
     display: none;
@@ -182,19 +164,7 @@
     #shopify-section-{{ section.id }} .ulike-experts-home__media {
       aspect-ratio: 301 / 260;
     }
-    #shopify-section-{{ section.id }} .ulike-experts-home__portrait {
-      width: 210%;
-    }
-    #shopify-section-{{ section.id }} .ulike-experts-home__portrait--adam {
-      width: 146%;
-      top: 8%;
-    }
-    #shopify-section-{{ section.id }} .ulike-experts-home__portrait--davin {
-      width: 140%;
-      top: -5%;
-    }
-    #shopify-section-{{ section.id }} .ulike-experts-home__media--has-mobile .ulike-experts-home__desktop-image,
-    #shopify-section-{{ section.id }} .ulike-experts-home__media--has-mobile .ulike-experts-home__portrait {
+    #shopify-section-{{ section.id }} .ulike-experts-home__media--has-mobile .ulike-experts-home__desktop-image {
       display: none;
     }
     #shopify-section-{{ section.id }} .ulike-experts-home__mobile-image {
@@ -246,7 +216,6 @@
               assign desktop_image = block.settings.image
               assign mobile_image = block.settings.mobile_image
               assign video = block.settings.video
-              assign fallback = block.settings.reference_portrait
               assign poster = desktop_image | default: mobile_image | default: video.preview_image
             %}
             <div class="swiper-slide" {{ block.shopify_attributes }}>
@@ -254,13 +223,6 @@
                 <div class="ulike-experts-home__media{% if mobile_image != blank %} ulike-experts-home__media--has-mobile{% endif %}">
                   {% if poster != blank %}
                     {{ poster | image_url: width: 1100 | image_tag: loading: 'lazy', class: 'ulike-experts-home__uploaded-image ulike-experts-home__desktop-image', widths: '400,600,800,1100', sizes: '(max-width: 767px) 301px, (max-width: 1199px) 50vw, 33vw' }}
-                  {% elsif fallback != 'none' %}
-                    {% case fallback %}
-                      {% when 'cassandra' %}{% assign portrait_file = 'ulike-expert-cassandra.png' %}
-                      {% when 'adam' %}{% assign portrait_file = 'ulike-expert-adam.png' %}
-                      {% when 'davin' %}{% assign portrait_file = 'ulike-expert-davin.png' %}
-                    {% endcase %}
-                    <img class="ulike-experts-home__portrait ulike-experts-home__portrait--{{ fallback }}" src="{{ portrait_file | asset_url }}" alt="{{ block.settings.name | escape }}" loading="lazy" width="1200" height="1200">
                   {% endif %}
                   {% if mobile_image != blank %}
                     {{ mobile_image | image_url: width: 700 | image_tag: loading: 'lazy', class: 'ulike-experts-home__uploaded-image ulike-experts-home__mobile-image', widths: '350,500,700', sizes: '301px' }}
@@ -466,18 +428,6 @@
         { "type": "image_picker", "id": "image", "label": "Image / video cover" },
         { "type": "image_picker", "id": "mobile_image", "label": "Mobile image (optional)" },
         { "type": "video", "id": "video", "label": "Video (optional)" },
-        {
-          "type": "select",
-          "id": "reference_portrait",
-          "label": "Reference portrait if no image is uploaded",
-          "options": [
-            { "value": "none", "label": "None" },
-            { "value": "cassandra", "label": "Cassandra Bankson" },
-            { "value": "adam", "label": "Dr. Adam Rubinstein" },
-            { "value": "davin", "label": "Dr. Davin Lim" }
-          ],
-          "default": "none"
-        },
         { "type": "text", "id": "name", "label": "Name", "default": "Expert name" },
         { "type": "text", "id": "role", "label": "Title", "default": "A board-certified dermatologist" },
         { "type": "richtext", "id": "description", "label": "Description", "default": "<p>Ulike IPL is backed by over 30+ safety certifications, ensuring your skin is protected from harmful UV light, and delivering you a comfortable and reliable hair removal experience.</p>" }
@@ -488,9 +438,9 @@
     {
       "name": "Ulike experts home",
       "blocks": [
-        { "type": "expert", "settings": { "reference_portrait": "cassandra", "name": "Cassandra Bankson" } },
-        { "type": "expert", "settings": { "reference_portrait": "adam", "name": "Dr. Adam Rubinstein", "role": "Award-Winning Aesthetic Surgeon" } },
-        { "type": "expert", "settings": { "reference_portrait": "davin", "name": "Dr. Davin Lim", "role": "Board-Certified Dermatologist" } }
+        { "type": "expert", "settings": { "name": "Cassandra Bankson" } },
+        { "type": "expert", "settings": { "name": "Dr. Adam Rubinstein", "role": "Award-Winning Aesthetic Surgeon" } },
+        { "type": "expert", "settings": { "name": "Dr. Davin Lim", "role": "Board-Certified Dermatologist" } }
       ]
     }
   ]
