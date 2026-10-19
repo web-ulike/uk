@@ -8,7 +8,7 @@
   rel="stylesheet"
   href="{{ 'product-new.min.css' | asset_url }}"
 >
-<section>
+<section class="luke-product-section">
   {%- if section.settings.show_sticky_add_to_cart and product.available -%}
     {%- render 'product-sticky-form-new', product: product, buy_buttons_block: buy_buttons_block -%}
   {%- endif -%}
@@ -37,11 +37,112 @@
 {% comment %} 3D 渲染 {% endcomment %}
 {% render 'model-code-new' %}
 
+{{ 'product-luke-blocks.css' | asset_url | stylesheet_tag }}
+
 {% schema %}
 {
   "name": "Product page",
   "class": "shopify-section--main-product",
   "blocks": [
+{
+    "type": "sha_accreditation",
+    "name": "SHA Accreditation",
+    "limit": 1,
+    "settings": [
+        {
+            "type": "image_picker",
+            "id": "image",
+            "label": "图片 / 图标"
+        },
+        {
+            "type": "text",
+            "id": "heading",
+            "label": "标题",
+            "default": "Accredited by Skin Health Alliance (SHA)"
+        },
+        {
+            "type": "richtext",
+            "id": "text",
+            "label": "说明",
+            "default": "<p>Independently reviewed by dermatologists for outstanding skin compatibility & gentle IPL treatment.</p>"
+        }
+    ]
+},
+{
+    "type": "early_bird_shipping",
+    "name": "Early Bird Shipping",
+    "limit": 1,
+    "settings": [
+        {
+            "type": "image_picker",
+            "id": "image",
+            "label": "图片 / 图标"
+        },
+        {
+            "type": "text",
+            "id": "heading",
+            "label": "标题",
+            "default": "Limitierte Early-Bird-Verfügbarkeit."
+        },
+        {
+            "type": "richtext",
+            "id": "text",
+            "label": "说明",
+            "default": "<p>Voraussichtlicher Versand ab dem 15. Juni 2026 oder früher.</p>"
+        }
+    ]
+},
+{
+    "type": "clinical_badges",
+    "name": "Clinical Badges",
+    "limit": 1,
+    "settings": [
+        {
+            "type": "image_picker",
+            "id": "image_1",
+            "label": "标签 1 图片"
+        },
+        {
+            "type": "text",
+            "id": "text_1",
+            "label": "标签 1 文案",
+            "default": "Clinically Proven"
+        },
+        {
+            "type": "image_picker",
+            "id": "image_2",
+            "label": "标签 2 图片"
+        },
+        {
+            "type": "text",
+            "id": "text_2",
+            "label": "标签 2 文案",
+            "default": "CE Certified Medical Device"
+        },
+        {
+            "type": "image_picker",
+            "id": "image_3",
+            "label": "标签 3 图片"
+        },
+        {
+            "type": "text",
+            "id": "text_3",
+            "label": "标签 3 文案",
+            "default": "100-Day Money-Back Guarantee"
+        },
+        {
+            "type": "image_picker",
+            "id": "image_4",
+            "label": "标签 4 图片"
+        },
+        {
+            "type": "text",
+            "id": "text_4",
+            "label": "标签 4 文案",
+            "default": "Hautverträglich für alle Hauttöne"
+        }
+    ]
+},
     {
       "type": "@app"
     },
@@ -154,8 +255,7 @@
           "type": "checkbox",
           "id": "show_buy_direct",
           "label": "是否显示直接购买按钮",
-          "default": false,
-        }
+          "default": false}
       ]
     },
     {
@@ -173,16 +273,6 @@
           "id": "liquid",
           "label": "Liquid",
           "info": "Add app snippets or other Liquid code to create advanced customizations."
-        },
-        {
-          "type": "image_picker",
-          "id": "image1",
-          "label": "Image"
-        },
-        {
-          "type": "image_picker",
-          "id": "image2",
-          "label": "Image"
         }
       ]
     },
@@ -865,8 +955,7 @@
     {
        "type": "text",
        "id": "sub_title",
-       "label": "产品副标题",
-    },
+       "label": "产品副标题"},
         {
       "type": "header",
       "content": "捆绑相关配置"
@@ -899,8 +988,39 @@
   ],
   "presets": [
     {
-      "name": "g-ulike-prodcut",
-      "blocks": []
+      "name": "Product page - Luke",
+      "blocks": [
+        {
+                "type": "clinical_badges"
+        },
+        {
+                "type": "description"
+        },
+        {
+                "type": "variant_picker"
+        },
+        {
+                "type": "price"
+        },
+        {
+                "type": "installment"
+        },
+        {
+                "type": "discountCode"
+        },
+        {
+                "type": "buy_buttons"
+        },
+        {
+                "type": "sha_accreditation"
+        },
+        {
+                "type": "early_bird_shipping"
+        },
+        {
+                "type": "aftermarket"
+        }
+]
     }
   ]
 }

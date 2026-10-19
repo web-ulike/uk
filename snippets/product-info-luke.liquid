@@ -60,6 +60,44 @@
         {%- when '@app' -%}
           {%- render block -%}
 
+        {%- when 'sha_accreditation', 'early_bird_shipping' -%}
+          {%- if block.settings.image != blank or block.settings.heading != blank or block.settings.text != blank -%}
+            <div class="luke-product-card luke-product-card--{{ block.type }}{% if block.settings.image == blank %} luke-product-card--text-only{% endif %}" {{ block.shopify_attributes }}>
+              {%- if block.settings.image != blank -%}
+                {{- block.settings.image | image_url: width: 300 | image_tag: loading: 'lazy', widths: '60,100,150,200,300', sizes: '(max-width: 999px) 52px, 100px', class: 'luke-product-card__image' -}}
+              {%- endif -%}
+              <div class="luke-product-card__content">
+                {%- if block.settings.heading != blank -%}
+                  <p class="luke-product-card__heading">{{ block.settings.heading | escape }}</p>
+                {%- endif -%}
+                {%- if block.settings.text != blank -%}
+                  <div class="luke-product-card__text">{{ block.settings.text }}</div>
+                {%- endif -%}
+              </div>
+            </div>
+          {%- endif -%}
+
+        {%- when 'clinical_badges' -%}
+          {%- capture clinical_badges -%}
+            {%- for index in (1..4) -%}
+              {%- assign image_key = 'image_' | append: index -%}
+              {%- assign text_key = 'text_' | append: index -%}
+              {%- assign badge_image = block.settings[image_key] -%}
+              {%- assign badge_text = block.settings[text_key] -%}
+              {%- if badge_image != blank or badge_text != blank -%}
+                <div class="luke-clinical-badges__item">
+                  {%- if badge_image != blank -%}
+                    {{- badge_image | image_url: width: 80 | image_tag: loading: 'lazy', widths: '20,40,60,80', sizes: '20px', class: 'luke-clinical-badges__image' -}}
+                  {%- endif -%}
+                  {%- if badge_text != blank -%}<span>{{ badge_text | escape }}</span>{%- endif -%}
+                </div>
+              {%- endif -%}
+            {%- endfor -%}
+          {%- endcapture -%}
+          {%- if clinical_badges != blank -%}
+            <div class="luke-clinical-badges" {{ block.shopify_attributes }}>{{ clinical_badges }}</div>
+          {%- endif -%}
+
         {%- when 'variant_picker' -%}
           {%- capture variant_picker_info -%}
             {%- unless product.has_only_default_variant
@@ -282,7 +320,6 @@
           {%- endcapture -%}
 
           <div class="product-row-direction">
-            {{ description_popup_box }}
             {{- variant_picker_info -}}
           </div>
         {%- when 'line_item_property' -%}
@@ -512,11 +549,10 @@
           {{ quantity_selector_info }}
 
         {%- when 'description' -%}
-          {%- capture description_popup_box -%}
-            <div class="description-cont-flex">
+            <div class="description-cont-flex" {{ block.shopify_attributes }}>
               <div>
                 {%- if product.description != blank -%}
-                  <div class="product-form__description rte" {{ block.shopify_attributes }}>
+                  <div class="product-form__description rte">
                     {{- product.description -}}
                   </div>
                 {%- endif -%}
@@ -540,7 +576,6 @@
                 </div>
               {%- endif -%}
             </div>
-          {% endcapture %}
 
         {%- when 'buy_buttons' -%}
           {%- capture buy_buttons_info -%}
