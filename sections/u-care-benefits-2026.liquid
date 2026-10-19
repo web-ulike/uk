@@ -1,0 +1,198 @@
+{%- liquid
+  assign st = section.settings
+-%}
+
+<section id="u-care-benefits-{{ section.id }}" class="u-care-benefits-2026">
+  <ul class="u-care-benefits-2026__grid" role="list">
+    {%- for block in section.blocks -%}
+      {%- liquid
+        assign bs = block.settings
+        assign default_asset = blank
+        case bs.default_icon
+          when 'facial-massage'
+            assign default_asset = 'u-care-facial-massage-2026.svg'
+          when 'soothing-relief'
+            assign default_asset = 'u-care-soothing-relief-2026.svg'
+          when 'bedtime-relaxation'
+            assign default_asset = 'u-care-bedtime-relaxation-2026.svg'
+          when 'natural-stone'
+            assign default_asset = 'u-care-natural-stone-2026.svg'
+        endcase
+      -%}
+      <li class="u-care-benefits-2026__card" {{ block.shopify_attributes }}>
+        {%- if bs.image != blank or default_asset != blank -%}
+          <div class="u-care-benefits-2026__icon{% if bs.image == blank %} u-care-benefits-2026__icon--{{ bs.default_icon }}{% endif %}">
+            {%- if bs.image != blank -%}
+              {{- bs.image | image_url: width: 240 | image_tag: loading: 'lazy', widths: '40,80,160,240', sizes: '(max-width: 768px) 40px, 80px', alt: '' -}}
+            {%- else -%}
+              <img src="{{ default_asset | asset_url }}" width="80" height="80" loading="lazy" alt="">
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+        {%- if bs.text != blank -%}
+          <p class="u-care-benefits-2026__text">{{ bs.text | escape }}</p>
+        {%- endif -%}
+      </li>
+    {%- endfor -%}
+  </ul>
+</section>
+
+<style>
+  #u-care-benefits-{{ section.id }} {
+    background: {{ st.background }};
+    color: {{ st.text_color }};
+    padding: {{ st.padding_top }}px 24px {{ st.padding_bottom }}px;
+    font-family: Saans, var(--text-font-family), sans-serif;
+  }
+  #u-care-benefits-{{ section.id }} .u-care-benefits-2026__grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    align-items: stretch;
+    gap: 20px;
+    max-width: 1520px;
+    margin: 0 auto;
+    padding: 0;
+    list-style: none;
+  }
+  #u-care-benefits-{{ section.id }} .u-care-benefits-2026__card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    min-width: 0;
+    margin: 0;
+    padding: 40px 20px;
+    border-radius: 10px;
+    background: {{ st.card_background }};
+    text-align: center;
+  }
+  #u-care-benefits-{{ section.id }} .u-care-benefits-2026__icon {
+    position: relative;
+    flex: 0 0 80px;
+    width: 80px;
+    height: 80px;
+    overflow: hidden;
+  }
+  #u-care-benefits-{{ section.id }} .u-care-benefits-2026__icon img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+  #u-care-benefits-{{ section.id }} .u-care-benefits-2026__icon--facial-massage img {
+    position: absolute;
+    width: 98.75%;
+    height: 102.5%;
+    top: -0.5875%;
+    left: 0.625%;
+  }
+  #u-care-benefits-{{ section.id }} .u-care-benefits-2026__icon--soothing-relief img {
+    position: absolute;
+    width: 92.5%;
+    height: 95%;
+    top: 3.1625%;
+    left: 3.125%;
+  }
+  #u-care-benefits-{{ section.id }} .u-care-benefits-2026__icon--bedtime-relaxation img {
+    position: absolute;
+    width: 87.5%;
+    height: 92.5%;
+    top: 3.1625%;
+    left: 6.875%;
+  }
+  #u-care-benefits-{{ section.id }} .u-care-benefits-2026__icon--natural-stone img {
+    position: absolute;
+    width: 76.25%;
+    height: 85%;
+    top: 6.3125%;
+    left: 11.875%;
+    transform: rotate(11.7deg);
+  }
+  #u-care-benefits-{{ section.id }} .u-care-benefits-2026__text {
+    width: 100%;
+    max-width: 267px;
+    margin: 0;
+    color: inherit;
+    font-family: inherit;
+    font-size: 26px;
+    font-weight: 400;
+    line-height: 1.25;
+    overflow-wrap: anywhere;
+  }
+  @media (min-width: 769px) and (max-width: 1200px) {
+    #u-care-benefits-{{ section.id }} .u-care-benefits-2026__text { font-size: 20px; }
+  }
+  @media (max-width: 768px) {
+    #u-care-benefits-{{ section.id }} {
+      padding: {{ st.mobile_padding_top }}px 16px {{ st.mobile_padding_bottom }}px;
+    }
+    #u-care-benefits-{{ section.id }} .u-care-benefits-2026__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+    #u-care-benefits-{{ section.id }} .u-care-benefits-2026__card {
+      gap: 10px;
+      padding: 20px 10px;
+      border-radius: 5px;
+    }
+    #u-care-benefits-{{ section.id }} .u-care-benefits-2026__icon {
+      flex-basis: 40px;
+      width: 40px;
+      height: 40px;
+    }
+    #u-care-benefits-{{ section.id }} .u-care-benefits-2026__text {
+      max-width: 133.5px;
+      font-size: 13px;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "U Care Benefits 2026",
+  "tag": "div",
+  "class": "shopify-section--u-care-benefits-2026",
+  "max_blocks": 8,
+  "settings": [
+    { "type": "color", "id": "background", "label": "模块背景色", "default": "#ffffff" },
+    { "type": "color", "id": "card_background", "label": "卡片背景色", "default": "#fff8fa" },
+    { "type": "color", "id": "text_color", "label": "文字颜色", "default": "#3f3636" },
+    { "type": "range", "id": "padding_top", "label": "PC 上间距", "min": 0, "max": 150, "step": 2, "unit": "px", "default": 0 },
+    { "type": "range", "id": "padding_bottom", "label": "PC 下间距", "min": 0, "max": 150, "step": 2, "unit": "px", "default": 94 },
+    { "type": "range", "id": "mobile_padding_top", "label": "手机端上间距", "min": 0, "max": 100, "step": 1, "unit": "px", "default": 56 },
+    { "type": "range", "id": "mobile_padding_bottom", "label": "手机端下间距", "min": 0, "max": 100, "step": 1, "unit": "px", "default": 56 }
+  ],
+  "blocks": [
+    {
+      "type": "benefit",
+      "name": "护理卖点",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "图标", "info": "上传图片后替换下方默认图标。" },
+        {
+          "type": "select", "id": "default_icon", "label": "默认图标", "default": "none",
+          "options": [
+            { "value": "none", "label": "无" },
+            { "value": "facial-massage", "label": "面部按摩" },
+            { "value": "soothing-relief", "label": "舒缓护理" },
+            { "value": "bedtime-relaxation", "label": "睡前放松" },
+            { "value": "natural-stone", "label": "天然石护理" }
+          ]
+        },
+        { "type": "text", "id": "text", "label": "文案" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "U Care Benefits 2026",
+      "blocks": [
+        { "type": "benefit", "settings": { "default_icon": "facial-massage", "text": "Facial Massage" } },
+        { "type": "benefit", "settings": { "default_icon": "soothing-relief", "text": "Soothing Relief" } },
+        { "type": "benefit", "settings": { "default_icon": "bedtime-relaxation", "text": "Bedtime Relaxation" } },
+        { "type": "benefit", "settings": { "default_icon": "natural-stone", "text": "Natural Stone Care" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
