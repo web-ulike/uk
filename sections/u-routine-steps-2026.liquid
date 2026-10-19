@@ -1,0 +1,198 @@
+{%- assign st = section.settings -%}
+<section id="u-routine-steps-{{ section.id }}" class="u-routine-steps-2026"{% if st.heading != blank %} aria-labelledby="u-routine-heading-{{ section.id }}"{% endif %}>
+  {%- if st.heading != blank -%}
+    <h2 id="u-routine-heading-{{ section.id }}" class="u-routine-steps-2026__heading">{{ st.heading | escape }}</h2>
+  {%- endif -%}
+  <div class="u-routine-steps-2026__scroller" tabindex="0" role="region" aria-label="{{ st.heading | default: 'Routine steps' | escape }}">
+    <ol class="u-routine-steps-2026__list" role="list">
+      {%- for block in section.blocks -%}
+        {%- liquid
+          assign bs = block.settings
+          assign card_image = bs.image | default: bs.mobile_image
+        -%}
+        <li class="u-routine-steps-2026__card" {{ block.shopify_attributes }}>
+          {%- if card_image != blank -%}
+            <picture class="u-routine-steps-2026__media">
+              {%- if bs.mobile_image != blank -%}
+                <source media="(max-width: 768px)" srcset="{{ bs.mobile_image | image_url: width: 400 }} 400w, {{ bs.mobile_image | image_url: width: 600 }} 600w, {{ bs.mobile_image | image_url: width: 900 }} 900w" sizes="286px" width="{{ bs.mobile_image.width }}" height="{{ bs.mobile_image.height }}">
+              {%- endif -%}
+              {{- card_image | image_url: width: 1500 | image_tag: loading: 'lazy', widths: '300,500,750,1000,1500', sizes: '(max-width: 768px) 286px, (max-width: 1568px) 32vw, 495px', alt: card_image.alt -}}
+            </picture>
+          {%- endif -%}
+          {%- if bs.heading != blank or bs.text != blank -%}
+            <div class="u-routine-steps-2026__content">
+              {%- if bs.heading != blank -%}
+                <h3 class="u-routine-steps-2026__step">{{ bs.heading | escape }}</h3>
+              {%- endif -%}
+              {%- if bs.text != blank -%}
+                <p class="u-routine-steps-2026__text">{{ bs.text | escape | newline_to_br }}</p>
+              {%- endif -%}
+            </div>
+          {%- endif -%}
+        </li>
+      {%- endfor -%}
+    </ol>
+  </div>
+</section>
+
+<style>
+  #u-routine-steps-{{ section.id }} {
+    padding: {{ st.padding_top }}px 24px {{ st.padding_bottom }}px;
+    background: {{ st.background }};
+    color: {{ st.text_color }};
+    font-family: Saans, var(--text-font-family), sans-serif;
+  }
+  #u-routine-steps-{{ section.id }} .u-routine-steps-2026__heading {
+    max-width: 976px;
+    margin: 0 auto 50px;
+    color: inherit;
+    font-family: inherit;
+    font-size: 48px;
+    font-weight: 400;
+    line-height: 1.2;
+    text-align: center;
+    overflow-wrap: anywhere;
+  }
+  #u-routine-steps-{{ section.id }} .u-routine-steps-2026__scroller {
+    max-width: 1520px;
+    margin: 0 auto;
+  }
+  #u-routine-steps-{{ section.id }} .u-routine-steps-2026__scroller:focus-visible {
+    outline: 2px solid {{ st.step_color }};
+    outline-offset: 4px;
+  }
+  #u-routine-steps-{{ section.id }} .u-routine-steps-2026__list {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  #u-routine-steps-{{ section.id }} .u-routine-steps-2026__card {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    margin: 0;
+    overflow: hidden;
+    border-radius: 16px;
+    background: {{ st.card_background }};
+  }
+  #u-routine-steps-{{ section.id }} .u-routine-steps-2026__media {
+    display: block;
+    aspect-ratio: 495 / 400;
+    overflow: hidden;
+    background: #f4f3f2;
+  }
+  #u-routine-steps-{{ section.id }} .u-routine-steps-2026__media img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  #u-routine-steps-{{ section.id }} .u-routine-steps-2026__content {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+    min-height: 140px;
+    padding: 34px clamp(24px, 3.28vw, 63px);
+  }
+  #u-routine-steps-{{ section.id }} .u-routine-steps-2026__step {
+    margin: 0;
+    color: {{ st.step_color }};
+    font-family: inherit;
+    font-size: 24px;
+    font-weight: 400;
+    line-height: 1.2;
+    overflow-wrap: anywhere;
+  }
+  #u-routine-steps-{{ section.id }} .u-routine-steps-2026__text {
+    margin: 0;
+    color: inherit;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.25;
+    overflow-wrap: anywhere;
+  }
+  @media (max-width: 768px) {
+    #u-routine-steps-{{ section.id }} {
+      padding: {{ st.mobile_padding_top }}px 0 {{ st.mobile_padding_bottom }}px;
+    }
+    #u-routine-steps-{{ section.id }} .u-routine-steps-2026__heading {
+      margin-bottom: 40px;
+      padding: 0 20px;
+      font-size: 26px;
+    }
+    #u-routine-steps-{{ section.id }} .u-routine-steps-2026__scroller {
+      overflow-x: auto;
+      overscroll-behavior-x: contain;
+      scroll-snap-type: x proximity;
+      scroll-padding-inline: 20px;
+      scrollbar-width: none;
+    }
+    #u-routine-steps-{{ section.id }} .u-routine-steps-2026__scroller::-webkit-scrollbar { display: none; }
+    #u-routine-steps-{{ section.id }} .u-routine-steps-2026__list {
+      display: flex;
+      gap: 16px;
+      width: max-content;
+      min-width: 100%;
+      padding: 0 20px;
+    }
+    #u-routine-steps-{{ section.id }} .u-routine-steps-2026__card {
+      flex: 0 0 auto;
+      width: min(286px, calc(100vw - 56px));
+      border-radius: 8px;
+      scroll-snap-align: start;
+    }
+    #u-routine-steps-{{ section.id }} .u-routine-steps-2026__media { aspect-ratio: 286 / 291; }
+    #u-routine-steps-{{ section.id }} .u-routine-steps-2026__content {
+      gap: 10px;
+      min-height: 95px;
+      padding: 23px 24px;
+    }
+    #u-routine-steps-{{ section.id }} .u-routine-steps-2026__step { font-size: 18px; }
+    #u-routine-steps-{{ section.id }} .u-routine-steps-2026__text { font-size: 12px; }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "U Routine Steps 2026",
+  "class": "shopify-section--u-routine-steps-2026",
+  "max_blocks": 6,
+  "settings": [
+    { "type": "text", "id": "heading", "label": "标题", "default": "Level up your routine." },
+    { "type": "color", "id": "background", "label": "模块背景色", "default": "#fbfaf9" },
+    { "type": "color", "id": "card_background", "label": "卡片背景色", "default": "#ffffff" },
+    { "type": "color", "id": "text_color", "label": "文字颜色", "default": "#1a1a1a" },
+    { "type": "color", "id": "step_color", "label": "步骤标题颜色", "default": "#e0004d" },
+    { "type": "range", "id": "padding_top", "label": "PC 上间距", "min": 0, "max": 150, "step": 2, "unit": "px", "default": 78 },
+    { "type": "range", "id": "padding_bottom", "label": "PC 下间距", "min": 0, "max": 150, "step": 2, "unit": "px", "default": 74 },
+    { "type": "range", "id": "mobile_padding_top", "label": "手机端上间距", "min": 0, "max": 100, "step": 1, "unit": "px", "default": 60 },
+    { "type": "range", "id": "mobile_padding_bottom", "label": "手机端下间距", "min": 0, "max": 100, "step": 1, "unit": "px", "default": 74 }
+  ],
+  "blocks": [
+    {
+      "type": "step", "name": "护理步骤",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "PC 图片", "info": "建议比例 495:400；未上传任何图片时不显示图片区。" },
+        { "type": "image_picker", "id": "mobile_image", "label": "手机端图片", "info": "建议比例 286:291；未上传时沿用 PC 图片。" },
+        { "type": "text", "id": "heading", "label": "步骤标题" },
+        { "type": "textarea", "id": "text", "label": "步骤说明" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "U Routine Steps 2026",
+      "blocks": [
+        { "type": "step", "settings": { "heading": "Step 1", "text": "Cleanse and moisturize your face before using the facial tools" } },
+        { "type": "step", "settings": { "heading": "Step 2", "text": "Massage with Gua Sha or Jade Roller" } },
+        { "type": "step", "settings": { "heading": "Step 3", "text": "Put On Your Sleep Mask & Relax" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
