@@ -12,15 +12,15 @@
     </picture>
   {%- endif -%}
   <div class="benefits-list-2026__container">
-    {%- if st.title != blank -%}<h2 class="benefits-list-2026__title">{{ st.title | escape }}</h2>{%- endif -%}
-    {%- if st.subtitle != blank -%}<p class="benefits-list-2026__subtitle">{{ st.subtitle | escape }}</p>{%- endif -%}
+    {%- if st.title != blank -%}<h2 class="benefits-list-2026__title to-top">{{ st.title | escape }}</h2>{%- endif -%}
+    {%- if st.subtitle != blank -%}<p class="benefits-list-2026__subtitle to-top">{{ st.subtitle | escape }}</p>{%- endif -%}
     <ul class="benefits-list-2026__grid" role="list">
       {%- for block in section.blocks -%}
         {%- liquid
           assign bs = block.settings
           assign card_image = bs.image | default: bs.image_mobile
         -%}
-        <li class="benefits-list-2026__item" {{ block.shopify_attributes }}>
+        <li class="benefits-list-2026__item to-top" style="transition-delay: {{ forloop.index | times: 0.1 }}s;" {{ block.shopify_attributes }}>
           <div class="benefits-list-2026__card" style="--art-width: {{ bs.image_width }}%; --card-fill: {{ bs.card_background | default: st.card_background }};">
             {%- if card_image != blank -%}
               <picture class="benefits-list-2026__art">
@@ -32,9 +32,13 @@
             {%- endif -%}
             {%- if bs.popup_text != blank -%}
               <details class="benefits-list-2026__help">
-                <summary aria-label="{{ bs.text | default: st.title | escape }} — {{ st.help_label | escape }}"><span aria-hidden="true">?</span></summary>
+                <summary class="benefits-popup-icon" data-txt="{{ bs.popup_text | escape }}" aria-label="{{ bs.text | default: st.title | escape }} — {{ st.help_label | escape }}"><span aria-hidden="true">?</span></summary>
                 <div class="benefits-list-2026__tooltip">{{ bs.popup_text }}</div>
               </details>
+            {%- else -%}
+              <div class="benefits-list-2026__help" aria-hidden="true">
+                <span class="benefits-popup-icon"><span>?</span></span>
+              </div>
             {%- endif -%}
           </div>
           {%- if bs.text != blank -%}
@@ -69,12 +73,14 @@
   #benefits-list-2026-{{ section.id }} .benefits-list-2026__text { margin: 20px 0 0; font-size: 20px; font-weight: 500; line-height: 1.5; text-align: center; overflow-wrap: anywhere; }
   #benefits-list-2026-{{ section.id }} .benefits-list-2026__text a { color: inherit; text-decoration: underline; text-underline-offset: 3px; }
   #benefits-list-2026-{{ section.id }} .benefits-list-2026__help { position: absolute; top: 4.6%; right: 3.28%; z-index: 2; }
+  #benefits-list-2026-{{ section.id }} .benefits-list-2026__item:focus-within { position: relative; z-index: 3; }
+  #benefits-list-2026-{{ section.id }} .benefits-list-2026__help[aria-hidden] .benefits-popup-icon { cursor: default; }
   #benefits-list-2026-{{ section.id }} .benefits-list-2026__help[open] { z-index: 3; }
-  #benefits-list-2026-{{ section.id }} .benefits-list-2026__help summary { position: relative; display: flex; align-items: center; justify-content: center; width: 27px; height: 27px; padding: 0; list-style: none; color: {{ st.help_color }}; font: 500 18px/1 Saans, sans-serif; cursor: pointer; }
-  #benefits-list-2026-{{ section.id }} .benefits-list-2026__help summary::before { content: ''; position: absolute; inset: 0; background: {{ st.help_background }}; border-radius: 50%; }
-  #benefits-list-2026-{{ section.id }} .benefits-list-2026__help summary span { position: relative; }
-  #benefits-list-2026-{{ section.id }} .benefits-list-2026__help summary::-webkit-details-marker { display: none; }
-  #benefits-list-2026-{{ section.id }} .benefits-list-2026__help summary:focus-visible { outline: 2px solid currentColor; outline-offset: 3px; border-radius: 50%; }
+  #benefits-list-2026-{{ section.id }} .benefits-list-2026__help .benefits-popup-icon { position: relative; display: flex; align-items: center; justify-content: center; width: 27px; height: 27px; padding: 0; list-style: none; color: {{ st.help_color }}; font: 500 18px/1 Saans, sans-serif; cursor: pointer; }
+  #benefits-list-2026-{{ section.id }} .benefits-list-2026__help .benefits-popup-icon::before { content: ''; position: absolute; inset: 0; background: {{ st.help_background }}; border-radius: 50%; }
+  #benefits-list-2026-{{ section.id }} .benefits-list-2026__help .benefits-popup-icon span { position: relative; }
+  #benefits-list-2026-{{ section.id }} .benefits-list-2026__help .benefits-popup-icon::-webkit-details-marker { display: none; }
+  #benefits-list-2026-{{ section.id }} .benefits-list-2026__help .benefits-popup-icon:focus-visible { outline: 2px solid currentColor; outline-offset: 3px; border-radius: 50%; }
   #benefits-list-2026-{{ section.id }} .benefits-list-2026__tooltip { position: absolute; top: calc(100% + 8px); right: 0; width: min(300px, 75vw); padding: 20px; border-radius: 10px; background: {{ st.popup_background }}; color: {{ st.popup_color }}; box-shadow: 0 8px 24px #0003; font-size: 16px; line-height: 1.4; overflow-wrap: anywhere; }
   #benefits-list-2026-{{ section.id }} .benefits-list-2026__tooltip p { margin: 0; }
   @media (min-width: 768px) and (max-width: 1200px) {
@@ -86,7 +92,7 @@
     #benefits-list-2026-{{ section.id }} .benefits-list-2026__subtitle { margin-top: 10px; font-size: 14px; }
     #benefits-list-2026-{{ section.id }} .benefits-list-2026__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px 12px; margin-top: 28px; }
     #benefits-list-2026-{{ section.id }} .benefits-list-2026__text { margin-top: 10px; font-size: 13px; }
-    #benefits-list-2026-{{ section.id }} .benefits-list-2026__help summary { width: 22px; height: 22px; font-size: 14px; }
+    #benefits-list-2026-{{ section.id }} .benefits-list-2026__help .benefits-popup-icon { width: 22px; height: 22px; font-size: 14px; }
     #benefits-list-2026-{{ section.id }} .benefits-list-2026__item:nth-child(odd) .benefits-list-2026__tooltip { right: auto; left: -120px; }
   }
 </style>
@@ -257,7 +263,7 @@
         {
           "type": "richtext",
           "id": "popup_text",
-          "label": "问号说明（留空则隐藏问号）"
+          "label": "问号说明（留空时仅显示图标）"
         }
       ]
     }
