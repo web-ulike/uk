@@ -19,8 +19,8 @@
     }
   #shopify-section-{{ section.id }} .product-cont{
     padding: 60px 0 40px 0;
-    background: {{ section.settings.product_bg_color | default: 'transparent' }};
-    color:#333;
+    background: linear-gradient(180deg, #F0E6F4 -19.8%, #FFF 99.95%);
+    color: {{ section.settings.product_text_color | default: '#333333' }};
     position: relative;
       z-index: 1;
   }
@@ -2003,6 +2003,7 @@
 {%- endif -%}
 <div
   class="product-cont {{ section.settings.text6 }} {% if section.settings.is_reverse %}is-reverse-box{% endif %} "
+  style="background: transparent"
 >
   <div class="container">
     {% if section.settings.t_title != blank or section.settings.t_sub != blank %}
@@ -3046,10 +3047,10 @@
       "label": "背景颜色"
     },
     {
-      "type": "color_background",
-      "id": "product_bg_color",
-      "label": "产品区域背景颜色",
-      "info": "设置 product-cont 区域的纯色或渐变背景，留空则显示模块背景。"
+      "type": "color",
+      "id": "product_text_color",
+      "label": "产品区域文字颜色",
+      "default": "#333333"
     },
     {
       "type": "header",
