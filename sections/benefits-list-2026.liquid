@@ -19,42 +19,15 @@
         {%- liquid
           assign bs = block.settings
           assign card_image = bs.image | default: bs.image_mobile
-          assign fallback_asset = blank
-          case bs.default_artwork
-            when 'discount'
-              assign fallback_asset = 'benefits-list-2026-discount.png'
-              assign artwork_width = 1024
-              assign artwork_height = 756
-              assign artwork_ratio = '258 / 193'
-            when 'gift'
-              assign fallback_asset = 'benefits-list-2026-gift.png'
-              assign artwork_width = 1358
-              assign artwork_height = 1159
-              assign artwork_ratio = '229 / 202'
-            when 'guarantee'
-              assign fallback_asset = 'benefits-list-2026-guarantee.png'
-              assign artwork_width = 450
-              assign artwork_height = 398
-              assign artwork_ratio = '225 / 199'
-            when 'price-match'
-              assign fallback_asset = 'benefits-list-2026-price-match.png'
-              assign artwork_width = 1024
-              assign artwork_height = 1024
-              assign artwork_ratio = '210 / 180'
-          endcase
         -%}
         <li class="benefits-list-2026__item" {{ block.shopify_attributes }}>
           <div class="benefits-list-2026__card" style="--art-width: {{ bs.image_width }}%; --card-fill: {{ bs.card_background | default: st.card_background }};">
-            {%- if card_image != blank or fallback_asset != blank -%}
-              <picture class="benefits-list-2026__art{% if card_image == blank %} benefits-list-2026__art--default{% endif %}"{% if card_image == blank %} style="aspect-ratio: {{ artwork_ratio }}"{% endif %}>
+            {%- if card_image != blank -%}
+              <picture class="benefits-list-2026__art">
                 {%- if bs.image_mobile != blank -%}
                   <source media="(max-width: 767px)" srcset="{{ bs.image_mobile | image_url: width: 720 }}">
                 {%- endif -%}
-                {%- if card_image != blank -%}
-                  {{ card_image | image_url: width: 900 | image_tag: loading: 'lazy', widths: '180,260,360,540,720,900', sizes: '(max-width: 767px) 40vw, (max-width: 1559px) 18vw, 260px' }}
-                {%- else -%}
-                  <img src="{{ fallback_asset | asset_url }}" alt="" width="{{ artwork_width }}" height="{{ artwork_height }}" loading="lazy">
-                {%- endif -%}
+                {{ card_image | image_url: width: 900 | image_tag: loading: 'lazy', widths: '180,260,360,540,720,900', sizes: '(max-width: 767px) 40vw, (max-width: 1559px) 18vw, 260px' }}
               </picture>
             {%- endif -%}
             {%- if bs.popup_text != blank -%}
@@ -90,17 +63,15 @@
   #benefits-list-2026-{{ section.id }} .benefits-list-2026__grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 30px 20px; padding: 0; margin: 43px 0 0; list-style: none; }
   #benefits-list-2026-{{ section.id }} .benefits-list-2026__item { min-width: 0; margin: 0; padding: 0; }
   #benefits-list-2026-{{ section.id }} .benefits-list-2026__card { position: relative; aspect-ratio: 360 / 250; display: flex; align-items: center; justify-content: center; }
-  #benefits-list-2026-{{ section.id }} .benefits-list-2026__card::before { content: ''; position: absolute; inset: 0; background: var(--card-fill); -webkit-mask: url('{{ 'benefits-list-2026-card.svg' | asset_url }}') center / 100% 100% no-repeat; mask: url('{{ 'benefits-list-2026-card.svg' | asset_url }}') center / 100% 100% no-repeat; }
+  #benefits-list-2026-{{ section.id }} .benefits-list-2026__card::before { content: ''; position: absolute; inset: 0; background: var(--card-fill); border-radius: 5px; }
   #benefits-list-2026-{{ section.id }} .benefits-list-2026__art { position: relative; display: flex; align-items: center; justify-content: center; width: var(--art-width); height: 84%; }
   #benefits-list-2026-{{ section.id }} .benefits-list-2026__art img { display: block; width: 100%; height: 100%; object-fit: contain; }
-  #benefits-list-2026-{{ section.id }} .benefits-list-2026__art--default { height: auto; }
-  #benefits-list-2026-{{ section.id }} .benefits-list-2026__art--default img { object-fit: cover; }
   #benefits-list-2026-{{ section.id }} .benefits-list-2026__text { margin: 20px 0 0; font-size: 20px; font-weight: 500; line-height: 1.5; text-align: center; overflow-wrap: anywhere; }
   #benefits-list-2026-{{ section.id }} .benefits-list-2026__text a { color: inherit; text-decoration: underline; text-underline-offset: 3px; }
   #benefits-list-2026-{{ section.id }} .benefits-list-2026__help { position: absolute; top: 4.6%; right: 3.28%; z-index: 2; }
   #benefits-list-2026-{{ section.id }} .benefits-list-2026__help[open] { z-index: 3; }
   #benefits-list-2026-{{ section.id }} .benefits-list-2026__help summary { position: relative; display: flex; align-items: center; justify-content: center; width: 27px; height: 27px; padding: 0; list-style: none; color: {{ st.help_color }}; font: 500 18px/1 Saans, sans-serif; cursor: pointer; }
-  #benefits-list-2026-{{ section.id }} .benefits-list-2026__help summary::before { content: ''; position: absolute; inset: 0; background: {{ st.help_background }}; -webkit-mask: url('{{ 'benefits-list-2026-help.svg' | asset_url }}') center / contain no-repeat; mask: url('{{ 'benefits-list-2026-help.svg' | asset_url }}') center / contain no-repeat; }
+  #benefits-list-2026-{{ section.id }} .benefits-list-2026__help summary::before { content: ''; position: absolute; inset: 0; background: {{ st.help_background }}; border-radius: 50%; }
   #benefits-list-2026-{{ section.id }} .benefits-list-2026__help summary span { position: relative; }
   #benefits-list-2026-{{ section.id }} .benefits-list-2026__help summary::-webkit-details-marker { display: none; }
   #benefits-list-2026-{{ section.id }} .benefits-list-2026__help summary:focus-visible { outline: 2px solid currentColor; outline-offset: 3px; border-radius: 50%; }
@@ -259,34 +230,6 @@
           "label": "图片 M（未设置时使用 PC）"
         },
         {
-          "type": "select",
-          "id": "default_artwork",
-          "label": "默认设计素材（上传图片优先）",
-          "default": "none",
-          "options": [
-            {
-              "value": "none",
-              "label": "无"
-            },
-            {
-              "value": "discount",
-              "label": "折扣"
-            },
-            {
-              "value": "gift",
-              "label": "赠品"
-            },
-            {
-              "value": "guarantee",
-              "label": "100 天退款"
-            },
-            {
-              "value": "price-match",
-              "label": "14 天保价"
-            }
-          ]
-        },
-        {
           "type": "range",
           "id": "image_width",
           "label": "图片宽度",
@@ -326,7 +269,6 @@
         {
           "type": "item",
           "settings": {
-            "default_artwork": "discount",
             "text": "Up to 50% OFF",
             "image_width": 72
           }
@@ -334,7 +276,6 @@
         {
           "type": "item",
           "settings": {
-            "default_artwork": "gift",
             "text": "Exclusive Free Gift",
             "image_width": 64
           }
@@ -342,7 +283,6 @@
         {
           "type": "item",
           "settings": {
-            "default_artwork": "guarantee",
             "text": "100 Day Money Back Guarantee",
             "image_width": 63
           }
@@ -350,7 +290,6 @@
         {
           "type": "item",
           "settings": {
-            "default_artwork": "price-match",
             "text": "14-Day Price Match",
             "image_width": 58
           }
