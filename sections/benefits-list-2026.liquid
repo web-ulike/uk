@@ -1,0 +1,362 @@
+{%- liquid
+  assign st = section.settings
+-%}
+<section id="benefits-list-2026-{{ section.id }}" class="benefits-list-2026">
+  {%- if st.background_image != blank or st.background_image_mobile != blank -%}
+    {%- assign background_image = st.background_image | default: st.background_image_mobile -%}
+    <picture class="benefits-list-2026__background">
+      {%- if st.background_image_mobile != blank -%}
+        <source media="(max-width: 767px)" srcset="{{ st.background_image_mobile | image_url: width: 1000 }}">
+      {%- endif -%}
+      {{ background_image | image_url: width: 2400 | image_tag: loading: 'lazy', widths: '750,1100,1500,1920,2400', sizes: '100vw', alt: '' }}
+    </picture>
+  {%- endif -%}
+  <div class="benefits-list-2026__container">
+    {%- if st.title != blank -%}<h2 class="benefits-list-2026__title">{{ st.title | escape }}</h2>{%- endif -%}
+    {%- if st.subtitle != blank -%}<p class="benefits-list-2026__subtitle">{{ st.subtitle | escape }}</p>{%- endif -%}
+    <ul class="benefits-list-2026__grid" role="list">
+      {%- for block in section.blocks -%}
+        {%- liquid
+          assign bs = block.settings
+          assign card_image = bs.image | default: bs.image_mobile
+          assign fallback_asset = blank
+          case bs.default_artwork
+            when 'discount'
+              assign fallback_asset = 'benefits-list-2026-discount.png'
+              assign artwork_width = 1024
+              assign artwork_height = 756
+              assign artwork_ratio = '258 / 193'
+            when 'gift'
+              assign fallback_asset = 'benefits-list-2026-gift.png'
+              assign artwork_width = 1358
+              assign artwork_height = 1159
+              assign artwork_ratio = '229 / 202'
+            when 'guarantee'
+              assign fallback_asset = 'benefits-list-2026-guarantee.png'
+              assign artwork_width = 450
+              assign artwork_height = 398
+              assign artwork_ratio = '225 / 199'
+            when 'price-match'
+              assign fallback_asset = 'benefits-list-2026-price-match.png'
+              assign artwork_width = 1024
+              assign artwork_height = 1024
+              assign artwork_ratio = '210 / 180'
+          endcase
+        -%}
+        <li class="benefits-list-2026__item" {{ block.shopify_attributes }}>
+          <div class="benefits-list-2026__card" style="--art-width: {{ bs.image_width }}%; --card-fill: {{ bs.card_background | default: st.card_background }};">
+            {%- if card_image != blank or fallback_asset != blank -%}
+              <picture class="benefits-list-2026__art{% if card_image == blank %} benefits-list-2026__art--default{% endif %}"{% if card_image == blank %} style="aspect-ratio: {{ artwork_ratio }}"{% endif %}>
+                {%- if bs.image_mobile != blank -%}
+                  <source media="(max-width: 767px)" srcset="{{ bs.image_mobile | image_url: width: 720 }}">
+                {%- endif -%}
+                {%- if card_image != blank -%}
+                  {{ card_image | image_url: width: 900 | image_tag: loading: 'lazy', widths: '180,260,360,540,720,900', sizes: '(max-width: 767px) 40vw, (max-width: 1559px) 18vw, 260px' }}
+                {%- else -%}
+                  <img src="{{ fallback_asset | asset_url }}" alt="" width="{{ artwork_width }}" height="{{ artwork_height }}" loading="lazy">
+                {%- endif -%}
+              </picture>
+            {%- endif -%}
+            {%- if bs.popup_text != blank -%}
+              <details class="benefits-list-2026__help">
+                <summary aria-label="{{ bs.text | default: st.title | escape }} — {{ st.help_label | escape }}"><span aria-hidden="true">?</span></summary>
+                <div class="benefits-list-2026__tooltip">{{ bs.popup_text }}</div>
+              </details>
+            {%- endif -%}
+          </div>
+          {%- if bs.text != blank -%}
+            <p class="benefits-list-2026__text">
+              {%- if bs.link != blank -%}<a href="{{ bs.link }}">{{ bs.text | escape }}</a>{%- else -%}{{ bs.text | escape }}{%- endif -%}
+            </p>
+          {%- endif -%}
+        </li>
+      {%- endfor -%}
+    </ul>
+  </div>
+</section>
+<style>
+  #benefits-list-2026-{{ section.id }} {
+    position: relative;
+    background: {{ st.background }};
+    color: {{ st.text_color }};
+    padding: {{ st.padding_top }}px 30px {{ st.padding_bottom }}px;
+    font-family: Saans, var(--text-font-family, sans-serif), sans-serif;
+  }
+  #benefits-list-2026-{{ section.id }} .benefits-list-2026__background { position: absolute; inset: 0; pointer-events: none; }
+  #benefits-list-2026-{{ section.id }} .benefits-list-2026__background img { display: block; width: 100%; height: 100%; object-fit: cover; }
+  #benefits-list-2026-{{ section.id }} .benefits-list-2026__container { position: relative; max-width: 1500px; margin: 0 auto; }
+  #benefits-list-2026-{{ section.id }} .benefits-list-2026__title { margin: 0; color: {{ st.title_color }}; font: 500 44px/1.2 Saans, var(--text-font-family, sans-serif), sans-serif; text-align: center; }
+  #benefits-list-2026-{{ section.id }} .benefits-list-2026__subtitle { margin: 9px 0 0; font-size: 18px; font-weight: 400; line-height: 1.5; text-align: center; }
+  #benefits-list-2026-{{ section.id }} .benefits-list-2026__grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 30px 20px; padding: 0; margin: 43px 0 0; list-style: none; }
+  #benefits-list-2026-{{ section.id }} .benefits-list-2026__item { min-width: 0; margin: 0; padding: 0; }
+  #benefits-list-2026-{{ section.id }} .benefits-list-2026__card { position: relative; aspect-ratio: 360 / 250; display: flex; align-items: center; justify-content: center; }
+  #benefits-list-2026-{{ section.id }} .benefits-list-2026__card::before { content: ''; position: absolute; inset: 0; background: var(--card-fill); -webkit-mask: url('{{ 'benefits-list-2026-card.svg' | asset_url }}') center / 100% 100% no-repeat; mask: url('{{ 'benefits-list-2026-card.svg' | asset_url }}') center / 100% 100% no-repeat; }
+  #benefits-list-2026-{{ section.id }} .benefits-list-2026__art { position: relative; display: flex; align-items: center; justify-content: center; width: var(--art-width); height: 84%; }
+  #benefits-list-2026-{{ section.id }} .benefits-list-2026__art img { display: block; width: 100%; height: 100%; object-fit: contain; }
+  #benefits-list-2026-{{ section.id }} .benefits-list-2026__art--default { height: auto; }
+  #benefits-list-2026-{{ section.id }} .benefits-list-2026__art--default img { object-fit: cover; }
+  #benefits-list-2026-{{ section.id }} .benefits-list-2026__text { margin: 20px 0 0; font-size: 20px; font-weight: 500; line-height: 1.5; text-align: center; overflow-wrap: anywhere; }
+  #benefits-list-2026-{{ section.id }} .benefits-list-2026__text a { color: inherit; text-decoration: underline; text-underline-offset: 3px; }
+  #benefits-list-2026-{{ section.id }} .benefits-list-2026__help { position: absolute; top: 4.6%; right: 3.28%; z-index: 2; }
+  #benefits-list-2026-{{ section.id }} .benefits-list-2026__help[open] { z-index: 3; }
+  #benefits-list-2026-{{ section.id }} .benefits-list-2026__help summary { position: relative; display: flex; align-items: center; justify-content: center; width: 27px; height: 27px; padding: 0; list-style: none; color: {{ st.help_color }}; font: 500 18px/1 Saans, sans-serif; cursor: pointer; }
+  #benefits-list-2026-{{ section.id }} .benefits-list-2026__help summary::before { content: ''; position: absolute; inset: 0; background: {{ st.help_background }}; -webkit-mask: url('{{ 'benefits-list-2026-help.svg' | asset_url }}') center / contain no-repeat; mask: url('{{ 'benefits-list-2026-help.svg' | asset_url }}') center / contain no-repeat; }
+  #benefits-list-2026-{{ section.id }} .benefits-list-2026__help summary span { position: relative; }
+  #benefits-list-2026-{{ section.id }} .benefits-list-2026__help summary::-webkit-details-marker { display: none; }
+  #benefits-list-2026-{{ section.id }} .benefits-list-2026__help summary:focus-visible { outline: 2px solid currentColor; outline-offset: 3px; border-radius: 50%; }
+  #benefits-list-2026-{{ section.id }} .benefits-list-2026__tooltip { position: absolute; top: calc(100% + 8px); right: 0; width: min(300px, 75vw); padding: 20px; border-radius: 10px; background: {{ st.popup_background }}; color: {{ st.popup_color }}; box-shadow: 0 8px 24px #0003; font-size: 16px; line-height: 1.4; overflow-wrap: anywhere; }
+  #benefits-list-2026-{{ section.id }} .benefits-list-2026__tooltip p { margin: 0; }
+  @media (min-width: 768px) and (max-width: 1200px) {
+    #benefits-list-2026-{{ section.id }} .benefits-list-2026__text { font-size: 16px; }
+  }
+  @media (max-width: 767px) {
+    #benefits-list-2026-{{ section.id }} { padding: {{ st.mobile_padding_top }}px 16px {{ st.mobile_padding_bottom }}px; }
+    #benefits-list-2026-{{ section.id }} .benefits-list-2026__title { font-size: 28px; }
+    #benefits-list-2026-{{ section.id }} .benefits-list-2026__subtitle { margin-top: 10px; font-size: 14px; }
+    #benefits-list-2026-{{ section.id }} .benefits-list-2026__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px 12px; margin-top: 28px; }
+    #benefits-list-2026-{{ section.id }} .benefits-list-2026__text { margin-top: 10px; font-size: 13px; }
+    #benefits-list-2026-{{ section.id }} .benefits-list-2026__help summary { width: 22px; height: 22px; font-size: 14px; }
+    #benefits-list-2026-{{ section.id }} .benefits-list-2026__item:nth-child(odd) .benefits-list-2026__tooltip { right: auto; left: -120px; }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "benefits-list-2026",
+  "tag": "section",
+  "max_blocks": 8,
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "标题",
+      "default": "Buy from Ulike for extra perks"
+    },
+    {
+      "type": "textarea",
+      "id": "subtitle",
+      "label": "副标题",
+      "default": "Unlock special offers with purchases made here on our official website!"
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "背景图片 PC"
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image_mobile",
+      "label": "背景图片 M"
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "背景颜色",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "标题颜色",
+      "default": "#EFE7F8"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "文案颜色",
+      "default": "#EFE7F8"
+    },
+    {
+      "type": "color_background",
+      "id": "card_background",
+      "label": "卡片背景（支持渐变）",
+      "default": "linear-gradient(180deg, #DAC5FF 0%, #55398D 100%)"
+    },
+    {
+      "type": "text",
+      "id": "help_label",
+      "label": "说明按钮无障碍标签",
+      "default": "More information"
+    },
+    {
+      "type": "color",
+      "id": "help_background",
+      "label": "问号背景颜色",
+      "default": "#EFE7F8"
+    },
+    {
+      "type": "color",
+      "id": "help_color",
+      "label": "问号文字颜色",
+      "default": "#1B0749"
+    },
+    {
+      "type": "color",
+      "id": "popup_background",
+      "label": "说明背景颜色",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "popup_color",
+      "label": "说明文字颜色",
+      "default": "#1B0749"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "上间距 PC",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 71
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "下间距 PC",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 70
+    },
+    {
+      "type": "range",
+      "id": "mobile_padding_top",
+      "label": "上间距 M",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "mobile_padding_bottom",
+      "label": "下间距 M",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 40
+    }
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "权益卡片",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "图片 PC"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_mobile",
+          "label": "图片 M（未设置时使用 PC）"
+        },
+        {
+          "type": "select",
+          "id": "default_artwork",
+          "label": "默认设计素材（上传图片优先）",
+          "default": "none",
+          "options": [
+            {
+              "value": "none",
+              "label": "无"
+            },
+            {
+              "value": "discount",
+              "label": "折扣"
+            },
+            {
+              "value": "gift",
+              "label": "赠品"
+            },
+            {
+              "value": "guarantee",
+              "label": "100 天退款"
+            },
+            {
+              "value": "price-match",
+              "label": "14 天保价"
+            }
+          ]
+        },
+        {
+          "type": "range",
+          "id": "image_width",
+          "label": "图片宽度",
+          "min": 30,
+          "max": 100,
+          "step": 1,
+          "unit": "%",
+          "default": 70
+        },
+        {
+          "type": "color_background",
+          "id": "card_background",
+          "label": "卡片背景覆盖（可选）"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "权益文案"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "文案链接（可选）"
+        },
+        {
+          "type": "richtext",
+          "id": "popup_text",
+          "label": "问号说明（留空则隐藏问号）"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "benefits-list-2026",
+      "blocks": [
+        {
+          "type": "item",
+          "settings": {
+            "default_artwork": "discount",
+            "text": "Up to 50% OFF",
+            "image_width": 72
+          }
+        },
+        {
+          "type": "item",
+          "settings": {
+            "default_artwork": "gift",
+            "text": "Exclusive Free Gift",
+            "image_width": 64
+          }
+        },
+        {
+          "type": "item",
+          "settings": {
+            "default_artwork": "guarantee",
+            "text": "100 Day Money Back Guarantee",
+            "image_width": 63
+          }
+        },
+        {
+          "type": "item",
+          "settings": {
+            "default_artwork": "price-match",
+            "text": "14-Day Price Match",
+            "image_width": 58
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
