@@ -2006,6 +2006,15 @@
       color: {{ section.settings.purchase_button_hover_text }};
     }
     {%- endif -%}
+
+    {%- if section.settings.info_gift_bg_image != blank -%}
+    #shopify-section-{{ section.id }} .product-cont .product-components .product-right-panel .info-gift {
+      background-image: url("{{ section.settings.info_gift_bg_image | image_url: width: 1200 }}");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+    {%- endif -%}
 </style>
 
 {% assign image_found = false %}
@@ -3280,37 +3289,6 @@
       "default": "Read More"
     },
     {
-      "type": "checkbox",
-      "id": "is_cart_aloebera",
-      "label": "是否购物车显示赠品",
-      "default": false
-    },
-    {
-      "type": "image_picker",
-      "id": "image1",
-      "label": "赠品图片"
-    },
-    {
-      "type": "text",
-      "id": "text8",
-      "label": "赠品标题"
-    },
-    {
-      "type": "text",
-      "id": "text9",
-      "label": "Text"
-    },
-    {
-      "type": "text",
-      "id": "text10",
-      "label": "Text"
-    },
-    {
-      "type": "text",
-      "id": "text11",
-      "label": "Text"
-    },
-    {
       "type": "textarea",
       "id": "group-purchase",
       "label": "加购按钮文案",
@@ -3466,10 +3444,51 @@
       "default": 0
     },
     {
+      "type": "header",
+      "content": "赠品块"
+    },
+    {
+      "type": "checkbox",
+      "id": "is_cart_aloebera",
+      "label": "是否购物车显示赠品",
+      "default": false
+    },
+    {
+      "type": "image_picker",
+      "id": "image1",
+      "label": "赠品图片"
+    },
+    {
+      "type": "text",
+      "id": "text8",
+      "label": "赠品标题"
+    },
+    {
+      "type": "text",
+      "id": "text9",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "text10",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "text11",
+      "label": "Text"
+    },
+    {
       "type": "color_background",
       "id": "info_gift_bg",
-      "label": "Info gift background",
+      "label": "赠品背景颜色",
       "default": "linear-gradient(71deg, #E1DAF9 33.74%, #F1DCE0 73.43%)"
+    },
+    {
+      "type": "image_picker",
+      "id": "info_gift_bg_image",
+      "label": "赠品背景图片",
+      "info": "留空使用赠品背景颜色；上传图片后按区域居中裁切铺满。"
     }
   ],
   "blocks": [
