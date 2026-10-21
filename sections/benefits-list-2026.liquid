@@ -31,10 +31,12 @@
               </picture>
             {%- endif -%}
             {%- if bs.popup_text != blank -%}
-              <details class="benefits-list-2026__help">
+              <benefits-help-2026 class="benefits-list-2026__help">
+                <details>
                 <summary class="benefits-popup-icon" data-txt="{{ bs.popup_text | escape }}" aria-label="{{ bs.text | default: st.title | escape }} — {{ st.help_label | escape }}"><span aria-hidden="true">?</span></summary>
                 <div class="benefits-list-2026__tooltip">{{ bs.popup_text }}</div>
-              </details>
+                </details>
+              </benefits-help-2026>
             {%- else -%}
               <div class="benefits-list-2026__help" aria-hidden="true">
                 <span class="benefits-popup-icon"><span>?</span></span>
@@ -73,9 +75,9 @@
   #benefits-list-2026-{{ section.id }} .benefits-list-2026__text { margin: 20px 0 0; font-size: 20px; font-weight: 500; line-height: 1.5; text-align: center; overflow-wrap: anywhere; }
   #benefits-list-2026-{{ section.id }} .benefits-list-2026__text a { color: inherit; text-decoration: underline; text-underline-offset: 3px; }
   #benefits-list-2026-{{ section.id }} .benefits-list-2026__help { position: absolute; top: 4.6%; right: 3.28%; z-index: 2; }
-  #benefits-list-2026-{{ section.id }} .benefits-list-2026__item:focus-within { position: relative; z-index: 3; }
+  #benefits-list-2026-{{ section.id }} .benefits-list-2026__item:focus-within, #benefits-list-2026-{{ section.id }} .benefits-list-2026__item:has(details[open]) { position: relative; z-index: 3; }
   #benefits-list-2026-{{ section.id }} .benefits-list-2026__help[aria-hidden] .benefits-popup-icon { cursor: default; }
-  #benefits-list-2026-{{ section.id }} .benefits-list-2026__help[open] { z-index: 3; }
+  #benefits-list-2026-{{ section.id }} .benefits-list-2026__help:has(details[open]) { z-index: 3; }
   #benefits-list-2026-{{ section.id }} .benefits-list-2026__help .benefits-popup-icon { position: relative; display: flex; align-items: center; justify-content: center; width: 27px; height: 27px; padding: 0; list-style: none; color: {{ st.help_color }}; font: 500 18px/1 Saans, sans-serif; cursor: pointer; }
   #benefits-list-2026-{{ section.id }} .benefits-list-2026__help .benefits-popup-icon::before { content: ''; position: absolute; inset: 0; background: {{ st.help_background }}; border-radius: 50%; }
   #benefits-list-2026-{{ section.id }} .benefits-list-2026__help .benefits-popup-icon span { position: relative; color: inherit; }
@@ -96,6 +98,35 @@
     #benefits-list-2026-{{ section.id }} .benefits-list-2026__item:nth-child(odd) .benefits-list-2026__tooltip { right: auto; left: -120px; }
   }
 </style>
+
+<script>
+  if (!customElements.get('benefits-help-2026')) {
+    customElements.define('benefits-help-2026', class extends HTMLElement {
+      connectedCallback() {
+        if (this.initialized) return;
+        this.initialized = true;
+        const details = this.querySelector('details');
+        const summary = this.querySelector('summary');
+        const canHover = () => window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+        this.addEventListener('pointerenter', (event) => {
+          if (canHover() && event.pointerType !== 'touch') details.open = true;
+        });
+        this.addEventListener('pointerleave', (event) => {
+          if (canHover() && event.pointerType !== 'touch') details.open = false;
+        });
+        summary.addEventListener('click', (event) => {
+          if (canHover() && event.detail > 0) event.preventDefault();
+        });
+        this.addEventListener('keydown', (event) => {
+          if (event.key === 'Escape') {
+            details.open = false;
+            summary.focus();
+          }
+        });
+      }
+    });
+  }
+</script>
 
 {% schema %}
 {
