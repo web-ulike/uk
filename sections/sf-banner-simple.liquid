@@ -101,6 +101,10 @@
           <div class="sf-banner-simple__subtitle">{{ st.subtitle }}</div>
         {% endif %}
 
+        {% if st.desc != blank %}
+          <div class="sf-banner-simple__subtitle sf-banner-simple__desc">{{ st.desc }}</div>
+        {% endif %}
+
         {% if st.cta_text != blank and st.cta_link != blank %}
           <a class="sf-banner-simple__btn" href="{{ st.cta_link }}">
             {{ st.cta_text }}
@@ -116,6 +120,7 @@
     position: relative;
     overflow: hidden;
     --sf-banner-text-color: {{ st.text_color }};
+    --sf-banner-eyebrow-color: {{ st.eyebrow_color | default: '#e0004d' }};
     --sf-banner-subtitle-color: {{ st.subtitle_color | default: st.text_color }};
     --sf-banner-btn-text-color: {{ st.btn_text_color }};
     --sf-banner-btn-bg-color: {{ st.btn_bg_color }};
@@ -158,9 +163,7 @@
   }
 
   #sf-banner-simple-{{ sid }} .sf-banner-simple__eyebrow{
-    color: #FFF;
-    font-size: 12px;
-    color: #e0004d;
+    color: var(--sf-banner-eyebrow-color);
     font-size: 20px;
     display: inline-block;
     padding: 0px;
@@ -299,9 +302,11 @@
 
     { "type": "header", "content": "文案内容" },
     { "type": "text", "id": "eyebrow", "label": "顶部小标题（可选）", "default": "Early Spring Sale" },
+    { "type": "color", "id": "eyebrow_color", "label": "顶部小标题颜色", "default": "#e0004d" },
     { "type": "color", "id": "text_color", "label": "主文字颜色", "default": "#000000" },
     { "type": "color", "id": "subtitle_color", "label": "副标题颜色", "default": "#000000" },
     { "type": "richtext", "id": "subtitle", "label": "副标题（可选）" },
+    { "type": "html", "id": "desc", "label": "Desc（HTML，可选）" },
     { "type": "header", "content": "按钮（可选）" },
     { "type": "color", "id": "btn_text_color", "label": "按钮文字颜色", "default": "#FFFFFF" },
     { "type": "color", "id": "btn_bg_color", "label": "按钮背景颜色", "default": "#130304" },
