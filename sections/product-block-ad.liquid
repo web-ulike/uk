@@ -1890,12 +1890,16 @@
       padding-bottom: var(--intro-pb);
     }
 
+    #shopify-section-{{ section.id }} .product-block-intro__content {
+      text-align: {{ section.settings.intro_text_align | default: 'left' }};
+    }
+
     #shopify-section-{{ section.id }} .product-block-intro__heading {
       margin: 0;
       font-size: 56px;
       font-family: "Bodoni-Book";
       line-height: 1;
-      color: #190A0A;
+      color: {{ section.settings.intro_heading_color | default: '#190A0A' }};
       font-weight: inherit;
     }
 
@@ -1918,7 +1922,7 @@
       margin: 0;
       font-size: 18px;
       line-height: 1.4;
-      color: #190A0A;
+      color: {{ section.settings.intro_subheading_color | default: '#190A0A' }};
     }
 
     @media screen and (max-width: 999px) {
@@ -1930,13 +1934,13 @@
       #shopify-section-{{ section.id }} .product-block-intro__content {
         max-width: 100%;
         margin: 0 auto;
-        text-align: center;
+        text-align: {{ section.settings.intro_mobile_text_align | default: 'center' }};
       }
 
       #shopify-section-{{ section.id }} .product-block-intro__heading {
         width: 100%;
         margin: 0 auto;
-        text-align: center;
+        text-align: inherit;
         font-size: 28px;
         line-height: 1.1;
       }
@@ -3055,6 +3059,40 @@
       "type": "text",
       "id": "intro_subheading",
       "label": "Intro subheading"
+    },
+    {
+      "type": "color",
+      "id": "intro_heading_color",
+      "label": "标题颜色",
+      "default": "#190A0A"
+    },
+    {
+      "type": "color",
+      "id": "intro_subheading_color",
+      "label": "副标题颜色",
+      "default": "#190A0A"
+    },
+    {
+      "type": "select",
+      "id": "intro_text_align",
+      "label": "标题文案对齐方式（电脑端）",
+      "options": [
+        { "value": "left", "label": "左对齐" },
+        { "value": "center", "label": "居中" },
+        { "value": "right", "label": "右对齐" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "select",
+      "id": "intro_mobile_text_align",
+      "label": "标题文案对齐方式（移动端）",
+      "options": [
+        { "value": "left", "label": "左对齐" },
+        { "value": "center", "label": "居中" },
+        { "value": "right", "label": "右对齐" }
+      ],
+      "default": "center"
     },
     {
       "type": "image_picker",
