@@ -1,6 +1,14 @@
 <style>
   #shopify-section-{{ section.id }} {
-    --section-background: {{ section.settings.background }};
+    --section-background: {{ section.settings.background | default: '#FFFFFF' }};
+    --sport-nav-text: {% if section.settings.text_color == blank or section.settings.text_color.alpha == 0 %}#3F3636{% else %}{{ section.settings.text_color }}{% endif %};
+    --sport-nav-active-text: {{ section.settings.active_text_color | default: '#E0004D' }};
+    --sport-nav-tag-text: {{ section.settings.tag_text_color | default: '#3F3636' }};
+    --sport-nav-tag-background: {{ section.settings.tag_background | default: '#E4DDDD' }};
+    --sport-nav-active-tag-text: {{ section.settings.active_tag_text_color | default: section.settings.tag_text_color | default: '#3F3636' }};
+    --sport-nav-active-tag-background: {{ section.settings.active_tag_background | default: section.settings.tag_background | default: '#E4DDDD' }};
+    --sport-nav-line: {{ section.settings.line_color | default: '#E4DDDD' }};
+    --sport-nav-active-line: {{ section.settings.active_line_color | default: '#E0004D' }};
     background-color: var(--section-background)
   }
     .section-{{ section.id }}-padding {
@@ -32,7 +40,7 @@
     cursor: pointer;
   }
   .sport_nav-box .sport_nav-txt{
-    color:  #3F3636;
+    color: var(--sport-nav-text);
   text-align: center;
   font-size: 24px;
   font-style: normal;
@@ -45,14 +53,14 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    color:  #3F3636;
+    color: var(--sport-nav-tag-text);
   text-align: center;
   font-size: 10px;
   font-style: normal;
   font-weight: 400;
   line-height: 1.3;
   text-transform: capitalize;
-  background:  #E4DDDD;
+  background: var(--sport-nav-tag-background);
   padding: 2px 5px;
   opacity: 0.5;
   }
@@ -61,7 +69,7 @@
   position: absolute;
   width: 100%;
   height: 2px;
-  background: #E4DDDD;
+  background: var(--sport-nav-line);
   bottom: 0;
   }
   .sport_nav-box .sport_nav-li.active:after{
@@ -69,7 +77,7 @@
   position: absolute;
   width: 100%;
   height: 2px;
-  background: #E0004D;
+  background: var(--sport-nav-active-line);
   bottom: 0;
   z-index: 1;
   }
@@ -78,7 +86,7 @@
   }
   .sport_nav-box .sport_nav-li.active .sport_nav-txt {
     opacity: 1;
-    color: #E0004D;
+    color: var(--sport-nav-active-text);
   }
 
   .sport_nav-box .sport_nav-li.active .sport_nav-tag-icon {
@@ -86,13 +94,15 @@
   }
 
   .sport_nav-box .sport_nav-li.active .sport_nav-tag{
+    color: var(--sport-nav-active-tag-text);
+    background: var(--sport-nav-active-tag-background);
     opacity: 1;
   }
     .sport-nav {
       position: sticky;
       top: var(--header-height);
       z-index: 3;
-      background: #FFF;
+      background: var(--section-background);
   }
    .chr-2024 .sport_nav-box .sport_nav-li{
       gap:8px;
@@ -101,12 +111,13 @@
     opacity:1;
   }
   .chr-2024 .sport_nav-box .sport_nav-tag{
-    background: #3F3636;
-    color:#fff;
+    background: {{ section.settings.tag_background | default: '#3F3636' }};
+    color: {{ section.settings.tag_text_color | default: '#FFFFFF' }};
     opacity:1;
   }
     .chr-2024 .sport_nav-box .sport_nav-li.active .sport_nav-tag{
-      background: #E0004D;
+      background: {{ section.settings.active_tag_background | default: '#E0004D' }};
+      color: {{ section.settings.active_tag_text_color | default: section.settings.tag_text_color | default: '#FFFFFF' }};
     }
   @media (max-width: 768px) {
     .sport_nav .container{
@@ -271,12 +282,51 @@
       "type": "color",
       "id": "text_color",
       "label": "Text color",
-      "default": "rgba(0,0,0,0)"
+      "default": "#3F3636"
     },
     {
       "type": "color",
       "id": "background",
-      "label": "Background"
+      "label": "Background",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "active_text_color",
+      "label": "Active text color",
+      "default": "#E0004D"
+    },
+    {
+      "type": "color",
+      "id": "tag_text_color",
+      "label": "Tag text color"
+    },
+    {
+      "type": "color",
+      "id": "tag_background",
+      "label": "Tag background"
+    },
+    {
+      "type": "color",
+      "id": "active_tag_text_color",
+      "label": "Active tag text color"
+    },
+    {
+      "type": "color",
+      "id": "active_tag_background",
+      "label": "Active tag background"
+    },
+    {
+      "type": "color",
+      "id": "line_color",
+      "label": "Divider color",
+      "default": "#E4DDDD"
+    },
+    {
+      "type": "color",
+      "id": "active_line_color",
+      "label": "Active underline color",
+      "default": "#E0004D"
     }
   ],
   "blocks": [
