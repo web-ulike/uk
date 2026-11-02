@@ -9,9 +9,9 @@
     display: grid;
     grid-template-columns: minmax(0, 0.6fr) minmax(0, 1fr);
     gap: 48px;
-    align-items: center;
+    align-items: {{ section.settings.desktop_alignment }};
   }
-  #shopify-section-{{ section.id }} .results-images-2026__content { min-width: 0; text-align: center; }
+  #shopify-section-{{ section.id }} .results-images-2026__content { min-width: 0; text-align: left; }
   #shopify-section-{{ section.id }} .results-images-2026__eyebrow {
     margin: 0 0 24px;
     font-family: var(--text-font-family);
@@ -24,7 +24,7 @@
     margin: 0;
     color: inherit;
     font-family: var(--heading-font-family);
-    font-size: clamp(36px, 3.5vw, 60px);
+    font-size: clamp(36px, 4vw, 68px);
     font-weight: 400;
     line-height: 1.05;
     text-wrap: balance;
@@ -45,12 +45,13 @@
   #shopify-section-{{ section.id }} .results-images-2026__stat { min-width: 0; border-top: 1px solid currentColor; padding-top: 12px; }
   #shopify-section-{{ section.id }} .results-images-2026__stat-value {
     font-family: var(--heading-font-family);
-    font-size: clamp(24px, 2.2vw, 36px);
+    font-size: clamp(24px, 2.4vw, 40px);
     line-height: 1.1;
     overflow-wrap: anywhere;
   }
   #shopify-section-{{ section.id }} .results-images-2026__stat-label {
     margin-top: 8px;
+    color: #777;
     font-family: var(--text-font-family);
     font-size: 14px;
     line-height: 1.5;
@@ -67,15 +68,13 @@
   #shopify-section-{{ section.id }} .results-images-2026__image-wrap {
     overflow: hidden;
     width: 100%;
-    aspect-ratio: {{ section.settings.image_ratio_width }} / {{ section.settings.image_ratio_height }};
     border-radius: 24px;
     background: #f2f2f2;
   }
   #shopify-section-{{ section.id }} .results-images-2026__image {
     display: block;
     width: 100%;
-    height: 100%;
-    object-fit: cover;
+    height: auto;
   }
   @media screen and (max-width: 767px) {
     #shopify-section-{{ section.id }} .results-images-2026 { padding: {{ section.settings.mobile_padding_top }}px 0 {{ section.settings.mobile_padding_bottom }}px; }
@@ -138,9 +137,8 @@
     { "type": "richtext", "id": "description", "label": "Description", "default": "<p>Visible hair reduction that keeps improving with continued weekly treatments.</p>" },
     { "type": "color", "id": "background", "label": "Background", "default": "#ffffff" },
     { "type": "color", "id": "text_color", "label": "Text color", "default": "#191919" },
-    { "type": "header", "content": "Image layout" },
-    { "type": "range", "id": "image_ratio_width", "label": "Image ratio width", "min": 1, "max": 20, "step": 1, "default": 4 },
-    { "type": "range", "id": "image_ratio_height", "label": "Image ratio height", "min": 1, "max": 20, "step": 1, "default": 5 },
+    { "type": "header", "content": "Desktop layout" },
+    { "type": "select", "id": "desktop_alignment", "label": "Content vertical alignment", "options": [{ "value": "start", "label": "Top" }, { "value": "center", "label": "Center" }], "default": "start" },
     { "type": "header", "content": "Desktop spacing" },
     { "type": "range", "id": "padding_top", "label": "Top padding", "min": 0, "max": 200, "step": 4, "unit": "px", "default": 64 },
     { "type": "range", "id": "padding_bottom", "label": "Bottom padding", "min": 0, "max": 200, "step": 4, "unit": "px", "default": 64 },
