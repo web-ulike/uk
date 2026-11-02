@@ -807,3 +807,77 @@ function loadCSS(href) {
   link.fetchPriority = "low"; // 低优先级加载
   document.head.appendChild(link);
 }
+
+
+class LuxuryVideoModal extends HTMLElement {
+  constructor() {
+    super();
+  }
+
+  connectedCallback() {
+    this.innerHTML = `
+      <div class="luxury-video-overlay">
+        <div class="luxury-video-bg"></div>
+        <div class="luxury-video-content">
+          <button class="luxury-video-close">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+          <div class="luxury-video-wrapper">
+            <video controls playsinline></video>
+          </div>
+        </div>
+      </div>
+    `;
+
+    this.overlay = this.querySelector('.luxury-video-overlay');
+    this.bg = this.querySelector('.luxury-video-bg');
+    this.closeBtn = this.querySelector('.luxury-video-close');
+    this.videoEl = this.querySelector('video');
+
+    this.close = this.close.bind(this);
+    this.handleKeyDown = this.handleKeyDown.bind(this);
+
+    this.closeBtn.addEventListener('click', this.close);
+    this.bg.addEventListener('click', this.close);
+  }
+
+  disconnectedCallback() {
+    this.closeBtn.removeEventListener('click', this.close);
+    this.bg.removeEventListener('click', this.close);
+    document.removeEventListener('keydown', this.handleKeyDown);
+  }
+
+  handleKeyDown(e) {
+    if (e.key === "Escape") this.close();
+  }
+
+  open(videoUrl) {
+    if (!videoUrl) return;
+
+    this.videoEl.src = videoUrl;
+    document.addEventListener('keydown', this.handleKeyDown);
+document.body.classList.add('no-scroll');
+    requestAnimationFrame(() => {
+      this.overlay.classList.add('is-active');
+    });
+    
+    this.videoEl.play();
+  }
+
+  close() {
+    document.removeEventListener('keydown', this.handleKeyDown);
+    
+    this.overlay.classList.remove('is-active');
+document.body.classList.remove('no-scroll');
+    setTimeout(() => {
+      this.videoEl.pause();
+      this.videoEl.currentTime = 0;
+      this.videoEl.src = '';
+    }, 400); 
+  }
+}
+
+customElements.define('luxury-video-modal', LuxuryVideoModal);
