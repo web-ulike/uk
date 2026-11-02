@@ -1,0 +1,166 @@
+{% style %}
+  #shopify-section-{{ section.id }} .results-images-2026 {
+    --results-color: {{ section.settings.text_color }};
+    background: {{ section.settings.background }};
+    color: var(--results-color);
+    padding: {{ section.settings.padding_top }}px 0 {{ section.settings.padding_bottom }}px;
+  }
+  #shopify-section-{{ section.id }} .results-images-2026__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 0.6fr) minmax(0, 1fr);
+    gap: 48px;
+    align-items: start;
+  }
+  #shopify-section-{{ section.id }} .results-images-2026__content { min-width: 0; }
+  #shopify-section-{{ section.id }} .results-images-2026__eyebrow {
+    margin: 0 0 24px;
+    font-family: var(--text-font-family);
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: .16em;
+    line-height: 1.4;
+  }
+  #shopify-section-{{ section.id }} .results-images-2026__title {
+    margin: 0;
+    color: inherit;
+    font-family: var(--heading-font-family);
+    font-size: clamp(36px, 3.5vw, 60px);
+    font-weight: 400;
+    line-height: 1.05;
+    text-wrap: balance;
+  }
+  #shopify-section-{{ section.id }} .results-images-2026__description {
+    margin-top: 24px;
+    font-family: var(--text-font-family);
+    font-size: 18px;
+    line-height: 1.5;
+  }
+  #shopify-section-{{ section.id }} .results-images-2026__description p { margin: 0; }
+  #shopify-section-{{ section.id }} .results-images-2026__stats {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+    margin-top: 32px;
+  }
+  #shopify-section-{{ section.id }} .results-images-2026__stat { min-width: 0; border-top: 1px solid currentColor; padding-top: 12px; }
+  #shopify-section-{{ section.id }} .results-images-2026__stat-value {
+    font-family: var(--heading-font-family);
+    font-size: clamp(24px, 2.2vw, 36px);
+    line-height: 1.1;
+    overflow-wrap: anywhere;
+  }
+  #shopify-section-{{ section.id }} .results-images-2026__stat-label {
+    margin-top: 8px;
+    font-family: var(--text-font-family);
+    font-size: 14px;
+    line-height: 1.5;
+    letter-spacing: .06em;
+  }
+  #shopify-section-{{ section.id }} .results-images-2026__media {
+    display: grid;
+    grid-auto-columns: minmax(0, 1fr);
+    grid-auto-flow: column;
+    gap: 24px;
+    min-width: 0;
+  }
+  #shopify-section-{{ section.id }} .results-images-2026__image-wrap {
+    overflow: hidden;
+    aspect-ratio: {{ section.settings.image_ratio_width }} / {{ section.settings.image_ratio_height }};
+    border-radius: 24px;
+    background: #f2f2f2;
+  }
+  #shopify-section-{{ section.id }} .results-images-2026__image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  @media screen and (max-width: 767px) {
+    #shopify-section-{{ section.id }} .results-images-2026 { padding: {{ section.settings.mobile_padding_top }}px 0 {{ section.settings.mobile_padding_bottom }}px; }
+    #shopify-section-{{ section.id }} .results-images-2026__grid { grid-template-columns: minmax(0, 1fr); gap: 32px; }
+    #shopify-section-{{ section.id }} .results-images-2026__eyebrow { margin-bottom: 12px; font-size: 12px; }
+    #shopify-section-{{ section.id }} .results-images-2026__title { font-size: 36px; }
+    #shopify-section-{{ section.id }} .results-images-2026__description { margin-top: 16px; font-size: 16px; }
+    #shopify-section-{{ section.id }} .results-images-2026__stats { gap: 12px; margin-top: 24px; }
+    #shopify-section-{{ section.id }} .results-images-2026__stat-value { font-size: 24px; }
+    #shopify-section-{{ section.id }} .results-images-2026__stat-label { font-size: 12px; }
+    #shopify-section-{{ section.id }} .results-images-2026__media { grid-auto-columns: calc(50% - 6px); gap: 12px; overflow-x: auto; scroll-snap-type: x proximity; }
+    #shopify-section-{{ section.id }} .results-images-2026__image-wrap { border-radius: 16px; scroll-snap-align: start; }
+    #shopify-section-{{ section.id }} .results-images-2026__media--single { grid-auto-columns: 100%; }
+  }
+{% endstyle %}
+
+<section class="results-images-2026">
+  <div class="container">
+    <div class="results-images-2026__grid">
+      <div class="results-images-2026__content">
+        {% if section.settings.eyebrow != blank %}<p class="results-images-2026__eyebrow">{{ section.settings.eyebrow | escape }}</p>{% endif %}
+        {% if section.settings.title != blank %}<h2 class="results-images-2026__title">{{ section.settings.title | escape }}</h2>{% endif %}
+        {% if section.settings.description != blank %}<div class="results-images-2026__description">{{ section.settings.description }}</div>{% endif %}
+        {% assign stats = section.blocks | where: 'type', 'stat' %}
+        {% if stats.size > 0 %}
+          <div class="results-images-2026__stats">
+            {% for block in stats %}
+              <div class="results-images-2026__stat" {{ block.shopify_attributes }}>
+                {% if block.settings.value != blank %}<div class="results-images-2026__stat-value">{{ block.settings.value | escape }}</div>{% endif %}
+                {% if block.settings.label != blank %}<div class="results-images-2026__stat-label">{{ block.settings.label | escape }}</div>{% endif %}
+              </div>
+            {% endfor %}
+          </div>
+        {% endif %}
+      </div>
+      {% assign images = section.blocks | where: 'type', 'image' %}
+      {% if images.size > 0 %}
+        <div class="results-images-2026__media{% if images.size == 1 %} results-images-2026__media--single{% endif %}">
+          {% for block in images %}
+            <div class="results-images-2026__image-wrap" {{ block.shopify_attributes }}>
+              {% if block.settings.image != blank %}
+                {{ block.settings.image | image_url: width: 1800 | image_tag: class: 'results-images-2026__image', loading: 'lazy', widths: '360, 540, 720, 900, 1200, 1800', sizes: '(max-width: 767px) 50vw, 30vw', alt: block.settings.image_alt }}
+              {% else %}
+                {{ 'lifestyle-1' | placeholder_svg_tag: 'results-images-2026__image' }}
+              {% endif %}
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Real Results Images 2026",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "CLINICALLY PROVEN RESULTS" },
+    { "type": "text", "id": "title", "label": "Title", "default": "See results in as little as 2 treatments" },
+    { "type": "richtext", "id": "description", "label": "Description", "default": "<p>Visible hair reduction that keeps improving with continued weekly treatments.</p>" },
+    { "type": "color", "id": "background", "label": "Background", "default": "#ffffff" },
+    { "type": "color", "id": "text_color", "label": "Text color", "default": "#191919" },
+    { "type": "header", "content": "Image layout" },
+    { "type": "range", "id": "image_ratio_width", "label": "Image ratio width", "min": 1, "max": 20, "step": 1, "default": 4 },
+    { "type": "range", "id": "image_ratio_height", "label": "Image ratio height", "min": 1, "max": 20, "step": 1, "default": 5 },
+    { "type": "header", "content": "Desktop spacing" },
+    { "type": "range", "id": "padding_top", "label": "Top padding", "min": 0, "max": 200, "step": 4, "unit": "px", "default": 64 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom padding", "min": 0, "max": 200, "step": 4, "unit": "px", "default": 64 },
+    { "type": "header", "content": "Mobile spacing" },
+    { "type": "range", "id": "mobile_padding_top", "label": "Top padding", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 40 },
+    { "type": "range", "id": "mobile_padding_bottom", "label": "Bottom padding", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 40 }
+  ],
+  "blocks": [
+    { "type": "stat", "name": "Statistic", "limit": 3, "settings": [
+      { "type": "text", "id": "value", "label": "Value", "default": "up to 95%" },
+      { "type": "text", "id": "label", "label": "Label", "default": "LESS HAIR AFTER 2 USES*" }
+    ] },
+    { "type": "image", "name": "Image", "limit": 2, "settings": [
+      { "type": "image_picker", "id": "image", "label": "Image" },
+      { "type": "text", "id": "image_alt", "label": "Image alt text" }
+    ] }
+  ],
+  "presets": [{ "name": "Real Results Images 2026", "blocks": [
+    { "type": "stat", "settings": { "value": "up to 95%", "label": "LESS HAIR AFTER 2 USES*" } },
+    { "type": "stat", "settings": { "value": "12 months", "label": "OF SMOOTHER SKIN" } },
+    { "type": "stat", "settings": { "value": "94% users", "label": "WOULD RECOMMEND" } },
+    { "type": "image" }, { "type": "image" }
+  ] }]
+}
+{% endschema %}
