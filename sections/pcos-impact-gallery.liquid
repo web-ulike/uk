@@ -83,6 +83,12 @@
 
   }
 
+  #shopify-section-{{ section.id }} .pcos-impact-gallery__currency-icon {
+    font-size: 36px;
+    line-height: 1;
+    font-weight: 500;
+  }
+
   #shopify-section-{{ section.id }} .pcos-impact-gallery__stat-icon svg {
     display: block;
   }
@@ -398,17 +404,7 @@
         </div>
         <div class="pcos-impact-gallery__stat">
           <span class="pcos-impact-gallery__stat-icon" aria-hidden="true">
-           <svg xmlns="http://www.w3.org/2000/svg" width="37" height="37" viewBox="0 0 37 37" fill="none">
-              <g clip-path="url(#clip0_2362_2441)">
-                <path d="M18.3867 1.53223V35.24" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M26.0473 7.66089H14.556C13.1337 7.66089 11.7697 8.22588 10.764 9.23156C9.75835 10.2372 9.19336 11.6012 9.19336 13.0235C9.19336 14.4457 9.75835 15.8097 10.764 16.8154C11.7697 17.8211 13.1337 18.3861 14.556 18.3861H22.2168C23.6391 18.3861 25.0031 18.9511 26.0088 19.9568C27.0144 20.9625 27.5794 22.3265 27.5794 23.7487C27.5794 25.171 27.0144 26.535 26.0088 27.5406C25.0031 28.5463 23.6391 29.1113 22.2168 29.1113H9.19336" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-              </g>
-              <defs>
-                <clipPath id="clip0_2362_2441">
-                  <rect width="36.7722" height="36.7722" fill="white"/>
-                </clipPath>
-              </defs>
-            </svg>
+            <span class="pcos-impact-gallery__currency-icon">{{ section.settings.currency_symbol | escape }}</span>
           </span>
           <div>
             <div class="pcos-impact-gallery__stat-label">{{ section.settings.stat_2_label }}</div>
@@ -689,7 +685,8 @@
     { "type": "text", "id": "stat_1_value", "label": "Stat 1 value", "default": "1,652" },
     { "type": "text", "id": "stat_2_label", "label": "Stat 2 label", "default": "Global Impact" },
     { "type": "text", "id": "stat_2_value", "label": "Stat 2 value", "default": "130,000" },
-    { "type": "checkbox", "id": "show_placeholder_participants", "label": "Show placeholder participant data", "default": false },
+    { "type": "text", "id": "currency_symbol", "label": "Contribution currency icon", "default": "$" },
+    { "type": "checkbox", "id": "show_placeholder_participants", "label": "Show placeholder participant data", "info": "Uncheck to load real activity and participant data from the API.", "default": false },
     { "type": "color", "id": "background", "label": "Background", "default": "#effcfc" },
     { "type": "color", "id": "card_background", "label": "Card background", "default": "#e5fbfb" },
     { "type": "color", "id": "text_color", "label": "Text", "default": "#111111" },
@@ -713,3 +710,4 @@
   ]
 }
 {% endschema %}
+
