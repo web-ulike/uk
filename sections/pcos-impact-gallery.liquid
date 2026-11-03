@@ -561,7 +561,11 @@
         row.remove();
       });
 
-      payload.data.forEach(function (benefit, index) {
+      payload.data.filter(function (benefit) {
+        var email = benefit && typeof benefit.userEmail === 'string' ? benefit.userEmail.trim() : '';
+
+        return !/@ulike\.com$/i.test(email);
+      }).forEach(function (benefit, index) {
         var extend = parseExtend(benefit.extend);
         var row = document.createElement('div');
         var nameClass = 'pcos-impact-gallery__name';
