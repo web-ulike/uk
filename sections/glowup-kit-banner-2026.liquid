@@ -21,9 +21,6 @@
     display: grid;
     position: relative;
     isolation: isolate;
-    width: 79.166667%;
-    max-width: 1520px;
-    margin: 0 auto;
     overflow: hidden;
     border-radius: 16px;
     background: {{ section.settings.media_background }};
@@ -84,7 +81,7 @@
       padding-top: {{ section.settings.mobile_padding_top }}px;
       padding-bottom: {{ section.settings.mobile_padding_bottom }}px;
     }
-    #shopify-section-{{ section.id }} .glowup-banner-2026__card { width: calc(100% - 32px); border-radius: 4px; }
+    #shopify-section-{{ section.id }} .glowup-banner-2026__card { border-radius: 4px; }
     #shopify-section-{{ section.id }} .glowup-banner-2026__placeholder { aspect-ratio: 343 / 470; }
     #shopify-section-{{ section.id }} .glowup-banner-2026__card .glowup-banner-2026__content {
       align-self: start;
@@ -105,34 +102,36 @@
 {% endstyle %}
 
 <section class="glowup-banner-2026 glowup-banner-2026--{{ section.settings.desktop_position }}"{% if section.settings.heading != blank %} aria-labelledby="GlowupHeading-{{ section.id }}"{% endif %}>
-  <div class="glowup-banner-2026__card">
-    {% if desktop_image != blank %}
-      <picture class="glowup-banner-2026__media">
-        <source
-          media="(max-width: 767px)"
-          srcset="{{ mobile_image | image_url: width: 375 }} 375w, {{ mobile_image | image_url: width: 550 }} 550w, {{ mobile_image | image_url: width: 750 }} 750w, {{ mobile_image | image_url: width: 1100 }} 1100w, {{ mobile_image | image_url: width: 1500 }} 1500w"
-          sizes="calc(100vw - 32px)"
-          width="{{ mobile_image.width }}"
-          height="{{ mobile_image.height }}"
-        >
-        {{ desktop_image | image_url: width: 3040 | image_tag: class: 'glowup-banner-2026__image', loading: 'lazy', widths: '750, 1100, 1520, 1920, 2560, 3040', sizes: '(max-width: 767px) calc(100vw - 32px), (min-width: 1920px) 1520px, 79.166667vw', alt: image_alt }}
-      </picture>
-    {% else %}
-      <div class="glowup-banner-2026__media glowup-banner-2026__placeholder" aria-hidden="true"></div>
-    {% endif %}
-    <div class="glowup-banner-2026__content">
-      {% if section.settings.heading != blank %}
-        <h2 id="GlowupHeading-{{ section.id }}" class="glowup-banner-2026__heading">{{ section.settings.heading | escape | newline_to_br }}</h2>
+  <div class="container">
+    <div class="glowup-banner-2026__card">
+      {% if desktop_image != blank %}
+        <picture class="glowup-banner-2026__media">
+          <source
+            media="(max-width: 767px)"
+            srcset="{{ mobile_image | image_url: width: 375 }} 375w, {{ mobile_image | image_url: width: 550 }} 550w, {{ mobile_image | image_url: width: 750 }} 750w, {{ mobile_image | image_url: width: 1100 }} 1100w, {{ mobile_image | image_url: width: 1500 }} 1500w"
+            sizes="(min-width: 741px) calc(100vw - 80px), calc(100vw - 48px)"
+            width="{{ mobile_image.width }}"
+            height="{{ mobile_image.height }}"
+          >
+          {{ desktop_image | image_url: width: 3040 | image_tag: class: 'glowup-banner-2026__image', loading: 'lazy', widths: '750, 1100, 1520, 1920, 2560, 3040', sizes: '(min-width: 1600px) 1520px, (min-width: 741px) calc(100vw - 80px), calc(100vw - 48px)', alt: image_alt }}
+        </picture>
+      {% else %}
+        <div class="glowup-banner-2026__media glowup-banner-2026__placeholder" aria-hidden="true"></div>
       {% endif %}
-      {% if section.settings.subheading != blank %}
-        <div class="glowup-banner-2026__subheading{% if section.settings.mobile_subheading != blank %} glowup-banner-2026__subheading--desktop{% endif %}">{{ section.settings.subheading }}</div>
-      {% endif %}
-      {% if section.settings.mobile_subheading != blank %}
-        <div class="glowup-banner-2026__subheading glowup-banner-2026__subheading--mobile">{{ section.settings.mobile_subheading }}</div>
-      {% endif %}
-      {% if section.settings.description != blank %}
-        <div class="glowup-banner-2026__description">{{ section.settings.description }}</div>
-      {% endif %}
+      <div class="glowup-banner-2026__content">
+        {% if section.settings.heading != blank %}
+          <h2 id="GlowupHeading-{{ section.id }}" class="glowup-banner-2026__heading">{{ section.settings.heading | escape | newline_to_br }}</h2>
+        {% endif %}
+        {% if section.settings.subheading != blank %}
+          <div class="glowup-banner-2026__subheading{% if section.settings.mobile_subheading != blank %} glowup-banner-2026__subheading--desktop{% endif %}">{{ section.settings.subheading }}</div>
+        {% endif %}
+        {% if section.settings.mobile_subheading != blank %}
+          <div class="glowup-banner-2026__subheading glowup-banner-2026__subheading--mobile">{{ section.settings.mobile_subheading }}</div>
+        {% endif %}
+        {% if section.settings.description != blank %}
+          <div class="glowup-banner-2026__description">{{ section.settings.description }}</div>
+        {% endif %}
+      </div>
     </div>
   </div>
 </section>
