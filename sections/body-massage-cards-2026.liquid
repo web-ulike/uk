@@ -1,4 +1,5 @@
 {% comment %}UK 2026. Add manually; images and copy are configured in the theme editor.{% endcomment %}
+{% assign massage_arrow_svg = 'data:image/svg+xml;base64,PHN2ZyBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJub25lIiBvdmVyZmxvdz0idmlzaWJsZSIgc3R5bGU9ImRpc3BsYXk6IGJsb2NrOyIgd2lkdGg9IjMwIiBoZWlnaHQ9IjIyLjk2ODMiIHZpZXdCb3g9IjAgMCAzMCAyMi45NjgzIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8ZyBpZD0iQXJ0d29yayIgY2xpcC1wYXRoPSJ1cmwoI2NsaXAwXzBfNCkiPgo8cGF0aCBpZD0iVmVjdG9yIiBkPSJNMzAgMTEuNDkyNEMzMCAxMS42NzM5IDI5LjkzMjcgMTEuODUzOSAyOS44MDM5IDExLjk5MTVMMTkuNTYgMjIuOTY3MUwxOC40OTAyIDIxLjk2OUwyNy41ODU0IDEyLjIyNDJIMEMwIDExLjQxNjQgMC42NTU2MSAxMC43NjA3IDEuNDYzNDEgMTAuNzYwN0gyOS4yMzQ2QzI5LjUxMTIgMTAuNzYwNyAyOS43ODA1IDEwLjg5OTggMjkuOTEyMiAxMS4xNDQyQzI5Ljk3MjIgMTEuMjUzOSAzMCAxMS4zNzM5IDMwIDExLjQ5MjRaIiBmaWxsPSIjMTkwQTBBIi8+CjxwYXRoIGlkPSJWZWN0b3JfMiIgZD0iTTI4LjQ2OTMgOC45MjY4M0MyNy44OTcxIDkuNDk3NTYgMjYuOTcwNyA5LjQ5NzU2IDI2LjQgOC45MjY4M0wxOC41MDYzIDEuMDM0NjNMMTkuNTQxIDBMMjguNDY3OCA4LjkyNjgzSDI4LjQ2OTNaIiBmaWxsPSIjMTkwQTBBIi8+CjwvZz4KPGRlZnM+CjxjbGlwUGF0aCBpZD0iY2xpcDBfMF80Ij4KPHJlY3Qgd2lkdGg9IjMwIiBoZWlnaHQ9IjIyLjk2ODMiIGZpbGw9IndoaXRlIi8+CjwvY2xpcFBhdGg+CjwvZGVmcz4KPC9zdmc+Cg==' %}
 {% style %}
   #shopify-section-{{ section.id }} .body-massage-2026 {
     display: block;
@@ -33,12 +34,13 @@
     border: 0;
     background: transparent;
     color: inherit;
-    font-size: 30px;
     line-height: 1;
     cursor: pointer;
   }
+  #shopify-section-{{ section.id }} .body-massage-2026__arrow img { display: block; }
+  #shopify-section-{{ section.id }} .body-massage-2026__arrow[data-direction="-1"] img { transform: scaleX(-1); }
   #shopify-section-{{ section.id }} .body-massage-2026__arrow:disabled { opacity: .25; cursor: default; }
-  #shopify-section-{{ section.id }} .body-massage-2026__arrow:not(:disabled):hover { color: {{ section.settings.accent_color }}; }
+  #shopify-section-{{ section.id }} .body-massage-2026__arrow:not(:disabled):hover { opacity: .65; }
   #shopify-section-{{ section.id }} .body-massage-2026__arrow:active { transform: translateY(1px); }
   #shopify-section-{{ section.id }} .body-massage-2026__track {
     display: grid;
@@ -105,8 +107,8 @@
       {% if section.settings.heading != blank %}<h2 id="MassageHeading-{{ section.id }}" class="body-massage-2026__heading">{{ section.settings.heading | escape }}</h2>{% endif %}
       {% if section.blocks.size > 1 %}
         <div class="body-massage-2026__arrows">
-          <button type="button" class="body-massage-2026__arrow" data-direction="-1" aria-label="Previous card" aria-controls="MassageTrack-{{ section.id }}" disabled><span aria-hidden="true">←</span></button>
-          <button type="button" class="body-massage-2026__arrow" data-direction="1" aria-label="Next card" aria-controls="MassageTrack-{{ section.id }}"><span aria-hidden="true">→</span></button>
+          <button type="button" class="body-massage-2026__arrow" data-direction="-1" aria-label="Previous card" aria-controls="MassageTrack-{{ section.id }}" disabled><img src="{{ massage_arrow_svg }}" width="30" height="23" alt="" aria-hidden="true"></button>
+          <button type="button" class="body-massage-2026__arrow" data-direction="1" aria-label="Next card" aria-controls="MassageTrack-{{ section.id }}"><img src="{{ massage_arrow_svg }}" width="30" height="23" alt="" aria-hidden="true"></button>
         </div>
         <div class="body-massage-2026__dots" aria-label="Choose card">
           {% for block in section.blocks %}<button type="button" class="body-massage-2026__dot" data-slide="{{ forloop.index0 }}" aria-label="Card {{ forloop.index }}: {{ block.settings.title | escape }}" aria-controls="MassageTrack-{{ section.id }}"{% if forloop.first %} aria-current="true"{% endif %}></button>{% endfor %}
