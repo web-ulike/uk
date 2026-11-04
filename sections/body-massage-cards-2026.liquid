@@ -99,12 +99,18 @@
     #shopify-section-{{ section.id }} .body-massage-2026__dot[aria-current='true'] { width: 24px; }
     #shopify-section-{{ section.id }} .body-massage-2026__dot[aria-current='true']::before { background: #190a0a; }
   }
+  #shopify-section-{{ section.id }} .body-massage-2026__title.to-top { transition-delay: .1s; }
+  #shopify-section-{{ section.id }} .body-massage-2026__description.to-top { transition-delay: .2s; }
+  .no-js #shopify-section-{{ section.id }} .body-massage-2026 .to-top { opacity: 1; transform: none; transition: none; }
+  @media (prefers-reduced-motion: reduce) {
+    #shopify-section-{{ section.id }} .body-massage-2026 .to-top { opacity: 1; transform: none; transition: none; }
+  }
 {% endstyle %}
 
 <body-massage-2026 class="body-massage-2026">
   <div class="container">
     <div class="body-massage-2026__header">
-      {% if section.settings.heading != blank %}<h2 id="MassageHeading-{{ section.id }}" class="body-massage-2026__heading">{{ section.settings.heading | escape }}</h2>{% endif %}
+      {% if section.settings.heading != blank %}<h2 id="MassageHeading-{{ section.id }}" class="body-massage-2026__heading to-top">{{ section.settings.heading | escape }}</h2>{% endif %}
       {% if section.blocks.size > 1 %}
         <div class="body-massage-2026__arrows">
           <button type="button" class="body-massage-2026__arrow" data-direction="-1" aria-label="Previous card" aria-controls="MassageTrack-{{ section.id }}" disabled><img src="{{ massage_arrow_svg }}" width="30" height="23" alt="" aria-hidden="true"></button>
@@ -130,8 +136,8 @@
             </picture>
           {% else %}<div class="body-massage-2026__media body-massage-2026__placeholder" aria-hidden="true"></div>{% endif %}
           <div class="body-massage-2026__copy">
-            {% if block.settings.title != blank %}<h3 class="body-massage-2026__title">{{ block.settings.title | escape }}</h3>{% endif %}
-            {% if block.settings.description != blank %}<div class="body-massage-2026__description">{{ block.settings.description }}</div>{% endif %}
+            {% if block.settings.title != blank %}<h3 class="body-massage-2026__title to-top">{{ block.settings.title | escape }}</h3>{% endif %}
+            {% if block.settings.description != blank %}<div class="body-massage-2026__description to-top">{{ block.settings.description }}</div>{% endif %}
           </div>
         </li>
       {% endfor %}
@@ -204,6 +210,16 @@
       }
     });
   }
+</script>
+
+<script>
+  (() => {
+    const revealCopy = () => requestAnimationFrame(() => {
+      if (typeof window.initialCheck === 'function') window.initialCheck();
+    });
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', revealCopy, { once: true });
+    else revealCopy();
+  })();
 </script>
 
 {% schema %}

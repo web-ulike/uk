@@ -99,6 +99,12 @@
     #shopify-section-{{ section.id }} .glowup-banner-2026__subheading--desktop { display: none; }
     #shopify-section-{{ section.id }} .glowup-banner-2026__subheading--mobile { display: block; }
   }
+  #shopify-section-{{ section.id }} .glowup-banner-2026__subheading.to-top { transition-delay: .1s; }
+  #shopify-section-{{ section.id }} .glowup-banner-2026__description.to-top { transition-delay: .2s; }
+  .no-js #shopify-section-{{ section.id }} .glowup-banner-2026 .to-top { opacity: 1; transform: none; transition: none; }
+  @media (prefers-reduced-motion: reduce) {
+    #shopify-section-{{ section.id }} .glowup-banner-2026 .to-top { opacity: 1; transform: none; transition: none; }
+  }
 {% endstyle %}
 
 <section class="glowup-banner-2026 glowup-banner-2026--{{ section.settings.desktop_position }}"{% if section.settings.heading != blank %} aria-labelledby="GlowupHeading-{{ section.id }}"{% endif %}>
@@ -120,21 +126,31 @@
       {% endif %}
       <div class="glowup-banner-2026__content">
         {% if section.settings.heading != blank %}
-          <h2 id="GlowupHeading-{{ section.id }}" class="glowup-banner-2026__heading">{{ section.settings.heading | escape | newline_to_br }}</h2>
+          <h2 id="GlowupHeading-{{ section.id }}" class="glowup-banner-2026__heading to-top">{{ section.settings.heading | escape | newline_to_br }}</h2>
         {% endif %}
         {% if section.settings.subheading != blank %}
-          <div class="glowup-banner-2026__subheading{% if section.settings.mobile_subheading != blank %} glowup-banner-2026__subheading--desktop{% endif %}">{{ section.settings.subheading }}</div>
+          <div class="glowup-banner-2026__subheading to-top{% if section.settings.mobile_subheading != blank %} glowup-banner-2026__subheading--desktop{% endif %}">{{ section.settings.subheading }}</div>
         {% endif %}
         {% if section.settings.mobile_subheading != blank %}
-          <div class="glowup-banner-2026__subheading glowup-banner-2026__subheading--mobile">{{ section.settings.mobile_subheading }}</div>
+          <div class="glowup-banner-2026__subheading glowup-banner-2026__subheading--mobile to-top">{{ section.settings.mobile_subheading }}</div>
         {% endif %}
         {% if section.settings.description != blank %}
-          <div class="glowup-banner-2026__description">{{ section.settings.description }}</div>
+          <div class="glowup-banner-2026__description to-top">{{ section.settings.description }}</div>
         {% endif %}
       </div>
     </div>
   </div>
 </section>
+
+<script>
+  (() => {
+    const revealCopy = () => requestAnimationFrame(() => {
+      if (typeof window.initialCheck === 'function') window.initialCheck();
+    });
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', revealCopy, { once: true });
+    else revealCopy();
+  })();
+</script>
 
 {% schema %}
 {
