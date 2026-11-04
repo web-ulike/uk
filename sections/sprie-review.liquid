@@ -456,6 +456,20 @@
         const host = document.getElementById('sprie-review-swiper-{{ section.id }}');
         if (!host || host.dataset.videoControlsReady === 'true') return;
         host.dataset.videoControlsReady = 'true';
+        window.customElements.whenDefined('custom-swiper-new').then(() => {
+          const swiper = host?.swiper;
+          if (!swiper || swiper.destroyed) return;
+          swiper.params.preventClicks = false;
+          swiper.params.preventClicksPropagation = false;
+          if (swiper.pagination && swiper.params.pagination.type !== 'progressbar') {
+            swiper.pagination.destroy();
+            swiper.params.pagination.type = 'progressbar';
+            swiper.params.pagination.clickable = false;
+            swiper.pagination.init();
+            swiper.pagination.render();
+            swiper.pagination.update();
+          }
+        });
         new SprieReviewVideoControls(host);
       });
     })();

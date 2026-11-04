@@ -716,6 +716,21 @@
       if (sectionEl.dataset.initiated === 'true') return;
       sectionEl.dataset.initiated = 'true';
 
+      window.customElements.whenDefined('custom-swiper-new').then(() => {
+        const swiper = sectionEl.querySelector('custom-swiper-new')?.swiper;
+        if (!swiper || swiper.destroyed) return;
+        swiper.params.preventClicks = false;
+        swiper.params.preventClicksPropagation = false;
+        if (swiper.pagination && swiper.params.pagination.type !== 'progressbar') {
+          swiper.pagination.destroy();
+          swiper.params.pagination.type = 'progressbar';
+          swiper.params.pagination.clickable = false;
+          swiper.pagination.init();
+          swiper.pagination.render();
+          swiper.pagination.update();
+        }
+      });
+
       const tabs = sectionEl.querySelectorAll('.hsa-products-tab');
       const items = sectionEl.querySelectorAll('.hsa-products-item');
 
