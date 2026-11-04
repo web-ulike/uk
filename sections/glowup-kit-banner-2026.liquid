@@ -67,6 +67,7 @@
     font-weight: 400;
     line-height: 1.2;
   }
+  #shopify-section-{{ section.id }} .glowup-banner-2026__subheading--mobile { display: none; }
   #shopify-section-{{ section.id }} .glowup-banner-2026--left .glowup-banner-2026__subheading { margin-top: 8px; }
   #shopify-section-{{ section.id }} .glowup-banner-2026__description {
     margin-top: 28px;
@@ -98,6 +99,8 @@
       font-weight: 500;
     }
     #shopify-section-{{ section.id }} .glowup-banner-2026__description { margin-top: 12px; font-size: 12px; }
+    #shopify-section-{{ section.id }} .glowup-banner-2026__subheading--desktop { display: none; }
+    #shopify-section-{{ section.id }} .glowup-banner-2026__subheading--mobile { display: block; }
   }
 {% endstyle %}
 
@@ -122,7 +125,10 @@
         <h2 id="GlowupHeading-{{ section.id }}" class="glowup-banner-2026__heading">{{ section.settings.heading | escape | newline_to_br }}</h2>
       {% endif %}
       {% if section.settings.subheading != blank %}
-        <div class="glowup-banner-2026__subheading">{{ section.settings.subheading }}</div>
+        <div class="glowup-banner-2026__subheading{% if section.settings.mobile_subheading != blank %} glowup-banner-2026__subheading--desktop{% endif %}">{{ section.settings.subheading }}</div>
+      {% endif %}
+      {% if section.settings.mobile_subheading != blank %}
+        <div class="glowup-banner-2026__subheading glowup-banner-2026__subheading--mobile">{{ section.settings.mobile_subheading }}</div>
       {% endif %}
       {% if section.settings.description != blank %}
         <div class="glowup-banner-2026__description">{{ section.settings.description }}</div>
@@ -145,6 +151,7 @@
     { "type": "header", "content": "文案" },
     { "type": "textarea", "id": "heading", "label": "标题（支持换行）", "default": "Nature’s Beauty, A Gentle Touch" },
     { "type": "richtext", "id": "subheading", "label": "副标题", "default": "<p>Nature’s Touch, Made for Your Skincare Ritual</p>" },
+    { "type": "richtext", "id": "mobile_subheading", "label": "手机副标题（留空则共用）", "info": "需要与 PC 不同的换行或文案时填写。" },
     { "type": "richtext", "id": "description", "label": "正文（可留空）", "default": "<p>Natural Jade stone feels cool to the touch, offering a refreshing sensation that helps soothe the skin and reduce the appearance of puffiness.</p>" },
     { "type": "select", "id": "desktop_position", "label": "PC 文案位置", "options": [{ "value": "left", "label": "左侧（礼赠）" }, { "value": "right", "label": "右侧（玉石护理）" }], "default": "right" },
     { "type": "range", "id": "mobile_text_top", "label": "手机文案距图片顶部", "min": 0, "max": 100, "step": 2, "unit": "px", "default": 14 },
@@ -163,6 +170,7 @@
     { "name": "UK 礼赠横幅 2026", "settings": {
       "heading": "The Perfect Gift",
       "subheading": "<p>Make every ritual a moment<br/>to feel good.</p>",
+      "mobile_subheading": "<p>Make every ritual a moment to feel good.</p>",
       "description": "",
       "desktop_position": "left",
       "padding_top": 0,
