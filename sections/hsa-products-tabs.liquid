@@ -810,70 +810,7 @@
   }
 
   document.addEventListener('DOMContentLoaded', function () {
-    class CustomSwiperNew extends HTMLElement {
-      constructor() {
-        super();
-      }
-
-      connectedCallback() {
-        this.initSwiper();
-        initHsaProductsTabs(this);
-      }
-
-      initSwiper() {
-        const swiperContainer = this.querySelector('.swiper-container');
-        if (!swiperContainer || typeof Swiper === 'undefined') return;
-
-        const disableOn = this.getAttribute('disable-on');
-        const isMobile = window.matchMedia('(max-width: 990px)').matches;
-
-        if ((disableOn === 'mobile' && isMobile) || (disableOn === 'desktop' && !isMobile)) {
-          return;
-        }
-
-        const slidesPerView = parseFloat(this.getAttribute('slides-per-view')) || 1.3;
-        const spaceBetween = parseFloat(this.getAttribute('space-between')) || 10;
-        const loop = this.getAttribute('loop') !== 'false';
-        const centeredSlides = this.getAttribute('centered-slides') !== 'false';
-        const navigationEnabled = this.getAttribute('navigation') === 'true';
-
-        let breakpoints = {};
-        try {
-          breakpoints = JSON.parse(this.getAttribute('breakpoints') || '{}');
-        } catch (error) {
-          breakpoints = {};
-        }
-
-        const prevButton = navigationEnabled ? this.querySelector('.swiper-prev') : null;
-        const nextButton = navigationEnabled ? this.querySelector('.swiper-next') : null;
-
-        this.swiper = new Swiper(swiperContainer, {
-          slidesPerView,
-          spaceBetween,
-          loop,
-          centeredSlides,
-          navigation: navigationEnabled ? { prevEl: prevButton, nextEl: nextButton } : false,
-          pagination: {
-            el: this.querySelector('.swiper-pagination'),
-            type: 'progressbar',
-          },
-          breakpoints,
-          allowTouchMove: true,
-          simulateTouch: true,
-          watchOverflow: true,
-          observer: true,
-          observeParents: true,
-          preventClicks: false,
-          preventClicksPropagation: false,
-          watchSlidesProgress: true,
-          watchSlidesVisibility: true,
-          updateOnWindowResize: true,
-        });
-      }
-    }
-
     initHsaProductsTabs();
-    window.customElements.define('custom-swiper-new', CustomSwiperNew);
   });
 
   document.addEventListener('shopify:section:load', function (event) {
