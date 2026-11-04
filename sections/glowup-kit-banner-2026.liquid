@@ -1,0 +1,175 @@
+{% comment %}
+  UK Glowup Kit 2026 — shared banner for the jade-care and gifting designs.
+  Upload text-free artwork: desktop 1520 × 582, mobile 343 × 470.
+  Images retain their uploaded aspect ratio; all copy remains editable HTML text.
+{% endcomment %}
+
+{% liquid
+  assign desktop_image = section.settings.image_desktop | default: section.settings.image_mobile
+  assign mobile_image = section.settings.image_mobile | default: desktop_image
+  assign image_alt = section.settings.image_alt | default: desktop_image.alt | default: section.settings.heading
+%}
+
+{% style %}
+  #shopify-section-{{ section.id }} .glowup-banner-2026 {
+    padding: {{ section.settings.padding_top }}px 0 {{ section.settings.padding_bottom }}px;
+    background: {{ section.settings.background }};
+    color: {{ section.settings.text_color }};
+    font-family: 'Saans', var(--text-font-family);
+  }
+  #shopify-section-{{ section.id }} .glowup-banner-2026__card {
+    display: grid;
+    position: relative;
+    isolation: isolate;
+    width: 79.166667%;
+    max-width: 1520px;
+    margin: 0 auto;
+    overflow: hidden;
+    border-radius: 16px;
+    background: {{ section.settings.media_background }};
+  }
+  #shopify-section-{{ section.id }} .glowup-banner-2026__media,
+  #shopify-section-{{ section.id }} .glowup-banner-2026__content {
+    grid-area: 1 / 1;
+    min-width: 0;
+  }
+  #shopify-section-{{ section.id }} .glowup-banner-2026__media { display: block; align-self: start; }
+  #shopify-section-{{ section.id }} .glowup-banner-2026__image { display: block; width: 100%; height: auto; }
+  #shopify-section-{{ section.id }} .glowup-banner-2026__placeholder { aspect-ratio: 1520 / 582; }
+  #shopify-section-{{ section.id }} .glowup-banner-2026__content {
+    position: relative;
+    z-index: 1;
+    align-self: center;
+    justify-self: end;
+    width: 44.934211%;
+    margin: 32px 5.855263% 32px 0;
+    overflow-wrap: anywhere;
+    text-align: left;
+  }
+  #shopify-section-{{ section.id }} .glowup-banner-2026--left .glowup-banner-2026__content {
+    justify-self: start;
+    width: 39.605263%;
+    margin-right: 0;
+    margin-left: 5.592105%;
+  }
+  #shopify-section-{{ section.id }} .glowup-banner-2026__heading {
+    margin: 0;
+    color: inherit;
+    font-family: inherit;
+    font-size: clamp(24px, 2.5vw, 48px);
+    font-weight: 500;
+    line-height: 1.2;
+    letter-spacing: normal;
+  }
+  #shopify-section-{{ section.id }} .glowup-banner-2026__subheading {
+    margin-top: 4px;
+    font-size: clamp(16px, 1.666667vw, 32px);
+    font-weight: 400;
+    line-height: 1.2;
+  }
+  #shopify-section-{{ section.id }} .glowup-banner-2026--left .glowup-banner-2026__subheading { margin-top: 8px; }
+  #shopify-section-{{ section.id }} .glowup-banner-2026__description {
+    margin-top: 28px;
+    font-size: clamp(14px, 1.25vw, 24px);
+    font-weight: 400;
+    line-height: 1.2;
+  }
+  #shopify-section-{{ section.id }} .glowup-banner-2026__subheading p,
+  #shopify-section-{{ section.id }} .glowup-banner-2026__description p { margin: 0; }
+  #shopify-section-{{ section.id }} .glowup-banner-2026__subheading p + p,
+  #shopify-section-{{ section.id }} .glowup-banner-2026__description p + p { margin-top: .5em; }
+  @media screen and (max-width: 767px) {
+    #shopify-section-{{ section.id }} .glowup-banner-2026 {
+      padding-top: {{ section.settings.mobile_padding_top }}px;
+      padding-bottom: {{ section.settings.mobile_padding_bottom }}px;
+    }
+    #shopify-section-{{ section.id }} .glowup-banner-2026__card { width: calc(100% - 32px); border-radius: 4px; }
+    #shopify-section-{{ section.id }} .glowup-banner-2026__placeholder { aspect-ratio: 343 / 470; }
+    #shopify-section-{{ section.id }} .glowup-banner-2026__card .glowup-banner-2026__content {
+      align-self: start;
+      justify-self: stretch;
+      width: auto;
+      margin: {{ section.settings.mobile_text_top }}px 28px 28px;
+    }
+    #shopify-section-{{ section.id }} .glowup-banner-2026__heading { font-size: 24px; }
+    #shopify-section-{{ section.id }} .glowup-banner-2026__card .glowup-banner-2026__subheading {
+      margin-top: 4px;
+      font-size: 14px;
+      font-weight: 500;
+    }
+    #shopify-section-{{ section.id }} .glowup-banner-2026__description { margin-top: 12px; font-size: 12px; }
+  }
+{% endstyle %}
+
+<section class="glowup-banner-2026 glowup-banner-2026--{{ section.settings.desktop_position }}"{% if section.settings.heading != blank %} aria-labelledby="GlowupHeading-{{ section.id }}"{% endif %}>
+  <div class="glowup-banner-2026__card">
+    {% if desktop_image != blank %}
+      <picture class="glowup-banner-2026__media">
+        <source
+          media="(max-width: 767px)"
+          srcset="{{ mobile_image | image_url: width: 375 }} 375w, {{ mobile_image | image_url: width: 550 }} 550w, {{ mobile_image | image_url: width: 750 }} 750w, {{ mobile_image | image_url: width: 1100 }} 1100w, {{ mobile_image | image_url: width: 1500 }} 1500w"
+          sizes="calc(100vw - 32px)"
+          width="{{ mobile_image.width }}"
+          height="{{ mobile_image.height }}"
+        >
+        {{ desktop_image | image_url: width: 3040 | image_tag: class: 'glowup-banner-2026__image', loading: 'lazy', widths: '750, 1100, 1520, 1920, 2560, 3040', sizes: '(max-width: 767px) calc(100vw - 32px), (min-width: 1920px) 1520px, 79.166667vw', alt: image_alt }}
+      </picture>
+    {% else %}
+      <div class="glowup-banner-2026__media glowup-banner-2026__placeholder" aria-hidden="true"></div>
+    {% endif %}
+    <div class="glowup-banner-2026__content">
+      {% if section.settings.heading != blank %}
+        <h2 id="GlowupHeading-{{ section.id }}" class="glowup-banner-2026__heading">{{ section.settings.heading | escape | newline_to_br }}</h2>
+      {% endif %}
+      {% if section.settings.subheading != blank %}
+        <div class="glowup-banner-2026__subheading">{{ section.settings.subheading }}</div>
+      {% endif %}
+      {% if section.settings.description != blank %}
+        <div class="glowup-banner-2026__description">{{ section.settings.description }}</div>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "UK Glowup Kit 2026",
+  "tag": "section",
+  "class": "section-glowup-kit-2026",
+  "settings": [
+    { "type": "header", "content": "图片" },
+    { "type": "paragraph", "content": "请上传不含文案的图片。建议 PC 1520 × 582，手机 343 × 470；按原比例完整显示。仅上传一张时，两端共用该图。" },
+    { "type": "image_picker", "id": "image_desktop", "label": "PC 图片" },
+    { "type": "image_picker", "id": "image_mobile", "label": "手机图片" },
+    { "type": "text", "id": "image_alt", "label": "图片替代文本" },
+    { "type": "header", "content": "文案" },
+    { "type": "textarea", "id": "heading", "label": "标题（支持换行）", "default": "Nature’s Beauty, A Gentle Touch" },
+    { "type": "richtext", "id": "subheading", "label": "副标题", "default": "<p>Nature’s Touch, Made for Your Skincare Ritual</p>" },
+    { "type": "richtext", "id": "description", "label": "正文（可留空）", "default": "<p>Natural Jade stone feels cool to the touch, offering a refreshing sensation that helps soothe the skin and reduce the appearance of puffiness.</p>" },
+    { "type": "select", "id": "desktop_position", "label": "PC 文案位置", "options": [{ "value": "left", "label": "左侧（礼赠）" }, { "value": "right", "label": "右侧（玉石护理）" }], "default": "right" },
+    { "type": "range", "id": "mobile_text_top", "label": "手机文案距图片顶部", "min": 0, "max": 100, "step": 2, "unit": "px", "default": 14 },
+    { "type": "color", "id": "text_color", "label": "文字颜色", "default": "#1a1a1a" },
+    { "type": "color", "id": "background", "label": "组件背景色", "default": "#fbfaf9" },
+    { "type": "color", "id": "media_background", "label": "图片底色", "default": "#f1eeee" },
+    { "type": "header", "content": "PC 上下边距" },
+    { "type": "range", "id": "padding_top", "label": "上边距", "min": 0, "max": 200, "step": 2, "unit": "px", "default": 108 },
+    { "type": "range", "id": "padding_bottom", "label": "下边距", "min": 0, "max": 200, "step": 2, "unit": "px", "default": 110 },
+    { "type": "header", "content": "手机上下边距" },
+    { "type": "range", "id": "mobile_padding_top", "label": "上边距", "min": 0, "max": 160, "step": 2, "unit": "px", "default": 60 },
+    { "type": "range", "id": "mobile_padding_bottom", "label": "下边距", "min": 0, "max": 160, "step": 2, "unit": "px", "default": 60 }
+  ],
+  "presets": [
+    { "name": "UK 玉石护理 2026" },
+    { "name": "UK 礼赠横幅 2026", "settings": {
+      "heading": "The Perfect Gift",
+      "subheading": "<p>Make every ritual a moment<br/>to feel good.</p>",
+      "description": "",
+      "desktop_position": "left",
+      "padding_top": 0,
+      "padding_bottom": 0,
+      "mobile_padding_top": 0,
+      "mobile_padding_bottom": 0
+    } }
+  ]
+}
+{% endschema %}
