@@ -65,6 +65,7 @@
     line-height: 1.2;
   }
   #shopify-section-{{ section.id }} .glowup-banner-2026__subheading--mobile { display: none; }
+  #shopify-section-{{ section.id }} .glowup-banner-2026__heading--mobile { display: none; }
   #shopify-section-{{ section.id }} .glowup-banner-2026--left .glowup-banner-2026__subheading { margin-top: 8px; }
   #shopify-section-{{ section.id }} .glowup-banner-2026__description {
     margin-top: 28px;
@@ -90,6 +91,8 @@
       margin: {{ section.settings.mobile_text_top }}px 28px 28px;
     }
     #shopify-section-{{ section.id }} .glowup-banner-2026__heading { font-size: 24px; }
+    #shopify-section-{{ section.id }} .glowup-banner-2026__heading--desktop { display: none; }
+    #shopify-section-{{ section.id }} .glowup-banner-2026__heading--mobile { display: inline; }
     #shopify-section-{{ section.id }} .glowup-banner-2026__card .glowup-banner-2026__subheading {
       margin-top: 4px;
       font-size: 14px;
@@ -126,7 +129,18 @@
       {% endif %}
       <div class="glowup-banner-2026__content">
         {% if section.settings.heading != blank %}
-          <h2 id="GlowupHeading-{{ section.id }}" class="glowup-banner-2026__heading to-top">{{ section.settings.heading | escape | newline_to_br }}</h2>
+          <h2 id="GlowupHeading-{{ section.id }}" class="glowup-banner-2026__heading to-top">
+            <span class="glowup-banner-2026__heading--desktop">{{ section.settings.heading | escape | newline_to_br }}</span>
+            <span class="glowup-banner-2026__heading--mobile">
+              {%- if section.settings.mobile_heading != blank -%}
+                {{- section.settings.mobile_heading | escape | newline_to_br -}}
+              {%- elsif section.settings.heading == 'Nature’s Beauty, A Gentle Touch' -%}
+                Nature’s Beauty,<br>A Gentle Touch
+              {%- else -%}
+                {{- section.settings.heading | escape | newline_to_br -}}
+              {%- endif -%}
+            </span>
+          </h2>
         {% endif %}
         {% if section.settings.subheading != blank %}
           <div class="glowup-banner-2026__subheading to-top{% if section.settings.mobile_subheading != blank %} glowup-banner-2026__subheading--desktop{% endif %}">{{ section.settings.subheading }}</div>
@@ -165,6 +179,7 @@
     { "type": "text", "id": "image_alt", "label": "图片替代文本" },
     { "type": "header", "content": "文案" },
     { "type": "textarea", "id": "heading", "label": "标题（支持换行）", "default": "Nature’s Beauty, A Gentle Touch" },
+    { "type": "textarea", "id": "mobile_heading", "label": "手机标题（支持换行）", "info": "回车控制手机标题换行；留空时共用 PC 标题。默认玉石护理标题自动按设计稿分为两行。" },
     { "type": "richtext", "id": "subheading", "label": "副标题", "default": "<p>Nature’s Touch, Made for Your Skincare Ritual</p>" },
     { "type": "richtext", "id": "mobile_subheading", "label": "手机副标题（留空则共用）", "info": "需要与 PC 不同的换行或文案时填写。" },
     { "type": "richtext", "id": "description", "label": "正文（可留空）", "default": "<p>Natural Jade stone feels cool to the touch, offering a refreshing sensation that helps soothe the skin and reduce the appearance of puffiness.</p>" },
