@@ -1,0 +1,145 @@
+{% doc %}
+  Renders a gift card for a configured product variant.
+  @param {block} block - Gift card settings.
+  @param {variant} variant - Initially selected product variant.
+  @param {string} form_id - ID of the product form that emits variant changes.
+{% enddoc %}
+
+{%- liquid
+  assign gift = block.settings
+  assign gift_variant_id = gift.variant_id | strip
+  assign selected_variant_id = variant.id | append: ''
+  assign has_copy = false
+  if gift.title != blank or gift.description != blank or gift.note != blank
+    assign has_copy = true
+  endif
+-%}
+
+{%- if gift.image != blank or has_copy -%}
+  <ulike-variant-gift
+    class="variant-gift{% if gift.image != blank and has_copy %} variant-gift--with-image{% endif %}"
+    data-variant-id="{{ gift_variant_id | escape }}"
+    data-form-id="{{ form_id | escape }}"
+    style="{% if gift.background != blank %}--variant-gift-background: {{ gift.background | escape }};{% endif %} --variant-gift-color: {{ gift.text_color | default: '#ffffff' }};"
+    {% if gift_variant_id == blank or gift_variant_id != selected_variant_id %}hidden{% endif %}
+    {{ block.shopify_attributes }}
+  >
+    {%- if gift.image != blank -%}
+      {{- gift.image
+        | image_url: width: 720
+        | image_tag: class: 'variant-gift__image', loading: 'lazy', widths: '120,180,240,360,480,720', sizes: '(max-width: 749px) 35vw, 235px'
+      -}}
+    {%- endif -%}
+    {%- if has_copy -%}
+      <div class="variant-gift__copy">
+        {%- if gift.title != blank -%}
+          <p class="variant-gift__title">{{ gift.title | escape }}</p>
+        {%- endif -%}
+        {%- if gift.description != blank -%}
+          <p class="variant-gift__description">{{ gift.description | escape }}</p>
+        {%- endif -%}
+        {%- if gift.note != blank -%}
+          <p class="variant-gift__note">{{ gift.note | escape }}</p>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+  </ulike-variant-gift>
+{%- endif -%}
+
+{% stylesheet %}
+  .variant-gift {
+    display: grid;
+    align-items: center;
+    gap: 2.6%;
+    margin-block: 15px;
+    min-height: 82px;
+    border-radius: 7px;
+    background: var(--variant-gift-background, linear-gradient(90deg, #d0476b, #570e19));
+    color: var(--variant-gift-color, #fff);
+    container-type: inline-size;
+  }
+
+  .variant-gift[hidden] {
+    display: none;
+  }
+
+  .variant-gift--with-image {
+    grid-template-columns: 35% minmax(0, 1fr);
+  }
+
+  .variant-gift__image {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-height: 98px;
+    object-fit: contain;
+  }
+
+  .variant-gift--with-image .variant-gift__image {
+    align-self: end;
+    margin-block-start: -15px;
+  }
+
+  .variant-gift__copy {
+    padding: 10px 12px;
+    overflow-wrap: anywhere;
+  }
+
+  .variant-gift--with-image .variant-gift__copy {
+    padding-inline-start: 0;
+  }
+
+  .variant-gift__copy p {
+    margin: 0;
+  }
+
+  .variant-gift__title {
+    font-size: clamp(16px, 3.1cqi, 21px);
+    font-weight: 500;
+    line-height: 1.2;
+  }
+
+  .variant-gift__description {
+    font-size: clamp(13px, 2.3cqi, 16px);
+    line-height: 1.4;
+  }
+
+  .variant-gift__note {
+    font-size: 11px;
+    line-height: 1.4;
+  }
+{% endstylesheet %}
+
+{% javascript %}
+  if (!customElements.get('ulike-variant-gift')) {
+    customElements.define('ulike-variant-gift', class extends HTMLElement {
+      connectedCallback() {
+        const formId = this.dataset.formId;
+        const productInfo = this.closest('.product-form');
+        if (!productInfo) return;
+
+        this.listeners = new AbortController();
+        const options = { signal: this.listeners.signal };
+        const update = (variantId) => {
+          this.hidden = !this.dataset.variantId || this.dataset.variantId !== String(variantId);
+        };
+        const currentVariantId = () => document.getElementById(formId)?.elements.namedItem('id')?.value;
+        const initialVariantId = currentVariantId();
+        if (initialVariantId) update(initialVariantId);
+
+        productInfo.addEventListener('variant:changed', (event) => {
+          if (event.target.id === formId) update(event.detail?.variant?.id);
+        }, options);
+
+        if (window.Shopify?.designMode) {
+          this.addEventListener('shopify:block:select', () => { this.hidden = false; }, options);
+          this.addEventListener('shopify:block:deselect', () => update(currentVariantId()), options);
+        }
+      }
+
+      disconnectedCallback() {
+        this.listeners?.abort();
+      }
+    });
+  }
+{% endjavascript %}
