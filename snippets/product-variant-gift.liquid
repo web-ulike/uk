@@ -9,15 +9,21 @@
   assign gift = block.settings
   assign gift_variant_id = gift.variant_id | strip
   assign selected_variant_id = variant.id | append: ''
+  assign description = gift.description | default: gift.mobile_description
+  assign mobile_description = gift.mobile_description | default: description
+  assign image_overflow = false
+  if gift.image != blank and gift.image_overflow != false
+    assign image_overflow = true
+  endif
   assign has_copy = false
-  if gift.title != blank or gift.description != blank or gift.note != blank
+  if gift.title != blank or description != blank or gift.note != blank
     assign has_copy = true
   endif
 -%}
 
 {%- if gift.image != blank or has_copy -%}
   <ulike-variant-gift
-    class="variant-gift{% if gift.image != blank and has_copy %} variant-gift--with-image{% endif %}{% if gift.image != blank and gift.image_overflow != false %} variant-gift--image-overflow{% endif %}"
+    class="variant-gift{% if gift.image != blank and has_copy %} variant-gift--with-image{% endif %}{% if image_overflow %} variant-gift--image-overflow{% endif %}"
     data-variant-id="{{ gift_variant_id | escape }}"
     data-form-id="{{ form_id | escape }}"
     style="{% if gift.background != blank %}--variant-gift-background: {{ gift.background | escape }};{% endif %} --variant-gift-color: {{ gift.text_color | default: '#ffffff' }};"
@@ -31,10 +37,17 @@
       -}}
     {%- endif -%}
     {%- if gift.image != blank -%}
-      {%- assign gift_image_sizes = '(max-width: 375px) 64px, (max-width: 749px) 76px, 670px' -%}
-      {%- if has_copy -%}
-        {%- assign gift_image_sizes = '(max-width: 375px) 64px, (max-width: 749px) 76px, 235px' -%}
-      {%- endif -%}
+      {%- liquid
+        assign gift_image_sizes = '(max-width: 375px) 64px, (max-width: 749px) 76px, '
+        if image_overflow
+          assign gift_image_sizes = '(max-width: 375px) 96px, (max-width: 749px) 112px, '
+        endif
+        if has_copy
+          assign gift_image_sizes = gift_image_sizes | append: '235px'
+        else
+          assign gift_image_sizes = gift_image_sizes | append: '670px'
+        endif
+      -%}
       {{- gift.image
         | image_url: width: 720
         | image_tag: class: 'variant-gift__image', loading: 'lazy', widths: '120,180,240,360,480,720', sizes: gift_image_sizes
@@ -45,8 +58,11 @@
         {%- if gift.title != blank -%}
           <p class="variant-gift__title">{{ gift.title | escape }}</p>
         {%- endif -%}
-        {%- if gift.description != blank -%}
-          <p class="variant-gift__description">{{ gift.description | escape }}</p>
+        {%- if description != blank -%}
+          <p class="variant-gift__description{% if mobile_description != description %} variant-gift__description--desktop{% endif %}">{{ description | escape }}</p>
+        {%- endif -%}
+        {%- if mobile_description != description -%}
+          <p class="variant-gift__description variant-gift__description--mobile">{{ mobile_description | escape }}</p>
         {%- endif -%}
         {%- if gift.note != blank -%}
           <p class="variant-gift__note">{{ gift.note | escape }}</p>
@@ -135,6 +151,10 @@
     line-height: 1.4;
   }
 
+  .variant-gift__description--mobile {
+    display: none;
+  }
+
   .variant-gift__note {
     font-size: 11px;
     line-height: 1.4;
@@ -144,11 +164,41 @@
     .variant-gift {
       --variant-gift-image-width: 76px;
       --variant-gift-image-height: 54px;
-      --variant-gift-image-offset: -6px;
     }
 
     .variant-gift--with-image {
       grid-template-columns: 28% minmax(0, 1fr);
+    }
+
+    .variant-gift--image-overflow {
+      --variant-gift-image-width: 112px;
+      --variant-gift-image-height: 88px;
+      --variant-gift-image-offset: -10px;
+    }
+
+    .variant-gift--image-overflow.variant-gift--with-image {
+      grid-template-columns: 34% minmax(0, 1fr);
+    }
+
+    .variant-gift--image-overflow .variant-gift__copy {
+      padding-block: 8px;
+    }
+
+    .variant-gift--image-overflow .variant-gift__title {
+      font-size: 15px;
+    }
+
+    .variant-gift--image-overflow .variant-gift__description {
+      font-size: 12px;
+      line-height: 1.3;
+    }
+
+    .variant-gift__description--desktop {
+      display: none;
+    }
+
+    .variant-gift__description--mobile {
+      display: block;
     }
   }
 
@@ -156,7 +206,12 @@
     .variant-gift {
       --variant-gift-image-width: 64px;
       --variant-gift-image-height: 48px;
-      --variant-gift-image-offset: -4px;
+    }
+
+    .variant-gift--image-overflow {
+      --variant-gift-image-width: 96px;
+      --variant-gift-image-height: 78px;
+      --variant-gift-image-offset: -8px;
     }
   }
 {% endstylesheet %}
