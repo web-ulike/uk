@@ -25,9 +25,13 @@
     {{ block.shopify_attributes }}
   >
     {%- if gift.image != blank -%}
+      {%- assign gift_image_sizes = '(max-width: 749px) 100vw, 670px' -%}
+      {%- if has_copy -%}
+        {%- assign gift_image_sizes = '(max-width: 749px) 35vw, 235px' -%}
+      {%- endif -%}
       {{- gift.image
         | image_url: width: 720
-        | image_tag: class: 'variant-gift__image', loading: 'lazy', widths: '120,180,240,360,480,720', sizes: '(max-width: 749px) 35vw, 235px'
+        | image_tag: class: 'variant-gift__image', loading: 'lazy', widths: '120,180,240,360,480,720', sizes: gift_image_sizes
       -}}
     {%- endif -%}
     {%- if has_copy -%}
