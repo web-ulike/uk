@@ -3,6 +3,7 @@
   assign perks = section.blocks | where: 'type', 'perk'
   assign gift_cards = section.blocks | where: 'type', 'gift_card'
   assign background_image = st.background_image | default: st.background_image_mobile
+  assign perks_subtitle_mobile = st.perks_subtitle_mobile | default: st.perks_subtitle
   assign show_perks = false
   assign show_gift_cards = false
 
@@ -75,7 +76,12 @@
         <div class="bfcm-offers-2026__perks">
           <header class="bfcm-offers-2026__header">
             {%- if st.perks_title != blank -%}<h2 class="bfcm-offers-2026__title to-top">{{ st.perks_title | escape }}</h2>{%- endif -%}
-            {%- if st.perks_subtitle != blank -%}<p class="bfcm-offers-2026__subtitle to-top">{{ st.perks_subtitle | escape }}</p>{%- endif -%}
+            {%- if st.perks_subtitle != blank or perks_subtitle_mobile != blank -%}
+              <p class="bfcm-offers-2026__subtitle to-top">
+                <span class="bfcm-offers-2026__timeline-title-pc">{{ st.perks_subtitle | default: perks_subtitle_mobile | escape }}</span>
+                <span class="bfcm-offers-2026__timeline-title-mobile">{{ perks_subtitle_mobile | escape }}</span>
+              </p>
+            {%- endif -%}
           </header>
 
           <ul class="bfcm-offers-2026__perks-grid" role="list">
@@ -157,7 +163,7 @@
                 {%- endif -%}
                 {%- if bs.button_label != blank -%}
                   {%- if bs.button_link != blank -%}
-                    <a class="bfcm-offers-2026__button" href="{{ bs.button_link }}" aria-label="{{ bs.button_label | escape }}{% if bs.title != blank %} — {{ bs.title | escape }}{% endif %}">{{ bs.button_label | escape }}</a>
+                    <a class="bfcm-offers-2026__button" href="{{ bs.button_link | escape }}" aria-label="{{ bs.button_label | escape }}{% if bs.title != blank %} — {{ bs.title | escape }}{% endif %}">{{ bs.button_label | escape }}</a>
                   {%- elsif request.design_mode -%}
                     <button type="button" class="bfcm-offers-2026__button" disabled>{{ bs.button_label | escape }}</button>
                   {%- endif -%}
@@ -222,6 +228,10 @@
     max-width: 1146px;
     margin-inline: auto;
     color: #ffe0e9;
+  }
+
+  .bfcm-offers-2026__timeline:not(:last-child) {
+    margin-bottom: clamp(12px, 1.25vw, 24px);
   }
 
   .bfcm-offers-2026__timeline-title {
@@ -352,13 +362,10 @@
     line-height: 1.5;
   }
 
-  .bfcm-offers-2026__help {
+  .bfcm-offers-2026__help summary {
     position: absolute;
     top: 0;
     right: 0;
-  }
-
-  .bfcm-offers-2026__help summary {
     display: grid;
     place-items: center;
     width: 48px;
@@ -384,9 +391,9 @@
 
   .bfcm-offers-2026__help-copy {
     position: absolute;
-    top: 100%;
+    top: 48px;
     right: 0;
-    width: min(280px, 75vw);
+    width: min(280px, 100%);
     padding: 14px;
     border-radius: 6px;
     background: #ffe0e9;
@@ -428,6 +435,10 @@
     margin-bottom: 23px;
     border-radius: 4px;
     overflow: hidden;
+  }
+
+  .bfcm-offers-2026__gift-art img {
+    object-fit: cover;
   }
 
   .bfcm-offers-2026__gift-heading {
@@ -549,6 +560,10 @@
       text-align: center;
     }
 
+    .bfcm-offers-2026__timeline:not(:last-child) {
+      margin-bottom: 0;
+    }
+
     .bfcm-offers-2026__timeline-title {
       font-size: 32px;
       line-height: 1.25;
@@ -623,11 +638,8 @@
       font-size: 9px;
     }
 
-    .bfcm-offers-2026__perk:nth-child(odd) .bfcm-offers-2026__help-copy {
-      right: auto;
-      left: 0;
-      width: min(220px, 46vw);
-      transform: translateX(-45%);
+    .bfcm-offers-2026__help-copy {
+      top: 28px;
     }
 
     .bfcm-offers-2026__gift-cards .bfcm-offers-2026__header {
