@@ -1,0 +1,763 @@
+{%- liquid
+  assign st = section.settings
+  assign perks = section.blocks | where: 'type', 'perk'
+  assign gift_cards = section.blocks | where: 'type', 'gift_card'
+  assign background_image = st.background_image | default: st.background_image_mobile
+  assign show_perks = false
+  assign show_gift_cards = false
+
+  if st.show_perks and perks.size > 0
+    assign show_perks = true
+  endif
+  if st.show_gift_cards and gift_cards.size > 0
+    assign show_gift_cards = true
+  endif
+
+  assign background_loading = 'eager'
+  if section.index > 2
+    assign background_loading = 'lazy'
+  endif
+-%}
+
+{%- if st.show_timeline or show_perks or show_gift_cards -%}
+  <div class="bfcm-offers-2026{% if request.design_mode %} bfcm-offers-2026--editor{% endif %}" style="--bfcm-offers-background: {{ st.background_color }};">
+    {%- if background_image != blank -%}
+      <picture class="bfcm-offers-2026__background" aria-hidden="true">
+        {%- if st.background_image_mobile != blank -%}
+          <source
+            media="(max-width: 767px)"
+            srcset="{{ st.background_image_mobile | image_url: width: 480 }} 480w, {{ st.background_image_mobile | image_url: width: 750 }} 750w, {{ st.background_image_mobile | image_url: width: 1125 }} 1125w"
+            sizes="100vw"
+          >
+        {%- endif -%}
+        {{ background_image | image_url: width: 2400 | image_tag: widths: '480, 750, 1125, 1440, 1920, 2400', sizes: '100vw', loading: background_loading, alt: '' }}
+      </picture>
+    {%- endif -%}
+
+    <div class="container bfcm-offers-2026__container">
+      {%- if st.show_timeline -%}
+        <div class="bfcm-offers-2026__timeline">
+          {%- if st.timeline_title != blank or st.timeline_title_mobile != blank -%}
+            <h2 class="bfcm-offers-2026__timeline-title">
+              {%- if st.timeline_title != blank and st.timeline_title_mobile != blank -%}
+                <span class="bfcm-offers-2026__timeline-title-pc">{{ st.timeline_title | escape | newline_to_br }}</span>
+                <span class="bfcm-offers-2026__timeline-title-mobile">{{ st.timeline_title_mobile | escape | newline_to_br }}</span>
+              {%- else -%}
+                {{ st.timeline_title | default: st.timeline_title_mobile | escape | newline_to_br }}
+              {%- endif -%}
+            </h2>
+          {%- endif -%}
+
+          <div class="bfcm-offers-2026__timeline-dates" style="--bfcm-timeline-fill: {{ st.timeline_progress }}%; --bfcm-timeline-fill-mobile: {{ st.timeline_progress_mobile }}%;">
+            {%- for phase in (1..2) -%}
+              {%- liquid
+                assign start_key = 'phase_start_' | append: phase
+                assign end_key = 'phase_end_' | append: phase
+                assign copy_key = 'phase_copy_' | append: phase
+              -%}
+              <div class="bfcm-offers-2026__phase bfcm-offers-2026__phase--{{ phase }}">
+                <p class="bfcm-offers-2026__date">
+                  {{ st[start_key] | escape }}
+                  <span class="bfcm-offers-2026__date-separator">/</span>
+                  {{ st[end_key] | escape }}
+                </p>
+                {%- if st[copy_key] != blank -%}
+                  <p class="bfcm-offers-2026__phase-copy">{{ st[copy_key] | escape | newline_to_br }}</p>
+                {%- endif -%}
+              </div>
+            {%- endfor -%}
+            <div class="bfcm-offers-2026__timeline-line" aria-hidden="true"></div>
+          </div>
+        </div>
+      {%- endif -%}
+
+      {%- if show_perks -%}
+        <div class="bfcm-offers-2026__perks">
+          <header class="bfcm-offers-2026__header">
+            {%- if st.perks_title != blank -%}<h2 class="bfcm-offers-2026__title to-top">{{ st.perks_title | escape }}</h2>{%- endif -%}
+            {%- if st.perks_subtitle != blank -%}<p class="bfcm-offers-2026__subtitle to-top">{{ st.perks_subtitle | escape }}</p>{%- endif -%}
+          </header>
+
+          <ul class="bfcm-offers-2026__perks-grid" role="list">
+            {%- for block in perks -%}
+              {%- liquid
+                assign bs = block.settings
+                assign image = bs.image | default: bs.image_mobile
+              -%}
+              <li class="bfcm-offers-2026__perk" {{ block.shopify_attributes }}>
+                <div class="bfcm-offers-2026__perk-card" style="--bfcm-perk-width: {{ bs.image_width }}%;">
+                  {%- if image != blank -%}
+                    <picture class="bfcm-offers-2026__perk-art">
+                      {%- if bs.image_mobile != blank -%}
+                        <source
+                          media="(max-width: 767px)"
+                          srcset="{{ bs.image_mobile | image_url: width: 180 }} 180w, {{ bs.image_mobile | image_url: width: 360 }} 360w, {{ bs.image_mobile | image_url: width: 540 }} 540w"
+                          sizes="38vw"
+                        >
+                      {%- endif -%}
+                      {{ image | image_url: width: 720 | image_tag: widths: '180, 260, 360, 540, 720', sizes: '(max-width: 767px) 38vw, (max-width: 1550px) 18vw, 300px', loading: 'lazy', alt: image.alt }}
+                    </picture>
+                  {%- endif -%}
+                  {%- if bs.details != blank -%}
+                    <details class="bfcm-offers-2026__help">
+                      <summary aria-label="More information{% if bs.title != blank %} about {{ bs.title | escape }}{% endif %}"><span aria-hidden="true">?</span></summary>
+                      <div class="bfcm-offers-2026__help-copy">{{ bs.details }}</div>
+                    </details>
+                  {%- endif -%}
+                </div>
+                {%- if bs.title != blank -%}<p class="bfcm-offers-2026__perk-title">{{ bs.title | escape }}</p>{%- endif -%}
+              </li>
+            {%- endfor -%}
+          </ul>
+        </div>
+      {%- endif -%}
+
+      {%- if show_gift_cards -%}
+        <bfcm-gift-cards-2026 class="bfcm-offers-2026__gift-cards">
+          <header class="bfcm-offers-2026__header">
+            {%- if st.gift_cards_title != blank -%}
+              <h2 id="BfcmGiftTitle-{{ section.id }}" class="bfcm-offers-2026__title to-top">{{ st.gift_cards_title | escape }}</h2>
+            {%- endif -%}
+            {%- if st.gift_cards_subtitle != blank -%}
+              <p class="bfcm-offers-2026__subtitle to-top">{{ st.gift_cards_subtitle | escape }}</p>
+            {%- endif -%}
+          </header>
+
+          <ul id="BfcmGiftTrack-{{ section.id }}" class="bfcm-offers-2026__gift-track" role="list" tabindex="0"
+            {% if st.gift_cards_title != blank %}aria-labelledby="BfcmGiftTitle-{{ section.id }}"{% else %}aria-label="Gift cards"{% endif %}
+          >
+            {%- for block in gift_cards -%}
+              {%- liquid
+                assign bs = block.settings
+                assign image = bs.image | default: bs.image_mobile
+              -%}
+              <li class="bfcm-offers-2026__gift" {{ block.shopify_attributes }}>
+                {%- if image != blank -%}
+                  <picture class="bfcm-offers-2026__gift-art">
+                    {%- if bs.image_mobile != blank -%}
+                      <source
+                        media="(max-width: 767px)"
+                        srcset="{{ bs.image_mobile | image_url: width: 200 }} 200w, {{ bs.image_mobile | image_url: width: 400 }} 400w, {{ bs.image_mobile | image_url: width: 600 }} 600w"
+                        sizes="164px"
+                      >
+                    {%- endif -%}
+                    {{ image | image_url: width: 960 | image_tag: widths: '200, 330, 400, 600, 660, 960', sizes: '(max-width: 767px) 164px, (max-width: 1550px) 23vw, 328px', loading: 'lazy', alt: image.alt }}
+                  </picture>
+                {%- endif -%}
+                <div class="bfcm-offers-2026__gift-heading">
+                  {%- if bs.title != blank -%}<h3 class="bfcm-offers-2026__gift-title">{{ bs.title | escape }}</h3>{%- endif -%}
+                  {%- if bs.price != blank -%}<span class="bfcm-offers-2026__gift-price">{{ bs.price | escape }}</span>{%- endif -%}
+                </div>
+                {%- if bs.description != blank -%}<p class="bfcm-offers-2026__gift-description">{{ bs.description | escape }}</p>{%- endif -%}
+                {%- if bs.stock_text != blank -%}
+                  <div class="bfcm-offers-2026__stock">
+                    <p>{{ bs.stock_text | escape }}</p>
+                    <div class="bfcm-offers-2026__stock-line" style="--bfcm-stock-fill: {{ bs.stock_progress }}%;" aria-hidden="true"></div>
+                  </div>
+                {%- endif -%}
+                {%- if bs.button_label != blank -%}
+                  {%- if bs.button_link != blank -%}
+                    <a class="bfcm-offers-2026__button" href="{{ bs.button_link }}" aria-label="{{ bs.button_label | escape }}{% if bs.title != blank %} — {{ bs.title | escape }}{% endif %}">{{ bs.button_label | escape }}</a>
+                  {%- elsif request.design_mode -%}
+                    <button type="button" class="bfcm-offers-2026__button" disabled>{{ bs.button_label | escape }}</button>
+                  {%- endif -%}
+                {%- endif -%}
+              </li>
+            {%- endfor -%}
+          </ul>
+
+          {%- if gift_cards.size > 1 -%}
+            <div class="bfcm-offers-2026__arrows">
+              <button type="button" data-direction="-1" aria-label="Previous gift card" aria-controls="BfcmGiftTrack-{{ section.id }}" disabled>
+                {%- render 'icon', icon: 'nav-arrow-left' -%}
+              </button>
+              <button type="button" data-direction="1" aria-label="Next gift card" aria-controls="BfcmGiftTrack-{{ section.id }}">
+                {%- render 'icon', icon: 'nav-arrow-right' -%}
+              </button>
+            </div>
+          {%- endif -%}
+        </bfcm-gift-cards-2026>
+      {%- endif -%}
+    </div>
+  </div>
+{%- endif -%}
+
+{% stylesheet %}
+  .bfcm-offers-2026 {
+    position: relative;
+    isolation: isolate;
+    overflow: clip;
+    padding: clamp(72px, 7.24vw, 139px) 0 clamp(60px, 5.42vw, 104px);
+    color: #fffffc;
+    background: var(--bfcm-offers-background, #000);
+    font-family: Saans, var(--text-font-family, sans-serif), sans-serif;
+  }
+
+  .bfcm-offers-2026__background {
+    position: absolute;
+    z-index: -1;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  .bfcm-offers-2026__background img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .bfcm-offers-2026 .bfcm-offers-2026__container {
+    display: grid;
+    gap: clamp(64px, 7.14vw, 137px);
+    max-width: 1580px;
+  }
+
+  .bfcm-offers-2026__timeline {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: clamp(24px, 4vw, 80px);
+    width: 100%;
+    max-width: 1146px;
+    margin-inline: auto;
+    color: #ffe0e9;
+  }
+
+  .bfcm-offers-2026__timeline-title {
+    flex: none;
+    margin: 0;
+    font: italic 400 clamp(38px, 4vw, 64px)/1.22 Bodoni-Book, Georgia, serif;
+    color: inherit;
+  }
+
+  .bfcm-offers-2026__timeline-title-mobile {
+    display: none;
+  }
+
+  .bfcm-offers-2026__timeline-dates {
+    display: grid;
+    flex: 0 1 634px;
+    grid-template-columns: max-content minmax(24px, 240px) max-content;
+    gap: clamp(10px, 1.15vw, 22px);
+    align-items: start;
+  }
+
+  .bfcm-offers-2026__phase--2 {
+    grid-column: 3;
+    grid-row: 1;
+  }
+
+  .bfcm-offers-2026__date {
+    margin: 0;
+    font: 700 clamp(34px, 3.5vw, 60px)/.8 Bodoni-Book, Georgia, serif;
+  }
+
+  .bfcm-offers-2026__date-separator {
+    display: block;
+    padding-inline-start: 1.5em;
+    font-size: .4em;
+    font-weight: 400;
+    line-height: 1.8;
+  }
+
+  .bfcm-offers-2026__phase-copy {
+    margin: 16px 0 0;
+    font-size: clamp(12px, 1.1vw, 16px);
+    line-height: 1.2;
+  }
+
+  .bfcm-offers-2026__timeline-line {
+    grid-column: 2;
+    grid-row: 1;
+    margin-top: clamp(40px, 3.55vw, 68px);
+    height: 2px;
+    background: linear-gradient(to right, #e0004d var(--bfcm-timeline-fill), #414141 var(--bfcm-timeline-fill));
+  }
+
+  .bfcm-offers-2026__header {
+    text-align: center;
+  }
+
+  .bfcm-offers-2026__header:empty {
+    display: none;
+  }
+
+  .bfcm-offers-2026__title {
+    margin: 0;
+    font: 400 clamp(32px, 3vw, 44px)/1.2 Saans, var(--text-font-family, sans-serif), sans-serif;
+    color: inherit;
+  }
+
+  .bfcm-offers-2026__subtitle {
+    margin: 9px 0 0;
+    font-size: 18px;
+    line-height: 1.5;
+    color: #f4ebff;
+  }
+
+  .bfcm-offers-2026__perks-grid,
+  .bfcm-offers-2026__gift-track {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 20px;
+    padding: 0;
+    list-style: none;
+  }
+
+  .bfcm-offers-2026__perks-grid {
+    max-width: 1500px;
+    margin: 43px auto 0;
+  }
+
+  .bfcm-offers-2026__perk,
+  .bfcm-offers-2026__gift {
+    min-width: 0;
+    margin: 0;
+  }
+
+  .bfcm-offers-2026__perk:has(details[open]) {
+    position: relative;
+    z-index: 1;
+  }
+
+  .bfcm-offers-2026__perk-card {
+    position: relative;
+    display: grid;
+    place-items: center;
+    aspect-ratio: 360 / 250;
+    border: 1px solid #cf4a69;
+    border-radius: 2px;
+  }
+
+  .bfcm-offers-2026__perk-art {
+    display: block;
+    width: var(--bfcm-perk-width);
+    height: 72%;
+  }
+
+  .bfcm-offers-2026__perk-art img,
+  .bfcm-offers-2026__gift-art img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .bfcm-offers-2026__perk-title {
+    margin: 20px 0 0;
+    text-align: center;
+    font-size: clamp(15px, 1.4vw, 20px);
+    font-weight: 500;
+    line-height: 1.5;
+  }
+
+  .bfcm-offers-2026__help {
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+
+  .bfcm-offers-2026__help summary {
+    display: grid;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    list-style: none;
+    cursor: pointer;
+  }
+
+  .bfcm-offers-2026__help summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .bfcm-offers-2026__help summary span {
+    display: grid;
+    place-items: center;
+    width: 27px;
+    height: 27px;
+    border-radius: 50%;
+    color: #e0004d;
+    background: #fff;
+    font: 500 18px/1 Saans, sans-serif;
+  }
+
+  .bfcm-offers-2026__help-copy {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    width: min(280px, 75vw);
+    padding: 14px;
+    border-radius: 6px;
+    background: #ffe0e9;
+    color: #18060c;
+    font-size: 14px;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+  }
+
+  .bfcm-offers-2026__help-copy p {
+    margin: 0;
+  }
+
+  .bfcm-offers-2026__help-copy p + p {
+    margin-top: .5em;
+  }
+
+  .bfcm-offers-2026__gift-cards {
+    display: block;
+    min-width: 0;
+  }
+
+  .bfcm-offers-2026__gift-track {
+    margin: 52px 0 0;
+  }
+
+  .bfcm-offers-2026__gift {
+    display: flex;
+    flex-direction: column;
+    padding: clamp(10px, 1.05vw, 20px);
+    border: 1px solid rgb(255 224 233 / .55);
+    border-radius: 8px;
+    background: #000;
+  }
+
+  .bfcm-offers-2026__gift-art {
+    display: block;
+    aspect-ratio: 328 / 310;
+    margin-bottom: 23px;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .bfcm-offers-2026__gift-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 6px;
+    overflow-wrap: anywhere;
+  }
+
+  .bfcm-offers-2026__gift-title {
+    margin: 0;
+    font: 500 clamp(14px, 1.4vw, 20px)/1.2 Saans, var(--text-font-family, sans-serif), sans-serif;
+    color: inherit;
+  }
+
+  .bfcm-offers-2026__gift-price {
+    margin-inline-start: auto;
+    text-align: end;
+    color: #ff2868;
+    font-size: clamp(12px, 1.1vw, 16px);
+    font-weight: 500;
+  }
+
+  .bfcm-offers-2026__gift-description,
+  .bfcm-offers-2026__stock p {
+    margin: 5px 0 0;
+    color: #e9e9e9;
+    font-size: clamp(11px, 1vw, 14px);
+    line-height: 1.35;
+    overflow-wrap: anywhere;
+  }
+
+  .bfcm-offers-2026__stock {
+    margin: 12px 0;
+  }
+
+  .bfcm-offers-2026__stock-line {
+    height: 5px;
+    margin-top: 5px;
+    border-radius: 99px;
+    background: #cbcbcb;
+    overflow: hidden;
+  }
+
+  .bfcm-offers-2026__stock-line::before {
+    content: '';
+    display: block;
+    width: var(--bfcm-stock-fill);
+    height: 100%;
+    background: linear-gradient(to right, #960638, #ff497b);
+  }
+
+  .bfcm-offers-2026__button {
+    display: grid;
+    place-items: center;
+    min-height: 48px;
+    margin-top: auto;
+    padding: 6px 8px;
+    border: 0;
+    border-radius: 4px;
+    color: #fffffc;
+    background: linear-gradient(180deg, #e0004d 3.36%, #6f092e 125%);
+    text-align: center;
+    text-transform: uppercase;
+    text-decoration: none;
+    font-size: clamp(12px, 1vw, 15px);
+    font-weight: 500;
+  }
+
+  .bfcm-offers-2026__button[href]:hover {
+    filter: brightness(1.15);
+  }
+
+  .bfcm-offers-2026__button:disabled {
+    opacity: .65;
+  }
+
+  .bfcm-offers-2026__gift-track:focus-visible,
+  .bfcm-offers-2026__arrows button:focus-visible,
+  .bfcm-offers-2026__help summary:focus-visible,
+  .bfcm-offers-2026__button:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: -2px;
+  }
+
+  .bfcm-offers-2026__arrows {
+    display: none;
+  }
+
+  .no-js .bfcm-offers-2026 .to-top,
+  .bfcm-offers-2026--editor .to-top {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .bfcm-offers-2026 .to-top {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .bfcm-offers-2026 {
+      padding: 54px 0 44px;
+    }
+
+    .bfcm-offers-2026 .bfcm-offers-2026__container {
+      gap: 52px;
+      padding-inline: 16px;
+    }
+
+    .bfcm-offers-2026__timeline {
+      display: grid;
+      gap: 34px;
+      text-align: center;
+    }
+
+    .bfcm-offers-2026__timeline-title {
+      font-size: 32px;
+      line-height: 1.25;
+    }
+
+    .bfcm-offers-2026__timeline-title-pc {
+      display: none;
+    }
+
+    .bfcm-offers-2026__timeline-title-mobile {
+      display: block;
+    }
+
+    .bfcm-offers-2026__timeline-dates {
+      grid-template-columns: minmax(0, 105px) minmax(0, 123px) minmax(0, 105px);
+      justify-content: space-between;
+      gap: 6px;
+    }
+
+    .bfcm-offers-2026__date {
+      font-size: 32px;
+    }
+
+    .bfcm-offers-2026__date-separator {
+      padding: 0;
+      font-size: 16px;
+      line-height: 1.8;
+    }
+
+    .bfcm-offers-2026__phase-copy {
+      margin-top: 8px;
+      font-size: 10px;
+      line-height: 1.5;
+    }
+
+    .bfcm-offers-2026__timeline-line {
+      margin-top: 40px;
+      background: linear-gradient(to right, #e0004d var(--bfcm-timeline-fill-mobile), #414141 var(--bfcm-timeline-fill-mobile));
+    }
+
+    .bfcm-offers-2026__title {
+      color: #edc3d5;
+      font-size: 24px;
+    }
+
+    .bfcm-offers-2026__subtitle {
+      margin-top: 11px;
+      font-size: 12px;
+      line-height: 1.3;
+      color: #fff;
+    }
+
+    .bfcm-offers-2026__perks-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 9px;
+      margin-top: 25px;
+    }
+
+    .bfcm-offers-2026__perk-title {
+      margin-top: 9px;
+      font-size: 12px;
+    }
+
+    .bfcm-offers-2026__help summary {
+      width: 32px;
+      height: 28px;
+    }
+
+    .bfcm-offers-2026__help summary span {
+      width: 13px;
+      height: 13px;
+      font-size: 9px;
+    }
+
+    .bfcm-offers-2026__perk:nth-child(odd) .bfcm-offers-2026__help-copy {
+      right: auto;
+      left: 0;
+      width: min(220px, 46vw);
+      transform: translateX(-45%);
+    }
+
+    .bfcm-offers-2026__gift-cards .bfcm-offers-2026__header {
+      max-width: 273px;
+      margin-inline: auto;
+    }
+
+    .bfcm-offers-2026__gift-track {
+      grid-template-columns: none;
+      grid-auto-columns: 184px;
+      grid-auto-flow: column;
+      gap: 10px;
+      margin: 34px -16px 0;
+      padding-inline: 16px;
+      overflow-x: auto;
+      overscroll-behavior-inline: contain;
+      scroll-padding-inline: 16px;
+      scroll-snap-type: x mandatory;
+      scrollbar-width: none;
+    }
+
+    .bfcm-offers-2026__gift-track::-webkit-scrollbar {
+      display: none;
+    }
+
+    .bfcm-offers-2026__gift {
+      padding: 9px;
+      border-radius: 4px;
+      scroll-snap-align: start;
+    }
+
+    .bfcm-offers-2026__gift-art {
+      margin-bottom: 9px;
+      border-radius: 2px;
+    }
+
+    .bfcm-offers-2026__gift-title,
+    .bfcm-offers-2026__gift-price {
+      font-size: 12px;
+    }
+
+    .bfcm-offers-2026__gift-description,
+    .bfcm-offers-2026__stock p {
+      margin-top: 3px;
+      font-size: 8px;
+    }
+
+    .bfcm-offers-2026__stock {
+      margin-block: 8px;
+    }
+
+    .bfcm-offers-2026__stock-line {
+      height: 2.5px;
+      margin-top: 3px;
+    }
+
+    .bfcm-offers-2026__button {
+      min-height: 24px;
+      padding: 4px;
+      border-radius: 2px;
+      font-size: 10px;
+    }
+
+    .bfcm-offers-2026__gift-cards[data-overflow] .bfcm-offers-2026__arrows {
+      display: flex;
+      justify-content: flex-end;
+      padding-right: 30px;
+      margin-top: 12px;
+    }
+
+    .bfcm-offers-2026__arrows button {
+      display: grid;
+      place-items: center;
+      width: 44px;
+      height: 44px;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      color: inherit;
+      cursor: pointer;
+    }
+
+    .bfcm-offers-2026__arrows button:disabled {
+      opacity: .45;
+      cursor: default;
+    }
+  }
+{% endstylesheet %}
+
+{% javascript %}
+  if (!customElements.get('bfcm-gift-cards-2026')) {
+    customElements.define('bfcm-gift-cards-2026', class extends HTMLElement {
+      connectedCallback() {
+        this.track = this.querySelector('.bfcm-offers-2026__gift-track');
+        this.previous = this.querySelector('[data-direction="-1"]');
+        this.next = this.querySelector('[data-direction="1"]');
+        if (!this.track || !this.previous || !this.next) return;
+
+        this.controller = new AbortController();
+        const { signal } = this.controller;
+        this.previous.addEventListener('click', () => this.move(-1), { signal });
+        this.next.addEventListener('click', () => this.move(1), { signal });
+        this.track.addEventListener('scroll', () => this.updateControls(), { passive: true, signal });
+        this.addEventListener('shopify:block:select', (event) => {
+          if (!this.hasAttribute('data-overflow') || !this.track.contains(event.target)) return;
+          event.target.scrollIntoView({ block: 'nearest', inline: 'start' });
+        }, { signal });
+        this.resizeObserver = new ResizeObserver(() => this.updateControls());
+        this.resizeObserver.observe(this.track);
+        this.updateControls();
+      }
+
+      disconnectedCallback() {
+        this.controller?.abort();
+        this.resizeObserver?.disconnect();
+      }
+
+      move(direction) {
+        const [firstCard, secondCard] = this.track.children;
+        const distance = secondCard.offsetLeft - firstCard.offsetLeft;
+        const behavior = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth';
+        this.track.scrollBy({ left: direction * distance, behavior });
+      }
+
+      updateControls() {
+        const remaining = this.track.scrollWidth - this.track.clientWidth;
+        this.toggleAttribute('data-overflow', remaining > 1);
+        this.previous.disabled = this.track.scrollLeft <= 1;
+        this.next.disabled = this.track.scrollLeft >= remaining - 1;
+      }
+    });
+  }
+{% endjavascript %}
