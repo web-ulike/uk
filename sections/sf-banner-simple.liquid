@@ -119,6 +119,7 @@
   #sf-banner-simple-{{ sid }}.sf-banner-simple{
     position: relative;
     overflow: hidden;
+    --sf-banner-content-padding-top: {{ st.content_padding_top_wide | default: 14 }}%;
     --sf-banner-text-color: {{ st.text_color }};
     --sf-banner-eyebrow-color: {{ st.eyebrow_color | default: '#e0004d' }};
     --sf-banner-subtitle-color: {{ st.subtitle_color | default: st.text_color }};
@@ -159,7 +160,7 @@
     color: var(--sf-banner-text-color);
     position: relative;
     z-index: 2;
-    padding: 14% 0px 0px;
+    padding: var(--sf-banner-content-padding-top) 0px 0px;
   }
 
   #sf-banner-simple-{{ sid }} .sf-banner-simple__eyebrow{
@@ -300,6 +301,7 @@
     { "type": "text", "id": "title", "label": "标题文本（无艺术字图时显示）", "default": "DARE to GLOW" },
 
     { "type": "header", "content": "文案内容" },
+    { "type": "range", "id": "content_padding_top_wide", "label": "内容顶部内边距（宽屏）", "info": "仅在视口宽度大于 1520px 时生效。", "min": 0, "max": 50, "step": 1, "unit": "%", "default": 14 },
     { "type": "text", "id": "eyebrow", "label": "顶部小标题（可选）", "default": "Early Spring Sale" },
     { "type": "color", "id": "eyebrow_color", "label": "顶部小标题颜色", "default": "#e0004d" },
     { "type": "color", "id": "text_color", "label": "主文字颜色", "default": "#000000" },
