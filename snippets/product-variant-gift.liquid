@@ -31,9 +31,9 @@
       -}}
     {%- endif -%}
     {%- if gift.image != blank -%}
-      {%- assign gift_image_sizes = '(max-width: 749px) 100vw, 670px' -%}
+      {%- assign gift_image_sizes = '(max-width: 375px) 64px, (max-width: 749px) 76px, 670px' -%}
       {%- if has_copy -%}
-        {%- assign gift_image_sizes = '(max-width: 749px) 35vw, 235px' -%}
+        {%- assign gift_image_sizes = '(max-width: 375px) 64px, (max-width: 749px) 76px, 235px' -%}
       {%- endif -%}
       {{- gift.image
         | image_url: width: 720
@@ -95,15 +95,20 @@
 
   .variant-gift__image {
     display: block;
-    width: 100%;
+    justify-self: center;
+    width: calc(100% - 16px);
     height: auto;
-    max-height: 98px;
+    max-width: var(--variant-gift-image-width, 144px);
+    max-height: var(--variant-gift-image-height, 66px);
     object-fit: contain;
   }
 
   .variant-gift--image-overflow .variant-gift__image {
     align-self: start;
-    margin-block-start: -15px;
+    width: 100%;
+    max-width: var(--variant-gift-image-width, 100%);
+    max-height: var(--variant-gift-image-height, 98px);
+    margin-block-start: var(--variant-gift-image-offset, -15px);
   }
 
   .variant-gift__copy {
@@ -133,6 +138,26 @@
   .variant-gift__note {
     font-size: 11px;
     line-height: 1.4;
+  }
+
+  @media (max-width: 749px) {
+    .variant-gift {
+      --variant-gift-image-width: 76px;
+      --variant-gift-image-height: 54px;
+      --variant-gift-image-offset: -6px;
+    }
+
+    .variant-gift--with-image {
+      grid-template-columns: 28% minmax(0, 1fr);
+    }
+  }
+
+  @media (max-width: 375px) {
+    .variant-gift {
+      --variant-gift-image-width: 64px;
+      --variant-gift-image-height: 48px;
+      --variant-gift-image-offset: -4px;
+    }
   }
 {% endstylesheet %}
 
