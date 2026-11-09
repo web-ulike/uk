@@ -41,8 +41,8 @@
           {%- if st.timeline_title != blank or st.timeline_title_mobile != blank -%}
             <h2 class="bfcm-offers-2026__timeline-title">
               {%- if st.timeline_title != blank and st.timeline_title_mobile != blank -%}
-                <span class="bfcm-offers-2026__timeline-title-pc">{{ st.timeline_title | escape | newline_to_br }}</span>
-                <span class="bfcm-offers-2026__timeline-title-mobile">{{ st.timeline_title_mobile | escape | newline_to_br }}</span>
+                <span class="bfcm-offers-2026__copy-pc">{{ st.timeline_title | escape | newline_to_br }}</span>
+                <span class="bfcm-offers-2026__copy-mobile">{{ st.timeline_title_mobile | escape | newline_to_br }}</span>
               {%- else -%}
                 {{ st.timeline_title | default: st.timeline_title_mobile | escape | newline_to_br }}
               {%- endif -%}
@@ -78,8 +78,8 @@
             {%- if st.perks_title != blank -%}<h2 class="bfcm-offers-2026__title to-top">{{ st.perks_title | escape }}</h2>{%- endif -%}
             {%- if st.perks_subtitle != blank or perks_subtitle_mobile != blank -%}
               <p class="bfcm-offers-2026__subtitle to-top">
-                <span class="bfcm-offers-2026__timeline-title-pc">{{ st.perks_subtitle | default: perks_subtitle_mobile | escape }}</span>
-                <span class="bfcm-offers-2026__timeline-title-mobile">{{ perks_subtitle_mobile | escape }}</span>
+                <span class="bfcm-offers-2026__copy-pc">{{ st.perks_subtitle | default: perks_subtitle_mobile | escape }}</span>
+                <span class="bfcm-offers-2026__copy-mobile">{{ perks_subtitle_mobile | escape }}</span>
               </p>
             {%- endif -%}
           </header>
@@ -241,7 +241,7 @@
     color: inherit;
   }
 
-  .bfcm-offers-2026__timeline-title-mobile {
+  .bfcm-offers-2026__copy-mobile {
     display: none;
   }
 
@@ -569,11 +569,11 @@
       line-height: 1.25;
     }
 
-    .bfcm-offers-2026__timeline-title-pc {
+    .bfcm-offers-2026__copy-pc {
       display: none;
     }
 
-    .bfcm-offers-2026__timeline-title-mobile {
+    .bfcm-offers-2026__copy-mobile {
       display: block;
     }
 
@@ -773,3 +773,86 @@
     });
   }
 {% endjavascript %}
+
+{% schema %}
+{
+  "name": "bfcm-offers-2026",
+  "tag": "section",
+  "max_blocks": 8,
+  "settings": [
+    { "type": "header", "content": "背景" },
+    { "type": "image_picker", "id": "background_image", "label": "背景图片（PC）" },
+    { "type": "image_picker", "id": "background_image_mobile", "label": "背景图片（移动端）" },
+    { "type": "color", "id": "background_color", "label": "背景颜色", "default": "#000000" },
+
+    { "type": "header", "content": "活动时间" },
+    { "type": "checkbox", "id": "show_timeline", "label": "显示活动时间", "default": true },
+    { "type": "textarea", "id": "timeline_title", "label": "活动时间标题（PC）", "default": "Sale Runs\nThrough\nNovember 30" },
+    { "type": "textarea", "id": "timeline_title_mobile", "label": "活动时间标题（移动端）", "default": "Sale Runs Through\nNovember 30" },
+    { "type": "text", "id": "phase_start_1", "label": "第一阶段开始日期", "default": "10.28" },
+    { "type": "text", "id": "phase_end_1", "label": "第一阶段结束日期", "default": "11.1" },
+    { "type": "textarea", "id": "phase_copy_1", "label": "第一阶段说明", "default": "EARLY BIRD DEALS\nUP TO 50% OFF & FREE GIFTS" },
+    { "type": "text", "id": "phase_start_2", "label": "第二阶段开始日期", "default": "11.2" },
+    { "type": "text", "id": "phase_end_2", "label": "第二阶段结束日期", "default": "11.8" },
+    { "type": "textarea", "id": "phase_copy_2", "label": "第二阶段说明", "default": "BLACK FRIDAY FINALE\nUP TO 58% OFF & FREE GIFTS" },
+    { "type": "range", "id": "timeline_progress", "label": "时间线进度（PC）", "min": 0, "max": 100, "step": 1, "unit": "%", "default": 60 },
+    { "type": "range", "id": "timeline_progress_mobile", "label": "时间线进度（移动端）", "min": 0, "max": 100, "step": 1, "unit": "%", "default": 32 },
+
+    { "type": "header", "content": "福利" },
+    { "type": "checkbox", "id": "show_perks", "label": "显示福利", "default": true },
+    { "type": "text", "id": "perks_title", "label": "福利标题", "default": "Buy from Ulike for extra perks" },
+    { "type": "text", "id": "perks_subtitle", "label": "福利副标题（PC）", "default": "Unlock special offers with purchases made here on our official website!" },
+    { "type": "text", "id": "perks_subtitle_mobile", "label": "福利副标题（移动端）", "default": "Everything you need to start the semester with confidence." },
+
+    { "type": "header", "content": "礼品卡" },
+    { "type": "checkbox", "id": "show_gift_cards", "label": "显示礼品卡", "default": true },
+    { "type": "text", "id": "gift_cards_title", "label": "礼品卡标题", "default": "Black Friday & Cyber Monday Gift Card" },
+    { "type": "text", "id": "gift_cards_subtitle", "label": "礼品卡副标题", "default": "Give yourself a treat or surprise someone special with a Ulike gift card." }
+  ],
+  "blocks": [
+    {
+      "type": "perk",
+      "name": "福利图片",
+      "limit": 4,
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "图片（PC）" },
+        { "type": "image_picker", "id": "image_mobile", "label": "图片（移动端）" },
+        { "type": "range", "id": "image_width", "label": "图片宽度", "min": 30, "max": 100, "step": 1, "unit": "%", "default": 65 },
+        { "type": "text", "id": "title", "label": "福利名称" },
+        { "type": "richtext", "id": "details", "label": "问号说明", "info": "填写后在图片右上角显示问号。" }
+      ]
+    },
+    {
+      "type": "gift_card",
+      "name": "礼品卡金额",
+      "limit": 4,
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "图片（PC）" },
+        { "type": "image_picker", "id": "image_mobile", "label": "图片（移动端）" },
+        { "type": "text", "id": "title", "label": "礼品卡名称或面额" },
+        { "type": "text", "id": "price", "label": "售价" },
+        { "type": "text", "id": "description", "label": "说明", "default": "A Little Something Special" },
+        { "type": "text", "id": "stock_text", "label": "库存文案", "info": "手动填写。留空隐藏文案和进度条。" },
+        { "type": "range", "id": "stock_progress", "label": "库存条填充比例", "min": 0, "max": 100, "step": 1, "unit": "%", "default": 87 },
+        { "type": "text", "id": "button_label", "label": "按钮文案", "default": "Shop now" },
+        { "type": "url", "id": "button_link", "label": "按钮链接", "info": "填写后在店铺页面显示按钮。" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "bfcm-offers-2026",
+      "blocks": [
+        { "type": "perk", "settings": { "title": "Up to 50% OFF", "image_width": 65 } },
+        { "type": "perk", "settings": { "title": "Exclusive Free Gift", "image_width": 56 } },
+        { "type": "perk", "settings": { "title": "100 Day Money Back Guarantee", "image_width": 57 } },
+        { "type": "perk", "settings": { "title": "14-Day Price Match", "image_width": 56 } },
+        { "type": "gift_card", "settings": { "title": "£150 Gift Card" } },
+        { "type": "gift_card", "settings": { "title": "£250 Gift Card" } },
+        { "type": "gift_card", "settings": { "title": "£300 Gift Card" } },
+        { "type": "gift_card", "settings": { "title": "£400 Gift Card" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
