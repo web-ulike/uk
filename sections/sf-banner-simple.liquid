@@ -101,7 +101,10 @@
           <div class="sf-banner-simple__subtitle">{{ st.subtitle }}</div>
         {% endif %}
 
-        {% if st.desc != blank %}
+        {% if st.desc_mobile != blank %}
+          {% if st.desc != blank %}<div class="sf-banner-simple__subtitle sf-banner-simple__desc sf-banner-simple__desc--desktop">{{ st.desc }}</div>{% endif %}
+          <div class="sf-banner-simple__subtitle sf-banner-simple__desc sf-banner-simple__desc--mobile">{{ st.desc_mobile }}</div>
+        {% elsif st.desc != blank %}
           <div class="sf-banner-simple__subtitle sf-banner-simple__desc">{{ st.desc }}</div>
         {% endif %}
 
@@ -225,6 +228,8 @@
     background: #3f3636;
   } {% endcomment %}
 
+  #sf-banner-simple-{{ sid }} .sf-banner-simple__desc--mobile { display: none; }
+
   @media(max-width: 1520px){
     #sf-banner-simple-{{ sid }} .sf-banner-simple__content{
       padding: 7% 0px 0px;
@@ -239,6 +244,8 @@
   }
 
   @media (max-width: 768px){
+    #sf-banner-simple-{{ sid }} .sf-banner-simple__desc--desktop { display: none; }
+    #sf-banner-simple-{{ sid }} .sf-banner-simple__desc--mobile { display: block; }
     #sf-banner-simple-{{ sid }} .sf-banner-simple__content{
       max-width: 100%;
       padding: 40px 0px 0;
@@ -308,6 +315,7 @@
     { "type": "color", "id": "subtitle_color", "label": "副标题颜色", "default": "#000000" },
     { "type": "richtext", "id": "subtitle", "label": "副标题（可选）" },
     { "type": "html", "id": "desc", "label": "Desc（HTML，可选）" },
+    { "type": "html", "id": "desc_mobile", "label": "Desc（移动端 HTML，可选）", "info": "留空时使用 Desc。" },
     { "type": "header", "content": "按钮（可选）" },
     { "type": "color", "id": "btn_text_color", "label": "按钮文字颜色", "default": "#FFFFFF" },
     { "type": "color", "id": "btn_bg_color", "label": "按钮背景颜色", "default": "#130304" },
