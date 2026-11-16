@@ -2016,6 +2016,9 @@
     }
     {%- endif -%}
     /* Keep the gift background sized by its copy while the image extends above it. */
+    #shopify-section-{{ section.id }} .info-gift.info-gift--image-overflow {
+      margin-top: 40px;
+    }
     #shopify-section-{{ section.id }} .info-gift .info-gift-image-overflow {
       position: relative;
       align-self: stretch;
@@ -2230,7 +2233,7 @@
             {% for block in se_bks %}
               {% if block.type == 'info' %}
                 {%- if block.settings.image1 != blank -%}
-                  <div class="info-gift info-gift-flex" data-index="{{ block.settings.index_gif }}">
+                  <div class="info-gift info-gift-flex{% if block.settings.gift_image_overflow %} info-gift--image-overflow{% endif %}" data-index="{{ block.settings.index_gif }}">
                     {% if block.settings.gift_image_overflow %}<div class="info-gift-image-overflow">{% endif %}
                     <img
                       loading="lazy"
@@ -2258,7 +2261,7 @@
           </div>
         {%- else -%}
           {%- if section.settings.image1 != blank -%}
-            <div class="info-gift info-gift-flex">
+            <div class="info-gift info-gift-flex{% if section.settings.gift_image_overflow %} info-gift--image-overflow{% endif %}">
               {% if section.settings.gift_image_overflow %}<div class="info-gift-image-overflow">{% endif %}
               <img
                 loading="lazy"
