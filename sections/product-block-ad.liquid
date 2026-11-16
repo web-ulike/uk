@@ -2016,26 +2016,33 @@
     }
     {%- endif -%}
     /* Keep the gift background sized by its copy while the image extends above it. */
+    {%- if section.settings.info_gift_text_color != blank -%}
+    #shopify-section-{{ section.id }} .product-cont .product-components .product-right-panel .info-gift .info-gift-txt,
+    #shopify-section-{{ section.id }} .product-cont .product-components .product-right-panel .info-gift .info-gift-txt * {
+      color: {{ section.settings.info_gift_text_color }};
+    }
+    {%- endif -%}
     #shopify-section-{{ section.id }} .info-gift.info-gift--image-overflow {
       margin-top: 40px;
     }
     #shopify-section-{{ section.id }} .info-gift .info-gift-image-overflow {
       position: relative;
       align-self: stretch;
-      flex: 0 0 120px;
+      flex: 0 0 30%;
       overflow: visible;
     }
     #shopify-section-{{ section.id }} .info-gift .info-gift-image-overflow .img {
       position: absolute;
       bottom: 0;
-      left: 0;
-      width: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 120px;
       height: auto;
       max-height: none;
     }
     @media (max-width: 991px) {
-      #shopify-section-{{ section.id }} .info-gift .info-gift-image-overflow {
-        flex-basis: 88px;
+      #shopify-section-{{ section.id }} .info-gift .info-gift-image-overflow .img {
+        width: 88px;
       }
     }
 </style>
@@ -3522,6 +3529,12 @@
       "id": "info_gift_bg",
       "label": "赠品背景颜色",
       "default": "linear-gradient(71deg, #E1DAF9 33.74%, #F1DCE0 73.43%)"
+    },
+    {
+      "type": "color",
+      "id": "info_gift_text_color",
+      "label": "赠品文字颜色",
+      "info": "设置赠品标题、说明和价格的文字颜色，留空保留原有颜色。"
     },
     {
       "type": "image_picker",
