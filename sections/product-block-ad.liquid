@@ -2015,6 +2015,26 @@
       background-repeat: no-repeat;
     }
     {%- endif -%}
+    /* Keep the gift background sized by its copy while the image extends above it. */
+    #shopify-section-{{ section.id }} .info-gift .info-gift-image-overflow {
+      position: relative;
+      align-self: stretch;
+      flex: 0 0 120px;
+      overflow: visible;
+    }
+    #shopify-section-{{ section.id }} .info-gift .info-gift-image-overflow .img {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: auto;
+      max-height: none;
+    }
+    @media (max-width: 991px) {
+      #shopify-section-{{ section.id }} .info-gift .info-gift-image-overflow {
+        flex-basis: 88px;
+      }
+    }
 </style>
 
 {% assign image_found = false %}
@@ -2211,6 +2231,7 @@
               {% if block.type == 'info' %}
                 {%- if block.settings.image1 != blank -%}
                   <div class="info-gift info-gift-flex" data-index="{{ block.settings.index_gif }}">
+                    {% if block.settings.gift_image_overflow %}<div class="info-gift-image-overflow">{% endif %}
                     <img
                       loading="lazy"
                       class="img"
@@ -2219,6 +2240,7 @@
                       {% render 'image-attributes', image: block.settings.image1 %}
                       alt="{{ block.settings.image1.alt | escape }}"
                     >
+                    {% if block.settings.gift_image_overflow %}</div>{% endif %}
                     <div class="info-gift-txt">
                       <div class="info-gift-title">{{ block.settings.text8 }}</div>
                       <div class="info-gift-p">
@@ -2237,6 +2259,7 @@
         {%- else -%}
           {%- if section.settings.image1 != blank -%}
             <div class="info-gift info-gift-flex">
+              {% if section.settings.gift_image_overflow %}<div class="info-gift-image-overflow">{% endif %}
               <img
                 loading="lazy"
                 class="img"
@@ -2245,6 +2268,7 @@
                 {% render 'image-attributes', image: section.settings.image1 %}
                 alt="{{ section.settings.image1.alt | escape }}"
               >
+              {% if section.settings.gift_image_overflow %}</div>{% endif %}
               <div class="info-gift-txt">
                 <div class="info-gift-title">{{ section.settings.text8 }}</div>
                 <div class="info-gift-p">
@@ -3464,6 +3488,13 @@
       "label": "赠品图片"
     },
     {
+      "type": "checkbox",
+      "id": "gift_image_overflow",
+      "label": "赠品图片超出显示",
+      "info": "开启后图片向上伸出赠品背景，建议使用透明背景图片。",
+      "default": false
+    },
+    {
       "type": "text",
       "id": "text8",
       "label": "赠品标题"
@@ -3521,6 +3552,13 @@
           "type": "image_picker",
           "id": "image1",
           "label": "赠品图片"
+        },
+        {
+          "type": "checkbox",
+          "id": "gift_image_overflow",
+          "label": "赠品图片超出显示",
+          "info": "开启后图片向上伸出赠品背景，建议使用透明背景图片。",
+          "default": false
         },
         {
           "type": "text",
