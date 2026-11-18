@@ -88,9 +88,14 @@
   }
 
   .xmas-navigation__links a:hover,
-  .xmas-navigation__links a:focus-visible {
+  .xmas-navigation__links a:focus-visible,
+  .xmas-navigation__links a[aria-current="location"] {
     color: #811425;
     text-decoration-color: currentColor;
+  }
+
+  .xmas-navigation__links a[aria-current="location"] {
+    text-decoration-thickness: 2px;
   }
 
   .xmas-navigation .xmas-navigation__button {
@@ -130,13 +135,17 @@
   }
 
   @media (max-width: 700px) {
-    .xmas-navigation { font-size: 14px; }
+    .xmas-navigation { font-size: 16px; }
+    .xmas-navigation__layout { gap: 8px; padding-block: 6px; }
+    .xmas-navigation__links { gap: 14px; }
 
     .xmas-navigation .xmas-navigation__button {
       gap: 8px;
       max-width: 52%;
       min-height: 44px;
       padding: 5px 6px 5px 12px;
+      font-size: 15px;
+      white-space: nowrap;
     }
 
     .xmas-navigation__arrow { width: 24px; height: 24px; }
@@ -150,6 +159,9 @@
         this.main = this.closest('#main');
         if (!this.main) return;
 
+        this.links = this.querySelector('.xmas-navigation__links');
+        window.addEventListener('scroll', this.scheduleHighlight, { passive: true });
+        window.addEventListener('resize', this.scheduleHighlight);
         this.observer = new ResizeObserver(() => this.updateOffset());
         this.observer.observe(this);
         this.updateOffset();
@@ -157,6 +169,10 @@
 
       disconnectedCallback() {
         this.observer?.disconnect();
+        window.removeEventListener('scroll', this.scheduleHighlight);
+        window.removeEventListener('resize', this.scheduleHighlight);
+        cancelAnimationFrame(this.highlightFrame);
+        this.highlightFrame = null;
         this.updateOffset();
       }
 
@@ -166,6 +182,53 @@
         const menus = this.main.querySelectorAll('xmas-sticky-navigation');
         const height = Math.max(0, ...Array.from(menus, (menu) => menu.offsetHeight));
         this.main.style.setProperty('--xmas-navigation-height', height + 'px');
+        if (this.isConnected) this.scheduleHighlight();
+      }
+
+      scheduleHighlight = () => {
+        if (this.highlightFrame) return;
+
+        this.highlightFrame = requestAnimationFrame(() => {
+          this.highlightFrame = null;
+          this.updateHighlight();
+        });
+      };
+
+      updateHighlight() {
+        const boundary = this.getBoundingClientRect().bottom + 16;
+        let first;
+        let firstTop = Infinity;
+        let current;
+        let currentTop = -Infinity;
+
+        for (const link of this.links.querySelectorAll('a')) {
+          const target = document.getElementById(link.hash.slice(1));
+          if (!target) continue;
+
+          const top = target.getBoundingClientRect().top;
+          if (top < firstTop) {
+            first = link;
+            firstTop = top;
+          }
+          if (top <= boundary && top > currentTop) {
+            current = link;
+            currentTop = top;
+          }
+        }
+
+        const active = current || first;
+        if (active === this.active) return;
+
+        this.active?.removeAttribute('aria-current');
+        this.active = active;
+        if (!active) return;
+
+        active.setAttribute('aria-current', 'location');
+        const tab = active.getBoundingClientRect();
+        const strip = this.links.getBoundingClientRect();
+        if (tab.left < strip.left || tab.right > strip.right) {
+          this.links.scrollLeft += tab.left - strip.left - (strip.width - tab.width) / 2;
+        }
       }
     });
   }
