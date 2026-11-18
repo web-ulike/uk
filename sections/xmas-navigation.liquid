@@ -1,4 +1,4 @@
-{% if section.settings.sticky_navigation %}<xmas-sticky-navigation>{% endif %}
+<xmas-sticky-navigation>
 <nav class="xmas-navigation" aria-label="Christmas event">
   <div class="container">
     <div class="xmas-navigation__layout">
@@ -22,7 +22,7 @@
     </div>
   </div>
 </nav>
-{% if section.settings.sticky_navigation %}</xmas-sticky-navigation>{% endif %}
+</xmas-sticky-navigation>
 
 {% stylesheet %}
   xmas-sticky-navigation { display: block; }
@@ -36,6 +36,14 @@
     z-index: 3;
   }
 
+  #main:has(xmas-sticky-navigation) .xmas[id] {
+    scroll-margin-top: calc(
+      var(--header-height, 0px) * var(--enable-sticky-header, 0) +
+      var(--announcement-bar-height, 0px) * var(--enable-sticky-announcement-bar, 0) +
+      var(--xmas-navigation-height, 0px)
+    );
+  }
+
   .xmas-navigation {
     background: #fbf6ed;
     border-block: 1px solid #e3d3be;
@@ -46,27 +54,26 @@
   .xmas-navigation__layout {
     display: flex;
     align-items: center;
-    gap: clamp(24px, 4vw, 64px);
-    padding-block: 12px;
+    gap: clamp(10px, 2.4vw, 36px);
+    padding-block: 8px;
   }
 
   .xmas-navigation__links {
     display: flex;
     flex: 1;
-    flex-wrap: wrap;
     align-items: stretch;
-    justify-content: center;
-    column-gap: clamp(20px, 3.2vw, 52px);
+    gap: clamp(16px, 3vw, 48px);
     min-width: 0;
     margin: 0;
     padding: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
     list-style: none;
   }
 
   .xmas-navigation__links li {
     display: flex;
-    min-width: 0;
-    max-width: 100%;
+    flex: 0 0 auto;
   }
 
   .xmas-navigation__links a {
@@ -77,7 +84,7 @@
     text-decoration: underline;
     text-decoration-color: transparent;
     text-underline-offset: 6px;
-    overflow-wrap: anywhere;
+    white-space: nowrap;
   }
 
   .xmas-navigation__links a:hover,
@@ -123,27 +130,16 @@
   }
 
   @media (max-width: 700px) {
-    .xmas-navigation { font-size: 15px; }
-
-    .xmas-navigation__layout {
-      display: grid;
-      gap: 12px;
-      padding-block: 8px 14px;
-    }
-
-    .xmas-navigation__links {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      column-gap: 16px;
-    }
-
-    .xmas-navigation__links li { border-bottom: 1px solid #e3d3be; }
-    .xmas-navigation__links a { width: 100%; }
+    .xmas-navigation { font-size: 14px; }
 
     .xmas-navigation .xmas-navigation__button {
-      justify-self: stretch;
-      max-width: none;
+      gap: 8px;
+      max-width: 52%;
+      min-height: 44px;
+      padding: 5px 6px 5px 12px;
     }
+
+    .xmas-navigation__arrow { width: 24px; height: 24px; }
   }
 {% endstylesheet %}
 
@@ -179,12 +175,6 @@
 {
   "name": "Christmas event tabs",
   "settings": [
-    {
-      "type": "checkbox",
-      "id": "sticky_navigation",
-      "label": "Stick to top when scrolling",
-      "default": false
-    },
     {
       "type": "text",
       "id": "button_label",
