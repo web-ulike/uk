@@ -13,3 +13,11 @@
     .xmas .to-top { opacity: 1; transform: none; transition: none; }
   }
 {% endstylesheet %}
+
+{% javascript %}
+  document.addEventListener('shopify:section:load', (event) => {
+    if (event.target.querySelector('.xmas') && typeof window.initialCheck === 'function') {
+      window.initialCheck();
+    }
+  });
+{% endjavascript %}

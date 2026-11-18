@@ -7,7 +7,7 @@
           {{ block.settings.image | image_url: width: 1400 | image_tag: widths: '400,600,800,1080,1400', sizes: '(max-width: 700px) 92vw, (max-width: 1150px) 46vw, 531px', loading: 'lazy', alt: block.settings.alt }}
         {% elsif block.settings.art != 'none' %}
           {% assign filename = 'xmas-' | append: block.settings.art | append: '-1080.jpg' %}
-          <img src="{{ filename | asset_url }}" width="1080" height="720" loading="lazy" alt="{{ block.settings.alt | escape }}">
+          <img src="{{ filename | asset_url }}" width="1080" height="{% if block.settings.art == 'venue' %}558{% else %}720{% endif %}" loading="lazy" alt="{{ block.settings.alt | escape }}">
         {% endif %}
         <figcaption>{{ block.settings.label | escape }}</figcaption>
       </figure>
