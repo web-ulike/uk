@@ -1,7 +1,7 @@
 <nav class="xmas-navigation" aria-label="Christmas event">
   <div class="container">
-    <div class="xmas-navigation__row">
-      <ul class="xmas-navigation__tabs" role="list">
+    <div class="xmas-navigation__layout">
+      <ul class="xmas-navigation__links" role="list">
         {% for block in section.blocks %}
           {% assign anchor = block.settings.anchor | handleize %}
           {% if anchor != blank and block.settings.label != blank %}
@@ -21,59 +21,74 @@
 
 {% stylesheet %}
   .xmas-navigation {
-    background: #fbf6ed;
+    background: #fff9ee;
+    border-bottom: 1px solid #e4d3bb;
     color: #651625;
-    font: 500 16px/1.4 Saans, sans-serif;
+    font: 500 16px/1.3 Saans, sans-serif;
   }
 
-  .xmas-navigation__row {
+  .xmas-navigation__layout {
     display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 16px;
-    padding-block: 12px;
+    align-items: stretch;
+    gap: clamp(12px, 2.2vw, 32px);
+    padding-block: 14px;
   }
 
-  .xmas-navigation__tabs {
-    display: flex;
-    gap: clamp(18px, 3vw, 44px);
+  .xmas-navigation__links {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    flex: 1 1 auto;
+    gap: 8px;
     min-width: 0;
     margin: 0;
-    padding: 2px 4px;
-    overflow-x: auto;
+    padding: 0;
     list-style: none;
-    white-space: nowrap;
   }
 
-  .xmas-navigation__tabs a {
-    display: block;
-    padding-block: 10px;
-    text-underline-offset: 5px;
+  .xmas-navigation__links a,
+  .xmas-navigation__button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 46px;
+    padding: 10px 14px;
+    border-radius: 4px;
+    text-align: center;
+    overflow-wrap: anywhere;
   }
 
-  .xmas-navigation__tabs a:hover,
-  .xmas-navigation__tabs a:focus-visible {
-    text-decoration: underline;
+  .xmas-navigation__links a {
+    height: 100%;
+    border: 1px solid #e4d3bb;
+    background: #fbf3e6;
+  }
+
+  .xmas-navigation__links a:hover {
+    background: #f0e1c9;
   }
 
   .xmas-navigation__button {
-    display: inline-flex;
     gap: 12px;
-    flex-shrink: 0;
-    padding: 10px 18px;
-    border: 1px solid #b7897e;
-    border-radius: 999px;
-    white-space: nowrap;
+    max-width: 34%;
+    padding-inline: clamp(16px, 2vw, 30px);
+    background: #741a2c;
+    color: #fff9ee;
   }
 
   .xmas-navigation__button:hover {
-    background: #f0e1c9;
+    background: #571020;
+  }
+
+  .xmas-navigation a:focus-visible {
+    outline: 2px solid #741a2c;
+    outline-offset: 2px;
   }
 
   @media (max-width: 700px) {
     .xmas-navigation { font-size: 14px; }
-    .xmas-navigation__row { gap: 10px; }
-    .xmas-navigation__button { padding-inline: 12px; }
+    .xmas-navigation__layout { display: grid; gap: 8px; padding-block: 10px; }
+    .xmas-navigation__links { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .xmas-navigation__button { max-width: none; }
   }
 {% endstylesheet %}
 
