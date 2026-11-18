@@ -292,9 +292,13 @@
     <loading-bar class="loading-bar"></loading-bar>
 
     {%- if request.page_type != 'gift_card' and request.page_type != 'password' -%}
-      {%- section 'announcement-bar' -%}
+      {% unless template.name == 'page' and template.suffix == 'xmas-2026' %}
+        {%- section 'announcement-bar' -%}
+      {% endunless %}
       {%- section 'popup' -%}
-      {%- section 'header' -%}
+      {% unless template.name == 'page' and template.suffix == 'xmas-2026' %}
+        {%- section 'header' -%}
+      {% endunless %}
 
       {%- unless settings.cart_type == 'page' or request.page_type == 'cart' -%}
         {%- section 'mini-cart' -%}
