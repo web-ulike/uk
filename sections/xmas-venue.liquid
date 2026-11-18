@@ -1,0 +1,131 @@
+<section class="xmas xmas-venue"><div class="container">
+  <div class="xmas-head-row">{% render 'xmas-heading', settings_group: section.settings %}</div>
+  <div class="xmas-venue__gallery">
+    {% for block in section.blocks %}
+      <figure {{ block.shopify_attributes }}>
+        {% if block.settings.image != blank %}
+          {{ block.settings.image | image_url: width: 1400 | image_tag: widths: '400,600,800,1080,1400', sizes: '(max-width: 700px) 92vw, (max-width: 1150px) 46vw, 531px', loading: 'lazy', alt: block.settings.alt }}
+        {% elsif block.settings.art != 'none' %}
+          {% assign filename = 'xmas-' | append: block.settings.art | append: '-1080.jpg' %}
+          <img src="{{ filename | asset_url }}" width="1080" height="720" loading="lazy" alt="{{ block.settings.alt | escape }}">
+        {% endif %}
+        <figcaption>{{ block.settings.label | escape }}</figcaption>
+      </figure>
+    {% endfor %}
+  </div>
+  <div class="xmas-venue__credit">{{ section.settings.caption }}</div>
+</div></section>
+
+{% stylesheet %}
+.xmas-venue { padding-block: 88px; }
+.xmas-venue__gallery { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 18px; }
+.xmas-venue figure { position: relative; margin: 0; }
+.xmas-venue figure img { width: 100%; height: 335px; object-fit: cover; }
+.xmas-venue figcaption { position: absolute; bottom: 17px; left: 19px; color: white; background: #342b27b0; padding: 7px 10px; font-size: 10px; letter-spacing: 1px; }
+.xmas-venue__credit { margin-top: 12px; font-size: 10px; color: #71686e; }
+.xmas-venue__credit a { text-decoration: underline; }
+@media (max-width: 700px) {
+  .xmas-venue { padding-block: 55px; }
+  .xmas-venue__gallery { grid-template-columns: 1fr; gap: 10px; }
+  .xmas-venue figure img { height: auto; aspect-ratio: 3/2; }
+  .xmas-venue figcaption { bottom: 10px; left: 8px; padding: 5px; font-size: 8px; }
+}
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Christmas venue gallery",
+  "settings": [
+    {
+      "type": "text",
+      "id": "kicker",
+      "label": "Eyebrow",
+      "default": "THE SPACE"
+    },
+    {
+      "type": "textarea",
+      "id": "heading",
+      "label": "Heading",
+      "default": "A Christmas stop\non Oxford Street."
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "Make Ulike part of your Christmas shopping day. Step inside Future Stores, explore our featured products and find inspiration for someone special — yourself included."
+    },
+    {
+      "type": "richtext",
+      "id": "caption",
+      "label": "Photo credit and note",
+      "default": "<p>Venue photo from <a href=\"https://futurestores.com/london-store/\">Future Stores</a>. The Ulike image is an AI-generated event concept, not an actual venue setup. Final layout and displays may vary.</p>"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Christmas venue gallery",
+      "blocks": [
+        {
+          "type": "photo",
+          "settings": {
+            "art": "venue",
+            "label": "THE SPACE · FUTURE STORES",
+            "alt": "Future Stores on Oxford Street"
+          }
+        },
+        {
+          "type": "photo",
+          "settings": {
+            "art": "concept",
+            "label": "ULIKE CHRISTMAS · CONCEPT",
+            "alt": "AI-generated concept for the Ulike Christmas pop-up"
+          }
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "photo",
+      "name": "Photo",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "select",
+          "id": "art",
+          "label": "Bundled image",
+          "default": "none",
+          "options": [
+            {
+              "value": "none",
+              "label": "None"
+            },
+            {
+              "value": "venue",
+              "label": "Venue"
+            },
+            {
+              "value": "concept",
+              "label": "Concept"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Caption"
+        },
+        {
+          "type": "text",
+          "id": "alt",
+          "label": "Image description"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

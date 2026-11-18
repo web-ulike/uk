@@ -1,0 +1,137 @@
+<section class="xmas xmas-lineup"{% if section.settings.anchor != blank %} id="{{ section.settings.anchor | handleize }}"{% endif %}><div class="container"><div class="xmas-lineup__inner">
+  <div class="xmas-head-row">{% render 'xmas-heading', settings_group: section.settings %}</div>
+  <div class="xmas-lineup__grid">
+    {% for block in section.blocks %}
+      {% liquid
+        assign product = block.settings.product
+        assign photo = block.settings.image | default: product.featured_image
+        assign title = block.settings.title | default: product.title
+        assign link = block.settings.link | default: product.url
+      %}
+      <article class="to-top"{% unless forloop.first %} style="transition-delay: {{ forloop.index0 | times: 0.1 }}s"{% endunless %} {{ block.shopify_attributes }}>
+        {% if link != blank %}<a href="{{ link | escape }}">{% endif %}
+        <div class="xmas-lineup__art">
+          {% if photo != blank %}
+            {{ photo | image_url: width: 800 | image_tag: widths: '200,400,600,800', sizes: '(max-width: 700px) 44vw, (max-width: 1150px) 23vw, 257px', loading: 'lazy' }}
+          {% else %}
+            {{ 'image' | placeholder_svg_tag }}
+          {% endif %}
+        </div>
+        <h3>{{ title | escape }}</h3>
+        {% if link != blank %}</a>{% endif %}
+        <p>{{ block.settings.detail | escape }}</p>
+      </article>
+    {% endfor %}
+  </div>
+</div></div></section>
+
+{% stylesheet %}
+.xmas-lineup__inner { padding: 65px 0 88px; border-top: 1px solid #e5ddd2; }
+.xmas-lineup__grid { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 18px; }
+.xmas-lineup__art { height: 230px; display: grid; place-items: center; background: #f2e9de; border-bottom: 2px solid #ad8c4a; }
+.xmas-lineup__art img { width: 100%; height: 100%; min-height: 0; object-fit: contain; }
+.xmas-lineup__art svg { width: 95px; height: 110px; fill: #b8aa98; }
+.xmas-lineup h3 { margin: 16px 0 5px; font: 400 17px/1.3 Saans, sans-serif; }
+.xmas-lineup article p { margin: 0; font-size: 11px; color: #786e73; }
+@media (max-width: 700px) {
+  .xmas-lineup__inner { padding: 65px 0 55px; }
+  .xmas-lineup__grid { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 25px 12px; }
+  .xmas-lineup__art { height: 180px; }
+}
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Christmas gift edit",
+  "settings": [
+    {
+      "type": "text",
+      "id": "anchor",
+      "label": "Navigation anchor ID"
+    },
+    {
+      "type": "text",
+      "id": "kicker",
+      "label": "Eyebrow",
+      "default": "THE CHRISTMAS GIFT EDIT"
+    },
+    {
+      "type": "textarea",
+      "id": "heading",
+      "label": "Heading",
+      "default": "For your Christmas wish list."
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "For someone special. For a little self-care.\nDiscover the Ulike lineup at our Christmas pop-up."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Christmas gift edit",
+      "blocks": [
+        {
+          "type": "product",
+          "settings": {
+            "title": "Air 10 Pro"
+          }
+        },
+        {
+          "type": "product",
+          "settings": {
+            "title": "M12 MAX"
+          }
+        },
+        {
+          "type": "product",
+          "settings": {
+            "title": "Face Mask"
+          }
+        },
+        {
+          "type": "product",
+          "settings": {
+            "title": "Ulike Me"
+          }
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "product",
+      "name": "Featured product",
+      "settings": [
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Product"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Display title"
+        },
+        {
+          "type": "text",
+          "id": "detail",
+          "label": "Caption",
+          "default": "On display at the pop-up"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Override link"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

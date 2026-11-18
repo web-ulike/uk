@@ -1,0 +1,77 @@
+<section class="xmas xmas-holly"{% if section.settings.anchor != blank %} id="{{ section.settings.anchor | handleize }}"{% endif %}><div class="container"><div class="xmas-holly__grid">
+  {% if section.settings.image != blank %}
+    {{ section.settings.image | image_url: width: 1400 | image_tag: widths: '400,600,900,1080,1400', sizes: '(max-width: 700px) 92vw, (max-width: 1150px) 46vw, 540px', loading: 'lazy', alt: section.settings.alt }}
+  {% else %}
+    <img src="{{ 'xmas-holly-900.jpg' | asset_url }}" width="900" height="1350" loading="lazy" alt="{{ section.settings.alt | escape }}">
+  {% endif %}
+  <div class="xmas-holly__copy">
+    {% render 'xmas-heading', settings_group: section.settings %}
+    <p class="xmas-holly__note to-top" style="transition-delay: 0.3s">{{ section.settings.note | escape }}</p>
+  </div>
+</div></div></section>
+
+{% stylesheet %}
+.xmas-holly__grid { display: grid; grid-template-columns: 1fr 1fr; background: #f0e8da; border-bottom: 3px solid #a58346; }
+.xmas-holly__grid img { width: 100%; height: 100%; max-height: 650px; object-fit: cover; object-position: center 28%; }
+.xmas-holly__copy { align-self: center; padding: 50px 42px; color: #811425; }
+.xmas-holly__note { display: inline-block; border-top: 1px solid #c6a895; margin: 32px 0 0; padding-top: 16px; font-size: 11px; color: #7e4a46; }
+@media (max-width: 700px) {
+  .xmas-holly__grid { grid-template-columns: 1fr; }
+  .xmas-holly__grid img { height: auto; max-height: 550px; }
+  .xmas-holly__copy { padding: 35px 26px; }
+  .xmas-holly .xmas-heading { font-size: 40px; }
+}
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Christmas guest feature",
+  "settings": [
+    {
+      "type": "text",
+      "id": "anchor",
+      "label": "Navigation anchor ID"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "alt",
+      "label": "Image description",
+      "default": "Holly Hagan-Blyth"
+    },
+    {
+      "type": "text",
+      "id": "kicker",
+      "label": "Eyebrow",
+      "default": "CHRISTMAS WITH HOLLY"
+    },
+    {
+      "type": "textarea",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Gift inspiration,\nwith Holly."
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "Join Holly Hagan-Blyth at our London Christmas pop-up. Explore the Ulike lineup and get inspired to choose a thoughtful gift for someone you love — or a little treat for yourself."
+    },
+    {
+      "type": "text",
+      "id": "note",
+      "label": "Appearance note",
+      "default": "Appearance time to be announced"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Christmas guest feature"
+    }
+  ]
+}
+{% endschema %}
