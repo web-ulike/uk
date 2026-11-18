@@ -13,7 +13,8 @@
   {% if section.settings.show_bar %}
     <aside class="xmas-visit__bar">
       <div><strong>{{ section.settings.summary | escape }}</strong><small>{{ section.settings.subline | escape }}</small></div>
-      <a href="#shopify-section-{{ section.id }}">{{ section.settings.visit_label | escape }}</a>
+      {% assign visit_anchor = section.settings.anchor | handleize %}
+      <a href="#{% if visit_anchor != blank %}{{ visit_anchor }}{% else %}shopify-section-{{ section.id }}{% endif %}">{{ section.settings.visit_label | escape }}</a>
     </aside>
   {% endif %}
 </div>
