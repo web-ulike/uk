@@ -1,0 +1,111 @@
+<nav class="xmas-navigation" aria-label="Christmas event">
+  <div class="container">
+    <div class="xmas-navigation__row">
+      <ul class="xmas-navigation__tabs" role="list">
+        {% for block in section.blocks %}
+          {% assign anchor = block.settings.anchor | handleize %}
+          {% if anchor != blank and block.settings.label != blank %}
+            <li {{ block.shopify_attributes }}>
+              <a href="#{{ anchor }}">{{ block.settings.label | escape }}</a>
+            </li>
+          {% endif %}
+        {% endfor %}
+      </ul>
+      {% assign button_anchor = section.settings.button_anchor | handleize %}
+      {% if button_anchor != blank and section.settings.button_label != blank %}
+        <a class="xmas-navigation__button" href="#{{ button_anchor }}">{{ section.settings.button_label | escape }} <span aria-hidden="true">↓</span></a>
+      {% endif %}
+    </div>
+  </div>
+</nav>
+
+{% stylesheet %}
+  .xmas-navigation {
+    background: #fbf6ed;
+    color: #651625;
+    font: 500 16px/1.4 Saans, sans-serif;
+  }
+
+  .xmas-navigation__row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding-block: 12px;
+  }
+
+  .xmas-navigation__tabs {
+    display: flex;
+    gap: clamp(18px, 3vw, 44px);
+    min-width: 0;
+    margin: 0;
+    padding: 2px 4px;
+    overflow-x: auto;
+    list-style: none;
+    white-space: nowrap;
+  }
+
+  .xmas-navigation__tabs a {
+    display: block;
+    padding-block: 10px;
+    text-underline-offset: 5px;
+  }
+
+  .xmas-navigation__tabs a:hover,
+  .xmas-navigation__tabs a:focus-visible {
+    text-decoration: underline;
+  }
+
+  .xmas-navigation__button {
+    display: inline-flex;
+    gap: 12px;
+    flex-shrink: 0;
+    padding: 10px 18px;
+    border: 1px solid #b7897e;
+    border-radius: 999px;
+    white-space: nowrap;
+  }
+
+  .xmas-navigation__button:hover {
+    background: #f0e1c9;
+  }
+
+  @media (max-width: 700px) {
+    .xmas-navigation { font-size: 14px; }
+    .xmas-navigation__row { gap: 10px; }
+    .xmas-navigation__button { padding-inline: 12px; }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Christmas navigation",
+  "settings": [
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "Plan your visit"
+    },
+    {
+      "type": "text",
+      "id": "button_anchor",
+      "label": "Button target anchor",
+      "default": "christmas-directions"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "tab",
+      "name": "Tab",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Label" },
+        { "type": "text", "id": "anchor", "label": "Target anchor" }
+      ]
+    }
+  ],
+  "presets": [
+    { "name": "Christmas navigation" }
+  ]
+}
+{% endschema %}
