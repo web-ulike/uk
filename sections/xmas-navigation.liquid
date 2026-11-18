@@ -1,3 +1,4 @@
+{% if section.settings.sticky_navigation %}<xmas-sticky-navigation>{% endif %}
 <nav class="xmas-navigation" aria-label="Christmas event">
   <div class="container">
     <div class="xmas-navigation__layout">
@@ -21,8 +22,20 @@
     </div>
   </div>
 </nav>
+{% if section.settings.sticky_navigation %}</xmas-sticky-navigation>{% endif %}
 
 {% stylesheet %}
+  xmas-sticky-navigation { display: block; }
+
+  .shopify-section:has(> xmas-sticky-navigation) {
+    position: sticky;
+    top: calc(
+      var(--header-height, 0px) * var(--enable-sticky-header, 0) +
+      var(--announcement-bar-height, 0px) * var(--enable-sticky-announcement-bar, 0)
+    );
+    z-index: 3;
+  }
+
   .xmas-navigation {
     background: #fbf6ed;
     border-block: 1px solid #e3d3be;
@@ -134,10 +147,44 @@
   }
 {% endstylesheet %}
 
+{% javascript %}
+  if (!customElements.get('xmas-sticky-navigation')) {
+    customElements.define('xmas-sticky-navigation', class extends HTMLElement {
+      connectedCallback() {
+        this.main = this.closest('#main');
+        if (!this.main) return;
+
+        this.observer = new ResizeObserver(() => this.updateOffset());
+        this.observer.observe(this);
+        this.updateOffset();
+      }
+
+      disconnectedCallback() {
+        this.observer?.disconnect();
+        this.updateOffset();
+      }
+
+      updateOffset() {
+        if (!this.main) return;
+
+        const menus = this.main.querySelectorAll('xmas-sticky-navigation');
+        const height = Math.max(0, ...Array.from(menus, (menu) => menu.offsetHeight));
+        this.main.style.setProperty('--xmas-navigation-height', height + 'px');
+      }
+    });
+  }
+{% endjavascript %}
+
 {% schema %}
 {
   "name": "Christmas event tabs",
   "settings": [
+    {
+      "type": "checkbox",
+      "id": "sticky_navigation",
+      "label": "Stick to top when scrolling",
+      "default": false
+    },
     {
       "type": "text",
       "id": "button_label",
