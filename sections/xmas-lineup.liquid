@@ -3,10 +3,10 @@
   <div class="xmas-lineup__grid">
     {% for block in section.blocks %}
       {% liquid
-        assign product = block.settings.product
-        assign photo = block.settings.image | default: product.featured_image
-        assign title = block.settings.title | default: product.title
-        assign link = block.settings.link | default: product.url
+        assign featured_product = block.settings.product
+        assign photo = block.settings.image | default: featured_product.featured_image
+        assign title = featured_product.title | default: block.settings.title
+        assign link = block.settings.link | default: featured_product.url
       %}
       <article class="to-top"{% unless forloop.first %} style="transition-delay: {{ forloop.index0 | times: 0.1 }}s"{% endunless %} {{ block.shopify_attributes }}>
         {% if link != blank %}<a href="{{ link | escape }}">{% endif %}
@@ -110,17 +110,19 @@
         {
           "type": "product",
           "id": "product",
-          "label": "Product"
+          "label": "Select product"
         },
         {
           "type": "image_picker",
           "id": "image",
-          "label": "Image"
+          "label": "Custom image",
+          "info": "Leave blank to use the selected product's main image."
         },
         {
           "type": "text",
           "id": "title",
-          "label": "Display title"
+          "label": "Placeholder title",
+          "info": "Used when no product is selected."
         },
         {
           "type": "text",
