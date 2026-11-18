@@ -1,0 +1,29 @@
+<p class="xmas-kicker to-top">{{ settings_group.kicker | escape }}</p>
+<h2 class="xmas-heading to-top" style="transition-delay: 0.1s">{{ settings_group.heading | escape | newline_to_br }}</h2>
+{% if settings_group.description != blank %}
+  <p class="xmas-intro to-top" style="transition-delay: 0.2s">{{ settings_group.description | escape | newline_to_br }}</p>
+{% endif %}
+
+{% stylesheet %}
+  .xmas {
+    background: #fbf6ed;
+    color: #342b27;
+    font-family: Saans, sans-serif;
+  }
+  .xmas .container { width: 100%; max-width: 1150px; padding-inline: 35px; margin-inline: auto; }
+  .xmas .xmas-kicker { margin: 0 0 22px; color: #8b1b2b; font: 500 10px/1.4 Saans, sans-serif; letter-spacing: 2.5px; }
+  .xmas .xmas-heading { margin: 0; font: 400 clamp(33px, 4vw, 48px)/1.1 Bodoni-Book, serif; letter-spacing: -0.035em; color: inherit; }
+  .xmas .xmas-intro { font-size: 14px; line-height: 1.8; margin: 22px 0 0; color: #6d665e; }
+  .xmas-head-row { display: grid; grid-template-columns: 1fr minmax(240px, 360px); align-items: end; gap: 0 30px; margin-bottom: 30px; }
+  .xmas-head-row .xmas-kicker { grid-column: 1 / -1; }
+  .xmas-head-row .xmas-intro { margin: 0; }
+  .xmas img { display: block; }
+  @media (max-width: 700px) {
+    .xmas .container { padding-inline: 22px; }
+    .xmas-head-row { display: block; }
+    .xmas-head-row .xmas-intro { margin-top: 20px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .xmas .to-top { opacity: 1; transform: none; transition: none; }
+  }
+{% endstylesheet %}
