@@ -1,5 +1,7 @@
 <section class="xmas xmas-gifts"{% if section.settings.anchor != blank %} id="{{ section.settings.anchor | handleize }}"{% endif %}><div class="container">
-  {% render 'xmas-heading', settings_group: section.settings %}
+  <div class="xmas-gifts__heading">
+    {% render 'xmas-heading', settings_group: section.settings %}
+  </div>
   <div class="xmas-gifts__grid">
     {% assign gifts = section.blocks | where: 'type', 'gift' %}
     {% for block in gifts %}
@@ -60,19 +62,36 @@
 
 {% stylesheet %}
 .xmas-gifts { padding: var(--xmas-section-space) 0; text-align: center; }
-.xmas-gifts .xmas-intro { max-width: 640px; margin: 24px auto clamp(32px, 3.3vw, 48px); }
+/* Keep the gap to the cards independent of the theme's last-child margin reset. */
+.xmas-gifts__heading {
+  max-width: 640px;
+  margin: 0 auto;
+  padding-bottom: clamp(28px, 3.3vw, 48px);
+}
+.xmas-gifts .xmas-gifts__heading .xmas-intro { margin-inline: auto; }
 .xmas-gifts__grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 20px; max-width: 900px; margin: auto; }
-.xmas-gifts__card { position: relative; padding: 35px 20px 28px; border-top: 3px solid #8b1425; background: #f0e7d8; }
+.xmas-gifts__card {
+  position: relative;
+  display: grid;
+  grid-row: span 4;
+  grid-template-rows: subgrid;
+  row-gap: 8px;
+  min-width: 0;
+  padding: 35px 20px 28px;
+  border-top: 3px solid #8b1425;
+  background: #f0e7d8;
+  overflow-wrap: anywhere;
+}
 .xmas-gifts__card::after { content: '✧'; position: absolute; top: 12px; right: 18px; color: #a78843; font-size: 26px; }
-.xmas-gifts__card h3 { margin: 20px 0 8px; font: 400 clamp(26px, 2.3vw, 34px)/1.1 Bodoni-Book, serif; }
-.xmas-gifts__card small { display: block; margin-top: 10px; font-size: var(--xmas-small-size); color: #776b62; }
-.xmas-gifts__art { height: 155px; display: grid; place-items: center; }
+.xmas-gifts__card h3 { margin: 12px 0 0; font: 400 clamp(26px, 2.3vw, 34px)/1.1 Bodoni-Book, serif; }
+.xmas-gifts__card small { display: block; font-size: var(--xmas-small-size); color: #776b62; }
+.xmas-gifts__art { height: 165px; display: grid; place-items: center; padding-top: 24px; grid-template: minmax(0, 1fr) / minmax(0, 1fr); }
 .xmas-gifts__art > img { width: 100%; height: 100%; min-height: 0; object-fit: contain; }
 .xmas-gifts__gua { width: 100px; height: 105px; border-radius: 65% 25% 55% 25%; transform: rotate(-30deg); background: linear-gradient(145deg,#d7c7b2,#f7edde,#d3bca6); box-shadow: 8px 14px 18px #9e8d7529; }
-.xmas-gifts__tote { position: relative; display: grid; place-items: center; width: 115px; height: 110px; background: #d9cbb4; transform: rotate(6deg); box-shadow: 8px 13px 14px #9e8d7526; }
+.xmas-gifts__tote { position: relative; display: grid; place-items: center; width: min(115px, 85%); aspect-ratio: 23 / 22; background: #d9cbb4; transform: rotate(6deg); box-shadow: 8px 13px 14px #9e8d7526; }
 .xmas-gifts__tote::before { content: ''; position: absolute; bottom: 100%; width: 55px; height: 38px; border: 6px solid #c6b599; border-bottom: 0; border-radius: 35px 35px 0 0; }
-.xmas-gifts__tote img { width: 75px; mix-blend-mode: multiply; filter: grayscale(1) contrast(100); }
-.xmas-gifts__steps { display: flex; justify-content: center; gap: 35px; margin: 40px 0 24px; padding: 0; list-style: none; font-size: 16px; }
+.xmas-gifts__tote img { width: 65%; height: auto; mix-blend-mode: multiply; filter: grayscale(1) contrast(100); }
+.xmas-gifts__steps { display: flex; justify-content: center; flex-wrap: wrap; gap: 16px 32px; margin: 36px 0 20px; padding: 0; list-style: none; font-size: 16px; }
 .xmas-gifts__steps span { display: inline-grid; place-items: center; border: 1px solid #c6bbaa; border-radius: 50%; width: 26px; height: 26px; margin-right: 10px; }
 .xmas-gifts__trigger { border-bottom: 1px solid #a06b65; padding: 10px 0; color: #801427; font-size: 16px; }
 .xmas-gifts dialog { position: fixed; inset: 0; margin: auto; width: min(460px, calc(100% - 40px)); max-height: 85vh; overflow: auto; border: 0; padding: 32px; border-radius: 8px; text-align: left; background: #fbf6ed; color: #342b27; }
@@ -83,11 +102,14 @@
 @media (max-width: 700px) {
   .xmas-gifts__grid { gap: 12px; }
   .xmas-gifts__card { padding: 25px 10px 20px; }
-  .xmas-gifts__art { height: 140px; }
-  .xmas-gifts__card h3 { font-size: 24px; }
+  .xmas-gifts__art { height: 140px; padding-top: 26px; }
+  .xmas-gifts__card h3 { font-size: clamp(21px, 6vw, 26px); }
   .xmas-gifts__steps { gap: 12px; font-size: 14px; }
-  .xmas-gifts__steps li { flex: 1; }
+  .xmas-gifts__steps li { flex: 1 1 0; min-width: 0; }
   .xmas-gifts__steps span { display: grid; margin: 0 auto 8px; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .xmas-gifts .to-top:not(.appear) { transform: translateY(24px); }
 }
 {% endstylesheet %}
 
