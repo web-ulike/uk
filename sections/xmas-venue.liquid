@@ -2,7 +2,7 @@
   <div class="xmas-head-row">{% render 'xmas-heading', settings_group: section.settings %}</div>
   <div class="xmas-venue__gallery">
     {% for block in section.blocks %}
-      <figure {{ block.shopify_attributes }}>
+      <figure class="to-top"{% unless forloop.first %} style="transition-delay: {{ forloop.index0 | times: 0.1 }}s"{% endunless %} {{ block.shopify_attributes }}>
         {% if block.settings.image != blank %}
           {{ block.settings.image | image_url: width: 1400 | image_tag: widths: '400,600,800,1080,1400', sizes: '(max-width: 700px) 92vw, (max-width: 1150px) 46vw, 531px', loading: 'lazy', alt: block.settings.alt }}
         {% elsif block.settings.art != 'none' %}
@@ -13,22 +13,21 @@
       </figure>
     {% endfor %}
   </div>
-  <div class="xmas-venue__credit">{{ section.settings.caption }}</div>
+  <div class="xmas-venue__credit to-top">{{ section.settings.caption }}</div>
 </div></section>
 
 {% stylesheet %}
-.xmas-venue { padding-block: 88px; }
-.xmas-venue__gallery { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 18px; }
+.xmas-venue { padding-block: var(--xmas-section-space); }
+.xmas-venue__gallery { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 24px; }
 .xmas-venue figure { position: relative; margin: 0; }
 .xmas-venue figure img { width: 100%; height: 335px; object-fit: cover; }
-.xmas-venue figcaption { position: absolute; bottom: 17px; left: 19px; color: white; background: #342b27b0; padding: 7px 10px; font-size: 10px; letter-spacing: 1px; }
-.xmas-venue__credit { margin-top: 12px; font-size: 10px; color: #71686e; }
+.xmas-venue figcaption { position: absolute; bottom: 17px; left: 19px; color: white; background: #342b27b0; padding: 7px 10px; font-size: var(--xmas-small-size); letter-spacing: 1px; }
+.xmas-venue__credit { margin-top: 16px; font-size: var(--xmas-small-size); color: #71686e; }
 .xmas-venue__credit a { text-decoration: underline; }
 @media (max-width: 700px) {
-  .xmas-venue { padding-block: 55px; }
-  .xmas-venue__gallery { grid-template-columns: 1fr; gap: 10px; }
+  .xmas-venue__gallery { grid-template-columns: 1fr; gap: 16px; }
   .xmas-venue figure img { height: auto; aspect-ratio: 3/2; }
-  .xmas-venue figcaption { bottom: 10px; left: 8px; padding: 5px; font-size: 8px; }
+  .xmas-venue figcaption { bottom: 10px; left: 8px; padding: 6px 9px; font-size: 12px; }
 }
 {% endstylesheet %}
 

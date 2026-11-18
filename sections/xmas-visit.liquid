@@ -8,7 +8,8 @@
         <p>{{ block.settings.detail | escape }}</p>
       </div>
     {% endfor %}
-    {% render 'xmas-directions', settings_group: section.settings %}
+    {% assign button_delay = section.blocks.size | times: 0.1 %}
+    {% render 'xmas-directions', settings_group: section.settings, delay: button_delay %}
   </div></div>
   {% if section.settings.show_bar %}
     <aside class="xmas-visit__bar">
@@ -20,17 +21,17 @@
 </div>
 
 {% stylesheet %}
-.xmas-visit__row { display: grid; grid-template-columns: 1.1fr 1.3fr auto; align-items: center; gap: 34px; padding: 36px 0; border-bottom: 1px solid #e3dcd3; }
-.xmas-visit__row small { display: block; font-size: 10px; color: #7f2330; letter-spacing: 2px; margin-bottom: 8px; }
-.xmas-visit__row strong { font-size: 19px; font-weight: 400; }
-.xmas-visit__row p { margin: 4px 0 0; font-size: 13px; color: #716b69; }
+.xmas-visit__row { display: grid; grid-template-columns: 1.1fr 1.3fr auto; align-items: center; gap: 34px; padding: clamp(40px, 4vw, 64px) 0; border-bottom: 1px solid #e3dcd3; }
+.xmas-visit__row small { display: block; font-size: var(--xmas-small-size); color: #7f2330; letter-spacing: 2px; margin-bottom: 8px; }
+.xmas-visit__row strong { font-size: clamp(22px, 2vw, 30px); font-weight: 500; line-height: 1.25; }
+.xmas-visit__row p { margin: 8px 0 0; font-size: var(--xmas-body-size); color: #716b69; }
 .xmas-visit__bar { display: none; }
 @media (max-width: 700px) {
-  .xmas-visit__row { grid-template-columns: 1fr; justify-items: start; gap: 23px; padding: 30px 0; }
+  .xmas-visit__row { grid-template-columns: 1fr; justify-items: start; gap: 28px; padding: 36px 0; }
   .xmas-visit__bar { position: fixed; inset: auto 0 0; z-index: 5; display: flex; justify-content: space-between; align-items: center; padding: 12px 18px calc(12px + env(safe-area-inset-bottom)); background: #fff9ef; border-top: 1px solid #dad2be; }
-  .xmas-visit__bar strong { font: 500 12px Saans, sans-serif; }
-  .xmas-visit__bar small { display: block; font-size: 10px; }
-  .xmas-visit__bar a { padding: 14px 18px; border-radius: 3px; background: #861629; color: white; font-size: 11px; }
+  .xmas-visit__bar strong { font: 500 14px Saans, sans-serif; }
+  .xmas-visit__bar small { display: block; font-size: 12px; }
+  .xmas-visit__bar a { padding: 14px 18px; border-radius: 3px; background: #861629; color: white; font-size: 14px; }
   body:has(.xmas-visit__bar) { padding-bottom: calc(70px + env(safe-area-inset-bottom)); }
 }
 {% endstylesheet %}
