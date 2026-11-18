@@ -111,44 +111,15 @@
       font-size: 12px;
     }
   }
-  {% if section.settings.christmas_style %}
-    #shopify-section-{{ section.id }} .container { width: 100%; max-width: 1280px; padding-inline: 64px; margin-inline: auto; }
-    #shopify-section-{{ section.id }} .de-tab-nav__inner { min-height: 76px; }
-    #shopify-section-{{ section.id }} .de-tab-nav__list { gap: 30px; }
-    #shopify-section-{{ section.id }} .de-tab-nav__link { color: #342b27; font-size: 12px; }
-    #shopify-section-{{ section.id }} .de-tab-nav__link:hover { text-decoration: underline; }
-    #shopify-section-{{ section.id }} .de-tab-nav__button { padding: 12px 21px; border: 1px solid #bea588; font: 400 12px/1.4 Saans, sans-serif; }
-    #shopify-section-{{ section.id }} .de-tab-nav__logo img { display: block; width: 110px; height: auto; mix-blend-mode: multiply; filter: grayscale(1) contrast(100); }
-    #shopify-section-{{ section.id }} .de-tab-nav__announcement { margin: 0; padding: 10px 16px; background: #700d19; color: #f5dfb9; text-align: center; font: 500 11px/1.4 Saans, sans-serif; letter-spacing: 2px; }
-    @media (max-width: 700px) {
-      #shopify-section-{{ section.id }} .container { padding-inline: 20px; }
-      #shopify-section-{{ section.id }} .de-tab-nav__inner { min-height: 65px; }
-      #shopify-section-{{ section.id }} .de-tab-nav__logo img { width: 90px; }
-      #shopify-section-{{ section.id }} .de-tab-nav__list { display: none; }
-      #shopify-section-{{ section.id }} .de-tab-nav__announcement { font-size: 9px; letter-spacing: 1.3px; }
-    }
-  {% endif %}
 </style>
 
-{% if section.settings.christmas_style and section.settings.announcement != blank %}
-  <p class="de-tab-nav__announcement">{{ section.settings.announcement | escape }}</p>
-{% endif %}
 <nav class="de-tab-nav" aria-label="{{ section.settings.aria_label | escape }}">
   <div class="container">
     <div class="de-tab-nav__inner">
-      {% if section.settings.christmas_style %}
-        <a class="de-tab-nav__logo" href="{{ routes.root_url }}" aria-label="{{ shop.name | escape }}">
-          {% if section.settings.logo != blank %}
-            {{ section.settings.logo | image_url: width: 240 | image_tag: alt: shop.name }}
-          {% else %}
-            <img src="{{ 'xmas-logo-240.png' | asset_url }}" width="240" height="53" alt="{{ shop.name | escape }}">
-          {% endif %}
-        </a>
-      {% endif %}
       <div class="de-tab-nav__list">
         {%- for block in section.blocks -%}
           <a
-            class="de-tab-nav__link{% if forloop.first and section.settings.christmas_style != true %} is-active{% endif %}"
+            class="de-tab-nav__link{% if forloop.first %} is-active{% endif %}"
             href="{{ block.settings.link | default: '#' }}"
             {{ block.shopify_attributes }}
           >
@@ -166,7 +137,6 @@
   </div>
 </nav>
 
-{% unless section.settings.christmas_style %}
 <script>
   (() => {
     const section = document.getElementById('shopify-section-{{ section.id }}');
@@ -346,28 +316,11 @@
     });
   })();
 </script>
-{% endunless %}
 
 {% schema %}
 {
   "name": "DE tab nav",
   "settings": [
-    {
-      "type": "checkbox",
-      "id": "christmas_style",
-      "label": "Christmas event navigation",
-      "default": false
-    },
-    {
-      "type": "text",
-      "id": "announcement",
-      "label": "Christmas announcement"
-    },
-    {
-      "type": "image_picker",
-      "id": "logo",
-      "label": "Christmas navigation logo"
-    },
     {
       "type": "text",
       "id": "aria_label",
