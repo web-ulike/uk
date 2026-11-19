@@ -21,7 +21,7 @@
         {% endif %}
           {% if block.settings.badge != blank %}<span class="xmas-lineup__badge">{{ block.settings.badge | escape }}</span>{% endif %}
           {% if photo != blank %}
-            {{ photo | image_url: width: 800 | image_tag: widths: '200,400,600,800', sizes: '(max-width: 700px) calc(50vw - 31px), (max-width: 740px) calc(25vw - 30px), (max-width: 1600px) calc(25vw - 38px), 362px', loading: 'lazy' }}
+            {{ photo | image_url: width: 1400 | image_tag: widths: '200,400,600,800,1100,1400', sizes: '(max-width: 700px) calc(100vw - 48px), (max-width: 740px) calc(25vw - 30px), (max-width: 1600px) calc(25vw - 38px), 362px', loading: 'lazy' }}
           {% else %}
             <svg viewBox="0 0 70 90" aria-hidden="true" focusable="false">
               <rect x="8" y="10" width="54" height="65" rx="2" />
@@ -100,7 +100,20 @@
 .xmas-lineup__rating > :first-child { color: #bb315c; }
 .xmas-lineup__description { margin: 0; font-size: var(--xmas-small-size); color: #786e73; }
 @media (max-width: 700px) {
-  .xmas-lineup__grid { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 32px 14px; }
+  .xmas-lineup__grid {
+    grid-template-columns: none;
+    grid-auto-flow: column;
+    grid-auto-columns: 100%;
+    gap: 14px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+  }
+  .xmas-lineup__grid > article {
+    scroll-snap-align: start;
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
   .xmas-lineup__content { padding-inline: 12px; }
 }
 {% endstylesheet %}
