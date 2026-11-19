@@ -7,10 +7,16 @@
         assign photo = block.settings.image | default: featured_product.featured_image
         assign title = featured_product.title | default: block.settings.title
         assign link = block.settings.link | default: featured_product.url
+        assign score = block.settings.rating
+        if score == blank or score == 0
+          assign score = featured_product.metafields.loox.avg_rating.value
+        endif
+        assign reviews = block.settings.review_count | default: featured_product.metafields.loox.num_reviews.value
       %}
       <article class="to-top"{% unless forloop.first %} style="transition-delay: {{ forloop.index0 | times: 0.1 }}s"{% endunless %} {{ block.shopify_attributes }}>
-        {% if link != blank %}<a href="{{ link | escape }}">{% endif %}
+        {% if link != blank %}<a href="{{ link | escape }}" aria-label="{{ title | escape }}">{% endif %}
         <div class="xmas-lineup__art">
+          {% if block.settings.badge != blank %}<span class="xmas-lineup__badge">{{ block.settings.badge | escape }}</span>{% endif %}
           {% if photo != blank %}
             {{ photo | image_url: width: 800 | image_tag: widths: '200,400,600,800', sizes: '(max-width: 700px) calc(50vw - 31px), (max-width: 740px) calc(25vw - 30px), (max-width: 1600px) calc(25vw - 38px), 362px', loading: 'lazy' }}
           {% else %}
@@ -21,9 +27,18 @@
             </svg>
           {% endif %}
         </div>
-        <h3>{{ title | escape }}</h3>
         {% if link != blank %}</a>{% endif %}
-        <p>{{ block.settings.detail | escape }}</p>
+        <div class="xmas-lineup__summary">
+          <h3>{% if link != blank %}<a href="{{ link | escape }}">{{ title | escape }}</a>{% else %}{{ title | escape }}{% endif %}</h3>
+          {% if block.settings.show_rating and score != blank or reviews > 0 %}
+            <span class="xmas-lineup__rating">
+              <span aria-hidden="true">★</span>
+              {% if score != blank %}<span>{{ score | round: 1 }}<span class="visually-hidden"> out of 5</span></span>{% endif %}
+              {% if reviews != blank %}<span>{{ 'product.general.reviews_count' | t: count: reviews }}</span>{% endif %}
+            </span>
+          {% endif %}
+        </div>
+        {% if block.settings.detail != blank %}<p>{{ block.settings.detail | escape | newline_to_br }}</p>{% endif %}
         <div class="xmas-lineup__actions">
           {% if featured_product != blank %}
             <div class="price-list">{% render 'product-item-prices', product: featured_product %}</div>
@@ -73,7 +88,11 @@
 .xmas-lineup__art { position: relative; width: 100%; aspect-ratio: 1 / 1; display: grid; place-items: center; overflow: hidden; background: #f5f4f8; border-radius: 5px 5px 0 0; }
 .xmas-lineup__art img { position: absolute; inset: 0; display: block; width: 100%; height: 100%; object-fit: cover; }
 .xmas-lineup__art svg { width: 65px; height: 90px; fill: none; stroke: #b8aa98; }
-.xmas-lineup h3 { margin: 14px 12px 5px; font: 500 clamp(16px, 1.3vw, 20px)/1.3 Saans, sans-serif; }
+.xmas-lineup__badge { position: absolute; z-index: 1; top: 10px; left: 10px; max-width: calc(100% - 20px); padding: 3px 8px; border: 1px solid #bb315c; border-radius: 20px; background: #fff; color: #a31d48; font: 500 12px/1.3 Saans, sans-serif; overflow-wrap: anywhere; }
+.xmas-lineup__summary { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 4px 8px; margin: 14px 12px 5px; }
+.xmas-lineup h3 { flex: 1 1 9em; min-width: 0; margin: 0; font: 500 clamp(16px, 1.3vw, 20px)/1.3 Saans, sans-serif; }
+.xmas-lineup__rating { display: inline-flex; align-items: baseline; gap: 3px; font-size: 12px; }
+.xmas-lineup__rating > :first-child { color: #bb315c; }
 .xmas-lineup article p { margin: 0 12px; font-size: var(--xmas-small-size); color: #786e73; }
 @media (max-width: 700px) {
   .xmas-lineup__grid { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 32px 14px; }
@@ -169,8 +188,35 @@
         },
         {
           "type": "text",
+          "id": "badge",
+          "label": "Badge text"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_rating",
+          "label": "Show star rating",
+          "default": true
+        },
+        {
+          "type": "range",
+          "id": "rating",
+          "label": "Star rating",
+          "min": 0,
+          "max": 5,
+          "step": 0.1,
+          "default": 0,
+          "info": "Set to 0 to use the product’s Loox rating."
+        },
+        {
+          "type": "number",
+          "id": "review_count",
+          "label": "Review count",
+          "info": "Leave blank to use the product’s Loox review count."
+        },
+        {
+          "type": "textarea",
           "id": "detail",
-          "label": "Caption",
+          "label": "Description",
           "default": "On display at the pop-up"
         },
         {
