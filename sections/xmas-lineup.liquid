@@ -14,8 +14,11 @@
         assign reviews = block.settings.review_count | default: featured_product.metafields.loox.num_reviews.value
       %}
       <article class="to-top"{% unless forloop.first %} style="transition-delay: {{ forloop.index0 | times: 0.1 }}s"{% endunless %} {{ block.shopify_attributes }}>
-        {% if link != blank %}<a href="{{ link | escape }}" aria-label="{{ title | escape }}">{% endif %}
-        <div class="xmas-lineup__art">
+        {% if link != blank %}
+          <a class="xmas-lineup__art" href="{{ link | escape }}" aria-label="{{ title | escape }}">
+        {% else %}
+          <div class="xmas-lineup__art">
+        {% endif %}
           {% if block.settings.badge != blank %}<span class="xmas-lineup__badge">{{ block.settings.badge | escape }}</span>{% endif %}
           {% if photo != blank %}
             {{ photo | image_url: width: 800 | image_tag: widths: '200,400,600,800', sizes: '(max-width: 700px) calc(50vw - 31px), (max-width: 740px) calc(25vw - 30px), (max-width: 1600px) calc(25vw - 38px), 362px', loading: 'lazy' }}
@@ -26,47 +29,48 @@
               <path d="m8 63 18-19 13 13 10-11 13 17" />
             </svg>
           {% endif %}
-        </div>
-        {% if link != blank %}</a>{% endif %}
-        <div class="xmas-lineup__summary">
-          <h3>{% if link != blank %}<a href="{{ link | escape }}">{{ title | escape }}</a>{% else %}{{ title | escape }}{% endif %}</h3>
-          {% if block.settings.show_rating and score != blank or reviews > 0 %}
-            <span class="xmas-lineup__rating">
-              <span aria-hidden="true">★</span>
-              {% if score != blank %}<span>{{ score | round: 1 }}<span class="visually-hidden"> out of 5</span></span>{% endif %}
-              {% if reviews != blank %}<span>{{ 'product.general.reviews_count' | t: count: reviews }}</span>{% endif %}
-            </span>
-          {% endif %}
-        </div>
-        {% if block.settings.detail != blank %}<p>{{ block.settings.detail | escape | newline_to_br }}</p>{% endif %}
-        <div class="xmas-lineup__actions">
-          {% if featured_product != blank %}
-            <div class="price-list">{% render 'product-item-prices', product: featured_product %}</div>
-            <script type="application/ld+json">{{ featured_product | structured_data }}</script>
-          {% endif %}
-          {% if link != blank %}
-            <div class="xmas-lineup__buttons">
-              {% if featured_product != blank %}
-                {% capture action_id %}xmas-buy-{{ section.id }}-{{ block.id }}{% endcapture %}
-                {% if featured_product.available == false %}
-                  <button class="button button--primary" disabled>{{ 'product.form.sold_out' | t }}</button>
-                {% elsif featured_product.variants.size == 1 %}
-                  {% form 'product', featured_product, is: 'product-form', id: action_id %}
-                    <input type="hidden" name="id" value="{{ featured_product.first_available_variant.id }}">
-                    <button type="submit" is="loader-button" class="button button--primary">{{ 'product.form.add_to_cart' | t }}</button>
-                  {% endform %}
-                {% else %}
-                  {% assign query_separator = '?' %}
-                  {% if featured_product.url contains '?' %}{% assign query_separator = '&' %}{% endif %}
-                  <button type="button" is="toggle-button" class="button button--primary hidden-phone" aria-controls="{{ action_id }}-drawer" aria-expanded="false">{{ 'product.form.add_to_cart' | t }}</button>
-                  <button type="button" is="toggle-button" class="button button--primary hidden-tablet-and-up" aria-controls="{{ action_id }}-popover" aria-expanded="false">{{ 'product.form.add_to_cart' | t }}</button>
-                  <quick-buy-drawer id="{{ action_id }}-drawer" href="{{ featured_product.url | escape }}{{ query_separator | escape }}view=quick-buy-drawer" class="drawer drawer--large drawer--quick-buy hidden-phone"></quick-buy-drawer>
-                  <quick-buy-popover id="{{ action_id }}-popover" href="{{ featured_product.url | escape }}{{ query_separator | escape }}view=quick-buy-popover" class="popover popover--quick-buy hidden-tablet-and-up"></quick-buy-popover>
+        {% if link != blank %}</a>{% else %}</div>{% endif %}
+        <div class="xmas-lineup__content">
+          <div class="xmas-lineup__summary">
+            <h3>{% if link != blank %}<a href="{{ link | escape }}">{{ title | escape }}</a>{% else %}{{ title | escape }}{% endif %}</h3>
+            {% if block.settings.show_rating and score != blank or reviews > 0 %}
+              <span class="xmas-lineup__rating">
+                <span aria-hidden="true">★</span>
+                {% if score != blank %}<span>{{ score | round: 1 }}<span class="visually-hidden"> out of 5</span></span>{% endif %}
+                {% if reviews != blank %}<span>{{ 'product.general.reviews_count' | t: count: reviews }}</span>{% endif %}
+              </span>
+            {% endif %}
+          </div>
+          {% if block.settings.detail != blank %}<p class="xmas-lineup__description">{{ block.settings.detail | escape | newline_to_br }}</p>{% endif %}
+          <div class="xmas-lineup__actions">
+            {% if featured_product != blank %}
+              <div class="price-list">{% render 'product-item-prices', product: featured_product %}</div>
+              <script type="application/ld+json">{{ featured_product | structured_data }}</script>
+            {% endif %}
+            {% if link != blank %}
+              <div class="xmas-lineup__buttons">
+                {% if featured_product != blank %}
+                  {% capture action_id %}xmas-buy-{{ section.id }}-{{ block.id }}{% endcapture %}
+                  {% if featured_product.available == false %}
+                    <button class="button button--primary" disabled>{{ 'product.form.sold_out' | t }}</button>
+                  {% elsif featured_product.variants.size == 1 %}
+                    {% form 'product', featured_product, is: 'product-form', id: action_id %}
+                      <input type="hidden" name="id" value="{{ featured_product.first_available_variant.id }}">
+                      <button type="submit" is="loader-button" class="button button--primary">{{ 'product.form.add_to_cart' | t }}</button>
+                    {% endform %}
+                  {% else %}
+                    {% assign query_separator = '?' %}
+                    {% if featured_product.url contains '?' %}{% assign query_separator = '&' %}{% endif %}
+                    <button type="button" is="toggle-button" class="button button--primary hidden-phone" aria-controls="{{ action_id }}-drawer" aria-expanded="false">{{ 'product.form.add_to_cart' | t }}</button>
+                    <button type="button" is="toggle-button" class="button button--primary hidden-tablet-and-up" aria-controls="{{ action_id }}-popover" aria-expanded="false">{{ 'product.form.add_to_cart' | t }}</button>
+                    <quick-buy-drawer id="{{ action_id }}-drawer" href="{{ featured_product.url | escape }}{{ query_separator | escape }}view=quick-buy-drawer" class="drawer drawer--large drawer--quick-buy hidden-phone"></quick-buy-drawer>
+                    <quick-buy-popover id="{{ action_id }}-popover" href="{{ featured_product.url | escape }}{{ query_separator | escape }}view=quick-buy-popover" class="popover popover--quick-buy hidden-tablet-and-up"></quick-buy-popover>
+                  {% endif %}
                 {% endif %}
-              {% endif %}
-              <a class="button button--outline" href="{{ link | escape }}">{% if section.settings.cta_label != blank %}{{ section.settings.cta_label | escape }}{% else %}{{ 'product.general.view_details' | t }}{% endif %}<span class="visually-hidden"> {{ title | escape }}</span></a>
-            </div>
-          {% endif %}
+                <a class="button button--outline" href="{{ link | escape }}">{% if section.settings.cta_label != blank %}{{ section.settings.cta_label | escape }}{% else %}{{ 'product.general.view_details' | t }}{% endif %}<span class="visually-hidden"> {{ title | escape }}</span></a>
+              </div>
+            {% endif %}
+          </div>
         </div>
       </article>
     {% endfor %}
@@ -78,7 +82,8 @@
 .xmas-lineup .xmas-head-row .xmas-heading { font-size: clamp(28px, 3vw, 42px); font-weight: 500; }
 .xmas-lineup__grid { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 24px; }
 .xmas-lineup__grid article { display: flex; flex-direction: column; min-width: 0; background: #fff; border-radius: 5px; }
-.xmas-lineup__actions { display: grid; justify-items: start; gap: 12px; margin-top: auto; padding: 0 12px 12px; }
+.xmas-lineup__content { display: flex; flex: 1; flex-direction: column; padding: 14px 12px 12px; }
+.xmas-lineup__actions { display: grid; justify-items: start; gap: 12px; margin-top: auto; }
 .xmas-lineup__actions > :first-child { margin-top: 12px; }
 .xmas-lineup__actions .price-list { align-items: baseline; flex-wrap: wrap; }
 .xmas-lineup__actions .price-list > span.price { font-size: clamp(22px, 2vw, 28px); font-weight: 500; line-height: 1.2; }
@@ -89,11 +94,11 @@
 .xmas-lineup__art img { position: absolute; inset: 0; display: block; width: 100%; height: 100%; object-fit: cover; }
 .xmas-lineup__art svg { width: 65px; height: 90px; fill: none; stroke: #b8aa98; }
 .xmas-lineup__badge { position: absolute; z-index: 1; top: 10px; left: 10px; max-width: calc(100% - 20px); padding: 3px 8px; border: 1px solid #bb315c; border-radius: 20px; background: #fff; color: #a31d48; font: 500 12px/1.3 Saans, sans-serif; overflow-wrap: anywhere; }
-.xmas-lineup__summary { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 4px 8px; margin: 14px 12px 5px; }
+.xmas-lineup__summary { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 4px 8px; margin-bottom: 5px; }
 .xmas-lineup h3 { flex: 1 1 9em; min-width: 0; margin: 0; font: 500 clamp(16px, 1.3vw, 20px)/1.3 Saans, sans-serif; }
 .xmas-lineup__rating { display: inline-flex; align-items: baseline; gap: 3px; font-size: 12px; }
 .xmas-lineup__rating > :first-child { color: #bb315c; }
-.xmas-lineup article p { margin: 0 12px; font-size: var(--xmas-small-size); color: #786e73; }
+.xmas-lineup__description { margin: 0; font-size: var(--xmas-small-size); color: #786e73; }
 @media (max-width: 700px) {
   .xmas-lineup__grid { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 32px 14px; }
 }
