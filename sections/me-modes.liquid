@@ -1,4 +1,3 @@
-
 {% style %}
 .me-modes {
       position: relative;
@@ -53,7 +52,8 @@
 
     .me-modes__marker {
       position: absolute;
-      left: 58.5%;
+      left: var(--marker-left, 58.5%);
+      top: var(--marker-top, 50%);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -71,21 +71,9 @@
         box-shadow .3s ease;
     }
 
-    .me-modes__marker--1 {
-      top: 38.6%;
-    }
 
-    .me-modes__marker--2 {
-      top: 43.8%;
-    }
 
-    .me-modes__marker--3 {
-      top: 49.2%;
-    }
 
-    .me-modes__marker--4 {
-      top: 54.6%;
-    }
 
     .me-modes__content {
       position: relative;
@@ -212,29 +200,16 @@
     }
 
     .me-modes__icons {
-      display: flex;
-      gap: 12px;
       margin-top: 14px;
     }
 
-    .me-modes__icon {
-      display: grid;
-      place-items: center;
-      width: 58px;
-      height: 56px;
-      border-radius: 0 0 24px 24px;
-      background: #FFE0EB;
-      color: #E0004D;
-    }
-
-    .me-modes__icon svg {
-      width: 40px;
-      height: 36px;
-      fill: none;
-      stroke: currentColor;
-      stroke-width: 1.2;
-      stroke-linecap: round;
-      stroke-linejoin: round;
+    .me-modes__icons img {
+      display: block;
+      width: auto;
+      max-width: 100%;
+      max-height: 80px;
+      height: auto;
+      object-fit: contain;
     }
 
     .me-modes__item[open] .me-modes__number {
@@ -252,14 +227,13 @@
     }
 
 
-    .me-modes:has(.me-modes__item--1[open]) .me-modes__marker--1,
-    .me-modes:has(.me-modes__item--2[open]) .me-modes__marker--2,
-    .me-modes:has(.me-modes__item--3[open]) .me-modes__marker--3,
-    .me-modes:has(.me-modes__item--4[open]) .me-modes__marker--4 {
+    {% for block in section.blocks %}
+    .me-modes:has(.me-modes__item--{{ block.id }}[open]) .me-modes__marker--{{ block.id }} {
       background: #E0004D;
       color: #fff;
       border-color: #fff;
     }
+    {% endfor %}
 
 
     .me-modes__visual.appear .me-modes__picture {
@@ -274,27 +248,16 @@
     .me-modes__content.appear .me-modes__tle,
     .me-modes__content.appear .me-modes__item {
       animation: me-modes-rise .85s cubic-bezier(.22, 1, .36, 1) both;
+      animation-delay: var(--me-item-delay, 0ms);
     }
 
     .me-modes__content.appear .me-modes__tle {
       animation-delay: .08s;
     }
 
-    .me-modes__content.appear .me-modes__item--1 {
-      animation-delay: .16s;
-    }
 
-    .me-modes__content.appear .me-modes__item--2 {
-      animation-delay: .24s;
-    }
 
-    .me-modes__content.appear .me-modes__item--3 {
-      animation-delay: .32s;
-    }
 
-    .me-modes__content.appear .me-modes__item--4 {
-      animation-delay: .40s;
-    }
 
     @keyframes me-modes-rise {
       from {
@@ -458,24 +421,17 @@
         font-size: 13px;
       }
 
-      .me-modes__icons {
-        gap: 10px;
-        margin-top: 11px;
-      }
-
-      .me-modes__icon {
-        width: 46px;
-        height: 45px;
-        border-radius: 0 0 19px 19px;
-      }
-
-      .me-modes__icon svg {
-        width: 32px;
-        height: 29px;
-      }
     }
 
     @media (max-width: 767px) {
+      .me-modes__marker {
+        top: var(--marker-top-mobile, var(--marker-top, 50%));
+      }
+
+      .me-modes__icons img {
+        max-height: 56px;
+      }
+
       .me-modes__layout {
         display: block;
         min-height: 700px;
@@ -495,105 +451,9 @@
       }
 
       .me-modes__marker {
-        left: 58.5%;
         width: 20px;
         height: 20px;
         font-size: 14px;
-      }
-
-      .me-modes__marker--1 {
-        top: 60.5%;
-      }
-
-      .me-modes__marker--2 {
-        top: 66.5%;
-      }
-
-      .me-modes__marker--3 {
-        top: 72.5%;
-      }
-
-      .me-modes__marker--4 {
-        top: 78.5%;
-      }
-
-      .me-modes__eyebrow {
-        justify-content: center;
-        gap: 6px;
-        font-size: 16px;
-      }
-
-      .me-modes__eyebrow svg {
-        width: 21px;
-        height: 21px;
-      }
-
-      .me-modes__tle {
-        margin-top: 8px;
-        text-align: center;
-        font-size: 28px;
-        line-height: 1.1;
-      }
-
-      .me-modes__list {
-        gap: 10px;
-        margin-top: 46px;
-      }
-
-      .me-modes__item {
-        border-radius: 10px;
-      }
-
-      .me-modes__summary {
-        gap: 12px;
-        min-height: 40px;
-        padding: 10px 14px;
-      }
-
-      .me-modes__number {
-        width: 17px;
-        height: 17px;
-        font-size: 12px;
-      }
-
-      .me-modes__name {
-        font-size: 14px;
-      }
-
-      .me-modes__toggle {
-        width: 8px;
-        height: 8px;
-        margin-right: 10px;
-      }
-
-      .me-modes__body {
-        padding: 0 14px 12px 43px;
-      }
-
-      .me-modes__description {
-        font-size: 12px;
-        line-height: 1.25;
-      }
-
-      .me-modes__icons {
-        gap: 8px;
-        margin-top: 8px;
-      }
-
-      .me-modes__icon {
-        width: 42px;
-        height: 40px;
-        border-radius: 0 0 18px 18px;
-      }
-
-      .me-modes__icon svg {
-        width: 30px;
-        height: 28px;
-      }
-
-      .me-modes__toggle::before,
-      .me-modes__toggle::after {
-        height: 1px;
       }
     }
 
@@ -615,15 +475,14 @@
           <div class="me-modes__product">
             <picture class="me-modes__picture">
               
-              {% if section.settings.image_1_mobile != blank or section.settings.image_1_pc != blank %}{% if section.settings.image_1_pc != blank %}<source media="(min-width: 768px)" srcset="{{ section.settings.image_1_pc | image_url: width: 3000 }}">{% endif %}<img src="{{ section.settings.image_1_mobile | default: section.settings.image_1_pc | image_url: width: 1800 }}"
-                width="808" height="1914" loading="lazy" alt="{{ section.settings.image_1_mobile.alt | default: section.settings.image_1_pc.alt | escape }}">{% endif %}
+              {% if section.settings.product_image_mobile != blank or section.settings.product_image_pc != blank %}{% if section.settings.product_image_pc != blank %}<source media="(min-width: 768px)" srcset="{{ section.settings.product_image_pc | image_url: width: 3000 }}">{% endif %}<img src="{{ section.settings.product_image_mobile | default: section.settings.product_image_pc | image_url: width: 1800 }}"
+                width="808" height="1914" loading="lazy" alt="{{ section.settings.product_image_mobile.alt | default: section.settings.product_image_pc.alt | escape }}">{% endif %}
             </picture>
 
             <div class="me-modes__markers" aria-hidden="true">
-              <span class="me-modes__marker me-modes__marker--1">{{ section.settings.text_1 | escape }}</span>
-              <span class="me-modes__marker me-modes__marker--2">{{ section.settings.text_2 | escape }}</span>
-              <span class="me-modes__marker me-modes__marker--3">{{ section.settings.text_3 | escape }}</span>
-              <span class="me-modes__marker me-modes__marker--4">{{ section.settings.text_4 | escape }}</span>
+              {% for block in section.blocks %}
+                <span class="me-modes__marker me-modes__marker--{{ block.id }}" style="--marker-left: {{ block.settings.marker_left }}%; --marker-top: {{ block.settings.marker_top_desktop }}%; --marker-top-mobile: {{ block.settings.marker_top_mobile }}%;">{{ forloop.index }}</span>
+              {% endfor %}
             </div>
           </div>
         </div>
@@ -636,232 +495,160 @@
               <path d="M3 37v-9c0-7 5-10 17-10s17 3 17 10v9" />
               <rect x="11" y="25" width="18" height="7" rx="2" />
             </svg>
-            <span>{{ section.settings.text_5 | escape }}</span>
+            <span>{{ section.settings.eyebrow | escape }}</span>
           </div>
 
           <h2 class="me-modes__tle">
-            {{ section.settings.text_6 | escape }}<br>
-            {{ section.settings.text_7 | escape }}
+            {{ section.settings.heading_line_1 | escape }}<br>
+            {{ section.settings.heading_line_2 | escape }}
           </h2>
 
           <div class="me-modes__list">
-            <!-- 同一组 name 保证一次只展开一个；多个模块时请使用不同的 name -->
-            <details class="me-modes__item me-modes__item--1" name="me-treatment-modes" open>
-              <summary class="me-modes__summary">
-                <span class="me-modes__number">{{ section.settings.text_8 | escape }}</span>
-                <span class="me-modes__name">{{ section.settings.text_9 | escape }}</span>
-                <span class="me-modes__toggle" aria-hidden="true"></span>
-              </summary>
-
-              <div class="me-modes__body">
-                <p class="me-modes__description">
-                  {{ section.settings.text_10 | escape }}
-                </p>
-
-                <div class="me-modes__icons" aria-hidden="true">
-                  <span class="me-modes__icon">
-                    <svg viewBox="0 0 40 36">
-                      <path d="M4 17 13 10q4-3 7 1 3-4 7-1l9 7" />
-                      <path d="M4 17q16 20 32 0M4 17q16 8 32 0" />
-                      <path d="M10 17h20" />
-                    </svg>
-                  </span>
-
-                  <span class="me-modes__icon">
-                    <svg viewBox="0 0 40 36">
-                      <path d="m3 16 12-5q4-2 8 0l12 5" />
-                      <path d="m7 21 10-3 12 5q5 2 6-1l-12-6" />
-                      <path d="m4 24 12 3h13M17 12l17 6M22 11l15 6" />
-                    </svg>
-                  </span>
-
-                  <span class="me-modes__icon">
-                    <svg viewBox="0 0 40 36">
-                      <path d="M29 3q5 7 1 13l-1 5q0 4-7 4l-3 8" />
-                      <path d="M8 10q-2 10 1 14l-2 9M9 23l13 2" />
-                      <path d="m23 14 5-1M23 18h5" />
-                    </svg>
-                  </span>
+            {% for block in section.blocks %}
+              <details class="me-modes__item me-modes__item--{{ block.id }}" name="me-treatment-modes-{{ section.id }}" style="--me-item-delay: {{ forloop.index0 | times: 80 }}ms" {% if forloop.first %}open{% endif %} {{ block.shopify_attributes }}>
+                <summary class="me-modes__summary">
+                  <span class="me-modes__number">{{ forloop.index }}</span>
+                  <span class="me-modes__name">{{ block.settings.title | escape }}</span>
+                  <span class="me-modes__toggle" aria-hidden="true"></span>
+                </summary>
+                <div class="me-modes__body">
+                  {% if block.settings.description != blank %}
+                    <p class="me-modes__description">{{ block.settings.description | escape }}</p>
+                  {% endif %}
+                  {% if block.settings.icons_image != blank %}
+                    <div class="me-modes__icons">
+                      <img src="{{ block.settings.icons_image | image_url: width: 600 }}" alt="{{ block.settings.icons_image.alt | escape }}" loading="lazy">
+                    </div>
+                  {% endif %}
                 </div>
-              </div>
-            </details>
-
-            <details class="me-modes__item me-modes__item--2" name="me-treatment-modes">
-              <summary class="me-modes__summary">
-                <span class="me-modes__number">{{ section.settings.text_11 | escape }}</span>
-                <span class="me-modes__name">{{ section.settings.text_12 | escape }}</span>
-                <span class="me-modes__toggle" aria-hidden="true"></span>
-              </summary>
-              <div class="me-modes__body">
-                <p class="me-modes__description">
-                  {{ section.settings.text_13 | escape }}
-                </p>
-              </div>
-            </details>
-
-            <details class="me-modes__item me-modes__item--3" name="me-treatment-modes">
-              <summary class="me-modes__summary">
-                <span class="me-modes__number">{{ section.settings.text_14 | escape }}</span>
-                <span class="me-modes__name">{{ section.settings.text_15 | escape }}</span>
-                <span class="me-modes__toggle" aria-hidden="true"></span>
-              </summary>
-              <div class="me-modes__body">
-                <p class="me-modes__description">
-                  {{ section.settings.text_16 | escape }}
-                </p>
-              </div>
-            </details>
-
-            <details class="me-modes__item me-modes__item--4" name="me-treatment-modes">
-              <summary class="me-modes__summary">
-                <span class="me-modes__number">{{ section.settings.text_17 | escape }}</span>
-                <span class="me-modes__name">{{ section.settings.text_18 | escape }}</span>
-                <span class="me-modes__toggle" aria-hidden="true"></span>
-              </summary>
-              <div class="me-modes__body">
-                <p class="me-modes__description">
-                  {{ section.settings.text_19 | escape }}
-                </p>
-              </div>
-            </details>
-          </div>
+              </details>
+            {% endfor %}
+          
         </div>
 
       </div>
     </section>
-
 {% schema %}
 {
   "name": "Me Product Modes",
   "settings": [
     {
       "type": "text",
-      "id": "text_1",
-      "label": "Text 1",
-      "default": "1"
-    },
-    {
-      "type": "text",
-      "id": "text_2",
-      "label": "Text 2",
-      "default": "2"
-    },
-    {
-      "type": "text",
-      "id": "text_3",
-      "label": "Text 3",
-      "default": "3"
-    },
-    {
-      "type": "text",
-      "id": "text_4",
-      "label": "Text 4",
-      "default": "4"
-    },
-    {
-      "type": "text",
-      "id": "text_5",
-      "label": "Text 5",
+      "id": "eyebrow",
+      "label": "Eyebrow",
       "default": "Customized Modes"
     },
     {
       "type": "text",
-      "id": "text_6",
-      "label": "Text 6",
+      "id": "heading_line_1",
+      "label": "Heading line 1",
       "default": "Four Modes."
     },
     {
       "type": "text",
-      "id": "text_7",
-      "label": "Text 7",
+      "id": "heading_line_2",
+      "label": "Heading line 2",
       "default": "One Simple Routine."
     },
     {
-      "type": "text",
-      "id": "text_8",
-      "label": "Text 8",
-      "default": "1"
-    },
-    {
-      "type": "text",
-      "id": "text_9",
-      "label": "Text 9",
-      "default": "Gentle Mode"
-    },
-    {
-      "type": "text",
-      "id": "text_10",
-      "label": "Text 10",
-      "default": "Ideal for fine hair and touch-up sessions"
-    },
-    {
-      "type": "text",
-      "id": "text_11",
-      "label": "Text 11",
-      "default": "2"
-    },
-    {
-      "type": "text",
-      "id": "text_12",
-      "label": "Text 12",
-      "default": "Face Mode"
-    },
-    {
-      "type": "text",
-      "id": "text_13",
-      "label": "Text 13",
-      "default": "A dedicated mode for your facial hair removal routine."
-    },
-    {
-      "type": "text",
-      "id": "text_14",
-      "label": "Text 14",
-      "default": "3"
-    },
-    {
-      "type": "text",
-      "id": "text_15",
-      "label": "Text 15",
-      "default": "Body Mode"
-    },
-    {
-      "type": "text",
-      "id": "text_16",
-      "label": "Text 16",
-      "default": "A dedicated mode for your body hair removal routine."
-    },
-    {
-      "type": "text",
-      "id": "text_17",
-      "label": "Text 17",
-      "default": "4"
-    },
-    {
-      "type": "text",
-      "id": "text_18",
-      "label": "Text 18",
-      "default": "Bikini Mode"
-    },
-    {
-      "type": "text",
-      "id": "text_19",
-      "label": "Text 19",
-      "default": "A dedicated mode for your bikini-line hair removal routine."
+      "type": "image_picker",
+      "id": "product_image_pc",
+      "label": "Product image — PC"
     },
     {
       "type": "image_picker",
-      "id": "image_1_pc",
-      "label": "Image 1 PC"
-    },
+      "id": "product_image_mobile",
+      "label": "Product image — Mobile"
+    }
+  ],
+  "max_blocks": 12,
+  "blocks": [
     {
-      "type": "image_picker",
-      "id": "image_1_mobile",
-      "label": "Image 1 Mobile"
+      "type": "mode_item",
+      "name": "Mode item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Treatment mode"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description"
+        },
+        {
+          "type": "image_picker",
+          "id": "icons_image",
+          "label": "Icons image (optional)"
+        },
+        {
+          "type": "text",
+          "id": "marker_left",
+          "label": "Marker left (%)",
+          "default": "58.5"
+        },
+        {
+          "type": "text",
+          "id": "marker_top_desktop",
+          "label": "Marker top — PC (%)",
+          "default": "38.6"
+        },
+        {
+          "type": "text",
+          "id": "marker_top_mobile",
+          "label": "Marker top — Mobile (%)",
+          "default": "60.5"
+        }
+      ]
     }
   ],
   "presets": [
     {
-      "name": "Me Product Modes"
+      "name": "Me Product Modes",
+      "blocks": [
+        {
+          "type": "mode_item",
+          "settings": {
+            "title": "Gentle Mode",
+            "description": "Ideal for fine hair and touch-up sessions",
+            "marker_left": "58.5",
+            "marker_top_desktop": "38.6",
+            "marker_top_mobile": "60.5"
+          }
+        },
+        {
+          "type": "mode_item",
+          "settings": {
+            "title": "Face Mode",
+            "description": "A dedicated mode for your facial hair removal routine.",
+            "marker_left": "58.5",
+            "marker_top_desktop": "43.8",
+            "marker_top_mobile": "66.5"
+          }
+        },
+        {
+          "type": "mode_item",
+          "settings": {
+            "title": "Body Mode",
+            "description": "A dedicated mode for your body hair removal routine.",
+            "marker_left": "58.5",
+            "marker_top_desktop": "49.2",
+            "marker_top_mobile": "72.5"
+          }
+        },
+        {
+          "type": "mode_item",
+          "settings": {
+            "title": "Bikini Mode",
+            "description": "A dedicated mode for your bikini-line hair removal routine.",
+            "marker_left": "58.5",
+            "marker_top_desktop": "54.6",
+            "marker_top_mobile": "78.5"
+          }
+        }
+      ]
     }
   ]
 }
