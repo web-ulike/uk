@@ -402,9 +402,9 @@
                 {% if block.settings.review_text != blank %}<div class="me-result__top__bottom__des">{{ block.settings.review_text | escape }}</div>{% endif %}
                 <div class="me-result__top__bottom__review">
                   {% if block.settings.customer_name != blank %}<div class="me-result__top__bottom__review__name">{{ block.settings.customer_name | escape }}</div>{% endif %}
-                  {% if section.settings.rating_image != blank %}
+                  {% if block.settings.rating_image != blank %}
                     <div class="me-result__top__bottom__review__img">
-                      <img src="{{ section.settings.rating_image | image_url: width: 240 }}" alt="{{ section.settings.rating_image.alt | escape }}" loading="lazy">
+                      <img src="{{ block.settings.rating_image | image_url: width: 240 }}" alt="{{ block.settings.rating_image.alt | escape }}" loading="lazy">
                     </div>
                   {% endif %}
                 </div>
@@ -426,11 +426,6 @@
       "id": "heading",
       "label": "Heading",
       "default": "Visible Results in 4 Weeks"
-    },
-    {
-      "type": "image_picker",
-      "id": "rating_image",
-      "label": "Review rating image"
     },
     {
       "type": "textarea",
@@ -491,6 +486,7 @@
           "label": "Review title",
           "default": "Easy to Use and I’m Actually Seeing Results"
         },
+        
         {
           "type": "textarea",
           "id": "review_text",
@@ -502,7 +498,12 @@
           "id": "customer_name",
           "label": "Customer name",
           "default": "— Jennifer S. / Legs"
-        }
+        },
+          {
+      "type": "image_picker",
+      "id": "rating_image",
+      "label": "Review rating image"
+    },
       ]
     }
   ],
