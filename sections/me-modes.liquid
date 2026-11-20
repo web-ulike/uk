@@ -1,481 +1,485 @@
 {% style %}
-.me-modes {
-      position: relative;
-      overflow: hidden;
-      background: #fff;
-      color: #3F3636;
-    }
-
-
-
-    .me-modes__layout {
-      position: relative;
-      display: grid;
-      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
-      gap: 100px;
-      width: 100%;
-      max-width: 1568px;
-      min-height: 875px;
-      padding: 114px 20px 90px;
-      margin: 0 auto;
-    }
-
-    .me-modes__visual {
-      position: relative;
-      min-width: 0;
-    }
-
-    .me-modes__product {
-      position: absolute;
-      top: 0;
-      left: 50%;
-      width: 404px;
-      max-width: 100%;
-      transform: translateX(-50%);
-    }
-
-    .me-modes__picture,
-    .me-modes__picture img {
-      display: block;
-      width: 100%;
-    }
-
-    .me-modes__picture img {
-      height: auto;
-    }
-
-    .me-modes__markers {
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-    }
-
-    .me-modes__marker {
-      position: absolute;
-      left: var(--marker-left, 58.5%);
-      top: var(--marker-top, 50%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 34px;
-      height: 34px;
-      border: 1.6px solid #E0004D;
-      border-radius: 50%;
-      background: #fff;
-      color: #E0004D;
-      font-size: 22px;
-      line-height: 1;
-      transition:
-        color .3s ease,
-        background .3s ease,
-        box-shadow .3s ease;
-    }
-
-
-
-
-
-    .me-modes__content {
-      position: relative;
-      z-index: 1;
-      min-width: 0;
-    }
-
-    .me-modes__eyebrow {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      color: #E0004D;
-      font-size: 26px;
-      line-height: 1.2;
-    }
-
-    .me-modes__eyebrow svg {
-      flex-shrink: 0;
-      width: 40px;
-      height: 40px;
-    }
-
-    .me-modes__tle {
-      margin: 22px 0 0;
-      color: #190A0A;
-      font-size: 48px;
-      font-weight: 400;
-      line-height: 1.2;
-    }
-
-    .me-modes__list {
-      display: grid;
-      gap: 28px;
-      margin-top: 56px;
-    }
-
-    .me-modes__item {
-      min-width: 0;
-      overflow: hidden;
-      border-radius: 20px;
-      background: #FFF8FA;
-      transition: background .3s ease, box-shadow .3s ease;
-    }
-
-    .me-modes__summary {
-      display: flex;
-      align-items: center;
-      gap: 24px;
-      min-height: 82px;
-      padding: 20px 28px;
-      list-style: none;
-      cursor: pointer;
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    .me-modes__summary::-webkit-details-marker {
-      display: none;
-    }
-
-    .me-modes__summary::marker {
-      content: "";
-    }
-
-    .me-modes__summary:focus-visible {
-      outline: 2px solid #E0004D;
-      outline-offset: -4px;
-      border-radius: inherit;
-    }
-
-    .me-modes__number {
-      display: flex;
-      flex-shrink: 0;
-      align-items: center;
-      justify-content: center;
-      width: 34px;
-      height: 34px;
-      border: 1.6px solid #E0004D;
-      border-radius: 50%;
-      color: #E0004D;
-      font-size: 22px;
-      line-height: 1;
-      background: #fff;
-      transition: background .3s ease, color .3s ease;
-    }
-
-    .me-modes__name {
-      font-size: 30px;
-      line-height: 1.2;
-    }
-
-    .me-modes__toggle {
-      position: relative;
-      flex-shrink: 0;
-      width: 16px;
-      height: 16px;
-      margin-left: auto;
-      color: #E0004D;
-    }
-
-    .me-modes__toggle::before,
-    .me-modes__toggle::after {
-      content: "";
-      position: absolute;
-      top: 50%;
-      left: 0;
-      width: 100%;
-      height: 2px;
-      background: currentColor;
-      transition: transform .3s ease, opacity .3s ease;
-    }
-
-    .me-modes__toggle::after {
-      transform: rotate(90deg);
-    }
-
-    .me-modes__body {
-      padding: 0 28px 24px 86px;
-    }
-
-    .me-modes__description {
-      margin: 0;
-      font-size: 16px;
-      line-height: 1.4;
-    }
-
-    .me-modes__icons {
-      margin-top: 14px;
-    }
-
-    .me-modes__icons img {
-      display: block;
-      width: auto;
-      max-width: 100%;
-      max-height: 80px;
-      height: auto;
-      object-fit: contain;
-    }
-
-    .me-modes__item[open] .me-modes__number {
-      background: #E0004D;
-      color: #fff;
-    }
-
-    .me-modes__item[open] .me-modes__toggle::after {
-      opacity: 0;
-      transform: rotate(0);
-    }
-
-    .me-modes__item[open] .me-modes__body {
-      animation: me-modes-expand .4s ease both;
-    }
-
-
-    {% for block in section.blocks %}
-    .me-modes:has(.me-modes__item--{{ block.id }}[open]) .me-modes__marker--{{ block.id }} {
-      background: #E0004D;
-      color: #fff;
-      border-color: #fff;
-    }
-    {% endfor %}
-
-
-    .me-modes__visual.appear .me-modes__picture {
-      animation: me-modes-product 1.2s cubic-bezier(.22, 1, .36, 1) both;
-    }
-
-    .me-modes__visual.appear .me-modes__markers {
-      animation: me-modes-expand .8s ease .35s both;
-    }
-
-    .me-modes__content.appear .me-modes__eyebrow,
-    .me-modes__content.appear .me-modes__tle,
-    .me-modes__content.appear .me-modes__item {
-      animation: me-modes-rise .85s cubic-bezier(.22, 1, .36, 1) both;
-      animation-delay: var(--me-item-delay, 0ms);
-    }
-
-    .me-modes__content.appear .me-modes__tle {
-      animation-delay: .08s;
-    }
-
-
-
-
-
-    @keyframes me-modes-rise {
-      from {
-        opacity: 0;
-        transform: translateY(22px);
+  .me-modes {
+        position: relative;
+        overflow: hidden;
+        background: #fff;
+        color: #3F3636;
       }
 
-      to {
-        opacity: 1;
-        transform: none;
-      }
-    }
 
-    @keyframes me-modes-product {
-      from {
-        opacity: 0;
-        transform: translateY(40px) scale(.97);
-      }
-
-      to {
-        opacity: 1;
-        transform: none;
-      }
-    }
-
-    @keyframes me-modes-expand {
-      from {
-        opacity: 0;
-        transform: translateY(8px);
-      }
-
-      to {
-        opacity: 1;
-        transform: none;
-      }
-    }
-
-    @media (hover: hover) and (pointer: fine) {
-      .me-modes__item:hover {
-        background: #FFF0F5;
-        box-shadow: 0 8px 24px rgba(224, 0, 77, .06);
-      }
-    }
-
-    .me-modes__item::details-content {
-      height: 0;
-      overflow: hidden;
-      opacity: 0;
-
-      transition:
-        height .45s cubic-bezier(.22, 1, .36, 1),
-        opacity .3s ease,
-        content-visibility .45s allow-discrete;
-
-      interpolate-size: allow-keywords;
-    }
-
-    .me-modes__item[open]::details-content {
-      height: auto;
-      opacity: 1;
-    }
-
-
-    .me-modes__item[open] .me-modes__body {
-      animation: none;
-    }
-
-
-    .me-modes__summary {
-      transition: color .3s ease;
-    }
-
-    .me-modes__item[open] .me-modes__summary {
-      color: #E0004D;
-    }
-
-
-    .me-modes__toggle::after {
-      transition:
-        transform .3s ease,
-        opacity .3s ease;
-    }
-
-    .me-modes__item[open] .me-modes__toggle::after {
-      transform: rotate(0deg);
-      opacity: 0;
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-
-      .me-modes__item::details-content,
-      .me-modes__summary,
-      .me-modes__toggle::after {
-        transition: none;
-      }
-    }
-
-    @media (min-width: 768px) and (max-width: 1450px) {
-      .me-modes__layout {
-        gap: 80px;
-        max-width: 1254px;
-        min-height: 700px;
-        padding: 91px 20px 72px;
-      }
-
-      .me-modes__product {
-        width: 323px;
-      }
-
-      .me-modes__marker,
-      .me-modes__number {
-        width: 27px;
-        height: 27px;
-        font-size: 18px;
-      }
-
-      .me-modes__eyebrow {
-        gap: 13px;
-        font-size: 21px;
-      }
-
-      .me-modes__eyebrow svg {
-        width: 32px;
-        height: 32px;
-      }
-
-      .me-modes__tle {
-        margin-top: 18px;
-        font-size: 38px;
-      }
-
-      .me-modes__list {
-        gap: 22px;
-        margin-top: 45px;
-      }
-
-      .me-modes__item {
-        border-radius: 16px;
-      }
-
-      .me-modes__summary {
-        gap: 19px;
-        min-height: 66px;
-        padding: 16px 22px;
-      }
-
-      .me-modes__name {
-        font-size: 24px;
-      }
-
-      .me-modes__toggle {
-        width: 13px;
-        height: 13px;
-      }
-
-      .me-modes__body {
-        padding: 0 22px 19px 68px;
-      }
-
-      .me-modes__description {
-        font-size: 13px;
-      }
-
-    }
-
-    @media (max-width: 767px) {
-      .me-modes__marker {
-        top: var(--marker-top-mobile, var(--marker-top, 50%));
-      }
-
-      .me-modes__icons img {
-        max-height: 56px;
-      }
 
       .me-modes__layout {
-        display: block;
-        min-height: 700px;
-        padding: 40px 16px 260px;
+        position: relative;
+        display: grid;
+        grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+        gap: 100px;
+        width: 100%;
+        max-width: 1568px;
+        min-height: 875px;
+        padding: 114px 20px 90px;
+        margin: 0 auto;
       }
 
       .me-modes__visual {
-        position: absolute;
-        top: 217px;
-        right: 29px;
-        left: 29px;
-        height: 483px;
+        position: relative;
+        min-width: 0;
       }
 
       .me-modes__product {
-        width: 317px;
+        position: absolute;
+        top: 0;
+        left: 50%;
+        width: 404px;
+        max-width: 100%;
+        transform: translateX(-50%);
+      }
+
+      .me-modes__picture,
+      .me-modes__picture img {
+        display: block;
+        width: 100%;
+      }
+
+      .me-modes__picture img {
+        height: auto;
+      }
+
+      .me-modes__markers {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
       }
 
       .me-modes__marker {
-        width: 20px;
-        height: 20px;
-        font-size: 14px;
+        position: absolute;
+        left: var(--marker-left, 58.5%);
+        top: var(--marker-top, 50%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 34px;
+        height: 34px;
+        border: 1.6px solid #E0004D;
+        border-radius: 50%;
+        background: #fff;
+        color: #E0004D;
+        font-size: 22px;
+        line-height: 1;
+        transition:
+          color .3s ease,
+          background .3s ease,
+          box-shadow .3s ease;
       }
-    }
 
-    @media (prefers-reduced-motion: reduce) {
 
-      .me-modes .me-modes__visual.appear *,
-      .me-modes .me-modes__content.appear *,
-      .me-modes .me-modes__item[open] .me-modes__body {
+
+
+
+      .me-modes__content {
+        position: relative;
+        z-index: 1;
+        min-width: 0;
+      }
+
+      .me-modes__eyebrow {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        color: #E0004D;
+        font-size: 26px;
+        line-height: 1.2;
+      }
+
+      .me-modes__eyebrow svg {
+        flex-shrink: 0;
+        width: 40px;
+        height: 40px;
+      }
+
+      .me-modes__tle {
+        margin: 22px 0 0;
+        color: #190A0A;
+        font-size: 48px;
+        font-weight: 400;
+        line-height: 1.2;
+      }
+
+      .me-modes__list {
+        display: grid;
+        gap: 28px;
+        margin-top: 56px;
+      }
+
+      .me-modes__item {
+        min-width: 0;
+        overflow: hidden;
+        border-radius: 20px;
+        background: #FFF8FA;
+        transition: background .3s ease, box-shadow .3s ease;
+      }
+
+      .me-modes__summary {
+        display: flex;
+        align-items: center;
+        gap: 24px;
+        min-height: 82px;
+        padding: 20px 28px;
+        list-style: none;
+        cursor: pointer;
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      .me-modes__summary::-webkit-details-marker {
+        display: none;
+      }
+
+      .me-modes__summary::marker {
+        content: "";
+      }
+
+      .me-modes__summary:focus-visible {
+        outline: 2px solid #E0004D;
+        outline-offset: -4px;
+        border-radius: inherit;
+      }
+
+      .me-modes__number {
+        display: flex;
+        flex-shrink: 0;
+        align-items: center;
+        justify-content: center;
+        width: 34px;
+        height: 34px;
+        border: 1.6px solid #E0004D;
+        border-radius: 50%;
+        color: #E0004D;
+        font-size: 22px;
+        line-height: 1;
+        background: #fff;
+        transition: background .3s ease, color .3s ease;
+      }
+
+      .me-modes__name {
+        font-size: 30px;
+        line-height: 1.2;
+      }
+
+      .me-modes__toggle {
+        position: relative;
+        flex-shrink: 0;
+        width: 16px;
+        height: 16px;
+        margin-left: auto;
+        color: #E0004D;
+      }
+
+      .me-modes__toggle::before,
+      .me-modes__toggle::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background: currentColor;
+        transition: transform .3s ease, opacity .3s ease;
+      }
+
+      .me-modes__toggle::after {
+        transform: rotate(90deg);
+      }
+
+      .me-modes__body {
+        padding: 0 28px 24px 86px;
+      }
+
+      .me-modes__description {
+        margin: 0;
+        font-size: 16px;
+        line-height: 1.4;
+      }
+
+      .me-modes__icons {
+        margin-top: 14px;
+      }
+
+      .me-modes__icons img {
+        display: block;
+        width: auto;
+        max-width: 100%;
+        max-height: 80px;
+        height: auto;
+        object-fit: contain;
+      }
+
+      .me-modes__item[open] .me-modes__number {
+        background: #E0004D;
+        color: #fff;
+      }
+
+      .me-modes__item[open] .me-modes__toggle::after {
+        opacity: 0;
+        transform: rotate(0);
+      }
+
+      .me-modes__item[open] .me-modes__body {
+        animation: me-modes-expand .4s ease both;
+      }
+
+
+      {% for block in section.blocks %}
+      .me-modes:has(.me-modes__item--{{ block.id }}[open]) .me-modes__marker--{{ block.id }} {
+        background: #E0004D;
+        color: #fff;
+        border-color: #fff;
+      }
+      {% endfor %}
+
+
+      .me-modes__visual.appear .me-modes__picture {
+        animation: me-modes-product 1.2s cubic-bezier(.22, 1, .36, 1) both;
+      }
+
+      .me-modes__visual.appear .me-modes__markers {
+        animation: me-modes-expand .8s ease .35s both;
+      }
+
+      .me-modes__content.appear .me-modes__eyebrow,
+      .me-modes__content.appear .me-modes__tle,
+      .me-modes__content.appear .me-modes__item {
+        animation: me-modes-rise .85s cubic-bezier(.22, 1, .36, 1) both;
+        animation-delay: var(--me-item-delay, 0ms);
+      }
+
+      .me-modes__content.appear .me-modes__tle {
+        animation-delay: .08s;
+      }
+
+
+
+
+
+      @keyframes me-modes-rise {
+        from {
+          opacity: 0;
+          transform: translateY(22px);
+        }
+
+        to {
+          opacity: 1;
+          transform: none;
+        }
+      }
+
+      @keyframes me-modes-product {
+        from {
+          opacity: 0;
+          transform: translateY(40px) scale(.97);
+        }
+
+        to {
+          opacity: 1;
+          transform: none;
+        }
+      }
+
+      @keyframes me-modes-expand {
+        from {
+          opacity: 0;
+          transform: translateY(8px);
+        }
+
+        to {
+          opacity: 1;
+          transform: none;
+        }
+      }
+
+      @media (hover: hover) and (pointer: fine) {
+        .me-modes__item:hover {
+          background: #FFF0F5;
+          box-shadow: 0 8px 24px rgba(224, 0, 77, .06);
+        }
+      }
+
+      .me-modes__item::details-content {
+        height: 0;
+        overflow: hidden;
+        opacity: 0;
+
+        transition:
+          height .45s cubic-bezier(.22, 1, .36, 1),
+          opacity .3s ease,
+          content-visibility .45s allow-discrete;
+
+        interpolate-size: allow-keywords;
+      }
+
+      .me-modes__item[open]::details-content {
+        height: auto;
+        opacity: 1;
+      }
+
+
+      .me-modes__item[open] .me-modes__body {
         animation: none;
-        transition: none;
       }
-    }
+
+
+      .me-modes__summary {
+        transition: color .3s ease;
+      }
+
+      .me-modes__item[open] .me-modes__summary {
+        color: #E0004D;
+      }
+
+
+      .me-modes__toggle::after {
+        transition:
+          transform .3s ease,
+          opacity .3s ease;
+      }
+
+      .me-modes__item[open] .me-modes__toggle::after {
+        transform: rotate(0deg);
+        opacity: 0;
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+
+        .me-modes__item::details-content,
+        .me-modes__summary,
+        .me-modes__toggle::after {
+          transition: none;
+        }
+      }
+
+      @media (min-width: 768px) and (max-width: 1450px) {
+        .me-modes__layout {
+          gap: 80px;
+          max-width: 1254px;
+          min-height: 700px;
+          padding: 91px 20px 72px;
+        }
+
+        .me-modes__product {
+          width: 323px;
+        }
+
+        .me-modes__marker,
+        .me-modes__number {
+          width: 27px;
+          height: 27px;
+          font-size: 18px;
+        }
+
+        .me-modes__eyebrow {
+          gap: 13px;
+          font-size: 21px;
+        }
+
+        .me-modes__eyebrow svg {
+          width: 32px;
+          height: 32px;
+        }
+
+        .me-modes__tle {
+          margin-top: 18px;
+          font-size: 38px;
+        }
+
+        .me-modes__list {
+          gap: 22px;
+          margin-top: 45px;
+        }
+
+        .me-modes__item {
+          border-radius: 16px;
+        }
+
+        .me-modes__summary {
+          gap: 19px;
+          min-height: 66px;
+          padding: 16px 22px;
+        }
+
+        .me-modes__name {
+          font-size: 24px;
+        }
+
+        .me-modes__toggle {
+          width: 13px;
+          height: 13px;
+        }
+
+        .me-modes__body {
+          padding: 0 22px 19px 68px;
+        }
+
+        .me-modes__description {
+          font-size: 13px;
+        }
+
+      }
+
+      @media (max-width: 767px) {
+        .me-modes__marker {
+          top: var(--marker-top-mobile, var(--marker-top, 50%));
+        }
+
+        .me-modes__icons img {
+          max-height: 56px;
+        }
+
+        .me-modes__layout {
+          display: block;
+          min-height: 700px;
+          padding: 40px 16px 260px;
+        }
+
+        .me-modes__visual {
+          position: absolute;
+          top: 217px;
+          right: 29px;
+          left: 29px;
+          height: 483px;
+        }
+
+        .me-modes__product {
+          width: 317px;
+        }
+
+        .me-modes__marker {
+          width: 20px;
+          height: 20px;
+          font-size: 14px;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+
+        .me-modes .me-modes__visual.appear *,
+        .me-modes .me-modes__content.appear *,
+        .me-modes .me-modes__item[open] .me-modes__body {
+          animation: none;
+          transition: none;
+        }
+      }
 {% endstyle %}
 
 <section class="me-modes">
-      <div class="me-modes__layout">
+  <div class="me-modes__layout">
 
         <div class="me-modes__visual js-me-top">
           <div class="me-modes__product">
             <picture class="me-modes__picture">
               
-              {% if section.settings.product_image_mobile != blank or section.settings.product_image_pc != blank %}{% if section.settings.product_image_pc != blank %}<source media="(min-width: 768px)" srcset="{{ section.settings.product_image_pc | image_url: width: 3000 }}">{% endif %}<img src="{{ section.settings.product_image_mobile | default: section.settings.product_image_pc | image_url: width: 1800 }}"
+              {% if section.settings.product_image_mobile != blank or section.settings.product_image_pc != blank %}
+                {% if section.settings.product_image_pc != blank %}
+                    <source media="(min-width: 768px)" srcset="{{ section.settings.product_image_pc | image_url: width: 3840 }}">
+                {% endif %}
+                <img src="{{ section.settings.product_image_mobile | default: section.settings.product_image_pc | image_url: width: 1800 }}"
                 width="808" height="1914" loading="lazy" alt="{{ section.settings.product_image_mobile.alt | default: section.settings.product_image_pc.alt | escape }}">{% endif %}
             </picture>
 
@@ -528,7 +532,8 @@
 
       </div>
     </section>
-{% schema %}
+
+  {% schema %}
 {
   "name": "Me Product Modes",
   "settings": [
@@ -652,4 +657,4 @@
     }
   ]
 }
-{% endschema %}
+  {% endschema %}
