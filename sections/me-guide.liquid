@@ -102,21 +102,8 @@
         height: auto;
       }
 
-      .me-guide__slide:nth-child(1) {
-        --card-delay: 0ms;
-      }
 
-      .me-guide__slide:nth-child(2) {
-        --card-delay: 80ms;
-      }
 
-      .me-guide__slide:nth-child(3) {
-        --card-delay: 160ms;
-      }
-
-      .me-guide__slide:nth-child(4) {
-        --card-delay: 240ms;
-      }
 
       .me-guide__picture {
         position: relative;
@@ -383,210 +370,78 @@
 
 <section class="me-guide js-me-top">
   <div class="me-guide__container">
-    <h2 class="me-guide__title">
-      {{ section.settings.text_1 | escape }}
-    </h2>
+    <h2 class="me-guide__title">{{ section.settings.heading | escape }}</h2>
 
     <div class="me-guide__tabs" role="tablist" aria-label="Product instructions">
-      <button class="me-guide__tab" type="button" role="tab" aria-selected="true" tabindex="0">
-        {{ section.settings.text_2 | escape }}
-      </button>
-      <button class="me-guide__tab" type="button" role="tab" aria-selected="false" tabindex="-1">
-        {{ section.settings.text_3 | escape }}
-      </button>
+      <button class="me-guide__tab" type="button" role="tab" aria-selected="true" tabindex="0">{{ section.settings.steps_tab | escape }}</button>
+      <button class="me-guide__tab" type="button" role="tab" aria-selected="false" tabindex="-1">{{ section.settings.tips_tab | escape }}</button>
     </div>
 
     <div class="me-guide__panel is-active" role="tabpanel">
-      <custom-swiper-me
-        disable-on="desktop"
-        mobile-breakpoint="767"
-        slides-per-view="1.125"
-        slides-per-group="1"
-        space-between="16"
-        speed="550"
-        loop="false"
-        centered-slides="false"
-        watch-overflow="true"
-        navigation="true"
-        pagination="false"
-      >
+      <custom-swiper-me disable-on="desktop" mobile-breakpoint="767" slides-per-view="1.125" slides-per-group="1" space-between="16" speed="550" loop="false" centered-slides="false" watch-overflow="true" navigation="true" pagination="false">
         <div class="me-guide__slider swiper-container">
           <div class="me-guide__grid swiper-wrapper">
-            <article class="me-guide__slide swiper-slide">
-              <div class="me-guide__card">
-                <div class="me-guide__picture">
-                  {% if section.settings.image_1 != blank -%}
-                    <img
-                      src="{{ section.settings.image_1 | image_url: width: 1800 }}"
-                      loading="lazy"
-                      alt="{{ section.settings.image_1.alt | escape }}"
-                    >
-                  {%- endif %}
-                </div>
-                <h3>{{ section.settings.text_4 | escape }}</h3>
-                <p class="me-guide__description">{{ section.settings.text_5 | escape }}</p>
-              </div>
-            </article>
-
-            <article class="me-guide__slide swiper-slide">
-              <div class="me-guide__card">
-                <div class="me-guide__picture">
-                  {% if section.settings.image_2 != blank -%}
-                    <img
-                      src="{{ section.settings.image_2 | image_url: width: 1800 }}"
-                      loading="lazy"
-                      alt="{{ section.settings.image_2.alt | escape }}"
-                    >
-                  {%- endif %}
-                </div>
-                <h3>{{ section.settings.text_6 | escape }}</h3>
-                <p class="me-guide__description">{{ section.settings.text_7 | escape }}</p>
-              </div>
-            </article>
-
-            <article class="me-guide__slide swiper-slide">
-              <div class="me-guide__card">
-                <div class="me-guide__picture">
-                  {% if section.settings.image_3 != blank -%}
-                    <img
-                      src="{{ section.settings.image_3 | image_url: width: 1800 }}"
-                      loading="lazy"
-                      alt="{{ section.settings.image_3.alt | escape }}"
-                    >
-                  {%- endif %}
-                </div>
-                <h3>{{ section.settings.text_8 | escape }}</h3>
-                <p class="me-guide__description">
-                  {{ section.settings.text_9 | escape }}
-                </p>
-              </div>
-            </article>
-
-            <article class="me-guide__slide swiper-slide">
-              <div class="me-guide__card">
-                <div class="me-guide__picture">
-                  {% if section.settings.image_4 != blank -%}
-                    <img
-                      src="{{ section.settings.image_4 | image_url: width: 1800 }}"
-                      loading="lazy"
-                      alt="{{ section.settings.image_4.alt | escape }}"
-                    >
-                  {%- endif %}
-                </div>
-                <h3>{{ section.settings.text_10 | escape }}</h3>
-                <p class="me-guide__description">
-                  {{ section.settings.text_11 | escape }}
-                </p>
-              </div>
-            </article>
+            {% for block in section.blocks %}
+              {% if block.settings.group == 'steps' %}
+                <article class="me-guide__slide swiper-slide" style="--card-delay: {{ forloop.index0 | times: 80 }}ms" {{ block.shopify_attributes }}>
+                  <div class="me-guide__card">
+                    <div class="me-guide__picture">
+                      {% if block.settings.image != blank %}
+                        <img src="{{ block.settings.image | image_url: width: 1800 }}" loading="lazy" alt="{{ block.settings.image.alt | escape }}">
+                      {% endif %}
+                    </div>
+                    {% if block.settings.title != blank %}<h3>{{ block.settings.title | escape }}</h3>{% endif %}
+                    {% if block.settings.description != blank %}<p class="me-guide__description">{{ block.settings.description | escape | newline_to_br }}</p>{% endif %}
+                  </div>
+                </article>
+              {% endif %}
+            {% endfor %}
           </div>
         </div>
-
         <div class="me-guide__arrows">
-          <button class="me-guide__arrow" data-swiper-prev type="button" aria-label="Previous step">
+          <button class="me-guide__arrow" data-swiper-prev type="button" aria-label="Previous slide">
             <svg viewBox="0 0 28 24" fill="none" aria-hidden="true">
               <path d="M26 12H3M11 3l-9 9 9 9" stroke="currentColor" stroke-width="1" />
             </svg>
           </button>
-          <button class="me-guide__arrow" data-swiper-next type="button" aria-label="Next step">
+          <button class="me-guide__arrow" data-swiper-next type="button" aria-label="Next slide">
             <svg viewBox="0 0 28 24" fill="none" aria-hidden="true">
               <path d="M2 12h23M17 3l9 9-9 9" stroke="currentColor" stroke-width="1" />
             </svg>
           </button>
         </div>
       </custom-swiper-me>
-
-      <p class="me-guide__note">
-        {{ section.settings.text_12 | escape }}
-      </p>
+      {% if section.settings.steps_note != blank %}<p class="me-guide__note">{{ section.settings.steps_note | escape }}</p>{% endif %}
     </div>
 
-
     <div class="me-guide__panel me-guide__panel--tips" role="tabpanel" hidden>
-      <custom-swiper-me
-        disable-on="desktop"
-        mobile-breakpoint="767"
-        slides-per-view="1.125"
-        slides-per-group="1"
-        space-between="16"
-        speed="550"
-        loop="false"
-        centered-slides="false"
-        watch-overflow="true"
-        navigation="true"
-        pagination="false"
-      >
+      <custom-swiper-me disable-on="desktop" mobile-breakpoint="767" slides-per-view="1.125" slides-per-group="1" space-between="16" speed="550" loop="false" centered-slides="false" watch-overflow="true" navigation="true" pagination="false">
         <div class="me-guide__slider swiper-container">
           <div class="me-guide__grid swiper-wrapper">
-            <article class="me-guide__slide swiper-slide">
-              <div class="me-guide__card">
-                <div class="me-guide__picture">
-                  {% if section.settings.image_5 != blank -%}
-                    <img
-                      src="{{ section.settings.image_5 | image_url: width: 1800 }}"
-                      loading="lazy"
-                      alt="{{ section.settings.image_5.alt | escape }}"
-                    >
-                  {%- endif %}
-                </div>
-                <h3>{{ section.settings.text_13 | escape }}</h3>
-                <p class="me-guide__description">
-                  {{ section.settings.text_14 | escape -}}
-                  <br>
-                  {{ section.settings.text_15 | escape }}
-                </p>
-              </div>
-            </article>
-
-            <article class="me-guide__slide swiper-slide">
-              <div class="me-guide__card">
-                <div class="me-guide__picture">
-                  {% if section.settings.image_6 != blank -%}
-                    <img
-                      src="{{ section.settings.image_6 | image_url: width: 1800 }}"
-                      loading="lazy"
-                      alt="{{ section.settings.image_6.alt | escape }}"
-                    >
-                  {%- endif %}
-                </div>
-                <h3>{{ section.settings.text_16 | escape }}</h3>
-                <p class="me-guide__description">
-                  {{ section.settings.text_17 | escape -}}
-                  <br>
-                  {{ section.settings.text_18 | escape }}
-                </p>
-              </div>
-            </article>
-
-            <article class="me-guide__slide swiper-slide">
-              <div class="me-guide__card">
-                <div class="me-guide__picture">
-                  {% if section.settings.image_7 != blank -%}
-                    <img
-                      src="{{ section.settings.image_7 | image_url: width: 1800 }}"
-                      loading="lazy"
-                      alt="{{ section.settings.image_7.alt | escape }}"
-                    >
-                  {%- endif %}
-                </div>
-                <h3>{{ section.settings.text_19 | escape }}</h3>
-                <p class="me-guide__description">
-                  {{ section.settings.text_20 | escape -}}
-                  <br>
-                  {{ section.settings.text_21 | escape }}
-                </p>
-              </div>
-            </article>
+            {% for block in section.blocks %}
+              {% if block.settings.group == 'tips' %}
+                <article class="me-guide__slide swiper-slide" style="--card-delay: {{ forloop.index0 | times: 80 }}ms" {{ block.shopify_attributes }}>
+                  <div class="me-guide__card">
+                    <div class="me-guide__picture">
+                      {% if block.settings.image != blank %}
+                        <img src="{{ block.settings.image | image_url: width: 1800 }}" loading="lazy" alt="{{ block.settings.image.alt | escape }}">
+                      {% endif %}
+                    </div>
+                    {% if block.settings.title != blank %}<h3>{{ block.settings.title | escape }}</h3>{% endif %}
+                    {% if block.settings.description != blank %}<p class="me-guide__description">{{ block.settings.description | escape | newline_to_br }}</p>{% endif %}
+                  </div>
+                </article>
+              {% endif %}
+            {% endfor %}
           </div>
         </div>
-
         <div class="me-guide__arrows">
-          <button class="me-guide__arrow" data-swiper-prev type="button" aria-label="Previous tip">
+          <button class="me-guide__arrow" data-swiper-prev type="button" aria-label="Previous slide">
             <svg viewBox="0 0 28 24" fill="none" aria-hidden="true">
               <path d="M26 12H3M11 3l-9 9 9 9" stroke="currentColor" stroke-width="1" />
             </svg>
           </button>
-          <button class="me-guide__arrow" data-swiper-next type="button" aria-label="Next tip">
+          <button class="me-guide__arrow" data-swiper-next type="button" aria-label="Next slide">
             <svg viewBox="0 0 28 24" fill="none" aria-hidden="true">
               <path d="M2 12h23M17 3l9 9-9 9" stroke="currentColor" stroke-width="1" />
             </svg>
@@ -596,7 +451,6 @@
     </div>
   </div>
 </section>
-
 <script>
   (() => {
     function initMeGuide() {
@@ -697,169 +551,131 @@
   "settings": [
     {
       "type": "text",
-      "id": "text_1",
-      "label": "Text 1",
+      "id": "heading",
+      "label": "Heading",
       "default": "Easy to Use Easy to Use Easy to Use"
     },
     {
       "type": "text",
-      "id": "text_2",
-      "label": "Text 2",
+      "id": "steps_tab",
+      "label": "Steps tab label",
       "default": "Easy to Use"
     },
     {
       "type": "text",
-      "id": "text_3",
-      "label": "Text 3",
+      "id": "tips_tab",
+      "label": "Tips tab label",
       "default": "Usage Tips"
     },
     {
-      "type": "text",
-      "id": "text_4",
-      "label": "Text 4",
-      "default": "1. Prepare"
-    },
+      "type": "textarea",
+      "id": "steps_note",
+      "label": "Steps note",
+      "default": "These steps are simplified usage guidance. Some operational details are not included. Please refer to the user manual for full operating instructions."
+    }
+  ],
+  "max_blocks": 30,
+  "blocks": [
     {
-      "type": "text",
-      "id": "text_5",
-      "label": "Text 5",
-      "default": "Shave the treatment area."
-    },
-    {
-      "type": "text",
-      "id": "text_6",
-      "label": "Text 6",
-      "default": "2. Plug In"
-    },
-    {
-      "type": "text",
-      "id": "text_7",
-      "label": "Text 7",
-      "default": "Connect the device to power."
-    },
-    {
-      "type": "text",
-      "id": "text_8",
-      "label": "Text 8",
-      "default": "3. Power On & Select Mode"
-    },
-    {
-      "type": "text",
-      "id": "text_9",
-      "label": "Text 9",
-      "default": "Turn on the device and choose a mode."
-    },
-    {
-      "type": "text",
-      "id": "text_10",
-      "label": "Text 10",
-      "default": "4. Start"
-    },
-    {
-      "type": "text",
-      "id": "text_11",
-      "label": "Text 11",
-      "default": "Place it on your skin and press the flash button."
-    },
-    {
-      "type": "text",
-      "id": "text_12",
-      "label": "Text 12",
-      "default": "These steps are simplified usage guidance. Some operational details are\n            not included. Please refer to the user manual for full operating instructions."
-    },
-    {
-      "type": "text",
-      "id": "text_13",
-      "label": "Text 13",
-      "default": "1. Before Use"
-    },
-    {
-      "type": "text",
-      "id": "text_14",
-      "label": "Text 14",
-      "default": "Shave the treatment area before use."
-    },
-    {
-      "type": "text",
-      "id": "text_15",
-      "label": "Text 15",
-      "default": "Ensure the power cable is securely connected."
-    },
-    {
-      "type": "text",
-      "id": "text_16",
-      "label": "Text 16",
-      "default": "2. During Use"
-    },
-    {
-      "type": "text",
-      "id": "text_17",
-      "label": "Text 17",
-      "default": "Always wear protective goggles and avoid looking directly at the flash."
-    },
-    {
-      "type": "text",
-      "id": "text_18",
-      "label": "Text 18",
-      "default": "Keep the flash window in full contact with your skin."
-    },
-    {
-      "type": "text",
-      "id": "text_19",
-      "label": "Text 19",
-      "default": "3. After Use"
-    },
-    {
-      "type": "text",
-      "id": "text_20",
-      "label": "Text 20",
-      "default": "Apply a gentle moisturizer after each session."
-    },
-    {
-      "type": "text",
-      "id": "text_21",
-      "label": "Text 21",
-      "default": "Avoid direct sunlight for 48 hours after treatment."
-    },
-    {
-      "type": "image_picker",
-      "id": "image_1",
-      "label": "Image 1"
-    },
-    {
-      "type": "image_picker",
-      "id": "image_2",
-      "label": "Image 2"
-    },
-    {
-      "type": "image_picker",
-      "id": "image_3",
-      "label": "Image 3"
-    },
-    {
-      "type": "image_picker",
-      "id": "image_4",
-      "label": "Image 4"
-    },
-    {
-      "type": "image_picker",
-      "id": "image_5",
-      "label": "Image 5"
-    },
-    {
-      "type": "image_picker",
-      "id": "image_6",
-      "label": "Image 6"
-    },
-    {
-      "type": "image_picker",
-      "id": "image_7",
-      "label": "Image 7"
+      "type": "guide_slide",
+      "name": "Guide slide",
+      "settings": [
+        {
+          "type": "select",
+          "id": "group",
+          "label": "Panel",
+          "options": [
+            {
+              "value": "steps",
+              "label": "Easy to Use"
+            },
+            {
+              "value": "tips",
+              "label": "Usage Tips"
+            }
+          ],
+          "default": "steps"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Guide title"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description"
+        }
+      ]
     }
   ],
   "presets": [
     {
-      "name": "Me Product Guide"
+      "name": "Me Product Guide",
+      "blocks": [
+        {
+          "type": "guide_slide",
+          "settings": {
+            "group": "steps",
+            "title": "1. Prepare",
+            "description": "Shave the treatment area."
+          }
+        },
+        {
+          "type": "guide_slide",
+          "settings": {
+            "group": "steps",
+            "title": "2. Plug In",
+            "description": "Connect the device to power."
+          }
+        },
+        {
+          "type": "guide_slide",
+          "settings": {
+            "group": "steps",
+            "title": "3. Power On & Select Mode",
+            "description": "Turn on the device and choose a mode."
+          }
+        },
+        {
+          "type": "guide_slide",
+          "settings": {
+            "group": "steps",
+            "title": "4. Start",
+            "description": "Place it on your skin and press the flash button."
+          }
+        },
+        {
+          "type": "guide_slide",
+          "settings": {
+            "group": "tips",
+            "title": "1. Before Use",
+            "description": "Shave the treatment area before use.\nEnsure the power cable is securely connected."
+          }
+        },
+        {
+          "type": "guide_slide",
+          "settings": {
+            "group": "tips",
+            "title": "2. During Use",
+            "description": "Always wear protective goggles and avoid looking directly at the flash.\nKeep the flash window in full contact with your skin."
+          }
+        },
+        {
+          "type": "guide_slide",
+          "settings": {
+            "group": "tips",
+            "title": "3. After Use",
+            "description": "Apply a gentle moisturizer after each session.\nAvoid direct sunlight for 48 hours after treatment."
+          }
+        }
+      ]
     }
   ]
 }
