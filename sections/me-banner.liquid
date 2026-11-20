@@ -1,0 +1,283 @@
+
+{% style %}
+  .me-banner {
+        position: relative;
+
+      }
+
+      .me-banner__picture {
+        position: relative;
+
+
+      }
+
+      .me-banner__picture img {
+        min-height: 875px;
+      }
+
+      .me-banner__content {
+        position: absolute;
+        top: 0;
+        left: 0;
+        display: flex;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+      }
+
+      .me-banner__content .me-banner__box {
+        width: 35%;
+      }
+
+      .me-banner__box .me-banner__logos {
+        display: flex;
+        align-items: center;
+        gap: 28px;
+      }
+
+      .me-banner__logos .me-banner__logo {
+        max-width: 161px;
+      }
+
+      .me-banner__logos .me-banner__tags {
+        display: inline-flex;
+        padding: 3px 14px;
+        justify-content: center;
+        align-items: center;
+        gap: 14px;
+        border-radius: 4px;
+        background: #E0004D;
+        color: #FFF;
+        font-size: 20px;
+        line-height: 120%;
+      }
+
+      .me-banner__tle {
+        color: #190A0A;
+        font-size: 56px;
+        line-height: 1.2;
+        margin-top: 10px;
+      }
+
+      .me-banner__txt {
+        color: #190A0A;
+        font-size: 16px;
+        line-height: 120%;
+        margin-top: 24px;
+      }
+
+      .me-banner__imgs {
+        display: flex;
+        align-items: center;
+        gap: 24px;
+        margin-top: 24px;
+      }
+
+      .me-banner__imgs .me-banner__img {
+        height: 124px;
+        width: auto;
+        display: block;
+      }
+
+      @media(min-width:768px) and (max-width:1450px) {
+        .me-banner__picture img {
+          min-height: 700px;
+        }
+
+        .me-banner__content .me-banner__box {
+          width: 45%;
+        }
+
+        .me-banner__box .me-banner__logos {
+          gap: 22px;
+        }
+
+        .me-banner__logos .me-banner__logo {
+          max-width: 129px;
+        }
+
+        .me-banner__logos .me-banner__tags {
+          padding: 2px 11px;
+          gap: 11px;
+          border-radius: 3px;
+          font-size: 16px;
+        }
+
+        .me-banner__tle {
+          font-size: 45px;
+          margin-top: 8px;
+        }
+
+        .me-banner__txt {
+          font-size: 13px;
+          margin-top: 19px;
+        }
+
+        .me-banner__imgs {
+          gap: 19px;
+          margin-top: 19px;
+        }
+
+        .me-banner__imgs .me-banner__img {
+          height: 99px;
+        }
+      }
+
+      @media(max-width:767px) {
+        .me-banner__picture img {
+          min-height: auto;
+        }
+
+        .me-banner__content {
+          align-items: flex-start;
+        }
+
+        .me-banner__content .me-banner__box {
+          width: 100%;
+          padding-top: 45px;
+        }
+
+        .me-banner__box .me-banner__logos {
+          gap: 15px;
+        }
+
+        .me-banner__logos .me-banner__logo {
+          max-width: 98px;
+        }
+
+        .me-banner__logos .me-banner__tags {
+          padding: 2px 8px;
+          border-radius: 2px;
+          font-size: 12px;
+        }
+
+        .me-banner__tle {
+          font-size: 30px;
+          margin-top: 10px;
+        }
+
+        .me-banner__txt {
+          font-size: 10px;
+          margin-top: 8px;
+        }
+
+        .me-banner__imgs {
+          gap: 15px;
+          position: absolute;
+          bottom: 20px;
+          justify-content: center;
+          left: 50%;
+          transform: translateX(-50%);
+        }
+
+        .me-banner__imgs .me-banner__img {
+          height: 75px;
+        }
+      }
+{% endstyle %}
+
+<section class="me-banner js-me-top" id="me-overview-{{ section.id }}">
+  <picture class="me-banner__picture">
+    {% if section.settings.image_1_mobile != blank or section.settings.image_1_pc != blank -%}
+      {%- if section.settings.image_1_pc != blank %}
+        <source media="(min-width: 768px)" srcset="{{ section.settings.image_1_pc | image_url: width: 3000 }}">
+      {% endif -%}
+      <img
+        src="{{ section.settings.image_1_mobile | default: section.settings.image_1_pc | image_url: width: 1800 }}"
+        alt="{{ section.settings.image_1_mobile.alt | default: section.settings.image_1_pc.alt | escape }}"
+      >
+    {%- endif %}
+  </picture>
+  <div class="me-banner__content">
+    <div class="container">
+      <div class="me-banner__box">
+        <div class="me-banner__logos">
+          {% if section.settings.image_2 != blank -%}
+            <img
+              src="{{ section.settings.image_2 | image_url: width: 1800 }}"
+              class="me-banner__logo"
+              alt="{{ section.settings.image_2.alt | escape }}"
+            >
+          {%- endif %}
+          <div class="me-banner__tags">{{ section.settings.text_1 | escape }}</div>
+        </div>
+        <h2 class="me-banner__tle">{{ section.settings.text_2 | escape }}</h2>
+        <div class="me-banner__txt">{{ section.settings.text_3 | escape }}</div>
+        <div class="me-banner__imgs">
+          {% if section.settings.image_3 != blank -%}
+            <img
+              src="{{ section.settings.image_3 | image_url: width: 1800 }}"
+              class="me-banner__img"
+              alt="{{ section.settings.image_3.alt | escape }}"
+            >
+          {%- endif %}
+          {% if section.settings.image_3 != blank -%}
+            <img
+              src="{{ section.settings.image_3 | image_url: width: 1800 }}"
+              class="me-banner__img"
+              alt="{{ section.settings.image_3.alt | escape }}"
+            >
+          {%- endif %}
+          {% if section.settings.image_3 != blank -%}
+            <img
+              src="{{ section.settings.image_3 | image_url: width: 1800 }}"
+              class="me-banner__img"
+              alt="{{ section.settings.image_3.alt | escape }}"
+            >
+          {%- endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Banner",
+  "settings": [
+    {
+      "type": "text",
+      "id": "text_1",
+      "label": "Text 1",
+      "default": "New 2026 Upgrade"
+    },
+    {
+      "type": "text",
+      "id": "text_2",
+      "label": "Text 2",
+      "default": "Meet Your First IPL Hair Removal Device"
+    },
+    {
+      "type": "text",
+      "id": "text_3",
+      "label": "Text 3",
+      "default": "Over 10 Million Home Hair Removal Devices Sold Worldwide.*"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_1_pc",
+      "label": "Image 1 PC"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_1_mobile",
+      "label": "Image 1 Mobile"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_2",
+      "label": "Image 2"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_3",
+      "label": "Image 3"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Banner"
+    }
+  ]
+}
+{% endschema %}
