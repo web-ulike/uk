@@ -17,7 +17,7 @@ function isElementInViewport(element,index) {
 
 // 监听滚动事件
 function handleScroll() {
-  const animateElements = document.querySelectorAll('.to-left,.to-edge,.to-top,.slide-to-left,.to-opacity,.to-top1,.text-top,.text-top-btn,.slide-to-left-white,.line-top');
+  const animateElements = document.querySelectorAll('.to-left,.to-edge,.to-top,.slide-to-left,.to-opacity,.to-top1,.text-top,.text-top-btn,.slide-to-left-white,.line-top,.js-me-top');
   animateElements.forEach((element,index) => {
     if (!element.classList.contains('appear') && isElementInViewport(element,index)) {
       element.classList.add('appear');
@@ -27,7 +27,7 @@ function handleScroll() {
 
 // 初始检查，如果元素初始位置已经在视口中，则立即触发动画
 window.initialCheck = function () {
-  const animateElements = document.querySelectorAll('.to-left,.to-edge,.to-top,.slide-to-left,.to-opacity,.to-top1,.text-top,.text-top-btn,.slide-to-left-white,.line-top');
+  const animateElements = document.querySelectorAll('.to-left,.to-edge,.to-top,.slide-to-left,.to-opacity,.to-top1,.text-top,.text-top-btn,.slide-to-left-white,.line-top,.js-me-top');
     animateElements.forEach((element,index) => {
     if (isElementInViewport(element,index)) {
       element.classList.add('appear');
