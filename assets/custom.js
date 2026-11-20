@@ -1004,7 +1004,6 @@ window.customElements.define('custom-swiper-new6', CustomSwiperNew6);
           if (this._connected) this._schedule();
         };
 
-        // 自定义元素连接时，子节点可能还没解析完。
         this._handleChildren = () => {
           if (this._hasMarkup()) {
             this._stopWaiting();
@@ -1101,7 +1100,6 @@ window.customElements.define('custom-swiper-new6', CustomSwiperNew6);
         return parsed;
       }
 
-      // 只查找当前组件的元素，避免嵌套轮播串用箭头。
       _find(selector) {
         return [...this.querySelectorAll(selector)].find(
           element => element.closest('custom-swiper-me') === this
@@ -1131,7 +1129,6 @@ window.customElements.define('custom-swiper-new6', CustomSwiperNew6);
         );
       }
 
-      // ---------- 监听与清理 ----------
 
       _bindMedia() {
         this._unbindMedia();
@@ -1241,8 +1238,6 @@ window.customElements.define('custom-swiper-new6', CustomSwiperNew6);
 
       _buildOptions() {
         const extra = this._json('options');
-
-        // 保留你旧组件的主要默认值。
         const options = {
           slidesPerView: 1.3,
           slidesPerGroup: 1,
@@ -1481,7 +1476,6 @@ window.customElements.define('custom-swiper-new6', CustomSwiperNew6);
         try {
           const options = this._buildOptions();
 
-          // 不允许 options 把实际挂载元素改到其他组件。
           delete options.el;
 
           // 统一在实例事件绑定后初始化。
