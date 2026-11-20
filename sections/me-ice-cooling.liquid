@@ -1,0 +1,266 @@
+{% style %}
+  .me-ice-cooling {
+        position: relative;
+      }
+
+      .me-ice-cooling__content {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        inset: 0;
+        display: flex;
+        align-items: center;
+      }
+
+      .me-ice-cooling__wrapper {
+        width: 100%;
+        max-width: 550px;
+      }
+
+      .me-ice-cooling__wrapper .me-ice-cooling__eyebrow {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 26px;
+        line-height: 1.2;
+        font-weight: 400;
+        color: #E0004D;
+      }
+
+      .me-ice-cooling__wrapper .me-ice-cooling__tle {
+        font-size: 48px;
+        line-height: 1.25;
+        font-weight: 400;
+        margin: 16px 0 0;
+      }
+
+      .me-ice-cooling__wrapper .me-ice-cooling__divider {
+        width: 124px;
+        height: 2px;
+        background: #E0004D;
+        margin: 20px 0 35px;
+      }
+
+      .me-ice-cooling__description {
+        font-size: 18px;
+        line-height: 1.5;
+        color: #3F3636;
+
+      }
+
+      .me-ice-cooling__bt {
+        font-size: 18px;
+        font-weight: 400;
+        line-height: 1.2;
+        color: #3F3636;
+      }
+
+      .me-ice-cooling__bt img {
+        max-width: 380px;
+        width: 100%;
+      }
+
+      .me-ice-cooling__picture img {
+        min-height: 930px;
+
+      }
+
+      .me-ice-cooling__wrapper .me-ice-cooling__eyebrow img {
+        height: 40px;
+        width: auto;
+      }
+
+      @media (min-width: 768px) and (max-width: 1450px) {
+        .me-ice-cooling__wrapper {
+          max-width: 440px;
+        }
+
+        .me-ice-cooling__wrapper .me-ice-cooling__eyebrow img {
+          height: 32px;
+        }
+
+        .me-ice-cooling__wrapper .me-ice-cooling__eyebrow {
+          gap: 8px;
+          font-size: 21px;
+        }
+
+        .me-ice-cooling__wrapper .me-ice-cooling__tle {
+          font-size: 38px;
+          margin: 13px 0 0;
+        }
+
+        .me-ice-cooling__wrapper .me-ice-cooling__divider {
+          width: 99px;
+          height: 2px;
+          margin: 16px 0 28px;
+        }
+
+        .me-ice-cooling__description {
+          font-size: 14px;
+        }
+
+        .me-ice-cooling__bt {
+          font-size: 14px;
+        }
+
+        .me-ice-cooling__bt img {
+          max-width: 304px;
+        }
+
+        .me-ice-cooling__picture img {
+          min-height: 744px;
+        }
+      }
+
+      @media (max-width: 767px) {
+        .me-ice-cooling__content {
+          align-items: flex-start;
+        }
+
+        .me-ice-cooling__wrapper {
+          padding-top: 40px;
+          text-align: center;
+        }
+
+        .me-ice-cooling__wrapper .me-ice-cooling__eyebrow {
+          font-size: 16px;
+          gap: 6px;
+          justify-content: center;
+        }
+
+        .me-ice-cooling__wrapper .me-ice-cooling__eyebrow img {
+          height: 21px;
+        }
+
+        .me-ice-cooling__wrapper .me-ice-cooling__tle {
+          font-size: 24px;
+          margin-top: 8px;
+        }
+
+        .me-ice-cooling__wrapper .me-ice-cooling__divider {
+          width: 61px;
+          height: 2px;
+          margin: 8px auto 8px;
+        }
+
+        .me-ice-cooling__description {
+          font-size: 12px;
+
+        }
+
+        .me-ice-cooling__bt {
+          position: absolute;
+          bottom: 36px;
+          width: 100%;
+          left: 0;
+          font-size: 12px;
+
+        }
+
+        .me-ice-cooling__picture img {
+          min-height: auto;
+        }
+
+        @media screen and (max-width:370px) {}
+      }
+{% endstyle %}
+
+<section class="me-ice-cooling">
+  <picture class="me-ice-cooling__picture">
+    {% if section.settings.image_1_mobile != blank or section.settings.image_1_pc != blank -%}
+      {%- if section.settings.image_1_pc != blank %}
+        <source media="(min-width: 768px)" srcset="{{ section.settings.image_1_pc | image_url: width: 3000 }}">
+      {% endif -%}
+      <img
+        src="{{ section.settings.image_1_mobile | default: section.settings.image_1_pc | image_url: width: 1800 }}"
+        alt="{{ section.settings.image_1_mobile.alt | default: section.settings.image_1_pc.alt | escape }}"
+      >
+    {%- endif %}
+  </picture>
+  <div class="me-ice-cooling__content">
+    <div class="container">
+      <div class="me-ice-cooling__wrapper">
+        <div class="me-ice-cooling__eyebrow">
+          {% if section.settings.image_2 != blank -%}
+            <img
+              class="me-ice-cooling__icon"
+              {{ section.settings.image_2 | image_url: width: 1800 }}
+              alt="{{ section.settings.image_2.alt | escape }}"
+            >
+          {%- endif %}
+          <span>{{ section.settings.text_1 | escape }}</span>
+        </div>
+        <h3 class="me-ice-cooling__tle">{{ section.settings.text_2 | escape }}</h3>
+        <div class="me-ice-cooling__divider"></div>
+        <div class="me-ice-cooling__description">{{ section.settings.text_3 | escape }}</div>
+        <div class="me-ice-cooling__bt">
+          {% if section.settings.image_3 != blank -%}
+            <img
+              src="{{ section.settings.image_3 | image_url: width: 1800 }}"
+              class="me-ice-cooling__bt-img"
+              alt="{{ section.settings.image_3.alt | escape }}"
+            >
+          {%- endif %}
+          <div class="me-ice-cooling__bt-txt">{{ section.settings.text_4 | escape }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Ice Cooling",
+  "settings": [
+    {
+      "type": "text",
+      "id": "text_1",
+      "label": "Text 1",
+      "default": "Sapphire Ice Cooling:"
+    },
+    {
+      "type": "text",
+      "id": "text_2",
+      "label": "Text 2",
+      "default": "Cooler Sessions. More Comfort."
+    },
+    {
+      "type": "text",
+      "id": "text_3",
+      "label": "Text 3",
+      "default": "Ulike ME combines powerful IPL energy with Sapphire Ice-Cooling\n              Technology, cooling the skin on contact for a more comfortable hair removal experience from head to toe."
+    },
+    {
+      "type": "text",
+      "id": "text_4",
+      "label": "Text 4",
+      "default": "callout: Cooling Down to X°C"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_1_pc",
+      "label": "Image 1 PC"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_1_mobile",
+      "label": "Image 1 Mobile"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_2",
+      "label": "Image 2"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_3",
+      "label": "Image 3"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Ice Cooling"
+    }
+  ]
+}
+{% endschema %}
