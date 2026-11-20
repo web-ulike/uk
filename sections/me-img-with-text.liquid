@@ -1,0 +1,225 @@
+
+{% style %}
+.me-img-with-text {
+      padding: 100px 0;
+    }
+
+    .me-img-with-text__fx {
+      display: flex;
+      gap: 92px;
+    }
+
+    .me-img-with-text__eyebrow {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 26px;
+      color: #E0004D;
+      line-height: 1.2;
+    }
+
+    .me-img-with-text__eyebrow img {
+      height: 40px;
+      width: auto
+    }
+
+    .me-img-with-text__rt .me-img-with-text__tle {
+      font-size: 48px;
+      line-height: 1.25;
+      margin: 16px 0 0;
+    }
+
+    .me-img-with-text__descripte {
+      font-size: 18px;
+      line-height: 1.58;
+      margin-top: 20px;
+    }
+
+    .me-img-with-text__divider {
+      width: 124px;
+      height: 2px;
+      background: #E0004D;
+      margin: 40px 0 60px;
+    }
+
+    .me-img-with-text__note {
+      color: #8A8A8A;
+      font-size: 12px;
+      margin-top: 23px;
+    }
+
+    @media (min-width: 768px) and (max-width: 1450px) {
+      .me-img-with-text__fx {
+        gap: 74px;
+      }
+
+      .me-img-with-text__eyebrow {
+        gap: 8px;
+        font-size: 21px;
+      }
+
+      .me-img-with-text__eyebrow img {
+        height: 32px;
+      }
+
+      .me-img-with-text__rt .me-img-with-text__tle {
+        font-size: 38px;
+        margin: 13px 0 0;
+      }
+
+      .me-img-with-text__descripte {
+        font-size: 15px;
+        margin-top: 16px;
+      }
+
+      .me-img-with-text__divider {
+        width: 99px;
+        margin: 32px 0 48px;
+      }
+
+      .me-img-with-text__note {
+        font-size: 10px;
+        margin-top: 18px;
+      }
+    }
+
+    @media (max-width: 767px) {
+      .me-img-with-text {
+        padding: 50px 0 40px;
+      }
+
+      .me-img-with-text__fx {
+        flex-direction: column;
+        gap: 0px;
+      }
+
+      .me-img-with-text__eyebrow {
+        gap: 10px;
+        font-size: 14px;
+        order: 1;
+      }
+
+      .me-img-with-text__eyebrow img {
+        height: 21px;
+      }
+
+      .me-img-with-text__rt .me-img-with-text__tle {
+        font-size: 24px;
+        margin: 6px 0 0 0;
+        order: 2;
+      }
+
+      .me-img-with-text__descripte {
+        font-size: 12px;
+        margin-top: 0;
+        order: 4;
+      }
+
+      .me-img-with-text__divider {
+        width: 61px;
+        margin: 20px 0;
+        order: 3;
+      }
+
+      .me-img-with-text__note {
+        font-size: 12px;
+        margin-top: 20px;
+        order: 5;
+      }
+
+      .me-img-with-text__rt {
+        display: contents;
+      }
+
+      .me-img-with-text__picture {
+        order: 6;
+        margin-top: 50px;
+      }
+
+      .me-img-with-text__imgs {
+        order: 7;
+        margin-top: 15px;
+      }
+    }
+{% endstyle %}
+
+<section class="me-img-with-text">
+      <div class="container">
+        <div class="me-img-with-text__fx">
+          <picture class="me-img-with-text__picture">
+            
+            {% if section.settings.image_1_mobile != blank or section.settings.image_1_pc != blank %}{% if section.settings.image_1_pc != blank %}<source media="(min-width: 768px)" srcset="{{ section.settings.image_1_pc | image_url: width: 3000 }}">{% endif %}<img src="{{ section.settings.image_1_mobile | default: section.settings.image_1_pc | image_url: width: 1800 }}" alt="{{ section.settings.image_1_mobile.alt | default: section.settings.image_1_pc.alt | escape }}">{% endif %}
+          </picture>
+          <div class="me-img-with-text__rt">
+            <div class="me-img-with-text__eyebrow">
+              {% if section.settings.image_2 != blank %}<img src="{{ section.settings.image_2 | image_url: width: 1800 }}" alt="{{ section.settings.image_2.alt | escape }}">{% endif %}
+              <span>{{ section.settings.text_1 | escape }}</span>
+            </div>
+            <h3 class="me-img-with-text__tle">{{ section.settings.text_2 | escape }}</h3>
+            <div class="me-img-with-text__descripte">{{ section.settings.text_3 | escape }}</div>
+            <div class="me-img-with-text__divider"></div>
+            <div class="me-img-with-text__imgs">
+              {% if section.settings.image_3 != blank %}<img src="{{ section.settings.image_3 | image_url: width: 1800 }}" alt="{{ section.settings.image_3.alt | escape }}">{% endif %}
+            </div>
+            <div class="me-img-with-text__note">{{ section.settings.text_4 | escape }}</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+{% schema %}
+{
+  "name": "Img With Text",
+  "settings": [
+    {
+      "type": "text",
+      "id": "text_1",
+      "label": "Text 1",
+      "default": "Bikini Mode"
+    },
+    {
+      "type": "text",
+      "id": "text_2",
+      "label": "Text 2",
+      "default": "Cooler Sessions. More Comfort."
+    },
+    {
+      "type": "text",
+      "id": "text_3",
+      "label": "Text 3",
+      "default": "Designed for coarser, stubborn hair in areas like the bikini line\n              and underarms, delivering targeted IPL energy for long-lasting hair reduction."
+    },
+    {
+      "type": "text",
+      "id": "text_4",
+      "label": "Text 4",
+      "default": "*Lab-tested peak energy, CVC Report WTS2025-5325."
+    },
+    {
+      "type": "image_picker",
+      "id": "image_1_pc",
+      "label": "Image 1 PC"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_1_mobile",
+      "label": "Image 1 Mobile"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_2",
+      "label": "Image 2"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_3",
+      "label": "Image 3"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Img With Text"
+    }
+  ]
+}
+{% endschema %}
