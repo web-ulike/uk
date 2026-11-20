@@ -1,0 +1,516 @@
+
+{% style %}
+.me-nav {
+      --me-nav-top: var(--header-height, 0px);
+      position: sticky;
+      top: var(--me-nav-top);
+      z-index: 50;
+      width: 100%;
+      background: #fff;
+      border-top: 1px solid #DDD;
+      border-bottom: 1px solid #DDD;
+    }
+
+    .me-nav,
+    .me-nav * {
+      box-sizing: border-box;
+    }
+
+    .me-nav__container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 40px;
+      min-height: 78px;
+      padding: 0 60px;
+    }
+
+    .me-nav__scroll {
+      flex: 1;
+      min-width: 0;
+      overflow-x: auto;
+      scrollbar-width: none;
+      overscroll-behavior-x: contain;
+    }
+
+    .me-nav__scroll::-webkit-scrollbar {
+      display: none;
+    }
+
+    .me-nav__list {
+      display: flex;
+      align-items: center;
+      gap: 64px;
+      width: max-content;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .me-nav__item {
+      flex-shrink: 0;
+      margin: 0;
+      padding: 0;
+    }
+
+    .me-nav__link {
+      display: flex;
+      align-items: center;
+      min-height: 78px;
+      padding: 0;
+      color: #858585;
+      font-family: inherit;
+      font-size: 20px;
+      font-weight: 400;
+      line-height: 1.2;
+      text-decoration: none;
+      white-space: nowrap;
+      transition: color .25s ease;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .me-nav__link.is-active {
+      color: #E0004D;
+    }
+
+    .me-nav__buy {
+      display: inline-flex;
+      flex-shrink: 0;
+      align-items: center;
+      justify-content: center;
+      width: 182px;
+      min-height: 42px;
+      padding: 12px 24px;
+      border-radius: 4px;
+      background: #E0004D;
+      color: #fff;
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 1.2;
+      text-decoration: none;
+      white-space: nowrap;
+      transition: background .25s ease, transform .25s ease;
+    }
+
+    .me-nav__link:focus-visible,
+    .me-nav__buy:focus-visible {
+      outline: 2px solid #E0004D;
+      outline-offset: -4px;
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+      .me-nav__link:hover {
+        color: #E0004D;
+      }
+
+      .me-nav__buy:hover {
+        background: #C90045;
+        transform: translateY(-1px);
+      }
+    }
+
+    @media (min-width: 768px) and (max-width: 1450px) {
+      .me-nav__container {
+        gap: 32px;
+        min-height: 62px;
+        padding: 0 48px;
+      }
+
+      .me-nav__list {
+        gap: 51px;
+      }
+
+      .me-nav__link {
+        min-height: 62px;
+        font-size: 16px;
+      }
+
+      .me-nav__buy {
+        width: 146px;
+        min-height: 34px;
+        padding: 10px 19px;
+        border-radius: 3px;
+        font-size: 11px;
+      }
+    }
+
+    @media (max-width: 767px) {
+      .me-nav__container {
+        display: block;
+        min-height: 48px;
+        padding: 0;
+      }
+
+      .me-nav__list {
+        gap: 30px;
+        padding: 0 16px;
+      }
+
+      .me-nav__link {
+        min-height: 48px;
+        font-size: 12px;
+      }
+
+      .me-nav__buy {
+        display: none;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .me-nav * {
+        transition: none !important;
+      }
+    }
+{% endstyle %}
+
+<nav class="me-nav" aria-label="Product navigation">
+    <div class="me-nav__container">
+      <div class="me-nav__scroll">
+        <ul class="me-nav__list">
+          <li class="me-nav__item">
+            <a class="me-nav__link is-active" href="#me-overview" aria-current="location">{{ section.settings.text_1 | escape }}</a>
+          </li>
+
+          <li class="me-nav__item">
+            <a class="me-nav__link" href="#me-results">{{ section.settings.text_2 | escape }}</a>
+          </li>
+
+          <li class="me-nav__item">
+            <a class="me-nav__link" href="#me-safety">{{ section.settings.text_3 | escape }}</a>
+          </li>
+
+          <li class="me-nav__item">
+            <a class="me-nav__link" href="#me-technology">{{ section.settings.text_4 | escape }}</a>
+          </li>
+
+          <li class="me-nav__item">
+            <a class="me-nav__link" href="#me-application">{{ section.settings.text_5 | escape }}</a>
+          </li>
+
+          <li class="me-nav__item">
+            <a class="me-nav__link" href="#me-comparison">{{ section.settings.text_6 | escape }}</a>
+          </li>
+
+          <li class="me-nav__item">
+            <a class="me-nav__link" href="#me-faq">{{ section.settings.text_7 | escape }}</a>
+          </li>
+        </ul>
+      </div>
+
+      <a class="me-nav__buy" href="#me-purchase">{{ section.settings.text_8 | escape }}</a>
+    </div>
+  </nav>
+<script>
+    (() => {
+      function initMeNav() {
+        document.querySelectorAll('.me-nav').forEach(nav => {
+          if (nav.dataset.initialized) return;
+          nav.dataset.initialized = 'true';
+
+          const scroller = nav.querySelector('.me-nav__scroll');
+          const links = [...nav.querySelectorAll('.me-nav__link')];
+          const reducedMotion = window.matchMedia(
+            '(prefers-reduced-motion: reduce)'
+          );
+
+          let activeLink = null;
+          let frame = 0;
+          let scrollingTo = null;
+          let cancelScroll = null;
+
+          function getTarget(link) {
+            const href = link.getAttribute('href');
+            if (!href || !href.startsWith('#')) return null;
+
+            return document.getElementById(href.slice(1));
+          }
+
+          function getOffset() {
+            const top = parseFloat(getComputedStyle(nav).top) || 0;
+            return Math.max(0, top) + nav.getBoundingClientRect().height;
+          }
+
+          // 只横向滚动导航，避免 scrollIntoView 带动整个页面。
+          function revealLink(link) {
+            const itemRect = link.getBoundingClientRect();
+            const scrollRect = scroller.getBoundingClientRect();
+            const padding = 16;
+            let distance = 0;
+
+            if (itemRect.left < scrollRect.left + padding) {
+              distance = itemRect.left - scrollRect.left - padding;
+            } else if (itemRect.right > scrollRect.right - padding) {
+              distance = itemRect.right - scrollRect.right + padding;
+            }
+
+            if (distance) {
+              scroller.scrollBy({
+                left: distance,
+                behavior: reducedMotion.matches ? 'auto' : 'smooth'
+              });
+            }
+          }
+
+          function setActive(link) {
+            if (!link || link === activeLink) return;
+            activeLink = link;
+
+            links.forEach(item => {
+              const selected = item === link;
+              item.classList.toggle('is-active', selected);
+
+              if (selected) {
+                item.setAttribute('aria-current', 'location');
+              } else {
+                item.removeAttribute('aria-current');
+              }
+            });
+
+            revealLink(link);
+          }
+
+          function updateActive() {
+            if (scrollingTo) return;
+
+            const entries = links
+              .map(link => ({ link, target: getTarget(link) }))
+              .filter(item =>
+                item.target && item.target.getClientRects().length
+              )
+              .map(item => ({
+                ...item,
+                top: item.target.getBoundingClientRect().top
+              }))
+              .sort((a, b) => a.top - b.top);
+
+            if (!entries.length) return;
+
+            const line = getOffset() + 8;
+            let current = entries[0];
+
+            // 以导航下边缘作为切换线，适用于高矮不同的模块。
+            for (const item of entries) {
+              if (item.top <= line) {
+                current = item;
+              } else {
+                break;
+              }
+            }
+
+            // 最后一块较短、无法滚到切换线时也能正确选中。
+            const pageHeight = document.documentElement.scrollHeight;
+            const atBottom =
+              window.scrollY + window.innerHeight >= pageHeight - 2;
+            const last = entries[entries.length - 1];
+
+            if (atBottom && last.top < window.innerHeight) {
+              current = last;
+            }
+
+            setActive(current.link);
+          }
+
+          function scheduleUpdate() {
+            if (frame) return;
+
+            frame = requestAnimationFrame(() => {
+              frame = 0;
+              updateActive();
+            });
+          }
+
+          function jumpTo(target, link) {
+            if (cancelScroll) cancelScroll();
+
+            if (link) setActive(link);
+            scrollingTo = target;
+
+            const maxScroll = Math.max(
+              0,
+              document.documentElement.scrollHeight - window.innerHeight
+            );
+
+            const destination = Math.min(
+              maxScroll,
+              Math.max(
+                0,
+                window.scrollY +
+                target.getBoundingClientRect().top -
+                getOffset()
+              )
+            );
+
+            const start = window.scrollY;
+            const distance = destination - start;
+            const duration = reducedMotion.matches ? 0 : 650;
+            const startTime = performance.now();
+
+            let animationFrame = 0;
+            let finished = false;
+
+            function finish() {
+              if (finished) return;
+              finished = true;
+
+              cancelAnimationFrame(animationFrame);
+              scrollingTo = null;
+              cancelScroll = null;
+
+              window.removeEventListener('wheel', interrupt);
+              window.removeEventListener('touchstart', interrupt);
+              window.removeEventListener('keydown', onKeydown);
+
+              scheduleUpdate();
+            }
+
+            function interrupt() {
+              finish();
+            }
+
+            function onKeydown(event) {
+              if ([
+                'ArrowUp', 'ArrowDown', 'PageUp', 'PageDown',
+                'Home', 'End', ' '
+              ].includes(event.key)) {
+                interrupt();
+              }
+            }
+
+            // 用户主动滚动时立即交还控制。
+            window.addEventListener('wheel', interrupt, { passive: true });
+            window.addEventListener('touchstart', interrupt, { passive: true });
+            window.addEventListener('keydown', onKeydown);
+
+            cancelScroll = finish;
+
+            function tick(now) {
+              if (finished) return;
+
+              const progress = duration
+                ? Math.min(1, (now - startTime) / duration)
+                : 1;
+              const eased = 1 - Math.pow(1 - progress, 4);
+
+              window.scrollTo({
+                top: start + distance * eased,
+                behavior: 'instant'
+              });
+
+              if (progress < 1) {
+                animationFrame = requestAnimationFrame(tick);
+              } else {
+                finish();
+              }
+            }
+
+            animationFrame = requestAnimationFrame(tick);
+          }
+
+          nav.addEventListener('click', event => {
+            const link = event.target.closest('a[href^="#"]');
+            if (!link || !nav.contains(link)) return;
+
+            if (
+              event.defaultPrevented ||
+              event.button !== 0 ||
+              event.ctrlKey ||
+              event.metaKey ||
+              event.shiftKey ||
+              event.altKey
+            ) return;
+
+            const target = getTarget(link);
+            if (!target) return;
+
+            event.preventDefault();
+
+            jumpTo(
+              target,
+              link.classList.contains('me-nav__link') ? link : null
+            );
+          });
+
+          window.addEventListener('scroll', scheduleUpdate, { passive: true });
+          window.addEventListener('resize', scheduleUpdate);
+          window.addEventListener('load', scheduleUpdate, { once: true });
+
+          const resizeObserver = new ResizeObserver(scheduleUpdate);
+          resizeObserver.observe(nav);
+
+          links.forEach(link => {
+            const target = getTarget(link);
+            if (target) resizeObserver.observe(target);
+          });
+
+          scheduleUpdate();
+        });
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initMeNav, { once: true });
+      } else {
+        initMeNav();
+      }
+    })();
+  </script>
+{% schema %}
+{
+  "name": "Nav",
+  "settings": [
+    {
+      "type": "text",
+      "id": "text_1",
+      "label": "Text 1",
+      "default": "Overview"
+    },
+    {
+      "type": "text",
+      "id": "text_2",
+      "label": "Text 2",
+      "default": "Results"
+    },
+    {
+      "type": "text",
+      "id": "text_3",
+      "label": "Text 3",
+      "default": "Safety"
+    },
+    {
+      "type": "text",
+      "id": "text_4",
+      "label": "Text 4",
+      "default": "Technology"
+    },
+    {
+      "type": "text",
+      "id": "text_5",
+      "label": "Text 5",
+      "default": "Application"
+    },
+    {
+      "type": "text",
+      "id": "text_6",
+      "label": "Text 6",
+      "default": "Comparison"
+    },
+    {
+      "type": "text",
+      "id": "text_7",
+      "label": "Text 7",
+      "default": "FAQ"
+    },
+    {
+      "type": "text",
+      "id": "text_8",
+      "label": "Text 8",
+      "default": "BUY NOW"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Nav"
+    }
+  ]
+}
+{% endschema %}
