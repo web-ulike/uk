@@ -70,22 +70,11 @@
       transition: transform .45s ease;
     }
 
-    .me-technology__icon svg {
+    .me-technology__icon img {
       display: block;
       width: 100%;
       height: 100%;
-      overflow: visible;
-      fill: none;
-      stroke: currentColor;
-      stroke-width: 2.5;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-    }
-
-    .me-technology__icon text {
-      fill: currentColor;
-      stroke: none;
-      font-family: Arial, sans-serif;
+      object-fit: contain;
     }
 
     .me-technology__name {
@@ -382,71 +371,36 @@
           watch-overflow="true" navigation="true" pagination="false">
           <div class="me-technology__scroll swiper-container">
             <div class="me-technology__grid swiper-wrapper">
-              <article class="me-technology__card swiper-slide js-me-top" style="--me-delay:0ms">
-                <div class="me-technology__inner">
-                  <div class="me-technology__icon" aria-hidden="true"><svg viewBox="0 0 80 80">
-                      <path d="M23 42V13a7 7 0 0 1 14 0v29a16 16 0 1 1-14 0M30 30v26M45 9h8M45 14h8" /><text x="43"
-                        y="33" font-size="12">{{ section.settings.text_3 | escape }}</text>
-                    </svg></div>
-                  <h3 class="me-technology__name">{{ section.settings.text_4 | escape }}</h3>
-                  <p class="me-technology__desc">{{ section.settings.text_5 | escape }}</p>
-                </div>
-              </article>
-              <article class="me-technology__card swiper-slide js-me-top" style="--me-delay:90ms">
-                <div class="me-technology__inner">
-                  <div class="me-technology__icon" aria-hidden="true"><svg viewBox="0 0 80 80">
-                      <path
-                        d="M5 8v8q0 22 22 22h26q22 0 22-22V8M30 29h20M27 45q13 10 26 0M22 54q18 15 36 0M15 63q25 21 50 0" />
-                    </svg></div>
-                  <h3 class="me-technology__name">{{ section.settings.text_6 | escape }}</h3>
-                  <p class="me-technology__desc">{{ section.settings.text_7 | escape }}</p>
-                </div>
-              </article>
-              <article class="me-technology__card swiper-slide js-me-top" style="--me-delay:180ms">
-                <div class="me-technology__inner">
-                  <div class="me-technology__icon" aria-hidden="true"><svg viewBox="0 0 80 80">
-                      <path d="M10 25a33 33 0 0 1 61 14M64 33l8 8 6-8M70 54A33 33 0 0 1 9 40M2 44l7-8 7 8" /><text
-                        x="40" y="45" text-anchor="middle" font-size="14">{{ section.settings.text_8 | escape }}</text>
-                    </svg></div>
-                  <h3 class="me-technology__name">{{ section.settings.text_9 | escape }}</h3>
-                  <p class="me-technology__desc">{{ section.settings.text_10 | escape }}</p>
-                </div>
-              </article>
-              <article class="me-technology__card swiper-slide js-me-top" style="--me-delay:0ms">
-                <div class="me-technology__inner">
-                  <div class="me-technology__icon" aria-hidden="true"><svg viewBox="0 0 80 80">
-                      <path
-                        d="M8 58C14 25 26 21 49 20c12-1 20-3 23-6 7-6 0 24-7 31-10 12-22 11-34 10-10 0-17 2-21 9-5 4-6-1-2-6ZM8 58q15-28 47-29" />
-                    </svg></div>
-                  <h3 class="me-technology__name">{{ section.settings.text_11 | escape }}</h3>
-                  <p class="me-technology__desc">{{ section.settings.text_12 | escape }}</p>
-                </div>
-              </article>
-              <article class="me-technology__card swiper-slide js-me-top" style="--me-delay:90ms">
-                <div class="me-technology__inner">
-                  <div class="me-technology__icon" aria-hidden="true"><svg viewBox="0 0 80 80">
-                      <circle cx="40" cy="46" r="30" />
-                      <path d="M28 4h24M40 4v23M10 46h9M61 46h9M40 67v9" /><text x="40" y="48" text-anchor="middle"
-                        font-size="23">{{ section.settings.text_13 | escape }}</text><text x="40" y="61" text-anchor="middle" font-size="11">{{ section.settings.text_14 | escape }}</text>
-                    </svg></div>
-                  <h3 class="me-technology__name">{{ section.settings.text_15 | escape }}</h3>
-                  <p class="me-technology__desc">{{ section.settings.text_16 | escape }}</p>
-                </div>
-              </article>
-              <article class="me-technology__card swiper-slide js-me-top" style="--me-delay:180ms">
-                <div class="me-technology__inner">
-                  <div class="me-technology__icon" aria-hidden="true"><svg viewBox="0 0 80 80">
-                      <path
-                        d="M40 9C24 27 14 45 20 57c5 11 24 11 25-4 1-10-14-19-5-44ZM3 49h10c-5 32 39 34 38 4M56 9v32M44 30l12 12 13-12M53 49h21" />
-                    </svg></div>
-                  <h3 class="me-technology__name">{{ section.settings.text_17 | escape }}</h3>
-                  <p class="me-technology__desc">{{ section.settings.text_18 | escape }}</p>
-                </div>
-              </article>
+              {% for block in section.blocks %}
+                <article class="me-technology__card swiper-slide js-me-top" style="--me-delay: {{ forloop.index0 | times: 90 }}ms" {{ block.shopify_attributes }}>
+                  <div class="me-technology__inner">
+                    <div class="me-technology__icon" aria-hidden="true">
+                      {% if block.settings.icon != blank %}
+                        <img
+                          src="{{ block.settings.icon | image_url: width: 240 }}"
+                          alt="{{ block.settings.icon.alt | escape }}"
+                          width="80"
+                          height="80"
+                          loading="lazy"
+                        >
+                      {% endif %}
+                    </div>
+                    {% if block.settings.title != blank %}
+                      <h3 class="me-technology__name">{{ block.settings.title | escape }}</h3>
+                    {% endif %}
+                    {% if block.settings.description != blank %}
+                      <p class="me-technology__desc">{{ block.settings.description | escape }}</p>
+                    {% endif %}
+                    {% if block.settings.note != blank %}
+                      <p class="me-technology__note">{{ block.settings.note | escape }}</p>
+                    {% endif %}
+                  </div>
+                </article>
+              {% endfor %}
+
             </div>
           </div>
-          <!-- <p class="me-technology__note">{{ section.settings.text_19 | escape }}</p> -->
-          <div class="me-technology__navagation">
+<div class="me-technology__navagation">
             <div class="me-technology__navagation__arrows swiper-prev">
               <svg xmlns="http://www.w3.org/2000/svg" width="30" height="23" viewBox="0 0 30 23" fill="none">
                 <g clip-path="url(#clip0_7980_1345)">
@@ -492,121 +446,93 @@
     {
       "type": "text",
       "id": "text_1",
-      "label": "Text 1",
+      "label": "Heading",
       "default": "Advanced Technology. Visible Results."
     },
     {
       "type": "text",
       "id": "text_2",
-      "label": "Text 2",
+      "label": "Subheading",
       "default": "Engineered for fast, comfortable and efficient IPL hair removal at home."
-    },
+    }
+  ],
+  "max_blocks": 12,
+  "blocks": [
     {
-      "type": "text",
-      "id": "text_3",
-      "label": "Text 3",
-      "default": "65°F"
-    },
-    {
-      "type": "text",
-      "id": "text_4",
-      "label": "Text 4",
-      "default": "Sapphire Ice-Cooling Technology"
-    },
-    {
-      "type": "text",
-      "id": "text_5",
-      "label": "Text 5",
-      "default": "Cooling below 15.6°C for skin comfort*"
-    },
-    {
-      "type": "text",
-      "id": "text_6",
-      "label": "Text 6",
-      "default": "Up to 21J Energy Output"
-    },
-    {
-      "type": "text",
-      "id": "text_7",
-      "label": "Text 7",
-      "default": "Ideal for coarse and stubborn hair"
-    },
-    {
-      "type": "text",
-      "id": "text_8",
-      "label": "Text 8",
-      "default": "AUTO"
-    },
-    {
-      "type": "text",
-      "id": "text_9",
-      "label": "Text 9",
-      "default": "AutoGlide Flash Mode"
-    },
-    {
-      "type": "text",
-      "id": "text_10",
-      "label": "Text 10",
-      "default": "Continuous flashes for faster treatments"
-    },
-    {
-      "type": "text",
-      "id": "text_11",
-      "label": "Text 11",
-      "default": "287g Lightweight Design"
-    },
-    {
-      "type": "text",
-      "id": "text_12",
-      "label": "Text 12",
-      "default": "Tailored settings for different body areas and hair types"
-    },
-    {
-      "type": "text",
-      "id": "text_13",
-      "label": "Text 13",
-      "default": "17"
-    },
-    {
-      "type": "text",
-      "id": "text_14",
-      "label": "Text 14",
-      "default": "min"
-    },
-    {
-      "type": "text",
-      "id": "text_15",
-      "label": "Text 15",
-      "default": "17 Min Full-Body Session*"
-    },
-    {
-      "type": "text",
-      "id": "text_16",
-      "label": "Text 16",
-      "default": "Complete a full-body session at home"
-    },
-    {
-      "type": "text",
-      "id": "text_17",
-      "label": "Text 17",
-      "default": "94.8% Hair Density Reduction*"
-    },
-    {
-      "type": "text",
-      "id": "text_18",
-      "label": "Text 18",
-      "default": "Visible results in 4 weeks*"
-    },
-    {
-      "type": "text",
-      "id": "text_19",
-      "label": "Text 19",
-      "default": "*Based on internal Ulike lab testing. Individual results may vary."
+      "type": "technology_card",
+      "name": "Technology card",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "icon",
+          "label": "Icon image"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Technology"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description"
+        },
+        {
+          "type": "textarea",
+          "id": "note",
+          "label": "Note (optional)"
+        }
+      ]
     }
   ],
   "presets": [
     {
-      "name": "Me Product Technology"
+      "name": "Me Product Technology",
+      "blocks": [
+        {
+          "type": "technology_card",
+          "settings": {
+            "title": "Sapphire Ice-Cooling Technology",
+            "description": "Cooling below 15.6°C for skin comfort*"
+          }
+        },
+        {
+          "type": "technology_card",
+          "settings": {
+            "title": "Up to 21J Energy Output",
+            "description": "Ideal for coarse and stubborn hair"
+          }
+        },
+        {
+          "type": "technology_card",
+          "settings": {
+            "title": "AutoGlide Flash Mode",
+            "description": "Continuous flashes for faster treatments"
+          }
+        },
+        {
+          "type": "technology_card",
+          "settings": {
+            "title": "287g Lightweight Design",
+            "description": "Tailored settings for different body areas and hair types"
+          }
+        },
+        {
+          "type": "technology_card",
+          "settings": {
+            "title": "17 Min Full-Body Session*",
+            "description": "Complete a full-body session at home"
+          }
+        },
+        {
+          "type": "technology_card",
+          "settings": {
+            "title": "94.8% Hair Density Reduction*",
+            "description": "Visible results in 4 weeks*"
+          }
+        }
+      ]
     }
   ]
 }
