@@ -939,3 +939,659 @@ class CustomSwiperNew6 extends HTMLElement {
 }
 
 window.customElements.define('custom-swiper-new6', CustomSwiperNew6);
+
+
+
+    class CustomSwiperMe extends HTMLElement {
+      static get observedAttributes() {
+        return [
+          'options',
+          'breakpoints',
+          'disable-on',
+          'mobile-breakpoint',
+          'slides-per-view',
+          'slides-per-group',
+          'space-between',
+          'speed',
+          'initial-slide',
+          'direction',
+          'effect',
+          'loop',
+          'rewind',
+          'centered-slides',
+          'auto-height',
+          'watch-overflow',
+          'grab-cursor',
+          'allow-touch-move',
+          'navigation',
+          'pagination',
+          'pagination-type',
+          'pagination-clickable',
+          'scrollbar',
+          'scrollbar-draggable',
+          'autoplay',
+          'autoplay-delay',
+          'autoplay-disable-on-interaction',
+          'autoplay-pause-on-hover',
+          'grid-rows',
+          'grid-fill',
+          'keyboard',
+          'mousewheel',
+          'free-mode',
+          'respect-reduced-motion'
+        ];
+      }
+
+      constructor() {
+        super();
+
+        this.swiper = null;
+
+        this._connected = false;
+        this._queued = false;
+        this._needsRebuild = false;
+        this._savedIndex = null;
+
+        this._mobileMedia = null;
+        this._motionMedia = null;
+        this._pendingObserver = null;
+        this._resizeObserver = null;
+
+        this._handleMediaChange = () => this._schedule();
+        this._handleMotionChange = () => this._schedule(true);
+
+        this._handleReady = () => {
+          if (this._connected) this._schedule();
+        };
+
+        // 自定义元素连接时，子节点可能还没解析完。
+        this._handleChildren = () => {
+          if (this._hasMarkup()) {
+            this._stopWaiting();
+            this._schedule();
+          }
+        };
+      }
+
+      connectedCallback() {
+        if (this._connected) return;
+
+        this._connected = true;
+        this._bindMedia();
+
+        if (document.readyState === 'loading') {
+          document.addEventListener(
+            'DOMContentLoaded',
+            this._handleReady,
+            { once: true }
+          );
+        }
+
+        this._schedule();
+      }
+
+      disconnectedCallback() {
+        this._connected = false;
+
+        document.removeEventListener(
+          'DOMContentLoaded',
+          this._handleReady
+        );
+
+        this._unbindMedia();
+        this._stopWaiting();
+        this.destroySwiper();
+      }
+
+      attributeChangedCallback(name, oldValue, newValue) {
+        if (oldValue === newValue || !this._connected) return;
+
+        if (name === 'mobile-breakpoint') {
+          this._bindMedia();
+        }
+
+        if (name === 'initial-slide') {
+          this._savedIndex = Math.max(
+            0,
+            Math.floor(this._number('initial-slide', 0))
+          );
+        }
+
+        this._schedule(true);
+      }
+
+      // ---------- 属性读取 ----------
+
+      _boolean(name, fallback = false) {
+        if (!this.hasAttribute(name)) return fallback;
+
+        const value = this.getAttribute(name).trim().toLowerCase();
+
+        // 同时支持 navigation 和 navigation="true"
+        return !['false', '0', 'off', 'no'].includes(value);
+      }
+
+      _number(name, fallback, min = -Infinity) {
+        const value = this.getAttribute(name);
+
+        if (value === null || value.trim() === '') return fallback;
+
+        const number = Number(value);
+
+        return Number.isFinite(number)
+          ? Math.max(min, number)
+          : fallback;
+      }
+
+      _json(name, fallback = {}) {
+        const value = this.getAttribute(name);
+
+        if (!value) return fallback;
+
+        const parsed = JSON.parse(value);
+
+        if (
+          !parsed ||
+          typeof parsed !== 'object' ||
+          Array.isArray(parsed)
+        ) {
+          throw new Error(`${name} 必须是 JSON 对象`);
+        }
+
+        return parsed;
+      }
+
+      // 只查找当前组件的元素，避免嵌套轮播串用箭头。
+      _find(selector) {
+        return [...this.querySelectorAll(selector)].find(
+          element => element.closest('custom-swiper-me') === this
+        ) || null;
+      }
+
+      _getContainer() {
+        return this._find(
+          '[data-swiper-container], .swiper-container, .swiper'
+        );
+      }
+
+      _hasMarkup() {
+        const container = this._getContainer();
+
+        if (!container) return false;
+
+        const wrapper = [...container.children].find(
+          element => element.classList.contains('swiper-wrapper')
+        );
+
+        return Boolean(
+          wrapper &&
+          [...wrapper.children].some(
+            element => element.classList.contains('swiper-slide')
+          )
+        );
+      }
+
+      // ---------- 监听与清理 ----------
+
+      _bindMedia() {
+        this._unbindMedia();
+
+        const breakpoint = this._number(
+          'mobile-breakpoint',
+          767,
+          0
+        );
+
+        this._mobileMedia = window.matchMedia(
+          `(max-width: ${breakpoint}px)`
+        );
+
+        this._motionMedia = window.matchMedia(
+          '(prefers-reduced-motion: reduce)'
+        );
+
+        this._mobileMedia.addEventListener(
+          'change',
+          this._handleMediaChange
+        );
+
+        this._motionMedia.addEventListener(
+          'change',
+          this._handleMotionChange
+        );
+      }
+
+      _unbindMedia() {
+        this._mobileMedia?.removeEventListener(
+          'change',
+          this._handleMediaChange
+        );
+
+        this._motionMedia?.removeEventListener(
+          'change',
+          this._handleMotionChange
+        );
+      }
+
+      _waitForMarkup() {
+        if (this._pendingObserver) return;
+
+        this._pendingObserver = new MutationObserver(
+          this._handleChildren
+        );
+
+        this._pendingObserver.observe(this, {
+          childList: true,
+          subtree: true
+        });
+      }
+
+      _stopWaiting() {
+        this._pendingObserver?.disconnect();
+        this._pendingObserver = null;
+      }
+
+      _schedule(rebuild = false) {
+        this._needsRebuild ||= rebuild;
+
+        if (this._queued) return;
+
+        this._queued = true;
+
+        queueMicrotask(() => {
+          this._queued = false;
+
+          if (!this._connected) return;
+
+          const shouldRebuild = this._needsRebuild;
+          this._needsRebuild = false;
+
+          if (shouldRebuild) {
+            this.destroySwiper();
+          }
+
+          this.updateSwiper();
+        });
+      }
+
+      _isDisabled() {
+        const disableOn = this.getAttribute('disable-on');
+        const mobile = this._mobileMedia?.matches;
+
+        return (
+          disableOn === 'all' ||
+          (disableOn === 'mobile' && mobile) ||
+          (disableOn === 'desktop' && !mobile)
+        );
+      }
+
+      _emit(name, detail = {}) {
+        this.dispatchEvent(new CustomEvent(name, {
+          detail: {
+            component: this,
+            swiper: this.swiper,
+            ...detail
+          },
+          bubbles: true,
+          composed: true
+        }));
+      }
+
+      // ---------- Swiper 配置 ----------
+
+      _buildOptions() {
+        const extra = this._json('options');
+
+        // 保留你旧组件的主要默认值。
+        const options = {
+          slidesPerView: 1.3,
+          slidesPerGroup: 1,
+          spaceBetween: 10,
+          speed: 300,
+          loop: true,
+          centeredSlides: true,
+          watchOverflow: false,
+          ...extra
+        };
+
+        const numbers = {
+          'slides-per-group': 'slidesPerGroup',
+          'space-between': 'spaceBetween',
+          'speed': 'speed',
+          'initial-slide': 'initialSlide'
+        };
+
+        Object.entries(numbers).forEach(([attribute, key]) => {
+          if (this.hasAttribute(attribute)) {
+            const min = key === 'slidesPerGroup' ? 1 : 0;
+            options[key] = this._number(
+              attribute,
+              options[key] ?? 0,
+              min
+            );
+          }
+        });
+
+        if (this.hasAttribute('slides-per-view')) {
+          options.slidesPerView =
+            this.getAttribute('slides-per-view') === 'auto'
+              ? 'auto'
+              : this._number('slides-per-view', 1.3, 0.1);
+        }
+
+        const booleans = {
+          'loop': 'loop',
+          'rewind': 'rewind',
+          'centered-slides': 'centeredSlides',
+          'auto-height': 'autoHeight',
+          'watch-overflow': 'watchOverflow',
+          'grab-cursor': 'grabCursor',
+          'allow-touch-move': 'allowTouchMove',
+          'free-mode': 'freeMode'
+        };
+
+        Object.entries(booleans).forEach(([attribute, key]) => {
+          if (this.hasAttribute(attribute)) {
+            options[key] = this._boolean(attribute);
+          }
+        });
+
+        if (this.hasAttribute('direction')) {
+          options.direction = this.getAttribute('direction');
+        }
+
+        if (this.hasAttribute('effect')) {
+          options.effect = this.getAttribute('effect');
+        }
+
+        if (this.hasAttribute('breakpoints')) {
+          options.breakpoints = this._json('breakpoints');
+        }
+
+        if (
+          this.hasAttribute('grid-rows') ||
+          this.hasAttribute('grid-fill')
+        ) {
+          options.grid = {
+            ...(options.grid || {}),
+            rows: Math.max(
+              1,
+              Math.floor(this._number('grid-rows', 1, 1))
+            ),
+            fill: this.getAttribute('grid-fill') === 'column'
+              ? 'column'
+              : 'row'
+          };
+        }
+
+        if (this.hasAttribute('navigation')) {
+          options.navigation = this._boolean('navigation')
+            ? {
+              prevEl: this._find(
+                '[data-swiper-prev], .swiper-prev, .swiper-button-prev'
+              ),
+              nextEl: this._find(
+                '[data-swiper-next], .swiper-next, .swiper-button-next'
+              )
+            }
+            : false;
+        }
+
+        if (this.hasAttribute('pagination')) {
+          options.pagination = this._boolean('pagination')
+            ? {
+              el: this._find('.swiper-pagination'),
+              type: this.getAttribute('pagination-type') || 'bullets',
+              clickable: this._boolean(
+                'pagination-clickable',
+                true
+              )
+            }
+            : false;
+        }
+
+        if (this.hasAttribute('scrollbar')) {
+          options.scrollbar = this._boolean('scrollbar')
+            ? {
+              el: this._find('.swiper-scrollbar'),
+              draggable: this._boolean(
+                'scrollbar-draggable',
+                true
+              )
+            }
+            : false;
+        }
+
+        if (this.hasAttribute('autoplay')) {
+          options.autoplay = this._boolean('autoplay')
+            ? {
+              delay: this._number('autoplay-delay', 4000, 1),
+              disableOnInteraction: this._boolean(
+                'autoplay-disable-on-interaction',
+                false
+              ),
+              pauseOnMouseEnter: this._boolean(
+                'autoplay-pause-on-hover',
+                true
+              )
+            }
+            : false;
+        }
+
+        if (this.hasAttribute('keyboard')) {
+          options.keyboard = {
+            enabled: this._boolean('keyboard'),
+            onlyInViewport: true
+          };
+        }
+
+        if (this.hasAttribute('mousewheel')) {
+          options.mousewheel = this._boolean('mousewheel')
+            ? {
+              forceToAxis: true,
+              releaseOnEdges: true
+            }
+            : false;
+        }
+
+        // 系统减少动态效果时，关闭自动播放和切换动效。
+        if (
+          this._boolean('respect-reduced-motion', true) &&
+          this._motionMedia?.matches
+        ) {
+          options.speed = 0;
+          options.autoplay = false;
+
+          if (options.breakpoints) {
+            options.breakpoints = Object.fromEntries(
+              Object.entries(options.breakpoints).map(
+                ([key, value]) => [
+                  key,
+                  {
+                    ...value,
+                    speed: 0,
+                    autoplay: false
+                  }
+                ]
+              )
+            );
+          }
+        }
+
+        // 响应式销毁、重建时保留当前逻辑索引。
+        if (this._savedIndex !== null) {
+          options.initialSlide = this._savedIndex;
+        }
+
+        return options;
+      }
+
+      // ---------- 实例生命周期 ----------
+
+      updateSwiper() {
+        if (!this._connected) return;
+
+        if (this._isDisabled()) {
+          this.destroySwiper();
+          return;
+        }
+
+        if (!this._hasMarkup()) {
+          this.destroySwiper();
+          this._waitForMarkup();
+          return;
+        }
+
+        this._stopWaiting();
+
+        const container = this._getContainer();
+
+        if (
+          this.swiper &&
+          !this.swiper.destroyed &&
+          this.swiper.el === container
+        ) {
+          this.swiper.update();
+          return;
+        }
+
+        this.destroySwiper();
+        this.initSwiper();
+      }
+
+      initSwiper() {
+        if (!this._connected || this._isDisabled()) return;
+
+        if (this.swiper && !this.swiper.destroyed) return;
+
+        if (!this._hasMarkup()) {
+          this._waitForMarkup();
+          return;
+        }
+
+        if (typeof window.Swiper !== 'function') {
+          this._reportError(
+            new Error('请先加载 swiper-bundle.min.js，再初始化组件')
+          );
+          return;
+        }
+
+        const container = this._getContainer();
+
+        try {
+          const options = this._buildOptions();
+
+          // 不允许 options 把实际挂载元素改到其他组件。
+          delete options.el;
+
+          // 统一在实例事件绑定后初始化。
+          options.init = false;
+
+          container.scrollLeft = 0;
+
+          const instance = new window.Swiper(container, options);
+          this.swiper = instance;
+
+          instance.on('init', () => {
+            this._emit('custom-swiper-me:ready');
+          });
+
+          instance.on('slideChange', () => {
+            this._savedIndex = instance.realIndex;
+
+            this._emit('custom-swiper-me:change', {
+              activeIndex: instance.activeIndex,
+              realIndex: instance.realIndex
+            });
+          });
+
+          instance.init();
+
+          // 处理隐藏容器重新显示、父级宽度变化。
+          if ('ResizeObserver' in window) {
+            let lastWidth = container.clientWidth;
+
+            this._resizeObserver = new ResizeObserver(() => {
+              const width = container.clientWidth;
+
+              if (width > 0 && width !== lastWidth) {
+                lastWidth = width;
+
+                if (this.swiper && !this.swiper.destroyed) {
+                  this.swiper.update();
+                }
+              }
+            });
+
+            this._resizeObserver.observe(container);
+          }
+        } catch (error) {
+          this.destroySwiper();
+          this._reportError(error);
+        }
+      }
+
+      destroySwiper() {
+        this._resizeObserver?.disconnect();
+        this._resizeObserver = null;
+
+        const instance = this.swiper;
+        this.swiper = null;
+
+        if (!instance || instance.destroyed) return;
+
+        if (Number.isFinite(instance.realIndex)) {
+          this._savedIndex = instance.realIndex;
+        }
+
+        instance.destroy(true, true);
+        this._emit('custom-swiper-me:destroy');
+      }
+
+      _reportError(error) {
+        console.error('[CustomSwiper]', error, this);
+        this._emit('custom-swiper-me:error', { error });
+      }
+
+
+      refresh() {
+        this._schedule();
+      }
+
+      rebuild() {
+        this._schedule(true);
+      }
+
+      next() {
+        this.swiper?.slideNext();
+      }
+
+      prev() {
+        this.swiper?.slidePrev();
+      }
+
+      goTo(index, speed) {
+        const instance = this.swiper;
+        const number = Number(index);
+
+        if (!instance || !Number.isFinite(number)) return;
+
+        const target = Math.max(0, Math.floor(number));
+
+        if (instance.params.loop) {
+          instance.slideToLoop(target, speed);
+        } else {
+          instance.slideTo(target, speed);
+        }
+      }
+
+      startAutoplay() {
+        this.swiper?.autoplay?.start();
+      }
+
+      stopAutoplay() {
+        this.swiper?.autoplay?.stop();
+      }
+    }
+
+    window.customElements.define('custom-swiper-me', CustomSwiperMe);
