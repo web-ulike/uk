@@ -1,0 +1,985 @@
+
+{% style %}
+.me-compare {
+      padding: 110px 0 100px;
+      background: #fff;
+      color: #242424;
+    }
+
+    .me-compare,
+    .me-compare * {
+      box-sizing: border-box;
+    }
+
+    .me-compare__container {
+      position: relative;
+      width: calc(100% - 64px);
+      max-width: 1520px;
+      margin: 0 auto;
+    }
+
+    .me-compare__head {
+      position: absolute;
+      top: 28px;
+      left: 0;
+      z-index: 2;
+      width: 340px;
+    }
+
+    .me-compare__title {
+      margin: 0;
+      font-size: 48px;
+      font-weight: 400;
+      line-height: 1.25;
+    }
+
+    .me-compare__note {
+      margin: 28px 0 0;
+      color: #757575;
+      font-size: 12px;
+      line-height: 1.4;
+    }
+
+    .me-compare__scroll {
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    .me-compare__scroll::-webkit-scrollbar {
+      display: none;
+    }
+
+    .me-compare__table {
+      width: 100%;
+      border-spacing: 0;
+      border-collapse: collapse;
+      table-layout: fixed;
+    }
+
+    .me-compare__table caption {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip-path: inset(50%);
+    }
+
+    .me-compare__table thead,
+    .me-compare__table tbody {
+      display: block;
+    }
+
+    .me-compare__table tr {
+      display: grid;
+      grid-template-columns: 24% 26% 26% 24%;
+    }
+
+    .me-compare__cell {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-width: 0;
+      margin: 0;
+      padding: 20px 16px;
+      text-align: center;
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 1.4;
+      border-bottom: 1px dotted #C6C6C6;
+    }
+
+    .me-compare__cell--label {
+      grid-column: 1;
+      grid-row: 1;
+      align-items: flex-start;
+      padding-left: 0;
+      text-align: left;
+      font-size: 20px;
+      font-weight: 500;
+    }
+
+    .me-compare__cell--air10 {
+      grid-column: 2;
+      grid-row: 1;
+    }
+
+    .me-compare__cell--air4 {
+      grid-column: 3;
+      grid-row: 1;
+    }
+
+    .me-compare__cell--me {
+      grid-column: 4;
+      grid-row: 1;
+      background: #FFF3F7;
+    }
+
+    .me-compare__table tbody tr {
+      min-height: 80px;
+    }
+
+    .me-compare__table tbody tr:last-child {
+      min-height: 108px;
+    }
+
+    .me-compare__table tbody tr:last-child .me-compare__cell {
+      border-bottom: 0;
+    }
+
+    .me-compare__table thead .me-compare__cell {
+      height: 290px;
+      padding-top: 26px;
+      padding-bottom: 20px;
+      border-bottom: 0;
+    }
+
+    .me-compare__table thead .me-compare__cell--label {
+      justify-content: flex-end;
+      padding-bottom: 24px;
+    }
+
+    .me-compare__product {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .me-compare__product img {
+      display: block;
+      width: 100px;
+      height: 184px;
+      object-fit: contain;
+      transition: transform .6s cubic-bezier(.22, 1, .36, 1);
+    }
+
+    .me-compare__badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 84px;
+      padding: 8px 24px;
+      border-radius: 100px;
+      background: #3F3636;
+      color: #fff;
+      font-size: 16px;
+      font-weight: 500;
+      line-height: 1.2;
+      white-space: nowrap;
+    }
+
+    .me-compare__cell--me .me-compare__badge {
+      background: #E0004D;
+    }
+
+    .me-compare__check {
+      display: block;
+      width: 14px;
+      height: 8px;
+      border-left: 2px solid currentColor;
+      border-bottom: 2px solid currentColor;
+      transform: translateY(-2px) rotate(-45deg);
+    }
+
+    .me-compare__dash {
+      color: #888;
+    }
+
+    .me-compare__arrows {
+      display: none;
+    }
+
+    .me-compare__scroll:focus-visible,
+    .me-compare__arrow:focus-visible {
+      outline: 2px solid #E0004D;
+      outline-offset: 4px;
+    }
+
+    /* 复用现有 js-me-top + appear 入场机制 */
+    .me-compare.appear .me-compare__head {
+      animation: me-compare-rise .8s cubic-bezier(.22, 1, .36, 1) both;
+    }
+
+    .me-compare.appear .me-compare__product {
+      animation: me-compare-rise 1s cubic-bezier(.22, 1, .36, 1) both;
+    }
+
+    .me-compare.appear .me-compare__cell--air4 .me-compare__product {
+      animation-delay: .1s;
+    }
+
+    .me-compare.appear .me-compare__cell--me .me-compare__product {
+      animation-delay: .2s;
+    }
+
+    @keyframes me-compare-rise {
+      from {
+        opacity: 0;
+        transform: translateY(24px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+      .me-compare__product:hover img {
+        transform: translateY(-8px);
+      }
+    }
+
+    @media (min-width: 768px) and (max-width: 1450px) {
+      .me-compare {
+        padding: 88px 0 80px;
+      }
+
+      .me-compare__container {
+        width: calc(100% - 52px);
+        max-width: 1216px;
+      }
+
+      .me-compare__head {
+        top: 22px;
+        width: 24%;
+      }
+
+      .me-compare__title {
+        font-size: 38px;
+      }
+
+      .me-compare__note {
+        margin-top: 22px;
+        font-size: 10px;
+      }
+
+      .me-compare__cell {
+        padding: 16px 13px;
+        font-size: 13px;
+      }
+
+      .me-compare__cell--label {
+        padding-left: 0;
+        font-size: 16px;
+      }
+
+      .me-compare__table tbody tr {
+        min-height: 64px;
+      }
+
+      .me-compare__table tbody tr:last-child {
+        min-height: 86px;
+      }
+
+      .me-compare__table thead .me-compare__cell {
+        height: 272px;
+        padding-top: 21px;
+        padding-bottom: 16px;
+      }
+
+      .me-compare__table thead .me-compare__cell--label {
+        padding-bottom: 19px;
+      }
+
+      .me-compare__product {
+        gap: 19px;
+      }
+
+      .me-compare__product img {
+        width: 80px;
+        height: 147px;
+      }
+
+      .me-compare__badge {
+        min-width: 67px;
+        padding: 6px 19px;
+        font-size: 13px;
+      }
+    }
+
+    @media (max-width: 767px) {
+      .me-compare {
+        padding: 36px 0 40px;
+        overflow: hidden;
+      }
+
+      .me-compare__container {
+        width: calc(100% - 32px);
+      }
+
+      .me-compare__head {
+        position: static;
+        width: 100%;
+        padding: 0 4px;
+      }
+
+      .me-compare__title {
+        font-size: 24px;
+        line-height: 1.25;
+      }
+
+      .me-compare__note {
+        margin-top: 14px;
+        font-size: 12px;
+        line-height: 1.5;
+      }
+
+      .me-compare__scroll {
+        position: relative;
+        margin-top: 28px;
+        overscroll-behavior-x: contain;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      .me-compare__table {
+        /* 375px 屏幕下：参数132 + ME88 + Air4 123 + Air10 123 */
+        width: calc(100% + 123px);
+        min-width: 466px;
+      }
+
+      .me-compare__table tr {
+        grid-template-columns: 132px 88px repeat(2, minmax(123px, 1fr));
+      }
+
+      .me-compare__cell {
+        padding: 18px 8px;
+        font-size: 12px;
+        line-height: 1.25;
+        border-bottom: 1px solid #C6C6C6;
+      }
+
+      .me-compare__cell--label {
+        position: sticky;
+        left: 0;
+        z-index: 2;
+        grid-column: 1;
+        padding-left: 4px;
+        padding-right: 12px;
+        background: #fff;
+        font-size: 14px;
+        line-height: 1.2;
+      }
+
+      .me-compare__cell--me {
+        grid-column: 2;
+        background: #FFF7FA;
+      }
+
+      .me-compare__cell--air4 {
+        grid-column: 3;
+      }
+
+      .me-compare__cell--air10 {
+        grid-column: 4;
+      }
+
+      .me-compare__table thead .me-compare__cell {
+        height: 118px;
+        padding: 14px 8px;
+        border-bottom: 1px solid #C6C6C6;
+      }
+
+      .me-compare__table thead .me-compare__cell--label {
+        justify-content: center;
+        padding-left: 8px;
+      }
+
+      .me-compare__product {
+        gap: 8px;
+      }
+
+      .me-compare__product img {
+        width: 42px;
+        height: 56px;
+      }
+
+      .me-compare__badge {
+        min-width: 52px;
+        padding: 2px 7px;
+        font-size: 10px;
+        line-height: 1.2;
+      }
+
+      .me-compare__table tbody tr {
+        min-height: 80px;
+      }
+
+      .me-compare__table tbody tr:first-child {
+        min-height: 92px;
+      }
+
+      .me-compare__table tbody tr:last-child {
+        min-height: 100px;
+      }
+
+      .me-compare__check {
+        width: 10px;
+        height: 6px;
+      }
+
+      .me-compare__arrows {
+        display: flex;
+        justify-content: flex-end;
+        gap: 16px;
+        margin-top: 30px;
+        padding-right: 32px;
+      }
+
+      .me-compare__arrow {
+        display: grid;
+        place-items: center;
+        width: 36px;
+        height: 40px;
+        padding: 0;
+        border: 0;
+        background: transparent;
+        color: #190A0A;
+        cursor: pointer;
+        transition: opacity .25s;
+      }
+
+      .me-compare__arrow svg {
+        display: block;
+        width: 26px;
+        height: 22px;
+      }
+
+      .me-compare__arrow:disabled {
+        opacity: .25;
+        cursor: default;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+
+      .me-compare *,
+      .me-compare *::before,
+      .me-compare *::after {
+        animation: none !important;
+        transition: none !important;
+      }
+    }
+{% endstyle %}
+
+<section class="me-compare js-me-top">
+      <div class="me-compare__container">
+        <div class="me-compare__head">
+          <h2 class="me-compare__title">
+            {{ section.settings.text_1 | escape }}
+          </h2>
+          <p class="me-compare__note">
+            {{ section.settings.text_2 | escape }}
+          </p>
+        </div>
+
+        <div class="me-compare__scroll" tabindex="0" role="region"
+          aria-label="Ulike device comparison. Scroll horizontally to view all devices.">
+          <table class="me-compare__table">
+            <caption>{{ section.settings.text_3 | escape }}</caption>
+
+            <thead>
+              <tr>
+                <th class="me-compare__cell me-compare__cell--label" scope="col">
+                  {{ section.settings.text_4 | escape }}
+                </th>
+
+                <th class="me-compare__cell me-compare__cell--me" scope="col">
+                  <div class="me-compare__product">
+                    {% if section.settings.image_1 != blank %}<img src="{{ section.settings.image_1 | image_url: width: 1800 }}" width="100" height="184" loading="lazy" alt="{{ section.settings.image_1.alt | escape }}">{% endif %}
+                    <span class="me-compare__badge">{{ section.settings.text_5 | escape }}</span>
+                  </div>
+                </th>
+
+                <th class="me-compare__cell me-compare__cell--air4" scope="col">
+                  <div class="me-compare__product">
+                    {% if section.settings.image_2 != blank %}<img src="{{ section.settings.image_2 | image_url: width: 1800 }}" width="100" height="184" loading="lazy" alt="{{ section.settings.image_2.alt | escape }}">{% endif %}
+                    <span class="me-compare__badge">{{ section.settings.text_6 | escape }}</span>
+                  </div>
+                </th>
+
+                <th class="me-compare__cell me-compare__cell--air10" scope="col">
+                  <div class="me-compare__product">
+                    {% if section.settings.image_3 != blank %}<img src="{{ section.settings.image_3 | image_url: width: 1800 }}" width="100" height="184" loading="lazy" alt="{{ section.settings.image_3.alt | escape }}">{% endif %}
+                    <span class="me-compare__badge">{{ section.settings.text_7 | escape }}</span>
+                  </div>
+                </th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr>
+                <th class="me-compare__cell me-compare__cell--label" scope="row">{{ section.settings.text_8 | escape }}</th>
+                <td class="me-compare__cell me-compare__cell--me">{{ section.settings.text_9 | escape }}</td>
+                <td class="me-compare__cell me-compare__cell--air4">{{ section.settings.text_10 | escape }}</td>
+                <td class="me-compare__cell me-compare__cell--air10">{{ section.settings.text_11 | escape }}</td>
+              </tr>
+
+              <tr>
+                <th class="me-compare__cell me-compare__cell--label" scope="row">{{ section.settings.text_12 | escape }}</th>
+                <td class="me-compare__cell me-compare__cell--me">{{ section.settings.text_13 | escape }}</td>
+                <td class="me-compare__cell me-compare__cell--air4">{{ section.settings.text_14 | escape }}</td>
+                <td class="me-compare__cell me-compare__cell--air10">{{ section.settings.text_15 | escape }}</td>
+              </tr>
+
+              <tr>
+                <th class="me-compare__cell me-compare__cell--label" scope="row">{{ section.settings.text_16 | escape }}</th>
+                <td class="me-compare__cell me-compare__cell--me"><span class="me-compare__check" role="img"
+                    aria-label="Yes"></span></td>
+                <td class="me-compare__cell me-compare__cell--air4"><span class="me-compare__check" role="img"
+                    aria-label="Yes"></span></td>
+                <td class="me-compare__cell me-compare__cell--air10"><span class="me-compare__check" role="img"
+                    aria-label="Yes"></span></td>
+              </tr>
+
+              <tr>
+                <th class="me-compare__cell me-compare__cell--label" scope="row">{{ section.settings.text_17 | escape }}</th>
+                <td class="me-compare__cell me-compare__cell--me"><span class="me-compare__dash" role="img"
+                    aria-label="No">{{ section.settings.text_18 | escape }}</span></td>
+                <td class="me-compare__cell me-compare__cell--air4"><span class="me-compare__dash" role="img"
+                    aria-label="No">{{ section.settings.text_19 | escape }}</span></td>
+                <td class="me-compare__cell me-compare__cell--air10"><span class="me-compare__check" role="img"
+                    aria-label="Yes"></span></td>
+              </tr>
+
+              <tr>
+                <th class="me-compare__cell me-compare__cell--label" scope="row">{{ section.settings.text_20 | escape }}</th>
+                <td class="me-compare__cell me-compare__cell--me"><span class="me-compare__dash" role="img"
+                    aria-label="No">{{ section.settings.text_21 | escape }}</span></td>
+                <td class="me-compare__cell me-compare__cell--air4"><span class="me-compare__check" role="img"
+                    aria-label="Yes"></span></td>
+                <td class="me-compare__cell me-compare__cell--air10"><span class="me-compare__check" role="img"
+                    aria-label="Yes"></span></td>
+              </tr>
+
+              <tr>
+                <th class="me-compare__cell me-compare__cell--label" scope="row">{{ section.settings.text_22 | escape }}</th>
+                <td class="me-compare__cell me-compare__cell--me"><span class="me-compare__check" role="img"
+                    aria-label="Yes"></span></td>
+                <td class="me-compare__cell me-compare__cell--air4"><span class="me-compare__dash" role="img"
+                    aria-label="No">{{ section.settings.text_23 | escape }}</span></td>
+                <td class="me-compare__cell me-compare__cell--air10"><span class="me-compare__dash" role="img"
+                    aria-label="No">{{ section.settings.text_24 | escape }}</span></td>
+              </tr>
+
+              <tr>
+                <th class="me-compare__cell me-compare__cell--label" scope="row">{{ section.settings.text_25 | escape }}</th>
+                <td class="me-compare__cell me-compare__cell--me"><span class="me-compare__check" role="img"
+                    aria-label="Yes"></span></td>
+                <td class="me-compare__cell me-compare__cell--air4"><span class="me-compare__check" role="img"
+                    aria-label="Yes"></span></td>
+                <td class="me-compare__cell me-compare__cell--air10"><span class="me-compare__check" role="img"
+                    aria-label="Yes"></span></td>
+              </tr>
+
+              <tr>
+                <th class="me-compare__cell me-compare__cell--label" scope="row">{{ section.settings.text_26 | escape }}</th>
+                <td class="me-compare__cell me-compare__cell--me">{{ section.settings.text_27 | escape }}</td>
+                <td class="me-compare__cell me-compare__cell--air4">{{ section.settings.text_27 | escape }}</td>
+                <td class="me-compare__cell me-compare__cell--air10">{{ section.settings.text_29 | escape }}</td>
+              </tr>
+
+              <tr>
+                <th class="me-compare__cell me-compare__cell--label" scope="row">{{ section.settings.text_30 | escape }}</th>
+                <td class="me-compare__cell me-compare__cell--me">{{ section.settings.text_31 | escape }}</td>
+                <td class="me-compare__cell me-compare__cell--air4">{{ section.settings.text_32 | escape }}</td>
+                <td class="me-compare__cell me-compare__cell--air10">{{ section.settings.text_33 | escape }}</td>
+              </tr>
+
+              <tr>
+                <th class="me-compare__cell me-compare__cell--label" scope="row">{{ section.settings.text_34 | escape }}</th>
+                <td class="me-compare__cell me-compare__cell--me">{{ section.settings.text_35 | escape }}</td>
+                <td class="me-compare__cell me-compare__cell--air4">{{ section.settings.text_36 | escape }}</td>
+                <td class="me-compare__cell me-compare__cell--air10">{{ section.settings.text_37 | escape }}</td>
+              </tr>
+
+              <tr>
+                <th class="me-compare__cell me-compare__cell--label" scope="row">{{ section.settings.text_38 | escape }}</th>
+                <td class="me-compare__cell me-compare__cell--me">{{ section.settings.text_39 | escape }}</td>
+                <td class="me-compare__cell me-compare__cell--air4">{{ section.settings.text_40 | escape }}</td>
+                <td class="me-compare__cell me-compare__cell--air10">{{ section.settings.text_41 | escape }}</td>
+              </tr>
+
+              <tr>
+                <th class="me-compare__cell me-compare__cell--label" scope="row">{{ section.settings.text_42 | escape }}</th>
+                <td class="me-compare__cell me-compare__cell--me">
+                  <span>{{ section.settings.text_43 | escape }}<br>{{ section.settings.text_44 | escape }}</span>
+                </td>
+                <td class="me-compare__cell me-compare__cell--air4">
+                  <span>{{ section.settings.text_43 | escape }}<br>{{ section.settings.text_46 | escape }}</span>
+                </td>
+                <td class="me-compare__cell me-compare__cell--air10">
+                  <span>{{ section.settings.text_43 | escape }}<br>{{ section.settings.text_48 | escape }}</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="me-compare__arrows">
+          <button class="me-compare__arrow" data-compare-prev type="button" aria-label="Previous products" disabled>
+            <svg viewBox="0 0 28 24" fill="none" aria-hidden="true">
+              <path d="M26 12H3M11 3l-9 9 9 9" stroke="currentColor" />
+            </svg>
+          </button>
+
+          <button class="me-compare__arrow" data-compare-next type="button" aria-label="Next products">
+            <svg viewBox="0 0 28 24" fill="none" aria-hidden="true">
+              <path d="M2 12h23M17 3l9 9-9 9" stroke="currentColor" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </section>
+<script>
+    (() => {
+      function initMeCompare() {
+        document.querySelectorAll('.me-compare').forEach(root => {
+          if (root.dataset.compareInitialized) return;
+          root.dataset.compareInitialized = 'true';
+
+          const scroll = root.querySelector('.me-compare__scroll');
+          const table = root.querySelector('.me-compare__table');
+          const prev = root.querySelector('[data-compare-prev]');
+          const next = root.querySelector('[data-compare-next]');
+          const reducedMotion = window.matchMedia(
+            '(prefers-reduced-motion: reduce)'
+          );
+
+          function updateArrows() {
+            const max = Math.max(0, scroll.scrollWidth - scroll.clientWidth);
+
+            prev.disabled = scroll.scrollLeft <= 1;
+            next.disabled = scroll.scrollLeft >= max - 1;
+          }
+
+          function move(direction) {
+            const product = root.querySelector(
+              'thead .me-compare__cell--air4'
+            );
+
+            scroll.scrollBy({
+              left: direction * product.getBoundingClientRect().width,
+              behavior: reducedMotion.matches ? 'auto' : 'smooth'
+            });
+          }
+
+          prev.addEventListener('click', () => move(-1));
+          next.addEventListener('click', () => move(1));
+          scroll.addEventListener('scroll', updateArrows, { passive: true });
+
+          const resizeObserver = new ResizeObserver(updateArrows);
+          resizeObserver.observe(scroll);
+          resizeObserver.observe(table);
+
+          updateArrows();
+        });
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initMeCompare, {
+          once: true
+        });
+      } else {
+        initMeCompare();
+      }
+    })();
+  </script>
+{% schema %}
+{
+  "name": "Compare",
+  "settings": [
+    {
+      "type": "text",
+      "id": "text_1",
+      "label": "Text 1",
+      "default": "Find Your Ideal Ulike IPL Device"
+    },
+    {
+      "type": "text",
+      "id": "text_2",
+      "label": "Text 2",
+      "default": "*Hair reduction results are based on SGS test reports.\n            Individual results may vary."
+    },
+    {
+      "type": "text",
+      "id": "text_3",
+      "label": "Text 3",
+      "default": "Ulike IPL device specifications comparison"
+    },
+    {
+      "type": "text",
+      "id": "text_4",
+      "label": "Text 4",
+      "default": "Model"
+    },
+    {
+      "type": "text",
+      "id": "text_5",
+      "label": "Text 5",
+      "default": "Ulike ME"
+    },
+    {
+      "type": "text",
+      "id": "text_6",
+      "label": "Text 6",
+      "default": "Air 4"
+    },
+    {
+      "type": "text",
+      "id": "text_7",
+      "label": "Text 7",
+      "default": "Air 10"
+    },
+    {
+      "type": "text",
+      "id": "text_8",
+      "label": "Text 8",
+      "default": "Key Advantage"
+    },
+    {
+      "type": "text",
+      "id": "text_9",
+      "label": "Text 9",
+      "default": "Simple, Accessible IPL"
+    },
+    {
+      "type": "text",
+      "id": "text_10",
+      "label": "Text 10",
+      "default": "Balanced Performance & Comfort"
+    },
+    {
+      "type": "text",
+      "id": "text_11",
+      "label": "Text 11",
+      "default": "Flagship Performance & Comfort"
+    },
+    {
+      "type": "text",
+      "id": "text_12",
+      "label": "Text 12",
+      "default": "Hair Reduction*"
+    },
+    {
+      "type": "text",
+      "id": "text_13",
+      "label": "Text 13",
+      "default": "Up to 94.8% in 4 Weeks"
+    },
+    {
+      "type": "text",
+      "id": "text_14",
+      "label": "Text 14",
+      "default": "Up to 95.9% in 4 Weeks"
+    },
+    {
+      "type": "text",
+      "id": "text_15",
+      "label": "Text 15",
+      "default": "Up to 97.16% in 4 Weeks"
+    },
+    {
+      "type": "text",
+      "id": "text_16",
+      "label": "Text 16",
+      "default": "Ice-Cooling Technology"
+    },
+    {
+      "type": "text",
+      "id": "text_17",
+      "label": "Text 17",
+      "default": "Smart SkinSensor"
+    },
+    {
+      "type": "text",
+      "id": "text_18",
+      "label": "Text 18",
+      "default": "—"
+    },
+    {
+      "type": "text",
+      "id": "text_19",
+      "label": "Text 19",
+      "default": "—"
+    },
+    {
+      "type": "text",
+      "id": "text_20",
+      "label": "Text 20",
+      "default": "SHR/USHR Mode"
+    },
+    {
+      "type": "text",
+      "id": "text_21",
+      "label": "Text 21",
+      "default": "—"
+    },
+    {
+      "type": "text",
+      "id": "text_22",
+      "label": "Text 22",
+      "default": "Bikini Mode"
+    },
+    {
+      "type": "text",
+      "id": "text_23",
+      "label": "Text 23",
+      "default": "—"
+    },
+    {
+      "type": "text",
+      "id": "text_24",
+      "label": "Text 24",
+      "default": "—"
+    },
+    {
+      "type": "text",
+      "id": "text_25",
+      "label": "Text 25",
+      "default": "AutoGlide Mode"
+    },
+    {
+      "type": "text",
+      "id": "text_26",
+      "label": "Text 26",
+      "default": "Light Source"
+    },
+    {
+      "type": "text",
+      "id": "text_27",
+      "label": "Text 27",
+      "default": "Single Light"
+    },
+    {
+      "type": "text",
+      "id": "text_29",
+      "label": "Text 29",
+      "default": "Dual Lights"
+    },
+    {
+      "type": "text",
+      "id": "text_30",
+      "label": "Text 30",
+      "default": "Flash Window Size"
+    },
+    {
+      "type": "text",
+      "id": "text_31",
+      "label": "Text 31",
+      "default": "3.0 cm²"
+    },
+    {
+      "type": "text",
+      "id": "text_32",
+      "label": "Text 32",
+      "default": "3.3 cm²"
+    },
+    {
+      "type": "text",
+      "id": "text_33",
+      "label": "Text 33",
+      "default": "3.9 cm²"
+    },
+    {
+      "type": "text",
+      "id": "text_34",
+      "label": "Text 34",
+      "default": "Fastest Flash Speed"
+    },
+    {
+      "type": "text",
+      "id": "text_35",
+      "label": "Text 35",
+      "default": "0.9s"
+    },
+    {
+      "type": "text",
+      "id": "text_36",
+      "label": "Text 36",
+      "default": "0.4s"
+    },
+    {
+      "type": "text",
+      "id": "text_37",
+      "label": "Text 37",
+      "default": "0.25s"
+    },
+    {
+      "type": "text",
+      "id": "text_38",
+      "label": "Text 38",
+      "default": "Maximum Energy Output"
+    },
+    {
+      "type": "text",
+      "id": "text_39",
+      "label": "Text 39",
+      "default": "21J"
+    },
+    {
+      "type": "text",
+      "id": "text_40",
+      "label": "Text 40",
+      "default": "24J"
+    },
+    {
+      "type": "text",
+      "id": "text_41",
+      "label": "Text 41",
+      "default": "26J"
+    },
+    {
+      "type": "text",
+      "id": "text_42",
+      "label": "Text 42",
+      "default": "Modes"
+    },
+    {
+      "type": "text",
+      "id": "text_43",
+      "label": "Text 43",
+      "default": "4 Modes"
+    },
+    {
+      "type": "text",
+      "id": "text_44",
+      "label": "Text 44",
+      "default": "Gentle / Face / Body / Bikini"
+    },
+    {
+      "type": "text",
+      "id": "text_46",
+      "label": "Text 46",
+      "default": "Soft / Body / Power / USHR"
+    },
+    {
+      "type": "text",
+      "id": "text_48",
+      "label": "Text 48",
+      "default": "Fast / Normal / High / SHR"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_1",
+      "label": "Image 1"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_2",
+      "label": "Image 2"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_3",
+      "label": "Image 3"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Compare"
+    }
+  ]
+}
+{% endschema %}
