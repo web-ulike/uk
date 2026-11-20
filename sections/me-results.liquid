@@ -1,4 +1,3 @@
-
 {% style %}
 .me-result__slider {}
 
@@ -337,14 +336,12 @@
 {% endstyle %}
 
 <section class="me-results">
-      <custom-swiper watch-overflow="true" slides-per-view="1" space-between="20" loop="false" centered-slides="false"
-        navigation="true" pagination="false" breakpoints='{
-        "767": {"slidesPerView": 3.3, "spaceBetween": 20}
-      }'>
-        <div class="container">
-          <div class="me-result__head">
-            <h3 class="js-me-top">{{ section.settings.text_1 | escape }}</h3>
-            <div class="me-result__head__arrows js-me-top">
+  <custom-swiper watch-overflow="true" slides-per-view="1" space-between="20" loop="false" centered-slides="false"
+    navigation="true" pagination="false" breakpoints='{"767":{"slidesPerView":3.3,"spaceBetween":20}}'>
+    <div class="container">
+      <div class="me-result__head">
+        <h3 class="js-me-top">{{ section.settings.heading | escape }}</h3>
+        <div class="me-result__head__arrows js-me-top">
               <svg xmlns="http://www.w3.org/2000/svg" width="30" height="23" viewBox="0 0 30 23" fill="none"
                 class="me-result__head__arrows__prev swiper-prev">
                 <g clip-path="url(#clip0_7980_1345)">
@@ -378,431 +375,207 @@
                 </defs>
               </svg>
             </div>
-          </div>
-          <div class="me-result__content swiper-container">
-            <div class="me-result__container swiper-wrapper">
-              <div class="me-result__slider swiper-slide js-me-top" style="--me-enter-delay: 0ms">
-                <div class="me-result__top">
+      </div>
+      <div class="me-result__content swiper-container">
+        <div class="me-result__container swiper-wrapper">
+          {% for block in section.blocks %}
+            <div class="me-result__slider swiper-slide js-me-top" style="--me-enter-delay: {{ forloop.index0 | times: 100 }}ms" {{ block.shopify_attributes }}>
+              <div class="me-result__top">
+                {% assign result_image = block.settings.image_mobile | default: block.settings.image_pc %}
+                {% if block.settings.image_pc != blank or block.settings.image_mobile != blank %}
                   <picture class="me-result__picture">
-                    
-                    {% if section.settings.image_1_mobile != blank or section.settings.image_1_pc != blank %}{% if section.settings.image_1_pc != blank %}<source media="(min-width: 768px)" srcset="{{ section.settings.image_1_pc | image_url: width: 3000 }}">{% endif %}<img src="{{ section.settings.image_1_mobile | default: section.settings.image_1_pc | image_url: width: 1800 }}" alt="{{ section.settings.image_1_mobile.alt | default: section.settings.image_1_pc.alt | escape }}">{% endif %}
+                    {% if block.settings.image_pc != blank %}
+                      <source media="(min-width: 768px)" srcset="{{ block.settings.image_pc | image_url: width: 3000 }}">
+                    {% endif %}
+                    <img src="{{ result_image | image_url: width: 1800 }}" alt="{{ result_image.alt | escape }}" loading="lazy">
                   </picture>
-                  <div class="me-result__before-txt">{{ section.settings.text_2 | escape }}</div>
-                  <div class="me-result__after-txt">{{ section.settings.text_3 | escape }}</div>
-                  <div class="me-result__top__cnt">
-                    <div class="me-result__top__cnt_tle">
-                      {{ section.settings.text_4 | escape }}<span class="me-result__top__cnt_tle_span">{{ section.settings.text_5 | escape }}</span>
-                    </div>
-                    <div class="me-result__top__cnt__txt">{{ section.settings.text_6 | escape }}</div>
-                  </div>
-                </div>
-                <div class="me-result__top__bottom">
-                  <h4>{{ section.settings.text_7 | escape }}</h4>
-                  <div class="me-result__top__bottom__des">
-                    {{ section.settings.text_8 | escape }}
-                  </div>
-                  <div class="me-result__top__bottom__review">
-                    <div class="me-result__top__bottom__review__name">{{ section.settings.text_9 | escape }}</div>
-                    <div class="me-result__top__bottom__review__img">
-                      {% if section.settings.image_2 != blank %}<img src="{{ section.settings.image_2 | image_url: width: 1800 }}" alt="{{ section.settings.image_2.alt | escape }}">{% endif %}
-                    </div>
-                  </div>
+                {% endif %}
+                {% if block.settings.before_label != blank %}<div class="me-result__before-txt">{{ block.settings.before_label | escape }}</div>{% endif %}
+                {% if block.settings.after_label != blank %}<div class="me-result__after-txt">{{ block.settings.after_label | escape }}</div>{% endif %}
+                <div class="me-result__top__cnt">
+                  <div class="me-result__top__cnt_tle">{{ block.settings.result_value | escape }}<span class="me-result__top__cnt_tle_span">{{ block.settings.result_suffix | escape }}</span></div>
+                  {% if block.settings.result_caption != blank %}<div class="me-result__top__cnt__txt">{{ block.settings.result_caption | escape }}</div>{% endif %}
                 </div>
               </div>
-              <div class="me-result__slider swiper-slide js-me-top" style="--me-enter-delay: 100ms">
-                <div class="me-result__top">
-                  <picture class="me-result__picture">
-                    
-                    {% if section.settings.image_1_mobile != blank or section.settings.image_1_pc != blank %}{% if section.settings.image_1_pc != blank %}<source media="(min-width: 768px)" srcset="{{ section.settings.image_1_pc | image_url: width: 3000 }}">{% endif %}<img src="{{ section.settings.image_1_mobile | default: section.settings.image_1_pc | image_url: width: 1800 }}" alt="{{ section.settings.image_1_mobile.alt | default: section.settings.image_1_pc.alt | escape }}">{% endif %}
-                  </picture>
-                  <div class="me-result__before-txt">{{ section.settings.text_10 | escape }}</div>
-                  <div class="me-result__after-txt">{{ section.settings.text_11 | escape }}</div>
-                  <div class="me-result__top__cnt">
-                    <div class="me-result__top__cnt_tle">
-                      {{ section.settings.text_12 | escape }}<span class="me-result__top__cnt_tle_span">{{ section.settings.text_13 | escape }}</span>
-                    </div>
-                    <div class="me-result__top__cnt__txt">{{ section.settings.text_14 | escape }}</div>
-                  </div>
-                </div>
-                <div class="me-result__top__bottom">
-                  <h4>{{ section.settings.text_15 | escape }}</h4>
-                  <div class="me-result__top__bottom__des">
-                    {{ section.settings.text_16 | escape }}
-                  </div>
-                  <div class="me-result__top__bottom__review">
-                    <div class="me-result__top__bottom__review__name">{{ section.settings.text_17 | escape }}</div>
+              <div class="me-result__top__bottom">
+                {% if block.settings.review_title != blank %}<h4>{{ block.settings.review_title | escape }}</h4>{% endif %}
+                {% if block.settings.review_text != blank %}<div class="me-result__top__bottom__des">{{ block.settings.review_text | escape }}</div>{% endif %}
+                <div class="me-result__top__bottom__review">
+                  {% if block.settings.customer_name != blank %}<div class="me-result__top__bottom__review__name">{{ block.settings.customer_name | escape }}</div>{% endif %}
+                  {% if section.settings.rating_image != blank %}
                     <div class="me-result__top__bottom__review__img">
-                      {% if section.settings.image_2 != blank %}<img src="{{ section.settings.image_2 | image_url: width: 1800 }}" alt="{{ section.settings.image_2.alt | escape }}">{% endif %}
+                      <img src="{{ section.settings.rating_image | image_url: width: 240 }}" alt="{{ section.settings.rating_image.alt | escape }}" loading="lazy">
                     </div>
-                  </div>
-                </div>
-              </div>
-              <div class="me-result__slider swiper-slide js-me-top" style="--me-enter-delay: 200ms">
-                <div class="me-result__top">
-                  <picture class="me-result__picture">
-                    
-                    {% if section.settings.image_1_mobile != blank or section.settings.image_1_pc != blank %}{% if section.settings.image_1_pc != blank %}<source media="(min-width: 768px)" srcset="{{ section.settings.image_1_pc | image_url: width: 3000 }}">{% endif %}<img src="{{ section.settings.image_1_mobile | default: section.settings.image_1_pc | image_url: width: 1800 }}" alt="{{ section.settings.image_1_mobile.alt | default: section.settings.image_1_pc.alt | escape }}">{% endif %}
-                  </picture>
-                  <div class="me-result__before-txt">{{ section.settings.text_18 | escape }}</div>
-                  <div class="me-result__after-txt">{{ section.settings.text_19 | escape }}</div>
-                  <div class="me-result__top__cnt">
-                    <div class="me-result__top__cnt_tle">
-                      {{ section.settings.text_20 | escape }}<span class="me-result__top__cnt_tle_span">{{ section.settings.text_21 | escape }}</span>
-                    </div>
-                    <div class="me-result__top__cnt__txt">{{ section.settings.text_22 | escape }}</div>
-                  </div>
-                </div>
-                <div class="me-result__top__bottom">
-                  <h4>{{ section.settings.text_23 | escape }}</h4>
-                  <div class="me-result__top__bottom__des">
-                    {{ section.settings.text_24 | escape }}
-                  </div>
-                  <div class="me-result__top__bottom__review">
-                    <div class="me-result__top__bottom__review__name">{{ section.settings.text_25 | escape }}</div>
-                    <div class="me-result__top__bottom__review__img">
-                      {% if section.settings.image_2 != blank %}<img src="{{ section.settings.image_2 | image_url: width: 1800 }}" alt="{{ section.settings.image_2.alt | escape }}">{% endif %}
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="me-result__slider swiper-slide js-me-top" style="--me-enter-delay: 200ms">
-                <div class="me-result__top">
-                  <picture class="me-result__picture">
-                    
-                    {% if section.settings.image_1_mobile != blank or section.settings.image_1_pc != blank %}{% if section.settings.image_1_pc != blank %}<source media="(min-width: 768px)" srcset="{{ section.settings.image_1_pc | image_url: width: 3000 }}">{% endif %}<img src="{{ section.settings.image_1_mobile | default: section.settings.image_1_pc | image_url: width: 1800 }}" alt="{{ section.settings.image_1_mobile.alt | default: section.settings.image_1_pc.alt | escape }}">{% endif %}
-                  </picture>
-                  <div class="me-result__before-txt">{{ section.settings.text_26 | escape }}</div>
-                  <div class="me-result__after-txt">{{ section.settings.text_27 | escape }}</div>
-                  <div class="me-result__top__cnt">
-                    <div class="me-result__top__cnt_tle">
-                      {{ section.settings.text_28 | escape }}<span class="me-result__top__cnt_tle_span">{{ section.settings.text_29 | escape }}</span>
-                    </div>
-                    <div class="me-result__top__cnt__txt">{{ section.settings.text_30 | escape }}</div>
-                  </div>
-                </div>
-                <div class="me-result__top__bottom">
-                  <h4>{{ section.settings.text_31 | escape }}</h4>
-                  <div class="me-result__top__bottom__des">
-                    {{ section.settings.text_32 | escape }}
-                  </div>
-                  <div class="me-result__top__bottom__review">
-                    <div class="me-result__top__bottom__review__name">{{ section.settings.text_33 | escape }}</div>
-                    <div class="me-result__top__bottom__review__img">
-                      {% if section.settings.image_2 != blank %}<img src="{{ section.settings.image_2 | image_url: width: 1800 }}" alt="{{ section.settings.image_2.alt | escape }}">{% endif %}
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="me-result__slider swiper-slide js-me-top" style="--me-enter-delay: 200ms">
-                <div class="me-result__top">
-                  <picture class="me-result__picture">
-                    
-                    {% if section.settings.image_1_mobile != blank or section.settings.image_1_pc != blank %}{% if section.settings.image_1_pc != blank %}<source media="(min-width: 768px)" srcset="{{ section.settings.image_1_pc | image_url: width: 3000 }}">{% endif %}<img src="{{ section.settings.image_1_mobile | default: section.settings.image_1_pc | image_url: width: 1800 }}" alt="{{ section.settings.image_1_mobile.alt | default: section.settings.image_1_pc.alt | escape }}">{% endif %}
-                  </picture>
-                  <div class="me-result__before-txt">{{ section.settings.text_34 | escape }}</div>
-                  <div class="me-result__after-txt">{{ section.settings.text_35 | escape }}</div>
-                  <div class="me-result__top__cnt">
-                    <div class="me-result__top__cnt_tle">
-                      {{ section.settings.text_36 | escape }}<span class="me-result__top__cnt_tle_span">{{ section.settings.text_37 | escape }}</span>
-                    </div>
-                    <div class="me-result__top__cnt__txt">{{ section.settings.text_38 | escape }}</div>
-                  </div>
-                </div>
-                <div class="me-result__top__bottom">
-                  <h4>{{ section.settings.text_39 | escape }}</h4>
-                  <div class="me-result__top__bottom__des">
-                    {{ section.settings.text_40 | escape }}
-                  </div>
-                  <div class="me-result__top__bottom__review">
-                    <div class="me-result__top__bottom__review__name">{{ section.settings.text_41 | escape }}</div>
-                    <div class="me-result__top__bottom__review__img">
-                      {% if section.settings.image_2 != blank %}<img src="{{ section.settings.image_2 | image_url: width: 1800 }}" alt="{{ section.settings.image_2.alt | escape }}">{% endif %}
-                    </div>
-                  </div>
+                  {% endif %}
                 </div>
               </div>
             </div>
-          </div>
-          <div class="me-result__note js-me-top">{{ section.settings.text_42 | escape }}</div>
+          {% endfor %}
         </div>
-        </div>
-      </custom-swiper>
-    </section>
+      </div>
+      {% if section.settings.footnote != blank %}<div class="me-result__note js-me-top">{{ section.settings.footnote | escape }}</div>{% endif %}
+    </div>
+  </custom-swiper>
+</section>
 {% schema %}
 {
   "name": "Me Product Results",
   "settings": [
     {
       "type": "text",
-      "id": "text_1",
-      "label": "Text 1",
+      "id": "heading",
+      "label": "Heading",
       "default": "Visible Results in 4 Weeks"
     },
     {
-      "type": "text",
-      "id": "text_2",
-      "label": "Text 2",
-      "default": "Before"
-    },
-    {
-      "type": "text",
-      "id": "text_3",
-      "label": "Text 3",
-      "default": "After 8 weeks"
-    },
-    {
-      "type": "text",
-      "id": "text_4",
-      "label": "Text 4",
-      "default": "-94."
-    },
-    {
-      "type": "text",
-      "id": "text_5",
-      "label": "Text 5",
-      "default": "80%"
-    },
-    {
-      "type": "text",
-      "id": "text_6",
-      "label": "Text 6",
-      "default": "Hair Density Reduction in 4 Weeks*"
-    },
-    {
-      "type": "text",
-      "id": "text_7",
-      "label": "Text 7",
-      "default": "\"Easy to Use and I’m Actually Seeing Results\""
-    },
-    {
-      "type": "text",
-      "id": "text_8",
-      "label": "Text 8",
-      "default": "\"After about 8 weeks, it solved my #1 biggest problem- my acne has really improved and the\n                    inflammation is calming down. Thank you!\""
-    },
-    {
-      "type": "text",
-      "id": "text_9",
-      "label": "Text 9",
-      "default": "— Jennifer S. / Legs"
-    },
-    {
-      "type": "text",
-      "id": "text_10",
-      "label": "Text 10",
-      "default": "Before"
-    },
-    {
-      "type": "text",
-      "id": "text_11",
-      "label": "Text 11",
-      "default": "After 8 weeks"
-    },
-    {
-      "type": "text",
-      "id": "text_12",
-      "label": "Text 12",
-      "default": "-94."
-    },
-    {
-      "type": "text",
-      "id": "text_13",
-      "label": "Text 13",
-      "default": "80%"
-    },
-    {
-      "type": "text",
-      "id": "text_14",
-      "label": "Text 14",
-      "default": "Hair Density Reduction in 4 Weeks*"
-    },
-    {
-      "type": "text",
-      "id": "text_15",
-      "label": "Text 15",
-      "default": "\"Easy to Use and I’m Actually Seeing Results\""
-    },
-    {
-      "type": "text",
-      "id": "text_16",
-      "label": "Text 16",
-      "default": "\"After about 8 weeks, it solved my #1 biggest problem- my acne has really improved and the\n                    inflammation is calming down. Thank you!\""
-    },
-    {
-      "type": "text",
-      "id": "text_17",
-      "label": "Text 17",
-      "default": "— Jennifer S. / Legs"
-    },
-    {
-      "type": "text",
-      "id": "text_18",
-      "label": "Text 18",
-      "default": "Before"
-    },
-    {
-      "type": "text",
-      "id": "text_19",
-      "label": "Text 19",
-      "default": "After 8 weeks"
-    },
-    {
-      "type": "text",
-      "id": "text_20",
-      "label": "Text 20",
-      "default": "-94."
-    },
-    {
-      "type": "text",
-      "id": "text_21",
-      "label": "Text 21",
-      "default": "80%"
-    },
-    {
-      "type": "text",
-      "id": "text_22",
-      "label": "Text 22",
-      "default": "Hair Density Reduction in 4 Weeks*"
-    },
-    {
-      "type": "text",
-      "id": "text_23",
-      "label": "Text 23",
-      "default": "\"Easy to Use and I’m Actually Seeing Results\""
-    },
-    {
-      "type": "text",
-      "id": "text_24",
-      "label": "Text 24",
-      "default": "\"After about 8 weeks, it solved my #1 biggest problem- my acne has really improved and the\n                    inflammation is calming down. Thank you!\""
-    },
-    {
-      "type": "text",
-      "id": "text_25",
-      "label": "Text 25",
-      "default": "— Jennifer S. / Legs"
-    },
-    {
-      "type": "text",
-      "id": "text_26",
-      "label": "Text 26",
-      "default": "Before"
-    },
-    {
-      "type": "text",
-      "id": "text_27",
-      "label": "Text 27",
-      "default": "After 8 weeks"
-    },
-    {
-      "type": "text",
-      "id": "text_28",
-      "label": "Text 28",
-      "default": "-94."
-    },
-    {
-      "type": "text",
-      "id": "text_29",
-      "label": "Text 29",
-      "default": "80%"
-    },
-    {
-      "type": "text",
-      "id": "text_30",
-      "label": "Text 30",
-      "default": "Hair Density Reduction in 4 Weeks*"
-    },
-    {
-      "type": "text",
-      "id": "text_31",
-      "label": "Text 31",
-      "default": "\"Easy to Use and I’m Actually Seeing Results\""
-    },
-    {
-      "type": "text",
-      "id": "text_32",
-      "label": "Text 32",
-      "default": "\"After about 8 weeks, it solved my #1 biggest problem- my acne has really improved and the\n                    inflammation is calming down. Thank you!\""
-    },
-    {
-      "type": "text",
-      "id": "text_33",
-      "label": "Text 33",
-      "default": "— Jennifer S. / Legs"
-    },
-    {
-      "type": "text",
-      "id": "text_34",
-      "label": "Text 34",
-      "default": "Before"
-    },
-    {
-      "type": "text",
-      "id": "text_35",
-      "label": "Text 35",
-      "default": "After 8 weeks"
-    },
-    {
-      "type": "text",
-      "id": "text_36",
-      "label": "Text 36",
-      "default": "-94."
-    },
-    {
-      "type": "text",
-      "id": "text_37",
-      "label": "Text 37",
-      "default": "80%"
-    },
-    {
-      "type": "text",
-      "id": "text_38",
-      "label": "Text 38",
-      "default": "Hair Density Reduction in 4 Weeks*"
-    },
-    {
-      "type": "text",
-      "id": "text_39",
-      "label": "Text 39",
-      "default": "\"Easy to Use and I’m Actually Seeing Results\""
-    },
-    {
-      "type": "text",
-      "id": "text_40",
-      "label": "Text 40",
-      "default": "\"After about 8 weeks, it solved my #1 biggest problem- my acne has really improved and the\n                    inflammation is calming down. Thank you!\""
-    },
-    {
-      "type": "text",
-      "id": "text_41",
-      "label": "Text 41",
-      "default": "— Jennifer S. / Legs"
-    },
-    {
-      "type": "text",
-      "id": "text_42",
-      "label": "Text 42",
-      "default": "* Based on third-party lab testing by SGS (Report No.\n            GZCPCH24007287-01_EN). Individual results may vary."
-    },
-    {
       "type": "image_picker",
-      "id": "image_1_pc",
-      "label": "Image 1 PC"
+      "id": "rating_image",
+      "label": "Review rating image"
     },
     {
-      "type": "image_picker",
-      "id": "image_1_mobile",
-      "label": "Image 1 Mobile"
-    },
+      "type": "textarea",
+      "id": "footnote",
+      "label": "Footnote",
+      "default": "* Based on third-party lab testing by SGS (Report No. GZCPCH24007287-01_EN). Individual results may vary."
+    }
+  ],
+  "max_blocks": 20,
+  "blocks": [
     {
-      "type": "image_picker",
-      "id": "image_2",
-      "label": "Image 2"
+      "type": "result_card",
+      "name": "Result card",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image_pc",
+          "label": "Result image — PC"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_mobile",
+          "label": "Result image — Mobile"
+        },
+        {
+          "type": "text",
+          "id": "before_label",
+          "label": "Before label",
+          "default": "Before"
+        },
+        {
+          "type": "text",
+          "id": "after_label",
+          "label": "After label",
+          "default": "After 8 weeks"
+        },
+        {
+          "type": "text",
+          "id": "result_value",
+          "label": "Result value",
+          "default": "-94."
+        },
+        {
+          "type": "text",
+          "id": "result_suffix",
+          "label": "Result suffix",
+          "default": "80%"
+        },
+        {
+          "type": "text",
+          "id": "result_caption",
+          "label": "Result caption",
+          "default": "Hair Density Reduction in 4 Weeks*"
+        },
+        {
+          "type": "text",
+          "id": "review_title",
+          "label": "Review title",
+          "default": "Easy to Use and I’m Actually Seeing Results"
+        },
+        {
+          "type": "textarea",
+          "id": "review_text",
+          "label": "Review text",
+          "default": "After about 8 weeks, it solved my #1 biggest problem- my acne has really improved and the inflammation is calming down. Thank you!"
+        },
+        {
+          "type": "text",
+          "id": "customer_name",
+          "label": "Customer name",
+          "default": "— Jennifer S. / Legs"
+        }
+      ]
     }
   ],
   "presets": [
     {
-      "name": "Me Product Results"
+      "name": "Me Product Results",
+      "blocks": [
+        {
+          "type": "result_card",
+          "settings": {
+            "before_label": "Before",
+            "after_label": "After 8 weeks",
+            "result_value": "-94.",
+            "result_suffix": "80%",
+            "result_caption": "Hair Density Reduction in 4 Weeks*",
+            "review_title": "Easy to Use and I’m Actually Seeing Results",
+            "review_text": "After about 8 weeks, it solved my #1 biggest problem- my acne has really improved and the inflammation is calming down. Thank you!",
+            "customer_name": "— Jennifer S. / Legs"
+          }
+        },
+        {
+          "type": "result_card",
+          "settings": {
+            "before_label": "Before",
+            "after_label": "After 8 weeks",
+            "result_value": "-94.",
+            "result_suffix": "80%",
+            "result_caption": "Hair Density Reduction in 4 Weeks*",
+            "review_title": "Easy to Use and I’m Actually Seeing Results",
+            "review_text": "After about 8 weeks, it solved my #1 biggest problem- my acne has really improved and the inflammation is calming down. Thank you!",
+            "customer_name": "— Jennifer S. / Legs"
+          }
+        },
+        {
+          "type": "result_card",
+          "settings": {
+            "before_label": "Before",
+            "after_label": "After 8 weeks",
+            "result_value": "-94.",
+            "result_suffix": "80%",
+            "result_caption": "Hair Density Reduction in 4 Weeks*",
+            "review_title": "Easy to Use and I’m Actually Seeing Results",
+            "review_text": "After about 8 weeks, it solved my #1 biggest problem- my acne has really improved and the inflammation is calming down. Thank you!",
+            "customer_name": "— Jennifer S. / Legs"
+          }
+        },
+        {
+          "type": "result_card",
+          "settings": {
+            "before_label": "Before",
+            "after_label": "After 8 weeks",
+            "result_value": "-94.",
+            "result_suffix": "80%",
+            "result_caption": "Hair Density Reduction in 4 Weeks*",
+            "review_title": "Easy to Use and I’m Actually Seeing Results",
+            "review_text": "After about 8 weeks, it solved my #1 biggest problem- my acne has really improved and the inflammation is calming down. Thank you!",
+            "customer_name": "— Jennifer S. / Legs"
+          }
+        },
+        {
+          "type": "result_card",
+          "settings": {
+            "before_label": "Before",
+            "after_label": "After 8 weeks",
+            "result_value": "-94.",
+            "result_suffix": "80%",
+            "result_caption": "Hair Density Reduction in 4 Weeks*",
+            "review_title": "Easy to Use and I’m Actually Seeing Results",
+            "review_text": "After about 8 weeks, it solved my #1 biggest problem- my acne has really improved and the inflammation is calming down. Thank you!",
+            "customer_name": "— Jennifer S. / Legs"
+          }
+        }
+      ]
     }
   ]
 }
