@@ -168,37 +168,18 @@
     <div class="me-nav__container">
       <div class="me-nav__scroll">
         <ul class="me-nav__list">
+              {% for block in section.blocks %}
           <li class="me-nav__item">
-            <a class="me-nav__link is-active" href="#me-overview" aria-current="location">{{ section.settings.text_1 | escape }}</a>
+            <a class="me-nav__link is-active" href="#{{ block.settings.nav_id }}" {% if forloop.first %} aria-current="location" {% endif %}>{{ block.settings.nav_text | escape }}</a>
           </li>
+        {% endfor %}
 
-          <li class="me-nav__item">
-            <a class="me-nav__link" href="#me-results">{{ section.settings.text_2 | escape }}</a>
-          </li>
-
-          <li class="me-nav__item">
-            <a class="me-nav__link" href="#me-safety">{{ section.settings.text_3 | escape }}</a>
-          </li>
-
-          <li class="me-nav__item">
-            <a class="me-nav__link" href="#me-technology">{{ section.settings.text_4 | escape }}</a>
-          </li>
-
-          <li class="me-nav__item">
-            <a class="me-nav__link" href="#me-application">{{ section.settings.text_5 | escape }}</a>
-          </li>
-
-          <li class="me-nav__item">
-            <a class="me-nav__link" href="#me-comparison">{{ section.settings.text_6 | escape }}</a>
-          </li>
-
-          <li class="me-nav__item">
-            <a class="me-nav__link" href="#me-faq">{{ section.settings.text_7 | escape }}</a>
-          </li>
         </ul>
       </div>
 
-      <a class="me-nav__buy" href="#me-purchase">{{ section.settings.text_8 | escape }}</a>
+      {% if section.settings.button_txt != blank %}
+      <a class="me-nav__buy" href="#me-purchase">{{ section.settings.button_txt | escape }}</a>
+      {% endif %}
     </div>
   </nav>
 <script>
@@ -458,53 +439,30 @@
 {
   "name": "Me Product Nav",
   "settings": [
-    {
+     {
       "type": "text",
-      "id": "text_1",
-      "label": "Text 1",
-      "default": "Overview"
-    },
-    {
-      "type": "text",
-      "id": "text_2",
-      "label": "Text 2",
-      "default": "Results"
-    },
-    {
-      "type": "text",
-      "id": "text_3",
-      "label": "Text 3",
-      "default": "Safety"
-    },
-    {
-      "type": "text",
-      "id": "text_4",
-      "label": "Text 4",
-      "default": "Technology"
-    },
-    {
-      "type": "text",
-      "id": "text_5",
-      "label": "Text 5",
-      "default": "Application"
-    },
-    {
-      "type": "text",
-      "id": "text_6",
-      "label": "Text 6",
-      "default": "Comparison"
-    },
-    {
-      "type": "text",
-      "id": "text_7",
-      "label": "Text 7",
-      "default": "FAQ"
-    },
-    {
-      "type": "text",
-      "id": "text_8",
-      "label": "Text 8",
+      "id": "button_txt",
+      "label": "Button Text",
       "default": "BUY NOW"
+    }
+  ],
+    "blocks": [
+    {
+      "type": "nav_slide",
+      "name": "Nav slide",
+      "settings": [
+         {
+      "type": "text",
+      "id": "nav_text",
+      "label": "Nav Text"
+    },
+        {
+      "type": "text",
+      "id": "nav_id",
+      "label": "Nav ID"
+    },
+      
+      ]
     }
   ],
   "presets": [
