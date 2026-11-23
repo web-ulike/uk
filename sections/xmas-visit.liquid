@@ -1,16 +1,29 @@
 {% render 'xmas-base' %}
 <div class="xmas xmas-visit"{% if section.settings.anchor != blank %} id="{{ section.settings.anchor | handleize }}"{% endif %}>
-  <div class="container"><div class="xmas-visit__row">
-    {% for block in section.blocks %}
-      <div class="to-top"{% unless forloop.first %} style="transition-delay: {{ forloop.index0 | times: 0.1 }}s"{% endunless %} {{ block.shopify_attributes }}>
-        <small>{{ block.settings.label | escape }}</small>
-        <strong>{{ block.settings.title | escape }}</strong>
-        <p>{{ block.settings.detail | escape }}</p>
-      </div>
-    {% endfor %}
-    {% assign button_delay = section.blocks.size | times: 0.1 %}
-    {% render 'xmas-directions', settings_group: section.settings, delay: button_delay %}
-  </div></div>
+  <div class="container">
+    <div class="xmas-visit__row">
+      {% for block in section.blocks %}
+        <div class="xmas-visit__detail to-top"{% unless forloop.first %} style="transition-delay: {{ forloop.index0 | times: 0.1 }}s"{% endunless %} {{ block.shopify_attributes }}>
+          {% if block.settings.label != blank %}<small class="xmas-visit__label">{{ block.settings.label | escape }}</small>{% endif %}
+          {% if block.settings.title != blank %}<strong class="xmas-visit__title">{{ block.settings.title | escape }}</strong>{% endif %}
+          {% if block.settings.detail != blank %}<p class="xmas-visit__note">{{ block.settings.detail | escape }}</p>{% endif %}
+        </div>
+      {% endfor %}
+      {% if section.settings.map_url != blank and section.settings.button != blank %}
+        <a class="xmas-visit__directions to-top" style="transition-delay: {{ section.blocks.size | times: 0.1 }}s" href="{{ section.settings.map_url | escape }}" target="_blank" rel="noopener">
+          {{ section.settings.button | escape }}
+          <picture>
+            <source media="(max-width: 700px)" srcset="{{ 'xmas-visit-pin-mobile.svg' | asset_url }}">
+            <img src="{{ 'xmas-visit-pin.svg' | asset_url }}" alt="" width="22" height="21">
+          </picture>
+        </a>
+      {% endif %}
+    </div>
+    <picture class="xmas-visit__rule" aria-hidden="true">
+      <source media="(max-width: 700px)" srcset="{{ 'xmas-visit-rule-mobile.svg' | asset_url }}">
+      <img src="{{ 'xmas-visit-rule.svg' | asset_url }}" alt="" width="1520">
+    </picture>
+  </div>
   {% if section.settings.show_bar %}
     <aside class="xmas-visit__bar">
       <div><strong>{{ section.settings.summary | escape }}</strong><small>{{ section.settings.subline | escape }}</small></div>
@@ -21,13 +34,77 @@
 </div>
 
 {% stylesheet %}
-.xmas-visit__row { display: grid; grid-template-columns: 1.1fr 1.3fr auto; align-items: center; gap: 34px; padding: clamp(40px, 4vw, 64px) 0; border-bottom: 1px solid #e3dcd3; }
-.xmas-visit__row small { display: block; font-size: var(--xmas-small-size); color: #7f2330; letter-spacing: 2px; margin-bottom: 8px; }
-.xmas-visit__row strong { font-size: clamp(22px, 2vw, 30px); font-weight: 500; line-height: 1.25; }
-.xmas-visit__row p { margin: 8px 0 0; font-size: var(--xmas-body-size); color: #716b69; }
+.xmas-visit__row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+  padding: 66px 0;
+  color: #3f3636;
+}
+
+.xmas-visit__detail {
+  display: flex;
+  flex: 1 1 470px;
+  flex-direction: column;
+  gap: 6px;
+  max-width: 470px;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.xmas-visit__label {
+  color: #a30a41;
+  font-size: 14px;
+  line-height: 18px;
+  letter-spacing: 2px;
+}
+
+.xmas-visit__title {
+  font-size: 26px;
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+.xmas-visit__note {
+  margin: 0;
+  font-size: 14px;
+  line-height: 18px;
+  opacity: 0.6;
+}
+
+.xmas-visit__directions {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  max-width: 100%;
+  min-height: 48px;
+  padding: 6px 20px;
+  border-radius: 4px;
+  background: #e0004d;
+  color: #fff;
+  font: 500 15px/1.2 Saans, sans-serif;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.xmas-visit__directions:hover { background: #a30a41; color: #fff; }
+.xmas-visit__directions picture { flex: none; }
+.xmas-visit__rule { display: block; }
+.xmas-visit__rule img { width: 100%; height: 0.5px; }
+
 .xmas-visit__bar { display: none; }
 @media (max-width: 700px) {
-  .xmas-visit__row { grid-template-columns: 1fr; justify-items: start; gap: 28px; padding: 36px 0; }
+  .xmas-visit > .container { padding-inline: 16px; }
+  .xmas-visit__row { flex-direction: column; align-items: flex-start; gap: 49px; padding: 48px 0 46px; }
+  .xmas-visit__detail { flex: none; }
+  .xmas-visit__label { font-size: 10px; }
+  .xmas-visit__title { font-size: 18px; }
+  .xmas-visit__note { font-size: 12px; }
+  .xmas-visit__directions { font-size: 12px; }
+  .xmas-visit__detail + .xmas-visit__directions { margin-top: -29px; }
   .xmas-visit__bar { position: fixed; inset: auto 0 0; z-index: 5; display: flex; justify-content: space-between; align-items: center; padding: 12px 18px calc(12px + env(safe-area-inset-bottom)); background: #fff9ef; border-top: 1px solid #dad2be; }
   .xmas-visit__bar strong { font: 500 14px Saans, sans-serif; }
   .xmas-visit__bar small { display: block; font-size: 12px; }
