@@ -78,7 +78,10 @@
             <div class="xmas-lineup__actions">
               {% if product != blank %}
                 <div class="price-list">
-                  {% render 'product-item-prices', product: product %}
+                  <span class="price">{{ variant.price | money }}</span>
+                  {% if variant.compare_at_price > variant.price %}
+                    <s class="price price--compare">{{ variant.compare_at_price | money }}</s>
+                  {% endif %}
                 </div>
                 <script type="application/ld+json">
                   {{ product | structured_data }}
