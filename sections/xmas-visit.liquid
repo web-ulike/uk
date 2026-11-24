@@ -42,6 +42,8 @@
               {% endif %}
               {{ pin | image_url: width: 44 | image_tag: width: 22, height: 21, alt: '' }}
             </picture>
+          {% elsif section.settings.pin_svg != blank %}
+            <span class="xmas-visit__pin" aria-hidden="true">{{ section.settings.pin_svg }}</span>
           {% endif %}
         </a>
       {% endif %}
@@ -156,6 +158,13 @@
   .xmas-visit__directions img {
     object-fit: contain;
   }
+  .xmas-visit__pin,
+  .xmas-visit__pin svg {
+    display: block;
+    width: 22px;
+    height: 21px;
+    flex: none;
+  }
   .xmas-visit__rule {
     height: 0.5px;
   }
@@ -260,6 +269,13 @@
       "type": "image_picker",
       "id": "pin_mobile",
       "label": "Mobile directions icon (optional)"
+    },
+    {
+      "type": "textarea",
+      "id": "pin_svg",
+      "label": "Directions icon SVG",
+      "info": "Used when both directions icon images are empty.",
+      "default": "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.8'><path d='M19 10c0 5-7 11-7 11S5 15 5 10a7 7 0 1 1 14 0Z'/><circle cx='12' cy='10' r='2.5'/></svg>"
     },
     {
       "type": "checkbox",
