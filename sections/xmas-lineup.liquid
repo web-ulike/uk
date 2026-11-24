@@ -1,122 +1,203 @@
-<section class="xmas xmas-lineup"{% if section.settings.anchor != blank %} id="{{ section.settings.anchor | handleize }}"{% endif %}><div class="container"><div class="xmas-lineup__inner">
-  <div class="xmas-head-row">{% render 'xmas-heading', settings_group: section.settings %}</div>
-  <div class="xmas-lineup__grid">
-    {% for block in section.blocks %}
-      {% liquid
-        assign featured_product = block.settings.product
-        assign photo = block.settings.image | default: featured_product.featured_image
-        assign title = featured_product.title | default: block.settings.title
-        assign link = block.settings.link | default: featured_product.url
-        assign score = block.settings.rating
-        if score == blank or score == 0
-          assign score = featured_product.metafields.loox.avg_rating.value
-        endif
-        assign reviews = block.settings.review_count | default: featured_product.metafields.loox.num_reviews.value
-      %}
-      <article class="to-top"{% unless forloop.first %} style="transition-delay: {{ forloop.index0 | times: 0.1 }}s"{% endunless %} {{ block.shopify_attributes }}>
-        {% if link != blank %}
-          <a class="xmas-lineup__art" href="{{ link | escape }}" aria-label="{{ title | escape }}">
-        {% else %}
-          <div class="xmas-lineup__art">
-        {% endif %}
-          {% if block.settings.badge != blank %}<span class="xmas-lineup__badge">{{ block.settings.badge | escape }}</span>{% endif %}
-          {% if photo != blank %}
-            {{ photo | image_url: width: 1400 | image_tag: widths: '200,400,600,800,1100,1400', sizes: '(max-width: 700px) calc(76.923vw - 47.7px), (max-width: 740px) calc(25vw - 30px), (max-width: 1600px) calc(25vw - 38px), 362px', loading: 'lazy' }}
-          {% else %}
-            <svg viewBox="0 0 70 90" aria-hidden="true" focusable="false">
-              <rect x="8" y="10" width="54" height="65" rx="2" />
-              <circle cx="25" cy="29" r="6" />
-              <path d="m8 63 18-19 13 13 10-11 13 17" />
-            </svg>
-          {% endif %}
-        {% if link != blank %}</a>{% else %}</div>{% endif %}
-        <div class="xmas-lineup__content">
-          <div class="xmas-lineup__summary">
-            <h3>{% if link != blank %}<a href="{{ link | escape }}">{{ title | escape }}</a>{% else %}{{ title | escape }}{% endif %}</h3>
-            {% if block.settings.show_rating and score != blank or reviews > 0 %}
-              <span class="xmas-lineup__rating">
-                <span aria-hidden="true">★</span>
-                {% if score != blank %}<span>{{ score | round: 1 }}<span class="visually-hidden"> out of 5</span></span>{% endif %}
-                {% if reviews != blank %}<span>{{ 'product.general.reviews_count' | t: count: reviews }}</span>{% endif %}
-              </span>
-            {% endif %}
-          </div>
-          {% if block.settings.detail != blank %}<p class="xmas-lineup__description">{{ block.settings.detail | escape | newline_to_br }}</p>{% endif %}
-          <div class="xmas-lineup__actions">
-            {% if featured_product != blank %}
-              <div class="price-list">{% render 'product-item-prices', product: featured_product %}</div>
-              <script type="application/ld+json">{{ featured_product | structured_data }}</script>
-            {% endif %}
-            {% if link != blank %}
-              <div class="xmas-lineup__buttons">
-                {% if featured_product != blank %}
-                  {% capture action_id %}xmas-buy-{{ section.id }}-{{ block.id }}{% endcapture %}
-                  {% if featured_product.available == false %}
-                    <button class="button button--primary" disabled>{{ 'product.form.sold_out' | t }}</button>
-                  {% elsif featured_product.variants.size == 1 %}
-                    {% form 'product', featured_product, is: 'product-form', id: action_id %}
-                      <input type="hidden" name="id" value="{{ featured_product.first_available_variant.id }}">
-                      <button type="submit" is="loader-button" class="button button--primary">{{ 'product.form.add_to_cart' | t }}</button>
-                    {% endform %}
-                  {% else %}
-                    {% assign query_separator = '?' %}
-                    {% if featured_product.url contains '?' %}{% assign query_separator = '&' %}{% endif %}
-                    <button type="button" is="toggle-button" class="button button--primary hidden-phone" aria-controls="{{ action_id }}-drawer" aria-expanded="false">{{ 'product.form.add_to_cart' | t }}</button>
-                    <button type="button" is="toggle-button" class="button button--primary hidden-tablet-and-up" aria-controls="{{ action_id }}-popover" aria-expanded="false">{{ 'product.form.add_to_cart' | t }}</button>
-                    <quick-buy-drawer id="{{ action_id }}-drawer" href="{{ featured_product.url | escape }}{{ query_separator | escape }}view=quick-buy-drawer" class="drawer drawer--large drawer--quick-buy hidden-phone"></quick-buy-drawer>
-                    <quick-buy-popover id="{{ action_id }}-popover" href="{{ featured_product.url | escape }}{{ query_separator | escape }}view=quick-buy-popover" class="popover popover--quick-buy hidden-tablet-and-up"></quick-buy-popover>
-                  {% endif %}
+<section class="xmas-lineup"{% if section.settings.anchor != blank %} id="{{ section.settings.anchor | handleize }}"{% endif %}>
+  <div class="container">
+    <header class="xmas-lineup__heading">
+      <div>
+        <p class="xmas-lineup__eyebrow">
+          <span>{{ section.settings.kicker | escape }}</span>
+          <span>{{ section.settings.mobile_kicker | default: section.settings.kicker | escape }}</span>
+        </p>
+        <h2>{{ section.settings.heading | escape | newline_to_br }}</h2>
+      </div>
+      <p class="xmas-lineup__intro">{{ section.settings.description | escape }}</p>
+    </header>
+    <xmas-lineup-carousel>
+      <div class="xmas-lineup__grid" id="lineup-track-{{ section.id }}">
+        {% for block in section.blocks %}
+          {% liquid
+            assign product = block.settings.product
+            assign variant = product.selected_or_first_available_variant
+            assign photo = block.settings.image | default: product.featured_image
+            assign title = product.title | default: block.settings.title
+            assign link = block.settings.link | default: product.url
+            assign badge = block.settings.badge
+            if badge == blank and variant.compare_at_price > variant.price
+              assign discount = variant.compare_at_price | minus: variant.price | times: 100.0 | divided_by: variant.compare_at_price | round
+              assign badge = discount | append: '% OFF'
+            endif
+            assign score = block.settings.rating
+            if score == blank or score == 0
+              assign score = product.metafields.loox.avg_rating.value
+            endif
+            assign reviews = block.settings.review_count | default: product.metafields.loox.num_reviews.value
+          %}
+          <article class="xmas-lineup__card" {{ block.shopify_attributes }}>
+            <div class="xmas-lineup__art">
+              {% if link != blank %}<a href="{{ link | escape }}" aria-label="{{ title | escape }}">{% endif %}
+              {% if photo != blank %}
+                {{ photo | image_url: width: 1100 | image_tag: widths: '260,368,520,736,1100', sizes: '(max-width: 700px) 70vw, (max-width: 1600px) 24vw, 368px', loading: 'lazy' }}
+              {% endif %}
+              {% if link != blank %}</a>{% endif %}
+              {% if badge != blank %}<span class="xmas-lineup__badge">{{ badge | escape }}</span>{% endif %}
+            </div>
+            <div class="xmas-lineup__summary">
+              <h3>{% if link != blank %}<a href="{{ link | escape }}">{{ title | escape }}</a>{% else %}{{ title | escape }}{% endif %}</h3>
+              {% if block.settings.show_rating %}
+                {% if product.metafields.judgeme.badge != blank %}
+                  <div class="xmas-lineup__rating">{{ product.metafields.judgeme.badge }}</div>
+                {% elsif score > 0 %}
+                  <span class="xmas-lineup__rating"><span aria-hidden="true">★</span> {{ score | round: 1 }}{% if reviews != blank %} ({{ reviews }}){% endif %}</span>
                 {% endif %}
-                <a class="button button--outline" href="{{ link | escape }}">{% if section.settings.cta_label != blank %}{{ section.settings.cta_label | escape }}{% else %}{{ 'product.general.view_details' | t }}{% endif %}<span class="visually-hidden"> {{ title | escape }}</span></a>
-              </div>
+              {% endif %}
+            </div>
+            {% if block.settings.detail != blank %}<p class="xmas-lineup__detail">{{ block.settings.detail | escape | newline_to_br }}</p>{% endif %}
+            <div class="xmas-lineup__actions">
+              {% if product != blank %}
+                <div class="price-list">{% render 'product-item-prices', product: product %}</div>
+                <script type="application/ld+json">{{ product | structured_data }}</script>
+              {% endif %}
+              {% if link != blank %}
+                <a class="xmas-lineup__button" href="{{ link | escape }}">{{ section.settings.cta_label | default: 'Learn more' | escape }}<span class="visually-hidden"> {{ title | escape }}</span></a>
+              {% endif %}
+              {% if product != blank %}
+                <button type="button" class="xmas-lineup__button xmas-lineup__buy" data-variant="{{ variant.id }}" {% unless variant.available %}disabled{% endunless %}>
+                  <span class="loader-button__text">{% if variant.available %}{{ 'product.form.add_to_cart' | t }}{% else %}{{ 'product.form.sold_out' | t }}{% endif %}</span>
+                  <span class="loader-button__loader" hidden>{% render 'icon', icon: 'spinner' %}</span>
+                </button>
+              {% endif %}
+            </div>
+          </article>
+        {% endfor %}
+      </div>
+      {% if section.blocks.size > 1 %}
+        <div class="xmas-lineup__controls">
+          {% for direction in (1..2) %}
+            {% if direction == 1 %}
+              {% assign icon = 'nav-arrow-left' %}
+              {% assign label = 'general.accessibility.previous' %}
+            {% else %}
+              {% assign icon = 'nav-arrow-right' %}
+              {% assign label = 'general.accessibility.next' %}
             {% endif %}
-          </div>
+            <button type="button" data-direction="{{ direction }}" aria-label="{{ label | t | escape }}" aria-controls="lineup-track-{{ section.id }}" {% if direction == 1 %}disabled{% endif %}>
+              {% render 'icon', icon: icon, width: 22, height: 18 %}
+            </button>
+          {% endfor %}
         </div>
-      </article>
-    {% endfor %}
+      {% endif %}
+    </xmas-lineup-carousel>
   </div>
-</div></div></section>
+</section>
+
+{% javascript %}
+  if (!customElements.get('xmas-lineup-carousel')) {
+    customElements.define('xmas-lineup-carousel', class extends HTMLElement {
+      connectedCallback() {
+        this.track = this.querySelector('.xmas-lineup__grid');
+        this.buttons = this.querySelectorAll('[data-direction]');
+        this.addEventListener('click', this.handleClick);
+        this.track.addEventListener('scroll', this.updateControls, { passive: true });
+        this.observer = new ResizeObserver(this.updateControls);
+        this.observer.observe(this.track);
+        this.updateControls();
+      }
+
+      disconnectedCallback() {
+        this.removeEventListener('click', this.handleClick);
+        this.track.removeEventListener('scroll', this.updateControls);
+        this.observer.disconnect();
+      }
+
+      updateControls = () => {
+        if (!this.buttons.length) return;
+        const { scrollLeft, scrollWidth, clientWidth } = this.track;
+        this.buttons[0].disabled = scrollLeft <= 1;
+        this.buttons[1].disabled = scrollWidth - clientWidth - scrollLeft <= 1;
+      };
+
+      handleClick(event) {
+        const buy = event.target.closest('[data-variant]');
+        if (buy && !buy.disabled) {
+          window.addToCartPromise(buy.dataset.variant, buy, {}).catch(console.error);
+          return;
+        }
+        const button = event.target.closest('[data-direction]');
+        if (!button) return;
+        const next = button.dataset.direction === '2';
+        const left = this.track.getBoundingClientRect().left;
+        const cards = Array.from(this.track.children);
+        const target = (next ? cards : cards.reverse()).find(card => {
+          const offset = card.getBoundingClientRect().left - left;
+          return next ? offset > 2 : offset < -2;
+        });
+        if (target) this.track.scrollBy({
+          left: target.getBoundingClientRect().left - left,
+          behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth'
+        });
+      }
+    });
+  }
+{% endjavascript %}
 
 {% stylesheet %}
-.xmas-lineup__inner { padding: var(--xmas-section-space) 0; border-top: 1px solid #e5ddd2; }
-.xmas-lineup .xmas-head-row .xmas-heading { font-size: clamp(28px, 3vw, 42px); font-weight: 500; }
-.xmas-lineup__grid { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 24px; }
-.xmas-lineup__grid article { display: flex; flex-direction: column; min-width: 0; background: #fff; border-radius: 5px; }
-.xmas-lineup__content { display: flex; flex: 1; flex-direction: column; padding: 14px 20px 12px; }
-.xmas-lineup__actions { display: grid; justify-items: start; gap: 12px; margin-top: auto; }
-.xmas-lineup__actions > :first-child { margin-top: 12px; }
-.xmas-lineup__actions .price-list { align-items: baseline; flex-wrap: wrap; }
-.xmas-lineup__actions .price-list > span.price { font-size: clamp(22px, 2vw, 28px); font-weight: 500; line-height: 1.2; }
-.xmas-lineup__actions .price-list > span.price--compare { font-size: clamp(15px, 1.2vw, 18px); font-weight: 500; text-decoration: line-through; }
-.xmas-lineup__buttons { display: grid; width: 100%; gap: 8px; }
-.xmas-lineup__buttons .button { width: 100%; padding-inline: 10px; font-weight: 500; }
-.xmas-lineup__art { position: relative; width: 100%; aspect-ratio: 1 / 1; display: grid; place-items: center; overflow: hidden; background: transparent; border-radius: 5px 5px 0 0; }
-.xmas-lineup__art img { position: absolute; inset: 0; display: block; width: 100%; height: 100%; object-fit: cover; }
-.xmas-lineup__art svg { width: 65px; height: 90px; fill: none; stroke: #b8aa98; }
-.xmas-lineup__badge { position: absolute; z-index: 1; top: 10px; left: 10px; max-width: calc(100% - 20px); padding: 3px 8px; border: 1px solid #bb315c; border-radius: 20px; background: #fff; color: #a31d48; font: 500 12px/1.3 Saans, sans-serif; overflow-wrap: anywhere; }
-.xmas-lineup__summary { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 4px 8px; margin-bottom: 5px; }
-.xmas-lineup h3 { flex: 1 1 9em; min-width: 0; margin: 0; font: 500 clamp(16px, 1.3vw, 20px)/1.3 Saans, sans-serif; }
-.xmas-lineup__rating { display: inline-flex; align-items: baseline; gap: 3px; font-size: 12px; }
-.xmas-lineup__rating > :first-child { color: #bb315c; }
-.xmas-lineup__description { margin: 0; font-size: var(--xmas-small-size); color: #786e73; }
-@media (max-width: 700px) {
-  .xmas-lineup__grid {
-    --xmas-card-gap: 14px;
-    grid-template-columns: none;
-    grid-auto-flow: column;
-    grid-auto-columns: calc((100% - var(--xmas-card-gap)) / 1.3);
-    gap: var(--xmas-card-gap);
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
+  .xmas-lineup {
+    padding-block: 80px 100px;
+    background: #fbf6ed;
+    color: #190a0a;
+    font-family: Saans, sans-serif;
+    scroll-margin-top: calc(var(--header-height, 0px) * var(--enable-sticky-header, 0) + var(--announcement-bar-height, 0px) * var(--enable-sticky-announcement-bar, 0));
   }
-  .xmas-lineup__grid > article {
-    scroll-snap-align: start;
-    opacity: 1;
-    transform: none;
-    transition: none;
+  .xmas-lineup :where(h2,h3,p) { margin: 0; }
+  .xmas-lineup__heading { display: flex; align-items: end; justify-content: space-between; gap: 20px; margin-bottom: 46px; }
+  .xmas-lineup__eyebrow { color: #a30a41; font: 400 18px/1.5 saans-light, sans-serif; letter-spacing: 2px; }
+  .xmas-lineup__eyebrow span:last-child { display: none; }
+  .xmas-lineup__heading h2 { margin-top: 10px; font: 400 50px/1.2 Saans, sans-serif; letter-spacing: normal; }
+  .xmas-lineup__intro { white-space: pre-line; font-size: 14px; line-height: 18px; opacity: .6; }
+  xmas-lineup-carousel { display: block; }
+  .xmas-lineup__grid { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 20px; }
+  .xmas-lineup__card { display: flex; flex-direction: column; min-width: 0; }
+  .xmas-lineup__art { position: relative; aspect-ratio: 1; overflow: hidden; background: white; border-radius: 8px; }
+  .xmas-lineup__art a, .xmas-lineup__art img { display: block; width: 100%; height: 100%; object-fit: contain; }
+  .xmas-lineup__badge { position: absolute; top: 12px; left: 12px; padding: 5px; border-radius: 4px; background: #e0004d; color: white; font: 500 12px/13px Saans, sans-serif; pointer-events: none; }
+  .xmas-lineup__summary { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 2px 6px; margin-top: 16px; }
+  .xmas-lineup__summary h3 { font: 500 18px/1.2 Saans, sans-serif; }
+  .xmas-lineup__rating { --jdgm-star-color: #190a0a; color: #190a0a; font-size: 14px; line-height: 30px; }
+  .xmas-lineup__rating .jdgm-star, .xmas-lineup__rating .jdgm-prev-badge__text { color: #190a0a !important; }
+  .xmas-lineup__rating .jdgm-prev-badge__stars .jdgm-star ~ .jdgm-star { display: none; }
+  .xmas-lineup__rating .jdgm-prev-badge__text { text-decoration: underline; }
+  .xmas-lineup__rating .jdgm-prev-badge[data-average-rating][data-number-of-reviews]::after { content: attr(data-average-rating) ' (' attr(data-number-of-reviews) ')'; text-decoration: underline; }
+  .xmas-lineup__rating .jdgm-prev-badge[data-average-rating][data-number-of-reviews] .jdgm-prev-badge__text { display: none; }
+  .xmas-lineup__detail { margin-top: 2px; color: rgb(63 54 54 / 80%); font-size: 12px; line-height: 1.3; }
+  .xmas-lineup__actions { margin-top: auto; padding-top: 17px; display: grid; gap: 10px; }
+  .xmas-lineup__actions .price-list { margin-bottom: 7px; gap: 4px; }
+  .xmas-lineup__actions .price { color: #e0004d; font: 500 16px/1.33 Saans, sans-serif; }
+  .xmas-lineup__actions .price--compare { color: rgb(63 54 54 / 60%); font-family: saans-light, sans-serif; }
+  .xmas-lineup__button { position: relative; display: grid; place-items: center; width: 100%; min-height: 36px; border: 1px solid #3f3636; border-radius: 4px; color: #3f3636; font: 500 12px/20px Saans, sans-serif; letter-spacing: 1px; text-transform: uppercase; }
+  .xmas-lineup__buy { background: #190a0a; border-color: #190a0a; color: white; cursor: pointer; }
+  .xmas-lineup__buy:disabled { opacity: .5; cursor: default; }
+  .xmas-lineup__controls { display: none; }
+  @media (max-width: 700px) {
+    .xmas-lineup { padding-block: 50px; }
+    .xmas-lineup > .container { padding-inline: 16px; }
+    .xmas-lineup__heading { display: grid; gap: 10px; margin-bottom: 30px; }
+    .xmas-lineup__eyebrow { font-size: 12px; }
+    .xmas-lineup__eyebrow span:first-child { display: none; }
+    .xmas-lineup__eyebrow span:last-child { display: inline; }
+    .xmas-lineup__heading h2 { max-width: 285px; font-size: 30px; }
+    .xmas-lineup__intro { white-space: normal; font-size: 12px; }
+    .xmas-lineup__grid { grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: calc((100% - 5px) / 1.3); gap: 16px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; }
+    .xmas-lineup__grid::-webkit-scrollbar { display: none; }
+    .xmas-lineup__card { scroll-snap-align: start; }
+    .xmas-lineup__art { border-radius: 4px; }
+    .xmas-lineup__badge { top: 10px; left: 10px; font-size: 10px; }
+    .xmas-lineup__summary { margin-top: 12px; }
+    .xmas-lineup__summary h3, .xmas-lineup__actions .price { font-size: 14px; }
+    .xmas-lineup__rating { font-size: 12px; }
+    .xmas-lineup__actions { padding-top: 10px; gap: 5px; }
+    .xmas-lineup__actions .price-list { margin-bottom: 5px; }
+    .xmas-lineup__controls { display: flex; justify-content: flex-end; margin: 24px 8% 0 0; }
+    .xmas-lineup__controls button { display: grid; place-items: center; width: 44px; height: 44px; color: #190a0a; cursor: pointer; }
+    .xmas-lineup__controls button:disabled { color: #bfbfbf; cursor: default; }
   }
-  .xmas-lineup__content { padding-inline: 12px; }
-}
 {% endstylesheet %}
 
 {% schema %}
@@ -139,6 +220,12 @@
       "id": "kicker",
       "label": "Eyebrow",
       "default": "THE CHRISTMAS GIFT EDIT"
+    },
+    {
+      "type": "text",
+      "id": "mobile_kicker",
+      "label": "Mobile eyebrow",
+      "default": "THE PERFECT CHRISTMAS GIFT"
     },
     {
       "type": "textarea",
