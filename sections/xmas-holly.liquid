@@ -1,27 +1,123 @@
-<section class="xmas xmas-holly"{% if section.settings.anchor != blank %} id="{{ section.settings.anchor | handleize }}"{% endif %}><div class="container"><div class="xmas-holly__grid">
-  {% if section.settings.image != blank %}
-    {{ section.settings.image | image_url: width: 1400 | image_tag: widths: '400,600,900,1080,1400', sizes: '(max-width: 700px) calc(100vw - 48px), (max-width: 740px) calc(50vw - 24px), (max-width: 1600px) calc(50vw - 40px), 760px', loading: 'lazy', class: 'to-top', alt: section.settings.alt }}
-  {% else %}
-    <img class="to-top" src="{{ 'xmas-holly-900.jpg' | asset_url }}" width="900" height="1349" loading="lazy" alt="{{ section.settings.alt | escape }}">
-  {% endif %}
-  <div class="xmas-holly__copy">
-    {% render 'xmas-heading', settings_group: section.settings %}
-    <p class="xmas-holly__note to-top" style="transition-delay: 0.3s">{{ section.settings.note | escape }}</p>
+<section class="xmas-holly"{% if section.settings.anchor != blank %} id="{{ section.settings.anchor | handleize }}"{% endif %}>
+  <div class="container">
+    <div class="xmas-holly__grid">
+      {% if section.settings.kicker != blank or section.settings.heading != blank %}
+        <header class="xmas-holly__titles to-top">
+          {% if section.settings.kicker != blank %}
+            <p class="xmas-holly__kicker">{{ section.settings.kicker | escape }}</p>
+          {% endif %}
+          {% if section.settings.heading != blank %}
+            <h2 class="xmas-holly__heading">{{ section.settings.heading | escape | newline_to_br }}</h2>
+          {% endif %}
+        </header>
+      {% endif %}
+
+      <div class="xmas-holly__portrait to-top">
+        {% if section.settings.image != blank %}
+          {% assign portrait_alt = section.settings.alt | default: section.settings.image.alt %}
+          {{ section.settings.image | image_url: width: 1452 | image_tag:
+            widths: '343,500,700,900,1080,1452',
+            sizes: '(max-width: 700px) calc(100vw - 32px), (max-width: 1600px) 46vw, 700px',
+            loading: 'lazy', alt: portrait_alt
+          }}
+        {% else %}
+          <img class="xmas-holly__art" src="{{ 'xmas-holly-portrait.jpg' | asset_url }}"
+            width="1452" height="1915" loading="lazy" alt="{{ section.settings.alt | escape }}">
+        {% endif %}
+      </div>
+
+      {% if section.settings.description != blank or section.settings.note != blank %}
+        <div class="xmas-holly__details to-top">
+          {% if section.settings.description != blank %}
+            <p class="xmas-holly__description">{{ section.settings.description | escape | newline_to_br }}</p>
+          {% endif %}
+          {% if section.settings.note != blank %}
+            <div class="xmas-holly__note">
+              <img src="{{ 'xmas-holly-rule.svg' | asset_url }}" width="147" alt="">
+              <p>{{ section.settings.note | escape }}</p>
+            </div>
+          {% endif %}
+        </div>
+      {% endif %}
+    </div>
   </div>
-</div></div></section>
+</section>
 
 {% stylesheet %}
-.xmas-holly__grid { display: grid; grid-template-columns: 1fr 1fr; background: #f0e8da; border-bottom: 3px solid #a58346; }
-.xmas-holly__grid img { width: 100%; height: 100%; max-height: 650px; object-fit: cover; object-position: center 28%; }
-.xmas-holly__copy { align-self: center; padding: clamp(32px, 4vw, 64px) clamp(24px, 3vw, 48px); color: #811425; }
-.xmas-holly__note { display: inline-block; border-top: 1px solid #c6a895; margin: 32px 0 0; padding-top: 16px; font-size: var(--xmas-small-size); color: #7e4a46; }
-@media (max-width: 700px) {
-  .xmas-holly__grid { grid-template-columns: 1fr; }
-  .xmas-holly__grid img { height: auto; max-height: 550px; }
-  .xmas-holly__copy { padding: 36px 24px; }
-  .xmas-holly .xmas-heading { font-size: clamp(40px, 10.8vw, 48px); }
-}
+  .xmas-holly {
+    background: #fbf6ed;
+    color: #190a0a;
+    padding-bottom: 80px;
+    font-family: Saans, sans-serif;
+    scroll-margin-top: calc(var(--header-height, 0px) * var(--enable-sticky-header, 0) + var(--announcement-bar-height, 0px) * var(--enable-sticky-announcement-bar, 0));
+  }
+  .xmas-holly__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 700fr) minmax(0, 698fr);
+    grid-template-rows: 1fr auto auto 1fr;
+    column-gap: 8.0263%;
+  }
+  .xmas-holly__titles, .xmas-holly__details, .xmas-holly__note {
+    display: grid;
+    align-content: start;
+    gap: 10px;
+  }
+  .xmas-holly__titles, .xmas-holly__details { grid-column: 2; max-width: 456px; }
+  .xmas-holly__titles { grid-row: 2; }
+  .xmas-holly__details { grid-row: 3; }
+  .xmas-holly__titles ~ .xmas-holly__details { margin-top: 10px; }
+  .xmas-holly p, .xmas-holly h2 { margin: 0; }
+  .xmas-holly__kicker { color: #a30a41; font: 400 18px/1.5 saans-light, sans-serif; letter-spacing: 2px; }
+  .xmas-holly__heading { color: inherit; font: 400 56px/1.2 Saans, sans-serif; letter-spacing: normal; }
+  .xmas-holly__portrait {
+    position: relative;
+    grid-area: 1 / 1 / -1 / 2;
+    align-self: center;
+    aspect-ratio: 1;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .xmas-holly__portrait img { display: block; width: 100%; height: 100%; object-fit: cover; }
+  .xmas-holly__portrait .xmas-holly__art {
+    position: absolute;
+    top: -12.57%;
+    left: -1.85%;
+    width: 103.7%;
+    max-width: none;
+    height: auto;
+  }
+  .xmas-holly__description { color: rgb(63 54 54 / 60%); font-size: 14px; line-height: 18px; }
+  .xmas-holly__description:has(+ .xmas-holly__note) { min-height: 85px; }
+  .xmas-holly__note { font: italic 400 18px/1.5 saans-light, sans-serif; }
+  .xmas-holly__note img { display: block; }
+
+  @media (max-width: 700px) {
+    .xmas-holly { padding-block: 50px; }
+    .xmas-holly > .container { padding-inline: 16px; }
+    .xmas-holly__grid { display: flex; flex-direction: column; }
+    .xmas-holly__titles, .xmas-holly__details { max-width: none; }
+    .xmas-holly__titles { margin-bottom: 30px; }
+    .xmas-holly__kicker { font-size: 12px; }
+    .xmas-holly__heading { font-size: 30px; }
+    .xmas-holly__portrait { width: 100%; border-radius: 0; }
+    .xmas-holly__portrait .xmas-holly__art { top: -9.85%; left: 0; width: 100%; }
+    .xmas-holly__portrait + .xmas-holly__details { margin-top: 20px; }
+    .xmas-holly__description { color: rgb(25 10 10 / 60%); font-size: 12px; }
+    .xmas-holly__description:has(+ .xmas-holly__note) { min-height: 0; }
+    .xmas-holly__note { color: #1a1a1a; font-size: 14px; line-height: normal; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .xmas-holly .to-top { opacity: 1; transform: none; transition: none; }
+  }
 {% endstylesheet %}
+
+{% javascript %}
+  document.addEventListener('shopify:section:load', (event) => {
+    if (event.target.querySelector('.xmas-holly') && typeof window.initialCheck === 'function') {
+      window.initialCheck();
+    }
+  });
+{% endjavascript %}
 
 {% schema %}
 {
