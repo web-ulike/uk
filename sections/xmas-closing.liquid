@@ -1,33 +1,91 @@
-<section class="xmas xmas-closing"{% if section.settings.anchor != blank %} id="{{ section.settings.anchor | handleize }}"{% endif %}><div class="container">
-  {% render 'xmas-heading', settings_group: section.settings %}
-  {% render 'xmas-directions', settings_group: section.settings, delay: 0.3 %}
-</div></section>
+<section class="xmas-closing"{% if section.settings.anchor != blank %} id="{{ section.settings.anchor | handleize }}"{% endif %}>
+  <div class="xmas-closing__content">
+    {% if section.settings.kicker != blank %}
+      <p class="xmas-closing__kicker">{{ section.settings.kicker | escape }}</p>
+    {% endif %}
+    {% if section.settings.heading != blank %}
+      <h2 class="xmas-closing__title">{{ section.settings.heading | escape | newline_to_br }}</h2>
+    {% endif %}
+    {% if section.settings.description != blank %}
+      <p class="xmas-closing__details">{{ section.settings.description | escape | newline_to_br }}</p>
+    {% endif %}
+    {% if section.settings.map_url != blank and section.settings.button != blank %}
+      <a class="xmas-closing__button" href="{{ section.settings.map_url | escape }}" target="_blank" rel="noopener">
+        {{ section.settings.button | escape }}
+      </a>
+    {% endif %}
+  </div>
+</section>
 
 {% stylesheet %}
-.xmas.xmas-closing {
-  padding-block: var(--xmas-section-space);
-  background: radial-gradient(ellipse at top, #a0202f, #670b18);
-  color: #fff;
-  text-align: center;
-}
+  .xmas-closing {
+    display: grid;
+    place-items: center;
+    min-height: 446px;
+    padding: 60px 16px;
+    background: radial-gradient(ellipse 93% 95% at 50% 4.87%, #a00920, #6a000f);
+    font-family: Saans, sans-serif;
+    text-align: center;
+    scroll-margin-top: calc(
+      var(--header-height, 0px) * var(--enable-sticky-header, 0) +
+      var(--announcement-bar-height, 0px) * var(--enable-sticky-announcement-bar, 0)
+    );
+  }
 
-.xmas.xmas-closing .xmas-kicker {
-  color: #efd09a;
-}
+  .xmas-closing__content {
+    display: grid;
+    width: min(100%, 750px);
+    justify-items: center;
+    gap: 14px;
+    overflow-wrap: anywhere;
+  }
 
-.xmas.xmas-closing .xmas-intro {
-  color: #f8d8d4;
-}
+  .xmas-closing__content > * { margin: 0; }
+  .xmas-closing__kicker {
+    color: #f5c1a7;
+    font-size: 16px;
+    line-height: 1.2;
+    letter-spacing: .05em;
+    text-transform: uppercase;
+  }
+  .xmas-closing__title {
+    color: #f5c1a7;
+    font: italic 400 60px/1.1 "Bodoni 72", Bodoni-Book, serif;
+    letter-spacing: normal;
+  }
+  @supports (background-clip: text) {
+    .xmas-closing__title {
+      background: linear-gradient(149deg, #f5c1a7 15.2%, #fcdbca 98.93%);
+      background-clip: text;
+      color: transparent;
+    }
+  }
+  .xmas-closing__details {
+    max-width: 500px;
+    color: #f9d1bd;
+    font-size: 20px;
+    line-height: 1.5;
+  }
+  .xmas-closing__button {
+    display: inline-grid;
+    place-items: center;
+    min-height: 48px;
+    padding: 6px 37px;
+    border-radius: 4px;
+    background: #e0004d;
+    color: #fff;
+    font: 500 15px/1.5 Saans, sans-serif;
+    text-transform: uppercase;
+    text-decoration: none;
+  }
+  .xmas-closing__content > * + .xmas-closing__button { margin-top: 26px; }
 
-.xmas-closing .xmas-directions {
-  margin-top: 32px;
-  background: #fff2df;
-  color: #701521;
-}
-
-.xmas-closing .xmas-directions:hover {
-  background: #efd09a;
-}
+  @media (max-width: 700px) {
+    .xmas-closing { min-height: 0; }
+    .xmas-closing__kicker, .xmas-closing__details { font-size: 12px; }
+    .xmas-closing__title { font-size: 28px; }
+    .xmas-closing__button { min-height: 38px; padding: 10px 30px; font-size: 12px; }
+  }
 {% endstylesheet %}
 
 {% schema %}
