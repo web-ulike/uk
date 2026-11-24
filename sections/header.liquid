@@ -9,10 +9,16 @@
   <link rel="stylesheet" href="https://uk.ulike.com/cdn/shop/t/111/assets/swiper-bundle.min.css?v=56532426556096954261759030155">
   <script src="https://uk.ulike.com/cdn/shop/t/111/assets/swiper-bundle.min.aio.min.js?v=172760071950005571451759030155"></script>
 {%- endif -%}
+{%- assign show_transparent_header = false -%}
+{%- if section.settings.enable_transparent_header -%}
+  {%- if request.page_type == 'index' or template.suffix == 'xmas-2026' and request.page_type == 'page' -%}
+    {%- assign show_transparent_header = true -%}
+  {%- endif -%}
+{%- endif -%}
 <style>
     :root {
       --enable-sticky-header: {% if section.settings.enable_sticky_header %}1{% else %}0{% endif %};
-      --enable-transparent-header: {% if request.page_type == 'index' and section.settings.enable_transparent_header %}1{% else %}0{% endif %};
+      --enable-transparent-header: {% if show_transparent_header %}1{% else %}0{% endif %};
       --loading-bar-background: {{ settings.header_text_color.red }}, {{ settings.header_text_color.green }}, {{ settings.header_text_color.blue }}; /* Prevent the loading bar to be invisible */
     }
 
@@ -34,7 +40,7 @@
       top: {% if section.settings.enable_sticky_header %}calc(var(--enable-sticky-announcement-bar) * var(--announcement-bar-height, 0px)){% else %}0{% endif %};
       z-index: 10;
     }
-    {%- if request.page_type == 'index' and section.settings.enable_transparent_header -%}
+    {%- if show_transparent_header -%}
       #shopify-section-{{ section.id }} {
         margin-bottom: calc(-1 * (var(--header-height, 0px) + var(--enable-sticky-announcement-bar) * var(--announcement-bar-height, 0px)));
       }
@@ -151,7 +157,7 @@
     display: flex;
     gap: 5px;
     color: #E0004D;
-    font-family: var(--heading-font-family);
+    font-family: var(--ulike-family);
     font-weight: var(--heading-font-weight);
     font-style: var(--heading-font-style);
   }
@@ -536,10 +542,10 @@
   {% if section.settings.enable_sticky_header %}
     sticky
   {% endif %}
-  {% if request.page_type == 'index' and section.settings.enable_transparent_header %}
+  {% if show_transparent_header %}
     transparent
   {% endif %}
-  class="header {% if settings.background == settings.header_background %}header--bordered{% endif %} {% if request.page_type == 'index' and section.settings.enable_transparent_header %}header--transparent{% endif %}"
+  class="header {% if settings.background == settings.header_background %}header--bordered{% endif %} {% if show_transparent_header %}header--transparent{% endif %}"
   role="banner"
 >
   {%- assign menu = section.settings.navigation_menu -%}
@@ -610,7 +616,7 @@
             {%- capture logo_size -%}{{ section.settings.logo_max_width | at_least: section.settings.mobile_logo_max_width | times: 2 | append: 'x' }}{%- endcapture -%}
             <span class="visually-hidden">{{ shop.name }}</span>
             <img class="header__logo-image" width="{{ section.settings.logo.width }}" height="{{ section.settings.logo.height }}" src="{{ section.settings.logo | img_url: logo_size }}" alt="{{ section.settings.logo.alt | escape }}">
-            {%- if request.page_type == 'index' and section.settings.enable_transparent_header and section.settings.transparent_logo != blank -%}
+            {%- if show_transparent_header and section.settings.transparent_logo != blank -%}
               <img class="header__logo-image header__logo-image--transparent" width="{{ section.settings.transparent_logo.width }}" height="{{ section.settings.transparent_logo.height }}" src="{{ section.settings.transparent_logo | img_url: logo_size }}" alt="{{ section.settings.transparent_logo.alt | escape }}">
             {%- endif -%}
           {%- else -%}
@@ -1151,7 +1157,7 @@
     {
       "type": "header",
       "content": "Transparent header",
-      "info": "Home page only. For best results, use an image section such as slideshow."
+      "info": "Applies to the home page and the Christmas 2026 page template."
     },
     {
       "type": "checkbox",
