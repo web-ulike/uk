@@ -1,5 +1,4 @@
-{% render 'xmas-base' %}
-<div class="xmas xmas-visit"{% if section.settings.anchor != blank %} id="{{ section.settings.anchor | handleize }}"{% endif %}>
+<div class="xmas-visit"{% if section.settings.anchor != blank %} id="{{ section.settings.anchor | handleize }}"{% endif %}>
   <div class="container">
     <div class="xmas-visit__row">
       {% for block in section.blocks %}
@@ -34,13 +33,29 @@
 </div>
 
 {% stylesheet %}
+.xmas-visit {
+  background: #fbf6ed;
+  color: #3f3636;
+  font-family: Saans, sans-serif;
+  scroll-margin-top: calc(
+    var(--header-height, 0px) * var(--enable-sticky-header, 0) +
+    var(--announcement-bar-height, 0px) * var(--enable-sticky-announcement-bar, 0)
+  );
+}
+
+.xmas-visit img { display: block; }
+.xmas-visit__row, .xmas-visit__rule { max-width: 1520px; margin-inline: auto; }
+
+@media (prefers-reduced-motion: reduce) {
+  .xmas-visit .to-top { opacity: 1; transform: none; transition: none; }
+}
+
 .xmas-visit__row {
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 24px;
   padding: 66px 0;
-  color: #3f3636;
 }
 
 .xmas-visit__detail {
@@ -99,7 +114,7 @@
 @media (max-width: 700px) {
   .xmas-visit > .container { padding-inline: 16px; }
   .xmas-visit__row { flex-direction: column; align-items: flex-start; gap: 20px; padding: 48px 0 46px; }
-  .xmas-visit__detail { flex: none; }
+  .xmas-visit__detail { flex: none; max-width: 100%; }
   .xmas-visit__detail + .xmas-visit__detail { margin-top: 29px; }
   .xmas-visit__label { font-size: 10px; }
   .xmas-visit__title { font-size: 18px; }
@@ -112,6 +127,14 @@
   body:has(.xmas-visit__bar) { padding-bottom: calc(70px + env(safe-area-inset-bottom)); }
 }
 {% endstylesheet %}
+
+{% javascript %}
+  document.addEventListener('shopify:section:load', (event) => {
+    if (event.target.querySelector('.xmas-visit') && typeof window.initialCheck === 'function') {
+      window.initialCheck();
+    }
+  });
+{% endjavascript %}
 
 {% schema %}
 {
