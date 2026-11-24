@@ -21,12 +21,21 @@
           {% liquid
             assign product = block.settings.product
             assign variant = product.selected_or_first_available_variant
+            assign display_price = variant.price
+            assign compare_price = variant.compare_at_price
+            assign page_price = variant.metafields.custom.page_price
+            if page_price != blank
+              assign display_price = page_price | times: 100 | round
+              if variant.price > display_price
+                assign compare_price = variant.price
+              endif
+            endif
             assign photo = block.settings.image | default: product.featured_image
             assign title = product.title | default: block.settings.title
             assign link = block.settings.link | default: product.url
             assign badge = block.settings.badge
-            if badge == blank and variant.compare_at_price > variant.price
-              assign discount = variant.compare_at_price | minus: variant.price | times: 100.0 | divided_by: variant.compare_at_price | round
+            if badge == blank and compare_price > display_price
+              assign discount = compare_price | minus: display_price | times: 100.0 | divided_by: compare_price | round
               assign badge = discount | append: '% OFF'
             endif
             assign score = block.settings.rating
@@ -78,14 +87,11 @@
             <div class="xmas-lineup__actions">
               {% if product != blank %}
                 <div class="price-list">
-                  <span class="price">{{ variant.price | money }}</span>
-                  {% if variant.compare_at_price > variant.price %}
-                    <s class="price price--compare">{{ variant.compare_at_price | money }}</s>
+                  <span class="price">{{ display_price | money }}</span>
+                  {% if compare_price > display_price %}
+                    <s class="price price--compare">{{ compare_price | money }}</s>
                   {% endif %}
                 </div>
-                <script type="application/ld+json">
-                  {{ product | structured_data }}
-                </script>
               {% endif %}
               {% if link != blank %}
                 <a class="xmas-lineup__button" href="{{ link | escape }}">
