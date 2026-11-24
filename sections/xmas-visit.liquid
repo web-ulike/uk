@@ -34,17 +34,21 @@
           rel="noopener"
         >
           {{ section.settings.button | escape }}
-          <picture>
-            <source media="(max-width: 700px)" srcset="{{ 'xmas-visit-pin-mobile.svg' | asset_url }}">
-            <img src="{{ 'xmas-visit-pin.svg' | asset_url }}" alt="" width="22" height="21">
-          </picture>
+          {% assign pin = section.settings.pin | default: section.settings.pin_mobile %}
+          {% if pin != blank %}
+            <picture>
+              {% if section.settings.pin_mobile != blank %}
+                <source media="(max-width: 700px)" srcset="{{ section.settings.pin_mobile | image_url: width: 44 }}">
+              {% endif %}
+              {{ pin | image_url: width: 44 | image_tag: width: 22, height: 21, alt: '' }}
+            </picture>
+          {% endif %}
         </a>
       {% endif %}
     </div>
-    <picture class="xmas-visit__rule" aria-hidden="true">
-      <source media="(max-width: 700px)" srcset="{{ 'xmas-visit-rule-mobile.svg' | asset_url }}">
-      <img src="{{ 'xmas-visit-rule.svg' | asset_url }}" alt="" width="1520">
-    </picture>
+    {% if section.settings.show_divider %}
+      <div class="xmas-visit__rule" style="background-color: {{ section.settings.divider_color }};" aria-hidden="true"></div>
+    {% endif %}
   </div>
   {% if section.settings.show_bar %}
     <aside class="xmas-visit__bar">
@@ -149,11 +153,10 @@
   .xmas-visit__directions picture {
     flex: none;
   }
-  .xmas-visit__rule {
-    display: block;
+  .xmas-visit__directions img {
+    object-fit: contain;
   }
-  .xmas-visit__rule img {
-    width: 100%;
+  .xmas-visit__rule {
     height: 0.5px;
   }
 
@@ -247,6 +250,28 @@
       "type": "url",
       "id": "map_url",
       "label": "Map link"
+    },
+    {
+      "type": "image_picker",
+      "id": "pin",
+      "label": "Directions icon"
+    },
+    {
+      "type": "image_picker",
+      "id": "pin_mobile",
+      "label": "Mobile directions icon (optional)"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_divider",
+      "label": "Show divider",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "divider_color",
+      "label": "Divider color",
+      "default": "#cfc6be"
     },
     {
       "type": "checkbox",

@@ -12,19 +12,16 @@
         </header>
       {% endif %}
 
-      <div class="xmas-holly__portrait to-top">
-        {% if section.settings.image != blank %}
+      {% if section.settings.image != blank %}
+        <div class="xmas-holly__portrait to-top">
           {% assign portrait_alt = section.settings.alt | default: section.settings.image.alt %}
           {{ section.settings.image | image_url: width: 1452 | image_tag:
             widths: '343,500,700,900,1080,1452',
             sizes: '(max-width: 700px) calc(100vw - 32px), (max-width: 1600px) 46vw, 700px',
             loading: 'lazy', alt: portrait_alt
           }}
-        {% else %}
-          <img class="xmas-holly__art" src="{{ 'xmas-holly-portrait.jpg' | asset_url }}"
-            width="1452" height="1915" loading="lazy" alt="{{ section.settings.alt | escape }}">
-        {% endif %}
-      </div>
+        </div>
+      {% endif %}
 
       {% if section.settings.description != blank or section.settings.note != blank %}
         <div class="xmas-holly__details to-top">
@@ -33,7 +30,9 @@
           {% endif %}
           {% if section.settings.note != blank %}
             <div class="xmas-holly__note">
-              <img src="{{ 'xmas-holly-rule.svg' | asset_url }}" width="147" alt="">
+              {% if section.settings.show_divider %}
+                <span class="xmas-holly__rule" style="background-color: {{ section.settings.divider_color }};" aria-hidden="true"></span>
+              {% endif %}
               <p>{{ section.settings.note | escape }}</p>
             </div>
           {% endif %}
@@ -78,30 +77,22 @@
     overflow: hidden;
   }
   .xmas-holly__portrait img { display: block; width: 100%; height: 100%; object-fit: cover; }
-  .xmas-holly__portrait .xmas-holly__art {
-    position: absolute;
-    top: -12.57%;
-    left: -1.85%;
-    width: 103.7%;
-    max-width: none;
-    height: auto;
-  }
   .xmas-holly__description { color: rgb(63 54 54 / 60%); font-size: 14px; line-height: 18px; }
   .xmas-holly__description:has(+ .xmas-holly__note) { min-height: 85px; }
   .xmas-holly__note { font: italic 400 18px/1.5 saans-light, sans-serif; }
-  .xmas-holly__note img { display: block; }
+  .xmas-holly__rule { width: 147px; max-width: 100%; height: 0.5px; }
+  .xmas-holly__grid:not(:has(.xmas-holly__portrait)) { display: block; }
 
   @media (max-width: 700px) {
     .xmas-holly { padding-block: 50px; }
     .xmas-holly > .container { padding-inline: 16px; }
     .xmas-holly__grid { display: flex; flex-direction: column; }
     .xmas-holly__titles, .xmas-holly__details { max-width: none; }
-    .xmas-holly__titles { margin-bottom: 30px; }
+    .xmas-holly__titles:has(+ .xmas-holly__portrait) { margin-bottom: 30px; }
     .xmas-holly__kicker { font-size: 12px; }
     .xmas-holly__heading { font-size: 30px; }
     .xmas-holly__portrait { width: 100%; border-radius: 0; }
-    .xmas-holly__portrait .xmas-holly__art { top: -9.85%; left: 0; width: 100%; }
-    .xmas-holly__portrait + .xmas-holly__details { margin-top: 20px; }
+      .xmas-holly__portrait + .xmas-holly__details { margin-top: 20px; }
     .xmas-holly__description { color: rgb(25 10 10 / 60%); font-size: 12px; }
     .xmas-holly__description:has(+ .xmas-holly__note) { min-height: 0; }
     .xmas-holly__note { color: #1a1a1a; font-size: 14px; line-height: normal; }
@@ -162,6 +153,18 @@
       "id": "note",
       "label": "Appearance note",
       "default": "Appearance time to be announced"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_divider",
+      "label": "Show divider",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "divider_color",
+      "label": "Divider color",
+      "default": "#190a0a"
     }
   ],
   "presets": [

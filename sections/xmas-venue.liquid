@@ -34,15 +34,6 @@
                   loading: 'lazy',
                   alt: photo_alt
               }}
-            {% elsif block.settings.art == 'venue' or block.settings.art == 'concept' %}
-              {% assign filename = 'xmas-' | append: block.settings.art | append: '-1080.jpg' %}
-              <img
-                src="{{ filename | asset_url }}"
-                width="1080"
-                height="{% if block.settings.art == 'venue' %}558{% else %}720{% endif %}"
-                loading="lazy"
-                alt="{{ block.settings.alt | escape }}"
-              >
             {% endif %}
             {% if block.settings.label != blank %}
               <figcaption>{{ block.settings.label | escape }}</figcaption>
@@ -201,7 +192,6 @@
         {
           "type": "photo",
           "settings": {
-            "art": "venue",
             "label": "THE SPACE · FUTURE STORES",
             "alt": "Future Stores on Oxford Street"
           }
@@ -209,7 +199,6 @@
         {
           "type": "photo",
           "settings": {
-            "art": "concept",
             "label": "ULIKE CHRISTMAS · CONCEPT",
             "alt": "AI-generated concept for the Ulike Christmas pop-up"
           }
@@ -226,26 +215,6 @@
           "type": "image_picker",
           "id": "image",
           "label": "Image"
-        },
-        {
-          "type": "select",
-          "id": "art",
-          "label": "Bundled image",
-          "default": "none",
-          "options": [
-            {
-              "value": "none",
-              "label": "None"
-            },
-            {
-              "value": "venue",
-              "label": "Venue"
-            },
-            {
-              "value": "concept",
-              "label": "Concept"
-            }
-          ]
         },
         {
           "type": "text",
