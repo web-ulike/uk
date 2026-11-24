@@ -1,35 +1,132 @@
-<section class="xmas xmas-venue"><div class="container">
-  <div class="xmas-head-row">{% render 'xmas-heading', settings_group: section.settings %}</div>
-  <div class="xmas-venue__gallery">
-    {% for block in section.blocks %}
-      <figure class="to-top"{% unless forloop.first %} style="transition-delay: {{ forloop.index0 | times: 0.1 }}s"{% endunless %} {{ block.shopify_attributes }}>
-        {% if block.settings.image != blank %}
-          {{ block.settings.image | image_url: width: 1400 | image_tag: widths: '400,600,800,1080,1400', sizes: '(max-width: 700px) calc(100vw - 48px), (max-width: 740px) calc(50vw - 36px), (max-width: 1600px) calc(50vw - 52px), 748px', loading: 'lazy', alt: block.settings.alt }}
-        {% elsif block.settings.art != 'none' %}
-          {% assign filename = 'xmas-' | append: block.settings.art | append: '-1080.jpg' %}
-          <img src="{{ filename | asset_url }}" width="1080" height="{% if block.settings.art == 'venue' %}558{% else %}720{% endif %}" loading="lazy" alt="{{ block.settings.alt | escape }}">
+<section class="xmas-venue">
+  <div class="container">
+    {% if section.settings.kicker != blank or section.settings.heading != blank or section.settings.description != blank %}
+      <header class="xmas-venue__header to-top">
+        <div class="xmas-venue__titles">
+          {% if section.settings.kicker != blank %}
+            <p class="xmas-venue__kicker">{{ section.settings.kicker | escape }}</p>
+          {% endif %}
+          {% if section.settings.heading != blank %}
+            <h2 class="xmas-venue__heading">{{ section.settings.heading | escape | newline_to_br }}</h2>
+          {% endif %}
+        </div>
+        {% if section.settings.description != blank %}
+          <p class="xmas-venue__description">{{ section.settings.description | escape | newline_to_br }}</p>
         {% endif %}
-        <figcaption>{{ block.settings.label | escape }}</figcaption>
-      </figure>
-    {% endfor %}
+      </header>
+    {% endif %}
+
+    {% if section.blocks.size > 0 %}
+      <div class="xmas-venue__gallery">
+        {% for block in section.blocks %}
+          <figure class="xmas-venue__photo to-top" {{ block.shopify_attributes }}>
+            {% if block.settings.image != blank %}
+              {% assign photo_alt = block.settings.alt | default: block.settings.image.alt %}
+              {{ block.settings.image | image_url: width: 1500 | image_tag:
+                widths: '343,500,700,750,1080,1500',
+                sizes: '(max-width: 700px) calc(100vw - 32px), (max-width: 740px) calc(50vw - 34px), (max-width: 1600px) calc(50vw - 50px), 750px',
+                loading: 'lazy', alt: photo_alt
+              }}
+            {% elsif block.settings.art == 'venue' or block.settings.art == 'concept' %}
+              {% assign filename = 'xmas-' | append: block.settings.art | append: '-1080.jpg' %}
+              <img src="{{ filename | asset_url }}" width="1080" height="{% if block.settings.art == 'venue' %}558{% else %}720{% endif %}" loading="lazy" alt="{{ block.settings.alt | escape }}">
+            {% endif %}
+            {% if block.settings.label != blank %}
+              <figcaption>{{ block.settings.label | escape }}</figcaption>
+            {% endif %}
+          </figure>
+        {% endfor %}
+      </div>
+    {% endif %}
+    {% if section.settings.caption != blank %}
+      <div class="xmas-venue__credit">{{ section.settings.caption }}</div>
+    {% endif %}
   </div>
-  <div class="xmas-venue__credit to-top">{{ section.settings.caption }}</div>
-</div></section>
+</section>
 
 {% stylesheet %}
-.xmas-venue { padding-block: var(--xmas-section-space); }
-.xmas-venue__gallery { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 24px; }
-.xmas-venue figure { position: relative; margin: 0; }
-.xmas-venue figure img { width: 100%; height: 335px; object-fit: cover; }
-.xmas-venue figcaption { position: absolute; bottom: 17px; left: 19px; color: white; background: #342b27b0; padding: 7px 10px; font-size: var(--xmas-small-size); letter-spacing: 1px; }
-.xmas-venue__credit { margin-top: 16px; font-size: var(--xmas-small-size); color: #71686e; }
-.xmas-venue__credit a { text-decoration: underline; }
-@media (max-width: 700px) {
-  .xmas-venue__gallery { grid-template-columns: 1fr; gap: 16px; }
-  .xmas-venue figure img { height: auto; aspect-ratio: 3/2; }
-  .xmas-venue figcaption { bottom: 10px; left: 8px; padding: 6px 9px; font-size: 12px; }
-}
+  .xmas-venue {
+    padding-block: 80px;
+    background: #fbf6ed;
+    color: #190a0a;
+    font-family: Saans, sans-serif;
+  }
+
+  .xmas-venue__header {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(0, 0.923fr);
+    align-items: end;
+    margin-bottom: 73px;
+  }
+
+  .xmas-venue__titles { display: grid; gap: 10px; }
+  .xmas-venue__kicker {
+    margin: 0;
+    color: #a30a41;
+    font: 300 18px/1.5 Saans, sans-serif;
+    letter-spacing: 2px;
+  }
+  .xmas-venue__heading {
+    margin: 0;
+    color: inherit;
+    font: 400 50px/1.2 Saans, sans-serif;
+    letter-spacing: normal;
+  }
+  .xmas-venue__description {
+    max-width: 456px;
+    margin: 0 0 7px;
+    color: rgb(25 10 10 / 60%);
+    font-size: 14px;
+    line-height: 18px;
+  }
+
+  .xmas-venue__gallery {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 30px 20px;
+  }
+  .xmas-venue__photo { margin: 0; }
+  .xmas-venue__photo img {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 750 / 493;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+  .xmas-venue__photo figcaption {
+    color: #3f3636;
+    font: 500 26px/1.25 Saans, sans-serif;
+  }
+  .xmas-venue__photo img + figcaption { margin-top: 30px; }
+  .xmas-venue__credit { margin-top: 16px; color: #71686e; font-size: 14px; line-height: 1.5; }
+  .xmas-venue__credit p { margin: 0; }
+  .xmas-venue__credit a { text-decoration: underline; }
+
+  @media (max-width: 700px) {
+    .xmas-venue { padding-block: 50px; }
+    .xmas-venue > .container { padding-inline: 16px; }
+    .xmas-venue__header { grid-template-columns: 1fr; gap: 10px; margin-bottom: 30px; }
+    .xmas-venue__kicker { font-size: 12px; }
+    .xmas-venue__heading { font-size: 30px; }
+    .xmas-venue__description { max-width: none; margin: 0; font-size: 12px; }
+    .xmas-venue__gallery { grid-template-columns: 1fr; }
+    .xmas-venue__photo img { border-radius: 0; }
+    .xmas-venue__photo figcaption { color: #1a1a1a; font-size: 14px; }
+    .xmas-venue__photo img + figcaption { margin-top: 20px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .xmas-venue .to-top { opacity: 1; transform: none; transition: none; }
+  }
 {% endstylesheet %}
+
+{% javascript %}
+  document.addEventListener('shopify:section:load', (event) => {
+    if (event.target.querySelector('.xmas-venue') && typeof window.initialCheck === 'function') {
+      window.initialCheck();
+    }
+  });
+{% endjavascript %}
 
 {% schema %}
 {
