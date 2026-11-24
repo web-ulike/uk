@@ -1,126 +1,157 @@
-<section class="xmas xmas-gifts"{% if section.settings.anchor != blank %} id="{{ section.settings.anchor | handleize }}"{% endif %}><div class="container">
-  <div class="xmas-gifts__heading">
-    {% render 'xmas-heading', settings_group: section.settings %}
-  </div>
-  <div class="xmas-gifts__grid">
+<section class="xmas-gifts"{% if section.settings.anchor != blank %} id="{{ section.settings.anchor | handleize }}"{% endif %}>
+  <div class="container">
+    <header class="xmas-gifts__heading">
+      <div>
+        {% if section.settings.kicker != blank %}
+          <p class="xmas-gifts__kicker">{{ section.settings.kicker | escape }}</p>
+        {% endif %}
+        {% if section.settings.heading != blank %}
+          <h2>{{ section.settings.heading | escape | newline_to_br }}</h2>
+        {% endif %}
+      </div>
+      {% if section.settings.description != blank %}
+        <p class="xmas-gifts__intro">{{ section.settings.description | escape | newline_to_br }}</p>
+      {% endif %}
+    </header>
+
     {% assign gifts = section.blocks | where: 'type', 'gift' %}
-    {% for block in gifts %}
-      <article class="xmas-gifts__card to-top"{% unless forloop.first %} style="transition-delay: {{ forloop.index0 | times: 0.1 }}s"{% endunless %} {{ block.shopify_attributes }}>
-        <div class="xmas-gifts__art">
-          {% if block.settings.image != blank %}
-            {{ block.settings.image | image_url: width: 800 | image_tag: widths: '200,400,800', sizes: '(max-width: 700px) calc(100vw - 96px), 50vw', loading: 'lazy' }}
-          {% elsif block.settings.art == 'gua' %}
-            <span class="xmas-gifts__gua" aria-hidden="true"></span>
-          {% elsif block.settings.art == 'tote' %}
-            <span class="xmas-gifts__tote"><img src="{{ 'xmas-logo-240.png' | asset_url }}" alt="" width="75" height="17" loading="lazy"></span>
-          {% endif %}
-        </div>
-        <h3>{{ block.settings.title | escape }}</h3>
-        <div class="xmas-gifts__item">{{ block.settings.item | escape }}</div>
-        <small>{{ block.settings.note | escape }}</small>
-      </article>
-    {% endfor %}
-  </div>
-  <ol class="xmas-gifts__steps">
+    {% if gifts.size > 0 %}
+      <div class="xmas-gifts__grid">
+        {% for block in gifts %}
+          <article class="xmas-gifts__card" {{ block.shopify_attributes }}>
+            {% if block.settings.image != blank %}
+              {{ block.settings.image | image_url: width: 1500 | image_tag:
+                widths: '343,500,700,750,1080,1500',
+                sizes: '(max-width: 700px) calc(100vw - 32px), (max-width: 740px) calc(50vw - 34px), (max-width: 1600px) calc(50vw - 50px), 750px',
+                loading: 'lazy', class: block.settings.crop
+              }}
+            {% endif %}
+            {% if block.settings.title != blank %}<h3>{{ block.settings.title | escape }}</h3>{% endif %}
+            {% if block.settings.item != blank %}<p>{{ block.settings.item | escape }}</p>{% endif %}
+          </article>
+        {% endfor %}
+      </div>
+    {% endif %}
+
     {% assign steps = section.blocks | where: 'type', 'step' %}
-    {% for block in steps %}
-      <li class="to-top"{% unless forloop.first %} style="transition-delay: {{ forloop.index0 | times: 0.1 }}s"{% endunless %} {{ block.shopify_attributes }}><span aria-hidden="true">{{ forloop.index }}</span>{{ block.settings.label | escape }}</li>
-    {% endfor %}
-  </ol>
-  {% if section.settings.rules != blank %}
-    <xmas-prize-rules>
-      <button class="xmas-gifts__trigger to-top" type="button" aria-haspopup="dialog">{{ section.settings.rules_label | escape }}</button>
-      <dialog aria-labelledby="rules-title-{{ section.id }}">
-        <h3 id="rules-title-{{ section.id }}">{{ section.settings.rules_heading | escape }}</h3>
-        {{ section.settings.rules }}
-        <form method="dialog"><button autofocus>{{ section.settings.dismiss | escape }}</button></form>
-      </dialog>
-    </xmas-prize-rules>
-  {% endif %}
-</div></section>
+    {% if steps.size > 0 or section.settings.rules != blank %}
+      <xmas-prize-rules class="xmas-gifts__footer">
+        {% if steps.size > 0 %}
+          <ol class="xmas-gifts__steps" role="list">
+            {% for block in steps %}
+              <li {{ block.shopify_attributes }}>
+                <span aria-hidden="true">{{ forloop.index }}</span>{{ block.settings.label | escape }}
+              </li>
+            {% endfor %}
+          </ol>
+        {% endif %}
+        {% if section.settings.rules != blank %}
+          <button class="xmas-gifts__trigger" type="button" aria-haspopup="dialog" aria-controls="rules-{{ section.id }}">
+            {{ section.settings.rules_label | escape }}
+          </button>
+          <dialog class="xmas-gifts__dialog" id="rules-{{ section.id }}" aria-labelledby="rules-title-{{ section.id }}">
+            <form method="dialog">
+              <button class="xmas-gifts__close" aria-label="{{ 'general.accessibility.close' | t | escape }}" autofocus>&times;</button>
+              <h3 id="rules-title-{{ section.id }}">{{ section.settings.rules_heading | escape }}</h3>
+              <div class="xmas-gifts__rules">{{ section.settings.rules }}</div>
+              <button class="xmas-gifts__dismiss">{{ section.settings.dismiss | escape }}</button>
+            </form>
+          </dialog>
+        {% endif %}
+      </xmas-prize-rules>
+    {% endif %}
+  </div>
+</section>
 
 {% javascript %}
-  class XmasPrizeRules extends HTMLElement {
-    connectedCallback() {
-      this.addEventListener('click', this.openRules);
-    }
-
-    disconnectedCallback() {
-      this.removeEventListener('click', this.openRules);
-    }
-
-    openRules(event) {
-      if (event.target.closest('.xmas-gifts__trigger')) {
-        this.querySelector('dialog').showModal();
-      }
-    }
-  }
   if (!customElements.get('xmas-prize-rules')) {
-    customElements.define('xmas-prize-rules', XmasPrizeRules);
+    customElements.define('xmas-prize-rules', class extends HTMLElement {
+      connectedCallback() { this.addEventListener('click', this.handleClick); }
+      disconnectedCallback() { this.removeEventListener('click', this.handleClick); }
+
+      handleClick(event) {
+        const dialog = this.querySelector('dialog');
+        if (event.target.closest('.xmas-gifts__trigger')) {
+          dialog.showModal();
+        } else if (event.target === dialog) {
+          const bounds = dialog.getBoundingClientRect();
+          if (event.clientX < bounds.left || event.clientX > bounds.right ||
+              event.clientY < bounds.top || event.clientY > bounds.bottom) dialog.close();
+        }
+      }
+    });
   }
 {% endjavascript %}
 
 {% stylesheet %}
-.xmas-gifts { padding: var(--xmas-section-space) 0; text-align: center; }
-/* Keep the gap to the cards independent of the theme's last-child margin reset. */
-.xmas-gifts__heading {
-  max-width: 680px;
-  margin: 0 auto;
-  padding-bottom: clamp(44px, 4.6vw, 66px);
-}
-.xmas-gifts .xmas-gifts__heading .xmas-heading { font-size: clamp(42px, 5vw, 72px); }
-.xmas-gifts .xmas-gifts__heading .xmas-intro {
-  margin: 28px auto 0;
-  font-size: clamp(17px, 1.55vw, 22px);
-}
-.xmas-gifts__grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: clamp(36px, 4.5vw, 64px);
-  max-width: 1080px;
-  margin-inline: auto;
-}
-.xmas-gifts__card {
-  position: relative;
-  display: grid;
-  grid-row: span 4;
-  grid-template-rows: subgrid;
-  row-gap: 12px;
-  min-width: 0;
-  padding: clamp(24px, 2.7vw, 36px) clamp(20px, 2.5vw, 36px);
-  border: 1px solid #dcc9ad;
-  border-top: 2px solid #8b1425;
-  background: radial-gradient(ellipse at 50% 25%, #fff9ed, #f0e4d1 78%);
-  overflow-wrap: anywhere;
-}
-.xmas-gifts__card::after { content: '✧'; position: absolute; top: 18px; right: 24px; color: #a78843; font-size: 28px; }
-.xmas-gifts__card h3 { margin: 10px 0 0; color: #651625; font: 400 clamp(30px, 3vw, 42px)/1.1 Bodoni-Book, serif; }
-.xmas-gifts__item { font-size: clamp(18px, 1.6vw, 22px); }
-.xmas-gifts__card small { display: block; font-size: clamp(15px, 1.2vw, 17px); color: #65574e; }
-.xmas-gifts__art { height: clamp(144px, 13vw, 184px); display: grid; place-items: center; padding-top: 24px; grid-template: minmax(0, 1fr) / minmax(0, 1fr); }
-.xmas-gifts__art > img { width: 100%; height: 100%; min-height: 0; object-fit: contain; }
-.xmas-gifts__gua { width: clamp(96px, 9vw, 126px); aspect-ratio: 20 / 21; border-radius: 65% 25% 55% 25%; transform: rotate(-30deg); background: linear-gradient(145deg,#d7c7b2,#f7edde,#d3bca6); box-shadow: 8px 14px 18px #9e8d7529; }
-.xmas-gifts__tote { position: relative; display: grid; place-items: center; width: clamp(104px, 9.5vw, 136px); aspect-ratio: 23 / 22; background: #d9cbb4; transform: rotate(6deg); box-shadow: 8px 13px 14px #9e8d7526; }
-.xmas-gifts__tote::before { content: ''; position: absolute; bottom: 100%; width: 55px; height: 38px; border: 6px solid #c6b599; border-bottom: 0; border-radius: 35px 35px 0 0; }
-.xmas-gifts__tote img { width: 65%; height: auto; mix-blend-mode: multiply; filter: grayscale(1) contrast(100); }
-.xmas-gifts__steps { display: flex; justify-content: center; flex-wrap: wrap; gap: 16px 32px; margin: 42px 0 25px; padding: 0; list-style: none; font-size: clamp(18px, 1.5vw, 21px); }
-.xmas-gifts__steps span { display: inline-grid; place-items: center; border: 1px solid #c6bbaa; border-radius: 50%; width: 26px; height: 26px; margin-right: 10px; }
-.xmas-gifts__trigger { border-bottom: 1px solid #a06b65; padding: 10px 0; color: #801427; font-size: 18px; }
-.xmas-gifts dialog { position: fixed; inset: 0; margin: auto; width: min(460px, calc(100% - 40px)); max-height: 85vh; overflow: auto; border: 0; padding: 32px; border-radius: 8px; text-align: left; background: #fbf6ed; color: #342b27; }
-.xmas-gifts dialog::backdrop { background: #291e3e77; }
-.xmas-gifts dialog h3 { font: 400 30px Bodoni-Book, serif; margin: 0 0 16px; }
-.xmas-gifts dialog p { font-size: 16px; line-height: 1.65; }
-.xmas-gifts dialog button { background: #861629; color: white; padding: 12px 22px; border-radius: 3px; }
-@media (max-width: 700px) {
-  .xmas-gifts__grid { grid-template-columns: minmax(0, 1fr); gap: 28px; max-width: 440px; }
-  .xmas-gifts__card { grid-row: auto; grid-template-rows: none; }
-  .xmas-gifts__steps { gap: 12px; font-size: 16px; }
-  .xmas-gifts__steps li { flex: 1 1 0; min-width: 0; }
-  .xmas-gifts__steps span { display: grid; margin: 0 auto 8px; }
-}
-@media (prefers-reduced-motion: no-preference) {
-  .xmas-gifts .to-top:not(.appear) { transform: translateY(24px); }
-}
+  .xmas-gifts {
+    padding-block: 80px;
+    background: #fbf6ed;
+    color: #190a0a;
+    font-family: Saans, sans-serif;
+    scroll-margin-top: calc(var(--header-height, 0px) * var(--enable-sticky-header, 0) + var(--announcement-bar-height, 0px) * var(--enable-sticky-announcement-bar, 0));
+  }
+  .xmas-gifts :is(p,h2,h3,h4,ol) { margin: 0; }
+  .xmas-gifts__heading {
+    display: grid;
+    grid-template-columns: minmax(0,13fr) minmax(0,6fr);
+    align-items: end;
+    margin-bottom: 60px;
+  }
+  .xmas-gifts__kicker { font: 400 18px/1.5 saans-light, sans-serif; letter-spacing: 2px; color: #a30a41; }
+  .xmas-gifts__heading h2 { font: 400 50px/1.2 Saans, sans-serif; letter-spacing: normal; }
+  .xmas-gifts__kicker + h2 { margin-top: 10px; }
+  .xmas-gifts p.xmas-gifts__intro { max-width: 456px; margin-bottom: 7px; font-size: 14px; line-height: 18px; opacity: .6; }
+  .xmas-gifts__grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 30px 20px; }
+  .xmas-gifts__card img { display: block; width: 100%; height: auto; aspect-ratio: 750/493; object-fit: cover; object-position: center top; border-radius: 8px; margin-bottom: 30px; }
+  .xmas-gifts__card img.cropped { object-position: center 70%; }
+  .xmas-gifts__card h3 { font: 400 26px/1.25 Saans, sans-serif; }
+  .xmas-gifts__card p { color: #3f3636; font-size: 16px; line-height: 18px; }
+  .xmas-gifts__card h3 + p { margin-top: 10px; }
+  .xmas-gifts__footer { display: flex; align-items: center; flex-wrap: wrap; gap: 24px; border-top: 1px solid #cfc6be; margin-top: 50px; padding-top: 44px; }
+  .xmas-gifts__steps { display: flex; flex-wrap: wrap; align-items: center; gap: 20px clamp(20px,3vw,56px); list-style: none; padding: 0; }
+  .xmas-gifts__steps li { display: flex; align-items: center; gap: 20px; font-size: clamp(16px,1.36vw,26px); line-height: 1.2; }
+  .xmas-gifts__steps span { display: grid; place-items: center; flex: none; width: 53px; aspect-ratio: 1; border: 1px solid currentColor; border-radius: 50%; font: italic 400 26px/1 Bodoni-Book, serif; }
+  .xmas-gifts__trigger, .xmas-gifts__dismiss { border: 0; border-radius: 4px; background: #e0004d; color: #fff; text-transform: uppercase; font: 500 15px/1.5 Saans, sans-serif; cursor: pointer; }
+  .xmas-gifts__trigger { margin-left: auto; min-height: 48px; padding: 8px 36px; }
+  .xmas-gifts__dialog { position: fixed; inset: 0; width: min(500px,calc(100% - 32px)); max-height: calc(100dvh - 32px); overflow: auto; overscroll-behavior: contain; margin: auto; padding: 0; border: 0; border-radius: 8px; background: #fbfaf4; color: #190a0a; }
+  .xmas-gifts__dialog::backdrop { background: rgb(0 0 0 / 50%); }
+  .xmas-gifts__dialog form { display: grid; align-content: center; gap: 37px; min-height: 634px; padding: 66px 40px 46px; }
+  .xmas-gifts__close { position: absolute; top: 14px; right: 14px; width: 44px; height: 44px; font: 300 32px/1 saans-light, sans-serif; color: inherit; cursor: pointer; }
+  .xmas-gifts__dialog h3 { font: 400 36px/1.15 Saans, sans-serif; }
+  .xmas-gifts__rules { color: #3f3636; font-size: 14px; line-height: 1.5; letter-spacing: -.196px; }
+  .xmas-gifts__rules > * + * { margin-top: 23px; }
+  .xmas-gifts__rules h4 { font: 400 18px/1.5 Saans, sans-serif; color: #190a0a; }
+  .xmas-gifts__rules h4 + p { margin-top: 8px; }
+  .xmas-gifts__dismiss { min-height: 60px; font-size: 18px; }
+  @media (max-width: 700px) {
+    .xmas-gifts { padding-block: 50px 42px; }
+    .xmas-gifts > .container { padding-inline: 16px; }
+    .xmas-gifts__heading { grid-template-columns: 1fr; gap: 10px; margin-bottom: 30px; }
+    .xmas-gifts__kicker { font-size: 12px; }
+    .xmas-gifts__heading h2 { font-size: 30px; }
+    .xmas-gifts p.xmas-gifts__intro { margin-bottom: 0; font-size: 12px; }
+    .xmas-gifts__grid { grid-template-columns: 1fr; }
+    .xmas-gifts__card img { margin-bottom: 20px; border-radius: 0; }
+    .xmas-gifts__card img.tall { aspect-ratio: 343/259; }
+    .xmas-gifts__card h3 { font-size: 14px; font-weight: 500; }
+    .xmas-gifts__card p { font-size: 12px; line-height: normal; opacity: .5; }
+    .xmas-gifts__footer { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 27px 16px; margin-top: 24px; padding-top: 24px; }
+    .xmas-gifts__steps { display: contents; }
+    .xmas-gifts__steps li { gap: 10px; font-size: 14px; }
+    .xmas-gifts__steps span { width: 27px; font-size: 12px; }
+    .xmas-gifts__trigger { justify-self: start; margin: 0; min-height: 28px; padding: 5px 15px; font-size: 12px; }
+    .xmas-gifts__dialog { width: min(343px,calc(100% - 32px)); }
+    .xmas-gifts__dialog form { min-height: 496px; padding: 58px 21px 42px; gap: 19px; }
+    .xmas-gifts__close { top: 3px; right: 3px; font-size: 24px; }
+    .xmas-gifts__dialog h3 { font-size: 26px; }
+    .xmas-gifts__rules { font-size: 12px; letter-spacing: -.098px; }
+    .xmas-gifts__rules h4 { font-size: 14px; }
+    .xmas-gifts__rules > * + * { margin-top: 19px; }
+    .xmas-gifts__rules h4 + p { margin-top: 10px; }
+    .xmas-gifts__rules p:has(> em:only-child) { font-size: 9px; margin-top: 10px; }
+    .xmas-gifts__dismiss { min-height: 50px; font-size: 14px; }
+  }
 {% endstylesheet %}
 
 {% schema %}
@@ -154,19 +185,19 @@
       "type": "text",
       "id": "rules_label",
       "label": "Rules button",
-      "default": "Prize draw details ↗"
+      "default": "Prize draw details"
     },
     {
       "type": "text",
       "id": "rules_heading",
       "label": "Dialog heading",
-      "default": "A little more detail."
+      "default": "Join the Ulike Fun!"
     },
     {
       "type": "richtext",
       "id": "rules",
       "label": "Prize draw details",
-      "default": "<p>Participate for a chance to win. Gifts are not guaranteed.</p><p>Full entry requirements, prize quantities, draw times and collection details will be added once confirmed.</p>"
+      "default": "<h4><strong>Option 1</strong>: Share Your #UlikeMoment</h4><p>Post a photo or video of your experience with #UlikeMoment to receive a Ulike gift bag, stickers and a DTC voucher. Scan the QR code and upload a screenshot of your post for a chance to win one of 10 exclusive prizes, including the M12 and Ulike Reglow Mask!</p><h4><strong>Option 2</strong>: Shop &amp; Get More</h4><p>Scan the QR code to join our livestream and complete a purchase to receive an exclusive Rose Quartz Glowup Kit, stickers and a DTC voucher!</p><p><em>While stocks last. Raffle prizes are limited to 10 winners. Winners will be contacted and prizes shipped after the event. Terms and conditions apply.</em></p>"
     },
     {
       "type": "text",
@@ -182,17 +213,17 @@
         {
           "type": "gift",
           "settings": {
-            "art": "gua",
-            "title": "A little self-care",
-            "item": "Gua sha tool"
+            "title": "Carry the Christmas cheer",
+            "item": "Tote bag",
+            "crop": "tall"
           }
         },
         {
           "type": "gift",
           "settings": {
-            "art": "tote",
-            "title": "Carry the Christmas cheer",
-            "item": "Tote bag"
+            "title": "A little self-care",
+            "item": "Gua sha tool",
+            "crop": "cropped"
           }
         },
         {
@@ -227,22 +258,6 @@
           "label": "Image"
         },
         {
-          "type": "select",
-          "id": "art",
-          "label": "Illustration",
-          "default": "gua",
-          "options": [
-            {
-              "value": "gua",
-              "label": "Gua sha"
-            },
-            {
-              "value": "tote",
-              "label": "Tote bag"
-            }
-          ]
-        },
-        {
           "type": "text",
           "id": "title",
           "label": "Title"
@@ -253,10 +268,20 @@
           "label": "Gift name"
         },
         {
-          "type": "text",
-          "id": "note",
-          "label": "Caption",
-          "default": "Illustration only"
+          "type": "select",
+          "id": "crop",
+          "label": "Image framing",
+          "default": "cropped",
+          "options": [
+            {
+              "value": "tall",
+              "label": "Top aligned, taller on mobile"
+            },
+            {
+              "value": "cropped",
+              "label": "Landscape crop"
+            }
+          ]
         }
       ]
     },
