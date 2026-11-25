@@ -113,7 +113,7 @@
                 </button>
               {% endif %}
               {% if link != blank %}
-                <a class="xmas-lineup__button" href="{{ link | escape }}">
+                <a class="xmas-lineup__button xmas-lineup__details" href="{{ link | escape }}">
                   {{- section.settings.cta_label | default: 'Learn more' | escape -}}
                   <span class="visually-hidden"> {{ title | escape }}</span></a
                 >
@@ -365,6 +365,10 @@
     cursor: pointer;
     transition: background-color 0.2s ease;
   }
+  .xmas-lineup__details {
+    background-color: #fff;
+    color: #1a1a1a;
+  }
   .xmas-lineup__button:focus-visible {
     outline: 2px solid #1a1a1a;
     outline-offset: 2px;
@@ -382,9 +386,13 @@
     display: none;
   }
   @media (hover: hover) {
-    .xmas-lineup__button:not(:disabled):hover {
+    .xmas-lineup__buy:not(:disabled):hover {
       background-color: #fff;
       color: #1a1a1a;
+    }
+    .xmas-lineup__details:hover {
+      background-color: #1a1a1a;
+      color: #fff;
     }
     .xmas-lineup__controls button:not(:disabled):hover {
       color: #a30a41;
