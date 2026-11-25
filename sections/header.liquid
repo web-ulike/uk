@@ -19,6 +19,12 @@
     {%- endif -%}
   {%- endif -%}
 {%- endif -%}
+{%- if request.page_type == 'page' -%}
+  {%- assign fit_page_banner = page.metafields.custom.fit_screen_height.value -%}
+  {%- if fit_page_banner == nil and template.suffix == 'bfcm-2026' -%}
+    {%- assign fit_page_banner = section.settings.fit_bfcm_banner_height -%}
+  {%- endif -%}
+{%- endif -%}
 <style>
     :root {
       --enable-sticky-header: {% if section.settings.enable_sticky_header %}1{% else %}0{% endif %};
@@ -549,8 +555,8 @@
   {% if show_transparent_header %}
     transparent
   {% endif %}
-  {% if request.page_type == 'page' and template.suffix == 'bfcm-2026' and section.settings.fit_bfcm_banner_height %}
-    data-fit-bfcm-banner
+  {% if fit_page_banner == true %}
+    data-fit-page-banner
   {% endif %}
   class="header {% if settings.background == settings.header_background %}header--bordered{% endif %} {% if show_transparent_header %}header--transparent{% endif %}"
   role="banner"
@@ -1192,7 +1198,7 @@
       "type": "checkbox",
       "id": "fit_bfcm_banner_height",
       "label": "Fit screen height",
-      "info": "Fills the first screen with the Black Friday 2026 banner on desktop and mobile. Background images may be cropped.",
+      "info": "Used when the page's Fit screen height metafield is empty. Background images may be cropped.",
       "default": false
     },
     {
