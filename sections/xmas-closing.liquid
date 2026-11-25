@@ -1,4 +1,10 @@
 <section class="xmas-closing"{% if section.settings.anchor != blank %} id="{{ section.settings.anchor | handleize }}"{% endif %}>
+  {% if section.settings.background_image != blank %}
+    {{ section.settings.background_image
+      | image_url: width: 2400
+      | image_tag: class: 'xmas-closing__background', widths: '480, 750, 1100, 1500, 1920, 2400', sizes: '100vw', alt: ''
+    }}
+  {% endif %}
   <div class="xmas-closing__content">
     {% if section.settings.kicker != blank %}
       <p class="xmas-closing__kicker">{{ section.settings.kicker | escape }}</p>
@@ -19,6 +25,7 @@
 
 {% stylesheet %}
   .xmas-closing {
+    position: relative;
     display: grid;
     place-items: center;
     min-height: 446px;
@@ -32,7 +39,16 @@
     );
   }
 
+  .xmas-closing__background {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
   .xmas-closing__content {
+    position: relative;
     display: grid;
     width: min(100%, 750px);
     justify-items: center;
@@ -96,6 +112,11 @@
       "type": "text",
       "id": "anchor",
       "label": "Navigation anchor ID"
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Background image"
     },
     {
       "type": "text",
