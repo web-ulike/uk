@@ -32,8 +32,14 @@
       {% if section.settings.heading != blank %}
         <h1 class="xmas-banner__title">{{ section.settings.heading | escape | newline_to_br }}</h1>
       {% endif %}
+      {% assign mobile_description = section.settings.mobile_description %}
       {% if section.settings.description != blank %}
-        <p class="xmas-banner__description">{{ section.settings.description | escape | newline_to_br }}</p>
+        <p class="xmas-banner__description{% if mobile_description != blank %} xmas-banner__description--desktop{% endif %}">
+          {{- section.settings.description | escape | newline_to_br -}}
+        </p>
+      {% endif %}
+      {% if mobile_description != blank %}
+        <div class="xmas-banner__description xmas-banner__description--mobile">{{ mobile_description }}</div>
       {% endif %}
       {% if section.settings.button_label != blank and section.settings.button_url != blank %}
         <a class="xmas-banner__button xmas-banner__button--desktop" href="{{ section.settings.button_url | escape }}">
@@ -106,6 +112,12 @@
     font-size: clamp(13px, 1.042vw, 20px);
     line-height: 1.5;
   }
+  .xmas-banner__description--mobile {
+    display: none;
+  }
+  .xmas-banner__description--mobile a {
+    pointer-events: auto;
+  }
   .xmas-banner__button {
     display: inline-grid;
     place-items: center;
@@ -165,8 +177,12 @@
     .xmas-banner__description {
       font-size: 12px;
     }
+    .xmas-banner__description--desktop,
     .xmas-banner__button--desktop {
       display: none;
+    }
+    .xmas-banner__description--mobile {
+      display: block;
     }
     .xmas-banner__button--mobile {
       display: inline-grid;
@@ -215,6 +231,12 @@
       "id": "description",
       "label": "Description",
       "default": "Find Christmas gift inspiration with Holly Hagan-Blyth on Oxford Street."
+    },
+    {
+      "type": "html",
+      "id": "mobile_description",
+      "label": "Mobile description (HTML)",
+      "info": "Leave blank to use Description on mobile."
     },
     {
       "type": "text",
