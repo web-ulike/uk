@@ -7,21 +7,29 @@
   {% endif %}
   <div class="xmas-closing__content">
     {% if section.settings.kicker != blank %}
-      <p class="xmas-closing__kicker">{{ section.settings.kicker | escape }}</p>
+      <p class="xmas-closing__kicker to-top">{{ section.settings.kicker | escape }}</p>
     {% endif %}
     {% if section.settings.heading != blank %}
-      <h2 class="xmas-closing__title">{{ section.settings.heading | escape | newline_to_br }}</h2>
+      <h2 class="xmas-closing__title to-top" style="transition-delay: 100ms">{{ section.settings.heading | escape | newline_to_br }}</h2>
     {% endif %}
     {% if section.settings.description != blank %}
-      <p class="xmas-closing__details">{{ section.settings.description | escape | newline_to_br }}</p>
+      <p class="xmas-closing__details to-top" style="transition-delay: 200ms">{{ section.settings.description | escape | newline_to_br }}</p>
     {% endif %}
     {% if section.settings.map_url != blank and section.settings.button != blank %}
-      <a class="xmas-closing__button" href="{{ section.settings.map_url | escape }}" target="_blank" rel="noopener">
+      <a class="xmas-closing__button to-top" style="transition-delay: 300ms" href="{{ section.settings.map_url | escape }}" target="_blank" rel="noopener">
         {{ section.settings.button | escape }}
       </a>
     {% endif %}
   </div>
 </section>
+
+{% javascript %}
+  document.addEventListener('shopify:section:load', (event) => {
+    if (event.target.querySelector('.xmas-closing') && typeof window.initialCheck === 'function') {
+      window.initialCheck();
+    }
+  });
+{% endjavascript %}
 
 {% stylesheet %}
   .xmas-closing {
@@ -95,6 +103,10 @@
     text-decoration: none;
   }
   .xmas-closing__content > * + .xmas-closing__button { margin-top: 26px; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .xmas-closing .to-top { opacity: 1; transform: none; transition: none; }
+  }
 
   @media (max-width: 700px) {
     .xmas-closing { min-height: 0; }

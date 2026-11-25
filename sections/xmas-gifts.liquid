@@ -1,6 +1,6 @@
 <section class="xmas-gifts"{% if section.settings.anchor != blank %} id="{{ section.settings.anchor | handleize }}"{% endif %}>
   <div class="container">
-    <header class="xmas-gifts__heading">
+    <header class="xmas-gifts__heading to-top">
       <div>
         {% if section.settings.kicker != blank %}
           <p class="xmas-gifts__kicker">{{ section.settings.kicker | escape }}</p>
@@ -18,7 +18,11 @@
     {% if gifts.size > 0 %}
       <div class="xmas-gifts__grid">
         {% for block in gifts %}
-          <article class="xmas-gifts__card" {{ block.shopify_attributes }}>
+          <article
+            class="xmas-gifts__card to-top"
+            style="transition-delay: {{ forloop.index | times: 100 | at_most: 300 }}ms"
+            {{ block.shopify_attributes }}
+          >
             {% if block.settings.image != blank %}
               {{ block.settings.image | image_url: width: 1500 | image_tag:
                 widths: '343,500,700,750,1080,1500',
@@ -35,7 +39,7 @@
 
     {% assign steps = section.blocks | where: 'type', 'step' %}
     {% if steps.size > 0 or section.settings.rules != blank %}
-      <xmas-prize-rules class="xmas-gifts__footer">
+      <xmas-prize-rules class="xmas-gifts__footer to-top" style="transition-delay: 200ms">
         {% if steps.size > 0 %}
           <ol class="xmas-gifts__steps" role="list">
             {% for block in steps %}
@@ -64,6 +68,12 @@
 </section>
 
 {% javascript %}
+  document.addEventListener('shopify:section:load', (event) => {
+    if (event.target.querySelector('.xmas-gifts') && typeof window.initialCheck === 'function') {
+      window.initialCheck();
+    }
+  });
+
   if (!customElements.get('xmas-prize-rules')) {
     customElements.define('xmas-prize-rules', class extends HTMLElement {
       connectedCallback() { this.addEventListener('click', this.handleClick); }
@@ -124,6 +134,9 @@
   .xmas-gifts__rules h4 { font: 400 18px/1.5 Saans, sans-serif; color: #190a0a; }
   .xmas-gifts__rules h4 + p { margin-top: 8px; }
   .xmas-gifts__dismiss { min-height: 60px; font-size: 18px; }
+  @media (prefers-reduced-motion: reduce) {
+    .xmas-gifts .to-top { opacity: 1; transform: none; transition: none; }
+  }
   @media (max-width: 700px) {
     .xmas-gifts { padding-block: 50px 42px; }
     .xmas-gifts > .container { padding-inline: 16px; }

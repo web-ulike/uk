@@ -22,7 +22,11 @@
     {% if section.blocks.size > 0 %}
       <div class="xmas-venue__gallery">
         {% for block in section.blocks %}
-          <figure class="xmas-venue__photo to-top" {{ block.shopify_attributes }}>
+          <figure
+            class="xmas-venue__photo to-top"
+            style="transition-delay: {{ forloop.index | times: 100 | at_most: 300 }}ms"
+            {{ block.shopify_attributes }}
+          >
             {% if block.settings.image != blank %}
               {% assign photo_alt = block.settings.alt | default: block.settings.image.alt %}
               {{

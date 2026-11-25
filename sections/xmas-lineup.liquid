@@ -5,7 +5,7 @@
   {% endif %}
 >
   <div class="container">
-    <header class="xmas-lineup__heading">
+    <header class="xmas-lineup__heading to-top">
       <div>
         <p class="xmas-lineup__eyebrow">
           <span>{{ section.settings.kicker | escape }}</span>
@@ -15,7 +15,7 @@
       </div>
       <p class="xmas-lineup__intro">{{ section.settings.description | escape }}</p>
     </header>
-    <xmas-lineup-carousel>
+    <xmas-lineup-carousel class="to-top" style="transition-delay: 150ms">
       <div class="xmas-lineup__grid" id="lineup-track-{{ section.id }}">
         {% for block in section.blocks %}
           {% liquid
@@ -151,6 +151,12 @@
 </section>
 
 {% javascript %}
+  document.addEventListener('shopify:section:load', (event) => {
+    if (event.target.querySelector('.xmas-lineup') && typeof window.initialCheck === 'function') {
+      window.initialCheck();
+    }
+  });
+
   if (!customElements.get('xmas-lineup-carousel')) {
     customElements.define(
       'xmas-lineup-carousel',
@@ -246,6 +252,9 @@
   }
   xmas-lineup-carousel {
     display: block;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .xmas-lineup .to-top { opacity: 1; transform: none; transition: none; }
   }
   .xmas-lineup__grid {
     display: grid;
