@@ -11,8 +11,12 @@
 {%- endif -%}
 {%- assign show_transparent_header = false -%}
 {%- if section.settings.enable_transparent_header -%}
-  {%- if request.page_type == 'index' or template.suffix == 'xmas-2026' and request.page_type == 'page' -%}
+  {%- if request.page_type == 'index' -%}
     {%- assign show_transparent_header = true -%}
+  {%- elsif request.page_type == 'page' -%}
+    {%- if template.suffix == 'xmas-2026' or template.suffix == 'bfcm-2026' -%}
+      {%- assign show_transparent_header = true -%}
+    {%- endif -%}
   {%- endif -%}
 {%- endif -%}
 <style>
@@ -544,6 +548,9 @@
   {% endif %}
   {% if show_transparent_header %}
     transparent
+  {% endif %}
+  {% if request.page_type == 'page' and template.suffix == 'bfcm-2026' and section.settings.fit_bfcm_banner_height %}
+    data-fit-bfcm-banner
   {% endif %}
   class="header {% if settings.background == settings.header_background %}header--bordered{% endif %} {% if show_transparent_header %}header--transparent{% endif %}"
   role="banner"
@@ -1157,7 +1164,7 @@
     {
       "type": "header",
       "content": "Transparent header",
-      "info": "Applies to the home page and the Christmas 2026 page template."
+      "info": "Applies to the home page, Christmas 2026 and Black Friday 2026 page templates."
     },
     {
       "type": "checkbox",
@@ -1176,6 +1183,17 @@
       "id": "transparent_logo",
       "label": "Logo image",
       "info": "Uses the dimensions set on your main logo."
+    },
+    {
+      "type": "header",
+      "content": "Black Friday 2026"
+    },
+    {
+      "type": "checkbox",
+      "id": "fit_bfcm_banner_height",
+      "label": "Fit screen height",
+      "info": "Fills the first screen with the Black Friday 2026 banner on desktop and mobile. Background images may be cropped.",
+      "default": false
     },
     {
       "type": "header",

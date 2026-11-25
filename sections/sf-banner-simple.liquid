@@ -9,7 +9,7 @@
   assign st = section.settings
 -%}
 
-<section id="sf-banner-simple-{{ sid }}" class="sf-banner-simple">
+<section id="sf-banner-simple-{{ sid }}" class="sf-banner-simple"{% if st.color_reverse %} data-header-reverse{% endif %}{% if st.mb_color_reverse %} data-mobile-header-reverse{% endif %}>
   <!-- Background -->
   <div class="sf-banner-simple__bg" aria-hidden="true">
     {% if st.bg_mobile != blank or st.bg_pc != blank %}
@@ -149,6 +149,58 @@
     top: 0;
     left: 0px;
     right: 0px;
+  }
+
+  body:has(store-header[data-fit-bfcm-banner]) #sf-banner-simple-{{ sid }} {
+    --sf-banner-header-overlap: calc(var(--enable-transparent-header, 0) * (var(--header-height, 0px) + var(--enable-sticky-announcement-bar, 0) * var(--announcement-bar-height, 0px)));
+    --sf-banner-top-offset: calc(var(--header-height, 0px) + var(--announcement-bar-height, 0px) - var(--sf-banner-header-overlap));
+    min-height: calc(100vh - var(--sf-banner-top-offset));
+    min-height: calc(100svh - var(--sf-banner-top-offset));
+  }
+
+  body:has(store-header[data-fit-bfcm-banner]) #sf-banner-simple-{{ sid }} .sf-banner-simple__bg {
+    position: absolute;
+  }
+
+  body:has(store-header[data-fit-bfcm-banner]) #sf-banner-simple-{{ sid }} .sf-banner-simple__bg picture,
+  body:has(store-header[data-fit-bfcm-banner]) #sf-banner-simple-{{ sid }} .sf-banner-simple__bg-img {
+    height: 100%;
+    object-fit: cover;
+  }
+
+  body:has(store-header[data-fit-bfcm-banner]) #sf-banner-simple-{{ sid }} .sf-banner-simple__inner {
+    position: relative;
+    padding-block: var(--sf-banner-header-overlap) 24px;
+  }
+
+  @media (width > 768px) {
+    .js:has(#sf-banner-simple-{{ sid }}[data-header-reverse]) #shopify-section-header .header--transparent {
+      --header-text-color: 0, 0, 0;
+      --header-border-color: 0, 0, 0, 0.15;
+    }
+
+    .js:has(#sf-banner-simple-{{ sid }}[data-header-reverse]) #shopify-section-header .header--transparent .header__logo-image:not(:last-child) {
+      opacity: 1;
+    }
+
+    .js:has(#sf-banner-simple-{{ sid }}[data-header-reverse]) #shopify-section-header .header--transparent .header__logo-image--transparent {
+      opacity: 0;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .js:has(#sf-banner-simple-{{ sid }}[data-mobile-header-reverse]) #shopify-section-header .header--transparent {
+      --header-text-color: 0, 0, 0;
+      --header-border-color: 0, 0, 0, 0.15;
+    }
+
+    .js:has(#sf-banner-simple-{{ sid }}[data-mobile-header-reverse]) #shopify-section-header .header--transparent .header__logo-image:not(:last-child) {
+      opacity: 1;
+    }
+
+    .js:has(#sf-banner-simple-{{ sid }}[data-mobile-header-reverse]) #shopify-section-header .header--transparent .header__logo-image--transparent {
+      opacity: 0;
+    }
   }
 
   #sf-banner-simple-{{ sid }} .sf-banner-simple__grid{
@@ -298,6 +350,10 @@
 {
   "name": "sf-banner-simple",
   "settings": [
+    { "type": "header", "content": "首屏设置" },
+    { "type": "checkbox", "id": "color_reverse", "label": "Header text color reverse", "info": "桌面端透明导航使用黑色文字和常规 Logo。", "default": false },
+    { "type": "checkbox", "id": "mb_color_reverse", "label": "Mobile Header text color reverse", "info": "移动端透明导航使用黑色文字和常规 Logo。", "default": false },
+
     { "type": "header", "content": "图片资源" },
     { "type": "image_picker", "id": "bg_pc", "label": "背景图（PC）" },
     { "type": "image_picker", "id": "bg_mobile", "label": "背景图（Mobile）" },
