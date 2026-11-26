@@ -457,15 +457,7 @@
                 </native-video-new>
               {%- elsif image != blank -%}
                 {%- capture sizes_attributes -%}{% if split_image != blank %}(min-width: 1000px) 50vw{% else %}100vw{% endif %}{%- endcapture -%}
-                {% comment %} {{ image | image_url: width: 3840 | image_tag: loading: loading_attribute_value, draggable: false, class: 'slideshow__image', sizes: sizes_attributes, widths: '600,700,800,1000,1200,1400,1600,3840' }} {% endcomment %}
-
-
-                  <picture class="">
-                  
-                    <img class="slideshow__image" src="{{  image | image_url  }}" alt="{{ image.alt }}" loading="{{ loading_attribute_value }}" fetchpriority="high">
-                  </picture>
-
-
+                {{ image | image_url: width: 3840 | image_tag: loading: loading_attribute_value, draggable: false, class: 'slideshow__image', sizes: sizes_attributes, widths: '600,700,800,1000,1200,1400,1600,3840' }}
               {%- else -%}
                 {%- capture image_name -%}lifestyle-{% cycle '1', '2' %}{%- endcapture -%}
                 {{ image_name | placeholder_svg_tag: 'slideshow__image slideshow__image--placeholder' }}
